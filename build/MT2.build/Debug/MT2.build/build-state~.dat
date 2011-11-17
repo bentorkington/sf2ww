@@ -1,265 +1,0 @@
-TMT2
-v7
-r0
-t330478430.000927
-cCheck dependencies
-cProcessInfoPlistFile /Users/ben/Documents/dev/MT2/build/Debug/MT2.app/Contents/Info.plist MT2-Info.plist
-cCopyStringsFile /Users/ben/Documents/dev/MT2/build/Debug/MT2.app/Contents/Resources/English.lproj/InfoPlist.strings English.lproj/InfoPlist.strings
-cCompileXIB /Users/ben/Documents/dev/MT2/MainMenu.xib
-cProcessPCH /var/folders/HM/HMAxCzAcGBqu9J6II2OMXk+++TI/-Caches-/com.apple.Xcode.501/SharedPrecompiledHeaders/MT2_Prefix-ebmseqvyvbjmttgofibdmulinbel/MT2_Prefix.pch.gch MT2_Prefix.pch normal x86_64 objective-c com.apple.compilers.gcc.4_2
-cCompileC build/MT2.build/Debug/MT2.build/Objects-normal/x86_64/main.o /Users/ben/Documents/dev/MT2/main.m normal x86_64 objective-c com.apple.compilers.gcc.4_2
-cCompileC build/MT2.build/Debug/MT2.build/Objects-normal/x86_64/MT2AppDelegate.o /Users/ben/Documents/dev/MT2/MT2AppDelegate.m normal x86_64 objective-c com.apple.compilers.gcc.4_2
-cCompileC build/MT2.build/Debug/MT2.build/Objects-normal/x86_64/OGLViewController.o /Users/ben/Documents/dev/MT2/OGLViewController.m normal x86_64 objective-c com.apple.compilers.gcc.4_2
-
-N/Developer/SDKs/MacOSX10.6.sdk
-c000000004C5342BA00000000000000EE
-t1280524986
-s238
-
-N/Developer/SDKs/MacOSX10.6.sdk/System/Library/Frameworks/Cocoa.framework/Headers/Cocoa.h
-c0000000040C4AA6800000000000001E5
-t1086630504
-s485
-
-N/Developer/SDKs/MacOSX10.6.sdk/System/Library/Frameworks/GLUT.framework/Headers/glut.h
-c000000004B489326000000000000578C
-t1263047462
-s22412
-
-N/System/Library/Frameworks/Cocoa.framework/Cocoa
-c000000004A1F2D63000000000000A5E0
-t1243557219
-s42464
-
-N/Users/ben/Documents/dev/MT2/English.lproj/InfoPlist.strings
-c000000004E027B26000000000000002D
-t1308785446
-s45
-
-N/Users/ben/Documents/dev/MT2/English.lproj/MainMenu.xib
-c000000004E027B26000000000002BB3F
-t1308785446
-s179007
-
-N/Users/ben/Documents/dev/MT2/MT2AppDelegate.h
-c000000004E027B260000000000000124
-t1308785446
-s292
-i<Cocoa/Cocoa.h>
-
-N/Users/ben/Documents/dev/MT2/MT2AppDelegate.m
-c000000004E027B260000000000000155
-t1308785446
-s341
-i"MT2AppDelegate.h"
-
-N/Users/ben/Documents/dev/MT2/MT2_Prefix.pch
-c000000004E027B260000000000000089
-t1308785446
-s137
-i<Cocoa/Cocoa.h>
-
-N/Users/ben/Documents/dev/MT2/MainMenu.xib
-c000000004E027B26000000000002BB3F
-t1308785446
-s179007
-
-N/Users/ben/Documents/dev/MT2/OGLViewController.h
-c000000004DED5BA10000000000000498
-t1307401121
-s1176
-i<Cocoa/Cocoa.h>
-i<GLUT/glut.h>
-
-N/Users/ben/Documents/dev/MT2/OGLViewController.m
-c000000004DDF09660000000000002DB5
-t1306462566
-s11701
-i"OGLViewController.h"
-i"GLUT/glut.h"
-i"trackball.h"
-i"MyDocument.h"
-
-N/Users/ben/Documents/dev/MT2/build/Debug/MT2.app
-t2
-s0
-
-N/Users/ben/Documents/dev/MT2/build/Debug/MT2.app/Contents/Info.plist
-t1308785626
-s874
-
-N/Users/ben/Documents/dev/MT2/build/Debug/MT2.app/Contents/MacOS/MT2
-t2
-s0
-
-N/Users/ben/Documents/dev/MT2/build/Debug/MT2.app/Contents/PkgInfo
-t1308785626
-s8
-
-N/Users/ben/Documents/dev/MT2/build/Debug/MT2.app/Contents/Resources/English.lproj/InfoPlist.strings
-t1308785626
-s92
-
-N/Users/ben/Documents/dev/MT2/build/Debug/MT2.app/Contents/Resources/English.lproj/MainMenu.nib
-t2
-s0
-
-N/Users/ben/Documents/dev/MT2/build/Debug/MT2.app/Contents/Resources/MainMenu.nib
-t1308785626
-s34315
-
-N/Users/ben/Documents/dev/MT2/build/MT2.build/Debug/MT2.build/Objects-normal/x86_64/MT2.LinkFileList
-c000000004E027BDA0000000000000125
-t1308785626
-s293
-
-N/Users/ben/Documents/dev/MT2/build/MT2.build/Debug/MT2.build/Objects-normal/x86_64/MT2AppDelegate.o
-t1308785629
-s20984
-
-N/Users/ben/Documents/dev/MT2/build/MT2.build/Debug/MT2.build/Objects-normal/x86_64/OGLViewController.o
-t2
-s0
-
-N/Users/ben/Documents/dev/MT2/build/MT2.build/Debug/MT2.build/Objects-normal/x86_64/main.o
-t1308785629
-s4968
-
-N/Users/ben/Documents/dev/MT2/main.m
-c000000004E027B2600000000000000EE
-t1308785446
-s238
-i<Cocoa/Cocoa.h>
-
-N/var/folders/HM/HMAxCzAcGBqu9J6II2OMXk+++TI/-Caches-/com.apple.Xcode.501/SharedPrecompiledHeaders/MT2_Prefix-ebmseqvyvbjmttgofibdmulinbel/MT2_Prefix.pch.gch
-t1308785629
-s54265616
-
-NMT2-Info.plist
-c000000004E027B2600000000000003EA
-t1308785446
-s1002
-
-CCheck dependencies
-r0
-lSLF07#2@18"Check dependencies330478426#330478426#0(0"0(0#1#0"3343187568374212096#0"0#
-
-CCompileC build/MT2.build/Debug/MT2.build/Objects-normal/x86_64/MT2AppDelegate.o /Users/ben/Documents/dev/MT2/MT2AppDelegate.m normal x86_64 objective-c com.apple.compilers.gcc.4_2
-s330478429.663810
-e330478429.882450
-r1
-xCompileC
-xbuild/MT2.build/Debug/MT2.build/Objects-normal/x86_64/MT2AppDelegate.o
-x/Users/ben/Documents/dev/MT2/MT2AppDelegate.m
-xnormal
-xx86_64
-xobjective-c
-xcom.apple.compilers.gcc.4_2
-lSLF07#2@53"Compile /Users/ben/Documents/dev/MT2/MT2AppDelegate.m330478429#330478429#0(0"0(0#0#45"/Users/ben/Documents/dev/MT2/MT2AppDelegate.m8616896512#1280"    cd /Users/ben/Documents/dev/MT2    setenv LANG en_US.US-ASCII    /Developer/usr/bin/gcc-4.2 -x objective-c -arch x86_64 -fmessage-length=0 -pipe -std=gnu99 -Wno-trigraphs -fpascal-strings -fasm-blocks -O0 -Wreturn-type -Wunused-variable -isysroot /Developer/SDKs/MacOSX10.6.sdk -mfix-and-continue -mmacosx-version-min=10.6 -gdwarf-2 -iquote /Users/ben/Documents/dev/MT2/build/MT2.build/Debug/MT2.build/MT2-generated-files.hmap -I/Users/ben/Documents/dev/MT2/build/MT2.build/Debug/MT2.build/MT2-own-target-headers.hmap -I/Users/ben/Documents/dev/MT2/build/MT2.build/Debug/MT2.build/MT2-all-target-headers.hmap -iquote /Users/ben/Documents/dev/MT2/build/MT2.build/Debug/MT2.build/MT2-project-headers.hmap -F/Users/ben/Documents/dev/MT2/build/Debug -I/Users/ben/Documents/dev/MT2/build/Debug/include -I/Users/ben/Documents/dev/MT2/build/MT2.build/Debug/MT2.build/DerivedSources/x86_64 -I/Users/ben/Documents/dev/MT2/build/MT2.build/Debug/MT2.build/DerivedSources -include /var/folders/HM/HMAxCzAcGBqu9J6II2OMXk+++TI/-Caches-/com.apple.Xcode.501/SharedPrecompiledHeaders/MT2_Prefix-ebmseqvyvbjmttgofibdmulinbel/MT2_Prefix.pch -c /Users/ben/Documents/dev/MT2/MT2AppDelegate.m -o /Users/ben/Documents/dev/MT2/build/MT2.build/Debug/MT2.build/Objects-normal/x86_64/MT2AppDelegate.o0#
-
-CCompileC build/MT2.build/Debug/MT2.build/Objects-normal/x86_64/OGLViewController.o /Users/ben/Documents/dev/MT2/OGLViewController.m normal x86_64 objective-c com.apple.compilers.gcc.4_2
-s330478429.862905
-e330478430.000846
-r0
-xCompileC
-xbuild/MT2.build/Debug/MT2.build/Objects-normal/x86_64/OGLViewController.o
-x/Users/ben/Documents/dev/MT2/OGLViewController.m
-xnormal
-xx86_64
-xobjective-c
-xcom.apple.compilers.gcc.4_2
-o/Users/ben/Documents/dev/MT2/OGLViewController.m:11:22: error: trackball.h: No such file or directory
-o/Users/ben/Documents/dev/MT2/OGLViewController.m:12:23: error: MyDocument.h: No such file or directory
-o/Users/ben/Documents/dev/MT2/OGLViewController.m: In function '-[OGLViewController prepare]':
-o/Users/ben/Documents/dev/MT2/OGLViewController.m:44: warning: unused variable 'matb'
-o/Users/ben/Documents/dev/MT2/OGLViewController.m: In function '-[OGLViewController drawDocument]':
-o/Users/ben/Documents/dev/MT2/OGLViewController.m:115: error: 'MyDocument' undeclared (first use in this function)
-o/Users/ben/Documents/dev/MT2/OGLViewController.m:115: error: (Each undeclared identifier is reported only once
-o/Users/ben/Documents/dev/MT2/OGLViewController.m:115: error: for each function it appears in.)
-o/Users/ben/Documents/dev/MT2/OGLViewController.m:115: error: 'theDoc' undeclared (first use in this function)
-o/Users/ben/Documents/dev/MT2/OGLViewController.m: In function '-[OGLViewController mouseTrackball:]':
-o/Users/ben/Documents/dev/MT2/OGLViewController.m:280: warning: implicit declaration of function 'rollToTrackball'
-o/Users/ben/Documents/dev/MT2/OGLViewController.m: In function '-[OGLViewController mouseDown:]':
-o/Users/ben/Documents/dev/MT2/OGLViewController.m:295: warning: implicit declaration of function 'startTrackball'
-o/Users/ben/Documents/dev/MT2/OGLViewController.m: In function '-[OGLViewController rightmouseDown:]':
-o/Users/ben/Documents/dev/MT2/OGLViewController.m:305: warning: implicit declaration of function 'addToRotationTrackball'
-o/Users/ben/Documents/dev/MT2/OGLViewController.m: In function '-[OGLViewController drawGLText:]':
-o/Users/ben/Documents/dev/MT2/OGLViewController.m:350: warning: unused variable 'endstring'
-o{standard input}:unknown:Undefined local symbol L_OBJC_SELECTOR_REFERENCES_0
-o{standard input}:unknown:Undefined local symbol L_OBJC_SELECTOR_REFERENCES_1
-o{standard input}:unknown:Undefined local symbol L_OBJC_SELECTOR_REFERENCES_2
-o{standard input}:unknown:Undefined local symbol L_OBJC_CLASSLIST_SUP_REFS_$_0
-o{standard input}:unknown:Undefined local symbol L_OBJC_SELECTOR_REFERENCES_3
-o{standard input}:unknown:Undefined local symbol L_OBJC_SELECTOR_REFERENCES_4
-o{standard input}:unknown:Undefined local symbol L_OBJC_SELECTOR_REFERENCES_5
-o{standard input}:unknown:Undefined local symbol L_OBJC_SELECTOR_REFERENCES_6
-o{standard input}:unknown:Undefined local symbol L_OBJC_SELECTOR_REFERENCES_7
-o{standard input}:unknown:Undefined local symbol L_OBJC_SELECTOR_REFERENCES_8
-o{standard input}:unknown:Undefined local symbol L_OBJC_SELECTOR_REFERENCES_9
-o{standard input}:unknown:Undefined local symbol L_OBJC_SELECTOR_REFERENCES_10
-o{standard input}:unknown:Undefined local symbol L_OBJC_SELECTOR_REFERENCES_11
-o{standard input}:unknown:Undefined local symbol L_OBJC_SELECTOR_REFERENCES_12
-o{standard input}:unknown:Undefined local symbol L_OBJC_SELECTOR_REFERENCES_13
-lSLF07#2@56"Compile /Users/ben/Documents/dev/MT2/OGLViewController.m330478429#330478430#0(2911"/Users/ben/Documents/dev/MT2/OGLViewController.m:11:22: error: trackball.h: No such file or directory/Users/ben/Documents/dev/MT2/OGLViewController.m:12:23: error: MyDocument.h: No such file or directory/Users/ben/Documents/dev/MT2/OGLViewController.m: In function '-[OGLViewController prepare]':/Users/ben/Documents/dev/MT2/OGLViewController.m:44: warning: unused variable 'matb'/Users/ben/Documents/dev/MT2/OGLViewController.m: In function '-[OGLViewController drawDocument]':/Users/ben/Documents/dev/MT2/OGLViewController.m:115: error: 'MyDocument' undeclared (first use in this function)/Users/ben/Documents/dev/MT2/OGLViewController.m:115: error: (Each undeclared identifier is reported only once/Users/ben/Documents/dev/MT2/OGLViewController.m:115: error: for each function it appears in.)/Users/ben/Documents/dev/MT2/OGLViewController.m:115: error: 'theDoc' undeclared (first use in this function)/Users/ben/Documents/dev/MT2/OGLViewController.m: In function '-[OGLViewController mouseTrackball:]':/Users/ben/Documents/dev/MT2/OGLViewController.m:280: warning: implicit declaration of function 'rollToTrackball'/Users/ben/Documents/dev/MT2/OGLViewController.m: In function '-[OGLViewController mouseDown:]':/Users/ben/Documents/dev/MT2/OGLViewController.m:295: warning: implicit declaration of function 'startTrackball'/Users/ben/Documents/dev/MT2/OGLViewController.m: In function '-[OGLViewController rightmouseDown:]':/Users/ben/Documents/dev/MT2/OGLViewController.m:305: warning: implicit declaration of function 'addToRotationTrackball'/Users/ben/Documents/dev/MT2/OGLViewController.m: In function '-[OGLViewController drawGLText:]':/Users/ben/Documents/dev/MT2/OGLViewController.m:350: warning: unused variable 'endstring'{standard input}:unknown:Undefined local symbol L_OBJC_SELECTOR_REFERENCES_0{standard input}:unknown:Undefined local symbol L_OBJC_SELECTOR_REFERENCES_1{standard input}:unknown:Undefined local symbol L_OBJC_SELECTOR_REFERENCES_2{standard input}:unknown:Undefined local symbol L_OBJC_CLASSLIST_SUP_REFS_$_0{standard input}:unknown:Undefined local symbol L_OBJC_SELECTOR_REFERENCES_3{standard input}:unknown:Undefined local symbol L_OBJC_SELECTOR_REFERENCES_4{standard input}:unknown:Undefined local symbol L_OBJC_SELECTOR_REFERENCES_5{standard input}:unknown:Undefined local symbol L_OBJC_SELECTOR_REFERENCES_6{standard input}:unknown:Undefined local symbol L_OBJC_SELECTOR_REFERENCES_7{standard input}:unknown:Undefined local symbol L_OBJC_SELECTOR_REFERENCES_8{standard input}:unknown:Undefined local symbol L_OBJC_SELECTOR_REFERENCES_9{standard input}:unknown:Undefined local symbol L_OBJC_SELECTOR_REFERENCES_10{standard input}:unknown:Undefined local symbol L_OBJC_SELECTOR_REFERENCES_11{standard input}:unknown:Undefined local symbol L_OBJC_SELECTOR_REFERENCES_12{standard input}:unknown:Undefined local symbol L_OBJC_SELECTOR_REFERENCES_139(4@38"Trackball.h: No such file or directory330478429#0#102#0(6@48"/Users/ben/Documents/dev/MT2/OGLViewController.m328155366#11#0#11#0#28"*: No such file or directory0(4@39"MyDocument.h: No such file or directory330478429#102#103#0(6@48"/Users/ben/Documents/dev/MT2/OGLViewController.m328155366#12#0#12#0#28"*: No such file or directory0(22@22"Unused variable 'matb'330478429#299#85#0(6@48"/Users/ben/Documents/dev/MT2/OGLViewController.m328155366#44#0#44#0#19"unused variable '*'0(4@52"'MyDocument' undeclared (first use in this function)330478429#483#114#0(6@48"/Users/ben/Documents/dev/MT2/OGLViewController.m328155366#115#0#115#0#43"'*' undeclared (first use in this function)0(4@48"'theDoc' undeclared (first use in this function)330478429#803#110#0(6@48"/Users/ben/Documents/dev/MT2/OGLViewController.m328155366#115#0#115#0#43"'*' undeclared (first use in this function)0(22@50"Implicit declaration of function 'rollToTrackball'330478429#1015#114#0(6@48"/Users/ben/Documents/dev/MT2/OGLViewController.m328155366#280#0#280#0#36"implicit declaration of function '*'0(22@49"Implicit declaration of function 'startTrackball'330478429#1226#113#0(6@48"/Users/ben/Documents/dev/MT2/OGLViewController.m328155366#295#0#295#0#36"implicit declaration of function '*'0(22@57"Implicit declaration of function 'addToRotationTrackball'330478429#1441#121#0(6@48"/Users/ben/Documents/dev/MT2/OGLViewController.m328155366#305#0#305#0#36"implicit declaration of function '*'0(22@27"Unused variable 'endstring'330478429#1660#91#0(6@48"/Users/ben/Documents/dev/MT2/OGLViewController.m328155366#350#0#350#0#19"unused variable '*'0(0#0#48"/Users/ben/Documents/dev/MT2/OGLViewController.m8617016448#1286"    cd /Users/ben/Documents/dev/MT2    setenv LANG en_US.US-ASCII    /Developer/usr/bin/gcc-4.2 -x objective-c -arch x86_64 -fmessage-length=0 -pipe -std=gnu99 -Wno-trigraphs -fpascal-strings -fasm-blocks -O0 -Wreturn-type -Wunused-variable -isysroot /Developer/SDKs/MacOSX10.6.sdk -mfix-and-continue -mmacosx-version-min=10.6 -gdwarf-2 -iquote /Users/ben/Documents/dev/MT2/build/MT2.build/Debug/MT2.build/MT2-generated-files.hmap -I/Users/ben/Documents/dev/MT2/build/MT2.build/Debug/MT2.build/MT2-own-target-headers.hmap -I/Users/ben/Documents/dev/MT2/build/MT2.build/Debug/MT2.build/MT2-all-target-headers.hmap -iquote /Users/ben/Documents/dev/MT2/build/MT2.build/Debug/MT2.build/MT2-project-headers.hmap -F/Users/ben/Documents/dev/MT2/build/Debug -I/Users/ben/Documents/dev/MT2/build/Debug/include -I/Users/ben/Documents/dev/MT2/build/MT2.build/Debug/MT2.build/DerivedSources/x86_64 -I/Users/ben/Documents/dev/MT2/build/MT2.build/Debug/MT2.build/DerivedSources -include /var/folders/HM/HMAxCzAcGBqu9J6II2OMXk+++TI/-Caches-/com.apple.Xcode.501/SharedPrecompiledHeaders/MT2_Prefix-ebmseqvyvbjmttgofibdmulinbel/MT2_Prefix.pch -c /Users/ben/Documents/dev/MT2/OGLViewController.m -o /Users/ben/Documents/dev/MT2/build/MT2.build/Debug/MT2.build/Objects-normal/x86_64/OGLViewController.o1#
-
-CCompileC build/MT2.build/Debug/MT2.build/Objects-normal/x86_64/main.o /Users/ben/Documents/dev/MT2/main.m normal x86_64 objective-c com.apple.compilers.gcc.4_2
-s330478429.662539
-e330478429.862806
-r1
-xCompileC
-xbuild/MT2.build/Debug/MT2.build/Objects-normal/x86_64/main.o
-x/Users/ben/Documents/dev/MT2/main.m
-xnormal
-xx86_64
-xobjective-c
-xcom.apple.compilers.gcc.4_2
-lSLF07#2@43"Compile /Users/ben/Documents/dev/MT2/main.m330478429#330478429#0(0"0(0#0#35"/Users/ben/Documents/dev/MT2/main.m8612503424#1260"    cd /Users/ben/Documents/dev/MT2    setenv LANG en_US.US-ASCII    /Developer/usr/bin/gcc-4.2 -x objective-c -arch x86_64 -fmessage-length=0 -pipe -std=gnu99 -Wno-trigraphs -fpascal-strings -fasm-blocks -O0 -Wreturn-type -Wunused-variable -isysroot /Developer/SDKs/MacOSX10.6.sdk -mfix-and-continue -mmacosx-version-min=10.6 -gdwarf-2 -iquote /Users/ben/Documents/dev/MT2/build/MT2.build/Debug/MT2.build/MT2-generated-files.hmap -I/Users/ben/Documents/dev/MT2/build/MT2.build/Debug/MT2.build/MT2-own-target-headers.hmap -I/Users/ben/Documents/dev/MT2/build/MT2.build/Debug/MT2.build/MT2-all-target-headers.hmap -iquote /Users/ben/Documents/dev/MT2/build/MT2.build/Debug/MT2.build/MT2-project-headers.hmap -F/Users/ben/Documents/dev/MT2/build/Debug -I/Users/ben/Documents/dev/MT2/build/Debug/include -I/Users/ben/Documents/dev/MT2/build/MT2.build/Debug/MT2.build/DerivedSources/x86_64 -I/Users/ben/Documents/dev/MT2/build/MT2.build/Debug/MT2.build/DerivedSources -include /var/folders/HM/HMAxCzAcGBqu9J6II2OMXk+++TI/-Caches-/com.apple.Xcode.501/SharedPrecompiledHeaders/MT2_Prefix-ebmseqvyvbjmttgofibdmulinbel/MT2_Prefix.pch -c /Users/ben/Documents/dev/MT2/main.m -o /Users/ben/Documents/dev/MT2/build/MT2.build/Debug/MT2.build/Objects-normal/x86_64/main.o0#
-
-CCompileXIB /Users/ben/Documents/dev/MT2/English.lproj/MainMenu.xib
-r0
-
-CCompileXIB /Users/ben/Documents/dev/MT2/MainMenu.xib
-s330478426.249470
-e330478426.552707
-r1
-xCompileXIB
-x/Users/ben/Documents/dev/MT2/MainMenu.xib
-lSLF07#2@23"CompileXIB MainMenu.xib330478426#330478426#0(0"0(0#0#41"/Users/ben/Documents/dev/MT2/MainMenu.xib8605136672#302"    cd /Users/ben/Documents/dev/MT2    /Developer/usr/bin/ibtool --errors --warnings --notices --output-format human-readable-text --compile /Users/ben/Documents/dev/MT2/build/Debug/MT2.app/Contents/Resources/MainMenu.nib /Users/ben/Documents/dev/MT2/MainMenu.xib --sdk /Developer/SDKs/MacOSX10.6.sdk0#
-
-CCopyStringsFile /Users/ben/Documents/dev/MT2/build/Debug/MT2.app/Contents/Resources/English.lproj/InfoPlist.strings English.lproj/InfoPlist.strings
-s330478426.248716
-e330478426.467086
-r1
-xCopyStringsFile
-x/Users/ben/Documents/dev/MT2/build/Debug/MT2.app/Contents/Resources/English.lproj/InfoPlist.strings
-xEnglish.lproj/InfoPlist.strings
-lSLF07#2@36"Copy English.lproj/InfoPlist.strings330478426#330478426#0(0"0(0#0#60"/Users/ben/Documents/dev/MT2/English.lproj/InfoPlist.strings8609357888#341"    cd /Users/ben/Documents/dev/MT2    setenv ICONV /usr/bin/iconv    /Developer/Library/Xcode/Plug-ins/CoreBuildTasks.xcplugin/Contents/Resources/copystrings --validate --inputencoding utf-8 --outputencoding UTF-16 English.lproj/InfoPlist.strings --outdir /Users/ben/Documents/dev/MT2/build/Debug/MT2.app/Contents/Resources/English.lproj0#
-
-CLd /Users/ben/Documents/dev/MT2/build/Debug/MT2.app/Contents/MacOS/MT2 normal x86_64
-r0
-
-CProcessInfoPlistFile /Users/ben/Documents/dev/MT2/build/Debug/MT2.app/Contents/Info.plist MT2-Info.plist
-s330478426.245125
-e330478426.248632
-r1
-xProcessInfoPlistFile
-x/Users/ben/Documents/dev/MT2/build/Debug/MT2.app/Contents/Info.plist
-xMT2-Info.plist
-lSLF07#2@22"Process MT2-Info.plist330478426#330478426#0(0"0(0#0#43"/Users/ben/Documents/dev/MT2/MT2-Info.plist30962681237471344#268"    cd /Users/ben/Documents/dev/MT2    builtin-infoPlistUtility MT2-Info.plist -genpkginfo /Users/ben/Documents/dev/MT2/build/Debug/MT2.app/Contents/PkgInfo -expandbuildsettings -platform macosx -o /Users/ben/Documents/dev/MT2/build/Debug/MT2.app/Contents/Info.plist0#
-
-CProcessPCH /var/folders/HM/HMAxCzAcGBqu9J6II2OMXk+++TI/-Caches-/com.apple.Xcode.501/SharedPrecompiledHeaders/MT2_Prefix-ebmseqvyvbjmttgofibdmulinbel/MT2_Prefix.pch.gch MT2_Prefix.pch normal x86_64 objective-c com.apple.compilers.gcc.4_2
-s330478426.552844
-e330478429.662342
-r1
-xProcessPCH
-x/var/folders/HM/HMAxCzAcGBqu9J6II2OMXk+++TI/-Caches-/com.apple.Xcode.501/SharedPrecompiledHeaders/MT2_Prefix-ebmseqvyvbjmttgofibdmulinbel/MT2_Prefix.pch.gch
-xMT2_Prefix.pch
-xnormal
-xx86_64
-xobjective-c
-xcom.apple.compilers.gcc.4_2
-lSLF07#2@25"Precompile MT2_Prefix.pch330478426#330478429#0(0"0(0#0#43"/Users/ben/Documents/dev/MT2/MT2_Prefix.pch8617032960#1180"    cd /Users/ben/Documents/dev/MT2    setenv LANG en_US.US-ASCII    /Developer/usr/bin/gcc-4.2 -x objective-c-header -arch x86_64 -fmessage-length=0 -pipe -std=gnu99 -Wno-trigraphs -fpascal-strings -fasm-blocks -O0 -Wreturn-type -Wunused-variable -isysroot /Developer/SDKs/MacOSX10.6.sdk -mfix-and-continue -mmacosx-version-min=10.6 -gdwarf-2 -iquote /Users/ben/Documents/dev/MT2/build/MT2.build/Debug/MT2.build/MT2-generated-files.hmap -I/Users/ben/Documents/dev/MT2/build/MT2.build/Debug/MT2.build/MT2-own-target-headers.hmap -I/Users/ben/Documents/dev/MT2/build/MT2.build/Debug/MT2.build/MT2-all-target-headers.hmap -iquote /Users/ben/Documents/dev/MT2/build/MT2.build/Debug/MT2.build/MT2-project-headers.hmap -F/Users/ben/Documents/dev/MT2/build/Debug -I/Users/ben/Documents/dev/MT2/build/Debug/include -I/Users/ben/Documents/dev/MT2/build/MT2.build/Debug/MT2.build/DerivedSources/x86_64 -I/Users/ben/Documents/dev/MT2/build/MT2.build/Debug/MT2.build/DerivedSources -c /Users/ben/Documents/dev/MT2/MT2_Prefix.pch -o /var/folders/HM/HMAxCzAcGBqu9J6II2OMXk+++TI/-Caches-/com.apple.Xcode.501/SharedPrecompiledHeaders/MT2_Prefix-ebmseqvyvbjmttgofibdmulinbel/MT2_Prefix.pch.gch0#
-
-CTouch /Users/ben/Documents/dev/MT2/build/Debug/MT2.app
-r0
-

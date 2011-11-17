@@ -1,5 +1,0 @@
-/Users/ben/Documents/dev/MT2/FistBlue/gfxlib.c: In function 'actiontickdraw':
-/Users/ben/Documents/dev/MT2/FistBlue/gfxlib.c:791: warning: target of assignment not really an lvalue; this will be a hard error in the future
-/Users/ben/Documents/dev/MT2/FistBlue/gfxlib.c:794: warning: assignment from incompatible pointer type
-/Users/ben/Documents/dev/MT2/FistBlue/gfxlib.c: In function 'showtextbank0':
-/Users/ben/Documents/dev/MT2/FistBlue/gfxlib.c:867: warning: assignment from incompatible pointer type

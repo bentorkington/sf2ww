@@ -1,6 +1,0 @@
-/Users/ben/Documents/dev/MT2/FistBlue/particle.c: In function 'setaction_list':
-/Users/ben/Documents/dev/MT2/FistBlue/particle.c:18: warning: initialization discards qualifiers from pointer target type
-/Users/ben/Documents/dev/MT2/FistBlue/particle.c: In function 'setaction_direct':
-/Users/ben/Documents/dev/MT2/FistBlue/particle.c:24: warning: assignment discards qualifiers from pointer target type
-/Users/ben/Documents/dev/MT2/FistBlue/particle.c: At top level:
-/Users/ben/Documents/dev/MT2/FistBlue/particle.c:118: warning: initialization from incompatible pointer type

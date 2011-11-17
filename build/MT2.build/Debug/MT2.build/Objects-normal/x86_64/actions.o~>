@@ -1,4 +1,0 @@
-/Users/ben/Documents/dev/MT2/FistBlue/actions/actions.c: In function 'sub_205d8':
-/Users/ben/Documents/dev/MT2/FistBlue/actions/actions.c:2719: warning: passing argument 2 of 'add_bcd_32' from incompatible pointer type
-/Users/ben/Documents/dev/MT2/FistBlue/actions/actions.c: In function 'action_3b':
-/Users/ben/Documents/dev/MT2/FistBlue/actions/actions.c:2813: warning: passing argument 2 of 'sub_bcd_8' from incompatible pointer type
