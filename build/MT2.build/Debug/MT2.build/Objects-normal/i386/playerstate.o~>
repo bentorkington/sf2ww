@@ -1,6 +1,0 @@
-In file included from /Users/ben/Documents/dev/MT2/FistBlue/playerstate.c:20:
-/Users/ben/Documents/dev/MT2/FistBlue/playerstate.h:32: error: expected '=', ',', ';', 'asm' or '__attribute__' before 'is_facing_enemy'
-/Users/ben/Documents/dev/MT2/FistBlue/playerstate.c: In function 'PSPushBack':
-/Users/ben/Documents/dev/MT2/FistBlue/playerstate.c:344: warning: initialization discards qualifiers from pointer target type
-/Users/ben/Documents/dev/MT2/FistBlue/playerstate.c: In function 'proc_plstat_normal':
-/Users/ben/Documents/dev/MT2/FistBlue/playerstate.c:541: warning: implicit declaration of function 'is_facing_enemy'
