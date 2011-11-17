@@ -18,7 +18,6 @@
 		B5ADB7B213B2B38400905DFE /* trackball.c in Sources */ = {isa = PBXBuildFile; fileRef = B5ADB7B013B2B38400905DFE /* trackball.c */; };
 		B5ADB7BA13B2B3B300905DFE /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B5ADB7B913B2B3B300905DFE /* OpenGL.framework */; };
 		B5ADB7BE13B2B3BE00905DFE /* GLUT.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B5ADB7BD13B2B3BE00905DFE /* GLUT.framework */; };
-		B5ADB84D13B2B57E00905DFE /* actions.c in Sources */ = {isa = PBXBuildFile; fileRef = B5ADB7E413B2B57D00905DFE /* actions.c */; };
 		B5ADB84E13B2B57E00905DFE /* actions_198a.c in Sources */ = {isa = PBXBuildFile; fileRef = B5ADB7E613B2B57D00905DFE /* actions_198a.c */; };
 		B5ADB84F13B2B57E00905DFE /* actions_530a.c in Sources */ = {isa = PBXBuildFile; fileRef = B5ADB7E813B2B57D00905DFE /* actions_530a.c */; };
 		B5ADB85113B2B57E00905DFE /* ai.c in Sources */ = {isa = PBXBuildFile; fileRef = B5ADB7ED13B2B57D00905DFE /* ai.c */; };
@@ -52,6 +51,7 @@
 		B5ADB86D13B2B57E00905DFE /* sprite.c in Sources */ = {isa = PBXBuildFile; fileRef = B5ADB84513B2B57E00905DFE /* sprite.c */; };
 		B5ADB86E13B2B57E00905DFE /* task.c in Sources */ = {isa = PBXBuildFile; fileRef = B5ADB84913B2B57E00905DFE /* task.c */; };
 		B5ADB87213B2B59A00905DFE /* glwimp.c in Sources */ = {isa = PBXBuildFile; fileRef = B5ADB87013B2B59A00905DFE /* glwimp.c */; };
+		B5E05DE11475B0B9007224B5 /* actions.c in Sources */ = {isa = PBXBuildFile; fileRef = B5ADB7E413B2B57D00905DFE /* actions.c */; };
 		B5E9056313B2D5FE00833C5A /* ParamController.m in Sources */ = {isa = PBXBuildFile; fileRef = B5E9056213B2D5FE00833C5A /* ParamController.m */; };
 		B5E9056513B2D61900833C5A /* ParamController.xib in Resources */ = {isa = PBXBuildFile; fileRef = B5E9056413B2D61900833C5A /* ParamController.xib */; };
 /* End PBXBuildFile section */
@@ -561,7 +561,6 @@
 				256AC3DA0F4B6AC300CF3369 /* MT2AppDelegate.m in Sources */,
 				B5ADB7AD13B2B34900905DFE /* OGLView.m in Sources */,
 				B5ADB7B213B2B38400905DFE /* trackball.c in Sources */,
-				B5ADB84D13B2B57E00905DFE /* actions.c in Sources */,
 				B5ADB84E13B2B57E00905DFE /* actions_198a.c in Sources */,
 				B5ADB84F13B2B57E00905DFE /* actions_530a.c in Sources */,
 				B5ADB85113B2B57E00905DFE /* ai.c in Sources */,
@@ -598,6 +597,7 @@
 				B5E9056313B2D5FE00833C5A /* ParamController.m in Sources */,
 				B5871ED71408E4F4004A45F5 /* pthreads.c in Sources */,
 				B56A718C1411B0D300DF7F02 /* game.c in Sources */,
+				B5E05DE11475B0B9007224B5 /* actions.c in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

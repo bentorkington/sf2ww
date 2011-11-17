@@ -1045,7 +1045,7 @@ static void action_0f(Object *obj) {		// 10b44 Another Bird
 
 #pragma mark Act10 10c66
 
-static void action_10(Object *obj) {
+static void Act10(Object *obj) {
 	char data_10c9e[]={
 		10, 2, 8, 5, 1, 1, 3, 4, 4, 3, 1, 4, 5, 2, 1, 3
 	};
@@ -1129,7 +1129,7 @@ static void action_11(Object *obj) {
 				d0 = (sf2rand() & 0xe);		// SF2UA bug does & 0x1e
 				obj->XPI = data_1104e[d0/2];
 				obj->YPI = data_1105e[d0/2];
-				//todo setaction_list(obj, data_111e6, 0);
+				setaction_list(obj, data_111e6, 0);
 			} else {
 				NEXT(obj->mode0);
 				obj->LocalTimer = 0x1e;
@@ -1182,7 +1182,7 @@ static void action_12(Object *obj) {
 					obj->Pool	= 6;
 					obj->XPI	= 0xc0;
 					obj->YPI	= 0x98;
-					//todo setaction_list(obj, data_11602, 1);
+					setaction_list(obj, data_11602, 1);
 					/* FALLTHRU */
 				case 2:
 					enqueue_and_layer(obj);
@@ -1198,7 +1198,7 @@ static void action_12(Object *obj) {
 					NEXT(obj->mode0);
 					obj->Pool	= 6;
 					ud->h0080c  = 0;
-					//todo setaction_list(obj, data_11602, 0);
+					setaction_list(obj, data_11602, 0);
 					break;
 				case 2:
 					switch (obj->mode1) {
@@ -1219,7 +1219,7 @@ static void action_12(Object *obj) {
 									nobj->exists = TRUE;
 									nobj->Sel = 0x29;
 								}
-								//todo setaction_list(obj, data_11602, 1);
+								setaction_list(obj, data_11602, 1);
 							}
 							break;
 						case 4:
@@ -1248,7 +1248,7 @@ static void action_12(Object *obj) {
 					NEXT(obj->mode0);
 					obj->Pool = 6;
 					ud->h0080c = 0;
-					//todo setaction_list(obj, data_11602, 0);
+					setaction_list(obj, data_11602, 0);
 					break;
 				case 2:
 					switch (obj->mode1) {
@@ -1270,7 +1270,7 @@ static void action_12(Object *obj) {
 									nobj->exists = TRUE;
 									nobj->Sel = 0x29;
 								}
-								//todo setaction_list(obj, data_11602, 1);
+								setaction_list(obj, data_11602, 1);
 							}
 							break;
 						case 4:
@@ -1519,58 +1519,58 @@ static void action_13(Object *obj) {  // 119ee
 
 #pragma mark Act17
 
-//static void action_17(Object *obj) {
-//	UD17 *ud = (UD17 *)&obj->UserData;
-//	
-//	switch (obj->mode0) {
-//		case 0:
-//			NEXT(obj->mode0);
-//			ud->h0082c = 0;
-//			if (0x9249 & (1 << RAND16) == 0) {
-//				obj->Pool = 6;
-//			}
-//			setaction_list(obj, data_, obj->SubSel);
-//			break;
-//		case 2:
-//			switch (obj->mode1) {
-//				case 0:
-//					NEXT(obj->mode1);
-//					obj->VelX = data_[RAND8W];
-//					obj->VelY = data_[RAND8W];
-//					obj->XPI += data_[RAND16W];
-//					obj->YPI += data_[RAND8W];
-//					ud->h0080w += 0x28;
-//					obj->AclY.full = 0x0040;
-//					obj->AclX.full = 0;
-//					obj->LocalTimer = 0x32;
-//					break;
-//				case 2:
-//					if (--obj->LocalTimer == 0) {
-//						NEXT(obj->mode1);
-//						obj->h0082c = 0x1e;
-//					}
-//					CATrajectory(obj);
-//					if (obj->VelY.full < 0) {
-//						/* XXX oh god! */
-//					}
-//				case 4:
-//					//todo
-//					
-//					
-//					break;
-//				FATALDEFAULT;
-//			}
-//			if ((ud->h0085c & 1) == 0) {
-//				check_rect_queue_draw(obj);
-//			}
-//			break;
-//		case 4:
-//		case 6:
-//			FreeActor(obj);
-//		FATALDEFAULT;
-//	}
-//	
-//}
+static void action_17(Object *obj) {
+	UD17 *ud = (UD17 *)&obj->UserData;
+	
+	switch (obj->mode0) {
+		case 0:
+			NEXT(obj->mode0);
+			ud->h0082c = 0;
+			if (0x9249 & (1 << RAND16) == 0) {
+				obj->Pool = 6;
+			}
+			setaction_list(obj, data_, obj->SubSel);
+			break;
+		case 2:
+			switch (obj->mode1) {
+				case 0:
+					NEXT(obj->mode1);
+					obj->VelX = data_[RAND8W];
+					obj->VelY = data_[RAND8W];
+					obj->XPI += data_[RAND16W];
+					obj->YPI += data_[RAND8W];
+					ud->h0080w += 0x28;
+					obj->AclY.full = 0x0040;
+					obj->AclX.full = 0;
+					obj->LocalTimer = 0x32;
+					break;
+				case 2:
+					if (--obj->LocalTimer == 0) {
+						NEXT(obj->mode1);
+						obj->h0082c = 0x1e;
+					}
+					CATrajectory(obj);
+					if (obj->VelY.full < 0) {
+						/* XXX oh god! */
+					}
+				case 4:
+					//todo
+					
+					
+					break;
+				FATALDEFAULT;
+			}
+			if ((ud->h0085c & 1) == 0) {
+				check_rect_queue_draw(obj);
+			}
+			break;
+		case 4:
+		case 6:
+			FreeActor(obj);
+		FATALDEFAULT;
+	}
+	
+}
 
 #pragma mark Act19 Guile Plane Tail
 static void action_19(Object *obj) {     // 1322c
