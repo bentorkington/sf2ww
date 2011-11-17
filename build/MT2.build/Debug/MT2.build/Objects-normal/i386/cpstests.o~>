@@ -1,0 +1,21 @@
+In file included from /Users/ben/Documents/dev/MT2/FistBlue/tests/cpstests.c:21:
+/Users/ben/Documents/dev/MT2/FistBlue/gfxlib.h:41: warning: 'struct simpleaction' declared inside parameter list
+/Users/ben/Documents/dev/MT2/FistBlue/gfxlib.h:41: warning: its scope is only this definition or declaration, which is probably not what you want
+/Users/ben/Documents/dev/MT2/FistBlue/gfxlib.h:42: warning: 'struct simpleaction' declared inside parameter list
+/Users/ben/Documents/dev/MT2/FistBlue/tests/cpstests.c: In function 'sub_856e6':
+/Users/ben/Documents/dev/MT2/FistBlue/tests/cpstests.c:139: warning: implicit declaration of function 'SCR1_CURSOR_ABS'
+/Users/ben/Documents/dev/MT2/FistBlue/tests/cpstests.c: In function 'sub_858d8':
+/Users/ben/Documents/dev/MT2/FistBlue/tests/cpstests.c:162: warning: implicit declaration of function 'sub_862a8'
+/Users/ben/Documents/dev/MT2/FistBlue/tests/cpstests.c:163: warning: implicit declaration of function 'sub_8630e'
+/Users/ben/Documents/dev/MT2/FistBlue/tests/cpstests.c:164: warning: implicit declaration of function 'sub_86570'
+/Users/ben/Documents/dev/MT2/FistBlue/tests/cpstests.c:166: warning: implicit declaration of function 'test_putbool'
+/Users/ben/Documents/dev/MT2/FistBlue/tests/cpstests.c:169: warning: implicit declaration of function 'sub_864ea'
+/Users/ben/Documents/dev/MT2/FistBlue/tests/cpstests.c: In function 'test_char_object':
+/Users/ben/Documents/dev/MT2/FistBlue/tests/cpstests.c:197: warning: implicit declaration of function 'sub_85674'
+/Users/ben/Documents/dev/MT2/FistBlue/tests/cpstests.c: In function 'sub_855b0':
+/Users/ben/Documents/dev/MT2/FistBlue/tests/cpstests.c:245: warning: implicit declaration of function 'test_char_scroll1'
+/Users/ben/Documents/dev/MT2/FistBlue/tests/cpstests.c:246: warning: implicit declaration of function 'test_char_scroll2'
+/Users/ben/Documents/dev/MT2/FistBlue/tests/cpstests.c:247: warning: implicit declaration of function 'test_char_scroll3'
+/Users/ben/Documents/dev/MT2/FistBlue/tests/cpstests.c: At top level:
+/Users/ben/Documents/dev/MT2/FistBlue/tests/cpstests.c:351: warning: conflicting types for 'test_putbool'
+/Users/ben/Documents/dev/MT2/FistBlue/tests/cpstests.c:166: warning: previous implicit declaration of 'test_putbool' was here

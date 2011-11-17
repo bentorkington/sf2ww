@@ -1,0 +1,8 @@
+/Users/ben/Documents/dev/MT2/FistBlue/computer.c: In function 'comp_jump_plycallback':
+/Users/ben/Documents/dev/MT2/FistBlue/computer.c:295: warning: initialization from incompatible pointer type
+/Users/ben/Documents/dev/MT2/FistBlue/computer.c:296: warning: initialization from incompatible pointer type
+/Users/ben/Documents/dev/MT2/FistBlue/computer.c:302: warning: initialization from incompatible pointer type
+/Users/ben/Documents/dev/MT2/FistBlue/computer.c: In function 'comp_changetactics':
+/Users/ben/Documents/dev/MT2/FistBlue/computer.c:893: error: 'JP_DBGTACTICS' undeclared (first use in this function)
+/Users/ben/Documents/dev/MT2/FistBlue/computer.c:893: error: (Each undeclared identifier is reported only once
+/Users/ben/Documents/dev/MT2/FistBlue/computer.c:893: error: for each function it appears in.)

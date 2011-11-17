@@ -1,0 +1,6 @@
+/Users/ben/Documents/dev/MT2/FistBlue/sprite.c: In function 'ds_draw_hiragana':
+/Users/ben/Documents/dev/MT2/FistBlue/sprite.c:461: warning: unused variable 'data_7e900'
+/Users/ben/Documents/dev/MT2/FistBlue/sprite.c: In function 'sub_7eea2':
+/Users/ben/Documents/dev/MT2/FistBlue/sprite.c:855: warning: unused variable 'tile'
+/Users/ben/Documents/dev/MT2/FistBlue/sprite.c: In function 'dbg_draw_hitboxes':
+/Users/ben/Documents/dev/MT2/FistBlue/sprite.c:1334: warning: initialization discards qualifiers from pointer target type

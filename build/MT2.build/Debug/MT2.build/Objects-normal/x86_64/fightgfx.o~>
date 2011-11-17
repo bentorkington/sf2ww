@@ -1,0 +1,2 @@
+/Users/ben/Documents/dev/MT2/FistBlue/fightgfx.c: In function 'object_dot_cloth':
+/Users/ben/Documents/dev/MT2/FistBlue/fightgfx.c:74: warning: implicit declaration of function 'coords_50ac'

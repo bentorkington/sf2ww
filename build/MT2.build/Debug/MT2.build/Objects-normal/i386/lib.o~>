@@ -1,0 +1,5 @@
+/Users/ben/Documents/dev/MT2/FistBlue/lib.c: In function 'clear_players':
+/Users/ben/Documents/dev/MT2/FistBlue/lib.c:965: warning: cast to pointer from integer of different size
+/Users/ben/Documents/dev/MT2/FistBlue/lib.c:965: warning: cast to pointer from integer of different size
+/Users/ben/Documents/dev/MT2/FistBlue/lib.c:966: warning: cast to pointer from integer of different size
+/Users/ben/Documents/dev/MT2/FistBlue/lib.c:966: warning: cast to pointer from integer of different size

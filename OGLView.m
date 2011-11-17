@@ -1,0 +1,302 @@
+//
+//  OGLView.m
+//  Points
+//
+//  Created by Ben on 26/05/11.
+//  Copyright 2011 Ben Torkington. All rights reserved.
+//
+
+#import "OGLView.h"
+#import "GLUT/glut.h"
+#import "trackball.h"
+
+
+#include "sf2const.h"
+#include "sf2types.h"
+#include "sf2macros.h"
+#include "gstate.h"
+
+#include "structs.h"
+#include "particle.h"
+#include "player.h"
+#include "sm.h"
+#include "gfx_glut.h"
+#include "lib.h"
+#include "gemu.h"
+#include "glwimp.h"
+#include "workarounds.h"
+#include "pthreads.h"
+
+#include "game.h"
+
+#define DEBUG TRUE
+extern Game g;
+extern CPSGFXEMU gemu;
+
+int gGameInWindow;
+LBView *gGameTitleBar;
+LBView *gGameWindowIcon;
+LBView *gGameArea;
+
+extern LBView rootView;
+
+void mouse (int button, int state, int x, int y);
+void drawGLString(GLfloat x, GLfloat y, char *string);
+
+int gtimercount	= 0;
+int gsupertaskcnt = 0;
+int gdrawallcnt = 0;
+struct inputs gInputs;
+
+GLfloat gShapeSize = 11.0f;
+
+
+@implementation OGLView
+
+- (void)prepare
+{
+	NSLog(@"prepare");
+	NSOpenGLContext *glcontext = [self openGLContext];
+	[glcontext makeCurrentContext];
+	
+	glShadeModel(GL_SMOOTH);
+	glEnable(GL_LIGHTING);
+	//glEnable(GL_DEPTH_TEST);
+	glDisable(GL_DEPTH_TEST);
+	GLfloat ambient[] = {0.2, 0.2, 0.2, 1.0};
+	glLightModelfv(GL_LIGHT_MODEL_AMBIENT, ambient);
+	GLfloat diffuse[] = {1.0, 1.0, 1.0, 1.0};
+	glLightfv(GL_LIGHT0, GL_DIFFUSE, diffuse);
+	glEnable(GL_LIGHT0);
+	
+	GLfloat mata[] = {0.1, 0.1, 0.1, 1.0};
+	GLfloat matb[] = {0.9, 0.9, 0.9, 1.0};
+
+	glMaterialfv(GL_FRONT, GL_AMBIENT, mata);
+	glMaterialfv(GL_FRONT, GL_DIFFUSE, matb);
+	
+	gCameraReset();
+	
+	//glEnable(GL_DEPTH_TEST);
+	glShadeModel(GL_SMOOTH);    
+	glFrontFace(GL_CCW);
+	
+	glColor3f(1.0,1.0,1.0);
+	glClearColor(0.0, 0.0, 0.0, 1.0);      
+	
+	glPolygonOffset (1.0, 1.0);
+	glEnable(GL_LIGHTING);
+	
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_SMOOTH);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_SMOOTH);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+	
+	gfx_glut_init();
+	glwimp_init(900, 600);
+	
+	manual_init();
+	
+	timer = [[NSTimer scheduledTimerWithTimeInterval:1.0 / 60
+											  target:self
+											selector:@selector(timerCallback)
+											userInfo:nil
+											 repeats:YES] retain];
+}
+
+
+- (id)initWithCoder:(NSCoder *)c
+{
+	self = [super initWithCoder:c];
+	[self prepare];
+	return self;
+}
+
+- (void)reshape
+{
+	NSRect baseRect = [self convertRectToBase:[self bounds]]; 
+	gfx_glut_reshape(baseRect.size.width, baseRect.size.height);
+}
+
+- (void)awakeFromNib
+{
+	[self setNeedsDisplay:YES];
+}
+
+
+- (id)initWithFrame:(NSRect)frame {
+    self = [super initWithFrame:frame];
+    if (self) {
+        // Initialization code here.
+    }
+    return self;
+}
+
+
+- (void)timerCallback
+{
+	intproc();
+	task_timer();
+	
+	[self setNeedsDisplay:YES];
+}
+
+
+- (void)drawGame:(NSRect)dirtyRect {
+	gfx_glut_drawgame();
+	//drawGLText (gCamera.screenWidth, gCamera.screenHeight, gCamera);
+	//glFinish();
+	//glutSwapBuffers();
+	
+}
+
+
+- (void)drawRect:(NSRect)r {
+	[self drawGame:r];
+	
+	glEnable(GL_LIGHTING);
+	glColor3f(0.5, 0.5, 0.5);
+	
+//	if ([showTrackball value]) {
+//	if (0) {
+//
+//		glBegin(GL_LINE_STRIP);
+//		for(angle = 0.0f; angle <= (2.0f* 3.1415927)*3.0f; angle += 0.1f)
+//		{ 
+//			glVertex3f(sin(angle), 0.0, cos(angle)); 
+//		}
+//		glEnd();
+//		glBegin(GL_LINE_STRIP);
+//		for(angle = 0.0f; angle <= (2.0f* 3.1415927)*3.0f; angle += 0.1f)
+//		{ 
+//			glVertex3f(sin(angle), cos(angle), 0.0); 
+//		}
+//		glEnd();
+//		glBegin(GL_LINE_STRIP);
+//		for(angle = 0.0f; angle <= (2.0f* 3.1415927)*3.0f; angle += 0.1f)
+//		{ 
+//			glVertex3f(0.0, sin(angle), cos(angle)); 
+//		}
+//		glEnd();
+//	}
+	
+	glFinish();
+}
+- (void)mouseDown:(NSEvent *)event
+{
+	NSPoint p = [event locationInWindow];
+	gfx_glut_mousedown(p.x, p.y);
+}
+
+- (void)rightMouseDown:(NSEvent *)event
+{
+	NSPoint p = [event locationInWindow];
+	gfx_glut_rightmousedown(p.x, p.y);
+}
+
+- (void)rightMouseDragged:(NSEvent *)event
+{
+	NSPoint p = [event locationInWindow];
+	gfx_glut_rightmousedragged(p.x, p.y);
+	[self setNeedsDisplay:YES];
+}
+
+- (void)mouseDragged:(NSEvent *)event
+{
+	NSPoint p = [event locationInWindow];
+	gfx_glut_mousedragged(p.x, p.y);
+	[self setNeedsDisplay:YES];
+}
+
+- (void)mouseUp:(NSEvent *)event
+{
+	NSPoint p = [event locationInWindow];
+	gfx_glut_mouseup(p.x, p.y);
+
+}
+
+- (void)rightMouseUp:(NSEvent *)event
+{
+	NSPoint p = [event locationInWindow];
+	gfx_glut_rightmouseup(p.x, p.y);
+}
+
+- (BOOL)acceptsFirstResponder
+{
+	return YES;		// YES, yes I do.
+}
+
+- (BOOL)resignFirstResponder
+{
+	[self setNeedsDisplay:YES];
+	return YES;
+}
+
+
+- (BOOL)becomeFirstResponder
+{
+	NSLog(@"SF2View accepts firstResponder status");
+	[self setNeedsDisplay:YES];
+	return YES;
+}
+
+
+
+- (void)keyDown:(NSEvent *)theEvent
+{
+	unichar keypress;
+	if ([theEvent isARepeat] == NO) {
+		keypress = [[theEvent characters]characterAtIndex:0];
+
+		switch (keypress) {
+			case 'q':		gInputs.p10 |=  0x10;	break;
+			case 'w':		gInputs.p10 |=  0x20;	break;
+			case 'e':		gInputs.p10 |=  0x40;	break;
+			case 'a':		gInputs.p11 |=	 0x1;	break;
+			case 's':		gInputs.p11 |=	 0x2;	break;
+			case 'd':		gInputs.p11 |=	 0x4;	break;
+			case NSUpArrowFunctionKey:
+				gInputs.p10 |=  0x08; break;
+			case NSDownArrowFunctionKey:
+				gInputs.p10 |= 0x04; break;
+			case NSLeftArrowFunctionKey:
+				gInputs.p10 |= 0x02; break;
+			case NSRightArrowFunctionKey:
+				gInputs.p10 |= 0x01; break;
+			case 'T':
+				print_task_table();
+				break;
+			default:
+				break;
+		}
+		
+	}
+}
+-(void)keyUp:(NSEvent *)theEvent
+{
+	unichar keypress = [[theEvent characters]characterAtIndex:0];
+	switch (keypress) {
+		case 'q':		gInputs.p10 &=  0xef;	break;
+		case 'w':		gInputs.p10 &=  0xdf;	break;
+		case 'e':		gInputs.p10 &=  0xbf;	break;
+		case 'a':		gInputs.p11 &= 0xfe;   break;
+		case 's':		gInputs.p11 &= 0xfd;   break;
+		case 'd':		gInputs.p11 &= 0xfb;   break;
+		case NSUpArrowFunctionKey:
+			gInputs.p10 &= 0xf7;
+			break;
+		case NSDownArrowFunctionKey:
+			gInputs.p10 &= 0xfb;
+			break;
+		case NSLeftArrowFunctionKey:
+			gInputs.p10 &= 0xfd;
+			break;
+		case NSRightArrowFunctionKey:
+			gInputs.p10 &= 0xfe;
+			break;
+		default:
+			break;
+	}
+}
+     
+@end
