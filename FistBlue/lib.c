@@ -1285,7 +1285,9 @@ void startgame(int players_online) {	/* 6d4e */
 		g.Player1.Human = TRUE;
 	}
 #endif //GUSTY_LOBSTER
-	fadenwait1();
+	
+	//XXX can't do this in the main thread
+	//fadenwait1();
 	
 	
 	TASK_CREATE(task_blinkers, 3, 0, 0, 0);
