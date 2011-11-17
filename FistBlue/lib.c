@@ -962,8 +962,8 @@ void memclear(void *c, int len) {
 #pragma mark ---- Resetter Functions ----
 
 void clear_players(void) {
-    memclear((char *)PLAYER1, (void *)(PLAYER1->Alive) - (void *)(PLAYER1->exists));	
-    memclear((char *)PLAYER2, (void *)(PLAYER2->Alive) - (void *)(PLAYER2->exists));
+    memclear((char *)PLAYER1, (void *)(&PLAYER1->Alive) - (void *)(&PLAYER1->exists));	
+    memclear((char *)PLAYER2, (void *)(&PLAYER2->Alive) - (void *)(&PLAYER2->exists));
 }
 static void clear_gstates(void) {			/* 0x2944 */
     memclear(&gstate_Scroll1, sizeof(GState));
