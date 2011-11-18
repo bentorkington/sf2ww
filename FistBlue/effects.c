@@ -422,7 +422,7 @@ void syslib_0c (void) {
     Task *task = &Exec.Tasks[Exec.CurrentTask];
     switch (task->params.Param0) {
 		case 0x1c:			/* fade out, clear all, wait */
-			cqsave(LC0_DARK_DUNNO, task->params.Param2);
+			QueueEffect(LC0_DARK_DUNNO, task->params.Param2);
 			SETSLEEP(1);
 			SIG_WAIT(!Exec.EffectIsSetUp);
 			gfxrepeat(CPS_VIDEO_SCROLL1, 0xfff, GFXROM_SCROLL1 + ' ', 0);  /* a whitespace */
@@ -438,7 +438,7 @@ void syslib_0c (void) {
 			DIEFREE;
 			break;  
 		case 0:
-			cqsave(LC0_DARK_ALL_DISABLE, task->params.Param2);
+			QueueEffect(LC0_DARK_ALL_DISABLE, task->params.Param2);
 			SETSLEEP(1);
 			SIG_WAIT(Exec.EffectIsSetUp);
 			gfxrepeat(CPS_VIDEO_SCROLL1, 0xfff, GFXROM_SCROLL1 + ' ', 0);  /* a whitespace */
@@ -478,13 +478,13 @@ void syslib_0c (void) {
 			DIEFREE;
 			break;
 		case 0x10:
-			cqsave(LC0_LIGHT_ALL_ENABLE, task->params.Param2);
+			QueueEffect(LC0_LIGHT_ALL_ENABLE, task->params.Param2);
 			do {sf2sleep(1);} while (Exec.EffectIsSetUp);
 			sf2sleep(task->params.Param2);
 			g.FadeBusy = FALSE;
 			DIEBREAK;
 		case 0x12:
-			cqsave(LC0_DARK_OBJECT, task->params.Param2);    
+			QueueEffect(LC0_DARK_OBJECT, task->params.Param2);    
 			do {sf2sleep(1);} while (g.FadeObject != 0xffffffff);
 			g.x02b8 = 0;
 			g.x02ba = 0;
@@ -492,30 +492,30 @@ void syslib_0c (void) {
 			/* clear other buffer */
 			DIEBREAK;
 		case 0x14:
-			cqsave(LC0_DARK_SCROLL1, task->params.Param2);    
+			QueueEffect(LC0_DARK_SCROLL1, task->params.Param2);    
 			do {sf2sleep(1);} while (g.FadeScroll1 != 0xffffffff);    
 			gfxrepeat(CPS_VIDEO_SCROLL1, 0xfff, GFXROM_SCROLL1 + ' ', 0);
 			g.FadeBusy = FALSE;
 			DIEBREAK;
 		case 0x16:
-			cqsave(LC0_DARK_123, task->params.Param2);    
+			QueueEffect(LC0_DARK_123, task->params.Param2);    
 			do {sf2sleep(1);} while (g.FadeScroll2 != 0xffffffff);    
 			gfxrepeat(CPS_VIDEO_SCROLL2, 0xfff, GFXROM_SCROLL2 , 0);
 			g.FadeBusy = FALSE;
 			DIEBREAK; 
 		case 0x18:
-			cqsave(LC0_DARK_SCROLL3, task->params.Param2);    
+			QueueEffect(LC0_DARK_SCROLL3, task->params.Param2);    
 			do {sf2sleep(1);} while (g.FadeScroll3 != 0xffffffff);    
 			gfxrepeat(CPS_VIDEO_SCROLL3, 0xfff, GFXROM_SCROLL3 , 0);
 			g.FadeBusy = FALSE;
 			DIEBREAK;
 		case 0x1a:
-			cqsave(LC0_DARK_ALL_DISABLE, task->params.Param2);
+			QueueEffect(LC0_DARK_ALL_DISABLE, task->params.Param2);
 			do {sleep(1);} while (Exec.EffectIsSetUp == 0);
 			sub_4bd6(task); /* dies */
 			break;
 		case 0x1e:
-			cqsave(LC0_DARK_123, task->params.Param2);
+			QueueEffect(LC0_DARK_123, task->params.Param2);
 			do {sleep(1);} while (g.FadeScroll3 != 0xffffffff);  
 			clear_scrolls_123(task);      /* dies */
 			break;

@@ -187,10 +187,6 @@ void SM_player_select(void) {		//7fc4
 	short d0, d1;
 	Object *obj;
 	
-	//printf("fatal: SM_player_select not done()\n");
-	// XXX 
-	//NEXT(g.mode1);
-	//return;
 	static const u16 data_80be[16]={
 		0x0ee7, 0x0ff0, 0x0f00, 0x006d, 0x0eef, 0x00af, 0x0060, 0x0777, 
 		0x004a, 0x0fc7, 0x0fa6, 0x0f85, 0x0e64, 0x0d43, 0x0c02, 0x0000, 
@@ -224,12 +220,12 @@ void SM_player_select(void) {		//7fc4
 					g.ActionLibSel				= 1;
 					gemu_setpalette(PALETTE_0C, data_80be);
 					soundsting(SOUND_PLAYERSELECTSCR);
-					cqsave(0x1c16, 0);
+					QueueEffect(0x1c16, 0);
 					actionlibrary();    // 82d0e
 					/* CPS does a short busy-sleep here */
 					/* 0x8094 maybe palette comparison here */
 					if (0) {
-						cqsave(0x2878, 0);		//suicide
+						QueueEffect(0x2878, 0);		//suicide
 					}
 					break;
 				case 2:				//80de
