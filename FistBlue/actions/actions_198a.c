@@ -158,9 +158,6 @@ static void sub_24a74(Object *obj) {
 	}
 	
 }
-
-
-
 static void sub_24c4e(Object *obj) {
 	Object *nobj;
 	short i;
@@ -204,10 +201,8 @@ static void sub_24c4e(Object *obj) {
 		FATALDEFAULT;
 	}
 }
-
 static void sub_24efa(Object *obj) {/* todo */}
 static void sub_27ea2(Object *obj) {/* todo */}
-static void sub_24ff6(Object *obj) {/* todo */}
 
 #pragma mark The Car		
 
@@ -229,17 +224,23 @@ static void car_setaction(Object_G2 *obj) {//25dbc
 	// XXX setaction_list(obj, data____, obj->UD.UDcar.h0091c + obj->UD.UDcar.h0092c);
 }	
 
+static void sub_26122(Player *ply) {
+	if (ply->YPI != 40) {
+		if (ply->Side) {
+			g.Ply2Shadow.flag1 = FALSE;
+		} else {
+			g.Ply1Shadow.flag1 = FALSE;
+		}
+	}
+}
+
+
 static void sub_25dcc(CarPlayer *cp) {
 	cp->as = cp->bs = (char []){3,5,4,5,3,4,5,4,4,4,5,3,4,3,5,3}[sf2rand() & 15];
 }
 
-static int car_check_platform(Player *ply) {		// 26096
-	ply->PlatformFallDir = 0;
-	
-	// todo
-}
 
-static void sub_24df2(Object_G2 *obj) {
+static void sub_25df2(Object_G2 *obj) {
 	short x = g.CarOffX;
 	short y = g.CarOffY;
 	Object *newobj;
@@ -320,10 +321,7 @@ static void sub_24df2(Object_G2 *obj) {
 		FATALDEFAULT;
 	}
 }
-	
-	
-
-static void sub_25984(Object_G2 *obj) {
+static void sub_25984(Object_G2 *obj) {			// ID 6
 	/* userdata: */
 	
 	
@@ -337,7 +335,7 @@ static void sub_25984(Object_G2 *obj) {
 			car_setaction(obj);
 			break;
 		case 2:
-			//sub_25df2(obj);
+			sub_25df2(obj);
 			//sub_7d99a(obj);			// collision detection			
 			
 			if (!obj->mode1) {
@@ -453,12 +451,405 @@ static void sub_25984(Object_G2 *obj) {
 		FATALDEFAULT;
 	}
 }
+
+static int _check_platform(Player *plya3, Object *obj) {		//26096
+	plya3->PlatformFallDir = 0;		//005b
+	if (2*(0x48 + plya3->Size) <= (plya3->XPI - obj->XPI) + 0x48 + plya3->Size) {
+		if (plya3->XPI - obj->XPI < 0) {
+			d2 = (plya3->XPI - obj->XPI) + (plya3->Size + 0x48);
+		} else {
+			d2 = (plya3->XPI - obj->XPI) - (plya3->Size + 0x48);
+		}
+		if (ABS(d2)) {
+			sub_26122(plya3);
+		}
+		if ((obj->YPI + 48) - plya3->YPI >= 0) {
+			if ( (ABS(d2) <= (obj->YPI + 48) - plya3->YPI) &&
+				((obj->YPI + 48) - plya3->YPI <= 0x20)   &&
+				plya3->DeltaY.full == 0 ) {
+				plya3->YPI = obj->YPI + 0x30;
+				plya3->OnPlatform = TRUE;
+				return 1;
+			} else {
+				plya3->XPI += d2;
+				if (d2 > 0) {
+					plya3->PlatformFallDir = 1;
+				} else if (d2 < 0) {
+					plya3->PlatformFallDir = 2;
+				}
+			}
+		}
+	} 
+	plya3->OnPlatform = FALSE;
+	return FALSE;
+}
+
+
+static void sub_25f06(Object *obj) {		// players on top of car
+	Object *nobj;
+	switch (ud->h0090c) {
+		case 0:		// no players on me
+			if (_check_platform(&g.Player1, obj)) {
+				ud->h0090c = 1;
+				if (nobj = AllocActor()) {
+					nobj->exists = TRUE;
+					nobj->Sel = 0x32;
+					nobj->SubSel = 0x2;
+				}
+			}
+			else if (_check_platform(&g.Player2, obj)) {
+				ud->h0090c = 2;
+				if (nobj = AllocActor()) {
+					nobj->exists = TRUE;
+					nobj->Sel = 0x32;
+					nobj->SubSel = 0x2;
+				}
+			}
+			break;
+		case 1:		// player1 is on me
+			if (_check_platform(&g.Player2, obj)) {
+				ud->h0090c = 3;
+				if (nobj = AllocActor()) {
+					nobj->exists = TRUE;
+					nobj->Sel = 0x32;
+					nobj->SubSel = 0x3;
+				}
+			} else if (!_check_platform(&g.Player1, obj)) {
+				ud->h0090c = 0;
+				if (nobj = AllocActor()) {
+					nobj->exists = TRUE;
+					nobj->Sel = 0x32;
+					nobj->SubSel = 0x5;
+				}
+			}				
+			break;
+		case 2:		// player2 is on me
+			if (_check_platform(&g.Player1, obj)) {
+				ud->h0090c = 3;
+				if (nobj = AllocActor()) {
+					nobj->exists = TRUE;
+					nobj->Sel = 0x32;
+					nobj->SubSel = 0x3;
+				}
+			}
+			else if (!_check_platform(&g.Player2, obj)) {
+				ud->h0090c = 0;
+				if (nobj = AllocActor()) {
+					nobj->exists = TRUE;
+					nobj->Sel = 0x32;
+					nobj->SubSel = 0x5;
+				}
+			}
+			break;
+		case 3:		// both players are on me, wait for both to come off;
+			break;
+			
+		default:
+			break;
+	}
+}
+static int sub_277d4(Player *plya3, Object *obj) {
+	short d2;
+	plya3->PlatformFallDir = 0;
 	
+	if (2*(0x48 + plya3->Size) <= (plya3->XPI - obj->XPI) + 0x48 + plya3->Size) {
+		if (plya3->Side) {
+			g.Ply2Shadow.exists = FALSE;
+		} else {
+			g.Ply1Shadow.exists = FALSE;
+		}
+
+		if (plya3->XPI - obj->XPI < 0) {
+			d2 = (plya3->XPI - obj->XPI) + (plya3->Size + 0x48);
+		} else {
+			d2 = (plya3->XPI - obj->XPI) - (plya3->Size + 0x48);
+		}
+		if (obj->YPI >= plya3->YPI) {
+			if (obj->YPI - plya3->YPI < 0x20 && plya3->DeltaY.full == 0) {
+				plya3->YPI = obj->YPI;
+				plya3->OnPlatform = TRUE;
+				return TRUE;
+			}
+			plya3->XPI += d2;
+			if (d2 > 0) {
+				plya3->PlatformFallDir = 1;
+			} else if (d2 < 0) {
+				plya3->PlatformFallDir = 2;
+			}			
+		}
+	} 
+	plya3->OnPlatform = FALSE;
+	return FALSE;
+}
 
 static void sub_272c6(Object *obj) {/* todo */}
-static void sub_274e4(Object *obj) {/* todo */}
-static void sub_27862(Object *obj) {/* todo */}
+static void sub_274e4(Object *obj) {
+	Object *nobj;
+	short tmpx, tmpy;
+	switch (obj->mode0) {
+		case 0:
+			NEXT(obj->mode0);
+			ud->h0080c = 0;
+			if (nobj = AllocActor()) {
+				nobj->exists = TRUE;
+				nobj->Sel = 6;
+				nobj->XPI = 192;
+				nobj->YPI = 48;
+				obj->Owner = nobj;
+			}
+			break;
+		case 2:
+			tmpx = g.CarOffX;
+			tmpy = g.CarOffY;
+			g.CarOffX = 0;
+			g.CarOffY = 0;
+			nobj = obj->Owner;
+			obj->YPI -= tmpy;
+			nobj->XPI += tmpx;
+			nobj->YPI -= tmpy;
+			if (g.Player1.exists && !g.Player1.Jumping) {
+				g.Player1.XPI += tmpx;
+				g.Player1.YPI -= tmpy;
+			}
+			if (g.Player2.exists && !g.Player2.Jumping) {
+				g.Player2.XPI += tmpx;
+				g.Player2.YPI -= tmpy;
+			}
+			switch (g.ActiveHumans) {
+				case 0:
+					/* nothing, can't happen */
+					break;
+				case 1:
+					if (ud->h0080c) {
+						if (sub_277d4(&g.Player1, obj)) {
+							ud->h0080c = 1;
+							if (nobj = AllocActor()) {
+								nobj->exists = TRUE;
+								nobj->Sel = 0x32;
+								nobj->SubSel = 0x2;
+							}
+						}
+					} else {
+						if(sub_277d4(&g.Player1, obj) == 0) {
+							ud->h0080c = 0;
+							if (nobj = AllocActor()) {
+								nobj->exists = TRUE;
+								nobj->Sel = 0x32;
+								nobj->SubSel = 0x5;
+							}
+						}
+					}
+					break;
+				case 2:
+					if (ud->h0080c) {
+						if (sub_277d4(&g.Player2, obj)) {
+							ud->h0080c = 2;
+							if (nobj = AllocActor()) {
+								nobj->exists = TRUE;
+								nobj->Sel = 0x32;
+								nobj->SubSel = 0x2;
+							}
+						}
+					} else {
+						if(sub_277d4(&g.Player2, obj) == 0) {
+							ud->h0080c = 0;
+							if (nobj = AllocActor()) {
+								nobj->exists = TRUE;
+								nobj->Sel = 0x32;
+								nobj->SubSel = 0x5;
+							}
+						}
+					}
+					break;
+				case 3:		// both of them
+					switch (ud->h0080c) {
+						case 0:
+							if (sub_277d4(&g.Player1, obj)) {
+								ud->h0080c = 1;
+								if (nobj = AllocActor()) {
+									nobj->exists = TRUE;
+									nobj->Sel = 0x32;
+									nobj->SubSel = 0x2;
+								}
+							}
+							if (sub_277d4(&g.Player2, obj)) {
+								ud->h0080c = 2;
+								if (nobj = AllocActor()) {
+									nobj->exists = TRUE;
+									nobj->Sel = 0x32;
+									nobj->SubSel = 0x2;
+								}
+							}
+							break;
+						case 1:
+							if (sub_277d4(&g.Player2, obj)) {
+								ud->h0080c = 3;
+								if (nobj = AllocActor()) {
+									nobj->exists = TRUE;
+									nobj->Sel = 0x32;
+									nobj->SubSel = 0x3;
+								}								
+							} else if (sub_277d4(&g.Player1, obj)==0) {
+								ud->h0080c = 0;
+								if (nobj = AllocActor()) {
+									nobj->exists = TRUE;
+									nobj->Sel = 0x32;
+									nobj->SubSel = 0x5;
+								}
+							}
+							break;
+						case 2:
+							if (sub_277d4(&g.Player1, obj)) {
+								ud->h0080c = 3;
+								if (nobj = AllocActor()) {
+									nobj->exists = TRUE;
+									nobj->Sel = 0x32;
+									nobj->SubSel = 0x3;
+								}								
+							} else if (sub_277d4(&g.Player2, obj)==0) {
+								ud->h0080c = 0;
+								if (nobj = AllocActor()) {
+									nobj->exists = TRUE;
+									nobj->Sel = 0x32;
+									nobj->SubSel = 0x5;
+								}
+							}
+							break;
+						case 3:
+							if (sub_277d4(&g.Player1, obj) == 0 &&
+								sub_277d4(&g.Player2, obj) == 0) {
+								ud->h0080c = 0;
+								if (nobj = AllocActor()) {
+									nobj->exists = TRUE;
+									nobj->Sel = 0x32;
+									nobj->SubSel = 0x5;
+								}
+							} else if (sub_277d4(&g.Player2, obj) == 0) {
+								ud->h0080c = 1;
+								if (nobj = AllocActor()) {
+									nobj->exists = TRUE;
+									nobj->Sel = 0x32;
+									nobj->SubSel = 0x4;
+								}
+							} else if (sub_277d4(&g.Player1, obj) == 0) {
+								ud->h0080c = 2;
+								if (nobj = AllocActor()) {
+									nobj->exists = TRUE;
+									nobj->Sel = 0x32;
+									nobj->SubSel = 0x4;
+								}
+								
+							}
+							break;
+						FATALDEFAULT;
+					}
+					break;
+				FATALDEFAULT;
+			}
+			break;
+		case 4:
+		case 6:
+			clearpush_1174(obj);
+			break;
+		FATALDEFAULT;
+	}
+}
 
+
+static void sub_921e(void) {
+	if (g.x8ab9 <= 5) {
+		sub_90c8();
+	}
+}
+static void sub_922c(void) {
+	sub_bcd_8(1, &g.x8ab9);
+	sub_528a();
+	if (g.x8ab9 == 0) {
+		g.TimeOut           = TRUE;
+		g.NewChallengerWait = TRUE;
+	}
+}
+static void sub_91c8(void) {
+	int tmp = 0;
+	if (g.RoundResult) {
+		wait_for_ply_PSFinishedParticipating();
+	} else if (g.TimeOut) {
+		add_bcd_8(g.x8a60[0], &tmp);
+		add_bcd_8(g.x8a60[1], &tmp);
+		if (tmp == 0x20) {
+			g.BonusComplete = TRUE;
+			print_libtextgfx(0x1d);
+		}
+		if (g.Player1.BonusScore == g.Player2.BonusScore) {
+			g.RoundResult = -1;
+		} else if (g.Player1.BonusScore > g.Player2.BonusScore) {
+			g.RoundResult = 1;
+		} else {
+			g.RoundResult = 2;
+		}
+		print_bonusremaining();
+	} else if (g.x8ab9 <= 5) {
+		sub_90c8();
+	}
+}
+
+static void sub_27862(Object *obj) {/* todo */}
+static void sub_2581a(Object *obj) {
+	if (((obj->YPI & 0xc0) >> 5) != 6) {
+		obj->Pool = (obj->YPI >> 5);
+	} else {
+		obj->Pool = 4;
+	}
+}
+
+
+
+void sub_24f0e(Object *obj) {
+	NEXT(obj->mode0);
+	//todo setaction_direct(obj, action_24f52);
+}
+
+void sub_24f22(Object *obj) {
+	Object *nobj;
+	
+	CDCheckDecor(obj);
+	if (obj->Energy < 0) {
+		NEXT(obj->mode0);
+		if (nobj = AllocActor()) {
+			nobj->exists = TRUE;
+			nobj->Sel = 0x18;
+			nobj->SubSel = obj->SubSel;
+		}
+	}
+	check_rect_queue_draw(obj);
+}
+
+void sub_24ff6(Object *obj) {
+	switch (obj->mode0) {
+		case 0:
+			NEXT(obj->mode0);
+			obj->mode2 = 0;
+			d1 = sub_24b52(obj);
+			// redundant btst
+			obj->HitBoxes = hitboxlist_25958;
+			obj->Pool = 2;
+			obj->Scroll = 0;
+			obj->Step = obj->Flip;
+			setaction_direct(obj, action_);
+			// userdata ...
+			
+			
+			
+			break;
+		case 2:
+			// todo
+			break;
+		default:
+			break;
+			
+			
+	}
+}
 
 
 void actions_198a(void) {			/* 249fa */

@@ -1069,6 +1069,72 @@ static void sub_7dccc(Player *ply, Object *a2) {	// 7dccc a6 a2
 	
 }
 */
+
+
+static void sub_7db9c(Object *obja2) {
+	Object *nobj;
+	if (nobj = AllocActor()) {
+		nobj->exists = TRUE;
+		nobj->Sel = 0x32;
+		if (obja2->Direction) {
+			nobj->SubSel = 0;
+		} else {
+			nobj->SubSel = 1;
+		}
+	}
+}
+
+void sub_7da44(Player *plya6, Object *obja2, char *a1) {
+	HitBoxAct *hba3;
+	
+	if(hba3 = get_active_hitbox(plya6)) {
+		if (hba3->Shove < 0) {
+			d4 = 1;
+		} else {
+			d4 = hba3->Shove;
+		}
+		if (d4 == *a1) {
+			return;
+		}
+		if (check_main_hitboxes(obja2,plya6 , hba3)) {
+			*a1 = hba3->Shove;
+			if (*a1 < 0) {
+				*a1 = 1;
+			}
+		}
+		obja2->x004c = hba3->ReactMode2;
+		obja2->Timer2 = 14;
+		plya6->Timer2 = 14;
+		obja2->Direction = plya6->Flip;
+		// ....
+	}
+	*a1=0;
+}
+	
+	
+int sub_7d9f6(Player *plya6, Object *obja2) { /* todo */ }
+	
+
+int sub_7d99a(Object *a6) {
+	// disable collision detection for most objects
+	char data_7d9ba[]={-1, -1, -1, -1, 6, 4, 0, -1, -1, 2, -1, -1, -1, -1, -1, -1};
+	
+	if (a6->exists == 1 && data_7d9ba[a6->Sel] >= 0) {
+		switch (data_7d9ba[a6->Sel]) {
+			case 0:
+				//g.x8aea = a6; only temp?
+				if (g.Player1.exists) {
+					return sub_7d9f6(&g.Player1, a6);
+				}
+				if (g.Player2.exists) {
+					return sub_7d9f6(&g.Player2, a6);
+				}
+				break;
+			default:
+				break;
+		}
+	}
+}
 void CDCheckPushBoxes () {			/* 7e136 check pushboxes, take action */
     if(g.BattleOver) {return;}
     g.GPCollDetect = FALSE;

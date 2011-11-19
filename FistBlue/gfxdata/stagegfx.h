@@ -108,7 +108,7 @@ const static u16 data_8a52c[64]={
 
 
 
-u16 *data_89f0c[20]={		// 89f0c
+const u16 *data_89f0c[20]={		// 89f0c
 	data_8a2ac, data_8a2bc, data_8a2cc, data_8a2dc, data_8a2ec, data_8a2fc, data_8a30c, data_8a31c,
 	data_8a32c, data_8a33c, data_8a34c, data_8a35c, data_8a36c, data_8a37c, data_8a38c, data_8a39c, 
 	data_8a3ac, data_8a42c, data_8a4ac, data_8a52c,  
@@ -185,7 +185,7 @@ const static u16 data_8a82c[64]={
 
 
 
-u16 *data_89f5c[20]={
+const u16 *data_89f5c[20]={
 	data_8a5ac, data_8a5bc, data_8a5cc, data_8a5dc, data_8a5ec, data_8a5fc, data_8a60c, data_8a61c,
 	data_8a62c, data_8a63c, data_8a64c, data_8a65c, data_8a66c, data_8a67c, data_8a68c, data_8a69c, 
 	data_8a6ac, data_8a72c, data_8a7ac, data_8a82c,  
