@@ -1044,7 +1044,6 @@ static void _CDStartAction38Vict(Player *vict) {
         }
     }
 }
-/* not used
 static void sub_7dccc(Player *ply, Object *a2) {	// 7dccc a6 a2 
 	short x=(ply->Side);
 	struct ud_s {
@@ -1068,7 +1067,6 @@ static void sub_7dccc(Player *ply, Object *a2) {	// 7dccc a6 a2
 	}
 	
 }
-*/
 
 
 static void sub_7db9c(Object *obja2) {
@@ -1084,8 +1082,16 @@ static void sub_7db9c(Object *obja2) {
 	}
 }
 
+void sub_7dafc(Object *obja2) {
+	if (obja2->BlockStun) {
+		queuesound(0x72);
+	} else {
+		queuesound(0x33);
+	}
+}
 void sub_7da44(Player *plya6, Object *obja2, char *a1) {
 	HitBoxAct *hba3;
+	int d4;
 	
 	if(hba3 = get_active_hitbox(plya6)) {
 		if (hba3->Shove < 0) {
@@ -1101,21 +1107,152 @@ void sub_7da44(Player *plya6, Object *obja2, char *a1) {
 			if (*a1 < 0) {
 				*a1 = 1;
 			}
+			
+			obja2->NextReactMode2 = hba3->ReactMode2;
+			obja2->Timer2 = 14;
+			plya6->Timer2 = 14;
+			obja2->Direction = plya6->Flip;
+			obja2->BlockStun = FALSE;
+			if (g.TimeRemainBCD != 1 && g.TimeOut == FALSE && a2ud->boxes[g.GPHitBoxHit] < 0) {
+				obja2->BlockStun = TRUE;
+			} else {
+				d0 = a2ud->boxes[g.GPHitBoxHit];
+				d0 -= (hba3->ReactMode2 + 1);
+				if (d0 < 0) {
+					d0 = -1;
+				}
+				obja2->boxes[g.GPHitBoxHit] = d0;
+				g.x8aec = d0;
+			}
+			if (g.GPWasProjectile) {
+				plya6->Energy = -2;
+			}
+			sub_7dafc(obja2);
+			mac_stunme2(plya6, obja2);
+			sub_7db9c(obja2);
+			sub_7db12(plya6, obja2);
+			return;
 		}
-		obja2->x004c = hba3->ReactMode2;
-		obja2->Timer2 = 14;
-		plya6->Timer2 = 14;
-		obja2->Direction = plya6->Flip;
-		// ....
 	}
 	*a1=0;
 }
 	
 	
-int sub_7d9f6(Player *plya6, Object *obja2) { /* todo */ }
+void sub_7d9f6(Player *plya6, Object *obja2) { 
+	char *a1;
 	
+	if (plya6->Side) {
+		a1 = &a2ud->h008cc;
+	} else {
+		a1 = &a2ud->h008dc;
+	}
+	if (plya6->OnPlatform) {
+		*a1 = 0;
+	} else {
+		g.GPWasProjectile = FALSE;
+		sub_7da44(plya6, obja2, a1);
+	}
+	if (plya6->Side) {
+		a1 = &a2ud->h008ec;
+	} else {
+		a1 = &a2ud->h008fc;
+	}
+	if (plya6->Projectile && plya6->Projectile->exists == 1) {
+		g.GPWasProjectile = TRUE;
+		sub_7da44(plya6, obja2, a1);
+	} else {
+		*a1 = 0;
+	}
+}
 
-int sub_7d99a(Object *a6) {
+static void sub_7dcba(Object *obja2, HitBoxAct *hba3) {
+	if (obja2->Energy < 0) {
+		queuesound(0x32);
+	} else {
+		make_collision_sound(obja2, hba3);
+	}
+}
+
+void sub_7dc2e(Player *plya6, Object *obja2, char *a1) {
+	HitBoxAct *hb;
+	HitBox *hb2;
+	int d4;
+	
+	
+	
+	if (hb = get_active_hitbox(plya6) == 0) {
+		*a1 = 0;
+	} else {
+		d4 = hb->Shove;
+		if (d4 < 0) {
+			d4 = 1;
+		}
+		if (d4 == *a1) {
+			return;
+		}
+		if (hb2 = lookup_hitbox_8(obja2)) {
+			if (check_hitbox_overlap(plya6, obja2, hb, hb2)) {
+				if (hb->Shove < 0) {
+					*a1 = 1;
+				} else {
+					*a1 = hb->Shove;
+				}
+				obja2->NextReactMode2 = hb->ReactMode2;
+				obja2->Timer2 = 14;
+				plya6->Timer2 = 14;
+				obja2->Direction = plya6->Flip;
+				obja2->BlockStun = FALSE;
+				obja2->Energy -= (hb->ReactMode2 + 1);
+				if (obja2->Energy < 0) {
+					obja2->Energy = -1;
+					obja2->exists = 2;
+				}
+				if (g.GPWasProjectile) {
+					obja2->Energy = -2;
+				}
+				sub_7dcba(obja2, hb);
+				mac_stunme2(plya6, obja2);
+				sub_7dccc(plya6, obja2);
+				return;
+			}
+		}
+		*a1 = 0;
+	}
+}
+
+void sub_7dbea(Player *plya6, Object *obja2) {
+	char *a1;
+	if (plya6->Side) {
+		a1 = &a2ud->h008cc;
+	} else {
+		a1 = &a2ud->h008dc;
+	}
+	g.GPWasProjectile = FALSE;
+	sub_7dc2e(plya6, obja2, a1);
+	if (plya6->Side) {
+		a1 = &a2ud->h008ec;
+	} else {
+		a1 = &a2ud->h008fc;
+	}
+	if (plya6->Projectile && plya6->Projectile->exists == 1) {
+		g.GPWasProjectile = TRUE;
+		sub_7dc2e(plya6, obja2, a1);
+	} else {
+		*a1 = 0;
+	}
+}
+
+void sub_7dbc2(Object *a6) {
+	g.x8aea = a6;
+	if (g.Player1.exists) {
+		sub_7dbea(&g.Player1, a6);
+	}
+	if (g.Player2.exists) {
+		sub_7dbea(&g.Player2, a6);
+	}
+}
+
+void sub_7d99a(Object *a6) {
 	// disable collision detection for most objects
 	char data_7d9ba[]={-1, -1, -1, -1, 6, 4, 0, -1, -1, 2, -1, -1, -1, -1, -1, -1};
 	
@@ -1124,14 +1261,22 @@ int sub_7d99a(Object *a6) {
 			case 0:
 				//g.x8aea = a6; only temp?
 				if (g.Player1.exists) {
-					return sub_7d9f6(&g.Player1, a6);
+					sub_7d9f6(&g.Player1, a6);
 				}
 				if (g.Player2.exists) {
-					return sub_7d9f6(&g.Player2, a6);
+					sub_7d9f6(&g.Player2, a6);
 				}
 				break;
-			default:
+			case 2:
+				sub_7dbc2(a6);
 				break;
+			case 4:
+				sub_7dd0c(a6);
+				break;
+			case 6:
+				sub_7d20a(a6);
+				break;
+			FATALDEFAULT;
 		}
 	}
 }
@@ -1263,9 +1408,9 @@ static void _CDCheckPlayer(Player *ply, Player *vict) {     /* 7cf38 */
         return;
     }
     if(!check_main_hitboxes((Object *)ply, (Object *)vict, active))   { return; }
-    if(active->ReactMode == RM_MULTIHIT	|| active->ReactMode == RM_ELECTROCUTED) {
-        vict->MultiHoldoff = 18;     /* a timer, 0x12 ticks to defer the next hit from blanka, 
-								        chunli and honda specials */
+    if(active->ReactMode == RM_MULTIHIT	|| 
+	   active->ReactMode == RM_ELECTROCUTED) {
+        vict->MultiHoldoff = 18;     
     }
     if(vict->Human == 0) {
         g.x0ae4++;
