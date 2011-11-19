@@ -19,11 +19,26 @@ typedef struct {
 	CarPlayer	p1;		// 80-83
 	CarPlayer	p2;		// 84-88
 	
+	char	h008cc, h008dc, h008ec, h008fc;
+	
 	char	h0090c;
 	char	h0091c;
 	char	h0092c;
 	char	h0093c;
 } UDcar;
+
+typedef struct {
+	char	h008cc;
+	char	h008dc;
+	char	h008ec;
+	char	h008fc;
+} UDbonus1;
+typedef struct {
+	char	h008cc;
+	char	h008dc;
+	char	h008ec;
+	char	h008fc;
+} UDbonus2;
 
 
 typedef struct {
@@ -70,7 +85,9 @@ typedef struct {
 	
 	/* userdata */
 	union userdata_obb2 {
-		UDcar UDcar;
+		UDcar    UDcar;
+		UDbonus1 UDbonus1;
+		UDbonus2 UDbonus2;
 	} UD;
 } Object_G2;
 

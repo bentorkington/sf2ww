@@ -17,6 +17,7 @@
 #include "lib.h"
 #include "rules.h"
 #include "particle.h"
+#include "actions_198a.h"
 #include "gfxlib.h"
 #include "sound.h"
 
@@ -1068,8 +1069,9 @@ static void sub_7dccc(Player *ply, Object *a2) {	// 7dccc a6 a2
 	
 }
 
+#pragma mark BONUS0 - The car
 
-static void sub_7db9c(Object *obja2) {
+static void _CDSplashBonus0(Object *obja2) {		// 7db9c
 	Object *nobj;
 	if (nobj = AllocActor()) {
 		nobj->exists = TRUE;
@@ -1081,15 +1083,14 @@ static void sub_7db9c(Object *obja2) {
 		}
 	}
 }
-
-void sub_7dafc(Object *obja2) {
+static void _CDSoundBonus0(Object *obja2) {						// 7dafc
 	if (obja2->BlockStun) {
 		queuesound(0x72);
 	} else {
 		queuesound(0x33);
 	}
 }
-void sub_7da44(Player *plya6, Object *obja2, char *a1) {
+static void _CDCheckObjBonus0(Player *plya6, Object_G2 *obja2, char *a1) {		// 7da44
 	HitBoxAct *hba3;
 	int d4;
 	
@@ -1127,60 +1128,57 @@ void sub_7da44(Player *plya6, Object *obja2, char *a1) {
 			if (g.GPWasProjectile) {
 				plya6->Energy = -2;
 			}
-			sub_7dafc(obja2);
+			_CDSoundBonus0(obja2);
 			mac_stunme2(plya6, obja2);
-			sub_7db9c(obja2);
+			_CDSplashBonus0(obja2);
 			sub_7db12(plya6, obja2);
 			return;
 		}
 	}
 	*a1=0;
 }
-	
-	
-void sub_7d9f6(Player *plya6, Object *obja2) { 
+void _CDCheckBonus0(Player *plya6, Object_G2 *obja2) {		// 7d9f6
 	char *a1;
 	
 	if (plya6->Side) {
-		a1 = &a2ud->h008cc;
+		a1 = &obja2->UD.UDcar.h008cc;
 	} else {
-		a1 = &a2ud->h008dc;
+		a1 = &obja2->UD.UDcar.h008dc;
 	}
 	if (plya6->OnPlatform) {
 		*a1 = 0;
 	} else {
 		g.GPWasProjectile = FALSE;
-		sub_7da44(plya6, obja2, a1);
+		_CDCheckObjBonus0(plya6, obja2, a1);
 	}
 	if (plya6->Side) {
-		a1 = &a2ud->h008ec;
+		a1 = &obja2->UD.UDcar.h008ec;
 	} else {
-		a1 = &a2ud->h008fc;
+		a1 = &obja2->UD.UDcar.h008fc;
 	}
 	if (plya6->Projectile && plya6->Projectile->exists == 1) {
 		g.GPWasProjectile = TRUE;
-		sub_7da44(plya6, obja2, a1);
+		_CDCheckObjBonus0(plya6, obja2, a1);
 	} else {
 		*a1 = 0;
 	}
 }
 
-static void sub_7dcba(Object *obja2, HitBoxAct *hba3) {
+
+#pragma mark BONUS1
+static void _CDSoundBonus1(Object *obja2, HitBoxAct *hba3) {		// 7dcba
 	if (obja2->Energy < 0) {
 		queuesound(0x32);
 	} else {
-		make_collision_sound(obja2, hba3);
+		make_collision_sound((Player *)obja2, hba3);
 	}
 }
-
-void sub_7dc2e(Player *plya6, Object *obja2, char *a1) {
-	HitBoxAct *hb;
-	HitBox *hb2;
+void _CDCheckObjBonus1(Player *plya6, Object_G2 *obja2, char *a1) {		// 7dc2e
+	const HitBoxAct *hb;
+	const HitBox *hb2;
 	int d4;
 	
-	
-	
-	if (hb = get_active_hitbox(plya6) == 0) {
+	if ((hb = get_active_hitbox((Object *)plya6)) == 0) {
 		*a1 = 0;
 	} else {
 		d4 = hb->Shove;
@@ -1191,7 +1189,7 @@ void sub_7dc2e(Player *plya6, Object *obja2, char *a1) {
 			return;
 		}
 		if (hb2 = lookup_hitbox_8(obja2)) {
-			if (check_hitbox_overlap(plya6, obja2, hb, hb2)) {
+			if (check_hitbox_overlap((Object *)plya6, (Object *)obja2, hb, hb2)) {
 				if (hb->Shove < 0) {
 					*a1 = 1;
 				} else {
@@ -1210,76 +1208,158 @@ void sub_7dc2e(Player *plya6, Object *obja2, char *a1) {
 				if (g.GPWasProjectile) {
 					obja2->Energy = -2;
 				}
-				sub_7dcba(obja2, hb);
-				mac_stunme2(plya6, obja2);
-				sub_7dccc(plya6, obja2);
+				_CDSoundBonus1((Object *)obja2, hb);
+				mac_stunme2(plya6, (Object *)obja2);
+				sub_7dccc(plya6, (Object *)obja2);
 				return;
 			}
 		}
 		*a1 = 0;
 	}
 }
-
-void sub_7dbea(Player *plya6, Object *obja2) {
+void _CDCheckBonus1(Player *plya6, Object_G2 *obja2) {		// 7dbea
 	char *a1;
 	if (plya6->Side) {
-		a1 = &a2ud->h008cc;
+		a1 = &obja2->UD.UDbonus1.h008cc;
 	} else {
-		a1 = &a2ud->h008dc;
+		a1 = &obja2->UD.UDbonus1.h008dc;
 	}
 	g.GPWasProjectile = FALSE;
-	sub_7dc2e(plya6, obja2, a1);
+	_CDCheckObjBonus1(plya6, obja2, a1);
 	if (plya6->Side) {
-		a1 = &a2ud->h008ec;
+		a1 = &obja2->UD.UDbonus1.h008ec;
 	} else {
-		a1 = &a2ud->h008fc;
+		a1 = &obja2->UD.UDbonus1.h008fc;
 	}
 	if (plya6->Projectile && plya6->Projectile->exists == 1) {
 		g.GPWasProjectile = TRUE;
-		sub_7dc2e(plya6, obja2, a1);
+		_CDCheckObjBonus1(plya6, obja2, a1);
 	} else {
 		*a1 = 0;
 	}
 }
-
-void sub_7dbc2(Object *a6) {
-	g.x8aea = a6;
+void _CDBonus1(Object_G2 *a6) {		// 7dbc2
 	if (g.Player1.exists) {
-		sub_7dbea(&g.Player1, a6);
+		_CDCheckBonus1(&g.Player1, a6);
 	}
 	if (g.Player2.exists) {
-		sub_7dbea(&g.Player2, a6);
+		_CDCheckBonus1(&g.Player2, a6);
 	}
 }
 
-void sub_7d99a(Object *a6) {
+
+#pragma mark BONUS2
+static void _CDCheckObjBonus2(Object *obj, Player *ply) {			// 7d2ae
+	HitBoxAct *hb;
+	if (g.PlayersThrowing || g.DebugNoCollide) {
+		return;
+	}
+	if(hb=get_active_hitbox(obj)==0) { return; }
+	if (ply->TimerInvincible) {
+		return;
+	}
+	if (check_main_hitboxes(obj, ply, hb)==0) {
+		return;
+	}
+	ply->TimerInvincible = 120;
+	ply->DidCollide = TRUE;
+	ply->NextReactMode2 = hb->ReactMode2;
+	obj->Timer2 = 14;
+	ply->Timer2 = 14;
+	ply->Direction = obj->Flip;
+	ply->Energy--;
+	ply->x0071 = 0;
+	ply->NextReactMode = RM_HITINAIR;
+	queuesound(45);
+	mac_stunhim_from76(obj, ply);
+}
+static void sub_7d284(Object_G2 *obj) {
+	// XXX userdata;
+	if (g.Player1.UserData[4] == 0 || g.Player2.UserData[4] == 0) {
+		return;
+	}
+	if (g.Player1.exists ) {
+		_CDCheckObjBonus2(obj, PLAYER1);
+	}
+	if (g.Player2.exists) {
+		_CDCheckObjBonus2(obj, PLAYER2);
+	}
+}
+static void _CDCheckBonus2(Player *a6, Object_G2 *a2) {		// 7dd38
+	char *a1;
+	/* XXX access userdata in A2 */
+	if (a6->Side) {
+		a1 = &a2->UD.UDbonus2.h008d;
+	} else {
+		a1 = &a2->UD.UDbonus2.h008c;
+	}
+	g.GPWasProjectile = FALSE;
+	sub_7dd7c(a6, a2, a1);
+	if (a6->Side) {
+		a1 = &a2->UD.UDbonus2.h008f;
+	} else {
+		a1 = &a2->UD.UDbonus2.h008e;
+	}
+	if (a6->Projectile) {
+		if (a6->Projectile->exists == 1) {
+			g.GPWasProjectile = TRUE;
+			sub_7dd7c(a6, a2, a1);
+			return;
+		}
+	}
+	*a1 = 0;
+}
+
+static void _CDBonus2(Object_G2 *a6) {		// 7dd0c
+	sub_7d284(a6);
+	if (g.Player1.exists) {
+		_CDCheckBonus2(&g.Player1, a6);
+	}
+	if (g.Player2.exists) {
+		_CDCheckBonus2(&g.Player2, a6);
+	}
+}
+
+
+static void _CDBonus3(Object_G2 *a6) {			// 7d20a
+	
+	
+}
+void sub_7d99a(Object_G2 *a6) {		// 7dd9a - entry for Bonus objects
 	// disable collision detection for most objects
 	char data_7d9ba[]={-1, -1, -1, -1, 6, 4, 0, -1, -1, 2, -1, -1, -1, -1, -1, -1};
 	
+	// Subsel    BonusX
+	//  4			3
+	//  5			2
+	//	6			0
+	//  9           1
+	
 	if (a6->exists == 1 && data_7d9ba[a6->Sel] >= 0) {
 		switch (data_7d9ba[a6->Sel]) {
-			case 0:
+			case 0:		// collision bonus obj 0
 				//g.x8aea = a6; only temp?
 				if (g.Player1.exists) {
-					sub_7d9f6(&g.Player1, a6);
+					_CDCheckBonus0(&g.Player1, a6);
 				}
 				if (g.Player2.exists) {
-					sub_7d9f6(&g.Player2, a6);
+					_CDCheckBonus0(&g.Player2, a6);
 				}
 				break;
-			case 2:
-				sub_7dbc2(a6);
+			case 2:		// collision bonus obj 1
+				_CDBonus1(a6);
 				break;
 			case 4:
-				sub_7dd0c(a6);
+				_CDBonus2(a6);
 				break;
 			case 6:
-				sub_7d20a(a6);
+				_CDBonus3(a6);
 				break;
 			FATALDEFAULT;
 		}
 	}
 }
+
 void CDCheckPushBoxes () {			/* 7e136 check pushboxes, take action */
     if(g.BattleOver) {return;}
     g.GPCollDetect = FALSE;
