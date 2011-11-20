@@ -19,9 +19,10 @@
 #include "particle.h"
 
 #include "sprite.h"
-//#include "main.h"
 
 #include "lib.h"
+#include "fightgfx.h"
+#include "gfxlib.h"
 #include "collision.h"
 
 #include "sound.h"
@@ -45,7 +46,7 @@ enum actions_198a {
 };
 
 
-
+static void sub_25f06(Object_G2 *obj);
 
 
 static void _SMAct00(Object *obj) {			// 24a50
@@ -166,7 +167,7 @@ static void _SMRyuSigns(Object *obj) {		// 24c4e
 		case 0:
 			NEXT(obj->mode0);
 			obj->Step = obj->Flip;
-//XXX			obj->HitBoxes = data_24eda;
+			obj->HitBoxes = data_24eda;
 			setaction_direct(obj, actlist_24e1a);
 			break;
 		case 2:
@@ -204,7 +205,31 @@ static void _SMRyuSigns(Object *obj) {		// 24c4e
 
 
 static void _SMAct03(Object *obj) {		// 24efa
-	/* todo */
+	Object *nobj;
+	switch (obj->mode0) {
+		case 0:
+			NEXT(obj->mode0);
+			obj->HitBoxes = hitboxes_24f76;
+			setaction_direct(obj, action_24f52);
+			break;
+		case 2:
+			CDCheckDecor(obj);
+			if (obj->Energy < 0) {
+				NEXT(obj->mode0);
+				if (nobj = AllocActor()) {
+					nobj->exists = TRUE;
+					nobj->Sel = 0x18;
+					nobj->SubSel = obj->SubSel;
+				}
+				check_rect_queue_draw(obj);
+			}
+			break;
+		case 4:
+		case 6:
+			clearpush_1174(obj);
+			break;
+		FATALDEFAULT;
+	}
 }
 static void _SMAct04(Object_G2 *obj) {		// 27ea2 ID4 BONUS3
 	const static char data_27f3e[]={1,1,2,2,3,3,3,3,3,3,3,3,3,3,2,2,1,1,-1,0};
@@ -233,7 +258,7 @@ static void _SMAct04(Object_G2 *obj) {		// 27ea2 ID4 BONUS3
 				obj->Direction = 1;
 			}
 			if (obj->mode1) {
-				sub_7d99a(obj);
+				sub_7d99a((Object *)obj);
 				if (obj->mode2) {
 					if ((obj->AnimFlags & 0x8000) == 0) {
 						actiontick((Object *)obj);
@@ -247,10 +272,10 @@ static void _SMAct04(Object_G2 *obj) {		// 27ea2 ID4 BONUS3
 				if (data_27f3e[obj->UD.UDbonus3.h00b0s] < 0) {
 					obj->mode1 = 0;
 					obj->mode2 = 0;
-					setaction_list(obj, actlist_27fa6, data_27f72[RAND16W/2]);
+					setaction_list((Object *)obj, actlist_27fa6, data_27f72[RAND16W/2]);
 				} else {
 					obj->LocalTimer = data_27f3e[obj->UD.UDbonus3.h00b0s];
-					setaction_list(obj, actlist_27fa6, 0);
+					setaction_list((Object *)obj, actlist_27fa6, 0);
 				}
 			} else {
 				// 27f92
@@ -267,26 +292,183 @@ static void _SMAct04(Object_G2 *obj) {		// 27ea2 ID4 BONUS3
 	}
 }
 
-void _SMAct05(Object *obj) {				// 24ff6
+
+
+#pragma mark ActB05 BONUS2 Burning drums
+static void sub_2525a(Object_G2 *obj) {
+	if (obj->YPI >= 48) {
+		obj->Pool = 2;
+	} else {
+		obj->Pool = 0;
+	}
+	obj->mode1 = 0;
+	obj->mode2 = 2;
+	obj->UD.UDbonus2.h0084c = 0;
+	obj->VelX.full = 0;
+	obj->VelY.full = 0;
+	obj->AclX.full = 0;
+	obj->AclY.full = 0;
+	sub_2581a(obj);
+	queuesound(0x3b);
+	check_rect_queue_draw(obj);
+}
+static void sub_25220(Object_G2 *obj) {
+	if (--obj->UD.UDbonus2.h009ac == 0) {
+		if (obj->UD.UDbonus2.h0092c) {
+			sub_2525a(obj);
+			return;
+		}
+		obj->UD.UDbonus2.h009ac = 1;
+	}
+	obj->mode1 = 2;
+	obj->mode2 = 0;
+	obj->VelY.full = 0x200;
+	queuesound(0x3b);
+	check_rect_queue_draw(obj);
+}
+static void sub_25252(Object_G2 *obj) {
+	if (obj->VelY.full > -0x500) {
+		sub_2525a(obj);
+	} else {
+		sub_25220(obj);
+	}
+}
+
+static void sub_257d8 (Object *obj) {			// 257d8 random force
+	int temp = sf2rand();
+	obj->VelX.full += data_257fa[(temp >> 1) & 0xf];
+	obj->VelY.full += data_257fa[(temp >> 5) & 0xf];
+}
+
+static void sub_251f4(Object_G2 *obj) {
+	obj->UD.UDbonus2.h009ac = 5;
+	obj->mode1 = 2;
+	obj->mode2 = 0;
+	obj->UD.UDbonus2.h0092c = 0;
+	obj->VelY.full = 0x0600;
+	obj->AclX.full = 0;
+	obj->AclY.full = 0x0030;
+	sub_257d8(obj);
+	check_rect_queue_draw((Object *)obj);
+}
+	
+}
+static void sub_2549a(Object *ply, Object_G2 *obj) {
+	if (ply->XPI < obj->XPI) {
+		obj->VelX.full = 0x0080;
+	} else {
+		obj->VelX.full = -0x0080;
+	}
+	sub_251f4(obj);
+}
+
+
+static void sub_25476(Object_G2 *obj) {
+	char *p;
+	if (obj->UD.UDbonus2.H0092) {
+		p = obj->UD.UDbonus2.H0092;
+		if (p[3]) {
+			sub_2549a(p, obj);
+			return;
+		}
+	}
+	if (obj->UD.UDbonus2.H0094) {
+		p = obj->UD.UDbonus2.H0094;
+		if (p[3]) {
+			sub_2549a(p, obj);
+		}
+	}
+}
+
+
+void _SMAct05(Object_G2 *obj) {				// 24ff6 Act05 Bonus2
 	switch (obj->mode0) {
 		case 0:
 			NEXT(obj->mode0);
 			obj->mode2 = 0;
-			d1 = sub_24b52(obj);
+			d1 = sub_255b2(obj);
 			// redundant btst
 			obj->HitBoxes = hitboxlist_25958;
 			obj->Pool = 2;
 			obj->Scroll = 0;
 			obj->Step = obj->Flip;
-			setaction_direct(obj, action_);
+			setaction_direct(obj, action_25834);
+			
 			// userdata ...
 			
-			
+			//todo
 			
 			break;
-		case 2:
-			// todo
+		case 2:						// 250c4
+			sub_7d99a(obj);
+			switch (obj->mode1) {
+				case 0:
+					switch (obj->mode2) {
+						case 0:
+							if (obj->UD.UDbonus2.h0096c) {
+								NEXT(obj->mode2);
+							}
+							actiontick(obj);
+							/* FALLTHRU */
+						case 2:
+							sub_25476(obj);
+							if(sub_2529a(obj)<0) {
+								obj->mode1 = 4;
+							}
+							sub_25670(obj);
+							if (obj->SubSel < 3) {
+								check_rect_queue_draw(obj);
+							}
+							break;
+						FATALDEFAULT;
+					}
+					break;
+				case 2:
+					switch (obj->mode2) {
+						case 0:
+							obj->UD.UDbonus2.h0084c = 1;
+							temp = sub_2529a(obj);
+							if (temp < 0) {
+								obj->mode1 = 4;
+							} else if (temp > 0) {
+								obj->UD.UDbonus2.h009ac = 5;
+								obj->VelY.full = 0x400;
+								obj->AclX.full = 0;
+								if (obj->Direction) {
+									obj->VelX.full = 0x80;
+								} else {
+									obj->VelX.full = -0x80;
+								}
+							}
+							CATrajectory(obj);
+							sub_25650(obj);
+							sub_2581a(obj);
+							temp = sub_254da(obj);
+							if (temp & 0x08) {
+								NEXT(obj->mode2);
+							} else if(check_ground_collision(obj)){
+								obj->mode2 = 2;
+								obj->YPI = g.GroundPlaneY;
+							}
+							sub_24fc2(obj);
+							check_rect_queue_draw(obj);
+							break;
+						case 2:
+							
+						default:
+							break;
+					}
+					break;
+				case 4:
+					//251d2
+					break;
+				FATALDEFAULT;
+			}
+			sub_257a0(obj);
 			break;
+		case 4:
+		case 6:
+			clearpush_1174((Object *)obj);
 		default:
 			break;
 			
@@ -435,19 +617,18 @@ static void _people_on_roof(Object_G2 *obj) {		// 25df2
 	}
 }
 static void _ActSMCar(Object_G2 *obj) {			// The CarID 6, BONUS0
-	/* userdata: */
 	switch (obj->mode0) {
 		case 0:
 			memclear(&obj->UD.UDcar, sizeof (UDcar));
 			g.x8abe = FALSE;
-			// XXX obj->HitBoxes = data_25d6c;
+			obj->HitBoxes = hitboxes_25d6c;
 			_car_init_as_bs(&obj->UD.UDcar.p1);
 			_car_init_as_bs(&obj->UD.UDcar.p2);
 			car_setaction(obj);
 			break;
 		case 2:
 			_people_on_roof(obj);
-			sub_7d99a(obj);			// collision detection			
+			sub_7d99a((Object *)obj);			// collision detection			
 			
 			if (!obj->mode1) {
 				if (obj->mode2) {
@@ -704,7 +885,7 @@ static void _SMAct07(Object *obj) {			// 272c6
 
 #pragma mark Act08
 
-static int _Act08PlatformCheck(Player *plya3, Object *obj) {		// 277d4
+static int _Act08PlatformCheck(Player *plya3, Object_G2 *obj) {		// 277d4
 	short d2;
 	plya3->PlatformFallDir = 0;
 	
@@ -737,13 +918,13 @@ static int _Act08PlatformCheck(Player *plya3, Object *obj) {		// 277d4
 	plya3->OnPlatform = FALSE;
 	return FALSE;
 }
-static void _SMAct08(Object *obj) {		// 274e4
+static void _SMAct08(Object_G2 *obj) {		// 274e4
 	Object *nobj;
 	short tmpx, tmpy;
 	switch (obj->mode0) {
 		case 0:
 			NEXT(obj->mode0);
-			ud->h0080c = 0;
+			obj->UD.UDactB08.h0080c = 0;
 			if (nobj = AllocActor()) {
 				nobj->exists = TRUE;
 				nobj->Sel = 6;
@@ -757,6 +938,7 @@ static void _SMAct08(Object *obj) {		// 274e4
 			tmpy = g.CarOffY;
 			g.CarOffX = 0;
 			g.CarOffY = 0;
+			// XXX think we forgot AllocActor here?
 			nobj = obj->Owner;
 			obj->YPI -= tmpy;
 			nobj->XPI += tmpx;
@@ -774,9 +956,9 @@ static void _SMAct08(Object *obj) {		// 274e4
 					/* nothing, can't happen */
 					break;
 				case 1:
-					if (ud->h0080c) {
+					if (obj->UD.UDactB08.h0080c) {
 						if (_Act08PlatformCheck(&g.Player1, obj)) {
-							ud->h0080c = 1;
+							obj->UD.UDactB08.h0080c = 1;
 							if (nobj = AllocActor()) {
 								nobj->exists = TRUE;
 								nobj->Sel = 0x32;
@@ -785,7 +967,7 @@ static void _SMAct08(Object *obj) {		// 274e4
 						}
 					} else {
 						if(_Act08PlatformCheck(&g.Player1, obj) == 0) {
-							ud->h0080c = 0;
+							obj->UD.UDactB08.h0080c = 0;
 							if (nobj = AllocActor()) {
 								nobj->exists = TRUE;
 								nobj->Sel = 0x32;
@@ -795,9 +977,9 @@ static void _SMAct08(Object *obj) {		// 274e4
 					}
 					break;
 				case 2:
-					if (ud->h0080c) {
+					if (obj->UD.UDactB08.h0080c) {
 						if (_Act08PlatformCheck(&g.Player2, obj)) {
-							ud->h0080c = 2;
+							obj->UD.UDactB08.h0080c = 2;
 							if (nobj = AllocActor()) {
 								nobj->exists = TRUE;
 								nobj->Sel = 0x32;
@@ -806,7 +988,7 @@ static void _SMAct08(Object *obj) {		// 274e4
 						}
 					} else {
 						if(_Act08PlatformCheck(&g.Player2, obj) == 0) {
-							ud->h0080c = 0;
+							obj->UD.UDactB08.h0080c = 0;
 							if (nobj = AllocActor()) {
 								nobj->exists = TRUE;
 								nobj->Sel = 0x32;
@@ -816,10 +998,10 @@ static void _SMAct08(Object *obj) {		// 274e4
 					}
 					break;
 				case 3:		// both of them
-					switch (ud->h0080c) {
+					switch (obj->UD.UDactB08.h0080c) {
 						case 0:
 							if (_Act08PlatformCheck(&g.Player1, obj)) {
-								ud->h0080c = 1;
+								obj->UD.UDactB08.h0080c = 1;
 								if (nobj = AllocActor()) {
 									nobj->exists = TRUE;
 									nobj->Sel = 0x32;
@@ -827,7 +1009,7 @@ static void _SMAct08(Object *obj) {		// 274e4
 								}
 							}
 							if (_Act08PlatformCheck(&g.Player2, obj)) {
-								ud->h0080c = 2;
+								obj->UD.UDactB08.h0080c = 2;
 								if (nobj = AllocActor()) {
 									nobj->exists = TRUE;
 									nobj->Sel = 0x32;
@@ -837,14 +1019,14 @@ static void _SMAct08(Object *obj) {		// 274e4
 							break;
 						case 1:
 							if (_Act08PlatformCheck(&g.Player2, obj)) {
-								ud->h0080c = 3;
+								obj->UD.UDactB08.h0080c = 3;
 								if (nobj = AllocActor()) {
 									nobj->exists = TRUE;
 									nobj->Sel = 0x32;
 									nobj->SubSel = 0x3;
 								}								
 							} else if (_Act08PlatformCheck(&g.Player1, obj)==0) {
-								ud->h0080c = 0;
+								obj->UD.UDactB08.h0080c = 0;
 								if (nobj = AllocActor()) {
 									nobj->exists = TRUE;
 									nobj->Sel = 0x32;
@@ -854,14 +1036,14 @@ static void _SMAct08(Object *obj) {		// 274e4
 							break;
 						case 2:
 							if (_Act08PlatformCheck(&g.Player1, obj)) {
-								ud->h0080c = 3;
+								obj->UD.UDactB08.h0080c = 3;
 								if (nobj = AllocActor()) {
 									nobj->exists = TRUE;
 									nobj->Sel = 0x32;
 									nobj->SubSel = 0x3;
 								}								
 							} else if (_Act08PlatformCheck(&g.Player2, obj)==0) {
-								ud->h0080c = 0;
+								obj->UD.UDactB08.h0080c = 0;
 								if (nobj = AllocActor()) {
 									nobj->exists = TRUE;
 									nobj->Sel = 0x32;
@@ -872,21 +1054,21 @@ static void _SMAct08(Object *obj) {		// 274e4
 						case 3:
 							if (_Act08PlatformCheck(&g.Player1, obj) == 0 &&
 								_Act08PlatformCheck(&g.Player2, obj) == 0) {
-								ud->h0080c = 0;
+								obj->UD.UDactB08.h0080c = 0;
 								if (nobj = AllocActor()) {
 									nobj->exists = TRUE;
 									nobj->Sel = 0x32;
 									nobj->SubSel = 0x5;
 								}
 							} else if (_Act08PlatformCheck(&g.Player2, obj) == 0) {
-								ud->h0080c = 1;
+								obj->UD.UDactB08.h0080c = 1;
 								if (nobj = AllocActor()) {
 									nobj->exists = TRUE;
 									nobj->Sel = 0x32;
 									nobj->SubSel = 0x4;
 								}
 							} else if (_Act08PlatformCheck(&g.Player1, obj) == 0) {
-								ud->h0080c = 2;
+								obj->UD.UDactB08.h0080c = 2;
 								if (nobj = AllocActor()) {
 									nobj->exists = TRUE;
 									nobj->Sel = 0x32;
@@ -903,7 +1085,7 @@ static void _SMAct08(Object *obj) {		// 274e4
 			break;
 		case 4:
 		case 6:
-			clearpush_1174(obj);
+			clearpush_1174((Object *)obj);
 			break;
 		FATALDEFAULT;
 	}
@@ -924,7 +1106,7 @@ static void sub_922c(void) {
 	}
 }
 static void sub_91c8(void) {
-	int tmp = 0;
+	unsigned char tmp = 0;
 	if (g.RoundResult) {
 		wait_for_ply_PSFinishedParticipating();
 	} else if (g.TimeOut) {
@@ -947,7 +1129,7 @@ static void sub_91c8(void) {
 	}
 }
 
-static void sub_27bda(Object *obj) {
+static void sub_27bda(Object_G2 *obj) {
 	Object *nobj;
 	int i;
 	if (nobj = AllocActor()) {
@@ -956,7 +1138,7 @@ static void sub_27bda(Object *obj) {
 		nobj->XPI = obj->XPI;
 		nobj->YPI = obj->YPI;
 		nobj->SubSel = 1;
-		nobj->x0046 = 0;
+		nobj->UserByte = 0;
 		nobj->Step = obj->Flip;
 		nobj->Flip = obj->Flip;
 	}
@@ -967,7 +1149,7 @@ static void sub_27bda(Object *obj) {
 			nobj->XPI = obj->XPI;
 			nobj->YPI = obj->YPI;
 			nobj->SubSel = 1;
-			nobj->x0046 = 1;
+			nobj->UserByte = 1;
 			nobj->Step = obj->Flip;
 			nobj->Flip = obj->Flip;
 		}
@@ -986,12 +1168,38 @@ static void sub_27912(Object_G2 *obj) {
 
 #pragma mark Act09 Bonus1
 
-static void sub_27b4c(Object_G2 *obj) {
+static int sub_27b4c(Object_G2 *obj) {				// 27b4c
+	obj->Y.full += obj->UD.UDbonus1.Velocity.full;
+	obj->UD.UDbonus1.Velocity.full += obj->UD.UDbonus1.Accel.full;
+	return obj->UD.UDbonus1.Velocity.full;
+}
+
+static int ACTB09_ply_distance(Player *ply, Object_G2 *obj) {		// 27b96
+	int tmp;
+	tmp = ABS(ply->XPI - obj->XPI) - 18;
+	if (tmp < 0) {
+		tmp = 0;
+	}
+	return tmp;
 }
 	
+static void sub_27b5e(Object_G2 *obj) {			// 27b5e
+	if (obj->mode0 == 2) {
+		obj->UD.UDbonus1.h0098s = 0x0100;
+		obj->UD.UDbonus1.h009as = 0x0100;
+	} else {
+		if (g.Player1.exists) {
+			obj->UD.UDbonus1.h0098s = ACTB09_ply_distance(PLAYER1, obj);
+		}
+		if (g.Player2.exists) {
+			obj->UD.UDbonus1.h009as = ACTB09_ply_distance(PLAYER2, obj);
+		}
+	}
+
+}
 
 static void sub_27862(Object_G2 *obj) {			// 27862 Act09 BONUS1
-	const static data_278c2[] = {
+	const static char data_278c2[] = {
 		0, 1, 2, 0, 1, 2, 0, 3, 0, 1, 2, 0, 1, 2, 0, 0
 	};
 	int temp;
@@ -1012,15 +1220,15 @@ static void sub_27862(Object_G2 *obj) {			// 27862 Act09 BONUS1
 			obj->EnergyDash = obj->Energy;
 			break;
 		case 2:
-			CDCheckDecor(obj);
-			sub_7d99a(obj);
+			CDCheckDecor((Object *)obj);
+			sub_7d99a((Object *)obj);
 			if (obj->Energy < 0) {
 				sub_27912(obj);
 				return;
 			} else if (obj->Energy != obj->EnergyDash) {
 				// 2793e
 				obj->EnergyDash = obj->Energy;
-				obj->UD.UDbonus1.H0094.full = 0xffffc000;	
+				obj->UD.UDbonus1.Accel.full = 0xffffc000;	
 				obj->Flip = 0;
 				if (obj->Direction) {
 					obj->UD.UDbonus1.H009c.part.integer = 2;
@@ -1039,7 +1247,7 @@ static void sub_27862(Object_G2 *obj) {			// 27862 Act09 BONUS1
 				actiontick((Object *)obj);
 				check_rect_queue_draw((Object *)obj);
 			} else {
-				sub_27b5e();
+				sub_27b5e(obj);
 				switch (obj->mode1) {
 					case 0:			// 279a0
 						if (obj->x002e != 0) {
@@ -1067,8 +1275,8 @@ static void sub_27862(Object_G2 *obj) {			// 27862 Act09 BONUS1
 						obj->XPI += obj->UD.UDbonus1.H009c.part.integer;
 						if (obj->XPI >= 0xa0 && obj->XPI <0xe0 ) {
 							NEXT(obj->mode1);
-							obj->UD.UDbonus1.H0090.full = 0;
-							obj->UD.UDbonus1.H0094.full = 0xffffc0000;
+							obj->UD.UDbonus1.Velocity.full = 0;
+							obj->UD.UDbonus1.Accel.full = 0xffffc0000;
 						}
 						actiontick(obj);
 						check_rect_queue_draw(obj);
@@ -1079,7 +1287,7 @@ static void sub_27862(Object_G2 *obj) {			// 27862 Act09 BONUS1
 						if (obj->XPI < 0xa0) {
 							NEXT(obj->mode1);
 							g.x8a64[0] = 1;
-							obj->UD.UDbonus1.H0090.full = 0x0004c000;
+							obj->UD.UDbonus1.Velocity.full = 0x0004c000;
 							temp = (sf2rand() & 1) + obj->SubSel;
 							obj->UD.UDbonus1.H009c.full = (u16[]){0xfffe8000,0xffff8000,0x00008000,0x00018000}[temp];
 						}
@@ -1088,7 +1296,7 @@ static void sub_27862(Object_G2 *obj) {			// 27862 Act09 BONUS1
 						break;
 					case 6:										// 27a8a
 						if(obj->mode2) {
-							obj->X.full += (obj->UD.UDbonus1.h009cs << 16) + obj->UD.UDbonus1.h009es;
+							obj->X.full += obj->UD.UDbonus1.H009c.full;
 							if(sub_27b4c(obj)<0 && obj->YPI < 40) {
 								NEXT(obj->mode1);
 								obj->mode2 = 0;
@@ -1099,7 +1307,7 @@ static void sub_27862(Object_G2 *obj) {			// 27862 Act09 BONUS1
 									obj->UD.UDbonus1.H009c.full = 0xfffe0000;
 									obj->Flip = 1;
 								}
-								obj->UD.UDbonus1.H0090.full = 0x00028000;
+								obj->UD.UDbonus1.Velocity.full = 0x00028000;
 							}
 							actiontick(obj);
 							check_rect_queue_draw(obj);
@@ -1152,8 +1360,6 @@ static void sub_2581a(Object *obj) {
 		obj->Pool = 4;
 	}
 }
-
-
 
 void sub_24f0e(Object *obj) {
 	NEXT(obj->mode0);

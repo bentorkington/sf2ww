@@ -58,7 +58,7 @@ static void sub_6c24(void) {
 }
 
 
-static void sub_6cc8(void) {
+static void sub_6cc8(void) {		// 6cc8 jumped straight to in freeplay
 	u16 buttons = (!g.RawButtons0 & g.RawButtons0Dash);
 	if (buttons & (BUTTON_P1ST | BUTTON_P2ST)) {
 		if (g.x0302) {

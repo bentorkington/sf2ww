@@ -25,6 +25,7 @@ typedef struct {
 	char	h0093c;
 } UDcar;
 
+
 typedef struct {
 	char	h0084c;
 	
@@ -33,23 +34,36 @@ typedef struct {
 	char	h008ec;
 	char	h008fc;
 	
-	FIXED16_16	H0090, H0094;
-	short	h0098s;
-	short	h009as;
+	FIXED16_16	Velocity, Accel;	// 90, 94
+	short	h0098s;			// distance to P1
+	short	h009as;			// distance to P2
 	FIXED16_16 H009c;
 	
 } UDbonus1;
 
 typedef struct {
+	char	h0084c;
+	
 	char	h008cc;
 	char	h008dc;
 	char	h008ec;
 	char	h008fc;
+	
+	char	h0092c;
+	void	*H0092;
+	void	*H0094;
+	char	h0096c;
+	char	h009ac;
+
 } UDbonus2;
+
 typedef struct {
 	short h00b0s;
 } UDbonus3;
 
+typedef struct {
+	char	h0080c;
+} UDactB08;
 
 typedef struct {
 #include "std_object.h"
@@ -95,10 +109,11 @@ typedef struct {
 	
 	/* userdata */
 	union userdata_obb2 {
-		UDcar    UDcar;
-		UDbonus1 UDbonus1;
-		UDbonus2 UDbonus2;
-		UDbonus3 UDbonus3;
+		UDcar		UDcar;
+		UDbonus1	UDbonus1;
+		UDbonus2	UDbonus2;
+		UDbonus3	UDbonus3;
+		UDactB08	UDactB08;
 	} UD;
 } Object_G2;
 

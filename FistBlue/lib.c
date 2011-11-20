@@ -1322,7 +1322,7 @@ void startgame(int players_online) {	/* 6d4e */
 	justdie();
 }
 	
-static void wait_for_ply_PSFinishedParticipating(void) {  /* 0x9048 */
+void wait_for_ply_PSFinishedParticipating(void) {  /* 0x9048 */
 	if(g.Player1.PSFinishedParticipating && g.Player2.PSFinishedParticipating) {
 		g.RoundComplete = TRUE;
 	}
