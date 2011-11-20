@@ -9,11 +9,9 @@
 
 void actions_198a(void);			/* 249fa */
 
-
 typedef struct {
 	short as,bs;
 } CarPlayer;
-
 
 typedef struct {
 	CarPlayer	p1;		// 80-83
@@ -28,17 +26,29 @@ typedef struct {
 } UDcar;
 
 typedef struct {
+	char	h0084c;
+	
 	char	h008cc;
 	char	h008dc;
 	char	h008ec;
 	char	h008fc;
+	
+	FIXED16_16	H0090, H0094;
+	short	h0098s;
+	short	h009as;
+	FIXED16_16 H009c;
+	
 } UDbonus1;
+
 typedef struct {
 	char	h008cc;
 	char	h008dc;
 	char	h008ec;
 	char	h008fc;
 } UDbonus2;
+typedef struct {
+	short h00b0s;
+} UDbonus3;
 
 
 typedef struct {
@@ -88,6 +98,7 @@ typedef struct {
 		UDcar    UDcar;
 		UDbonus1 UDbonus1;
 		UDbonus2 UDbonus2;
+		UDbonus3 UDbonus3;
 	} UD;
 } Object_G2;
 
