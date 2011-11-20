@@ -47,6 +47,8 @@ enum actions_198a {
 
 
 static void sub_25f06(Object_G2 *obj);
+static void sub_2581a(Object *obj);
+
 
 
 static void _SMAct00(Object *obj) {			// 24a50
@@ -352,7 +354,6 @@ static void sub_251f4(Object_G2 *obj) {
 	check_rect_queue_draw((Object *)obj);
 }
 	
-}
 static void sub_2549a(Object *ply, Object_G2 *obj) {
 	if (ply->XPI < obj->XPI) {
 		obj->VelX.full = 0x0080;
@@ -382,6 +383,7 @@ static void sub_25476(Object_G2 *obj) {
 
 
 void _SMAct05(Object_G2 *obj) {				// 24ff6 Act05 Bonus2
+	int temp;
 	switch (obj->mode0) {
 		case 0:
 			NEXT(obj->mode0);
@@ -494,7 +496,7 @@ static int _car_check_P2(Object_G2 *obj){			// 25da8
 	return FALSE;
 }
 static void car_setaction(Object_G2 *obj) {//25dbc
-	// XXX setaction_list(obj, data____, obj->UD.UDcar.h0091c + obj->UD.UDcar.h0092c);
+	// XXX setaction_list(obj, data____, obj->UD.UDcar.HitsTaken + obj->UD.UDcar.h0092c);
 }	
 static void _car_disable_ply_shadow(Player *ply) {				// 26122
 	if (ply->YPI != 40) {
@@ -554,7 +556,7 @@ static void _people_on_roof(Object_G2 *obj) {		// 25df2
 		PLAYER1->XPI += x;
 		PLAYER1->YPI -= y;
 	}
-	if (PLAYER2->exists && PLAYER2->Jumping == 0 && (obj->UD.UDcar.h0090c & 2)) {
+	if (PLAYER2->exists && PLAYER2->Jumping == 0 && (obj->UD.UDcar.PeopleOnMe & 2)) {
 		PLAYER2->XPI += x;
 		PLAYER2->YPI -= y;
 	}
@@ -563,9 +565,9 @@ static void _people_on_roof(Object_G2 *obj) {		// 25df2
 			// can't happen
 			break;
 		case 1:
-			if (obj->UD.UDcar.h0090c) {
+			if (obj->UD.UDcar.PeopleOnMe) {
 				if (_check_platform(PLAYER1, obj) == FALSE) {
-					obj->UD.UDcar.h0090c = 0;
+					obj->UD.UDcar.PeopleOnMe = 0;
 					if (newobj = AllocActor()) {
 						newobj->exists = TRUE;
 						newobj->Sel    = 0x32;
@@ -575,7 +577,7 @@ static void _people_on_roof(Object_G2 *obj) {		// 25df2
 				}
 			} else {
 				if (_check_platform(PLAYER1, obj) != FALSE) {
-					obj->UD.UDcar.h0090c = 1;
+					obj->UD.UDcar.PeopleOnMe = 1;
 					if (newobj = AllocActor()) {
 						newobj->exists = TRUE;
 						newobj->Sel    = 0x32;
@@ -587,9 +589,9 @@ static void _people_on_roof(Object_G2 *obj) {		// 25df2
 
 			break;
 		case 2:
-			if (obj->UD.UDcar.h0090c) {
+			if (obj->UD.UDcar.PeopleOnMe) {
 				if (_check_platform(PLAYER1, obj) == FALSE) {
-					obj->UD.UDcar.h0090c = 0;
+					obj->UD.UDcar.PeopleOnMe = 0;
 					if (newobj = AllocActor()) {
 						newobj->exists = TRUE;
 						newobj->Sel    = 0x32;
@@ -599,7 +601,7 @@ static void _people_on_roof(Object_G2 *obj) {		// 25df2
 				}
 			} else {
 				if (_check_platform(PLAYER1, obj) != FALSE) {
-					obj->UD.UDcar.h0090c = 2;
+					obj->UD.UDcar.PeopleOnMe = 2;
 					if (newobj = AllocActor()) {
 						newobj->exists = TRUE;
 						newobj->Sel    = 0x32;
@@ -636,7 +638,7 @@ static void _ActSMCar(Object_G2 *obj) {			// The CarID 6, BONUS0
 						case 0:							//25a22
 							if (_car_check_P1(obj) < 0) {
 								NEXT(obj->mode3);
-								obj->UD.UDcar.h0091c++;
+								obj->UD.UDcar.HitsTaken++;
 								_car_init_as_bs(&obj->UD.UDcar.p1);
 							}
 							if (_car_check_P2(obj) < 0) {
@@ -647,7 +649,7 @@ static void _ActSMCar(Object_G2 *obj) {			// The CarID 6, BONUS0
 						case 2:							//25a4a
 							if (_car_check_P1(obj) < 0) {
 								NEXT(obj->mode3);
-								++obj->UD.UDcar.h0091c;
+								++obj->UD.UDcar.HitsTaken;
 							}
 							if (_car_check_P2(obj) < 0) {
 								NEXT(obj->mode2);
@@ -669,14 +671,14 @@ static void _ActSMCar(Object_G2 *obj) {			// The CarID 6, BONUS0
 						case 0:
 							if (_car_check_P1(obj) < 0) {
 								NEXT(obj->mode3);
-								++obj->UD.UDcar.h0091c;
+								++obj->UD.UDcar.HitsTaken;
 							}
 							_car_init_as_bs(&obj->UD.UDcar.p1);
 							break;
 						case 2:
 							if (_car_check_P1(obj) < 0) {
 								NEXT(obj->mode3);
-								++obj->UD.UDcar.h0091c;
+								++obj->UD.UDcar.HitsTaken;
 								_car_init_as_bs(&obj->UD.UDcar.p1);
 								_car_init_as_bs(&obj->UD.UDcar.p2);
 							}
@@ -687,7 +689,7 @@ static void _ActSMCar(Object_G2 *obj) {			// The CarID 6, BONUS0
 								obj->mode2 = 0;
 								obj->mode3 = 0;
 								obj->UD.UDcar.h0092c = 0;
-								obj->UD.UDcar.h0091c = 6;
+								obj->UD.UDcar.HitsTaken = 6;
 								_car_init_as_bs(&obj->UD.UDcar.p1);
 							}
 							break;
@@ -702,7 +704,7 @@ static void _ActSMCar(Object_G2 *obj) {			// The CarID 6, BONUS0
 					case 0-16:							//25b26;
 						if(_car_check_P1(obj) < 0) {
 							NEXT(obj->mode2);
-							if(++obj->UD.UDcar.h0091c == 15) {
+							if(++obj->UD.UDcar.HitsTaken == 15) {
 								g.x8abe = TRUE;
 							}
 							_car_init_as_bs(&obj->UD.UDcar.p1);
@@ -740,10 +742,10 @@ static void _ActSMCar(Object_G2 *obj) {			// The CarID 6, BONUS0
 }
 static void sub_25f06(Object_G2 *obj) {		// players on top of car
 	Object *nobj;
-	switch (obj->UD.UDcar.h0090c) {
+	switch (obj->UD.UDcar.PeopleOnMe) {
 		case 0:		// no players on me
 			if (_check_platform(&g.Player1, obj)) {
-				obj->UD.UDcar.h0090c = 1;
+				obj->UD.UDcar.PeopleOnMe = 1;
 				if (nobj = AllocActor()) {
 					nobj->exists = TRUE;
 					nobj->Sel = 0x32;
@@ -751,7 +753,7 @@ static void sub_25f06(Object_G2 *obj) {		// players on top of car
 				}
 			}
 			else if (_check_platform(&g.Player2, obj)) {
-				obj->UD.UDcar.h0090c = 2;
+				obj->UD.UDcar.PeopleOnMe = 2;
 				if (nobj = AllocActor()) {
 					nobj->exists = TRUE;
 					nobj->Sel = 0x32;
@@ -761,14 +763,14 @@ static void sub_25f06(Object_G2 *obj) {		// players on top of car
 			break;
 		case 1:		// player1 is on me
 			if (_check_platform(&g.Player2, obj)) {
-				obj->UD.UDcar.h0090c = 3;
+				obj->UD.UDcar.PeopleOnMe = 3;
 				if (nobj = AllocActor()) {
 					nobj->exists = TRUE;
 					nobj->Sel = 0x32;
 					nobj->SubSel = 0x3;
 				}
 			} else if (!_check_platform(&g.Player1, obj)) {
-				obj->UD.UDcar.h0090c = 0;
+				obj->UD.UDcar.PeopleOnMe = 0;
 				if (nobj = AllocActor()) {
 					nobj->exists = TRUE;
 					nobj->Sel = 0x32;
@@ -778,7 +780,7 @@ static void sub_25f06(Object_G2 *obj) {		// players on top of car
 			break;
 		case 2:		// player2 is on me
 			if (_check_platform(&g.Player1, obj)) {
-				obj->UD.UDcar.h0090c = 3;
+				obj->UD.UDcar.PeopleOnMe = 3;
 				if (nobj = AllocActor()) {
 					nobj->exists = TRUE;
 					nobj->Sel = 0x32;
@@ -786,7 +788,7 @@ static void sub_25f06(Object_G2 *obj) {		// players on top of car
 				}
 			}
 			else if (!_check_platform(&g.Player2, obj)) {
-				obj->UD.UDcar.h0090c = 0;
+				obj->UD.UDcar.PeopleOnMe = 0;
 				if (nobj = AllocActor()) {
 					nobj->exists = TRUE;
 					nobj->Sel = 0x32;
@@ -797,14 +799,14 @@ static void sub_25f06(Object_G2 *obj) {		// players on top of car
 		case 3:		// both players are on me, wait for both to come off;
 			if (!_check_platform(&g.Player1, obj)) {
 				if (!_check_platform(&g.Player2, obj)) {
-					obj->UD.UDcar.h0090c = 0;
+					obj->UD.UDcar.PeopleOnMe = 0;
 					if (nobj = AllocActor()) {
 						nobj->exists = TRUE;
 						nobj->Sel = 0x32;
 						nobj->SubSel = 0x6;
 					}					
 				} else {
-					obj->UD.UDcar.h0090c = 2;
+					obj->UD.UDcar.PeopleOnMe = 2;
 					if (nobj = AllocActor()) {
 						nobj->exists = TRUE;
 						nobj->Sel = 0x32;
@@ -814,7 +816,7 @@ static void sub_25f06(Object_G2 *obj) {		// players on top of car
 
 			} else {
 				if (!_check_platform(&g.Player2, obj)) {
-					obj->UD.UDcar.h0090c = 1;
+					obj->UD.UDcar.PeopleOnMe = 1;
 					if (nobj = AllocActor()) {
 						nobj->exists = TRUE;
 						nobj->Sel = 0x32;
@@ -1197,6 +1199,14 @@ static void sub_27b5e(Object_G2 *obj) {			// 27b5e
 	}
 
 }
+static void sub_2581a(Object *obj) {
+	if (((obj->YPI & 0xc0) >> 5) != 6) {
+		obj->Pool = (obj->YPI >> 5);
+	} else {
+		obj->Pool = 4;
+	}
+}
+
 
 static void sub_27862(Object_G2 *obj) {			// 27862 Act09 BONUS1
 	const static char data_278c2[] = {
@@ -1353,13 +1363,6 @@ static void sub_27862(Object_G2 *obj) {			// 27862 Act09 BONUS1
 }
 	
 
-static void sub_2581a(Object *obj) {
-	if (((obj->YPI & 0xc0) >> 5) != 6) {
-		obj->Pool = (obj->YPI >> 5);
-	} else {
-		obj->Pool = 4;
-	}
-}
 
 void sub_24f0e(Object *obj) {
 	NEXT(obj->mode0);

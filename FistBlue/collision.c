@@ -1289,16 +1289,16 @@ static void _CDCheckBonus2(Player *a6, Object_G2 *a2) {		// 7dd38
 	char *a1;
 	/* XXX access userdata in A2 */
 	if (a6->Side) {
-		a1 = &a2->UD.UDbonus2.h008d;
+		a1 = &a2->UD.UDbonus2.h008dc;
 	} else {
-		a1 = &a2->UD.UDbonus2.h008c;
+		a1 = &a2->UD.UDbonus2.h008cc;
 	}
 	g.GPWasProjectile = FALSE;
 	sub_7dd7c(a6, a2, a1);
 	if (a6->Side) {
-		a1 = &a2->UD.UDbonus2.h008f;
+		a1 = &a2->UD.UDbonus2.h008fc;
 	} else {
-		a1 = &a2->UD.UDbonus2.h008e;
+		a1 = &a2->UD.UDbonus2.h008ec;
 	}
 	if (a6->Projectile) {
 		if (a6->Projectile->exists == 1) {
@@ -1325,7 +1325,7 @@ static void _CDBonus3(Object_G2 *a6) {			// 7d20a
 	
 	
 }
-void sub_7d99a(Object_G2 *a6) {		// 7dd9a - entry for Bonus objects
+void sub_7d99a(Object *a6) {		// 7dd9a - entry for Bonus objects
 	// disable collision detection for most objects
 	char data_7d9ba[]={-1, -1, -1, -1, 6, 4, 0, -1, -1, 2, -1, -1, -1, -1, -1, -1};
 	

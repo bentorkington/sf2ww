@@ -19,13 +19,14 @@ typedef struct {
 	
 	char	h008cc, h008dc, h008ec, h008fc;
 	
-	char	h0090c;
-	char	h0091c;
+	char	PeopleOnMe;		// 90 bitmask, people on me
+	char	HitsTaken;		// 91
 	char	h0092c;
 	char	h0093c;
-} UDcar;
+} UDcar;		// (bonus0)
 
 
+// the Barrels
 typedef struct {
 	char	h0084c;
 	
@@ -41,6 +42,8 @@ typedef struct {
 	
 } UDbonus1;
 
+
+// the Drums
 typedef struct {
 	char	h0084c;
 	
@@ -67,13 +70,14 @@ typedef struct {
 
 typedef struct {
 #include "std_object.h"
-    signed char		x0040;			/* some palette index, values 1,2,3,5 */
-	signed char		x0041;
-	void	*x0042;      /* palette? data at 0x90000 set by 82c26 used 82c4c */
+    FIXED8_8 AclX;
+    FIXED8_8 AclY;
+    u16 x0044;		
     u8		UserByte;
     signed char	Timer2;				/* 0047 prob not a timer in Object2*/
-	void	*x0048;
-	
+	//void	*x0048;
+	char BoundCheck;
+	char BlockStun;
 	u8 NextReactMode2;		/* 4c */
 	char	x004d;
 	signed char *x004e;	
