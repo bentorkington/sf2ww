@@ -54,11 +54,18 @@
 #define BUTTON_P2ST			0x20
 #define BUTTON_TESTMENU     0x40
 
+#define STRENGTH_LOW		0
+#define STRENGTH_MED		2
+#define STRENGTH_HIGH		4
 
-#define BOTH_COMPUTER  0
-#define ONLY_P1        1
-#define ONLY_P2        2
-#define BOTH_HUMAN     3
+// XXX these are toward and away
+#define STEP_RIGHT		1		
+#define STEP_LEFT		0
+#define	STEP_STILL		2
+
+#define FACING_LEFT		0
+#define FACING_RIGHT	1
+
 
 
 // Jumpers
@@ -88,6 +95,7 @@
 
 #define SF2_TILE_OBJ_PEACE		0x815f
 #define SF2_TILE_OBJ_DOTCLOTH	   0x4
+
 
 
 
@@ -131,6 +139,11 @@
 
  
 
+#define BOTH_COMPUTER  0
+#define ONLY_P1        1
+#define ONLY_P2        2
+#define BOTH_HUMAN     3
+
 
 #define VERSION_JAP 0
 #define VERISON_ETC 1
@@ -141,8 +154,10 @@
 #define SCROLL_3	4
 
 
-#define FACING_LEFT		0
-#define FACING_RIGHT	1
+
+#define COUNT_LAYER1	8
+#define COUNT_LAYER2	16
+#define COUNT_LAYER3	60
 
 
 #define PALETTE_0C       0xc

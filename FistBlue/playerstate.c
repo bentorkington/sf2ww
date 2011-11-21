@@ -249,7 +249,7 @@ static void PSPlayerKO(Player *ply) {		/* 2a508 */
 	x = ply->UndealtDamage;
 	ply->UndealtDamage = 0;
 	if(x) {
-		cqsave(ply->Opponent->RewardID, ply->Opponent->Side);
+		QueueEffect(ply->Opponent->RewardID, ply->Opponent->Side);
 	}
 	PSPlayerDamage(ply, 0);
 }
@@ -272,7 +272,7 @@ void player_postamble(Player *ply) {	// 2a410 called after comp_proc_stat and hu
 			if(ply->UndealtDamage == 0) {
 				PSPlayerDamage(ply, ply->Energy);
 			} else {
-				cqsave(ply->Opponent->RewardID, ply->Opponent->Side);
+				QueueEffect(ply->Opponent->RewardID, ply->Opponent->Side);
 				temp = ply->UndealtDamage;
 				ply->UndealtDamage = 0;
 				if((ply->Energy - temp) >= 0) {
@@ -292,8 +292,7 @@ void human_per_frame(Player *ply) {		/* 285f4 */
     case 0:
         NEXT(ply->mode0);
         LBInitHitBoxes(ply);         /* init throwboxes and hitboxes */
-        ply->Step=2;
-        ply->StepSave=2;
+        ply->Step = ply->StepSave = STEP_STILL;
         CASetAnim1(ply, STATUS_NORMAL);
         break;
     case 2:
@@ -1430,7 +1429,7 @@ void ply_exit_stand(Player *ply) {	// 2876a
     if(ply->Human) {
         ply->DSOffsetX = 0;
         set_towardsaway(ply);        
-        ply->Step |= 0x2;   
+        ply->Step |= STEP_STILL;   
         ply->Direction = ply->Step;
         ply->Attacking = 0;
         ply->IsJumpThreat = 0;

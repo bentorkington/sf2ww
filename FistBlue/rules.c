@@ -347,7 +347,7 @@ short sub_3466(Player *ply, short d2,short subsel_d3, short xoff_d4, short yoff_
 	}
 	LBGetDamage(ply, ply->Opponent, d2);
 	d4 = _EnergyDamageAdjust(ply, dr.damage);		// XXX never read
-	cqsave(dr.d5, ply->Side);
+	QueueEffect(dr.d5, ply->Side);
 	if (g.FastEndingFight == 0) {
 		ply->Energy     -= dr.damage;
 		ply->EnergyDash -= dr.damage;

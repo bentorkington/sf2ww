@@ -163,8 +163,8 @@ void computer_per_frame(Player *ply) {		/* 2ac70 */
 			ply->AIThreatCheckMode = 2;
 			AIInitPlayer(ply);
 
-			ply->Step     = 2;
-			ply->StepSave = 2;
+			ply->Step     = STEP_STILL;
+			ply->StepSave = STEP_STILL;
 			ply->x023a    = data_995ae[ply->FighterID][0];	// unused?
 			ply->x023c    = data_995ae[ply->FighterID][1];
 			CASetAnim1(ply, STATUS_NORMAL);
@@ -879,7 +879,7 @@ static void comp_changetactics(Player *ply, short d0) {	/* 2c1b4 */
 	ply->AIAllowAggressive = ply->AITimer271 = ply->AITimer272 = ply->AISigAttack = ply->CompDoJump =
 	ply->AICanJumpAttack = ply->AIMode1 = ply->AIMode2 = ply->CompDoBlockStun = ply->x0236 = 0;
 	
-	ply->AIWalkDirection |= 2;
+	ply->AIWalkDirection |= STEP_STILL;
 	
 	printf("comp_changetactics side %d", ply->Side);
 	if(g.Debug && g.JPCost & JP_DBGTACTICS) {
@@ -970,9 +970,9 @@ void comp_setjumping_main(Player *ply) {	/* 2c534 */
 }
 void exit_comp_normal(Player *ply) {	/* 0x2c408 */
 	set_ply_directions(ply);			/* 2f8a */
-	ply->Step |= 2;
+	ply->Step |= STEP_STILL;			// ???
 	ply->StepSave = ply->Step;
-	ply->Attacking = FALSE;
+	ply->Attacking    = FALSE;
 	ply->IsJumpThreat = FALSE;
 	ply->mode1 = 0;
 	ply->mode2 = 0;
@@ -982,7 +982,7 @@ void exit_comp_normal(Player *ply) {	/* 0x2c408 */
 void exit_comp_plstatfe_normal(Player *ply) {	/* 2c436 */
 	/* recover from a throw or reel */
 	set_ply_directions(ply);
-	ply->Step |= 2;
+	ply->Step |= STEP_STILL;
 	ply->StepSave = ply->Step;
 	ply->Attacking = ply->IsJumpThreat = 0;
 	ply->mode1 = PLSTAT_NORMAL;
@@ -994,7 +994,7 @@ void comp_exit_plstat_crouch(Player *ply) {	/* 0x2c496  */
 	// was 'comp_exit_plstat' one caller
 	set_ply_directions(ply);
 	ply->mode1 = PLSTAT_CROUCH;
-	ply->Attacking = 0;
+	ply->Attacking    = 0;
 	ply->IsJumpThreat = 0;
 	ply->mode2 = ply->mode3 = 0;
 	CASetAnim2(ply, STATUS_CROUCH, 2);

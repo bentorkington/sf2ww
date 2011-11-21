@@ -557,7 +557,7 @@ static void _AIBeginAgain(Player *ply) {
 	ply->AIMode2 = 0;
 	ply->AISigAttack = ply->CompDoBlockStun =
 	ply->x0236 = ply->CompDoJump = 0;
-	ply->AIWalkDirection |= 2;
+	ply->AIWalkDirection |= STEP_STILL;
 	if (ply->AIForceDefensive) {
 		AIBeginDef(ply);				
 	} else if (ply->AIAgressive) {
@@ -721,7 +721,7 @@ static void _AIStratStandStill(Player *ply) {		/* 2ae50 standing still*/
 			NEXT(ply->AIMode2);
 			ply->CompDoJump = ply->AISigAttack = ply->CompDoBlockStun =
 			ply->x0236 = 0;		/* all u8 */
-			ply->AIWalkDirection |= 2;
+			ply->AIWalkDirection |= STEP_STILL;
 			if(ply->AIParam1 & 0x80) {
 				if (ply->AIParam1 & 1) {
 					/* 2aedc */

@@ -347,8 +347,8 @@ void LBGetInputs(void) {		//2224
 		if ((g.JPCost & 0x80) && (g.JPCost & 0x40)) {
 			sub_22a8();
 		} else {
-			// XXX 225c
-			// XXX 2282
+			//todo 225c
+			//todo 2282
 		}
 	} else {
 		g.Player1.JoyDecode.full = g.ContrP1.full;
@@ -719,33 +719,32 @@ void LBUpdateAITimers(Player *ply) {	/* 3074 Updates needed by AI */
 
 void fadenwait1 (void) {			/* 0x2138 */
     g.FadeBusy = TRUE;
-    cqsave(0x0c00, 0x3);
+    QueueEffect(0x0c00, 0x3);
 	SIG_WAIT(g.FadeBusy);
 }
 void fadenwait2 (void) {		/* 215a */
     g.FadeBusy = TRUE;
-    cqsave(0x0c10, 0x3);
+    QueueEffect(0x0c10, 0x3);
 	SIG_WAIT(g.FadeBusy);
 }
 void fadenwait3 (void) {		/* 217c */
     g.FadeBusy = TRUE;
-    cqsave(0x0c1c, 0x3);
+    QueueEffect(0x0c1c, 0x3);
 	SIG_WAIT(g.FadeBusy);
 }
 void fadenwait4 (void) {		/* 219e */
     g.FadeBusy = TRUE;
-    cqsave(0x0c00, 0x3);
+    QueueEffect(0x0c00, 0x3);
 	SIG_WAIT(g.FadeBusy);
 }
 
 inline static void _init_energy(void) {			/* 2e6e */
-	g.Player1.Energy = 
-	g.Player2.EnergyDash =
-	g.Player2.Energy = 
-	g.Player2.EnergyDash =
-	g.Player1.EnergyCursor =
-	g.Player2.EnergyCursor =
-						ENERGY_START;
+	g.Player1.Energy		= 
+	g.Player2.EnergyDash	=
+	g.Player2.Energy		= 
+	g.Player2.EnergyDash	=
+	g.Player1.EnergyCursor	=
+	g.Player2.EnergyCursor	=	ENERGY_START;
 }
 inline static void _init_difficulty(void) { 
 	Player *ply;
@@ -784,7 +783,7 @@ inline static void _init_difficulty(void) {
 }
 
 void LBInitPlayers(void) {
-	_init_difficulty();			/* difficulty init */
+	_init_difficulty();	
 	_init_energy();		
 	
 	memclear((void *) &g.TimeRemainBCD, ((void *)&g.x0b4a - (void *)&g.TimeRemainBCD));
@@ -796,7 +795,7 @@ void LBInitPlayers(void) {
 	GSInitOffsets();
 }
     
-void resetcq(void) {		/* 21c2 */
+void ClearEffectQueue(void) {		/* 21c2 was resetcq */
     int i;
     g.effectNext = g.effectCurrent = 0;
     for (i = 0; i<EFFECT_QUEUE_LENGTH; i++) {
@@ -805,10 +804,8 @@ void resetcq(void) {		/* 21c2 */
 }
 
 short start_effect(short d0, short d1) {		/* 158c was libcall()*/
-
-	//g.FadeBusy = 0;			/* XXX kludge */
-
 	if (Exec.FreeTasks == 0) {
+		//XXX fix this, we actally can sleep now
 		printf("start_effect() can't sleep()! %x %x\n", d0 >>8, d0 & 0xff);
 		printtasktable();
 		panic(0);
@@ -816,15 +813,13 @@ short start_effect(short d0, short d1) {		/* 158c was libcall()*/
 		if (g.mode0 == 2 && g.mode1 == 4 && g.mode2 == 10 && (d0 & 0xff00) == 0) {
 			return g.libsplatter;
 		} else {
-			printf("BeginImmediate: %02x\n",d0);
 			wrap_trap7(data_155c[d0 >> 10], d0 & 0xff, d1);
 		}
-
 	}
 	return 0;
 }
 
-int cqsave(u16 arg1, u16 arg2) {		/* 21e2 */
+int QueueEffect(u16 arg1, u16 arg2) {		/* 21e2 was cqsave */
     if (g.mode0 == 2 && g.mode1 == 4 && g.mode2 == 0xa && (arg2 & 0xff00)) {
         return g.libsplatter;
     } else {
@@ -857,7 +852,7 @@ void player_hitstuni(Player *ply, u8 trajectory, u8 direction,u8 damage, u8 subs
 	DR dr;
     
     ply->Opponent->ThrowTrajectory = trajectory;         
-    ply->Opponent->Direction = direction;
+    ply->Opponent->Direction	   = direction;
     if (act = AllocActor()) {
         act->exists = TRUE;
         act->Sel    = SF2ACT_HITSTUN;
@@ -872,10 +867,11 @@ void player_hitstuni(Player *ply, u8 trajectory, u8 direction,u8 damage, u8 subs
     hitsound(sound);
     if (!g.FastEndingFight && !g.OnBonusStage) {
         LBGetDamage(ply, ply->Opponent, damage);	
-		cqsave(dr.d5, ply->Side);
+		QueueEffect(dr.d5, ply->Side);				// add score to player
 		
-		ply->Opponent->Energy -= dr.damage;
+		ply->Opponent->Energy	  -= dr.damage;
 		ply->Opponent->EnergyDash -= dr.damage;
+		
 		if (ply->Opponent->EnergyDash < 0) {
 			LBStartTimeWarp();
 			return;
@@ -892,9 +888,9 @@ void player_hitstuni(Player *ply, u8 trajectory, u8 direction,u8 damage, u8 subs
 	
 	g.ThrowEndHoldoff = 28;		
 	g.PlayersThrowing = 0;
-	ply->ThrowStat = 0;
+	ply->ThrowStat			 = 0;
 	ply->Opponent->ThrowStat = 0;
-	ply->Opponent->Attacking = 0;
+	ply->Opponent->Attacking = FALSE;
 }
 
 u16 *objcoords_scroll1(Object *obj) {
@@ -931,7 +927,7 @@ u16 *coords_scroll3(short x, short y){	/* 4114 */
 
 u32 MakePointObj (int x, int y) {		/* 50ac */
     x += 0x40;
-    y ^= 0xff;								/* fuck this */
+    y ^= 0xff;
     y++;
     return (x << 16) + y;
 }
@@ -962,8 +958,8 @@ void memclear(void *c, int len) {
 #pragma mark ---- Resetter Functions ----
 
 void clear_players(void) {
-    memclear((char *)PLAYER1, (void *)(PLAYER1->Alive) - (void *)(PLAYER1->exists));	
-    memclear((char *)PLAYER2, (void *)(PLAYER2->Alive) - (void *)(PLAYER2->exists));
+    memclear((char *)PLAYER1, (void *)(&PLAYER1->Alive) - (void *)(&PLAYER1->exists));	
+    memclear((char *)PLAYER2, (void *)(&PLAYER2->Alive) - (void *)(&PLAYER2->exists));
 }
 static void clear_gstates(void) {			/* 0x2944 */
     memclear(&gstate_Scroll1, sizeof(GState));
@@ -1003,22 +999,21 @@ static void _LBResetState(void) {
     g.Ply1Shadow.SubSel = 0;
     g.Ply2Shadow.SubSel = 1;
     
+    g.FreeLayer1 = COUNT_LAYER1;    
+    g.FreeLayer2 = COUNT_LAYER2;
+    g.FreeLayer3 = COUNT_LAYER3;
     
-    g.FreeLayer2 = 16;
-    g.FreeLayer1 = 8;
-    g.FreeLayer3 = 60;
-    
-    for(i=0; i<16; i++) {
+    for(i=0; i<COUNT_LAYER1; i++) {
+        memclear(&g.Objects1[i], sizeof(Object));
+        g.Objects1[i].Layer = GFX_LAYER1;
+        g.FreeStack_Layer1[ i ] = &g.Objects1[i];
+    }	
+    for(i=0; i<COUNT_LAYER2; i++) {
         memclear(&g.Objects2[i], sizeof(Object));
         g.Objects2[i].Layer = GFX_LAYER2;
         g.FreeStack_Layer2[ i ] = &g.Objects2[i];
     }
-    for(i=0; i<8; i++) {
-        memclear(&g.Objects1[i], sizeof(Object));
-        g.Objects1[i].Layer = GFX_LAYER1;
-        g.FreeStack_Layer1[ i ] = &g.Objects1[i];
-    }
-    for(i=0; i<60; i++) {
+    for(i=0; i<COUNT_LAYER3; i++) {
         memclear(&g.Objects3[i], sizeof(Object));
         g.Objects3[i].Layer = GFX_LAYER3;
         g.FreeStack_Layer3[ i ] = &g.Objects3[i];
@@ -1056,25 +1051,25 @@ void decode_buttons(Player *ply, short d0) {		/* 3296 */
  result in Big Kick */
 	
 	ply->PunchKick = 0;
-	if (d0 & 0x10) {
-		ply->ButtonStrength = 0;
+	if (d0 & BUTTON_A) {
+		ply->ButtonStrength = STRENGTH_LOW;
 		return;
-	} else if (d0 & 0x20) {
-		ply->ButtonStrength = 2;
+	} else if (d0 & BUTTON_B) {
+		ply->ButtonStrength = STRENGTH_MED;
 		return;
-	} else if (d0 & 0x40) {
-		ply->ButtonStrength = 4;
+	} else if (d0 & BUTTON_C) {
+		ply->ButtonStrength = STRENGTH_HIGH;
 		return;
 	}
 	ply->PunchKick = PLY_KICKING;
-	if (d0 & 0x100) {
-		ply->ButtonStrength = 0;
+	if (d0 & BUTTON_D) {
+		ply->ButtonStrength = STRENGTH_LOW;
 		return;
-	} else if (d0 & 0x200) {
-		ply->ButtonStrength = 2;
+	} else if (d0 & BUTTON_E) {
+		ply->ButtonStrength = STRENGTH_MED;
 		return;
 	} else {
-		ply->ButtonStrength = 4;
+		ply->ButtonStrength = STRENGTH_HIGH;
 		return;
 	}
 }
@@ -1085,12 +1080,12 @@ short buttonsreleased(Player *ply, u16 d1) {	/* 32d6 */
 	return ply->JoyDecodeDash.full & ~ply->JoyDecode.full & d1;
 }
 void set_towardsaway(Player *ply) {       /* 318a */
-    if(ply->JoyDecode.full & 0x1) {
-        ply->Step = 1; 
-    } else if (ply->JoyDecode.full & 0x2) {     /* guessing the .full */
-        ply->Step = 0;
+    if(ply->JoyDecode.full & JOY_RIGHT) {
+        ply->Step = STEP_RIGHT; 
+    } else if (ply->JoyDecode.full & JOY_LEFT) {     
+        ply->Step = STEP_LEFT;
     } else {
-        ply->Step = 2;
+        ply->Step = STEP_STILL;
     }
 }
 
@@ -1167,7 +1162,7 @@ static void _LBPrintTicker(u32 *coords, u8 a) {		//52ac print time remaining
 	OBJ_CURSOR_SET(gp, 29);
 	sub_52bc(gp, *coords >> 16, *coords & 0xffff,a );
 }
-void sub_528a() {		/* print numbe of barrels remaining */
+void sub_528a() {		/* print number of barrels remaining */
 	u32 coords=MakePointObj(176, 208);
 	_LBPrintTicker(&coords, g.x8ab9);		
 }
@@ -1179,7 +1174,7 @@ static void ply1_loses(void) {		/* 0x8f7a */
 	print_timeremaining();
 	g.RoundResult = 2;
 	g.Player2.RoundsWon++;
-	if(g.InDemo) { return; }		// shouldn't happen?
+	if(g.InDemo) { return; }
 	g.WinningFighter  = g.Player2.FighterID;
 	g.LosingFighter   = g.Player1.FighterID;
 	g.HumanWinner     = g.Player2.x02ae | g.Player2.Human;
@@ -1237,7 +1232,7 @@ static void ply2_loses(void) {		/* 0x8ed6 */
 void startgame(int players_online) {	/* 6d4e */
 	g.PlayersOnline = players_online;
 	/* XXX kill task 6; */
-	resetcq();
+	ClearEffectQueue();
 	die_top8();
 	// todo sub_62ec();
 	g.mode0	=	g.timer0 =
@@ -1246,13 +1241,13 @@ void startgame(int players_online) {	/* 6d4e */
 	g.mode3 =	g.timer3 = 
 	g.mode4 =	g.timer4 =
 	g.mode5 =	g.timer5 = 0;
-	g.SkipEnding = FALSE;
-	g.x02eb		 = FALSE;
-	g.FastEndingFight = FALSE;
-	g.OnFinalStage		 = FALSE;
-	g.x02ec		 = FALSE;
-	g.InDemo	 = FALSE;
-	g.ActiveHumans = 0;
+	g.SkipEnding		= FALSE;
+	g.x02eb				= FALSE;
+	g.FastEndingFight	= FALSE;
+	g.OnFinalStage		= FALSE;
+	g.x02ec				= FALSE;
+	g.InDemo			= FALSE;
+	g.ActiveHumans		= BOTH_COMPUTER;
 	g.NumberCreditsDash = FALSE;
 	g.NewChallengerWait = TRUE;
 	g.Player1.BlinkerMode0 = 0;
@@ -1469,6 +1464,7 @@ void sub_8e8e(void) {
 		print_timeremaining();
 	}
 }		
+
 void setup_stage_actions (int sel) { /* 8227e */
     int i;
 	const static short counts[]={ 4, 10, 17, 7, 13, 10, 2, 2, 7, 4, 24, 16, 0, 8, 1, 11, };

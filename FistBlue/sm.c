@@ -71,7 +71,7 @@ static void sub_7db6() {
 	g.mode3 = 0;
 }
 static void sub_7d5c(void) {
-	resetcq();		// 21c2
+	ClearEffectQueue();		// 21c2
 	die_top8();
 	fadenwait3();
 	sub_7db6();
@@ -104,7 +104,7 @@ static void game_mode_28(void) {	// 7af0
 		case 0:
 			NEXT(g.mode2);
 			g.FadeBusy = TRUE;
-			cqsave(0x0c1c, 3);
+			QueueEffect(0x0c1c, 3);
 			break;
 		case 2:
 			if (g.FadeBusy==0) {
@@ -151,7 +151,7 @@ static void game_mode_28(void) {	// 7af0
 				g.WaitMode = FALSE;
 				die_top8();
 				g.FadeBusy = TRUE;
-				cqsave(0x0c1c, 3);
+				QueueEffect(0x0c1c, 3);
 			} else {
 				Player *winner;
 				Player *loser;
@@ -306,30 +306,30 @@ static void sub_7eb4(void) {		// 7eb4 game mode 2,C
 			g.timer3 = 0x8;
 			g.timer4 = 0;
 			action_1ab8a();		/* clear top object */
-			cqsave(0x1c19, 0);
-			cqsave(0x1c1a, 0);
+			QueueEffect(0x1c19, 0);
+			QueueEffect(0x1c1a, 0);
 			soundsting(SOUND_CHALLENGER);
 			break;
 		case 2:
 			/* 7f02 */
 			if (g.timer2-- == 0) {
 				NEXT(g.mode2);
-				resetcq();		/* at 21c2 */
+				ClearEffectQueue();		/* at 21c2 */
 				die_top8();
 				g.FadeBusy = TRUE;
-				cqsave(0xc1c, 0x100);	/* FADE_CLEAR_ALL */
+				QueueEffect(0xc1c, 0x100);	/* FADE_CLEAR_ALL */
 			} else {
 				if(g.timer3--==0) {
 					g.timer3 = 8;
 					g.timer4 ^= 1;
 					if(g.timer4) {
 						/* 7f56 */
-						cqsave(0x1c1b, 0);
-						cqsave(0x1c1a, 0);
+						QueueEffect(0x1c1b, 0);
+						QueueEffect(0x1c1a, 0);
 					} else {
 						/* 7f3e */
-						cqsave(0x1c19, 0);
-						cqsave(0x1c1a, 0);
+						QueueEffect(0x1c19, 0);
+						QueueEffect(0x1c1a, 0);
 					}
 				}
 			}
@@ -469,7 +469,7 @@ static void draw_world_map(void) {		//856c
 				case 0:
 					NEXT(g.mode4);
 					g.FadeBusy = TRUE;
-					cqsave(0xc1c, 0x3);
+					QueueEffect(0xc1c, 0x3);
 					break;
 				case 2:
 					if (g.FadeBusy == FALSE) {
@@ -597,12 +597,12 @@ static void gamemode_init_round (void) {
 			LBInitPlayers();		/* set player difficulties, initial energy */
 			break;
 		case 2:
-			g.mode3 +=2;
+			NEXT(g.mode3);
 			palettes_nextlevel();
 			set_shadow_pen();    /* set Object Pal 10 for current stage */
 			break;
 		case 4:
-			g.mode3 +=2;
+			NEXT(g.mode3);
 			g.TimeRemainBCD   = 0x99;   
 			g.TimeRemainTicks = 0x28;
 			
@@ -617,18 +617,18 @@ static void gamemode_init_round (void) {
 			break;
 		case 6:
 			if(g.GSInitComplete) {
-				g.mode3 +=2;
+				NEXT(g.mode3);
 				set_initial_positions();
 			} else {
 				GSMain();
 			}
 			break;
 		case 8:
-			while(g.timer3 != gstate_Scroll2.X.part.integer) {
+			do {
 				g.timer3 = gstate_Scroll2.X.part.integer;
 				GSMain();
-			}
-			g.mode2 +=2;         /* Go to 2,4,8 */
+			} while(g.timer3 != gstate_Scroll2.X.part.integer);
+			NEXT(g.mode2);		/* Go to 2,4,8 */
 			g.mode3 =0;
 			break;
 		FATALDEFAULT;
@@ -1077,7 +1077,7 @@ void gamemode_24I (void) {		// 7970
 			}
 			break;
 		case 6:
-			if(g.TextEffectBusy == 0) {
+			if(g.TextEffectBusy == FALSE) {
 				g.mode3 += 2;
 				g.timer3 = 180;
 			}
@@ -1089,7 +1089,7 @@ void gamemode_24I (void) {		// 7970
 				g.mode3 +=2;
 				die_top8();
 				g.FadeBusy = TRUE;
-				cqsave(0xc1c,3);
+				QueueEffect(0xc1c,3);
 			} else if(check_if_new_player()) {
 				GEMU_CLEAR_OBJECT_72;             /* clear the "Press Start" message */
 				DSDrawAllMain();
@@ -1144,8 +1144,8 @@ void task_initmachine (void) {
     case 4:
         g.mode0 +=2;
         g.timer0 = 180;
-        cqsave(LC0_LIGHT_ALL_ENABLE, 5);
-        cqsave(data_645e[g.Version],0x0100); 
+        QueueEffect(LC0_LIGHT_ALL_ENABLE, 5);
+        QueueEffect(data_645e[g.Version],0x0100); 
         break;
     case 6:
         if(g.TextEffectBusy == 0) {g.mode0 += 2;}
@@ -1164,8 +1164,8 @@ void task_initmachine (void) {
     case 0xa:
         g.mode0 +=2;
         g.timer0 = 60;
-        cqsave(LC0_LIGHT_ALL_ENABLE,5);
-        //cqsave(text_copyrights[g.Version], 0x101); /* XXX */
+        QueueEffect(LC0_LIGHT_ALL_ENABLE,5);
+        //QueueEffect(text_copyrights[g.Version], 0x101); /* XXX */
         break;
     case 0xc:
         if(g.TextEffectBusy == 0) {

@@ -62,7 +62,7 @@ void RHWait(Task *task) {
 	//printf("RHWait: worker %d awakens\n", task->RHThreadID);
 }
 void RHExit(Task *task) {
-	printf("RHExit worker\n");
+	//printf("RHExit worker\n");
 	pthread_mutex_lock(&ptmx_go_task);
 	pt_go_task[task->RHThreadID] = FALSE;
 	pthread_mutex_unlock(&ptmx_go_task);
@@ -71,7 +71,7 @@ void RHExit(Task *task) {
 	InChild = FALSE;
 	pthread_cond_broadcast(&ptcv_despatcher);
 	pthread_mutex_unlock(&ptmx_despatcher);
-	printf("Exiting Thread\n");
+	//printf("Exiting Thread\n");
 	pthread_exit(NULL);
 }
 void RHKill (Task *task) {
@@ -92,7 +92,7 @@ void RHResume(Task *task) {
 	}
 	pthread_mutex_unlock(&ptmx_despatcher);
 	if (task->status == TASK_EMPTY) {
-		printf("pthread_join()\n");
+		//printf("pthread_join()\n");
 		pthread_join(pt_threads[task->RHThreadID], NULL);
 	}
 	//printf("Back in despatcher\n");
@@ -103,7 +103,7 @@ void RHCreateThread(int worker) {
 	if (errcode = pthread_create(&pt_threads[worker], NULL, RHThreadWorker, &Exec.Tasks[worker])) {
 		errexit(errcode, "pthread_create");
 	}
-	printf("RHCreateThread: worker %d\n", worker);
+	//printf("RHCreateThread: worker %d\n", worker);
 }
 
 void RHInitThreads(void) {
@@ -131,7 +131,7 @@ void *RHThreadWorker(void *arg) {
 	pthread_mutex_unlock(&ptmx_go_task);
 	
 	
-	printf("RHThreadWorker worker %d %s beginning\n", task->RHThreadID, task->name);
+	//printf("RHThreadWorker worker %d %s beginning\n", task->RHThreadID, task->name);
 	if(task->code) {
 		task->code();
 	} else {
@@ -144,7 +144,7 @@ void *RHThreadWorker(void *arg) {
 	pt_go_task[task->RHThreadID] = FALSE;
 	pthread_mutex_unlock(&ptmx_go_task);
 	
-		printf("RHThreadWorker worker %d ends\n", task->RHThreadID);
+	//printf("RHThreadWorker worker %d ends\n", task->RHThreadID);
 	pthread_mutex_lock(&ptmx_despatcher);
 	InChild = FALSE;
 	pthread_cond_broadcast(&ptcv_despatcher);

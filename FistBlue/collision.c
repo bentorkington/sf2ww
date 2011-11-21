@@ -140,7 +140,7 @@ void CDCheckProjectile(Object *obj, int d7) {   /* 0x7d0c0 check for projectile 
     obj->Energy = -2;
     mac_stunme3(obj);
     if(opp->BlockStun || g.OnBonusStage) { return; }
-    cqsave(g.GPPointsReward, ply->Side);
+    QueueEffect(g.GPPointsReward, ply->Side);
 }
 
 /* check for collision between projectile and enemy projectile,  supports only one projectile per player
@@ -1235,7 +1235,7 @@ static void _CDCheckPlayer(Player *ply, Player *vict) {     /* 7cf38 */
     make_collision_sound(vict, active);
     sub_7d74e(ply, vict, active);		     /* splash, see if vega loses claw */
     if(vict->BlockStun || g.OnBonusStage) { return; }
-    cqsave(g.GPPointsReward, ply->Side);                    /* award points */
+    QueueEffect(g.GPPointsReward, ply->Side);                    /* award points */
 }
 static void _CDKillDecor(Player *a2, Object *a6) {	/* 7e39e */
 	/* Kill the object, make a sound, reward points */
@@ -1254,8 +1254,8 @@ static void _CDDecorSoundPts(Object *a6){		// 7e3b0
 		0, 0, 0,
 		SOUND_BARRELS_BREAK,
 		0, 0}[a6->Sel]);
-	cqsave(0x8200, 0);		// Both players get points
-	cqsave(0x8200, 1);
+	QueueEffect(0x8200, 0);		// Both players get points
+	QueueEffect(0x8200, 1);
 }
 static short _CDPushOverlap(Player *a2, Object *a6) {	
 	/* 7e460 test if player %a2 push hit object %a6 push */

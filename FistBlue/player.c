@@ -115,7 +115,7 @@ static void apply_throw_damage(Player *ply, Player *opp_a3, short index) {		///0
         opp_a3->Energy        = -1;
         opp_a3->UndealtDamage = 0;
         
-        cqsave(opp_a3->RewardID, opp_a3->Side ^ 1);
+        QueueEffect(opp_a3->RewardID, opp_a3->Side ^ 1);
 		LBStartTimeWarp();
     } else {
         opp_a3->UndealtDamage    = 0;
@@ -208,7 +208,7 @@ void sub_36d6(Player *ply, short x, short y, short throwtrajd0, char direction, 
     
     if(g.FastEndingFight == 0 && g.OnBonusStage == 0) {
         LBGetDamage(ply, ply->Opponent, damage_d2);     /* calc, adjust damage based on difficulty */
-        cqsave(dr.d5, ply->Side);       /* award points for hit? */
+        QueueEffect(dr.d5, ply->Side);       /* award points for hit? */
         ply->Opponent->Energy     -= dr.damage;
         ply->Opponent->EnergyDash -= dr.damage;
         if (ply->EnergyDash <= 0) {
