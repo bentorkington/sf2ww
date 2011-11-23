@@ -17,6 +17,8 @@ typedef struct {
 	CarPlayer	p1;		// 80-83
 	CarPlayer	p2;		// 84-88
 	
+	char	boxes[4];		// hmm, overlap with 0x80?
+	
 	char	h008cc, h008dc, h008ec, h008fc;
 	
 	char	PeopleOnMe;		// 90 bitmask, people on me
@@ -75,7 +77,6 @@ typedef struct {
     u16 x0044;		
     u8		UserByte;
     signed char	Timer2;				/* 0047 prob not a timer in Object2*/
-	//void	*x0048;
 	char BoundCheck;
 	char BlockStun;
 	u8 NextReactMode2;		/* 4c */

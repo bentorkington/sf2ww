@@ -137,6 +137,8 @@ struct hitbox_active {		/* Attack hitbox is 0xc long */
     u8 ReactMode;   /* 0xb */
 };
 
+#define EMPTY_HITBOX		{0,0,0,0}
+#define EMPTY_HITBOXACT		{0,0,0,0,0,0,0,0,0,0,0,0}
 
 struct hitbox {		/* Attack hitbox is 0xc long */
     signed char X;			// DX

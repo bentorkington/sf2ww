@@ -1092,7 +1092,7 @@ static void _CDSoundBonus0(Object *obja2) {						// 7dafc
 }
 static void _CDCheckObjBonus0(Player *plya6, Object_G2 *obja2, char *a1) {		// 7da44
 	HitBoxAct *hba3;
-	int d4;
+	int d4, d0;
 	
 	if(hba3 = get_active_hitbox(plya6)) {
 		if (hba3->Shove < 0) {
@@ -1113,16 +1113,17 @@ static void _CDCheckObjBonus0(Player *plya6, Object_G2 *obja2, char *a1) {		// 7
 			obja2->Timer2 = 14;
 			plya6->Timer2 = 14;
 			obja2->Direction = plya6->Flip;
-			obja2->BlockStun = FALSE;
-			if (g.TimeRemainBCD != 1 && g.TimeOut == FALSE && a2ud->boxes[g.GPHitBoxHit] < 0) {
+			obja2->BlockStun = FALSE;  
+		
+			if (g.TimeRemainBCD != 1 && g.TimeOut == FALSE && obja2->UD.UDcar.boxes[g.GPHitBoxHit] < 0) {
 				obja2->BlockStun = TRUE;
 			} else {
-				d0 = a2ud->boxes[g.GPHitBoxHit];
+				d0 = obja2->UD.UDcar.boxes[g.GPHitBoxHit];
 				d0 -= (hba3->ReactMode2 + 1);
 				if (d0 < 0) {
 					d0 = -1;
 				}
-				obja2->boxes[g.GPHitBoxHit] = d0;
+				obja2->UD.UDcar.boxes[g.GPHitBoxHit] = d0;
 				g.x8aec = d0;
 			}
 			if (g.GPWasProjectile) {

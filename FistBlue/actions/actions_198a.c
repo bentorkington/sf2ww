@@ -39,10 +39,16 @@ extern GState gstate_Scroll3;
 short g_d7;		/* global for counter */
 
 enum actions_198a {
-	BLANKA_FISH,
+	BLANKA_FISH = 0,
 	KEN_DRUMS,
 	RYU_SIGNS,
-	/* more todo */
+	ACT_B03,
+	ACTB_DRUMFIRE,			// BONUS3 Collisions
+	ACTB_DRUMS,				// BONUS2 Collisions
+	ACTB_CAR,				// BONUS0 Collisions
+	ACTB_GUILE_CRATE,
+	ACT_B08,
+	ACT_B09,				// BONUS1 Collisions
 };
 
 
@@ -161,6 +167,8 @@ static void _SMKenDrums(Object *obj) {				// 24a74
 	}
 	
 }
+
+
 static void _SMRyuSigns(Object *obj) {		// 24c4e
 	Object *nobj;
 	short i;
@@ -169,7 +177,7 @@ static void _SMRyuSigns(Object *obj) {		// 24c4e
 		case 0:
 			NEXT(obj->mode0);
 			obj->Step = obj->Flip;
-			obj->HitBoxes = data_24eda;
+			obj->HitBoxes = &hitboxes_24eda;
 			setaction_direct(obj, actlist_24e1a);
 			break;
 		case 2:
@@ -205,14 +213,52 @@ static void _SMRyuSigns(Object *obj) {		// 24c4e
 	}
 }
 
+static void sub_24fcc(Object *obja0, Object *obja6) {
+	obja0->XPI = obja6->XPI;
+	obja0->YPI = obja6->YPI + 64;
+}
+
+static Object *sub_24fc2(Object_G2 *obj) {
+//	if (obj->UD.UDunknown.h0097c) {
+//		sub_24fcc(obj->UD.UDunknown.h0098p, obj);
+//	} else {
+//		return;
+//	}
+}
+
+static void sub_24fe0(Object_G2 *obj) {
+//	if (obj->UD.UDunknown.h0097c) {
+//		obj->UD.UDunknown.h0098p->mode0 = 4;
+//		obj->UD.UDunknown.h0097 = FALSE;
+//	}
+}
+
+
+static void sub_24f96(int argd0, Object *obj) {
+	
+}
+
+const static Image image_24f6a={0, 0, 0x28, 0, 0, 0, };
+const static CAFrame frame_24f52={0x8, 0, 0, &image_24f6a, 0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0};
+	
+const HitBox hitb_24f8e[] = {EMPTY_HITBOX, {0, 80, 16, 80}};
+
+const struct hitboxes hitboxes_24f76 = {
+	hitb_null,
+	hitb_null,
+	hitb_null,
+	hitb_null,
+	hitbact_null,
+	hitb_24f8e,
+};
 
 static void _SMAct03(Object *obj) {		// 24efa
 	Object *nobj;
 	switch (obj->mode0) {
 		case 0:
 			NEXT(obj->mode0);
-			obj->HitBoxes = hitboxes_24f76;
-			setaction_direct(obj, action_24f52);
+			obj->HitBoxes = &hitboxes_24f76;
+			setaction_direct(obj, &frame_24f52);
 			break;
 		case 2:
 			CDCheckDecor(obj);
@@ -233,7 +279,10 @@ static void _SMAct03(Object *obj) {		// 24efa
 		FATALDEFAULT;
 	}
 }
+
+
 static void _SMAct04(Object_G2 *obj) {		// 27ea2 ID4 BONUS3
+	// Fires on top of drums
 	const static char data_27f3e[]={1,1,2,2,3,3,3,3,3,3,3,3,3,3,2,2,1,1,-1,0};
 	const static short data_27f72[]={
 		0x64, 0x78, 0x8c, 0x78, 0x64, 0x78, 0x8c, 0x64,
@@ -244,7 +293,7 @@ static void _SMAct04(Object_G2 *obj) {		// 27ea2 ID4 BONUS3
 		case 0:
 			NEXT(obj->mode0);
 			NEXT(obj->mode1);
-			obj->HitBoxes = hitboxes_28284;
+			obj->HitBoxes = &hitboxes_28284;	// null hitboxes
 			obj->Pool = 4;
 			obj->UD.UDbonus3.h00b0s = 0;
 			if (obj->XPI < 192) {
@@ -337,6 +386,11 @@ static void sub_25252(Object_G2 *obj) {
 }
 
 static void sub_257d8 (Object *obj) {			// 257d8 random force
+	const static short data_257fa[] = {
+		-32, -16, -16, 0, 0, 16, 16, 32,
+		-32, -32, -16, 0, 0, 16, 32, 32
+	};
+	
 	int temp = sf2rand();
 	obj->VelX.full += data_257fa[(temp >> 1) & 0xf];
 	obj->VelY.full += data_257fa[(temp >> 5) & 0xf];
@@ -364,6 +418,24 @@ static void sub_2549a(Object *ply, Object_G2 *obj) {
 }
 
 
+static void sub_257aa(Object_G2 *obj, Player *ply) {
+	if (ply->exists) {
+		if(ABS(obj->XPI - ply->XPI) - ply->Size >= 29) {
+			if (ply->OppXDist > ABS(obj->XPI - ply->XPI) - ply->Size - 29) {
+				ply->OppXDist = ABS(obj->XPI - ply->XPI) - ply->Size - 29;
+			}
+		} else {
+			ply->OppXDist = 0;
+		}
+
+	}
+}
+
+static void sub_257a0(Object_G2 *obj) {
+	sub_257aa(obj, PLAYER1);
+	sub_257aa(obj, PLAYER2);
+}
+
 static void sub_25476(Object_G2 *obj) {
 	char *p;
 	if (obj->UD.UDbonus2.H0092) {
@@ -382,19 +454,21 @@ static void sub_25476(Object_G2 *obj) {
 }
 
 
+
 void _SMAct05(Object_G2 *obj) {				// 24ff6 Act05 Bonus2
 	int temp;
+	int d1;
 	switch (obj->mode0) {
 		case 0:
 			NEXT(obj->mode0);
 			obj->mode2 = 0;
 			d1 = sub_255b2(obj);
 			// redundant btst
-			obj->HitBoxes = hitboxlist_25958;
+			obj->HitBoxes = &hitboxes_25958;
 			obj->Pool = 2;
 			obj->Scroll = 0;
 			obj->Step = obj->Flip;
-			setaction_direct(obj, action_25834);
+			//setaction_direct(obj, action_25834);
 			
 			// userdata ...
 			
@@ -623,7 +697,7 @@ static void _ActSMCar(Object_G2 *obj) {			// The CarID 6, BONUS0
 		case 0:
 			memclear(&obj->UD.UDcar, sizeof (UDcar));
 			g.x8abe = FALSE;
-			obj->HitBoxes = hitboxes_25d6c;
+			obj->HitBoxes = &hitboxes_25d6c;
 			_car_init_as_bs(&obj->UD.UDcar.p1);
 			_car_init_as_bs(&obj->UD.UDcar.p2);
 			car_setaction(obj);
@@ -830,7 +904,7 @@ static void sub_25f06(Object_G2 *obj) {		// players on top of car
 	}
 }
 
-#pragma mark Act07
+#pragma mark Act07 Guiles's Crate
 static void _SMAct07(Object *obj) {			// 272c6
 	static const char data_27384[] = {
 		0, 4, 2, 3, 0, 1, 3, 2, 1, 4, 3, 2, 0, 1, 4, 2
@@ -843,9 +917,9 @@ static void _SMAct07(Object *obj) {			// 272c6
 			NEXT(obj->mode0);
 			obj->Flip = obj->Step;
 			obj->Energy = 0;
-			obj->HitBoxes = hitboxes_274c4;
+			obj->HitBoxes = &hitboxes_274c4;
 			obj->Pool = 0;
-			setaction_direct(obj, action_273a2);
+			setaction_direct(obj, actlist_273a2);
 			break;
 		case 2:
 			switch (obj->mode1) {
@@ -868,7 +942,7 @@ static void _SMAct07(Object *obj) {			// 272c6
 								nobj->YPI = obj->YPI + 0x2d;
 							}
 						}
-						setaction_direct(obj, action_27404);
+						setaction_direct(obj, actlist_27404);
 					}
 					break;
 				case 4:
@@ -1168,7 +1242,7 @@ static void sub_27912(Object_G2 *obj) {
 	check_rect_queue_draw((Object *)obj);
 }
 
-#pragma mark Act09 Bonus1
+#pragma mark Act09 Bonus1 Barrels
 
 static int sub_27b4c(Object_G2 *obj) {				// 27b4c
 	obj->Y.full += obj->UD.UDbonus1.Velocity.full;
@@ -1223,7 +1297,7 @@ static void sub_27862(Object_G2 *obj) {			// 27862 Act09 BONUS1
 			obj->UD.UDbonus1.h008fc = 0;
 			obj->UD.UDbonus1.h0098s = 0x0100;
 			obj->UD.UDbonus1.h009as = 0x0100;
-			obj->HitBoxes = hitboxes_27e6a;
+			obj->HitBoxes = &hitboxes_27e6a;
 			obj->Pool = 0;
 			obj->Flip = 0;
 			obj->Energy = data_278c2[RAND16W/2];
@@ -1364,10 +1438,10 @@ static void sub_27862(Object_G2 *obj) {			// 27862 Act09 BONUS1
 	
 
 
-void sub_24f0e(Object *obj) {
-	NEXT(obj->mode0);
-	setaction_direct(obj, action_24f52);
-}
+//void sub_24f0e(Object *obj) {
+//	NEXT(obj->mode0);
+//	setaction_direct(obj, action_24f52);
+//}
 
 void sub_24f22(Object *obj) {
 	Object *nobj;
@@ -1384,12 +1458,6 @@ void sub_24f22(Object *obj) {
 	check_rect_queue_draw(obj);
 }
 
-// Subsel    BonusX
-//  4			3
-//  5			2
-//	6			0
-//  9           1
-
 
 void actions_198a(void) {			/* 249fa */
 	short i;
@@ -1399,39 +1467,17 @@ void actions_198a(void) {			/* 249fa */
 	for(i=0; i<16; i++) {
 		if(g.Objects2[i].exists == 0) {break;}
 		switch (g.Objects2[i].Sel) {
-			case BLANKA_FISH:
-				_SMAct00(&g.Objects2[i]);
-				break;
-			case KEN_DRUMS:
-				_SMKenDrums(&g.Objects2[i]);
-				break;
-			case RYU_SIGNS:
-				_SMRyuSigns(&g.Objects2[i]);
-				break;
-			case 3:
-				_SMAct03(&g.Objects2[i]);
-				break;
-			case 4:						// BONUS3 Collisions
-				_SMAct04(&g.Objects2[i]);
-				break;
-			case 5:						// BONUS2 Collisions
-				_SMAct05(&g.Objects2[i]);
-				break;
-			case 6:		// the Car		// BONUS0 Collisions
-				_ActSMCar(&g.Objects2[i]);
-				break;
-			case 7:
-				_SMAct07(&g.Objects2[i]);
-				break;
-			case 8:
-				_SMAct08(&g.Objects2[i]);
-				break;
-			case 9:						// BONUS1 Collisions
-				sub_27862(&g.Objects2[i]);
-				break;
-			default:
-				printf("action 198a id %d not implemented\n", g.Objects2[i].Sel);
-				break;
+			case BLANKA_FISH:		_SMAct00(&g.Objects2[i]);		break;
+			case KEN_DRUMS:			_SMKenDrums(&g.Objects2[i]);	break;
+			case RYU_SIGNS:			_SMRyuSigns(&g.Objects2[i]);	break;
+			case 3:					_SMAct03(&g.Objects2[i]);		break;
+			case ACTB_DRUMFIRE:		_SMAct04(&g.Objects2[i]);		break;
+			case ACTB_DRUMS:		_SMAct05(&g.Objects2[i]);		break;
+			case ACTB_CAR:			_ActSMCar(&g.Objects2[i]);		break;
+			case 7:					_SMAct07(&g.Objects2[i]);		break;
+			case 8:					_SMAct08(&g.Objects2[i]);		break;
+			case 9:					sub_27862(&g.Objects2[i]);		break;
+			FATALDEFAULT;
 		}
 		g_d7--;
 	}
