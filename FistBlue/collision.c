@@ -1090,6 +1090,35 @@ static void _CDSoundBonus0(Object *obja2) {						// 7dafc
 		queuesound(0x33);
 	}
 }
+
+static void sub_7db12 (Object *obja6, Object_G2 *obja2) {
+	const static short data_7db7e[] = {
+		6, 6, 6, 8, 8, 8, 8, 8, 8, 10, 10, 34, 34, 34, 34
+	};
+	
+	if (obja2->BlockStun == FALSE) {
+		if (g.x8aec > 0) {
+			if (g.GPWasProjectile) {
+				LBAddPoints(2, ((Player *)obja6)->Side);
+			} else {
+				LBAddPoints(2, obja6->Owner->Side);
+			}
+			//todo sub_132fe(1);
+		} else {
+			if(++obja2->UD.UDcar.h0093c == 15) {
+				obja2->UD.UDcar.h0093c = 14;
+			}
+			if (g.GPWasProjectile) {
+				LBAddPoints(data_7db7e[obja2->UD.UDcar.h0093c], ((Player *)obja6)->Side);
+			} else {
+				LBAddPoints(data_7db7e[obja2->UD.UDcar.h0093c], obja6->Owner->Side);
+			}
+			//todo sub_132fe(0);
+		}
+
+	}
+}
+
 static void _CDCheckObjBonus0(Player *plya6, Object_G2 *obja2, char *a1) {		// 7da44
 	HitBoxAct *hba3;
 	int d4, d0;
@@ -1189,7 +1218,7 @@ void _CDCheckObjBonus1(Player *plya6, Object_G2 *obja2, char *a1) {		// 7dc2e
 		if (d4 == *a1) {
 			return;
 		}
-		if (hb2 = lookup_hitbox_8(obja2)) {
+		if (hb2 = _CDGetHitBoxHead(obja2)) {
 			if (check_hitbox_overlap((Object *)plya6, (Object *)obja2, hb, hb2)) {
 				if (hb->Shove < 0) {
 					*a1 = 1;
@@ -1295,7 +1324,7 @@ static void _CDCheckBonus2(Player *a6, Object_G2 *a2) {		// 7dd38
 		a1 = &a2->UD.UDbonus2.h008cc;
 	}
 	g.GPWasProjectile = FALSE;
-	sub_7dd7c(a6, a2, a1);
+	//todo sub_7dd7c(a6, a2, a1);
 	if (a6->Side) {
 		a1 = &a2->UD.UDbonus2.h008fc;
 	} else {
@@ -1304,7 +1333,7 @@ static void _CDCheckBonus2(Player *a6, Object_G2 *a2) {		// 7dd38
 	if (a6->Projectile) {
 		if (a6->Projectile->exists == 1) {
 			g.GPWasProjectile = TRUE;
-			sub_7dd7c(a6, a2, a1);
+			//todo sub_7dd7c(a6, a2, a1);
 			return;
 		}
 	}

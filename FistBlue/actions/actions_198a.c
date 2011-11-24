@@ -453,7 +453,20 @@ static void sub_25476(Object_G2 *obj) {
 	}
 }
 
+static int sub_254da (Object_G2 *obj) {		// sets %d0 and %d3
+	//todo
+}
 
+static void sub_25670 (Object_G2 *obj) {
+	//todo
+}
+
+static int sub_2529a (Object_G2 *obj) {
+	//todo 
+}
+static int sub_255b2(Object_G2 *obj) {
+	//todo
+}
 
 void _SMAct05(Object_G2 *obj) {				// 24ff6 Act05 Bonus2
 	int temp;
@@ -517,7 +530,7 @@ void _SMAct05(Object_G2 *obj) {				// 24ff6 Act05 Bonus2
 								}
 							}
 							CATrajectory(obj);
-							sub_25650(obj);
+							//todo sub_25650(obj);
 							sub_2581a(obj);
 							temp = sub_254da(obj);
 							if (temp & 0x08) {
@@ -1281,6 +1294,9 @@ static void sub_2581a(Object *obj) {
 	}
 }
 
+static void sub_278ac(Object_G2 *obj) {
+	//todo
+}
 
 static void sub_27862(Object_G2 *obj) {			// 27862 Act09 BONUS1
 	const static char data_278c2[] = {
