@@ -37,11 +37,16 @@ int gGameInWindow;
 LBView *gGameTitleBar;
 LBView *gGameWindowIcon;
 LBView *gGameArea;
+LBView *gameView;
+LBWindow *dummyWindow;
+
 
 extern LBView rootView;
 
 void mouse (int button, int state, int x, int y);
 void drawGLString(GLfloat x, GLfloat y, char *string);
+void GameViewClicked(LBView *view, int button, int state, int x, int y);
+void renderDummy(void);
 
 int gtimercount	= 0;
 int gsupertaskcnt = 0;
@@ -95,6 +100,16 @@ GLfloat gShapeSize = 11.0f;
 	gfx_glut_init();
 	glwimp_init(900, 600);
 	
+	dummyWindow = createWindow(40, 50, 384, 224);
+	dummyWindow->areaView->renderFunc = &renderDummy;
+	
+	gameView		= addSubView(&rootView, &DrawNull, &ClickNull, 10, 10, 400, 300 + WIN_TITLE_HEIGHT);
+	gGameWindowIcon   = addSubView(gameView, &DrawWindowButton, &WindowButtonClicked, 2, 2, WIN_TITLE_HEIGHT - 4, WIN_TITLE_HEIGHT - 4);
+	gGameTitleBar     = addSubView(gameView, &DrawTitleBar, &DragBarClicked, WIN_TITLE_HEIGHT + 8, 2, 400 - (WIN_TITLE_HEIGHT + 10), WIN_TITLE_HEIGHT - 4);
+	gGameArea         = addSubView(gameView, &DrawNull, &GameViewClicked, 0, WIN_TITLE_HEIGHT, 400, 300);			// XXX
+	
+	
+	
 	manual_init();
 	
 	timer = [[NSTimer scheduledTimerWithTimeInterval:1.0 / 60
@@ -103,6 +118,24 @@ GLfloat gShapeSize = 11.0f;
 											userInfo:nil
 											 repeats:YES] retain];
 }
+
+void renderDummy(void) {
+	glPushMatrix();
+	//	glTranslatef(192.0, 112.0, 0);
+	
+	//	glScalef(60.0, 60.0, 1.0);
+	
+	glEnable(GL_TEXTURE_2D);
+	gfx_glut_drawgame();
+//	draw_scroll1();
+//	draw_scroll3();
+//	draw_scroll2();
+//	draw_object();
+	
+	glDisable(GL_TEXTURE_2D);
+	glPopMatrix();
+}
+
 
 
 - (id)initWithCoder:(NSCoder *)c
@@ -266,6 +299,15 @@ GLfloat gShapeSize = 11.0f;
 			case 'T':
 				print_task_table();
 				break;
+			case 'W':
+				gGameInWindow = 1-gGameInWindow;
+				break;
+			case '0' ... '3':
+				gemu_flip_scroll_enable(keypress - '0');
+				break;
+			case 'p':
+				g.JPParam ^= JP_FREEZE;
+				break;
 			default:
 				break;
 		}
@@ -299,4 +341,8 @@ GLfloat gShapeSize = 11.0f;
 	}
 }
      
+void GameViewClicked(LBView *view, int button, int state, int x, int y) {
+}
+
+
 @end

@@ -1425,14 +1425,14 @@ void task_game(void) {			// 7672 Game Supertask
 			LBDecodeInputs();			// decode_inputs();
 			SM_game();					// game state machine 
 			
-			debughook(1);		
-			CHECK_SERVICE_BUTTON;
-			if (g.Debug && (g.JPCost & JP_DBGSLEEP)) {
-				sf2sleep((g.JPDifficulty & JP_DIFFMASK) + 2);
-			} else {
-				if (g.NoInterrupt) {sf2sleep(1); };
-				/* don't sleep if the interrupt stacked */
-			}
+			debughook(1);
+		}
+		CHECK_SERVICE_BUTTON;
+		if (g.Debug && (g.JPCost & JP_DBGSLEEP)) {
+			sf2sleep((g.JPDifficulty & JP_DIFFMASK) + 2);
+		} else {
+			if (g.NoInterrupt) {sf2sleep(1); };
+			/* don't sleep if the interrupt stacked */
 		}
 	}
 }

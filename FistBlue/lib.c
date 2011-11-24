@@ -338,7 +338,8 @@ void intproc(void) {        /* 0x1baa */
     g.ContrP2.part.p0 = GET_INPUT_P2_0;
 	
     intmaths();
-    read_jumpers();
+    //read_jumpers();
+	_get_live_jumpers();
 }
 
 static void sub_225c(void) {	// fetch controls from script instead of user

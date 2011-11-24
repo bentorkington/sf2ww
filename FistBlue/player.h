@@ -402,7 +402,7 @@ void proc_player_actions(void);
 void sub_99142(Player *ply);
 int _EnergyDamageAdjust(Player *ply, int damage);
 void setstatus4(Player *ply, short d1);
-void CASetAnim3(Player *ply, int status);
+void CASetAnimWithStep(Player *ply, int status);
 void CASetAnim2(Player *ply, int statusd1, int argd0);
 void CASetAnim1(Player *ply, short status);
 

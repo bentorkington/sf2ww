@@ -11,7 +11,6 @@
 #include	"particle.h"
 #include	"lib.h"
 #include    "sm.h"
-//#include	"main.h"
 #include	"rules.h"
 #include	"gfxlib.h"
 #include	"fightgfx.h"

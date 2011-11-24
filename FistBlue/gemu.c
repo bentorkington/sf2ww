@@ -21,6 +21,9 @@
 CPSGFXEMU gemu;
 extern Game g;
 
+int gemu_scroll_enable[4];
+
+
 extern u16 data_8a8ac[32][16];
 extern u16 data_c5000[20][32][16];
 extern u16 data_ca000[20][32][16];
@@ -43,7 +46,6 @@ void gemu_clear_object_first72(void) {		// 5f84
 	}
 }
 #endif /* ifdef CPS */
-
 
 
 void gemu_setpalette(short major, const u16 *palette) {

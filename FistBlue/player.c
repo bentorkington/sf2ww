@@ -481,7 +481,7 @@ void setstatus4(Player *ply, short d1) {
 	CASetAnim2(ply, d1, ply->Move);
 }
 
-void CASetAnim3(Player *ply, int status) {
+void CASetAnimWithStep(Player *ply, int status) {
     PL_CB_SETSTATUS3[ply->FighterID](ply, status);
 }
 

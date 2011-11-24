@@ -40,7 +40,7 @@ extern GState gstate_Scroll1;
 extern GState gstate_Scroll2;
 extern GState gstate_Scroll3;
 
-
+int gemu_scroll_enable[4];
 
 FILE * gfxrom;
 
@@ -129,6 +129,12 @@ const GLfloat flips[4][4][2] = {
 	{{1.0, 0.0},{0.0, 0.0},{0.0, 1.0},{1.0, 1.0}},
 	{{0.0, 0.0},{1.0, 0.0},{1.0, 1.0},{0.0, 1.0}},
 };
+
+void gemu_flip_scroll_enable(int scroll) {
+	gemu_scroll_enable[scroll] ^= 1;
+}
+
+
 
 void gfx_glut_reshape(int width, int height) {
 	printf("Reshaping to (%d,%d)\n", width, height);
@@ -323,6 +329,7 @@ void gemu_colortile_scroll1(short palette, GLubyte *img) {
 
 void gfx_glut_init(void) {
 	int i;
+	
     gfxrom=fopen( "sf2gfx.bin", "r" );
     if(gfxrom == NULL) {
         printf("fatal: couldn't open graphics ROM in ");
@@ -331,6 +338,10 @@ void gfx_glut_init(void) {
     }
     printf("opened sf2gfx.bin\n");
     gemu.FadeEnable = FALSE;
+	
+	for (i=0; i<4; i++) {
+		gemu_scroll_enable[i] = TRUE;
+	}
 	
 	for (i=0; i<CPS1_OTHER_SIZE; i++) {
 		gemu.Tilemap_Scroll1[i][0]=0xf;
@@ -470,6 +481,9 @@ void gemu_readtile_scroll3(u16 tileid) {
 }
 
 static void draw_scroll1(void) {
+	if (!gemu_scroll_enable[1]) {
+		return;
+	}
 	int x,y, gx, flip;
 	short sx, sy;
 	int element;
@@ -516,6 +530,9 @@ static void draw_scroll1(void) {
 	glPopMatrix();
 }
 static void draw_object(void) {
+	if (!gemu_scroll_enable[0]) {
+		return;
+	}
 	int i,j;
 	GLfloat x,y;
 	int tile, flip;
@@ -560,6 +577,9 @@ static void draw_object(void) {
 }
 static void draw_scroll2(void) {
 	int x,y, yloop, flip;
+	if (!gemu_scroll_enable[2]) {
+		return;
+	}
 	/* Draw Scroll2 */
 	glPushMatrix();
 	glTranslatef(-g.CPS.Scroll2X / 128.0, g.CPS.Scroll2Y / 128.0, 0);
@@ -613,9 +633,12 @@ static void draw_scroll2(void) {
 }
 static void draw_scroll3(void) {
 	int x,y, flip;
-	// Draw Scroll3
+	if (!gemu_scroll_enable[3]) {
+		return;
+	}
 	glPushMatrix();
-	glTranslatef(-g.CPS.Scroll3X / 128.0, ((g.CPS.Scroll3Y & 0x7ff) / 128.0)-22.5, 0);
+	glTranslatef(-g.CPS.Scroll3X / 128.0, ((g.CPS.Scroll3Y & 0x7ff) / 128.0) - 15, 0);
+//	glTranslatef(-g.CPS.Scroll3X / 128.0, ((g.CPS.Scroll3Y & 0x7ff) / 128.0) - 22.5, 0);
 	
 	GLfloat master = (gemu.PalScroll3[0][0] & 0xf000) / 61140.0;
 	glColor3f(master, master, master);
@@ -628,6 +651,7 @@ static void draw_scroll3(void) {
 			
 			if (gemu.Tilemap_Scroll3[record][0] == 0x400) {
 				continue;
+				//gemu.Tilemap_Scroll3[record][0] = 4;
 			} 			
 			gemu_cache_scroll3(gemu.Tilemap_Scroll3[record][0],
 							   gemu.Tilemap_Scroll3[record][1] & 0x1f);
@@ -703,9 +727,6 @@ void gfx_glut_drawgame(void) {
 	
 	glEnable(GL_LIGHTING);
 	glEnable(GL_BLEND);
-	
-	
-	
 	
 	gframecnt++;
     finish = clock() ;
@@ -795,13 +816,8 @@ void drawGLText(recCamera cam) {
 	
 	glGetIntegerv(GL_MATRIX_MODE, &matrixMode);
 
-	glMatrixMode(GL_PROJECTION);
-	glPushMatrix();
-	glLoadIdentity();
-	
-	glMatrixMode(GL_MODELVIEW);
-	glPushMatrix();
-	glLoadIdentity();
+	glMatrixMode(GL_PROJECTION); glPushMatrix(); glLoadIdentity();
+	glMatrixMode(GL_MODELVIEW);  glPushMatrix(); glLoadIdentity();
 	
 	glScalef(2.0f / cam.screenWidth, -2.0f / cam.screenHeight, 1.0f);
 	glScalef(gWimpScale, gWimpScale, 1.0f);
@@ -834,9 +850,9 @@ void drawGLText(recCamera cam) {
 	
 	
 	
-	infoView.rect.left = 180;
-	infoView.rect.top = 20;
-	infoView.rect.width = 580;
+	infoView.rect.left   = 180;
+	infoView.rect.top    =  20;
+	infoView.rect.width  = 580;
 	infoView.rect.height = 180;
 	if (gShowHelp) {
 		glColor4f(0.3, 0.3, 0.3, 0.7);		
@@ -853,25 +869,22 @@ void drawGLText(recCamera cam) {
 		//				gtimercount,
 		//				gdrawallcnt);
 		//		drawGLString (10, (lineSpacing * line++) + startOffest, outString);		
-		sprintf (outString, "DISPENA %04x %x %x %x %x  RTR %d %d diff %d",
+		sprintf (outString, "DISPENA %04x RTR %x/%x diff %x LS %02x",
 				 g.CPS.DispEna,
-				 (g.CPS.DispEna >>  6) & 3,
-				 (g.CPS.DispEna >>  8) & 3,
-				 (g.CPS.DispEna >> 10) & 3,
-				 (g.CPS.DispEna >> 12) & 3,
 				 g.Player1.RoughTimeRemain,
 				 g.Player2.RoughTimeRemain,
-				 g.Player1.Difficulty
+				 g.Player1.Difficulty,
+				 g.libsplatter
 				 );
 		drawGLString (10, (lineSpacing * line++) + startOffest, outString);
-		sprintf (outString, "%4.0f FPS\n", 
+		sprintf (outString, "%4.0f FPS", 
 				 FPS);
 		drawGLString (10, (lineSpacing * line++) + startOffest, outString);
-		sprintf (outString, "%d %d - %d %d - %d %d - %d %d\n",
+		sprintf (outString, "%d %d - %d %d - %d %d - %d %d",
 				 g.mode0,g.timer0,g.mode1,g.timer1,g.mode2,g.timer2, g.mode3, g.timer3);
 		drawGLString(10, (lineSpacing * line++) + startOffest, outString);
 		endstring = g.Player1.AnimFlags & 0x8000 ? "END" : "   ";
-		sprintf (outString, "P1 %2d %2d %2d %2d X %04d Y %04d FL %d ST %d AF %02x %3d %s %02X %02X\n", 
+		sprintf (outString, "P1 %x/%x/%x/%x X %04d Y %04d FL %d ST %d", 
 				 g.Player1.mode0,
 				 g.Player1.mode1,
 				 g.Player1.mode2,
@@ -879,18 +892,14 @@ void drawGLText(recCamera cam) {
 				 g.Player1.X.part.integer,
 				 g.Player1.Y.part.integer,
 				 g.Player1.Flip,
-				 g.Player1.Step,
-				 g.Player1.AnimFlags & 0xff,
-				 g.Player1.Timer,
-				 endstring,
-				 g.ContrP1.part.p1,
-				 g.ContrP1.part.p0
+				 g.Player1.Step
 				 );
 		drawGLString(10, (lineSpacing * line++) + startOffest, outString);
-		sprintf (outString, "P2 %d %d %d X %04d Y %04d FL %d ST %d AF %04x %3d\n", 
+		sprintf (outString, "P2 %x/%x/%x/%x X %04d Y %04d FL %d ST %d AF %04x %3d", 
 				 g.Player2.mode0,
 				 g.Player2.mode1,
 				 g.Player2.mode2,
+				 g.Player2.mode3,
 				 g.Player2.X.part.integer,
 				 g.Player2.Y.part.integer,
 				 g.Player2.Flip,
@@ -899,7 +908,7 @@ void drawGLText(recCamera cam) {
 				 g.Player2.Timer
 				 );
 		drawGLString(10, (lineSpacing * line++) + startOffest, outString);
-		sprintf (outString, "AI P1 Def %d Agg %d M1 %d M2 %d ST %d P1 0x%02x P2 0x%02x T1 %3d\n",
+		sprintf (outString, "AI P1 Def %d Agg %d M1 %d M2 %d ST %d P1 0x%02x P2 0x%02x T1 %3d",
 				 g.Player1.AIForceDefensive,
 				 g.Player1.AIAgressive,
 				 g.Player1.AIMode1,
@@ -910,7 +919,7 @@ void drawGLText(recCamera cam) {
 				 g.Player1.AITimer
 				 );
 		drawGLString(10, (lineSpacing * line++) + startOffest, outString);
-		sprintf (outString, "AI P2 Def %d Agg %d M1 %d M2 %d ST %d P1 0x%02x P2 0x%02x T1 %3d\n",
+		sprintf (outString, "AI P2 Def %d Agg %d M1 %d M2 %d ST %d P1 0x%02x P2 0x%02x T1 %3d",
 				 g.Player2.AIForceDefensive,
 				 g.Player2.AIAgressive,
 				 g.Player2.AIMode1,

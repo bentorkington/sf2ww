@@ -87,6 +87,7 @@ void PSEntry(Player *ply) {   /* 0x28396 was: player_per_frame */
     }
     check_ply_x_bounds(ply);
 	
+	// Draw an 'extra' sprite associated with an avatar, such as Vega's claw
     ply->ExtraSpriteEna = FALSE;
     if(ply->exists && ply->VegaHasClaw) {
         if(offsetsel = ply->ActionScript->ExtraSprite) {
@@ -416,7 +417,7 @@ static void _PSDizzyState(Player *ply) {	/* 29f34 diziness */
 	switch (ply->mode3) {
 		case 0:
 			NEXT(ply->mode3);
-			ply->DizzyStun = 1;
+			ply->DizzyStun     = TRUE;
 			ply->DizzyStruggle = 0;
 			CASetAnim1(ply, STATUS_DIZZY);
 			break;
@@ -432,15 +433,15 @@ static void _PSDizzyState(Player *ply) {	/* 29f34 diziness */
 					ply->DizzySpell -= ply->Timer;
 					ply->Timer = 1;
 					if (ply->DizzySpell <= 0) {
-						ply->DizzyStun = 0;
-						ply->mode3 = 0;
+						ply->DizzyStun = FALSE;
+						ply->mode3     = 0;
 					}
 					actiontick((Object *)ply);
 				}
 			} else {
 				/* 29fa8 */
-				ply->DizzyStun = 0;
-				ply->mode3 = 0;
+				ply->DizzyStun = FALSE;
+				ply->mode3     = 0;
 				actiontick((Object *)ply);			
 			}
 			break;
@@ -477,7 +478,7 @@ static int retreat_or_block(Player *ply) {     /* 2a6b8 */
 
 
 static void standblock_crouch(Player *ply) {	/* 2a8ca */
-	ply->mode1=PLSTAT_STANDBLOCK;
+	ply->mode1 = PLSTAT_STANDBLOCK;
 	ply->mode2 = 4;
 	ply->mode3 = 0;
 	CASetAnim1(ply, STATUS_CROUCH_BLOCK);
@@ -531,11 +532,11 @@ void proc_plstat_normal(Player *ply) {          /* 286cc */
 			ply->Attacking    = FALSE;
 			ply->IsJumpThreat = FALSE;
 			ply->Path         = data_2abb0[ply->FighterID]; 
-			CASetAnim3(ply, STATUS_STAND);
+			CASetAnimWithStep(ply, STATUS_STAND);
 			/* FALLTHRU */
 		case 2:
 			set_towardsaway(ply);
-			if(PSGetRoundResult())        { 
+			if(PSGetRoundResult()) { 
 				react_to_result(ply);
 			} else if (is_facing_enemy(ply)) { 
 				turn_around(ply); 
@@ -555,7 +556,7 @@ void proc_plstat_normal(Player *ply) {          /* 286cc */
 						set_falling_from_platform(ply);
 					} else if (ply->Step ^ ply->StepSave ) {
 						ply->StepSave = ply->Step;
-						CASetAnim3(ply, STATUS_WALKING);
+						CASetAnimWithStep(ply, STATUS_WALKING);
 						actiontick((Object *)ply);
 						update_obj_path((Object *)ply);					
 					} else {
@@ -568,7 +569,6 @@ void proc_plstat_normal(Player *ply) {          /* 286cc */
 			}
 			break;
 		FATALDEFAULT
-			
     }
 }
 void proc_plstat_crouch(Player *ply) {		// 28940
@@ -1154,7 +1154,7 @@ void PSDizzyState(Player *ply) {		/* 29324 */
     }
 }
 
-int is_facing_enemy(Player *ply) {		//2a720
+int is_facing_enemy(Player *ply) {		//2a720 badly named
 	if (ply->Flip == ply->EnemyDirection) {
 		return FALSE;
 	} else {
@@ -1269,7 +1269,7 @@ void set_jumping(Player *ply) {
         ply->AclX.full = -ply->AclX.full;
     }
 	//printf("set_jumping  %04x %04x %04x %04x\n", ply->VelX.full, ply->AclX.full, ply->VelY.full, ply->AclY.full);
-    CASetAnim3(ply, STATUS_JUMP_START);
+    CASetAnimWithStep(ply, STATUS_JUMP_START);
 }
 
 	
