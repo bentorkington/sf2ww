@@ -880,8 +880,8 @@ void drawGLText(recCamera cam) {
 		sprintf (outString, "%4.0f FPS", 
 				 FPS);
 		drawGLString (10, (lineSpacing * line++) + startOffest, outString);
-		sprintf (outString, "%d %d - %d %d - %d %d - %d %d",
-				 g.mode0,g.timer0,g.mode1,g.timer1,g.mode2,g.timer2, g.mode3, g.timer3);
+		sprintf (outString, "%d(%d) %d(%d) %d(%d) %d(%d) %d(%d)",
+				 g.mode0,g.timer0,g.mode1,g.timer1,g.mode2,g.timer2, g.mode3, g.timer3, g.mode4, g.timer4);
 		drawGLString(10, (lineSpacing * line++) + startOffest, outString);
 		endstring = g.Player1.AnimFlags & 0x8000 ? "END" : "   ";
 		sprintf (outString, "P1 %x/%x/%x/%x X %04d Y %04d FL %d ST %d", 

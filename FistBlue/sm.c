@@ -392,7 +392,7 @@ void SM_game (void) {			/* 76e0 */
     }
 }
 
-static void draw_world_map(void) {		//856c 
+static void draw_world_map(void) {		//856c mode 2,4,2
 	Object *obj;
 	set_waitmode();
 		
@@ -412,7 +412,7 @@ static void draw_world_map(void) {		//856c
 
 			gstate_Scroll3.XPI = 0x0;
 			gstate_Scroll3.YPI = 0x700;
-			GSSetupScr3(&gstate_Scroll3);
+			GSSetupScr3(&gstate_Scroll3);	// draw the world map background
 
 			g.CPS.Scroll1X = 0;
 			g.CPS.Scroll1Y = 0;

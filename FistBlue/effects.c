@@ -812,9 +812,9 @@ SYSLIB18LOOP:
 		data++;
 		if (task->params.Param2) {
 			SETSLEEP(task->params.Param2);
-		} else {
-			goto SYSLIB18LOOP;		// YES!!!
-		}
+		} 
+		goto SYSLIB18LOOP;		// YES!!!
+		
 	}
 }
 
