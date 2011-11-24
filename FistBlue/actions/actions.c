@@ -674,7 +674,7 @@ static void action_08(Object *obj) {		//f13a
 	}
 }
 
-#pragma mark Act09
+#pragma mark Act09	 EHonda Bathwater
 static void sub_f664(Object *obj) {
 	UD09 *ud = (UD09 *)&obj->UserData;
 	int i;
@@ -1108,7 +1108,7 @@ static void action_10(Object *obj) {
 	}
 }
 
-#pragma mark ACT11  10ff4
+#pragma mark ACT11  10ff4 Barely noticable bat 
 
 static void action_11(Object *obj) {
 	UD11 *ud = (UD11 *)&obj->UserData;
@@ -1129,7 +1129,7 @@ static void action_11(Object *obj) {
 				d0 = (sf2rand() & 0xe);		// SF2UA bug does & 0x1e
 				obj->XPI = data_1104e[d0/2];
 				obj->YPI = data_1105e[d0/2];
-				//todo setaction_list(obj, data_111e6, 0);
+				setaction_list(obj, actlist_111e6, 0);
 			} else {
 				NEXT(obj->mode0);
 				obj->LocalTimer = 0x1e;
@@ -1169,7 +1169,7 @@ static void sub_11516(Object *obj) {
 	}
 }
 
-static void action_12(Object *obj) {
+static void action_12(Object *obj) {		// "Street Fighter" logo
 	UD12 *ud = (UD12 *)&obj->UserData;
 	Object *nobj;
 	
@@ -1182,7 +1182,7 @@ static void action_12(Object *obj) {
 					obj->Pool	= 6;
 					obj->XPI	= 0xc0;
 					obj->YPI	= 0x98;
-					//todo setaction_list(obj, data_11602, 1);
+					setaction_list(obj, actlist_11602, 1);
 					/* FALLTHRU */
 				case 2:
 					enqueue_and_layer(obj);
@@ -1198,7 +1198,7 @@ static void action_12(Object *obj) {
 					NEXT(obj->mode0);
 					obj->Pool	= 6;
 					ud->h0080c  = 0;
-					//todo setaction_list(obj, data_11602, 0);
+					setaction_list(obj, actlist_11602, 0);
 					break;
 				case 2:
 					switch (obj->mode1) {
@@ -1219,7 +1219,7 @@ static void action_12(Object *obj) {
 									nobj->exists = TRUE;
 									nobj->Sel = 0x29;
 								}
-								//todo setaction_list(obj, data_11602, 1);
+								setaction_list(obj, actlist_11602, 1);
 							}
 							break;
 						case 4:
@@ -1248,7 +1248,7 @@ static void action_12(Object *obj) {
 					NEXT(obj->mode0);
 					obj->Pool = 6;
 					ud->h0080c = 0;
-					//todo setaction_list(obj, data_11602, 0);
+					setaction_list(obj, actlist_11602, 0);
 					break;
 				case 2:
 					switch (obj->mode1) {
@@ -1270,7 +1270,7 @@ static void action_12(Object *obj) {
 									nobj->exists = TRUE;
 									nobj->Sel = 0x29;
 								}
-								//todo setaction_list(obj, data_11602, 1);
+								setaction_list(obj, actlist_11602, 1);
 							}
 							break;
 						case 4:
@@ -1519,58 +1519,58 @@ static void action_13(Object *obj) {  // 119ee
 
 #pragma mark Act17
 
-//static void action_17(Object *obj) {
-//	UD17 *ud = (UD17 *)&obj->UserData;
-//	
-//	switch (obj->mode0) {
-//		case 0:
-//			NEXT(obj->mode0);
-//			ud->h0082c = 0;
-//			if (0x9249 & (1 << RAND16) == 0) {
-//				obj->Pool = 6;
-//			}
-//			setaction_list(obj, data_, obj->SubSel);
-//			break;
-//		case 2:
-//			switch (obj->mode1) {
-//				case 0:
-//					NEXT(obj->mode1);
-//					obj->VelX = data_[RAND8W];
-//					obj->VelY = data_[RAND8W];
-//					obj->XPI += data_[RAND16W];
-//					obj->YPI += data_[RAND8W];
-//					ud->h0080w += 0x28;
-//					obj->AclY.full = 0x0040;
-//					obj->AclX.full = 0;
-//					obj->LocalTimer = 0x32;
-//					break;
-//				case 2:
-//					if (--obj->LocalTimer == 0) {
-//						NEXT(obj->mode1);
-//						obj->h0082c = 0x1e;
-//					}
-//					CATrajectory(obj);
-//					if (obj->VelY.full < 0) {
-//						/* XXX oh god! */
-//					}
-//				case 4:
-//					//todo
-//					
-//					
-//					break;
-//				FATALDEFAULT;
-//			}
-//			if ((ud->h0085c & 1) == 0) {
-//				check_rect_queue_draw(obj);
-//			}
-//			break;
-//		case 4:
-//		case 6:
-//			FreeActor(obj);
-//		FATALDEFAULT;
-//	}
-//	
-//}
+static void action_17(Object *obj) {
+	//UD17 *ud = (UD17 *)&obj->UserData;
+	
+	switch (obj->mode0) {
+		case 0:
+			NEXT(obj->mode0);
+			//ud->h0082c = 0;
+			if (0x9249 & (1 << RAND16) == 0) {
+				obj->Pool = 6;
+			}
+			//setaction_list(obj, data_10a72, obj->SubSel);
+			break;
+		case 2:
+			switch (obj->mode1) {
+				case 0:
+					NEXT(obj->mode1);
+					//obj->VelX = data_[RAND8W];
+					//obj->VelY = data_[RAND8W];
+					//obj->XPI += data_[RAND16W];
+					//obj->YPI += data_[RAND8W];
+					//ud->h0080w += 0x28;
+					obj->AclY.full = 0x0040;
+					obj->AclX.full = 0;
+					obj->LocalTimer = 0x32;
+					break;
+				case 2:
+					if (--obj->LocalTimer == 0) {
+						NEXT(obj->mode1);
+						//ud->h0082c = 0x1e;
+					}
+					CATrajectory(obj);
+					if (obj->VelY.full < 0) {
+						/* XXX oh god! */
+					}
+				case 4:
+					//todo
+					
+					
+					break;
+				FATALDEFAULT;
+			}
+			//if ((ud->h0085c & 1) == 0) {
+			//	check_rect_queue_draw(obj);
+			//}
+			break;
+		case 4:
+		case 6:
+			FreeActor(obj);
+		FATALDEFAULT;
+	}
+	
+}
 
 #pragma mark Act19 Guile Plane Tail
 static void action_19(Object *obj) {     // 1322c
