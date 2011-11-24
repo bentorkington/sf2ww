@@ -38,26 +38,26 @@ short g_d5; // XXX
 
 static void set_blockstun_react(Player *vict);
 
-static void _CDCheckPlayer(Player *ply, Player *vict);						/* 7cf38 */
+static void _CDCheckPlayer(Player *ply, Player *vict);								/* 7cf38 */
 static void _CDSpecialReactMode(Player *ply, Player *vict, const HitBoxAct *a3);	/* 7d02e */
-static void _CDTurnToFaceMe(Player *ply, Player *vict);						/* 7d0a8 */
+static void _CDTurnToFaceMe(Player *ply, Player *vict);								/* 7d0a8 */
 
 static int lookup_damage_and_score(Player *ply, Player *vict, const HitBoxAct *a3);	/* 7d378 */
-static int damage_multiplier(Player *vict, int d6);								/* 7d40e */
-static short randomize_damage(Player *ply,  int damage, const HitBoxAct *a3);			/* 7d476 */
+static int damage_multiplier(Player *vict, int d6);									/* 7d40e */
+static short randomize_damage(Player *ply,  int damage, const HitBoxAct *a3);		/* 7d476 */
 static void _CDStartAction38Vict(Player *ply);		/* 0x7d720  something to do with falling over */
-static void _CDKillDecor(Player *a2, Object *a6);								/* 7e39e */
-static void _CDDecorSoundPts(Object *a6);				/* make the sound, reward points */
-static short _CDPushOverlap(Player *a2, Object *a6);							/* 7e460 */
+static void _CDKillDecor(Player *a2, Object *a6);									/* 7e39e */
+static void _CDDecorSoundPts(Object *a6);					/* make the sound, reward points */
+static short _CDPushOverlap(Player *a2, Object *a6);								/* 7e460 */
 
-static const HitBox *_CDGetHitBoxHead(Object *obj);
+static const HitBox *_CDGetHitBoxHead(Object *obj);		
 static const HitBox *_CDGetHitBoxBody(Object *obj);
 static const HitBox *_CDGetHitBoxFoot(Object *obj);
 static const HitBox *_CDGetHitBoxWeak(Object *obj);
 static const HitBox *_CDGetPushBox(Object *obj);
 static const HitBoxAct *get_active_hitbox(Object *obj);
 
-static void mac_stunme3(Object *proj);          /* 7d7d4 */
+static void mac_stunme3(Object *proj);										/* 7d7d4 */
 static void mac_stun2005(Player *ply, Player *opp);
 static int sub_7d4fa(Player *vict, const HitBoxAct *a3);
 static void sub_7e314(void);

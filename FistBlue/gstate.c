@@ -255,7 +255,6 @@ static const u16 *_GSLookupScroll1(GState *gs, CP cp) {	/* 83e5c */
 	gs->YCoarse = (cp.y & 0xe0) >> 4;
     gs->XCoarse = (cp.x & 0xe0) >> 1;
 
-	//printf("GSLookupScroll1: YCoarse %02x XCoarse %02x\n", gs->YCoarse, gs->XCoarse);
     temp2 += (gs->YCoarse + gs->XCoarse)/2;
     return temp2;
 }
@@ -319,17 +318,19 @@ static void sub_83334(GState *gstate, int d0) {
 }
 
 
-static void _GSMaintScroll3X(GState *gs) {
+static void _GSMaintScroll3X(GState *gs) {		// 83658
 	gs->x0024 = gstate_Scroll2.x0024;
 	switch (gs->XUpdateMethod) {
 		case 0:
-		// XXX	gs->XPI = gstate_Scroll2.XPI + (g.x0cea - 0xc0); /* XXX yuck */
+			gs->XPI = gstate_Scroll2.XPI + (gstate_RowScroll.OffMask - 192);
 			break;
-		default:
+		case 2:
+			// do nothing
 			break;
+		FATALDEFAULT;
 	}
 }
-static void _GSMaintScroll3Y(GState *gs) {
+static void _GSMaintScroll3Y(GState *gs) {		// 8368c
 	if (g.ScreenWobble) {
 		return;
 	}
@@ -421,8 +422,10 @@ static void update_scroll2_Y (GState *gstate) { /* 0x3=83376 */
 			/* XXX not done */
 			
 			break;
-		default:
+		case 2:
+			// do nothing
 			break;
+		FATALDEFAULT;
 	}
 	
 }
@@ -669,8 +672,8 @@ static void _GSStageScroll1 (short d0) {	/* 83730 */
     gstate_Scroll1.SpecialStage = bonus * 2;
     gstate_Scroll1.Offset       = data_83834[bonus][0];			// add
     gstate_Scroll1.OffMask      = data_83834[bonus][1];			// mask
-    gstate_Scroll1.x001a        = data_83834[bonus][2];
-    gstate_Scroll1.x001c        = data_83834[bonus][3];
+    gstate_Scroll1.x001a        = data_83834[bonus][2];		// not used yet
+    gstate_Scroll1.x001c        = data_83834[bonus][3];		// not used yet
     
     gstate_Scroll1.TileMaps = data_89ebc[d0];
 }
@@ -731,6 +734,7 @@ static void _GSFillScroll2(GState *gs) {  /* 0x83ae0 fill scroll2 from tilemap *
         }
     }
 }
+
 static void _GSFillScroll3(GState *gs) {        /* 0x83b2a fill scroll3 from tilemap */
     int i,j;
     COORD gfx_p;
@@ -834,8 +838,7 @@ static const u16 *realign_scr3a(GState *gs, u16 **gfx_p) {
 	gs->Index = (gs->Index + gs->Offset) & gs->OffMask;
 	return &data_d8000[gs->TileMaps[gs->Index/2]][gs->XCoarse/2];
 }
-static const u16 *realign_scr3b(GState *gs, u16 **gfx_p) {
-	// 8442a for scroll3
+static const u16 *realign_scr3b(GState *gs, u16 **gfx_p) {						// 8442a for scroll3
 	u32 d0;
 	u32 d1;
 	int offset;
@@ -982,7 +985,7 @@ static void _GSDrawScroll3B(GState *gs, u16 *gfx_p, const u16 *tilep, CP cp) {  
 			tilep += 0x10;
 		}	
 	} else {
-		d2 = d0;		// XXX never read
+		d2 = d0;
 		for (d0 = 0; d0 < 8; ++d0) {
 			gfx_p[0] = tilep[0];
 			gfx_p[1] = tilep[1];
@@ -1003,31 +1006,24 @@ static void _GSDrawScroll3B(GState *gs, u16 *gfx_p, const u16 *tilep, CP cp) {  
 static void gstate_update_scroll1 (GState *gs) {			//83498
     short temp;
     CP cp;
-    u16       *gfx_p;
-    const u16 *tilep;
 		
     g.CPS.Scroll1X = gs->XPI;
     g.CPS.Scroll1Y = gs->YPI;
     
-    temp  = gs->XPI & 0x20;
-    temp ^= gs->x001e;
-    if(temp == 0) { return; } 
-    gs->x001e ^= 0x20;
+    if((gs->XPI & 0x20) ^ gs->x001e) {		// does it need refilling?
+		gs->x001e ^= 0x20;
     
-    cp    = _GSCoordOffsetScr1(gs, gs->x0024);
-    gfx_p = _GSCoordsScroll1(cp);
-    tilep = _GSLookupScroll1(gs,cp);
-    _GSDrawScroll1B(gs, gfx_p, tilep, cp);
+		cp    = _GSCoordOffsetScr1(gs, gs->x0024);
+		_GSDrawScroll1B(gs, _GSCoordsScroll1(cp), _GSLookupScroll1(gs,cp), cp);
+	}
 }
 static void gstate_update_scroll2 (GState *gs) {
     short temp;
     CP cp;
-    u16 *gfxp;
-    const u16 *tilep;
 
     g.CPS.Scroll2X = gs->XPI;
     g.CPS.Scroll2Y = gs->YPI;
-    
+    	
     temp  = gs->XPI & 0x10;
     temp ^= gs->x001e;
     if(temp == 0) {
@@ -1036,9 +1032,7 @@ static void gstate_update_scroll2 (GState *gs) {
     }
     
     cp = _GSCoordOffsetScr2(gs, gs->x0024);
-    gfxp = _GSCoordsScroll2(cp);
-    tilep = _GSLookupScroll2(gs, cp);
-    _GSDrawScroll2A(gs, gfxp, tilep,cp);
+    _GSDrawScroll2A(gs, _GSCoordsScroll2(cp), _GSCoordsScroll2(cp),cp);
     
     temp  = gs->YPI & 0x10;
     temp ^= gs->x001f;
@@ -1046,17 +1040,12 @@ static void gstate_update_scroll2 (GState *gs) {
         gs->x001f ^= 0x10;
         
     }
-    
     cp = _GSCoordOffsetScr2(gs, gs->x0024);
-    gfxp = _GSCoordsScroll2(cp);
-    tilep = (void *)_GSLookupScroll2(gs, cp);
-    sub_84336(gs, gfxp, tilep, cp);     /* seems to only be used on attract building */
+    sub_84336(gs, _GSCoordsScroll2(cp), _GSCoordsScroll2(cp), cp);     /* seems to only be used on attract building */
 }
 static void gstate_update_scroll3 (GState *gs) {
     short temp;
     CP cp;
-    u16 *gfxp;
-    const u16 *tilep;
 
     g.CPS.Scroll3X = gs->X.part.integer;
     g.CPS.Scroll3Y = gs->Y.part.integer;
@@ -1067,12 +1056,9 @@ static void gstate_update_scroll3 (GState *gs) {
         gs->x001e ^= 0x20;
         
     }
-    
-	
+    	
     cp = _GSCoordOffsetScr3(gs, gs->x0024);
-    gfxp = _GSCoordsScroll3(cp);
-    tilep = _GSLookupScroll3(gs, cp);
-    _GSDrawScroll3A(gs, gfxp, tilep, cp);
+    _GSDrawScroll3A(gs, _GSCoordsScroll3(cp), _GSLookupScroll3(gs, cp), cp);
     
     temp  = gs->YPI & 0x20;
     temp ^= gs->x001f;
@@ -1082,9 +1068,7 @@ static void gstate_update_scroll3 (GState *gs) {
     }
     
     cp = _GSCoordOffsetScr3(gs, gs->x0024);
-    gfxp = _GSCoordsScroll3(cp);
-    tilep = _GSLookupScroll3(gs, cp);
-    _GSDrawScroll3B(gs, gfxp, tilep,cp);
+    _GSDrawScroll3B(gs, _GSCoordsScroll3(cp), _GSLookupScroll3(gs, cp),cp);
 }
 
 
@@ -1227,12 +1211,11 @@ void draw_background(void) {
     gstate_update_scroll3(&gstate_Scroll3);
 }
 
-void GSSetupScr3(GState *gs) {			// was setup_scroll3, not working
+void GSSetupScr3(GState *gs) {			// 83cd2 was setup_scroll3
     CP			cp;
 	u16			*gfx_p;
 	const u16	*tilep;
 	int			i;
-	
 	
 	g.CPS.Scroll3X = gs->XPI;
 	g.CPS.Scroll3Y = gs->YPI;
@@ -1241,9 +1224,7 @@ void GSSetupScr3(GState *gs) {			// was setup_scroll3, not working
     cp.y = ~(gs->YPI + 0x180);
 	
 	for (i=0x15; i >= 0; --i) {
-		gfx_p = _GSCoordsScroll3(cp);
-		tilep = _GSLookupScroll3(gs, cp);
-		_GSDrawScroll3A(gs, gfx_p, tilep, cp);
+		_GSDrawScroll3A(gs, _GSCoordsScroll3(cp), _GSLookupScroll3(gs, cp), cp);
 		cp.x += 32;
 	}
 }
