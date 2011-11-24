@@ -18,6 +18,7 @@ void center_collision_coords(void);
 void sub_7d74e(Player *ply, Player *opp, const HitBoxAct *a3);
 void sub_7d7fc(Player *ply, Object *obj);
 
+void sub_7d99a(Object *a6);
 
 short sub_7e094(int d0, Object *a6, Player *vict, const HitBox *a3, const HitBox *a4);
 short check_hitbox_overlap(Object *obj, Object *vict, const HitBoxAct *a3, const HitBox *a4);

@@ -5,6 +5,10 @@
 
 #include "particle.h"
 #include "player.h"
+#ifdef COINAGE
+#include "coinage.h"
+#endif	// COINAGE
+
 
 struct damageresult {
     int damage; /* %d4 */
@@ -131,6 +135,7 @@ typedef struct game {
 	
 	u16	DemoStageIndex;
 	/**/
+	char	x0302;
     char	TimeWarpSlowdown, TimeWarpSlowdown2;	/* 0x303-4 */
     char	x0305; /* Bison cape signal */
     char	x0306; /* Bison cape done */
@@ -351,7 +356,7 @@ typedef struct game {
 	u8		x8a5e;				// flag for highscore enqueue_and_layer
 	u8		x8a60[2];
 	u8		x8a62[2];
-	
+	u8		x8a64[2];
 	char	x8a66[2];			// see action_0d
 	char	x8a68[12];			// flags on player select
 	// u16 x8a74;

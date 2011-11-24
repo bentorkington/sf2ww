@@ -338,8 +338,35 @@ void intproc(void) {        /* 0x1baa */
     g.ContrP2.part.p0 = GET_INPUT_P2_0;
 	
     intmaths();
-    read_jumpers();
+    //read_jumpers();
+	_get_live_jumpers();
 }
+
+static void sub_225c(void) {	// fetch controls from script instead of user
+	u16 *data;
+	if(--g.DemoJoyP1Timer != 0) {
+		data = g.DemoJoyP1;
+		if (data[1]==0) {
+			data += 2;
+		}
+		g.Player1.JoyDecode.full = data[0];
+		g.DemoJoyP1Timer = data[1];
+		g.DemoJoyP1 = data + 2;
+	}
+}
+static void sub_2282(void) {	// fetch controls from script instead of user
+	u16 *data;
+	if(--g.DemoJoyP2Timer != 0) {
+		data = g.DemoJoyP2;
+		if (data[1]==0) {
+			data += 2;
+		}
+		g.Player2.JoyDecode.full = data[0];
+		g.DemoJoyP2Timer = data[1];
+		g.DemoJoyP2 = data + 2;
+	}
+}
+
 void LBGetInputs(void) {		//2224
 	g.Player1.JoyDecodeDash.full = g.Player1.JoyDecode.full;
 	g.Player2.JoyDecodeDash.full = g.Player2.JoyDecode.full;
@@ -347,8 +374,8 @@ void LBGetInputs(void) {		//2224
 		if ((g.JPCost & 0x80) && (g.JPCost & 0x40)) {
 			sub_22a8();
 		} else {
-			//todo 225c
-			//todo 2282
+			sub_225c();
+			sub_2282();
 		}
 	} else {
 		g.Player1.JoyDecode.full = g.ContrP1.full;
@@ -732,11 +759,17 @@ void fadenwait3 (void) {		/* 217c */
     QueueEffect(0x0c1c, 0x3);
 	SIG_WAIT(g.FadeBusy);
 }
-void fadenwait4 (void) {		/* 219e */
+void fadenwait4 (short arg0) {		/* 219e */
     g.FadeBusy = TRUE;
-    QueueEffect(0x0c00, 0x3);
+    QueueEffect(0x0c00, arg0);
 	SIG_WAIT(g.FadeBusy);
 }
+void fadenwait5(short arg0) {		/* 21b0 */
+	g.FadeBusy = TRUE;
+	QueueEffect(0x0c10, arg0);
+	SIG_WAIT(g.FadeBusy);
+}
+	
 
 inline static void _init_energy(void) {			/* 2e6e */
 	g.Player1.Energy		= 
@@ -1290,7 +1323,7 @@ void startgame(int players_online) {	/* 6d4e */
 	justdie();
 }
 	
-static void wait_for_ply_PSFinishedParticipating(void) {  /* 0x9048 */
+void wait_for_ply_PSFinishedParticipating(void) {  /* 0x9048 */
 	if(g.Player1.PSFinishedParticipating && g.Player2.PSFinishedParticipating) {
 		g.RoundComplete = TRUE;
 	}

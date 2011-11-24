@@ -338,7 +338,7 @@ void comp_plstat_normal(Player *ply) {  /* 2c2a4 */
 			ply->Attacking			= FALSE;
 			ply->IsJumpThreat		= FALSE;
 			ply->Path = data_2abb0[ply->FighterID];	
-			CASetAnim3(ply, STATUS_STAND);
+			CASetAnimWithStep(ply, STATUS_STAND);
 			break;
 		case 2:
 			/* 2c2e2 */
@@ -361,7 +361,7 @@ void comp_plstat_normal(Player *ply) {  /* 2c2a4 */
 				comp_set_falling(ply);
 			} else if(ply->Step ^ ply->StepSave) {
 				ply->StepSave = ply->Step;
-				CASetAnim3(ply, STATUS_STAND);
+				CASetAnimWithStep(ply, STATUS_STAND);
 			}
 			actiontick((Object *)ply);
 			update_obj_path(ply);
@@ -1063,7 +1063,7 @@ void comp_set_jump(Player *ply) {		/* 2ceda was comp_jumps */
 		ply->VelX.full   = -ply->VelX.full;
 		ply->AclX.full   = -ply->AclX.full;
 	}
-	CASetAnim3(ply, STATUS_JUMP_START);
+	CASetAnimWithStep(ply, STATUS_JUMP_START);
 }
 static void CompStateGroundAttack(Player *ply, short StandSquat) {		/* 2cdee */
 	ply->mode1 = PLSTAT_ATTACKING;

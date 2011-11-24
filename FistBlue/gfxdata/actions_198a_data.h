@@ -7,6 +7,23 @@
  *
  */
 
+
+/* sythentic: */
+const HitBox hitb_null[] = {{0, 0, 0, 0}};
+const HitBoxAct hitbact_null[] = {{0,0,0,0,0,0,0,0,0,0,0}};
+								  
+
+const static HitBox hitb_24ef2[] = {EMPTY_HITBOX, {0, 48, 17, 50}};
+	const static struct hitboxes hitboxes_24eda={
+		hitb_null,
+		hitb_null,
+		hitb_null,
+		hitb_null,
+		hitbact_null,
+		hitb_24ef2,
+	};
+	
+
 const Image image_24d1a = {
     23, 0x001f, 0x7, 0, 128,
     { 0x8509, 0x8519, 0x8529, 0x8539, 0x8549, 0x850c, 0x851c, 0x852c, 0x850a, 0x851a, 0x852a, 0x853a, 0x854a, 0x850d, 0x851d, 0x852d, 0x0000, 0x851b, 0x852b, 0x853b, 0x854b, 0x850e, 0x851e,  }
@@ -70,3 +87,134 @@ const Image image_24e86 = {
 const Action actlist_24e36[] = {
 	{65535, 0x80, 0x0, &image_24e86, 0, 0, 0, 0, 0, 0, 0, 0x00, 0, 0, 0, 0, 0, 0, 0, 0}, /* LOOP BEGIN */ 
 };
+
+
+#pragma mark ActB06 The Car
+// in car.c
+#pragma mark Act07
+
+const HitBox hitb_274dc[] = {{ 0, 0, 0, 0}, {-3, 36, 44, 35}};
+
+const struct hitboxes hitboxes_274c4 = {
+	hitb_null,
+	hitb_null,
+	hitb_null,
+	hitb_null,
+	hitbact_null,
+	hitb_274dc,
+};
+
+const Image image_273be = {
+    30, 0x001d, 0x5, 0, 0,
+    { 0x83c3, 0x83d3, 0x83e3, 0x83f3, 0x83f9, 0x83c4, 0x83d4, 0x83e4, 
+		0x83f4, 0x83fa, 0x83c5, 0x83d5, 0x83e5, 0x83f5, 0x83fb, 0x83c6, 
+		0x83d6, 0x83e6, 0x83f6, 0x83fc, 0x83c7, 0x83d7, 0x83e7, 0x83f7, 
+		0x83fd, 0x83c8, 0x83d8, 0x83e8, 0x83f8, 0x83fe,  }
+};
+const CAFrame actlist_273a2[] = {
+	{65535, 0x80, 0x0, &image_273be, 0, 0, 0, 0, 0, 1, 0, 0x00, 0, 0, 0, 0, 0, 0, 0, 0},
+	{0,0,0,(struct image *)&actlist_273a2[0], 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 }
+};
+
+const Image image_27438 = {
+    30, 0x001d, 0x5, 0, 0,
+    { 0x83c9, 0x83d9, 
+		0x83e9, 0x83f3, 0x83f9, 0x83ca, 0x83da, 0x83ea, 0x83f4, 0x83fa, 
+		0x83cb, 0x83db, 0x83eb, 0x83f5, 0x83fb, 0x83cc, 0x83db, 0x83ec, 
+		0x83f6, 0x83fc, 0x83cd, 0x83dd, 0x83ed, 0x83f7, 0x83fd, 0x83ce, 
+		0x83de, 0x83ee, 0x83f8, 0x83fe,  }
+};
+const Image image_2747e = {
+    18, 0x001d, 0x5, 0, 0,
+    { 0x0000, 0x0000, 0x8399, 0x838b, 
+		0x839b, 0x0000, 0x0000, 0x839a, 0x838c, 0x839c, 0x0000, 0x0000, 
+		0x837d, 0x838d, 0x839d, 0x0000, 0x0000, 0x837e, 0x838e, 0x839e, 
+		0x0000, 0x0000, 0x837f, 0x838f, 0x839f, 0x0000, 0x0000, 0x83df, 
+		0x83ef, 0x83ff,  }
+};
+const CAFrame actlist_27404[] = {
+	{ 8, 0x00, 0x0, &image_27438, 0, 0, 0, 0, 0, 0, 0, 0x00, 0, 0, 0, 0, 0, 0, 0, 0},
+	{ 8, 0x80, 0x0, &image_2747e, 0, 0, 0, 0, 0, 0, 0, 0x00, 0, 0, 0, 0, 0, 0, 0, 0},
+	{0,0,0,(struct image *)&actlist_27404[0], 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 }
+};
+
+#pragma mark Act09 Barrels
+
+const HitBox hitb_27e82[] = {EMPTY_HITBOX, {-7, 28, 34, 29}};
+const HitBoxAct hitb_27e8a[] = {EMPTY_HITBOXACT, {-7, 28, 18, 15, 0, 1, 0, 1, 2, 0, 0, 0}};
+
+const struct hitboxes hitboxes_27e6a = {
+	hitb_27e82,
+	hitb_null,
+	hitb_null,
+	hitb_null,
+	hitb_27e8a,
+	hitb_27e82,
+};
+
+const Image image_27df4 = {
+    18, 0x001f, 0x1e, 0, 0,
+    { 0x0000, 0x0b40, 0x0b50, 0x0b60, 0x0c99, 0x0b41, 0x0bf0, 0x0bf3, 
+		0x0c9a, 0x0b90, 0x0bf1, 0x0bf4, 0x0c9b, 0x0b91, 0x0bf2, 0x0bf5, 
+		0x0000, 0x0c8f, 0x0c9f, 0x0c62,  }
+};
+const Image image_27dc2 = {
+    18, 0x001f, 0x1e, 0, 0,
+    { 0x0000, 0x0b94, 0x0bee, 0x0bfe, 
+		0x0af8, 0x0ba4, 0x0bef, 0x0bff, 0x0af9, 0x0ba5, 0x0bb5, 0x0b00, 
+		0x0afa, 0x0ba6, 0x0bb6, 0x0bc6, 0x0000, 0x0a54, 0x0a64, 0x0a63, 
+	}
+};
+const Image image_27d90 = {
+    18, 0x001f, 0x1e, 0, 0,
+    { 0x0000, 0x0c40, 0x0c50, 0x0c60, 0x0c99, 0x0cb4, 0x0cc4, 0x0c2d, 
+		0x0c9a, 0x0c0e, 0x0c1e, 0x0c2e, 0x0c9b, 0x0c8e, 0x0c51, 0x0c61, 
+		0x0000, 0x0c8f, 0x0c9f, 0x0c62,  }
+};
+const Image image_27d5e = {
+    18, 0x001f, 0x1e, 0, 0,
+    { 0x0000, 0x0a68, 0x0a78, 0x0a88, 
+		0x0af8, 0x0a69, 0x0a79, 0x0a89, 0x0af9, 0x0a0e, 0x0a1e, 0x0a2e, 
+		0x0afa, 0x0ad6, 0x0ae6, 0x0af6, 0x0000, 0x0a54, 0x0a64, 0x0a63, 
+	}
+};
+const CAFrame actlist_27c5e[] = {
+	{ 8, 0x00, 0x0, &image_27df4, 1, 0, 0, 0, 0, 1, 0, 0x00, 0, 0, 0, 0, 0, 0, 0, 0},
+	{ 8, 0x00, 0x0, &image_27dc2, 1, 0, 0, 0, 0, 1, 0, 0x00, 0, 0, 0, 0, 0, 0, 0, 0},
+	{ 8, 0x00, 0x0, &image_27d90, 1, 0, 0, 0, 0, 1, 0, 0x00, 0, 0, 0, 0, 0, 0, 0, 0},
+	{ 8, 0x80, 0x0, &image_27d5e, 1, 0, 0, 0, 0, 1, 0, 0x00, 0, 0, 0, 0, 0, 0, 0, 0},
+	{0,0,0,(struct image *)&actlist_27c5e[0], 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 }
+};
+const Image image_27e26 = {
+    12, 0x001f, 0x47, 0, 0,
+    { 0x0c00, 0x0c10, 0x0c20, 0x0c30, 0x0cb0, 0x0cc0, 0x0cd0, 0x0ce0, 
+		0x0c38, 0x0c48, 0x0c39, 0x0c49,  }
+};
+const CAFrame actlist_27cc2[] = {
+	{65535, 0x80, 0x0, &image_27e26, 0, 0, 0, 0, 0, 0, 0, 0x00, 0, 0, 0, 0, 0, 0, 0, 0},
+	{0,0,0,(struct image *)&actlist_27cc2[0], 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 }
+};
+const Image image_27e48 = {
+    12, 0x001f, 0x47, 0, 0,
+    { 0x0f06, 0x0f0d, 0x0fa4, 0x0fae, 
+		0x0f07, 0x0f0e, 0x0fa5, 0x0faf, 0x0f08, 0x0f0f, 0x0fa6, 0x0fbf, 
+	}
+};
+const CAFrame actlist_27cde[] = {
+	{65535, 0x80, 0x0, &image_27e48, 0, 0, 0, 0, 0, 0, 0, 0x00, 0, 0, 0, 0, 0, 0, 0, 0},
+	{0,0,0,(struct image *)&actlist_27cde[0], 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 }
+};
+const CAFrame actlist_27cfa[] = {
+	{ 8, 0x00, 0x0, &image_27df4, 1, 0, 0, 0, 1, 1, 0, 0x00, 0, 0, 0, 0, 0, 0, 0, 0},
+	{ 8, 0x00, 0x0, &image_27dc2, 1, 0, 0, 0, 1, 1, 0, 0x00, 0, 0, 0, 0, 0, 0, 0, 0},
+	{ 8, 0x00, 0x0, &image_27d90, 1, 0, 0, 0, 1, 1, 0, 0x00, 0, 0, 0, 0, 0, 0, 0, 0},
+	{ 8, 0x80, 0x0, &image_27d5e, 1, 0, 0, 0, 1, 1, 0, 0x00, 0, 0, 0, 0, 0, 0, 0, 0},
+	{0,0,0,(struct image *)&actlist_27cfa[0], 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 }
+};
+
+const CAFrame **actlist_27c54[]={
+	actlist_27c5e, 	actlist_27cc2, 	actlist_27cde, 	actlist_27cfa, 
+};
+
+
+

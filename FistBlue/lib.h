@@ -26,7 +26,7 @@ short LBRareChance(void);
 void fadenwait1(void);
 void fadenwait2(void);
 void fadenwait3(void);
-void fadenwait4(void);
+void fadenwait4(short argd0);
 void ClearEffectQueue(void);
 int QueueEffect(unsigned short arg1, unsigned short arg2);
 void player_hitstuni(Player *ply, unsigned char trajectory, unsigned char direction, unsigned char damage, unsigned char subsel, short xoff, short yoff, unsigned char sound);
@@ -60,8 +60,9 @@ short start_effect(short d0, short d1);
 void player_check_dizzy(Player *ply);	/* 377c test player dizzying */
 void LBUpdateAITimers(Player *ply);	/* Updates needed by AI */
 void startgame(int d2);
-
+void sub_528a();
 void bin2bcd(short d0);
+void wait_for_ply_PSFinishedParticipating(void);
 
 u32 MakePointObj(int x, int y);
 void decode_buttons(Player *ply, short d0);

@@ -9,32 +9,76 @@
 
 void actions_198a(void);			/* 249fa */
 
-
 typedef struct {
 	short as,bs;
 } CarPlayer;
-
 
 typedef struct {
 	CarPlayer	p1;		// 80-83
 	CarPlayer	p2;		// 84-88
 	
-	char	h0090c;
-	char	h0091c;
+	char	boxes[4];		// hmm, overlap with 0x80?
+	
+	char	h008cc, h008dc, h008ec, h008fc;
+	
+	char	PeopleOnMe;		// 90 bitmask, people on me
+	char	HitsTaken;		// 91
 	char	h0092c;
 	char	h0093c;
-} UDcar;
+} UDcar;		// (bonus0)
 
+
+// the Barrels
+typedef struct {
+	char	h0084c;
+	
+	char	h008cc;
+	char	h008dc;
+	char	h008ec;
+	char	h008fc;
+	
+	FIXED16_16	Velocity, Accel;	// 90, 94
+	short	h0098s;			// distance to P1
+	short	h009as;			// distance to P2
+	FIXED16_16 H009c;
+	
+} UDbonus1;
+
+
+// the Drums
+typedef struct {
+	char	h0084c;
+	
+	char	h008cc;
+	char	h008dc;
+	char	h008ec;
+	char	h008fc;
+	
+	char	h0092c;
+	void	*H0092;
+	void	*H0094;
+	char	h0096c;
+	char	h009ac;
+
+} UDbonus2;
+
+typedef struct {
+	short h00b0s;
+} UDbonus3;
+
+typedef struct {
+	char	h0080c;
+} UDactB08;
 
 typedef struct {
 #include "std_object.h"
-    signed char		x0040;			/* some palette index, values 1,2,3,5 */
-	signed char		x0041;
-	void	*x0042;      /* palette? data at 0x90000 set by 82c26 used 82c4c */
+    FIXED8_8 AclX;
+    FIXED8_8 AclY;
+    u16 x0044;		
     u8		UserByte;
     signed char	Timer2;				/* 0047 prob not a timer in Object2*/
-	void	*x0048;
-	
+	char BoundCheck;
+	char BlockStun;
 	u8 NextReactMode2;		/* 4c */
 	char	x004d;
 	signed char *x004e;	
@@ -70,7 +114,11 @@ typedef struct {
 	
 	/* userdata */
 	union userdata_obb2 {
-		UDcar UDcar;
+		UDcar		UDcar;
+		UDbonus1	UDbonus1;
+		UDbonus2	UDbonus2;
+		UDbonus3	UDbonus3;
+		UDactB08	UDactB08;
 	} UD;
 } Object_G2;
 

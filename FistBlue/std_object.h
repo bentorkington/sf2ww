@@ -26,7 +26,8 @@
     u16				x0028;					/* Unused */
     short			Energy;
     short			EnergyDash;
-    u16				x002e;
+    char			x002e;
+	char			x002f;
     short			*Path;					/* 0030 XXX special type for path */
     const struct hitboxes *HitBoxes;				/* 0034 */
     signed char		*MoreBoxes;				/* 0038 */

@@ -97,54 +97,6 @@ static void sub_7c90a(Object *obj) {
 }
 
 
-static void sub_7d2ae(Object *obj, Player *ply) {
-	HitBoxAct *hb;
-	if (g.PlayersThrowing || g.DebugNoCollide) {
-		return;
-	}
-	if(hb=get_active_hitbox(obj)==0) { return; }
-	if (ply->TimerInvincible) {
-		return;
-	}
-	if (check_main_hitboxes(obj, ply, hb)==0) {
-		return;
-	}
-	ply->TimerInvincible = 120;
-	ply->DidCollide = TRUE;
-	ply->NextReactMode2 = hb->ReactMode2;
-	obj->Timer2 = 14;
-	ply->Timer2 = 14;
-	ply->Direction = obj->Flip;
-	ply->Energy--;
-	ply->x0071 = 0;
-	ply->NextReactMode = RM_HITINAIR;
-	queuesound(45);
-	mac_stunhim_from76(obj, ply);
-}
-
-
-static void sub_7d284(Object *obj) {
-	if (g.Player1.UserData[4] == 0 || g.Player2.UserData[4] == 0) {
-		return;
-	}
-	if (g.Player1.exists ) {
-		sub_7d2ae(obj, PLAYER1);
-	}
-	if (g.Player2.exists) {
-		sub_7d2ae(obj, PLAYER2);
-	}
-}
-
-static void sub_7dd38(Object *a6, Object *a2) {
-	/* XXX access userdata in A2 */
-	
-}
-
-static void sub_7dd0c(Object *obj) {
-	sub_7d284(obj);
-	g.x8aea = obj;
-	/* XXX to be cont... */
-}
 
 
 static void sub_7cdf8(void) {

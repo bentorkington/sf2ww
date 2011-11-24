@@ -7,7 +7,7 @@
 #define GUSTY_LOBSTER 1			// On a UNIX host
 
 #ifndef ABS
-#define ABS(x) x<0 ? -x : x
+#define ABS(x) ((x)<0 ? -(x) : (x))
 #endif
 
 #ifdef CPS 
@@ -28,6 +28,7 @@
 
 #define RAND64 (sf2rand() & 0x3f)
 #define RAND32 (sf2rand() & 0x1f)
+#define RAND16W (sf2rand() & 0x1e)
 #define RAND16 (sf2rand() & 0xf)
 #define RAND8  (sf2rand() & 7)
 #define RAND8W (sf2rand() & 0xe)

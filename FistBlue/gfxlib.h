@@ -26,7 +26,7 @@ void clear_scrolls(void);
 void clear_rowscroll(void);	/* actually rowscroll */
 
 void clear_scrolls_123(Task *task);
-
+void print_bonusremaining(void);
 // test macros
 void sub_6032(void);
 void sub_6040(void);

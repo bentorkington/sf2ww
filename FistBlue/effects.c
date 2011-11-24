@@ -511,7 +511,7 @@ void syslib_0c (void) {
 			DIEBREAK;
 		case 0x1a:
 			QueueEffect(LC0_DARK_ALL_DISABLE, task->params.Param2);
-			do {sleep(1);} while (Exec.EffectIsSetUp == 0);
+			do {sf2sleep(1);} while (Exec.EffectIsSetUp == 0);
 			sub_4bd6(task); /* dies */
 			break;
 		case 0x1e:
@@ -812,9 +812,9 @@ SYSLIB18LOOP:
 		data++;
 		if (task->params.Param2) {
 			SETSLEEP(task->params.Param2);
-		} else {
-			goto SYSLIB18LOOP;		// YES!!!
-		}
+		} 
+		goto SYSLIB18LOOP;		// YES!!!
+		
 	}
 }
 
@@ -1077,7 +1077,7 @@ void task_scheduler(void) {		//14f2
 		exit_ready();
 		if (Exec.x820e == 0 && Exec.FreeTasks != 0) {
 			if (g.effectQueue[g.effectCurrent / 2] != 0xffff) {
-				printf("BeginFromQueue: %02x\n",g.effectQueue[g.effectCurrent / 2]);
+				//printf("BeginFromQueue: %02x\n",g.effectQueue[g.effectCurrent / 2]);
 				wrap_trap7(data_155c[g.effectQueue[g.effectCurrent / 2] >> 10],
 						   g.effectQueue[g.effectCurrent / 2 ] & 0xff,
 						   g.effectQueue[(g.effectCurrent / 2 ) + 1]
@@ -1090,7 +1090,7 @@ void task_scheduler(void) {		//14f2
 	}
 }
 
-static void sub_6fd4(Player *ply) {
+static void LBPlayerHasEntered(Player *ply) {		// 6fd4
 	g.NewPlayers    |= (1 << ply->Side);
 	g.PlayersOnline |= (1 << ply->Side);
 	ply->Continuing = 0;
@@ -1161,22 +1161,22 @@ static void sub_70d2(Player *ply) {		// coin inserted, reset continue
 	}	
 }
 
-inline static short sub_725e(Player *ply) {
+inline static short LBPlayerStartDown(Player *ply) {			// 725e
 	if (g.RawButtons0Dash &  (1 <<(ply->Side ? 5 : 4)) ) {
 		return 1;
 	}
 	return 0;
 }
-inline static short sub_7252(Player *ply) {
+inline static short LBCheckPaidStart(Player *ply) {		// 7252
 	if ((g.FreePlay == 0) && (g.NumberCredits == 0)) {
 		return 0;
 	}
-	return sub_725e(ply);
+	return LBPlayerStartDown(ply);
 }
 
 
-static void sub_71cc(Player *ply) {
-	if(sub_7252(ply)) {
+static void LBCheckContinued(Player *ply) {	
+	if(LBCheckPaidStart(ply)) {
 		++g.ContinueCount;
 		bumpdifficulty_01();		// 453c
 		if (g.FreePlay == 0) {
@@ -1191,7 +1191,7 @@ static void sub_71cc(Player *ply) {
 		print_libtextgfx(LIBTEXT_ERASE + ply->Side);	
 	}
 }
-static void sub_7222(Player *ply) {
+static void LBContinueBump(Player *ply) {			// 7222
 	u16 data;
 	if (ply->ContinueSecs < 7) {
 		if (ply->Side) {
@@ -1204,20 +1204,19 @@ static void sub_7222(Player *ply) {
 		}
 	}
 }
-static void sub_7660(Player *ply) {
+static void LBPlayerHasLeft(Player *ply) {			// 7660
 	g.PlayersOnline &= ~(1 << ply->Side);
 	ply->BlinkerMode0 = 0;
 	print_libtextgfx(LIBTEXT_ERASE + ply->Side);	
 }
 	
-
 static void SMPlayerBlinker(Task *task, Player *ply) {		// 6ea4
 	if (ply->Alive == FALSE) {
 		switch (ply->BlinkerMode0) {
 			case 0:
 				if (g.JapanJumper == 0) {
 					if (g.x02eb != 0) {
-						sub_7660(ply);
+						LBPlayerHasLeft(ply);
 					} else {
 						switch (ply->BlinkerMode1) {
 							case 0:
@@ -1248,7 +1247,7 @@ static void SMPlayerBlinker(Task *task, Player *ply) {		// 6ea4
 							case 4:
 								if (g.NewChallengerWait == 0) {
 									ply->BlinkerMode1 = 0;
-									sub_6fd4(ply);
+									LBPlayerHasEntered(ply);
 								}
 							default:
 								break;
@@ -1260,7 +1259,7 @@ static void SMPlayerBlinker(Task *task, Player *ply) {		// 6ea4
 			case 2:		// 6f4a
 				if (g.JapanJumper == 0) {
 					if (g.x02eb != 0) {
-						sub_7660(ply);
+						LBPlayerHasLeft(ply);
 					} else {
 						if (g.FreePlay || g.NumberCredits) {
 							switch (ply->BlinkerMode1) {
@@ -1273,7 +1272,7 @@ static void SMPlayerBlinker(Task *task, Player *ply) {		// 6ea4
 									sub_7018(ply);
 									if (g.BattleOver != 0) {
 										return;;
-									} else if (sub_725e(ply)) {
+									} else if (LBPlayerStartDown(ply)) {
 										return;
 									} else {
 										g.x02f0 += 1;
@@ -1291,7 +1290,7 @@ static void SMPlayerBlinker(Task *task, Player *ply) {		// 6ea4
 											/* 6e98 */
 											print_libtextgfx(LIBTEXT_ERASE + ply->Side);	
 										} else {
-											sub_6fd4(ply);
+											LBPlayerHasEntered(ply);
 										}
 									}
 									break;
@@ -1320,9 +1319,9 @@ static void SMPlayerBlinker(Task *task, Player *ply) {		// 6ea4
 							sub_716a(ply);
 							break;
 						case 2:
-							sub_7222(ply);
+							LBContinueBump(ply);
 							sub_70d2(ply);
-							sub_71cc(ply);
+							LBCheckContinued(ply);
 							if(--ply->ContinueTick == 0) {
 								if (ply->ContinueSecs == 0) {
 									g.ContinueBits &= ~(1<<ply->Side);
@@ -1365,7 +1364,7 @@ static void SMPlayerBlinker(Task *task, Player *ply) {		// 6ea4
 				break;
 			case 8:			// 7626
 				if (g.x02eb || g.BattleOver) {
-					sub_7660(ply);
+					LBPlayerHasLeft(ply);
 				} else {
 					switch (ply->BlinkerMode1) {
 						case 0:
@@ -1375,7 +1374,7 @@ static void SMPlayerBlinker(Task *task, Player *ply) {		// 6ea4
 							break;
 						case 2:
 							if (--ply->ContinueSecs == 0) {
-								sub_7660(ply);
+								LBPlayerHasLeft(ply);
 							}
 							break;
 						default:
@@ -1388,7 +1387,7 @@ static void SMPlayerBlinker(Task *task, Player *ply) {		// 6ea4
 	}
 }
 
-void check_coin_lockout(void) {		//dfc
+void check_coin_lockout(void) {		//dfc move to coinage.c
 	if (g.NumberCredits >= 9) {
 		g.x02db &= 0xf3;
 	} else {
@@ -1413,7 +1412,7 @@ void task_blinkers(void) {		// 6e64
 }
 
 void task_game(void) {			// 7672 Game Supertask
-	fadenwait4();
+	fadenwait4(1);
 #ifdef GUSTY_LOBSTER
 	gsupertaskcnt++;
 #endif
@@ -1426,14 +1425,14 @@ void task_game(void) {			// 7672 Game Supertask
 			LBDecodeInputs();			// decode_inputs();
 			SM_game();					// game state machine 
 			
-			debughook(1);		
-			CHECK_SERVICE_BUTTON;
-			if (g.Debug && (g.JPCost & JP_DBGSLEEP)) {
-				sf2sleep((g.JPDifficulty & JP_DIFFMASK) + 2);
-			} else {
-				if (g.NoInterrupt) {sf2sleep(1); };
-				/* don't sleep if the interrupt stacked */
-			}
+			debughook(1);
+		}
+		CHECK_SERVICE_BUTTON;
+		if (g.Debug && (g.JPCost & JP_DBGSLEEP)) {
+			sf2sleep((g.JPDifficulty & JP_DIFFMASK) + 2);
+		} else {
+			if (g.NoInterrupt) {sf2sleep(1); };
+			/* don't sleep if the interrupt stacked */
 		}
 	}
 }

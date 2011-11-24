@@ -725,9 +725,10 @@ static void _draw_sprite(Object *obj, const u16 *tilep, const short *offsets,
 	//7ee2c
 
 	if(obj->Draw1 > 0) {
-        attr &= 0xffe0;       /* mask out the palette bits */
-        attr |= obj->Draw2.part.integer;   /* OR in a replacement palette */
+        attr &= 0xffe0;						/* mask out the palette bits */
+        attr |= obj->Draw2.part.integer;    /* OR in a replacement palette */
     }
+	
     attr ^= (obj->Flip & 3) << 5;
     if(attr & ATTR_X_FLIP) {	
         sub_7ef2a(obj, tilep, offsets, x, y, tiles, attr);
