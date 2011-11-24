@@ -11,6 +11,8 @@
 		8D11072B0486CEB800E47090 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 089C165CFE840E0CC02AAC07 /* InfoPlist.strings */; };
 		8D11072D0486CEB800E47090 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 29B97316FDCFA39411CA2CEA /* main.m */; settings = {ATTRIBUTES = (); }; };
 		8D11072F0486CEB800E47090 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */; };
+		B51533F2147EEB4F004A87B0 /* car.c in Sources */ = {isa = PBXBuildFile; fileRef = B51533F1147EEB4F004A87B0 /* car.c */; };
+		B51533F5147EEBDB004A87B0 /* drums.c in Sources */ = {isa = PBXBuildFile; fileRef = B51533F4147EEBDB004A87B0 /* drums.c */; };
 		B551553514773E8A00A8BBD9 /* coinage.c in Sources */ = {isa = PBXBuildFile; fileRef = B551553414773E8A00A8BBD9 /* coinage.c */; };
 		B56A718C1411B0D300DF7F02 /* game.c in Sources */ = {isa = PBXBuildFile; fileRef = B56A718B1411B0D300DF7F02 /* game.c */; };
 		B5871ED71408E4F4004A45F5 /* pthreads.c in Sources */ = {isa = PBXBuildFile; fileRef = B5871ED61408E4F4004A45F5 /* pthreads.c */; };
@@ -69,6 +71,10 @@
 		29B97325FDCFA39411CA2CEA /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = /System/Library/Frameworks/Foundation.framework; sourceTree = "<absolute>"; };
 		8D1107310486CEB800E47090 /* MT2-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "MT2-Info.plist"; sourceTree = "<group>"; };
 		8D1107320486CEB800E47090 /* MT2.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MT2.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		B51533F0147EEB4F004A87B0 /* car.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = car.h; sourceTree = "<group>"; };
+		B51533F1147EEB4F004A87B0 /* car.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = car.c; sourceTree = "<group>"; };
+		B51533F3147EEBDB004A87B0 /* drums.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = drums.h; sourceTree = "<group>"; };
+		B51533F4147EEBDB004A87B0 /* drums.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = drums.c; sourceTree = "<group>"; };
 		B51867D01429504F003EE3BC /* act48.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = act48.h; sourceTree = "<group>"; };
 		B551553314773E8A00A8BBD9 /* coinage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = coinage.h; sourceTree = "<group>"; };
 		B551553414773E8A00A8BBD9 /* coinage.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = coinage.c; sourceTree = "<group>"; };
@@ -303,6 +309,17 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		B51533EF147EEB1A004A87B0 /* actions_b */ = {
+			isa = PBXGroup;
+			children = (
+				B51533F0147EEB4F004A87B0 /* car.h */,
+				B51533F1147EEB4F004A87B0 /* car.c */,
+				B51533F3147EEBDB004A87B0 /* drums.h */,
+				B51533F4147EEBDB004A87B0 /* drums.c */,
+			);
+			name = actions_b;
+			sourceTree = "<group>";
+		};
 		B56A715B1411A9D500DF7F02 /* SiennaBird */ = {
 			isa = PBXGroup;
 			children = (
@@ -383,6 +400,7 @@
 		B5ADB7E213B2B57D00905DFE /* actions */ = {
 			isa = PBXGroup;
 			children = (
+				B51533EF147EEB1A004A87B0 /* actions_b */,
 				B51867D01429504F003EE3BC /* act48.h */,
 				B5AE82E41416C8CC00881BD6 /* act10.h */,
 				B5AE80EB14159F2500881BD6 /* plane.h */,
@@ -604,6 +622,8 @@
 				B5871ED71408E4F4004A45F5 /* pthreads.c in Sources */,
 				B56A718C1411B0D300DF7F02 /* game.c in Sources */,
 				B551553514773E8A00A8BBD9 /* coinage.c in Sources */,
+				B51533F2147EEB4F004A87B0 /* car.c in Sources */,
+				B51533F5147EEBDB004A87B0 /* drums.c in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

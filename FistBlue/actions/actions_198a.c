@@ -53,7 +53,6 @@ enum actions_198a {
 
 
 static void sub_25f06(Object_G2 *obj);
-static void sub_2581a(Object *obj);
 
 
 
@@ -167,8 +166,6 @@ static void _SMKenDrums(Object *obj) {				// 24a74
 	}
 	
 }
-
-
 static void _SMRyuSigns(Object *obj) {		// 24c4e
 	Object *nobj;
 	short i;
@@ -218,13 +215,6 @@ static void sub_24fcc(Object *obja0, Object *obja6) {
 	obja0->YPI = obja6->YPI + 64;
 }
 
-static Object *sub_24fc2(Object_G2 *obj) {
-//	if (obj->UD.UDunknown.h0097c) {
-//		sub_24fcc(obj->UD.UDunknown.h0098p, obj);
-//	} else {
-//		return;
-//	}
-}
 
 static void sub_24fe0(Object_G2 *obj) {
 //	if (obj->UD.UDunknown.h0097c) {
@@ -281,641 +271,12 @@ static void _SMAct03(Object *obj) {		// 24efa
 }
 
 
-static void _SMAct04(Object_G2 *obj) {		// 27ea2 ID4 BONUS3
-	// Fires on top of drums
-	const static char data_27f3e[]={1,1,2,2,3,3,3,3,3,3,3,3,3,3,2,2,1,1,-1,0};
-	const static short data_27f72[]={
-		0x64, 0x78, 0x8c, 0x78, 0x64, 0x78, 0x8c, 0x64,
-		0x64, 0x78, 0x8c, 0x78, 0x8c, 0x78, 0x8c, 0x64
-	};
-	
-	switch (obj->mode0) {
-		case 0:
-			NEXT(obj->mode0);
-			NEXT(obj->mode1);
-			obj->HitBoxes = &hitboxes_28284;	// null hitboxes
-			obj->Pool = 4;
-			obj->UD.UDbonus3.h00b0s = 0;
-			if (obj->XPI < 192) {
-				obj->Direction = 0;
-			} else {
-				obj->Direction = 1;
-			}
-			break;
-		case 2:
-			if (obj->XPI < 192) {
-				obj->Direction = 0;
-			} else {
-				obj->Direction = 1;
-			}
-			if (obj->mode1) {
-				sub_7d99a((Object *)obj);
-				if (obj->mode2) {
-					if ((obj->AnimFlags & 0x8000) == 0) {
-						actiontick((Object *)obj);
-						check_rect_queue_draw((Object *)obj);
-						return;
-					}
-					obj->mode2 = 0;
-					++obj->UD.UDbonus3.h00b0s;
-				}
-				NEXT(obj->mode2);
-				if (data_27f3e[obj->UD.UDbonus3.h00b0s] < 0) {
-					obj->mode1 = 0;
-					obj->mode2 = 0;
-					setaction_list((Object *)obj, actlist_27fa6, data_27f72[RAND16W/2]);
-				} else {
-					obj->LocalTimer = data_27f3e[obj->UD.UDbonus3.h00b0s];
-					setaction_list((Object *)obj, actlist_27fa6, 0);
-				}
-			} else {
-				// 27f92
-				if (--obj->LocalTimer == 0) {
-					NEXT(obj->mode1);
-					obj->UD.UDbonus3.h00b0s = 0;
-				}
-			}
-			break;
-		case 4:
-		case 6:
-			clearpush_1174((Object *)obj);
-		FATALDEFAULT;
-	}
-}
-
-
-
-#pragma mark ActB05 BONUS2 Burning drums
-static void sub_2525a(Object_G2 *obj) {
-	if (obj->YPI >= 48) {
-		obj->Pool = 2;
-	} else {
-		obj->Pool = 0;
-	}
-	obj->mode1 = 0;
-	obj->mode2 = 2;
-	obj->UD.UDbonus2.h0084c = 0;
-	obj->VelX.full = 0;
-	obj->VelY.full = 0;
-	obj->AclX.full = 0;
-	obj->AclY.full = 0;
-	sub_2581a(obj);
-	queuesound(0x3b);
-	check_rect_queue_draw(obj);
-}
-static void sub_25220(Object_G2 *obj) {
-	if (--obj->UD.UDbonus2.h009ac == 0) {
-		if (obj->UD.UDbonus2.h0092c) {
-			sub_2525a(obj);
-			return;
-		}
-		obj->UD.UDbonus2.h009ac = 1;
-	}
-	obj->mode1 = 2;
-	obj->mode2 = 0;
-	obj->VelY.full = 0x200;
-	queuesound(0x3b);
-	check_rect_queue_draw(obj);
-}
-static void sub_25252(Object_G2 *obj) {
-	if (obj->VelY.full > -0x500) {
-		sub_2525a(obj);
-	} else {
-		sub_25220(obj);
-	}
-}
-
-static void sub_257d8 (Object *obj) {			// 257d8 random force
-	const static short data_257fa[] = {
-		-32, -16, -16, 0, 0, 16, 16, 32,
-		-32, -32, -16, 0, 0, 16, 32, 32
-	};
-	
-	int temp = sf2rand();
-	obj->VelX.full += data_257fa[(temp >> 1) & 0xf];
-	obj->VelY.full += data_257fa[(temp >> 5) & 0xf];
-}
-
-static void sub_251f4(Object_G2 *obj) {
-	obj->UD.UDbonus2.h009ac = 5;
-	obj->mode1 = 2;
-	obj->mode2 = 0;
-	obj->UD.UDbonus2.h0092c = 0;
-	obj->VelY.full = 0x0600;
-	obj->AclX.full = 0;
-	obj->AclY.full = 0x0030;
-	sub_257d8(obj);
-	check_rect_queue_draw((Object *)obj);
-}
-	
-static void sub_2549a(Object *ply, Object_G2 *obj) {
-	if (ply->XPI < obj->XPI) {
-		obj->VelX.full = 0x0080;
-	} else {
-		obj->VelX.full = -0x0080;
-	}
-	sub_251f4(obj);
-}
-
-
-static void sub_257aa(Object_G2 *obj, Player *ply) {
-	if (ply->exists) {
-		if(ABS(obj->XPI - ply->XPI) - ply->Size >= 29) {
-			if (ply->OppXDist > ABS(obj->XPI - ply->XPI) - ply->Size - 29) {
-				ply->OppXDist = ABS(obj->XPI - ply->XPI) - ply->Size - 29;
-			}
-		} else {
-			ply->OppXDist = 0;
-		}
-
-	}
-}
-
-static void sub_257a0(Object_G2 *obj) {
-	sub_257aa(obj, PLAYER1);
-	sub_257aa(obj, PLAYER2);
-}
-
-static void sub_25476(Object_G2 *obj) {
-	char *p;
-	if (obj->UD.UDbonus2.H0092) {
-		p = obj->UD.UDbonus2.H0092;
-		if (p[3]) {
-			sub_2549a(p, obj);
-			return;
-		}
-	}
-	if (obj->UD.UDbonus2.H0094) {
-		p = obj->UD.UDbonus2.H0094;
-		if (p[3]) {
-			sub_2549a(p, obj);
-		}
-	}
-}
-
-static int sub_254da (Object_G2 *obj) {		// sets %d0 and %d3
-	//todo
-}
-
-static void sub_25670 (Object_G2 *obj) {
-	//todo
-}
-
-static int sub_2529a (Object_G2 *obj) {
-	//todo 
-}
-static int sub_255b2(Object_G2 *obj) {
-	//todo
-}
-
-void _SMAct05(Object_G2 *obj) {				// 24ff6 Act05 Bonus2
-	int temp;
-	int d1;
-	switch (obj->mode0) {
-		case 0:
-			NEXT(obj->mode0);
-			obj->mode2 = 0;
-			d1 = sub_255b2(obj);
-			// redundant btst
-			obj->HitBoxes = &hitboxes_25958;
-			obj->Pool = 2;
-			obj->Scroll = 0;
-			obj->Step = obj->Flip;
-			//setaction_direct(obj, action_25834);
-			
-			// userdata ...
-			
-			//todo
-			
-			break;
-		case 2:						// 250c4
-			sub_7d99a(obj);
-			switch (obj->mode1) {
-				case 0:
-					switch (obj->mode2) {
-						case 0:
-							if (obj->UD.UDbonus2.h0096c) {
-								NEXT(obj->mode2);
-							}
-							actiontick(obj);
-							/* FALLTHRU */
-						case 2:
-							sub_25476(obj);
-							if(sub_2529a(obj)<0) {
-								obj->mode1 = 4;
-							}
-							sub_25670(obj);
-							if (obj->SubSel < 3) {
-								check_rect_queue_draw(obj);
-							}
-							break;
-						FATALDEFAULT;
-					}
-					break;
-				case 2:
-					switch (obj->mode2) {
-						case 0:
-							obj->UD.UDbonus2.h0084c = 1;
-							temp = sub_2529a(obj);
-							if (temp < 0) {
-								obj->mode1 = 4;
-							} else if (temp > 0) {
-								obj->UD.UDbonus2.h009ac = 5;
-								obj->VelY.full = 0x400;
-								obj->AclX.full = 0;
-								if (obj->Direction) {
-									obj->VelX.full = 0x80;
-								} else {
-									obj->VelX.full = -0x80;
-								}
-							}
-							CATrajectory(obj);
-							//todo sub_25650(obj);
-							sub_2581a(obj);
-							temp = sub_254da(obj);
-							if (temp & 0x08) {
-								NEXT(obj->mode2);
-							} else if(check_ground_collision(obj)){
-								obj->mode2 = 2;
-								obj->YPI = g.GroundPlaneY;
-							}
-							sub_24fc2(obj);
-							check_rect_queue_draw(obj);
-							break;
-						case 2:
-							
-						default:
-							break;
-					}
-					break;
-				case 4:
-					//251d2
-					break;
-				FATALDEFAULT;
-			}
-			sub_257a0(obj);
-			break;
-		case 4:
-		case 6:
-			clearpush_1174((Object *)obj);
-		default:
-			break;
-			
-			
-	}
-}
-
-
+//in drums.c
+void _SMAct04(Object *obj);
+void _SMAct05(Object *obj);
 #pragma mark 06-The Car		
-
-static int _car_check_P1(Object_G2 *obj){			// 25d94
-	if (obj->UD.UDcar.p1.as > 0 && obj->UD.UDcar.p1.bs != obj->UD.UDcar.p1.as) {
-		obj->UD.UDcar.p1.bs = obj->UD.UDcar.p1.as;
-		return TRUE;
-	}
-	return FALSE;
-}
-static int _car_check_P2(Object_G2 *obj){			// 25da8
-	if (obj->UD.UDcar.p2.as > 0 && obj->UD.UDcar.p2.bs != obj->UD.UDcar.p2.as) {
-		obj->UD.UDcar.p2.bs = obj->UD.UDcar.p2.as;
-		return TRUE;
-	}
-	return FALSE;
-}
-static void car_setaction(Object_G2 *obj) {//25dbc
-	// XXX setaction_list(obj, data____, obj->UD.UDcar.HitsTaken + obj->UD.UDcar.h0092c);
-}	
-static void _car_disable_ply_shadow(Player *ply) {				// 26122
-	if (ply->YPI != 40) {
-		if (ply->Side) {
-			g.Ply2Shadow.flag1 = FALSE;
-		} else {
-			g.Ply1Shadow.flag1 = FALSE;
-		}
-	}
-}
-static void _car_init_as_bs(CarPlayer *cp) {			// 25dcc
-	cp->as = cp->bs = (char []){3,5,4,5,3,4,5,4,4,4,5,3,4,3,5,3}[sf2rand() & 15];
-}
-static int _check_platform(Player *plya3, Object_G2 *obj) {		//26096
-	int d2;
-	
-	plya3->PlatformFallDir = 0;
-	if (2*(0x48 + plya3->Size) <= (plya3->XPI - obj->XPI) + 0x48 + plya3->Size) {
-		if (plya3->XPI - obj->XPI < 0) {
-			d2 = (plya3->XPI - obj->XPI) + (plya3->Size + 0x48);
-		} else {
-			d2 = (plya3->XPI - obj->XPI) - (plya3->Size + 0x48);
-		}
-		if (ABS(d2)) {
-			_car_disable_ply_shadow(plya3);
-		}
-		if ((obj->YPI + 48) - plya3->YPI >= 0) {
-			if ( (ABS(d2) <= (obj->YPI + 48) - plya3->YPI) &&
-				((obj->YPI + 48) - plya3->YPI <= 0x20)   &&
-				plya3->DeltaY.full == 0 ) {
-				plya3->YPI = obj->YPI + 0x30;
-				plya3->OnPlatform = TRUE;
-				return 1;
-			} else {
-				plya3->XPI += d2;
-				if (d2 > 0) {
-					plya3->PlatformFallDir = 1;
-				} else if (d2 < 0) {
-					plya3->PlatformFallDir = 2;
-				}
-			}
-		}
-	} 
-	plya3->OnPlatform = FALSE;
-	return FALSE;
-}
-static void _people_on_roof(Object_G2 *obj) {		// 25df2
-	short x = g.CarOffX;
-	short y = g.CarOffY;
-	Object *newobj;
-	
-	obj->XPI += x;
-	obj->YPI -= y;
-	g.CarOffX = 0;
-	g.CarOffY = 0;
-	if (PLAYER1->exists && PLAYER1->Jumping == 0) {
-		PLAYER1->XPI += x;
-		PLAYER1->YPI -= y;
-	}
-	if (PLAYER2->exists && PLAYER2->Jumping == 0 && (obj->UD.UDcar.PeopleOnMe & 2)) {
-		PLAYER2->XPI += x;
-		PLAYER2->YPI -= y;
-	}
-	switch (g.ActiveHumans) {
-		case 0:
-			// can't happen
-			break;
-		case 1:
-			if (obj->UD.UDcar.PeopleOnMe) {
-				if (_check_platform(PLAYER1, obj) == FALSE) {
-					obj->UD.UDcar.PeopleOnMe = 0;
-					if (newobj = AllocActor()) {
-						newobj->exists = TRUE;
-						newobj->Sel    = 0x32;
-						newobj->SubSel = 5;
-						
-					}
-				}
-			} else {
-				if (_check_platform(PLAYER1, obj) != FALSE) {
-					obj->UD.UDcar.PeopleOnMe = 1;
-					if (newobj = AllocActor()) {
-						newobj->exists = TRUE;
-						newobj->Sel    = 0x32;
-						newobj->SubSel = 2;
-						
-					}
-				}
-			}
-
-			break;
-		case 2:
-			if (obj->UD.UDcar.PeopleOnMe) {
-				if (_check_platform(PLAYER1, obj) == FALSE) {
-					obj->UD.UDcar.PeopleOnMe = 0;
-					if (newobj = AllocActor()) {
-						newobj->exists = TRUE;
-						newobj->Sel    = 0x32;
-						newobj->SubSel = 5;
-						
-					}
-				}
-			} else {
-				if (_check_platform(PLAYER1, obj) != FALSE) {
-					obj->UD.UDcar.PeopleOnMe = 2;
-					if (newobj = AllocActor()) {
-						newobj->exists = TRUE;
-						newobj->Sel    = 0x32;
-						newobj->SubSel = 2;
-						
-					}
-				}
-			}
-			
-			break;
-		case 3:
-			sub_25f06(obj);
-			break;
-		FATALDEFAULT;
-	}
-}
-static void _ActSMCar(Object_G2 *obj) {			// The CarID 6, BONUS0
-	switch (obj->mode0) {
-		case 0:
-			memclear(&obj->UD.UDcar, sizeof (UDcar));
-			g.x8abe = FALSE;
-			obj->HitBoxes = &hitboxes_25d6c;
-			_car_init_as_bs(&obj->UD.UDcar.p1);
-			_car_init_as_bs(&obj->UD.UDcar.p2);
-			car_setaction(obj);
-			break;
-		case 2:
-			_people_on_roof(obj);
-			sub_7d99a((Object *)obj);			// collision detection			
-			
-			if (!obj->mode1) {
-				if (obj->mode2) {
-					switch (obj->mode3) {				//25a10
-						case 0:							//25a22
-							if (_car_check_P1(obj) < 0) {
-								NEXT(obj->mode3);
-								obj->UD.UDcar.HitsTaken++;
-								_car_init_as_bs(&obj->UD.UDcar.p1);
-							}
-							if (_car_check_P2(obj) < 0) {
-								NEXT(obj->mode2);
-								obj->UD.UDcar.h0092c = 3;
-							}
-							break;
-						case 2:							//25a4a
-							if (_car_check_P1(obj) < 0) {
-								NEXT(obj->mode3);
-								++obj->UD.UDcar.HitsTaken;
-							}
-							if (_car_check_P2(obj) < 0) {
-								NEXT(obj->mode2);
-								obj->UD.UDcar.h0092c = 3;
-							}
-							break;
-						case 4:							//25a6a
-							if (_car_check_P2(obj) < 0) {
-								NEXT(obj->mode2);
-								obj->UD.UDcar.h0092c = 3;
-								_car_init_as_bs(&obj->UD.UDcar.p1);
-								_car_init_as_bs(&obj->UD.UDcar.p2);
-							}
-							break;
-						FATALDEFAULT;
-					}
-				} else {
-					switch (obj->mode3) {
-						case 0:
-							if (_car_check_P1(obj) < 0) {
-								NEXT(obj->mode3);
-								++obj->UD.UDcar.HitsTaken;
-							}
-							_car_init_as_bs(&obj->UD.UDcar.p1);
-							break;
-						case 2:
-							if (_car_check_P1(obj) < 0) {
-								NEXT(obj->mode3);
-								++obj->UD.UDcar.HitsTaken;
-								_car_init_as_bs(&obj->UD.UDcar.p1);
-								_car_init_as_bs(&obj->UD.UDcar.p2);
-							}
-							break;
-						case 4:
-							if (_car_check_P1(obj) < 0) {
-								NEXT(obj->mode1);
-								obj->mode2 = 0;
-								obj->mode3 = 0;
-								obj->UD.UDcar.h0092c = 0;
-								obj->UD.UDcar.HitsTaken = 6;
-								_car_init_as_bs(&obj->UD.UDcar.p1);
-							}
-							break;
-						FATALDEFAULT;
-					}
-				}
-
-			} 
-			else {
-				// 25b02
-				switch (obj->mode2) {
-					case 0-16:							//25b26;
-						if(_car_check_P1(obj) < 0) {
-							NEXT(obj->mode2);
-							if(++obj->UD.UDcar.HitsTaken == 15) {
-								g.x8abe = TRUE;
-							}
-							_car_init_as_bs(&obj->UD.UDcar.p1);
-							car_setaction(obj);
-						}
-						break;
-					case 18:							//25b50;
-						if(_car_check_P1(obj) < 0) {
-							NEXT(obj->mode2);
-							gstate_Scroll1.XPI += 256;
-							obj->YPI -= 24;
-							ActStartScreenWobble(obj);
-							queuesound(0x2a);
-							g.BonusComplete = TRUE;
-							g.CarWasted     = TRUE;
-						}
-						
-						break;
-					case 20-22:
-						/* nothing */
-						break;
-					FATALDEFAULT;
-				}
-			}
-			check_rect_queue_draw((Object *)obj);
-			break;
-		case 4:
-			NEXT(obj->mode0);
-			break;
-		case 6:
-			clearpush_1174((Object *)obj);
-			break;
-		FATALDEFAULT;
-	}
-}
-static void sub_25f06(Object_G2 *obj) {		// players on top of car
-	Object *nobj;
-	switch (obj->UD.UDcar.PeopleOnMe) {
-		case 0:		// no players on me
-			if (_check_platform(&g.Player1, obj)) {
-				obj->UD.UDcar.PeopleOnMe = 1;
-				if (nobj = AllocActor()) {
-					nobj->exists = TRUE;
-					nobj->Sel = 0x32;
-					nobj->SubSel = 0x2;
-				}
-			}
-			else if (_check_platform(&g.Player2, obj)) {
-				obj->UD.UDcar.PeopleOnMe = 2;
-				if (nobj = AllocActor()) {
-					nobj->exists = TRUE;
-					nobj->Sel = 0x32;
-					nobj->SubSel = 0x2;
-				}
-			}
-			break;
-		case 1:		// player1 is on me
-			if (_check_platform(&g.Player2, obj)) {
-				obj->UD.UDcar.PeopleOnMe = 3;
-				if (nobj = AllocActor()) {
-					nobj->exists = TRUE;
-					nobj->Sel = 0x32;
-					nobj->SubSel = 0x3;
-				}
-			} else if (!_check_platform(&g.Player1, obj)) {
-				obj->UD.UDcar.PeopleOnMe = 0;
-				if (nobj = AllocActor()) {
-					nobj->exists = TRUE;
-					nobj->Sel = 0x32;
-					nobj->SubSel = 0x5;
-				}
-			}				
-			break;
-		case 2:		// player2 is on me
-			if (_check_platform(&g.Player1, obj)) {
-				obj->UD.UDcar.PeopleOnMe = 3;
-				if (nobj = AllocActor()) {
-					nobj->exists = TRUE;
-					nobj->Sel = 0x32;
-					nobj->SubSel = 0x3;
-				}
-			}
-			else if (!_check_platform(&g.Player2, obj)) {
-				obj->UD.UDcar.PeopleOnMe = 0;
-				if (nobj = AllocActor()) {
-					nobj->exists = TRUE;
-					nobj->Sel = 0x32;
-					nobj->SubSel = 0x5;
-				}
-			}
-			break;
-		case 3:		// both players are on me, wait for both to come off;
-			if (!_check_platform(&g.Player1, obj)) {
-				if (!_check_platform(&g.Player2, obj)) {
-					obj->UD.UDcar.PeopleOnMe = 0;
-					if (nobj = AllocActor()) {
-						nobj->exists = TRUE;
-						nobj->Sel = 0x32;
-						nobj->SubSel = 0x6;
-					}					
-				} else {
-					obj->UD.UDcar.PeopleOnMe = 2;
-					if (nobj = AllocActor()) {
-						nobj->exists = TRUE;
-						nobj->Sel = 0x32;
-						nobj->SubSel = 0x4;
-					}
-				}
-
-			} else {
-				if (!_check_platform(&g.Player2, obj)) {
-					obj->UD.UDcar.PeopleOnMe = 1;
-					if (nobj = AllocActor()) {
-						nobj->exists = TRUE;
-						nobj->Sel = 0x32;
-						nobj->SubSel = 0x4;
-					}
-					
-				}
-			}
-			break;
-		FATALDEFAULT;
-	}
-}
+// in car.c
+void _ActSMCar(Object *obj);
 
 #pragma mark Act07 Guiles's Crate
 static void _SMAct07(Object *obj) {			// 272c6
@@ -1019,7 +380,7 @@ static void _SMAct08(Object_G2 *obj) {		// 274e4
 				nobj->Sel = 6;
 				nobj->XPI = 192;
 				nobj->YPI = 48;
-				obj->Owner = nobj;
+				obj->Owner = (Player *)nobj;
 			}
 			break;
 		case 2:
@@ -1028,7 +389,7 @@ static void _SMAct08(Object_G2 *obj) {		// 274e4
 			g.CarOffX = 0;
 			g.CarOffY = 0;
 			// XXX think we forgot AllocActor here?
-			nobj = obj->Owner;
+			nobj = (Object *)obj->Owner;
 			obj->YPI -= tmpy;
 			nobj->XPI += tmpx;
 			nobj->YPI -= tmpy;
@@ -1286,13 +647,6 @@ static void sub_27b5e(Object_G2 *obj) {			// 27b5e
 	}
 
 }
-static void sub_2581a(Object *obj) {
-	if (((obj->YPI & 0xc0) >> 5) != 6) {
-		obj->Pool = (obj->YPI >> 5);
-	} else {
-		obj->Pool = 4;
-	}
-}
 
 static void sub_278ac(Object_G2 *obj) {
 	//todo
@@ -1376,10 +730,10 @@ static void sub_27862(Object_G2 *obj) {			// 27862 Act09 BONUS1
 						if (obj->XPI >= 0xa0 && obj->XPI <0xe0 ) {
 							NEXT(obj->mode1);
 							obj->UD.UDbonus1.Velocity.full = 0;
-							obj->UD.UDbonus1.Accel.full = 0xffffc0000;
+							obj->UD.UDbonus1.Accel.full = 0xfffc0000;
 						}
-						actiontick(obj);
-						check_rect_queue_draw(obj);
+						actiontick((Object *)obj);
+						check_rect_queue_draw((Object *)obj);
 						break;
 					case 4:					// 27a34
 						obj->XPI += obj->UD.UDbonus1.H009c.part.integer;
@@ -1389,10 +743,10 @@ static void sub_27862(Object_G2 *obj) {			// 27862 Act09 BONUS1
 							g.x8a64[0] = 1;
 							obj->UD.UDbonus1.Velocity.full = 0x0004c000;
 							temp = (sf2rand() & 1) + obj->SubSel;
-							obj->UD.UDbonus1.H009c.full = (u16[]){0xfffe8000,0xffff8000,0x00008000,0x00018000}[temp];
+							obj->UD.UDbonus1.H009c.full = (u32[]){0xfffe8000,0xffff8000,0x00008000,0x00018000}[temp];
 						}
-						actiontick(obj);
-						check_rect_queue_draw(obj);
+						actiontick((Object *)obj);
+						check_rect_queue_draw((Object *)obj);
 						break;
 					case 6:										// 27a8a
 						if(obj->mode2) {
@@ -1409,8 +763,8 @@ static void sub_27862(Object_G2 *obj) {			// 27862 Act09 BONUS1
 								}
 								obj->UD.UDbonus1.Velocity.full = 0x00028000;
 							}
-							actiontick(obj);
-							check_rect_queue_draw(obj);
+							actiontick((Object *)obj);
+							check_rect_queue_draw((Object *)obj);
 						} else {
 							obj->X.full += obj->UD.UDbonus1.H009c.full;
 							if(sub_27b4c(obj)<0) {
@@ -1418,8 +772,8 @@ static void sub_27862(Object_G2 *obj) {			// 27862 Act09 BONUS1
 								obj->Pool = 2;
 								obj->exists = 1;
 							}
-							actiontick(obj);   
-							check_rect_queue_draw(obj);
+							actiontick((Object *)obj);   
+							check_rect_queue_draw((Object *)obj);
 						}
 
 						break;
@@ -1473,6 +827,7 @@ void sub_24f22(Object *obj) {
 	}
 	check_rect_queue_draw(obj);
 }
+
 
 
 void actions_198a(void) {			/* 249fa */
