@@ -49,7 +49,6 @@ static void syslib_20 (void);
 
 static void showtextbank0(u8 d0)  ;		//showtextbank4
 static void showtextbank2(u8 d0)  ;		//showtextbank4
-
 static void showtextbank4(u8 d0)  ;		//showtextbank4
 
 
@@ -71,7 +70,7 @@ void *data_155c[] = {
 	NULL,	//5a3e,
 	syslib_18,	//5b22	usa/etc winning chants,
 	syslib_1c,	//5c12,
-	syslib_20,	//5410,
+	syslib_20,	//5410, add to player score
 	NULL,	//5ce2 jap winning chants,
 	NULL,	//4a76 die and go to test menu?
 	NULL,	//5e14
@@ -516,7 +515,7 @@ void syslib_0c (void) {
 			break;
 		case 0x1e:
 			QueueEffect(LC0_DARK_123, task->params.Param2);
-			do {sleep(1);} while (g.FadeScroll3 != 0xffffffff);  
+			do {sf2sleep(1);} while (g.FadeScroll3 != 0xffffffff);  
 			clear_scrolls_123(task);      /* dies */
 			break;
 		case 0x20:
@@ -528,7 +527,7 @@ void syslib_0c (void) {
 			start_effect(LC0_DARK_SCROLL2, task->params.Param2);
 			start_effect(LC0_DARK_SCROLL3, task->params.Param2);
 			
-			do { sleep(1); } while (g.FadeScroll3 != 0xffffffff);
+			do { sf2sleep(1); } while (g.FadeScroll3 != 0xffffffff);
 			sub_4bd6(task);
     }
 }
@@ -991,7 +990,7 @@ static void syslib_1c(void) {		//5c12
 		}
 	}
 }	
-static void syslib_20(void) {		//5410
+static void syslib_20(void) {		//5410 increase player score
 	u32 data;
 	u16 *gfx_p;
 	Player *ply;

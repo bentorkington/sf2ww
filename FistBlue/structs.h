@@ -195,11 +195,11 @@ typedef struct game {
     u16 LastFightStage;
 	char	x0a02;
 	char	x0a03;
-    short	Diff_0a04;				/* a difficulty counter */
-    u8		Diff_0a06;
-    u16		x0a08;
+    short	Diff_0a04;				/* max of a04,6,8 */
+    short	Diff_0a06;
+    u16		Diff_0a08;
 	u16		x0a0a;
-	short	x0a0c;
+	short	x0a0c;				// number of battles done 
 	char	x0a0e;
 	u8		x0a0f;
 	
@@ -208,7 +208,7 @@ typedef struct game {
 	u8	BisonBeatSide;			/* x0a14 */
 	u8	VictoryCnt;					/* 0a15 incremented each victory */
 	u16	x0a16;			// difficulty, array index
-    u8  x0a18;			// not found set
+    u8  x0a18;			// Max Difficulty if true, not found set yet
 	u8	ComputerWon;	/* 0x0a19 */
     
 	

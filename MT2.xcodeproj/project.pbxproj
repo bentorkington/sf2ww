@@ -54,7 +54,7 @@
 		B5ADB86D13B2B57E00905DFE /* sprite.c in Sources */ = {isa = PBXBuildFile; fileRef = B5ADB84513B2B57E00905DFE /* sprite.c */; };
 		B5ADB86E13B2B57E00905DFE /* task.c in Sources */ = {isa = PBXBuildFile; fileRef = B5ADB84913B2B57E00905DFE /* task.c */; };
 		B5ADB87213B2B59A00905DFE /* glwimp.c in Sources */ = {isa = PBXBuildFile; fileRef = B5ADB87013B2B59A00905DFE /* glwimp.c */; };
-		B5E05DE11475B0B9007224B5 /* actions.c in Sources */ = {isa = PBXBuildFile; fileRef = B5ADB7E413B2B57D00905DFE /* actions.c */; };
+		B5BA3ACE147F0EBC0069ACD3 /* actions.c in Sources */ = {isa = PBXBuildFile; fileRef = B5ADB7E413B2B57D00905DFE /* actions.c */; };
 		B5E9056313B2D5FE00833C5A /* ParamController.m in Sources */ = {isa = PBXBuildFile; fileRef = B5E9056213B2D5FE00833C5A /* ParamController.m */; };
 		B5E9056513B2D61900833C5A /* ParamController.xib in Resources */ = {isa = PBXBuildFile; fileRef = B5E9056413B2D61900833C5A /* ParamController.xib */; };
 /* End PBXBuildFile section */
@@ -623,6 +623,7 @@
 				B551553514773E8A00A8BBD9 /* coinage.c in Sources */,
 				B51533F2147EEB4F004A87B0 /* car.c in Sources */,
 				B51533F5147EEBDB004A87B0 /* drums.c in Sources */,
+				B5BA3ACE147F0EBC0069ACD3 /* actions.c in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

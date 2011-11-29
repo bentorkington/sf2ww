@@ -37,12 +37,12 @@ extern Game g;
 const HitBoxAct hitb_28290[] = {{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}};
 
 const struct hitboxes hitboxes_28284 = {
-	hitb_28290,
-	hitb_28290,
-	hitb_28290,
-	hitb_28290,
-	hitb_28290,
-	hitb_28290,
+	(HitBox *)hitb_28290,
+	(HitBox *)hitb_28290,
+	(HitBox *)hitb_28290,
+	(HitBox *)hitb_28290,
+ 	          hitb_28290,
+	(HitBox *)hitb_28290,
 };
 
 const Image image_28278 = {

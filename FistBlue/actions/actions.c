@@ -1673,15 +1673,13 @@ static void action_1e(Object *obj) {		//18c1c
 	UD1E *ud = (UD1E *)&obj->UserData;
 	static const char data_18e2a[][2]={{0x78, 0x78},{0x28,0xc8},{0x50,0xa0}};
 	switch (obj->SubSel) {
-		case 0:
-		case 1:
-		case 2:
+		case 3:
 			if (obj->mode0 == 0) {		
 				setaction_list(obj, actlist_1912a, obj->UserByte);		// flags
 			}
 			enqueue_and_layer(obj);
 			break;
-		case 3:
+		case 0 ... 2:
 			switch (obj->mode0) {
 				case 0:
 					NEXT(obj->mode0);
@@ -1726,7 +1724,7 @@ static void action_1e(Object *obj) {		//18c1c
 				case 2:
 					if (g.CurrentStage != STAGE_USA_BALROG && obj->UserByte == 0 && obj->Step == 0 && obj->mode2 == 0) {
 						if (--obj->LocalTimer == 0) {
-							g.Pause_9e1 = TRUE;
+							g.Pause_9e1 = 1;
 							obj->mode2 += 2;
 						}
 					}
@@ -1745,7 +1743,7 @@ static void action_1e(Object *obj) {		//18c1c
 								NEXT(obj->mode1);
 							}
 							break;
-						case 2:
+						case 2:				
 							actiontick(obj);
 							break;
 						case 4:
@@ -2027,7 +2025,7 @@ static void sub_1acaa(Object *obj) {
 		switch (obj->mode1) {
 			case 0:
 				NEXT(obj->mode0);
-				obj->Draw2.full = 0xfff0;		// XXX overflow
+				obj->Draw2.full = 0xfff0;	
 				setaction_list(obj, actlist_1ae1a, g.RoundCnt);
 				break;
 			case 2:
@@ -2394,8 +2392,8 @@ static void Act23SMBlood(Object *obj) {		// 1e6fc
 			NEXT(obj->mode0);
 			a0 = obj->Owner;
 			obj->Flip = a0->Flip;
-			obj->XPI = a0->XPI;
-			obj->YPI = a0->YPI;
+			obj->XPI  = a0->XPI;
+			obj->YPI  = a0->YPI;
 			temp = (short []){-32, -37}[a0->FighterID==FID_BLANKA ? 0 : 1];
 			obj->XPI += obj->Flip ? -temp : temp ;
 			obj->YPI += (short []){ 69,  82}[a0->FighterID==FID_BLANKA ? 0 : 1];
@@ -2577,7 +2575,7 @@ static void action_2c (Object *obj) {
 		case 0:
 		case 2:
 			break;
-		FATALDEFAULT;		// trap illegals
+		FATALDEFAULT;
 	}
 	switch (obj->mode0) {
 		case 0:

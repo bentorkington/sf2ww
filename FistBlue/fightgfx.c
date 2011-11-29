@@ -84,7 +84,7 @@ void redraw_fight_dsk(void) {			//9418
 		0x81f7, 0x81f6, 0x81f5, 0x81f4, 0x81f3, 0x81f2, 0x81f1, 0x81f0,
 	};
 		
-    short temp = 8;
+    int tiles = 8;
     int i=0;
 	//    sub_929c();  /* see if we've beaten hiscore */
     if(g.OnBonusStage) {
@@ -93,58 +93,62 @@ void redraw_fight_dsk(void) {			//9418
         if(g.TimeOut) { return; }    
 		
         update_energy_cursor(PLAYER1);
-		
 		cp = MakePointObj(160, 220);
+		
+
         if(g.Player1.EnergyCursor >= 0) {     
             if(g.Player1.EnergyCursor / 16) {
                 for(i=0; i<(g.Player1.EnergyCursor / 16); i++) {        
                     OBJECT_DRAW_ID(90 + i, CP_X, CP_Y, TILE_ENERGY_FULL, ATTR_NO_FLIP | PALETTE_0C);
 					INC_GFX_CURSOR(&cp, -16, 0);
-                    temp--;
+                    --tiles;
                 }
             }
-            if(temp >= 0) {
+			
+            if(tiles >= 0) {
                 OBJECT_DRAW_ID(90 + i, CP_X, CP_Y, 
                             data_95fa[g.Player1.EnergyCursor & 0xf],
                             ATTR_X_FLIP | PALETTE_0C
 							);
 				INC_GFX_CURSOR(&cp, -16, 0);
-                i++;
-                temp--;
+                ++i;
+                --tiles;
             }
 		}
-		while(temp >= 0) {
+		// draw the remaining empty tiles
+		while(tiles >= 0) {
 			OBJECT_DRAW_ID(90 + i, CP_X, CP_Y, TILE_ENERGY_EMPTY, ATTR_NO_FLIP | PALETTE_0C);
 			INC_GFX_CURSOR(&cp, -16, 0);
-			i++; temp--;
+			i++; tiles--;
 		}
         
 		
-		temp = 8;
+		tiles = 8;
         update_energy_cursor(PLAYER2);
+		cp = MakePointObj(208, 220);
+
         if(g.Player2.EnergyCursor >= 0) {     
             if(g.Player2.EnergyCursor / 16) {
-				cp = MakePointObj(208, 220);
-                for(i=0; i<g.Player2.EnergyCursor >> 4; i++) {  
+                for(i=0; i<g.Player2.EnergyCursor / 16; ++i) {  
 					OBJECT_DRAW_ID(110 + i, CP_X, CP_Y, TILE_ENERGY_FULL, ATTR_NO_FLIP | PALETTE_0C);
 					INC_GFX_CURSOR(&cp, 16, 0);
-                    temp--;
+                    --tiles;
                 }
             }
-            if(temp >= 0) {
+            if(tiles >= 0) {
                 OBJECT_DRAW_ID(110 + i, CP_X, CP_Y, 
 							   data_95fa[g.Player2.EnergyCursor & 0xf],
 							   ATTR_NO_FLIP | PALETTE_0C
 							   );
 				INC_GFX_CURSOR(&cp, 16, 0);
                 i++;
-                temp--;
+                tiles--;
             }
 		}
-		while(temp >= 0) {
+		while(tiles >= 0) {
 			OBJECT_DRAW_ID(110 + i, CP_X, CP_Y, TILE_ENERGY_EMPTY, ATTR_NO_FLIP | PALETTE_0C);
 			INC_GFX_CURSOR(&cp, 16, 0);
-			i++; temp--;
+			i++; tiles--;
 		}
 		
     }
@@ -154,7 +158,7 @@ void redraw_fight_dsk(void) {			//9418
 void bonus_init_player(Player *ply) {
     ply->BonusScore     = 0;
     ply->BonusScoreDash = 0;
-    // todo: setup_bonus_display(ply);
+    //todo: setup_bonus_display(ply);
 }
 
 void draw_fight_dsk_init (void) {

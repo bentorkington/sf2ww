@@ -1268,7 +1268,6 @@ void set_jumping(Player *ply) {
         ply->VelX.full = -ply->VelX.full;
         ply->AclX.full = -ply->AclX.full;
     }
-	//printf("set_jumping  %04x %04x %04x %04x\n", ply->VelX.full, ply->AclX.full, ply->VelY.full, ply->AclY.full);
     CASetAnimWithStep(ply, STATUS_JUMP_START);
 }
 
@@ -1300,9 +1299,9 @@ void downandout(Player *ply) {		//2a052
 			}
 			NEXT(ply->mode3);
 			ply->VelX.full    = ply->NextVelX.full;
-			ply->AclX.full  = ply->NextAclX.full;
+			ply->AclX.full    = ply->NextAclX.full;
 			ply->VelY.full    = ply->NextVelY.full;
-			ply->AclY.full  = ply->NextAclY.full;
+			ply->AclY.full    = ply->NextAclY.full;
 			if(ply->Direction == FACING_LEFT) {
 				ply->VelX.full = -ply->VelX.full;
 			}
@@ -1320,8 +1319,8 @@ void downandout(Player *ply) {		//2a052
 			CATrajectory((Object *)ply);
 			if((ply->PlatformFallDir != 0 || ply->BoundCheck != 0) && ply->GroundSoundDisa == 0 ) {
 				queuesound(SOUND_GROUND_THUMP);
-				ply->ReactTimer = 0xc;              
-				ply->VelX.full = 0;
+				ply->ReactTimer = 12;              
+				ply->VelX.full  = 0;
 				if(ply->VelY.full >  0) { ply->VelY.full = 0; }
 			}
 			if(ply->VelY.full >= 0) { 
@@ -1449,10 +1448,11 @@ void ply_exit_crouch(Player *ply) {	// 287aa
     if(ply->Human) {
         ply->DSOffsetX = 0;
         ply->mode1     = PLSTAT_CROUCH;
-        ply->Attacking = FALSE;
-        ply->IsJumpThreat     = FALSE;
         ply->mode2     = 0;
         ply->mode3     = 0;
+
+        ply->Attacking    = FALSE;
+        ply->IsJumpThreat = FALSE;
         
         CASetAnim2(ply, STATUS_CROUCH, 2);
         proc_plstat_crouch(ply);
@@ -1490,21 +1490,20 @@ inline short check_round_result(void) {		/* 2cd06 */
 }
 
 static void _react_to_result(Player *ply, u8 plstat, u8 extra) {		// 2a7a0 dupe with PSSetRoundReact
-	ply->mode1=plstat;
+	ply->mode1 = plstat;
+	ply->mode2 = 
+	ply->mode3 = 0;
+
 	ply->PSRoundReactMode = extra;
-	ply->mode2 = ply->mode3 = 0;
 	CASetAnim1(ply, STATUS_NORMAL);
 }
 
-void react_to_result(Player *ply) {		/* 2a76e */
+void react_to_result(Player *ply) {				/* 2a76e */
 	ply->DizzyStun = 0;
 	ply->PSRoundReactMode = 0;		//char
-	if(g.OnBonusStage) {
-		/* 0x2a7b8 */
+	if(g.OnBonusStage) {						/* 0x2a7b8 */
 		if(g.ActiveHumans == 3) {
-			/* 2a7ca */
 			if(g.RoundResult < 0) {
-				/* 2a7e2 */
 				if(g.BonusComplete) {
 					_react_to_result(ply, PLSTAT_VICTORY, 0);
 				} else {
@@ -1585,7 +1584,7 @@ void PSStateRoundOver(Player *ply) {				/* 2cd0c */
 #pragma mark ---- callback 28340 ----
 
 static void ply_calc_draw_order(void) {		/* 28414 */
-	if (g.x0a5c) {		/* char */
+	if (g.x0a5c) {		/* char, bison beating Mbison at end? */
 		if (g.Player1.FighterID == FID_GUILE) {
 			g.PlyDrawOrder = 0;
 		} else {
@@ -1618,20 +1617,15 @@ static void ply_set_direction_bonus(Player *ply) {		/* 284f6 */
 static void ply_set_enemydirection(void) {		/* 2846e */
 	int temp, d2;
 	if (g.OnBonusStage) {
-		/* 284e6 */
 		if (g.PreRoundAnim == 0) {
 			ply_set_direction_bonus(PLAYER1);
 			ply_set_direction_bonus(PLAYER2);
 		}
-	} else {
-		/* 28476 */
-		d2 = 0;
+	} else {		
 		temp = g.Player2.XPI - g.Player1.XPI;
-		if (temp >= 0) {
-			d2 = 1;
-		}
-		temp += 0x18;
-		if (temp >= 0x30) {
+		if (temp >= 0) { d2 = 1; } else { d2 = 0; }
+
+		if (temp > 24 || temp < -24) {
 			if (d2) {
 				g.Player1.EnemyDirection = FACING_RIGHT;
 				g.Player2.EnemyDirection = FACING_LEFT;
@@ -1639,14 +1633,13 @@ static void ply_set_enemydirection(void) {		/* 2846e */
 				g.Player1.EnemyDirection = FACING_LEFT;
 				g.Player2.EnemyDirection = FACING_RIGHT;
 			}
-
 		}
 	}
 }
 
 
 
-static void _PSPlayerDelta(void) {		/* 2851c */
+inline static void _PSPlayerDelta(void) {		/* 2851c */
 	/* 28528 inlined x 2 */
 	g.Player1.DeltaX.full = g.Player1.X.full - g.Player1.OldX.full;
 	g.Player1.DeltaY.full = g.Player1.Y.full - g.Player1.OldY.full;
@@ -1733,7 +1726,7 @@ static void _PSCalcOppDistances(void) {
 	}
 }
 
-inline void sub_28340(void) {		/* 28340 */
+void ApplyPhysicsRules(void) {		/* 28340 */
 	ply_calc_draw_order();				/* calc player draw order */
 	ply_set_enemydirection();			/* set directions */
 	_PSPlayerDelta();					/* inertia? */

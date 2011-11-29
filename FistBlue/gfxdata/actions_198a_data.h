@@ -7,10 +7,10 @@
  *
  */
 
-
 /* sythentic: */
 const HitBox hitb_null[] = {{0, 0, 0, 0}};
 const HitBoxAct hitbact_null[] = {{0,0,0,0,0,0,0,0,0,0,0}};
+
 								  
 
 const static HitBox hitb_24ef2[] = {EMPTY_HITBOX, {0, 48, 17, 50}};

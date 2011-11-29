@@ -249,10 +249,7 @@ void RM_SM_knockedout(Player *ply) {			// 29c4c
 	}
 }	
 
-void react_to_attack(Player *ply) {
-    /* 0x28ed8 */
-
-	
+void react_to_attack(Player *ply) {							/* 0x28ed8 */
 	static const char data_29144[]={4,4,4,4,3,3,3,2,1,1,1,-1};
 	static const char data_29150[]={6,6,6,5,5,5,4,4,3,3,2,1,1,1,1,1,-1,-1};
 	static const char data_29162[]={8,8,8,7,7,7,6,5,5,4,3,2,1,1,1,1,1,1,1,1,-1,-1};
@@ -276,11 +273,11 @@ void react_to_attack(Player *ply) {
 			
 			ply->Flip = ply->Direction ^ 1;
 			
-			temp = ply->ReactMode;
 			if(ply->ReactMode == RM_MULTIHIT) {
-				temp += ply->MultiHitToggle * 2;
+				CASetAnim2(ply, reactmode_to_status[ply->ReactMode/2 + ply->MultiHitToggle], ply->ReactMode2);
+			} else {
+				CASetAnim2(ply, reactmode_to_status[ply->ReactMode/2], ply->ReactMode2);
 			}
-			CASetAnim2(ply, reactmode_to_status[temp/2], ply->ReactMode2);
 			action_start_35(ply);
 			
 			if(ply->ReactMode == RM_VOMIT1) {
@@ -325,16 +322,17 @@ void react_to_attack(Player *ply) {
 			} else {
 				/* 0x2903e */
 				ply->Invincible = FALSE;
-				ply->DSOffsetX = 0;
-				if(ply->ActionScript->Block) {
-					/* 28826 */
+				ply->DSOffsetX  = 0;
+				if(ply->ActionScript->Block) {          /* 28826 */
 					if(ply->Human) {
 						ply->DSOffsetX = 0;
 						ply->mode1     = PLSTAT_STANDBLOCK;
-						ply->mode2     = 0;
 						if(ply->ActionScript->Crouch) {
 							ply->mode2 = 4;
+						} else {
+							ply->mode2 = 0;
 						}
+
 					} else {
 						ply->DSOffsetX = 0;
 						ply->x01ac     = TRUE;		// never compared
@@ -358,60 +356,66 @@ void RMFootSwept(Player *ply) {		/* 29178 */
     int temp, temp2;
     
     switch (ply->mode2) {
-    case 0x0:
-        NEXT(ply->mode2);
-        ply->Flip = ply->Direction;
-        CASetAnim2(ply,STATUS_FOOTSWEPT,0);
-        break;
-    case 0x2:
-        if(ply->Timer2) {
-            ply->Timer2--;
-        } else {
-            NEXT(ply->mode2);   /* 291b6 */
-            ply->GroundSoundDisa = FALSE;
-            ply->ReactTimer = 0;
-            ply->Airborne   = -1;
-            ply->VelX.full  = 0x0200;
-            ply->AclX.full  = 0x0000;
-            ply->VelY.full  = 0x05c0;
-            ply->AclY.full  = 0x0048; /* standard gravity */
-            if(ply->Flip) {ply->VelX.full = -ply->VelX.full;}
-            ply->x012a = ply->VelX.full;
-            ply->PSPushBacks = data_29150;
-        }
-        break;
-    case 0x4:
-        if(ply->ReactTimer) {
-            ply->GroundSoundDisa = TRUE;
-            if(--ply->ReactTimer) { return; }
-        }
-        CATrajectory((Object *)ply); 
-        if((ply->PlatformFallDir != 0 || ply->BoundCheck != 0) && ply->GroundSoundDisa == 0 ) {    
-            queuesound(SOUND_GROUND_THUMP);
-            ply->ReactTimer = 12;               
-            ply->VelX.full  = 0;
-            if(ply->VelY.full >  0) { ply->VelY.full = 0; }
-        }
-        if(check_ground_collision(ply))     { sub_29280(ply); return; }
-
-        temp = *ply->PSPushBacks;
-        if(temp>0) { ply->PSPushBacks++; temp = 0; }
-        if(ply->x0071) {
-            temp2=1;
-            if(ply->x012a >= 0) {
-                temp = -temp;
-                temp2=2;
-            }
-            if (temp2 == ply->PlatformFallDir && ply->DidCollideDash == FALSE) {
-                ply->Opponent->XPI += temp;
-            }
-        }
-        actiontick((Object *)ply);
-        break;
-	case 0x6: _RMGetBackUp(ply);        break;
-    case 0x8: _RMRecoverTumble(ply);	break;
-    case 0xa: PSDizzyState(ply);		break;
-	FATALDEFAULT;
+		case 0x0:
+			NEXT(ply->mode2);
+			ply->Flip = ply->Direction;
+			CASetAnim2(ply,STATUS_FOOTSWEPT,0);
+			break;
+		case 0x2:
+			if(ply->Timer2) {
+				ply->Timer2--;
+			} else {
+				NEXT(ply->mode2);   /* 291b6 */
+				ply->GroundSoundDisa = FALSE;
+				ply->ReactTimer = 0;
+				ply->Airborne   = -1;
+				ply->VelX.full  = 0x0200;
+				ply->AclX.full  = 0x0000;
+				ply->VelY.full  = 0x05c0;
+				ply->AclY.full  = 0x0048; /* standard gravity */
+				if(ply->Flip) {ply->VelX.full = -ply->VelX.full;}
+				ply->x012a = ply->VelX.full;
+				ply->PSPushBacks = data_29150;
+			}
+			break;
+		case 0x4:
+			if(ply->ReactTimer) {
+				ply->GroundSoundDisa = TRUE;
+				if(--ply->ReactTimer) { return; }
+			}
+			CATrajectory((Object *)ply); 
+			if((ply->PlatformFallDir != 0 || ply->BoundCheck != 0) && ply->GroundSoundDisa == 0 ) {  
+				// we've hit a wall
+				queuesound(SOUND_GROUND_THUMP);
+				ply->ReactTimer = 12;               
+				ply->VelX.full  = 0;
+				if(ply->VelY.full >  0) { ply->VelY.full = 0; }
+			}
+			if(check_ground_collision((Object *)ply)) { sub_29280(ply); return; }
+			
+			
+			temp = ply->PSPushBacks[0];
+			if(temp < 0) {
+				temp = 0; 
+			} else {
+				++ply->PSPushBacks;
+			}
+			if(ply->x0071) {
+				temp2=1;
+				if(ply->x012a >= 0) {
+					temp = -temp;
+					temp2=2;
+				}
+				if (temp2 == ply->PlatformFallDir && ply->DidCollideDash == FALSE) {
+					ply->Opponent->XPI += temp;
+				}
+			}
+			actiontick((Object *)ply);
+			break;
+		case 0x6: _RMGetBackUp(ply);        break;
+		case 0x8: _RMRecoverTumble(ply);	break;
+		case 0xa: PSDizzyState(ply);		break;
+			FATALDEFAULT;
     }
 }
 static void sub_29426(Player *ply, short d6) {		
@@ -527,15 +531,9 @@ void RMElectrocuted(Player *ply) {
         ply->LocalTimer = 12;
         check_dizzy(ply);
         break;
-    case 8:
-        _RMGetBackUp(ply);
-        break;
-    case 0xa:
-        _RMRecoverTumble(ply);
-        break;
-    case 0xc:
-        PSDizzyState(ply);
-        break;
+	case 8:		_RMGetBackUp(ply);			break;
+    case 0xa:	_RMRecoverTumble(ply);		break;
+    case 0xc:   PSDizzyState(ply);			break;
 	FATALDEFAULT;
     }
 }
@@ -818,8 +816,8 @@ static void _RMTumbleSM3(Player *ply) {		/* 2a21a tumble sm */
 				if (ply->VelY.full >= 0) {
 					ply->VelY.full = 0;
 				}
-				if(ply->UndealtDamage){
-					ply->Energy -= ply->UndealtDamage;
+				if(ply->UndealtDamage){				
+					ply->Energy     -= ply->UndealtDamage;
 					ply->EnergyDash -= ply->UndealtDamage;
 					ply->UndealtDamage = 0;
 					QueueEffect(ply->Side ^ 1, ply->RewardID);
@@ -830,7 +828,7 @@ static void _RMTumbleSM3(Player *ply) {		/* 2a21a tumble sm */
 				actiontick((Object *)ply);
 			} else {
 				if (ply->UndealtDamage) {
-					ply->Energy -= ply->UndealtDamage;
+					ply->Energy     -= ply->UndealtDamage;
 					ply->EnergyDash -= ply->UndealtDamage;
 					ply->UndealtDamage = 0;
 					QueueEffect(ply->Side ^ 1, ply->RewardID);

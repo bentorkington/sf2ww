@@ -86,15 +86,15 @@ void check_ply_x_bounds (Player *ply) {	/* 3232 verified */
 }        
 
 
-void LBStartTimeWarp(void) {   /* 0x3534 player knocked out somethingarartha */
+void LBStartTimeWarp(void) {   /* 0x3534 */
     Object *obj;
     
     if(g.OnBonusStage) { return; }
 	if(obj=AllocActor()) {
         g.FlagTimeWarp = TRUE;         /* time slows down */
-        obj->exists = TRUE;
-        obj->Sel    = SF2ACT_TIMEWARP;
-        obj->SubSel = 0x1;
+        obj->exists	   = TRUE;
+        obj->Sel       = SF2ACT_TIMEWARP;
+        obj->SubSel    = 0x1;
         obj->UserByte  = 0x1;
     }
 }
@@ -261,7 +261,6 @@ void ply_thrown(Player *ply) {        /* 3948 data at 93440 */
 	
     data = data_93440[opp->FighterID][ply->FighterID][opp->ActionScript->Catch];    
     
-	
     ply->XPI = opp->XPI + (opp->Flip ? -data[0] : data[0]) ;
     ply->YPI = opp->YPI + data[1];
     
@@ -334,7 +333,7 @@ void proc_player_actions(void) {		/* 282a8 */
 		if(g.ThrowEndHoldoff) {
 			g.ThrowEndHoldoff--;
 		} else {
-			sub_28340();		/* calc draw order, check direction, pushboxes etc. */
+			ApplyPhysicsRules();		/* calc draw order, check direction, pushboxes etc. */
 		}
 	}
 }

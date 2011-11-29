@@ -598,14 +598,14 @@ void give_100_points(short side) {		//53d6, wrong, actually 1
         
 /*********************      Difficulty stuff ****************/
 
-static void sub_2be6(short d0) {
+static void sub_2be6(short stage) {						// 2be6
 	g.OnBonusStage = TRUE;
-	g.CurrentStage = d0;
+	g.CurrentStage = stage;
 	sub_2c1a();
 }
 
 void sub_2b7c(void) {
-	static const short data_2b6e[4] = { 
+	static const short SF2_DEMO_STAGES[4] = {			// 2b6e
 		STAGE_JAPAN_RYU, 
 		STAGE_USA_GUILE,
 		STAGE_INDIA_DHALSIM, 
@@ -614,7 +614,7 @@ void sub_2b7c(void) {
 	short d0,d1;
 	
 	if(g.InDemo) {
-		g.CurrentStage = data_2b6e[g.DemoStageIndex];       /* 2b60 */
+		g.CurrentStage = SF2_DEMO_STAGES[g.DemoStageIndex];       /* 2b60 */
 		return;
 	} else if (g.x0a0f == 0) {
 		/* 2b8e */
@@ -657,8 +657,10 @@ void sub_2b7c(void) {
 
 void sub_4720(void) {
 	u16 data_4754[32]={
-		0x000a, 0x0020, 0x0002, 0x0000, 0x000a, 0x0008, 0x0010, 0x0008, 0x0014, 0x0008, 0x0010, 0x000a, 0x0010, 0x000a, 0x0014, 0x0010,
-		0x0002, 0x0010, 0x000a, 0x0008, 0x000a, 0x0020, 0x000a, 0x0002, 0x0000, 0x000a, 0x0008, 0x0014, 0x0008, 0x000a, 0x0010, 0x000a,  
+		0x000a, 0x0020, 0x0002, 0x0000, 0x000a, 0x0008, 0x0010, 0x0008, 
+		0x0014, 0x0008, 0x0010, 0x000a, 0x0010, 0x000a, 0x0014, 0x0010,
+		0x0002, 0x0010, 0x000a, 0x0008, 0x000a, 0x0020, 0x000a, 0x0002, 
+		0x0000, 0x000a, 0x0008, 0x0014, 0x0008, 0x000a, 0x0010, 0x000a,  
 	};
 
 	short d0;
@@ -670,34 +672,28 @@ void sub_4720(void) {
 	bumpdifficulty();
 }
 
-void sub_4794(void) {
-	if (g.ActiveHumans != 3) {
+void sub_4794(void) {			// 4794
+	if (g.ActiveHumans != BOTH_HUMAN) {
 		g.Diff_0a04 += 8;
 		g.Diff_0a04 &= 0xff;
 	}
 }
 
-void bumpdifficulty(void) {
-	short d0;
+void bumpdifficulty(void) {				// 4414
     if(g.InDemo) { return; };
 	if(g.x0a18) {		// not found set
 		/* 43d6 */
 		g.Diff_0a06 = 0x69;
-		g.x0a08 = 0xff;
+		g.Diff_0a08 = 0xff;
 		g.CurrentDifficulty = 0x1f;
-		return;
+	} else {
+		g.Diff_0a06 = data_98f42[g.Difficulty][g.x0a16][0];
+		g.Diff_0a08 = data_98f42[g.Difficulty][g.x0a16][1];
+		
+		if (g.Diff_0a06 > g.Diff_0a04) {g.Diff_0a04 = g.Diff_0a06;}
+		if (g.Diff_0a08 > g.Diff_0a04) {g.Diff_0a04 = g.Diff_0a08;}
+		g.CurrentDifficulty = data_4976[g.Diff_0a04];		/* u8 array */
 	}
-	g.Diff_0a06 = data_98f42[g.Difficulty][g.x0a16][0];
-	g.x0a08 = data_98f42[g.Difficulty][g.x0a16][1];
-	
-	if(g.Diff_0a04 > g.Diff_0a06) { d0 = g.Diff_0a04; } else {d0 = g.Diff_0a06;}
-	if(g.x0a08 > d0) {
-		d0 = g.x0a08;
-	}
-	g.Diff_0a04 = d0;
-	g.CurrentDifficulty = data_4976[d0];		/* u8 array */
-//	printf("bumpDifficulty: Current: %d ", g.CurrentDifficulty);
-//	printf(" 0a04: %02x 0a06: %02x 0a08: %02x \n", g.Diff_0a04, g.Diff_0a06, g.x0a08);
 }
 
 void bumpdifficulty_4576(void) {
@@ -709,15 +705,16 @@ void bumpdifficulty_4576(void) {
 }
 
 void bumpdifficulty_01(void) {// 453c
-	short d1;
 	static char data_4566[] = {
-		24, 32, 40, 48, 56, 60, 64, 68, 72, 76, 0x50, 0x54, 0x58, 0x5c, 0x60, 0x63
+		24, 32, 40, 48, 56, 60, 64, 68, 
+		72, 76, 80, 84, 88, 92, 96, 99
 	};
-	d1 = 0x54;
 	if (g.x0a0c < 16) {
-		d1 = data_4566[g.x0a0c];
+		g.Diff_0a04 -= data_4566[g.x0a0c];
+	} else {
+		g.Diff_0a04 -= 84;
 	}
-	g.Diff_0a04 -= d1;
+
 	if (g.Diff_0a04 < 0) {
 		g.Diff_0a04 = 0;
 	}
@@ -725,11 +722,12 @@ void bumpdifficulty_01(void) {// 453c
 	bumpdifficulty();
 	++g.x0a0c;
 }
+
 void BumpDiff_NewGame(void) {
     if(g.InDemo) {
 		/* 43d6 inlined */
 		g.Diff_0a06 = 0x69;
-		g.x0a08 = 0x00ff;
+		g.Diff_0a08 = 0x00ff;
 		g.CurrentDifficulty = 0x1f;
     } else {
         g.Diff_GameCnt++;
@@ -770,37 +768,31 @@ void bumpdifficulty_08(void) {
 	}
 }
 void bumpdifficulty_02(void) {
-	short d1;
 	if(g.ActiveHumans == 3 || g.OnBonusStage) { return; }
 	if(g.Diff_0ad6 < 0x3d) {
-		d1 = data_44f6[g.Diff_0ad6];		/* u16 */
+		g.x8a36     += data_44f6[g.Diff_0ad6];
+		g.Diff_0a04 += data_44f6[g.Diff_0ad6];		/* u16 */
 	} else {
-		d1 = 4;
+		g.x8a36     += 4;
+		g.Diff_0a04 += 4;
 	}
-	g.Diff_0a04 += d1;
 	g.Diff_0a04 &= 0xff;
-	g.x8a36 += d1;		/* u16 */
 	bumpdifficulty();
 }
 void bumpdifficulty_03(void) {	// 46e2
-	short d1;
-	
 	static char data_4716[] = {0,2,4,8,12,16,20,24,28,32};
 	
 	if (g.ActiveHumans == 3 || g.OnBonusStage) { return; }
-
-	
 	if (g.Diff_WeakBoxCnt > 8) {
-		d1 = 32;
+		g.Diff_0a04 += 32;
+		g.x8a38     += 32;
 	} else {
-		d1 = data_4716[g.Diff_WeakBoxCnt];
+		g.Diff_0a04 += data_4716[g.Diff_WeakBoxCnt];
+		g.x8a38     += data_4716[g.Diff_WeakBoxCnt];
 	}
 
-	g.x8a38     += d1;
-	g.Diff_0a04 += d1;
 	g.Diff_0a04 &= 0xff;
-	bumpdifficulty();
-	
+	bumpdifficulty();	
 }
 void bumpdifficulty_04(void) { /* 47aa */
 	short d1 = 0;
@@ -938,14 +930,15 @@ void bumpdifficulty_10(void) {		/* 0x46b4 */
 	bumpdifficulty();
 }
 void bump_difficulty_4816(void) {  /* 0x4816 */
-	if(g.ActiveHumans == 3 || g.OnBonusStage) { return;}
-	g.Diff_0a04++;
-	g.Diff_0a04 &= 0xff;
-	bumpdifficulty();
+	if(g.ActiveHumans != BOTH_HUMAN && g.OnBonusStage == 0) { 
+		g.Diff_0a04++;
+		g.Diff_0a04 &= 0xff;
+		bumpdifficulty();
+	}
 }
 
 void BumpDiff_PowerMove(void) {	// 46c2 same as 4816?
-	if (g.ActiveHumans != 3 && g.OnBonusStage == 0) {
+	if (g.ActiveHumans != BOTH_HUMAN && g.OnBonusStage == 0) {
 		++g.Diff_0a04;
 		g.Diff_0a04 &= 0xff;
 		bumpdifficulty();
@@ -983,7 +976,7 @@ static void sub_8d94(short side) {
 		pla = PLAYER1;
 		plb = PLAYER2;
 	}
-	if (g.ActiveHumans == 3) {
+	if (g.ActiveHumans == BOTH_HUMAN) {
 		//8e0e
 		check_level_sequence(plb);
 		set_defeated_false(plb);

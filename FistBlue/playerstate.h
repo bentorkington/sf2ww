@@ -49,7 +49,7 @@ short check_round_result(void);			/* 2cd06 */
 void PSStateRoundOver(Player *ply);
 void PSPushBack(Player *ply);		/* handle pushback */
 void proc_plstat_victory(Player *ply);		/* plstat_victory */
-void sub_28340(void);		/* 28340 */
+void ApplyPhysicsRules(void);		/* 28340 */
 void _RMRecoverTumble(Player *ply) ;     /* 292f4 recovering from a knockover */
 void set_attacking(Player *ply);
 short PSSetNextAction(Player *ply);		// 288c0

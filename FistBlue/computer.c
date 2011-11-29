@@ -970,13 +970,13 @@ void comp_setjumping_main(Player *ply) {	/* 2c534 */
 }
 void exit_comp_normal(Player *ply) {	/* 0x2c408 */
 	set_ply_directions(ply);			/* 2f8a */
-	ply->Step |= STEP_STILL;			// ???
+	ply->Step |= STEP_STILL;
 	ply->StepSave = ply->Step;
 	ply->Attacking    = FALSE;
 	ply->IsJumpThreat = FALSE;
 	ply->mode1 = 0;
 	ply->mode2 = 0;
-	slib_ply_overlap();  /* 7e12a check pushboxes */
+	slib_ply_overlap(); 
 	comp_plstat_normal(ply);
 }
 void exit_comp_plstatfe_normal(Player *ply) {	/* 2c436 */

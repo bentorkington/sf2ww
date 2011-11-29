@@ -112,11 +112,11 @@ void sleep2(void) {
 		
 
 void init_fight_vars(void) {			/* 0x2b0c */
-	g.Player1.RoundsWon = 0;
-	g.Player2.RoundsWon = 0;
+	g.Player1.RoundsWon  = 0;
+	g.Player2.RoundsWon  = 0;
 	g.Player1.Continuing = FALSE;
 	g.Player2.Continuing = FALSE;
-	g.ActiveHumans = (g.Player1.Human | g.Player1.x02ae) + (g.Player1.Human | g.Player2.x02ae) * 2;
+	g.ActiveHumans = (g.Player1.Human | g.Player1.x02ae) + ((g.Player1.Human | g.Player2.x02ae) * 2);
 	if(!g.OnBonusStage) {
 		sub_2c38();		/* disabled, stops identical fighters */
 	}
@@ -128,7 +128,6 @@ void init_fight_vars(void) {			/* 0x2b0c */
 	
 void newgame(void) {
 	sub_2af2();		/* zero the scores and some game vars */
-	//g.CurrentStage = STAGE_USA_GUILE;		// xxx
 	BumpDiff_NewGame();
 }
 	
@@ -317,6 +316,8 @@ void LBDecodeInputs(void) {		// 2320
 void intproc(void) {        /* 0x1baa */
 #ifdef CPS
 	// XXX these should be out of CPS
+	// WHAT!?
+	
     g.x008d = g.FlipDisplay ^ g.x02df;
     (void *)CPS_VIDCNTL = (g.x008d >> 4) | g.x004c; /* might as well */
     (void *)CPS_DISPENA = g.DispEna;     /* need to emulate this */
@@ -342,7 +343,7 @@ void intproc(void) {        /* 0x1baa */
 	_get_live_jumpers();
 }
 
-static void sub_225c(void) {	// fetch controls from script instead of user
+static void _controlscript_P1(void) {	// 225c fetch controls from script instead of user
 	u16 *data;
 	if(--g.DemoJoyP1Timer != 0) {
 		data = g.DemoJoyP1;
@@ -354,7 +355,7 @@ static void sub_225c(void) {	// fetch controls from script instead of user
 		g.DemoJoyP1 = data + 2;
 	}
 }
-static void sub_2282(void) {	// fetch controls from script instead of user
+static void _controlscript_P2(void) {	// 2282 fetch controls from script instead of user
 	u16 *data;
 	if(--g.DemoJoyP2Timer != 0) {
 		data = g.DemoJoyP2;
@@ -374,8 +375,8 @@ void LBGetInputs(void) {		//2224
 		if ((g.JPCost & 0x80) && (g.JPCost & 0x40)) {
 			sub_22a8();
 		} else {
-			sub_225c();
-			sub_2282();
+			_controlscript_P1();
+			_controlscript_P2();
 		}
 	} else {
 		g.Player1.JoyDecode.full = g.ContrP1.full;
@@ -435,13 +436,13 @@ inline void fighttick(void) {
     DSDrawAllMain(); 
 }
 inline void proc_all_actions (void) {    /* 0x7f9a */
-    proc_player_actions();    /* 0x282a8 player related processing */
-    DSDrawShadows();    /* 0x7bc00 */       
-    process_projectiles();    /* 0x22aca */
-    actions_198a();           /* GROUP 2  0x249fa in actions_198a.c*/
-    proc_actions();           /*  0xc7da  in actions.c */
-    actions_530a();           /* 0x82a52 */
-    GSMain();        /* 0x8318a */
+    proc_player_actions();    
+    DSDrawShadows();    
+    process_projectiles();
+    actions_198a();
+    proc_actions();
+    actions_530a();
+    GSMain();      
 }
 void all_actions_sprites (void) {
 	/* Collisions are ignored, otherwise same as fighttick */
