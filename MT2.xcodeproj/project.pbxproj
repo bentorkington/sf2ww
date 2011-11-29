@@ -15,6 +15,7 @@
 		B51533F5147EEBDB004A87B0 /* drums.c in Sources */ = {isa = PBXBuildFile; fileRef = B51533F4147EEBDB004A87B0 /* drums.c */; };
 		B551553514773E8A00A8BBD9 /* coinage.c in Sources */ = {isa = PBXBuildFile; fileRef = B551553414773E8A00A8BBD9 /* coinage.c */; };
 		B56A718C1411B0D300DF7F02 /* game.c in Sources */ = {isa = PBXBuildFile; fileRef = B56A718B1411B0D300DF7F02 /* game.c */; };
+		B56BBD5514859AA100FF84CB /* fbtests.c in Sources */ = {isa = PBXBuildFile; fileRef = B56BBD5414859AA100FF84CB /* fbtests.c */; };
 		B5871ED71408E4F4004A45F5 /* pthreads.c in Sources */ = {isa = PBXBuildFile; fileRef = B5871ED61408E4F4004A45F5 /* pthreads.c */; };
 		B5ADB7A913B2B2EA00905DFE /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = B5ADB7A813B2B2EA00905DFE /* MainMenu.xib */; };
 		B5ADB7AD13B2B34900905DFE /* OGLView.m in Sources */ = {isa = PBXBuildFile; fileRef = B5ADB7AC13B2B34900905DFE /* OGLView.m */; };
@@ -81,6 +82,8 @@
 		B56A715D1411AA1000DF7F02 /* io.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = io.h; sourceTree = "<group>"; };
 		B56A718A1411B0D300DF7F02 /* game.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = game.h; sourceTree = "<group>"; };
 		B56A718B1411B0D300DF7F02 /* game.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = game.c; sourceTree = "<group>"; };
+		B56BBD5314859AA100FF84CB /* fbtests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = fbtests.h; sourceTree = "<group>"; };
+		B56BBD5414859AA100FF84CB /* fbtests.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = fbtests.c; sourceTree = "<group>"; };
 		B56E0DC913B95EB600FC837B /* actions_198a_data.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = actions_198a_data.h; path = FistBlue/gfxdata/actions_198a_data.h; sourceTree = SOURCE_ROOT; };
 		B5869A8313B561F1001844D9 /* graphics.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = graphics.h; sourceTree = "<group>"; };
 		B5869A8413B561F1001844D9 /* graphics.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = graphics.c; sourceTree = "<group>"; };
@@ -513,6 +516,8 @@
 			children = (
 				B5AEA9D81405A46600DD9798 /* cpstests.h */,
 				B5AEA9D91405A46600DD9798 /* cpstests.c */,
+				B56BBD5314859AA100FF84CB /* fbtests.h */,
+				B56BBD5414859AA100FF84CB /* fbtests.c */,
 			);
 			path = tests;
 			sourceTree = "<group>";
@@ -624,6 +629,7 @@
 				B51533F2147EEB4F004A87B0 /* car.c in Sources */,
 				B51533F5147EEBDB004A87B0 /* drums.c in Sources */,
 				B5BA3ACE147F0EBC0069ACD3 /* actions.c in Sources */,
+				B56BBD5514859AA100FF84CB /* fbtests.c in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

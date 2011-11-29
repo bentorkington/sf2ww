@@ -13,6 +13,7 @@
 #include "game.h"
 #include "player.h"
 #include "structs.h"
+#include "fbtests.h"
 
 #include "lib.h"
 #include "pthreads.h"
@@ -23,6 +24,7 @@ struct game g;
 
 
 void manual_init(void) {
+	//fistblue_run_tests();
 	memclear(&g, sizeof(struct game));
 	LBResetState();
 	g.CurrentDifficulty = 0x7;
