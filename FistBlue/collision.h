@@ -16,7 +16,6 @@ void projectile_to_projectile(Player *obj);
 short diminishing_damage(int damage, Player *vict);
 void center_collision_coords(void);
 void sub_7d74e(Player *ply, Player *opp, const HitBoxAct *a3);
-void sub_7d7fc(Player *ply, Object *obj);
 
 void sub_7d99a(Object *a6);
 
@@ -33,6 +32,19 @@ void make_collision_sound(Player *ply, const HitBoxAct *a3);
 
 void CDCheckDecor (Object *a6);		/* 7e340 check if collision with player */
 
+const HitBoxAct *get_active_hitbox(Object *obj);
+const HitBox *CDGetHitBoxHead(Object *obj);		
+const HitBox *CDGetPushBox(Object *obj);
+short CDPushOverlap(Player *a2, Object *a6);								/* 7e460 */
+
+void set_hitstun_effect_for_projectile(Object *projectile, Object *obj2);
+
+
+#pragma mark damage functions 
+int sub_7d4fa(Player *vict, const HitBoxAct *a3);
+int lookup_damage_and_score(Player *ply, Player *vict, const HitBoxAct *a3);
+short randomize_damage(Player *ply,  int damage, const HitBoxAct *a3);
+int damage_multiplier(Player *vict, int d6);
 
 
 struct hitboxresult {

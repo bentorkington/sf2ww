@@ -1103,7 +1103,7 @@ static void sub_7ef2a(Object *obj, const u16 *tilep, const short *offsets,
 				++count;
 				sx= x - (*offsets - d5);
 				offsets++;
-				if(sx>512) {
+				if(sx>512 || sx < 0) {
 					tilep++;
 					offsets++;
 					g.ObjTileBudget++;

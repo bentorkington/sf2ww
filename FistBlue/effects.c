@@ -84,6 +84,9 @@ void clear_object(void) {      /* clear_object() actually 256 * 2 * longwords = 
 		gemu.Tilemap_Object[i][2]=0;
 		gemu.Tilemap_Object[i][3]=0;
 	}
+#ifndef CPS
+	gemu_set_cache_clear();
+#endif
 }
 
 static void adder(u16 **palbase, int *a1, short arg, char d7) {		//11ea

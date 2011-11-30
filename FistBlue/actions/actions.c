@@ -3219,7 +3219,7 @@ static void action_3b(Object *obj) {	//203ba
 		case 2:							// 204fc animate and decrement score
 			switch (obj->SubSel) {
 				case 0:
-					if (g.x8ab5) {
+					if (g.CanSpeedUpScoreCount) {
 						if (ud->x0080.full & 0xff000000) {
 							sub_bcd_8(1, &ud->x0080.full);
 							ud->x0080.full &= 0xffff0000;
@@ -3231,7 +3231,7 @@ static void action_3b(Object *obj) {	//203ba
 					}
 					break;
 				case 2:
-					if (g.x8ab5) {
+					if (g.CanSpeedUpScoreCount) {
 						if (ud->x0080.split.msb) {
 							sub_bcd_16(1, &ud->x0080.full);	// XXX
 							ud->x0080.full &= 0xffff0000;
@@ -3244,7 +3244,7 @@ static void action_3b(Object *obj) {	//203ba
 					}
 					break;
 				case 4:
-					g.x8ab5 = 1;
+					g.CanSpeedUpScoreCount = TRUE;
 					if (g.x8ab2) {
 						if (g.x8ab2 < 0x10) {
 							d2 = 3;

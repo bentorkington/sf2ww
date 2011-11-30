@@ -14,6 +14,8 @@
 		B51533F2147EEB4F004A87B0 /* car.c in Sources */ = {isa = PBXBuildFile; fileRef = B51533F1147EEB4F004A87B0 /* car.c */; };
 		B51533F5147EEBDB004A87B0 /* drums.c in Sources */ = {isa = PBXBuildFile; fileRef = B51533F4147EEBDB004A87B0 /* drums.c */; };
 		B551553514773E8A00A8BBD9 /* coinage.c in Sources */ = {isa = PBXBuildFile; fileRef = B551553414773E8A00A8BBD9 /* coinage.c */; };
+		B55891431485AB2A00BBB0BA /* coll_projectile.c in Sources */ = {isa = PBXBuildFile; fileRef = B55891421485AB2A00BBB0BA /* coll_projectile.c */; };
+		B558918F1485B04A00BBB0BA /* coll_bonus.c in Sources */ = {isa = PBXBuildFile; fileRef = B558918E1485B04A00BBB0BA /* coll_bonus.c */; };
 		B56A718C1411B0D300DF7F02 /* game.c in Sources */ = {isa = PBXBuildFile; fileRef = B56A718B1411B0D300DF7F02 /* game.c */; };
 		B56BBD5514859AA100FF84CB /* fbtests.c in Sources */ = {isa = PBXBuildFile; fileRef = B56BBD5414859AA100FF84CB /* fbtests.c */; };
 		B5871ED71408E4F4004A45F5 /* pthreads.c in Sources */ = {isa = PBXBuildFile; fileRef = B5871ED61408E4F4004A45F5 /* pthreads.c */; };
@@ -79,6 +81,10 @@
 		B51867D01429504F003EE3BC /* act48.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = act48.h; sourceTree = "<group>"; };
 		B551553314773E8A00A8BBD9 /* coinage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = coinage.h; sourceTree = "<group>"; };
 		B551553414773E8A00A8BBD9 /* coinage.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = coinage.c; sourceTree = "<group>"; };
+		B55891411485AB2A00BBB0BA /* coll_projectile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = coll_projectile.h; sourceTree = "<group>"; };
+		B55891421485AB2A00BBB0BA /* coll_projectile.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = coll_projectile.c; sourceTree = "<group>"; };
+		B558918D1485B04A00BBB0BA /* coll_bonus.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = coll_bonus.h; sourceTree = "<group>"; };
+		B558918E1485B04A00BBB0BA /* coll_bonus.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = coll_bonus.c; sourceTree = "<group>"; };
 		B56A715D1411AA1000DF7F02 /* io.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = io.h; sourceTree = "<group>"; };
 		B56A718A1411B0D300DF7F02 /* game.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = game.h; sourceTree = "<group>"; };
 		B56A718B1411B0D300DF7F02 /* game.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = game.c; sourceTree = "<group>"; };
@@ -323,6 +329,19 @@
 			name = actions_b;
 			sourceTree = "<group>";
 		};
+		B55891401485AB1B00BBB0BA /* coll */ = {
+			isa = PBXGroup;
+			children = (
+				B5ADB81713B2B57D00905DFE /* collision.c */,
+				B5ADB81813B2B57D00905DFE /* collision.h */,
+				B55891411485AB2A00BBB0BA /* coll_projectile.h */,
+				B55891421485AB2A00BBB0BA /* coll_projectile.c */,
+				B558918D1485B04A00BBB0BA /* coll_bonus.h */,
+				B558918E1485B04A00BBB0BA /* coll_bonus.c */,
+			);
+			name = coll;
+			sourceTree = "<group>";
+		};
 		B56A715B1411A9D500DF7F02 /* SiennaBird */ = {
 			isa = PBXGroup;
 			children = (
@@ -342,12 +361,11 @@
 		B5ADB7E113B2B57D00905DFE /* FistBlue */ = {
 			isa = PBXGroup;
 			children = (
+				B55891401485AB1B00BBB0BA /* coll */,
 				B5AEA9D61405A44200DD9798 /* tests */,
 				B5ADB7E213B2B57D00905DFE /* actions */,
 				B5ADB7EC13B2B57D00905DFE /* ai */,
 				B5ADB7FC13B2B57D00905DFE /* avatars */,
-				B5ADB81713B2B57D00905DFE /* collision.c */,
-				B5ADB81813B2B57D00905DFE /* collision.h */,
 				B5ADB81913B2B57D00905DFE /* compdata.h */,
 				B5ADB81A13B2B57D00905DFE /* computer.c */,
 				B5ADB81B13B2B57D00905DFE /* computer.h */,
@@ -630,6 +648,8 @@
 				B51533F5147EEBDB004A87B0 /* drums.c in Sources */,
 				B5BA3ACE147F0EBC0069ACD3 /* actions.c in Sources */,
 				B56BBD5514859AA100FF84CB /* fbtests.c in Sources */,
+				B55891431485AB2A00BBB0BA /* coll_projectile.c in Sources */,
+				B558918F1485B04A00BBB0BA /* coll_bonus.c in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

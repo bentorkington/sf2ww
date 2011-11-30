@@ -71,13 +71,13 @@ break;
 #define PLAYER2 (&g.Player2)
 
 #define INITOBJ(obj, sel, subsel)   \
-obj->exists = 1;					\
+obj->exists = TRUE;					\
 obj->Sel = sel;						\
 obj->SubSel = subsel;				\
 
 
 #define INITOBJC(obj, sel, subsel,x,y)   \
-	obj->exists = 1;					\
+	obj->exists = TRUE;					\
 	obj->Sel = sel;						\
 	obj->SubSel = subsel;				\
 	obj->XPI = x;						\

@@ -37,7 +37,7 @@ buf[3]=getc(gfxrom);
 #define ALPHA_TRANS   0x00          /* Alpha value for fully-transparent */
 #define ALPHA_OPAQUE  0xff          /* and fully opaque                  */
 
-
+void gemu_clear_cache(void);
 void gemu_cache_scroll1(u16 tile, short palette);
 void gemu_cache_scroll2(u16 tile, short palette);
 void gemu_cache_scroll3(u16 tile, short palette);

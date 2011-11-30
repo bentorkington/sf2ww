@@ -8,3 +8,11 @@
  */
 void process_projectiles(void);			/* 22aca */
 
+enum en_projectiles {
+	SF2_PROJ_HADOUKEN = 0,
+	SF2_PROJ_YOGAFIRE,
+	SF2_PROJ_YOGAFLAME,
+	SF2_PROJ_SONICBOOM,
+	SF2_PROJ_TIGER,
+	SF2_PROJ_X05,
+};

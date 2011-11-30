@@ -34,7 +34,6 @@ extern GState gstate_Scroll1;
 extern GState gstate_Scroll2;
 extern GState gstate_Scroll3;
 
-static void sub_7fc4(void);
 static short sub_7e86(void);
 
 u16 data_BonusTimes[3][2] = {{0x40, 0x28}, {0x20, 0x00}, {0x40, 0x28}};
@@ -233,7 +232,7 @@ static void game_mode_28(void) {	// 7af0
 				if (g.x02a5) {
 					/* Player has continued, play sound and restart from world screen */
 					NEXT(g.mode2);
-					g.timer3 = 0x40;
+					g.timer3 = 64;
 					CSPlayerContinueSound();			/* make continue sound */
 					proc_actions();
 					DSDrawAll_Hira();
@@ -262,18 +261,15 @@ static void game_mode_28(void) {	// 7af0
 static void sub_7dca(void) {		// 7dca game mode 2,A
 	switch (g.mode2) {
 		case 0:
-			/* 7dea */
 			NEXT(g.mode2);
 			g.x09fe = 0;
 			break;
 		case 2:
-			/* 7df6 */
 			if (g.PlayersOnline==0) {
 				NEXT(g.mode2);
 			}
 			break;
 		case 4:
-			/* 7e02 */
 			if (g.x09fe != 2) {
 				NEXT(g.mode2);
 				g.timer3 = 150;
@@ -282,7 +278,6 @@ static void sub_7dca(void) {		// 7dca game mode 2,A
 			}
 			break;
 		case 6:
-			/* 7e24 */
 			if(g.timer3--==0) {
 				g.x02eb = 0;
 				g.mode0=g.mode1=g.mode2=g.mode3=g.mode4 = 0;
@@ -300,7 +295,6 @@ static void sub_7dca(void) {		// 7dca game mode 2,A
 static void sub_7eb4(void) {		// 7eb4 game mode 2,C
 	switch (g.mode2) {
 		case 0:
-			/* 7ec8 */
 			g.timer2 = 0x78;
 			g.timer3 = 0x8;
 			g.timer4 = 0;
@@ -310,7 +304,6 @@ static void sub_7eb4(void) {		// 7eb4 game mode 2,C
 			soundsting(SOUND_CHALLENGER);
 			break;
 		case 2:
-			/* 7f02 */
 			if (g.timer2-- == 0) {
 				NEXT(g.mode2);
 				ClearEffectQueue();		/* at 21c2 */
@@ -322,11 +315,9 @@ static void sub_7eb4(void) {		// 7eb4 game mode 2,C
 					g.timer3 = 8;
 					g.timer4 ^= 1;
 					if(g.timer4) {
-						/* 7f56 */
 						QueueEffect(0x1c1b, 0);
 						QueueEffect(0x1c1a, 0);
 					} else {
-						/* 7f3e */
 						QueueEffect(0x1c19, 0);
 						QueueEffect(0x1c1a, 0);
 					}
@@ -334,15 +325,13 @@ static void sub_7eb4(void) {		// 7eb4 game mode 2,C
 			}
 			break;
 		case 4:
-			/* 7f6e */
 			if(g.FadeBusy==0) {
 				NEXT(g.mode2);
 				LBResetState();
 			}
 			break;
 		case 6:
-			/* 7f7e */
-			sub_7fc4();		/* playerselect SM */
+			SM_player_select();
 			if (g.PlayerSelectDone) {
 				g.mode1 = 4;
 				g.mode2 = 0;
@@ -676,7 +665,7 @@ static void SM_game_postanim_8(void) {
 		case 0:
 			NEXT(g.mode4);
 			g.timer4 = 0x3;
-			g.x8ab5 = 0;			/* u8 */
+			g.CanSpeedUpScoreCount = FALSE;		/* u8 */
 			g.x8ab2 = 0;			/* u16 */
 			if(g.HumanWinner == 0) {
 				g.timer4 = 0xb4;
@@ -692,9 +681,7 @@ static void SM_game_postanim_8(void) {
 			break;
 		case 4:
 			if(obj=AllocActor()) {
-				obj->exists = TRUE;
-				obj->Sel = SF2ACT_SCORECOUNTER;
-				obj->SubSel = 0;
+				INITOBJ(obj, SF2ACT_SCORECOUNTER, 0);
 				print_libtextgfx(TIME);
 				NEXT(g.mode4);
 				g.timer4  = 30;
@@ -702,9 +689,7 @@ static void SM_game_postanim_8(void) {
 			break;
 		case 8:
 			if(obj=AllocActor()) {
-				obj->exists = TRUE;
-				obj->Sel = SF2ACT_SCORECOUNTER;
-				obj->SubSel = 2;
+				INITOBJ(obj, SF2ACT_SCORECOUNTER, 2);
 				print_libtextgfx(VITAL);
 				NEXT(g.mode4);
 				g.timer4 = 0x32;
@@ -712,9 +697,7 @@ static void SM_game_postanim_8(void) {
 			break;
 		case 0xc:
 			if(obj=AllocActor()){
-				obj->exists = TRUE;
-				obj->Sel = SF2ACT_SCORECOUNTER;
-				obj->SubSel = 4;
+				INITOBJ(obj, SF2ACT_SCORECOUNTER, 4);
 				print_libtextgfx(BONUS);
 				NEXT(g.mode4);
 			}
@@ -1190,8 +1173,3 @@ void task_initmachine (void) {
 }
 
 
-static void sub_7fc4(void) {
-	/* XXX stub PlayerSelect SM */
-	g.PlayerSelectDone = TRUE;
-	return;
-}

@@ -120,6 +120,7 @@ struct texture_cache_t {
 	GLuint text_scr3[0x10000];
 	GLuint text_obj[0x10000];
 } TC;
+int gemuCacheClear;
 
 extern GLubyte ubImage[];
 
@@ -159,7 +160,41 @@ void ResetScrolls(void){
 	glutPostRedisplay();
 }
 
+void gemu_set_cache_clear(void) {
+	gemuCacheClear = TRUE;
+}
 
+void gemu_clear_cache(void) {
+	int i;
+	for (i=0; i<0x10000; ++i) {
+		if (TC.text_scr1[i]) {
+			glDeleteTextures(1, &TC.text_scr1[i]);
+			TC.text_scr1[i] = 0;
+		}			
+	}
+	for (i=0; i<0x10000; ++i) {
+		if (TC.text_scr2[i]) {
+			glDeleteTextures(1, &TC.text_scr2[i]);
+			TC.text_scr2[i] = 0;
+		}			
+	}
+	for (i=0; i<0x10000; ++i) {
+		if (TC.text_scr3[i]) {
+			glDeleteTextures(1, &TC.text_scr3[i]);
+			TC.text_scr3[i] = 0;
+		}			
+	}
+	for (i=0; i<0x10000; ++i) {
+		if (TC.text_obj[i]) {
+			glDeleteTextures(1, &TC.text_obj[i]);
+			TC.text_obj[i] = 0;
+		}			
+	}
+	gemuCacheClear = FALSE;
+}
+	
+	
+	
 
 void gemu_cache_scroll1(u16 tile, short palette) {
 	static GLuint tempmap[8][8][4];
@@ -690,7 +725,11 @@ void gfx_glut_drawgame(void) {
 	GLdouble zNear = MIN (-gCamera.viewPos.z - gShapeSize * 0.5, 1.0);
 	// window aspect ratio
 	GLdouble aspect = gCamera.screenWidth / (GLdouble)gCamera.screenHeight;
-		
+	
+	if (gemuCacheClear) {
+		gemu_clear_cache();
+	}
+	
 	glClearColor(0.2, 0.4, 0.1, 0.0);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	

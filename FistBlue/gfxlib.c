@@ -454,6 +454,9 @@ void clear_scrolls(void) {		/* 0x5f10 */
 	g.x02ba = 0;	
 	
 	GEMU_CLEAR_OBJECT_D;
+#ifndef CPS
+	gemu_set_cache_clear();
+#endif
 }
 
 void clear_rowscroll(void) {	/* 6080 clear rowscroll*/

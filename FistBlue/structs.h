@@ -368,7 +368,7 @@ typedef struct game {
 	u16	x8ab0;		
 	u16 x8ab2;
 	u32	x8ab4;
-	u8	x8ab5;		// XXX
+	u8	CanSpeedUpScoreCount;		// x8ab5
 	Object *x8ab6;	/* XXX Barrels something */
 	
 	signed char x8ab8;
