@@ -208,7 +208,7 @@ void sub_36d6(Player *ply, short x, short y, short throwtrajd0, char direction, 
     
     if(g.FastEndingFight == 0 && g.OnBonusStage == 0) {
         LBGetDamage(ply, ply->Opponent, damage_d2);     /* calc, adjust damage based on difficulty */
-        QueueEffect(dr.d5, ply->Side);       /* award points for hit? */
+        QueueEffect(dr.d5, ply->Side);					/* award points for hit */
         ply->Opponent->Energy     -= dr.damage;
         ply->Opponent->EnergyDash -= dr.damage;
         if (ply->EnergyDash <= 0) {

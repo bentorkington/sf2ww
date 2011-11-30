@@ -220,7 +220,7 @@ void SM_player_select(void) {		//7fc4
 					g.ActionLibSel				= 1;
 					gemu_setpalette(PALETTE_0C, data_80be);
 					soundsting(SOUND_PLAYERSELECTSCR);
-					QueueEffect(0x1c16, 0);
+					QueueEffect(SL1C | 0x16, 0);
 					actionlibrary();    // 82d0e
 					/* CPS does a short busy-sleep here */
 					/* 0x8094 maybe palette comparison here */

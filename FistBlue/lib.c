@@ -747,27 +747,27 @@ void LBUpdateAITimers(Player *ply) {	/* 3074 Updates needed by AI */
 
 void fadenwait1 (void) {			/* 0x2138 */
     g.FadeBusy = TRUE;
-    QueueEffect(0x0c00, 0x3);
+    QueueEffect(SL0C | SL0C_FO_CL, 0x3);
 	SIG_WAIT(g.FadeBusy);
 }
 void fadenwait2 (void) {		/* 215a */
     g.FadeBusy = TRUE;
-    QueueEffect(0x0c10, 0x3);
+    QueueEffect(SL0C | SL0C_FI_W, 0x3);
 	SIG_WAIT(g.FadeBusy);
 }
 void fadenwait3 (void) {		/* 217c */
     g.FadeBusy = TRUE;
-    QueueEffect(0x0c1c, 0x3);
+    QueueEffect(SL0C | SL0C_FO_CLW, 0x3);
 	SIG_WAIT(g.FadeBusy);
 }
 void fadenwait4 (short arg0) {		/* 219e */
     g.FadeBusy = TRUE;
-    QueueEffect(0x0c00, arg0);
+    QueueEffect(SL0C | SL0C_FO_CL, arg0);
 	SIG_WAIT(g.FadeBusy);
 }
 void fadenwait5(short arg0) {		/* 21b0 */
 	g.FadeBusy = TRUE;
-	QueueEffect(0x0c10, arg0);
+	QueueEffect(SL0C | SL0C_FI_W, arg0);
 	SIG_WAIT(g.FadeBusy);
 }
 	

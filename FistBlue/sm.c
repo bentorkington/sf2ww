@@ -102,7 +102,7 @@ static void game_mode_28(void) {	// 7af0
 		case 0:
 			NEXT(g.mode2);
 			g.FadeBusy = TRUE;
-			QueueEffect(0x0c1c, 3);
+			QueueEffect(SL0C | SL0C_FO_CLW, 3);
 			break;
 		case 2:
 			if (g.FadeBusy==0) {
@@ -149,7 +149,7 @@ static void game_mode_28(void) {	// 7af0
 				g.WaitMode = FALSE;
 				die_top8();
 				g.FadeBusy = TRUE;
-				QueueEffect(0x0c1c, 3);
+				QueueEffect(SL0C | SL0C_FO_CLW, 3);
 			} else {
 				Player *winner;
 				Player *loser;
@@ -315,11 +315,11 @@ static void sub_7eb4(void) {		// 7eb4 game mode 2,C
 					g.timer3 = 8;
 					g.timer4 ^= 1;
 					if(g.timer4) {
-						QueueEffect(0x1c1b, 0);
-						QueueEffect(0x1c1a, 0);
+						QueueEffect(SL1C | HERE_COMES_2, 0);
+						QueueEffect(SL1C | CHALLENGER, 0);
 					} else {
-						QueueEffect(0x1c19, 0);
-						QueueEffect(0x1c1a, 0);
+						QueueEffect(SL1C | HERE_COMES, 0);
+						QueueEffect(SL1C | CHALLENGER, 0);
 					}
 				}
 			}
@@ -457,7 +457,7 @@ static void draw_world_map(void) {		//856c mode 2,4,2
 				case 0:
 					NEXT(g.mode4);
 					g.FadeBusy = TRUE;
-					QueueEffect(0xc1c, 0x3);
+					QueueEffect(SL1C | CHALLENGER_2, 0x3);
 					break;
 				case 2:
 					if (g.FadeBusy == FALSE) {
@@ -1071,7 +1071,7 @@ void gamemode_24I (void) {		// 7970
 				g.mode3 +=2;
 				die_top8();
 				g.FadeBusy = TRUE;
-				QueueEffect(0xc1c,3);
+				QueueEffect(SL1C | CHALLENGER_2,3);
 			} else if(check_if_new_player()) {
 				GEMU_CLEAR_OBJECT_72;             /* clear the "Press Start" message */
 				DSDrawAllMain();
@@ -1099,76 +1099,85 @@ void gamemode_24I (void) {		// 7970
 }
 
  
-void task_initmachine (void) {
-	static const u16 data_645e[3]={ 0x0411, 0x0412, 0x0413 };		/* CQ save param for version ID display */
-
+void task_initmachine (void) {		// 639e
+	static const u16 data_645e[3]={ 
+		SL04 | SL4_VERSION_JAP,
+		SL04 | SL4_VERSION_USA,
+		SL04 | SL4_VERSION_ETC,
+	};
+	
     switch(g.mode0) {
-    case 0:
-        g.mode0 +=2;
-        g.randSeed1 = 0x01;       /* initial random seed */
-        g.randSeed2 = 0xc2; 
-        g.WaitMode	= 0;
-        break;
-    case 2:
-        g.mode0 +=2;
+		case 0:
+			g.mode0 +=2;
+			g.randSeed1 = 0x01;       /* initial random seed */
+			g.randSeed2 = 0xc3; 
+			g.WaitMode	= 0;
+			break;
+		case 2:
+			g.mode0 +=2;
 #ifdef COINAGE
-        coincosts();
+			coincosts();
 #endif
-        decode_difficulty();
-        decode_params();
-        g.InDemo = TRUE;
-        g.x02b8  = 0x100;
-        palette_scr1_19();
+			decode_difficulty();
+			decode_params();
+			g.InDemo = TRUE;
+			g.x02b8  = 0x100;
+			palette_scr1_19();
 #ifdef COINAGE
-        check_coin_lockout();
+			check_coin_lockout();
 #endif
-        break;
-    case 4:
-        g.mode0 +=2;
-        g.timer0 = 180;
-        QueueEffect(LC0_LIGHT_ALL_ENABLE, 5);
-        QueueEffect(data_645e[g.Version],0x0100); 
-        break;
-    case 6:
-        if(g.TextEffectBusy == 0) {g.mode0 += 2;}
-        break;
-    case 8:
-    case 0xe:
-        g.timer0--;
-        if(g.timer0 == 0) {
-            g.mode0   += 2;
-            g.WaitMode = 0;
-            fadenwait1();
-        } else {
-            startup_impatience();
-        }
-        break;
-    case 0xa:
-        g.mode0 +=2;
-        g.timer0 = 60;
-        QueueEffect(LC0_LIGHT_ALL_ENABLE,5);
-        //QueueEffect(text_copyrights[g.Version], 0x101); /* XXX */
-        break;
-    case 0xc:
-        if(g.TextEffectBusy == 0) {
-            g.WaitMode = 0;
-            g.mode0   += 2;
-        }
-        startup_impatience();
-        break;
-    case 0x10:
-        RESET_MODES;
-        //if(g.RawButtons0Dash & BUTTON_TESTMENU || g.GameMode == 1) {
-        //    create_task(&task_test_mode,7,0, 0, 0);
-        //    task_die();
-        //} 
-        /* not included: copy protection with CPS1B */
+			break;
+		case 4:
+			g.mode0  +=2;
+			g.timer0 = 180;
+			QueueEffect(LC0_LIGHT_ALL_ENABLE, 5);
+			QueueEffect(data_645e[g.Version],0x0100); 
+			break;
+		case 6:
+			if(g.TextEffectBusy == 0) {g.mode0 += 2;}
+			break;
+		case 8:
+		case 0xe:
+			g.timer0--;
+			if(g.timer0 == 0) {
+				g.mode0   += 2;
+				g.WaitMode = 0;
+				fadenwait1();
+			} else {
+				startup_impatience();
+			}
+			break;
+		case 0xa:
+			g.mode0 +=2;
+			g.timer0 = 60;
+			QueueEffect(LC0_LIGHT_ALL_ENABLE,5);
+			QueueEffect((short []){
+				SL04 | COPYRIGHT_JAP,
+				SL04 | COPYRIGHT_USA,
+				SL04 | COPYRIGHT_ETC,
+			}[g.Version], 0x101);
+			
+			break;
+		case 0xc:
+			if(g.TextEffectBusy == 0) {
+				g.WaitMode = 0;
+				g.mode0   += 2;
+			}
+			startup_impatience();
+			break;
+		case 0x10:
+			RESET_MODES;
+			//if(g.RawButtons0Dash & BUTTON_TESTMENU || g.GameMode == 1) {
+			//    create_task(&task_test_mode,7,0, 0, 0);
+			//    task_die();
+			//} 
+			/* not included: copy protection with CPS1B */
 			
 			panic(1);
-        //create_task(task_attract_sequence, 1, 0,0,0);
-        
-		break;
-		FATALDEFAULT;
+			//create_task(task_attract_sequence, 1, 0,0,0);
+			
+			break;
+			FATALDEFAULT;
     }
 }
 

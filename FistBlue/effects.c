@@ -149,7 +149,7 @@ static void whiteadder(GPAL *palbase, int *fadebase, int count, short arg) {			/
 }
 	
 
-void sub_4bd6(Task *task) {
+void _clear_scr23_wait_die(Task *task) {		// 4bd6
 	gfxrepeat((u16 *)CPS_VIDEO_SCROLL2, 0xfff, GFXROM_SCROLL2      , 0);  /* first tile is blank */
     gfxrepeat((u16 *)CPS_VIDEO_SCROLL3, 0xfff, GFXROM_SCROLL3      , 0);        
     g.x02b8 = 0;
@@ -444,7 +444,7 @@ void syslib_0c (void) {
 			SETSLEEP(1);
 			SIG_WAIT(Exec.EffectIsSetUp);
 			gfxrepeat(CPS_VIDEO_SCROLL1, 0xfff, GFXROM_SCROLL1 + ' ', 0);  /* a whitespace */
-			sub_4bd6(task);     /* dies */ 
+			_clear_scr23_wait_die(task);     /* dies */ 
 			break;          
 		case 2:
 			g.x02b8 = 0;
@@ -514,7 +514,7 @@ void syslib_0c (void) {
 		case 0x1a:
 			QueueEffect(LC0_DARK_ALL_DISABLE, task->params.Param2);
 			do {sf2sleep(1);} while (Exec.EffectIsSetUp == 0);
-			sub_4bd6(task); /* dies */
+			_clear_scr23_wait_die(task); /* dies */
 			break;
 		case 0x1e:
 			QueueEffect(LC0_DARK_123, task->params.Param2);
@@ -531,7 +531,7 @@ void syslib_0c (void) {
 			start_effect(LC0_DARK_SCROLL3, task->params.Param2);
 			
 			do { sf2sleep(1); } while (g.FadeScroll3 != 0xffffffff);
-			sub_4bd6(task);
+			_clear_scr23_wait_die(task);
     }
 }
 
