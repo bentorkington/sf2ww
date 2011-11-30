@@ -251,7 +251,7 @@ enum syslib04sel {
 	DEVCREDITS5,
 };
 
-enum syslib_0csel {
+enum syslib0csel {
 	SL0C_FO_CL    = 0,
 	SL0C_CLO      = 2,
 	SL0C_CLS1     = 4,

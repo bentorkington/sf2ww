@@ -44,6 +44,7 @@ struct task_params {
     u8				Param1;		// x0011
     u8				Param2;		// x0012
 	unsigned char	x0014;
+	unsigned char	x0015;
 	unsigned char	x0016;
     u8				x001f;
 };

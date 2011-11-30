@@ -5,9 +5,7 @@
 
 #include "particle.h"
 #include "player.h"
-#ifdef COINAGE
 #include "coinage.h"
-#endif	// COINAGE
 
 
 struct damageresult {
@@ -79,6 +77,8 @@ typedef struct game {
     /* input variables */
     u8  RawButtons0;			//76
     u8  RawButtons0Dash;		//77
+	u8	x0078;
+	u8	x0079;
 	//gap
     DUAL ContrP1, ContrP1DB, ContrP2, ContrP2DB;		//7e,80,82,84
 	// gap
@@ -96,9 +96,9 @@ typedef struct game {
     u16 soundQueue[SOUND_QUEUE_LENGTH];         /* 1a2 */
 #endif
     
-#ifdef COINAGE
-    CoinSlot    coinslot1, coinslot2;
-#endif    
+//#ifdef COINAGE
+    Coinslot    coinslot1, coinslot2;
+//#endif    
 	u8	ContinueCredits;
 	u8	x02a5;		
 
@@ -130,7 +130,7 @@ typedef struct game {
     char  x02eb, x02ec, OnFinalStage, ContinueCount;
 	
 	char x02f0;
-	
+	short	CoinsTaken;		// 02f4
     char  Uptime[4];  // 2f6 - a   
 	
 	u16	DemoStageIndex;

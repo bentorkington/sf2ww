@@ -7,12 +7,12 @@
  *
  */
 
-#include "coinage.h"
 #include "sf2const.h"
 #include "sf2macros.h"
 #include "structs.h"
 
 #include "lib.h"
+#include "coinage.h"
 
 extern Game g;
 
@@ -20,6 +20,113 @@ static void sub_dee(void) {
 	g.x02db = g.x02db & 0xfff3;
 }
 
+
+void decode_start_service(void) {	// 1e7a was swirlything
+	g.StartServiceButtons =
+		((g.RawButtons0Dash & 0x4) >> 2 ) |
+		((g.RawButtons0     & 0x4) >> 1 ) |
+		((g.x0078           & 0x4) >> 0 ) |
+		((g.x0079			& 0x4) << 1 );
+	g.coinslot1.x0007 =
+	((g.RawButtons0Dash & 0x1) << 3 ) |
+	((g.RawButtons0     & 0x1) << 2 ) |
+	((g.x0078           & 0x1) << 1 ) |
+	((g.x0079			& 0x1) >> 0 );
+	g.coinslot2.x0007 =
+	((g.RawButtons0Dash & 0x2) << 2 ) |
+	((g.RawButtons0     & 0x2) << 1 ) |
+	((g.x0078           & 0x2) << 0 ) |
+	((g.x0079			& 0x2) >> 1 );
+}
+
+static void sub_1d9a(void) {
+	const static char data_1de0[][2] = {
+		{1,1}, {1,2}, {1,3}, {1,4}, {1,6}, {2, 1}, {3, 1}, {4, 1},
+	};
+	
+	
+	g.coinslot1.nCoins   = data_1de0[g.JPCost & 0x7][0];
+	g.coinslot1.nCredits = data_1de0[g.JPCost & 0x7][1];
+	g.coinslot2.nCoins   = data_1de0[(g.JPCost & 0x38)>>3][0];
+	g.coinslot2.nCredits = data_1de0[(g.JPCost & 0x38)>>3][1];
+	g.ContinueCoin = (g.JPCost & 0x40) >> 6;
+	g.DemoSound    = (g.JPCost & 0x80) >> 7;
+}
+void sub_1f9e(Coinslot *cs, char *a0) {
+	if (cs->x0003) {
+		if(--cs->x0003 != 15) {return;}
+		g.x02db &= a0[0];
+	} else {
+		if (cs->x0001) {
+			--cs->x0001;
+			g.x02db |= a0[1];
+			cs->x0003 = 30;
+		}
+	}
+}
+
+static void sub_1f5a(Coinslot *cs) {
+	++cs->x0001;
+	++cs->x0002;
+	if (!g.ContinueCoin) {
+		if (cs->x0002 < cs->nCoins) {
+			return;
+		}
+	}
+	g.NumberCredits += cs->nCredits;	// XXX should be BCD
+	if (g.NumberCredits > 9)
+		g.NumberCredits = 9;
+	cs->x0002 = 0;
+}
+static void sub_1f1c(Coinslot *cs) {
+	if (cs->x0000 == 0) {
+		if (cs->x0007 != 3) {
+			return;
+		}
+		++cs->x0000;
+		cs->x0006 = 120;	// 2 seconds
+	}
+	if (cs->x0007 == 12) {
+		++g.CoinsTaken;
+		++g.SoundOutstanding;
+		sub_1f5a(cs);
+		cs->x0000 = 0;
+	} else {
+		if (--cs->x0006 == 0) {
+			cs->x0000 = 0;
+		}
+	}
+}
+void sub_1ed0(void) {
+	static const char data_1e76[]={0xfe, 0x01, 0xfd, 0x02};
+	if (!g.InTestMode) {
+		decode_start_service();
+		sub_1f9e(&g.coinslot1, &data_1e76[0]);
+		sub_1f1c(&g.coinslot1);
+		sub_1f9e(&g.coinslot2, &data_1e76[2]);
+		sub_1f1c(&g.coinslot2);
+		
+		if (g.StartServiceButtons == 3) {
+			g.NumberCredits += 1;
+			if (g.NumberCredits > 9) {
+				g.NumberCredits = 9;
+			} else {
+				++g.CoinsTaken;
+			}
+			++g.SoundOutstanding;
+		}
+	}
+}
+
+void sub_1fe2(void) {
+	if (g.SoundOutstanding) {
+		--g.SoundOutstanding;
+		coinsound();
+		if (g.InDemo && g.FreePlay == 0 && g.NumberCredits) {
+			QueueEffect(SL10 | 0x0, 0);
+		}
+	}
+}
 static void sub_6c68(void) {				// 6c68
 	if (g.NumberCredits < 4) {
 		if (g.JapanJumper) {

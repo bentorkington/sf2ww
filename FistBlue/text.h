@@ -403,27 +403,27 @@ const u8 *data_8d2ac[]={
 	data_8d43c,
 	data_8d5ca,
 	data_8d77c,
-	data_8d786,
+	data_8d786,		//4
 	data_8d792,
 	data_8d7a2,
 	data_8d7b0,
-	data_8d7be,
+	data_8d7be,		//8
 	data_8d7cc,
 	data_8d7de,
 	data_8d7f0,
-	data_8d812,
+	data_8d812,		//12
 	data_8d850,
 	data_8d86c,
 	data_8d8aa,
-	data_8d8e6,
+	data_8d8e6,		//16
 	data_8d8f2,
 	data_8d948,
 	data_8d99c,
-	data_8d9f2,
+	data_8d9f2,		//20
 	data_8d9fe,
 	data_8da6e,
 	data_8dada,
-	data_8db46,
+	data_8db46,		//24
 	data_8dbae,
 };
 

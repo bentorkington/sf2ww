@@ -299,8 +299,8 @@ static void sub_7eb4(void) {		// 7eb4 game mode 2,C
 			g.timer3 = 0x8;
 			g.timer4 = 0;
 			action_1ab8a();		/* clear top object */
-			QueueEffect(0x1c19, 0);
-			QueueEffect(0x1c1a, 0);
+			QueueEffect(SL1C | HERE_COMES, 0);
+			QueueEffect(SL1C | CHALLENGER, 0);
 			soundsting(SOUND_CHALLENGER);
 			break;
 		case 2:
@@ -309,7 +309,7 @@ static void sub_7eb4(void) {		// 7eb4 game mode 2,C
 				ClearEffectQueue();		/* at 21c2 */
 				die_top8();
 				g.FadeBusy = TRUE;
-				QueueEffect(0xc1c, 0x100);	/* FADE_CLEAR_ALL */
+				QueueEffect(SL0C | SL0C_FO_CLW, 0x100);
 			} else {
 				if(g.timer3--==0) {
 					g.timer3 = 8;

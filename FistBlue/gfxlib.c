@@ -20,6 +20,8 @@ extern Game g;
 
 extern CPSGFXEMU gemu;
 
+extern u8 *data_8d2ac[];
+
 extern u16 data_86676[32][16];
 extern u16 data_8a8ac[32][16];
 extern u16 data_8aaac[32][16];
@@ -851,18 +853,13 @@ void sub_1a0c(void) {			//1a0c
 	
 
 void showtextbank0(char sel) {		// 5602 Scroll1
-	//XXX ROAD WORKS;
-	return;
-
-
-	u8 *data= NULL;
-	//u8 *data = data_8d2ac[sel & 0x7f];
+	u8 *data = data_8d2ac[sel & 0x7f];
 	u16 *gfx_p;
 	u8 cx,cy;
 	
 	cx = *data++;
 	cy = *data++;
-	//SCR1_CURSOR_SET(gfx_p, cx, cy);
+	SCR1_CURSOR_SET(gfx_p, cx, cy);
 	gfx_p = &gemu.Tilemap_Scroll1[ (cx << 5) + (cy >> 2)];
 	
 	u8 *string = data;
@@ -906,11 +903,7 @@ void showtextbank0(char sel) {		// 5602 Scroll1
 	}
 }
 void showtextbank1(char sel) {		// 568c draw text in OBJECT
-//XXX ROAD WORKS;
-	return;
-	
-	u16 *data= NULL;
-	//u16 *data = data_8d2ac[sel & 0x7f];
+	u8 *data = data_8d2ac[sel & 0x7f];
 
 	u16 *gfx_p;
 	OBJ_CURSOR_SET(gfx_p, *data++);

@@ -385,10 +385,8 @@ static int sub_4004(Player *ply) {		// 4004 ply %a4
 	};
 	
 	if (ply->Human) {
-		// 4014
 		return sub_4014(ply);
 	} else {
-		//4048
 		if (data_98e42[ply->Difficulty] & (1 << RAND32)) {
 			return (char []){4,4,2,4,4,2,7,3,8,4,3,2}[ply->FighterID];
 		}
@@ -407,7 +405,6 @@ static int sub_400e(Player *ply, Player *opp) {
 	if (ply->Human) {
 		return sub_4014(opp);
 	} else {
-		//407e
 		if (data_98ec2[ply->Difficulty] & (1 << RAND32)) {
 			return (char []){4,6,8,4,4,2,6,10,8,4,3,2}[ply->FighterID];
 		}

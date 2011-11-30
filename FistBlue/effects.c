@@ -45,21 +45,11 @@ static void syslib_10 (void);
 static void syslib_18 (void);
 static void syslib_1c (void);
 static void syslib_20 (void);
-
+static void syslib_26 (void);
 
 static void showtextbank0(u8 d0)  ;		//showtextbank4
 static void showtextbank2(u8 d0)  ;		//showtextbank4
 static void showtextbank4(u8 d0)  ;		//showtextbank4
-
-
-
-static void *textRoutines[] = {		// 4f8a
-	showtextbank0,			// 5602
-	showtextbank1,			// 568c
-	showtextbank2,			// 574a		winners
-	print_libtextgfx,		// 5816
-	showtextbank4,			// 58c0
-};
 
 void *data_155c[] = {
 	syslib_00,
@@ -67,13 +57,13 @@ void *data_155c[] = {
 	syslib_08,	// 4f3a insert coin blinker
 	syslib_0c,	// 4ade
 	syslib_10,	//4f9e,
-	NULL,	//5a3e,
+	NULL,		//5a3e,
 	syslib_18,	//5b22	usa/etc winning chants,
 	syslib_1c,	//5c12,
 	syslib_20,	//5410, add to player score
-	NULL,	//5ce2 jap winning chants,
-	NULL,	//4a76 die and go to test menu?
-	NULL,	//5e14
+	NULL,		//5ce2 jap winning chants,
+	NULL,		//4a76 die and go to test menu?
+	syslib_26,		//5e14
 };
 
 void clear_object(void) {      /* clear_object() actually 256 * 2 * longwords = 2048 */
@@ -109,33 +99,24 @@ static void adder(u16 **palbase, int *a1, short arg, char d7) {		//11ea
 	}
 	*palbase += 16;
 }
-
 static void massadder(GPAL *palbase, int *a1, short arg) {
 	for (short d7=0x1f; d7 >= 0; --d7) {
 		adder(&palbase, a1, arg, d7);
 	}
 }
-
-
 static void blackadder(GPAL *palbase, int *fadebase, int count, short arg) {		// 1142
     int i;
-//	printf("blackadder: fadebefore: %08x ", *fadebase);
     for(i=count; i >= 0; --i) {
         adder(&palbase, fadebase, arg, i);
     }
-//	printf("after: %08x FadeCounter: %08x ", *fadebase, g.FadeCounter);
     g.FadeCounter += *fadebase;
-//	printf("after %08x\n", g.FadeCounter);
 }
-
 static void whiteadder(GPAL *palbase, int *fadebase, int count, short arg) {			//11c2
-// 	printf("whiteadder: fadebefore: %08x ", *fadebase);
 	int d0;
 	
 	for(int i=count; i >= 0; --i) {
         adder(&palbase, fadebase, arg, i);
     }
-//	printf("after: %08x FadeCounter: %08x ", *fadebase, g.FadeCounter);
 
 	d0 = *fadebase;
 	if (arg < 0) {
@@ -144,8 +125,6 @@ static void whiteadder(GPAL *palbase, int *fadebase, int count, short arg) {			/
 		d0 &= ~(1 << 31);
 	}
 	g.FadeCounter += d0;
-//	printf("after %08x\n", g.FadeCounter);
-
 }
 	
 
@@ -176,14 +155,12 @@ void sub_1078 (Task *task) {        /* enable layers specified in task->params.P
     const u16 LAYERBITS[4]= { 0x0000, 0x0008, 0x0010, 0x0002 };
     g.CPS.DispEna |= LAYERBITS[ ((task->params.Param1 & 0xe0) >> 5) ];
 }
-
 void sub_140e (int arg) {
 	g.FadeCounter = 0;
     blackadder(gemu.PalScroll3[0], &g.FadeScroll3, 0x1f, arg);
     blackadder(gemu.PalUnk1[0]   , &g.x5d4e,       0x7,  arg);
     blackadder(gemu.PalUnk2[0]   , &g.x5d52,       0x7,  arg);          
 }
-
 static void sub_10e0(short data) {
 	g.FadeCounter = 0;
 	blackadder(gemu.PalObject[0], &g.FadeObject, 0x1f, data);
@@ -193,7 +170,6 @@ static void sub_10e0(short data) {
 	blackadder(gemu.PalUnk1[0], &g.x5d4e, 7, data);
 	blackadder(gemu.PalUnk2[0], &g.x5d52, 7, data);
 }
-
 static void sub_1152(short data) {	// same as 10e0, but doesn't do Object0
 	g.FadeCounter = 0;
 	whiteadder(gemu.PalObject[1],  &g.FadeObject,  0x1e, data);
@@ -203,8 +179,6 @@ static void sub_1152(short data) {	// same as 10e0, but doesn't do Object0
 	blackadder(gemu.PalUnk1[0], &g.x5d4e, 7, data);
 	blackadder(gemu.PalUnk2[0], &g.x5d52, 7, data);
 }
-
-
 
 void syslib_00 (void) {					// e12
     Task *task = &Exec.Tasks[Exec.CurrentTask];
@@ -259,8 +233,6 @@ void syslib_00 (void) {					// e12
 			sub_1078(task);         /*set layer enable according to task->params.Param1*/
 			/* XXX whoa */
 			break;
-			
-			
 			
 			/***************************
 			 * Individual layer FADE OUT 
@@ -399,8 +371,6 @@ void syslib_00 (void) {					// e12
 				TASKSLEEP;
 			}
 			break;
-            
-			
     }
 	DIEFREE;	
 }        
@@ -1039,9 +1009,16 @@ static void syslib_20(void) {		//5410 increase player score
 
 
 static void aTextRoutine(Task *task) {		// 4f78
-    /* within task context */
-    return;
-    /* (void *)textRoutines[task->x0015] (task->x0011); */
+
+	const static void (*textRoutines[])(int param) = {		// 4f8a
+		showtextbank0,			// 5602
+		showtextbank1,			// 568c
+		showtextbank2,			// 574a		winners
+		print_libtextgfx,		// 5816
+		showtextbank4,			// 58c0
+	};
+	
+    textRoutines[task->params.x0015] (task->params.Param1);
 }
 static void syslib_08 (void) {	// 4f3a Text Blinker, insert coin etc.
 	Task *task = &Exec.Tasks[Exec.CurrentTask];
@@ -1057,10 +1034,17 @@ static void syslib_08 (void) {	// 4f3a Text Blinker, insert coin etc.
 	}
 }
 
+
+static void syslib_26(void) {
+	Task *task = CURRENT_TASK;
+	sleep(10);
+	DIEFREE;
+}
+	
+
+
 #pragma mark STATIC TASKS 
 
-
-         
 void task_scheduler(void) {		//14f2
 	unsigned char i;
 	
@@ -1079,7 +1063,6 @@ void task_scheduler(void) {		//14f2
 		exit_ready();
 		if (Exec.x820e == 0 && Exec.FreeTasks != 0) {
 			if (g.effectQueue[g.effectCurrent / 2] != 0xffff) {
-				//printf("BeginFromQueue: %02x\n",g.effectQueue[g.effectCurrent / 2]);
 				wrap_trap7(data_155c[g.effectQueue[g.effectCurrent / 2] >> 10],
 						   g.effectQueue[g.effectCurrent / 2 ] & 0xff,
 						   g.effectQueue[(g.effectCurrent / 2 ) + 1]
@@ -1175,7 +1158,6 @@ inline static short LBCheckPaidStart(Player *ply) {		// 7252
 	}
 	return LBPlayerStartDown(ply);
 }
-
 
 static void LBCheckContinued(Player *ply) {	
 	if(LBCheckPaidStart(ply)) {
