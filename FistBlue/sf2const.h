@@ -272,6 +272,7 @@ enum syslib0csel {
 };
 
 #define SL04	0x0400
+#define SL08	0x0800
 #define SL0C	0x0c00
 #define SL10	0x1000
 #define SL1C	0x1c00

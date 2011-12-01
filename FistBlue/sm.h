@@ -14,5 +14,7 @@ void gamemode_24G(void);
 void gamemode_24I(void);
 void task_initmachine(void);
 
+void SMFreePlay(void);		// 6cc8
+
 
 #endif /* INC_SM */

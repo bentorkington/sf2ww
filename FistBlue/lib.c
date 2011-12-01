@@ -1224,7 +1224,7 @@ static void ply1_loses(void) {		/* 0x8f7a */
 		}
 		return;
 	}
-	if(g.Debug_0x31e == 0) { return; }
+	if(g.x031e == 0) { return; }
 	if(g.Player1.x02ae | g.Player1.Human) {
 		if(g.Player2.RoundsWon == 2) {
 			g.SkipEnding = TRUE;
@@ -1253,7 +1253,7 @@ static void ply2_loses(void) {		/* 0x8ed6 */
 		}
 		return;
 	}
-	if(g.Debug_0x31e == 0) { return; }
+	if(g.x031e == 0) { return; }
 	if(g.Player2.x02ae | g.Player2.Human) {
 		if(g.Player1.RoundsWon == 2) {
 			g.SkipEnding = TRUE;

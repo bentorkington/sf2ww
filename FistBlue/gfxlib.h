@@ -52,5 +52,7 @@ void sub_4386(short d1, short d3, short d4, const
 void set_shadow_pen(void);
 
 void showtextbank1(char sel);
+void _putlong(u16 **cursor, short x, short y, int arg, short attr);	//51fe
+void printlonghex2(u16 **cursor, short x, short y, int arg, short attr);
 
 #endif /* INC_GFXLIB */

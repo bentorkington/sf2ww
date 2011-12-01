@@ -1210,7 +1210,23 @@ void draw_background(void) {
     gstate_update_scroll2(&gstate_Scroll2);
     gstate_update_scroll3(&gstate_Scroll3);
 }
-
+void GSSetupScr2(GState *gs) {			// 83c3c
+    CP			cp;
+	u16			*gfx_p;
+	const u16	*tilep;
+	int			i;
+	
+	g.CPS.Scroll2X = gs->XPI;
+	g.CPS.Scroll2Y = gs->YPI;
+	
+    cp.x = gs->XPI -  0x90;
+    cp.y = ~(gs->YPI + 0x180);
+	
+	for (i=0x29; i >= 0; --i) {		
+		_GSDrawScroll2A(gs, gfx_p, _GSLookupScroll2(gs, cp), cp);
+		cp.x += 16;
+	}
+}
 void GSSetupScr3(GState *gs) {			// 83cd2 was setup_scroll3
     CP			cp;
 	u16			*gfx_p;

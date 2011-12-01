@@ -216,7 +216,7 @@ void syslib_00 (void) {					// e12
 				Exec.EffectIsSetUp = TRUE;
 			}
 			g.FadeInEffect = TRUE;
-			/* FALLTHRU */
+			/* FALLTHRU */			// fallthru to what?
 			while (g.FadeCounter) {
 				sub_10e0(0x1000);
 				TASKSLEEP;
@@ -667,8 +667,9 @@ static void sub_597a(void) {
 	sub_5982(task);
 }
 
+
 static void syslib_10(void) {		// 4f9e
-	u16 *cur;
+	u16 *cur; int i;
 	Task *task = &Exec.Tasks[Exec.CurrentTask];
 	switch (task->params.Param0) {
 		case 0:
@@ -683,35 +684,19 @@ static void syslib_10(void) {		// 4f9e
 			DIEFREE;
 			break;
 		case 2:
-			//4ff0 todo 
+			QueueEffect(0x180f, 0);
+			for (i=4; i>=0; --i) {
+				cur = &g.HiScoreTable[i].score;
+				printlonghex2(&cur, 0x80, 0xc0 - (i * 32), g.HiScoreTable[i].score, 0);
+			}
+			for (i=4; i>=0; --i) {
+				cur = &g.HiScoreTable[i].name;
+				_putlong(&cur, 0x100, 0xc0 - (i * 32), g.HiScoreTable[i].name, 0);
+			}
+			DIEFREE;
 			break;
-		default:
-			break;
+		FATALDEFAULT;
 	}
-}
-
-static void sub_516a(u16 **gfx_p, u32 *cp_p, u8 d0, short *leading_zero, u16 d3 ) {
-	u32 cp;
-	if (*leading_zero == 0) {
-		if (d0 & 0xf) {
-			*leading_zero = 1;
-		} else {
-			*leading_zero = 0;
-			INC_GFX_CURSOR(cp_p, 12, 0);
-			return;
-		}
-	}
-	
-	cp = *cp_p;
-	OBJECT_DRAW(*gfx_p, CP_X, CP_Y, 0x80b0 + (d0 & 0xf),d3);
-	OBJ_CURSOR_BUMP(*gfx_p);
-	/* and other buffer */
-	INC_GFX_CURSOR(cp_p, 12, 0);
-	
-}
-static void sub_5162(u16 **gfx_p, u32 *cp, u8 d0, short *d2, u16 d3) {
-	sub_516a(gfx_p, cp, d0 >> 4, d2, d3);
-	sub_516a(gfx_p, cp, d0,      d2, d3);
 }
 
 // print a player's score
@@ -1285,7 +1270,7 @@ static void SMPlayerBlinker(Task *task, Player *ply) {		// 6ea4
 				}
 				break;
 			case 4:		// 7072
-				if ((g.JapanJumper && g.Debug_0x31e) ||
+				if ((g.JapanJumper && g.x031e) ||
 					g.x02eb							 ||
 					g.BattleOver					 ||
 					g.AllowContinue == 0

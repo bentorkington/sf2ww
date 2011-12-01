@@ -253,10 +253,48 @@ static void _putword(u16 **cursor, u32 *gfxcursor, u16 arg, u16 attr){		//5208
     _putchar(cursor,gfxcursor,arg >> 8  , attr);
     _putchar(cursor,gfxcursor,arg & 0xff, attr);
 }
-static void _putlong(u16 **cursor, short x, short y, int arg, short attr) {	//51fe
+void _putlong(u16 **cursor, short x, short y, int arg, short attr) {	//51fe
     u32 gfxcursor = MakePointObj(x,y);
     _putword(cursor, &gfxcursor, arg >> 16   , attr);
     _putword(cursor, &gfxcursor, arg & 0xffff, attr);
+}
+static void sub_5152(u16 **cursor, u32 *gfxcursor, u16 arg, u16 attr) {
+	int lz = 0;		// XXX not really here
+	sub_516a(gfxcursor, cursor, arg >> 4, &lz, attr);
+	sub_516a(gfxcursor, cursor, arg     , &lz, attr);
+}
+static void sub_5148(u16 **cursor, u32 *gfxcursor, u16 arg, u16 attr) {
+	sub_5152(cursor, gfxcursor, arg >> 8, attr);
+	sub_5152(cursor, gfxcursor, arg     , attr);	
+}	
+
+void printlonghex2(u16 **cursor, short x, short y, int arg, short attr) {
+	u32 gfxcursor = MakePointObj(x, y);
+	sub_5148(cursor, &gfxcursor, (arg >> 4) & 0xfff, attr);
+	sub_5148(cursor, &gfxcursor, arg,                attr);
+}
+void sub_516a(u16 **gfx_p, u32 *cp_p, u8 d0, short *leading_zero, u16 d3 ) {
+	u32 cp;
+	if (*leading_zero == 0) {
+		if (d0 & 0xf) {
+			*leading_zero = 1;
+		} else {
+			*leading_zero = 0;
+			INC_GFX_CURSOR(cp_p, 12, 0);
+			return;
+		}
+	}
+	
+	cp = *cp_p;
+	OBJECT_DRAW(*gfx_p, CP_X, CP_Y, 0x80b0 + (d0 & 0xf),d3);
+	OBJ_CURSOR_BUMP(*gfx_p);
+	/* and other buffer */
+	INC_GFX_CURSOR(cp_p, 12, 0);
+	
+}
+void sub_5162(u16 **gfx_p, u32 *cp, u8 d0, short *d2, u16 d3) {
+	sub_516a(gfx_p, cp, d0 >> 4, d2, d3);
+	sub_516a(gfx_p, cp, d0,      d2, d3);
 }
 
 

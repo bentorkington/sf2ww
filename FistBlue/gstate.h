@@ -64,7 +64,10 @@ typedef struct {
 
 void GSInitOffsets(void);
 void draw_background(void);
+
+void GSSetupScr2(GState *gs);
 void GSSetupScr3(GState *gs);
+
 void GSMain(void);
 
 void GSInitForStage(void);			/* setup palettes from g.Pallete1 */

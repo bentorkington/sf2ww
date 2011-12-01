@@ -36,9 +36,56 @@ extern GState gstate_Scroll3;
 
 static short sub_7e86(void);
 
-u16 data_BonusTimes[3][2] = {{0x40, 0x28}, {0x20, 0x00}, {0x40, 0x28}};
+const static u16 data_BonusTimes[3][2] = {{0x40, 0x28}, {0x20, 0x00}, {0x40, 0x28}};
 
 static void gamemode_init_round (void);
+
+
+void SMFreePlay(void){		// 6cc8
+	int buttons = (!g.RawButtons0) & g.RawButtons0 & 0x30;
+	if (buttons) {
+		if (g.x0302) {
+			g.x0302 = 0;
+		}
+		if (buttons & 0x20) {
+			if (g.FreePlay) {
+				g.x031e = 1;
+				startgame(BOTH_HUMAN);
+				return;
+			} else {
+				if (g.JapanJumper) {
+					if ((g.ContinueCoin * 2) + 1 <= g.NumberCredits) {
+						g.x031e = TRUE;
+						g.NumberCredits -= (g.ContinueCoin * 2) + 1;
+						startgame(BOTH_HUMAN);
+						return;
+					}
+				} else {
+					if ((g.ContinueCoin * 2) + 2 <= g.NumberCredits) {
+						g.x031e = TRUE;
+						g.NumberCredits -= (g.ContinueCoin * 2) + 2;
+						startgame(BOTH_HUMAN);
+						return;
+					}
+				}
+			}
+		} 
+		if (buttons & 0x10) {
+			if (g.FreePlay) {
+				g.x031e = 0;
+				startgame(ONLY_P1);
+			} else {
+				if (g.ContinueCoin + 1 <= g.NumberCredits) {
+					g.x031e = FALSE;
+					g.NumberCredits -= g.ContinueCoin + 1;
+					startgame(ONLY_P1);
+				}
+			}
+		}
+
+	}
+	
+}
 
 
 /* 7880 State for fight in progress */
@@ -124,7 +171,7 @@ static void game_mode_28(void) {	// 7af0
 					g.mode2 = 0xa;
 					g.Player1.Alive = FALSE;
 					g.Player2.Alive = FALSE;
-					if (g.AllowContinue || g.Debug_0x31e) {
+					if (g.AllowContinue || g.x031e) {
 						sub_7c50();
 					}
 				} else {

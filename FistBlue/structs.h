@@ -146,7 +146,7 @@ typedef struct game {
     u8  FastEndingFight;
 	u8  Diff_GameCnt;		/* difficulty */
     u8  DifDebugJumper;
-	u8	Debug_0x31e;
+	u8	x031e;
     u8  SkipEnding;
 	u8	x0320;		/* affects sonic holdback timer, setter not found */
     char    TwoHumans;
@@ -301,7 +301,7 @@ typedef struct game {
     Object Objects2[16];    /* sizeof 0xc0 198a - 258a */
     Object Objects3[60];    /* sizeof 0xc0 258a - 528a */
     
-	struct HiScore HiScoreTable[6];		/* 528a - 52aa */
+	struct HiScore HiScoreTable[6];		/* 528a - 52ba */
 	
 	struct HiScore *x52da[6];
 	u32	TopScore;				/* x5302 */
@@ -321,8 +321,9 @@ typedef struct game {
 	int		FadeScroll3;
 	int		x5d4e;
 	int		x5d52;
-	char	FadeInEffect;	/* 5d58 */
-	u8 FadeBusy;        /* 0x5d59 */  
+	char	x5d56;
+	char	FadeInEffect;	/* 5d58 check this */
+	u8		FadeBusy;        /* 0x5d59 */  
 	
 	
 	/*****************/

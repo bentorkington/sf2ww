@@ -13,6 +13,8 @@
 
 #include "lib.h"
 #include "coinage.h"
+#include "actions.h"
+#include "sound.h"
 
 extern Game g;
 
@@ -52,7 +54,7 @@ static void sub_1d9a(void) {
 	g.ContinueCoin = (g.JPCost & 0x40) >> 6;
 	g.DemoSound    = (g.JPCost & 0x80) >> 7;
 }
-void sub_1f9e(Coinslot *cs, char *a0) {
+static void sub_1f9e(Coinslot *cs, const char *a0) {
 	if (cs->x0003) {
 		if(--cs->x0003 != 15) {return;}
 		g.x02db &= a0[0];
@@ -174,50 +176,62 @@ static void sub_6c24(void) {
 	}
 }
 
-
-static void sub_6cc8(void) {		// 6cc8 jumped straight to in freeplay
-	u16 buttons = (!g.RawButtons0 & g.RawButtons0Dash);
-	if (buttons & (BUTTON_P1ST | BUTTON_P2ST)) {
-		if (g.x0302) {
-			g.x0302 = 0;
-		}
-		if (buttons & BUTTON_P2ST) {
-			if (g.FreePlay) {
-				g.Debug_0x31e = TRUE;
-				startgame(BOTH_HUMAN);
-			} else {
-				// ... do when not drunk
-			}
-		} else if (buttons & BUTTON_P1ST) {
-			if (g.FreePlay) {
-				g.Debug_0x31e = FALSE;
-				startgame(ONLY_P1);
-			} else {
-				// ... again, sober
-			}
-		}
-	}
+void task_creditscreen(void) {          /* 6b52 */
+    Object *act;
+	
+    g.x5d56 = FALSE;
+    QueueEffect(LC0_DARK_ALL_DISABLE,1);
+    while(g.x5d56 == FALSE) { sf2sleep(1); }
+    clear_scrolls();
+    sf2sleep(1);
+    g.CPS.Scroll1X   = 0x0;
+    g.CPS.Scroll1Y = 0x100;
+    LBResetState();
+    sound_cq_f7_ff();
+    palette_macro_10();
+    if (act = AllocActor()) {
+        act->exists = TRUE;
+        act->Sel    = SF2ACT_SF2LOGO;
+    }
+    if (act = AllocActor()) {
+        act->exists = TRUE;
+        act->Sel    = SF2ACT_WWLOGO;
+        act->SubSel = 1;
+    }
+    if (act = AllocActor()) {
+        act->exists = TRUE;
+        act->Sel    = SF2ACT_CAPCOMLOGO;
+    }
+	
+    while(TRUE) {
+		if (g.RawButtons0Dash & 0x40 || (g.Debug & (!g.JPCost & 0x80))) {
+            //init_test_menu();
+            return;
+        }
+        if (0 == g.FreezeMachine) {
+            switch (g.mode0) {
+				case 0:
+					g.mode0 +=2;
+					g.NumberCreditsDash = g.NumberCredits;
+					if (g.ContinueCoin) {
+						sub_6c68();			/* print 2 to start, 1 to cont */
+					} else {
+						sub_6c38();
+					}
+				case 2:
+					g.mode0 +=2;
+					QueueEffect(SL10 | 0x0, 0x0);
+					fadenwait5(1);
+				case 4:
+					SMFreePlay();  /* only way out */
+            }
+			proc_actions();
+			DSDrawAllMain();
+            check_coin_lockout();
+            sub_6c24();             /* update the "press 1P start" display */
+        }
+        debughook(0);		/* XXX not correct value */
+        sf2sleep(1);
+    }
 }
 
-void task_creditscreen(void) {
-	switch (g.mode0) {
-		case 0:
-			NEXT(g.mode0);
-			g.NumberCreditsDash = g.NumberCredits;
-			if (g.ContinueCoin) {
-				sub_6c68();
-			} else {
-				sub_6c38();
-			}
-			break;
-		case 2:
-			NEXT(g.mode0);
-			QueueEffect(SL10 | 0, 0);
-			fadenwait5(1);
-			break;
-		case 4:
-			sub_6cc8();
-			break;
-		FATALDEFAULT;
-	}
-}
