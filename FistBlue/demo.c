@@ -49,6 +49,35 @@ static void sub_65a2(void) {
 	}
 }
 
+static void SMdemo_show_high_scores(void) {		//6aaa
+	switch (g.mode1) {
+		case 0:
+			NEXT(g.mode1);
+			g.timer1 = 0xb4;
+			g.Palette1 = 0x10;
+			palette_macro_10();
+			GSInitForStage();
+			gstate_Scroll2.XPI = 0x200;
+			gstate_Scroll2.YPI = 0x700;
+			GSSetupScr2(&gstate_Scroll2);
+			gstate_Scroll3.XPI = 0x200;
+			gstate_Scroll3.YPI = 0x700;
+			GSSetupScr3(&gstate_Scroll3);
+			QueueEffect(SL10 | 0x2, 0);
+			QueueEffect(0x02, 3);
+			queuesound(0x14);
+			break;
+		case 2:
+			if (--g.timer1 == 0) {
+				NEXT(g.mode0);
+			}
+			break;
+		FATALDEFAULT;
+			
+	}
+	
+}
+
 static void SMDemo(void) {
 	switch (g.mode0) {
 		case 0:
@@ -60,9 +89,9 @@ static void SMDemo(void) {
 		case 0x4: SMdemo_fade_and_clear(); break;
 		case 0x6: SMdemo_winnersusedrugs(); break;
 		case 0x8: SMdemo_fade_and_clear(); break;
-		//case 0xa: SMdemo_fight(); break;
+		case 0xa: SMdemo_fight(); break;
 		case 0xc: SMdemo_fade_and_clear(); break;
-		//case 0xe: SMdemo_show_high_scores(); break;
+		case 0xe: SMdemo_show_high_scores(); break;
 		case 0x10: SMdemo_fade_and_clear(); break;
 		case 0x12: 	
 			g.mode0 = g.mode1 = g.mode2 = g.mode3 = g.mode4 = 0;
@@ -302,7 +331,7 @@ static void sub_6964(void) {
 	}
 }
 
-void SMdemo_figterselect(void) {			// 6826
+void SMdemo_fight(void) {			// 6826
 	static const u16 data_910c4[] = {
 		0x0000, 0x004C, 0x0001, 0x000B, 0x0000, 0x0007, 0x0001, 0x000B, 
 		0x0000, 0x000E, 0x0004, 0x000D, 0x0000, 0x0020, 0x0008, 0x0011, 

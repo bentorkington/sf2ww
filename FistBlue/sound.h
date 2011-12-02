@@ -15,6 +15,7 @@
 void sound_cq_f0f7(void);
 void queuesound(int data);
 void setstagemusic(void);
+void coinsound(void);
 
 
 #define SOUND_PLAYERSELECTSCR	0x0e

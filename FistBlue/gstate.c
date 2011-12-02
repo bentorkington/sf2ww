@@ -1223,7 +1223,7 @@ void GSSetupScr2(GState *gs) {			// 83c3c
     cp.y = ~(gs->YPI + 0x180);
 	
 	for (i=0x29; i >= 0; --i) {		
-		_GSDrawScroll2A(gs, gfx_p, _GSLookupScroll2(gs, cp), cp);
+		_GSDrawScroll2A(gs, _GSCoordsScroll2(cp), _GSLookupScroll2(gs, cp), cp);
 		cp.x += 16;
 	}
 }
