@@ -24,7 +24,7 @@ extern u8 *data_8d2ac[];
 
 extern u16 data_86676[32][16];
 extern u16 data_8a8ac[32][16];
-extern u16 data_8aaac[32][16];
+extern u16 data_8aaac[20][16][16];
 extern u16 data_c0000[20][32][16];
 extern u16 data_c5000[20][32][16];
 extern u16 data_ca000[20][32][16];
@@ -58,7 +58,7 @@ void setpalette_objtop(short palette) {		// 16ae
     short u, v;
     for(u=16; u<32; u++) {
         for(v=0;v<16; v++) {
-			gemu.PalObject[u][v] = data_8aaac[u][v];			
+			gemu.PalObject[u][v] = data_8aaac[palette][u-16][v];			
         }
     }
 }
@@ -142,7 +142,7 @@ void sub_1742(int palette) {
 	short u, v;
     for(u=16; u<32; u++) {
         for(v=0;v<16; v++) {
-			gemu.PalObject[u][v] = data_8aaac/*[palette]*/[u][v] | 0xf000; 
+			gemu.PalObject[u][v] = data_8aaac[palette][u-16][v] | 0xf000; 
         }
     }
 }

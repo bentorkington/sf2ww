@@ -69,6 +69,7 @@ static void action_2c(Object *obj);
 
 static void action_2e(Object *obj);
 static void action_2f(Object *obj);
+static void action_30(Object *obj);
 
 static void action_35(Object *obj);
 static void action_36(Object *obj);	/* screenwobble */
@@ -152,6 +153,8 @@ void proc_actions(void) {			/* c7da */
 				
 				ACT117C(0x2e, action_2e)
 				ACT117C(0x2f, action_2f)
+				ACT117C(0x30, action_30)
+				
 				ACT117C(0x35, action_35)
 				ACT117C(0x36, action_36)
 				ACT117C(0x37, action_37)
@@ -530,7 +533,7 @@ static void action_07(Object *obj) {		//e6cc
 	short elephant, i;
 	Object *child;
 	
-	if (obj->SubSel == 0) {
+	if (obj->SubSel == 0) {		// Controller
 		switch (obj->mode0) {
 			case 0:
 				NEXT(obj->mode0);
@@ -647,9 +650,6 @@ static void action_07(Object *obj) {		//e6cc
 				break;
 		}
 	}
-
-
-
 }
 
 #pragma mark Act08
@@ -3019,6 +3019,29 @@ void action_2f(Object *obj) {		// 1d160
 		case 8:			skyskraperanim_08(obj);		break;
 			break;
 		FATALDEFAULT;
+	}
+}
+
+#pragma mark Act30 cheering people on skycraper fight
+
+static void action_30(Object *obj) {		// 1da4a
+	switch (obj->mode0) {
+		case 0:
+			NEXT(obj->mode0);
+			obj->XPI += gstate_Scroll3.XPI;
+			obj->YPI += gstate_Scroll3.YPI;
+			obj->Pool = 6;
+			setaction_direct(obj, actlist_1da8c);
+			/* FALLTHRU */
+		case 2:
+			actiontick(obj);
+			check_rect_queue_draw(obj);
+			break;
+		case 4:
+		case 6:
+			FreeActor(obj);
+			break;
+			FATALDEFAULT;
 	}
 }
 
