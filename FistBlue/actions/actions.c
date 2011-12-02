@@ -68,7 +68,7 @@ static void action_1e420(Object *obj);
 static void action_2c(Object *obj);
 
 static void action_2e(Object *obj);
-
+static void action_2f(Object *obj);
 
 static void action_35(Object *obj);
 static void action_36(Object *obj);	/* screenwobble */
@@ -94,6 +94,7 @@ typedef struct UserData_Act12 UD12;
 typedef struct UserData_Act1e UD1E;
 typedef struct UserData_Act23 UD23;
 typedef struct UserData_Act2e UD2E;
+typedef struct UserData_Act2f UD2F;
 
 typedef struct UserData_Act35 UD35;
 typedef struct UserData_Act36 UD36;
@@ -150,7 +151,7 @@ void proc_actions(void) {			/* c7da */
 				ACT117C(0x2c, action_2c)
 				
 				ACT117C(0x2e, action_2e)
-				
+				ACT117C(0x2f, action_2f)
 				ACT117C(0x35, action_35)
 				ACT117C(0x36, action_36)
 				ACT117C(0x37, action_37)
@@ -2087,7 +2088,7 @@ static void sub_1acaa(Object *obj) {
 static void action_22(Object *obj) {		// 1ac16
 	switch (obj->mode0) {
 		case 0:
-			NEXT(obj->mode2);
+			NEXT(obj->mode0);
 			obj->Pool   = 2;
 			obj->Scroll = -1;
 			obj->XPI	= 0xc0;
@@ -2110,12 +2111,13 @@ static void action_22(Object *obj) {		// 1ac16
 			}
 			break;
 		case 4:
-			NEXT(obj->mode2);
+			NEXT(obj->mode0);
 			action_1ab8a();
 			break;
 		case 6:
 			g.PreRoundAnim = FALSE;
 			FreeActor(obj);
+			break;
 		FATALDEFAULT;
 	}
 }
@@ -2711,7 +2713,7 @@ static void action_2e(Object *obj) {		// 18f92
 						ud->x_to = data_19040[ud->city_to][0];
 						ud->y_to = data_19040[ud->city_to][1];
 						d6 = calc_flightpath(obj, ud->x_to, ud->y_to);
-						// todo cheeky bitshifts
+						//todo cheeky bitshifts
 						obj->Step = d6;
 						setaction_list(obj, actlist_19fa2, (d6+1) >> 3);
 					}
@@ -2761,6 +2763,265 @@ static void action_2e(Object *obj) {		// 18f92
 		FATALDEFAULT;
 	}
 }
+
+
+#pragma mark Act2f	Attract sequence fighters
+static void skyskraperanim_00(Object *obj) {		// 1d176
+	UD2F *ud = (UD2F *)obj->UserData;
+
+	switch (obj->mode0) {
+		case 0:
+			NEXT(obj->mode0);
+			g.x8a74 = 0;
+			g.x8a75 = 0xf0;
+			obj->Pool = 4;
+			ud->OldY = obj->YPI;
+			setaction_list(obj, actlist_1d4f0, 0);
+			break;
+		case 2:
+			switch (obj->mode1) {
+				case 0:
+					if (--g.x8a75 == 0) {
+						NEXT(obj->mode1);
+						g.x8a74 = 1;
+						g.x8a75 = 0x10;
+						obj->XPI = 0xc8;
+						setaction_list(obj, actlist_1d4f0, 2);
+					} else {
+						obj->YPI = ud->OldY;
+						obj->YPI |= ((g.x8a75 & 0x10)>>3);
+					}
+					sub_25f8(obj);
+					break;
+				case 2:
+					if (--g.x8a75 == 0) {
+						NEXT(g.mode1);
+						g.x8a74 = -1;
+						g.x8a75 = 60;
+						obj->XPI = 0xb0;
+						obj->YPI = 0x610;
+						obj->Pool = 4;
+						setaction_list(obj, actlist_1d4f0, 3);
+					}
+					sub_25f8(obj);
+					break;
+				case 4:
+					if (--g.x8a75 == 0) {
+						g.Pause_9e1 = 1;
+					}
+					sub_25f8(obj);
+					break;
+				FATALDEFAULT;
+			}
+		case 4:
+		case 6:
+			FreeActor(obj);
+			break;
+		FATALDEFAULT;
+	}
+}
+static void skyskraperanim_02(Object *obj) {		// 1d250
+	UD2F *ud = (UD2F *)obj->UserData;
+
+	switch (obj->mode0) {
+		case 0:
+			NEXT(obj->mode0);
+			obj->Pool = 4;
+			ud->OldY = obj->YPI;
+			setaction_list(obj, actlist_1d4f0, 1);
+			sub_25f8(obj);
+			break;
+		case 2:
+			switch (obj->mode1) {
+				case 0:
+					if (g.x8a74 == 0) {
+						obj->YPI = ud->OldY;
+						obj->YPI |= ((g.x8a75 & 0x20)>>4);
+						sub_25f8(obj);
+					} else {
+						NEXT(obj->mode1);
+					}
+					break;
+				case 2:
+					if (g.x8a74 < 0) {
+						NEXT(g.mode1);
+						obj->XPI = 0x58;
+						obj->YPI = 0x610;
+						obj->Pool = 4;
+						obj->LocalTimer = 6;
+						setaction_list(obj, actlist_1d4f0, 4);
+						sub_25f8(obj);
+					}
+					break;
+				case 4:
+					if (--obj->LocalTimer == 0) {
+						NEXT(obj->mode1);
+					}
+					break;
+				case 6:
+					obj->XPI -= 2;
+					obj->YPI -= 1;
+					sub_25f8(obj);
+					break;
+				FATALDEFAULT;
+			}
+			break;
+		case 4:
+		case 6:
+			FreeActor(obj);
+			break;
+		FATALDEFAULT;
+	}
+}
+static void skyskraperanim_04(Object *obj) {		// 1d308
+	switch (obj->mode0) {
+		case 0:
+			NEXT(obj->mode0);
+			obj->Pool = 4;
+			setaction_list(obj, actlist_1d4f0, 5);
+			break;
+		case 2:
+			switch (obj->mode1) {
+				case 0:
+					if (g.x8a74) {
+						NEXT(obj->mode1);
+					}
+					break;
+				case 2:
+					if (g.x8a74 < 0) {
+						NEXT(obj->mode1);
+						obj->XPI = 0x38;
+						obj->YPI = 0x640;
+						obj->Pool = 6;
+						obj->LocalTimer = 6;
+						sub_25f8(obj);
+					}
+					break;
+				case 4:
+					if (--obj->LocalTimer == 0) {
+						NEXT(obj->mode1);
+					}
+					break;
+				case 6:
+					obj->XPI -= 2;
+					obj->YPI -= 1;
+					sub_25f8(obj);
+					break;
+				FATALDEFAULT;
+			}
+			break;
+		case 4:
+		case 6:
+			FreeActor(obj);
+			break;
+		FATALDEFAULT;
+	}
+}
+static void skyskraperanim_06(Object *obj) {		// 1d394
+	switch (obj->mode0) {
+		case 0:
+			NEXT(obj->mode0);
+			obj->Pool = 6;
+			setaction_list(obj, actlist_1d4f0, 6);
+			break;
+		case 2:
+			switch (obj->mode1) {
+				case 0:
+					if (g.x8a74) {
+						NEXT(obj->mode1);
+					}
+					break;
+				case 2:
+					if (g.x8a74 < 0) {
+						NEXT(obj->mode1);
+						soundsting(0x2a);
+						obj->XPI = 0x40;
+						obj->YPI = 0x650;
+						obj->Pool = 6;
+						obj->LocalTimer = 6;
+						sub_25f8(obj);
+					}
+					break;
+				case 4:
+					if (obj->LocalTimer) {
+						--obj->LocalTimer;
+						sub_25f8(obj);
+					}
+					break;
+				FATALDEFAULT;
+			}
+			break;
+		case 4:
+		case 6:
+			FreeActor(obj);
+			break;
+		FATALDEFAULT;
+	}
+}
+static void skyskraperanim_08(Object *obj) {		// 1d41a
+	UD2F *ud = (UD2F *)obj->UserData;
+
+	static const u32 data_1d4ac[] = {0x0002c000, 0x00030000, 0x00034000, 0x00028000};
+	static const u32 data_1d4bc[] = {0x00020000, 0x00010000, 0x00030000, 0x00000000};
+	
+	switch (obj->mode0) {
+		case 0:
+			NEXT(obj->mode0);
+			obj->Pool = 4;
+			ud->VelY.full    = 0x00000000;
+			ud->Gravity.full = 0xffffc000;
+			setaction_list(obj, actlist_1d4f0, 7);
+			break;
+		case 2:
+			switch (obj->mode1) {
+				case 0:
+					if (g.x8a74) {
+						NEXT(obj->mode1);
+					}
+					break;
+				case 2:
+					if (g.x8a74 < 0) {
+						NEXT(obj->mode1);
+						soundsting(0x2a);
+						obj->XPI = 0x30;
+						obj->YPI = 0x640;
+						obj->Pool = 4;
+						obj->LocalTimer = 10;
+						ud->VelX.full = data_1d4ac[obj->Step];
+						ud->VelY.full = data_1d4bc[obj->Step];
+						sub_25f8(obj);
+					}
+					break;
+				case 4:
+					obj->X.full -= ud->VelX.full;
+					obj->Y.full += ud->VelY.full;
+					ud->VelY.full += ud->Gravity.full;
+					actiontick(obj);
+					sub_25f8(obj);
+					break;
+				FATALDEFAULT;
+			}
+			break;
+		case 4:
+		case 6:
+			FreeActor(obj);
+			break;
+		FATALDEFAULT;
+	}
+}
+
+void action_2f(Object *obj) {		// 1d160
+	switch (obj->SubSel) {
+		case 0:			skyskraperanim_00(obj);		break;
+		case 2:			skyskraperanim_02(obj);		break;
+		case 4:			skyskraperanim_04(obj);		break;
+		case 6:			skyskraperanim_06(obj);		break;
+		case 8:			skyskraperanim_08(obj);		break;
+			break;
+		FATALDEFAULT;
+	}
+}
+
 
 #pragma mark Act35 Ground Dust
 
@@ -2912,7 +3173,7 @@ void action_36(Object *obj) {		/* 1fdc4 */
 		case 2:
 			if (--obj->x001f == 0) {
 				if(--obj->LocalTimer == 0) {
-					NEXT(obj->mode2);
+					NEXT(obj->mode0);
 					sub_1fe36(obj);
 					return;
 				} else {

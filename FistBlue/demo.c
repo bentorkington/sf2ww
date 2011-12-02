@@ -128,7 +128,7 @@ void SMdemo_fade_and_clear(void) {		// 6618
         g.mode1 +=2;
         start_effect(0,3);
     case 2:
-        if (g.x5d56) {
+        if (Exec.EffectIsSetUp) {
             g.mode0 += 2;
             g.mode1  = 0;
             clear_scrolls();
@@ -226,6 +226,7 @@ void SMdemo_winnersusedrugs (void) {
 				NEXT(g.mode0);
 				g.mode1 = 0;
 			}
+			break;
 		FATALDEFAULT;
 	}
 }
@@ -467,6 +468,7 @@ void SMdemo_fight(void) {			// 6826
 					break;
 				case 2:
 					sub_6964();
+					break;
 				FATALDEFAULT;
 			}
 			break;

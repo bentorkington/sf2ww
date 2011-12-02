@@ -40,6 +40,19 @@ void actiontick(Object *obj) {		/* 23ec */
     }
 }
 
+
+void sub_25f8(Object *obj) {
+	GState *gs;
+	if (obj->exists) {
+		gs = get_graphics_context(obj);
+		if (obj->XPI > -64 && obj->XPI < 544) {
+			obj->flag1 = TRUE;
+			enqueue_and_layer(obj);
+		} else {
+			obj->flag1 = FALSE;
+		}
+	}
+}
 void check_rect_queue_draw(Object *obj) {   /* 0x2540 */
     GState *gc;       
     short int x, y;

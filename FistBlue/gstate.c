@@ -663,8 +663,6 @@ static void _GSStageScroll1 (short d0) {	/* 83730 */
 		data_8a0ac, data_8a12c, data_8a1ac, data_8a22c,  
 	};
 
-	
-	
 	int bonus;					/* not actually bonus, but VS Screen, etc */
 	//bonus = data_8375c[d0];
 	bonus = d0 >= 0x10 ? TRUE : FALSE;		/* more compact than a U16 LUT*/
@@ -1004,7 +1002,6 @@ static void _GSDrawScroll3B(GState *gs, u16 *gfx_p, const u16 *tilep, CP cp) {  
 }
 
 static void gstate_update_scroll1 (GState *gs) {			//83498
-    short temp;
     CP cp;
 		
     g.CPS.Scroll1X = gs->XPI;
@@ -1212,8 +1209,6 @@ void draw_background(void) {
 }
 void GSSetupScr2(GState *gs) {			// 83c3c
     CP			cp;
-	u16			*gfx_p;
-	const u16	*tilep;
 	int			i;
 	
 	g.CPS.Scroll2X = gs->XPI;
@@ -1229,8 +1224,6 @@ void GSSetupScr2(GState *gs) {			// 83c3c
 }
 void GSSetupScr3(GState *gs) {			// 83cd2 was setup_scroll3
     CP			cp;
-	u16			*gfx_p;
-	const u16	*tilep;
 	int			i;
 	
 	g.CPS.Scroll3X = gs->XPI;

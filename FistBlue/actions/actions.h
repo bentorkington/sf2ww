@@ -132,6 +132,11 @@ struct UserData_Act2e {
 	short	sound;	// 0096
 };
 	
+struct UserData_Act2f {
+	short	OldY;
+	FIXED16_16	VelX, VelY, Gravity;
+};
+	
 
 struct UserData_Act35 {
 	short	x0080;	

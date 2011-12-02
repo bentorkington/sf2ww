@@ -266,6 +266,7 @@ void update_obj_path(Object *ply);
 Object *alloc_action_by_type(short type);
 void CAApplyVelocity(Object *obj);
 void die_if_offscreen(Object *obj);	// 248c
+void sub_25f8(Object *obj);
 
 
 

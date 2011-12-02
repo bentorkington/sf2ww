@@ -15,8 +15,10 @@
 #include "coinage.h"
 #include "actions.h"
 #include "sound.h"
+#include "task.h"
 
 extern Game g;
+extern struct executive_t Exec;
 
 static void sub_dee(void) {
 	g.x02db = g.x02db & 0xfff3;
@@ -186,9 +188,9 @@ void check_coin_lockout(void) {		//dfc move to coinage.c
 void task_creditscreen(void) {          /* 6b52 */
     Object *act;
 	
-    g.x5d56 = FALSE;
+    Exec.EffectIsSetUp = FALSE;
     QueueEffect(LC0_DARK_ALL_DISABLE,1);
-    while(g.x5d56 == FALSE) { sf2sleep(1); }
+    while(Exec.EffectIsSetUp == FALSE) { sf2sleep(1); }
     clear_scrolls();
     sf2sleep(1);
     g.CPS.Scroll1X   = 0x0;
