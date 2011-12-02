@@ -87,7 +87,7 @@ typedef struct game {
 	// gap
 	u8 *x0092,*x0096;		/* pointers to gfx ram (!!) for something funky at 22b0 */
     /* end input vars */
-	u16		*DemoJoyP1, *DemoJoyP2;				//0092,0096
+	const u16		*DemoJoyP1, *DemoJoyP2;				//0092,0096
 	short	DemoJoyP1Timer, DemoJoyP2Timer;		//009a,009c
 	
 
@@ -121,10 +121,10 @@ typedef struct game {
     char	x02e0, WaitMode, NoInterrupt, DebugNoCollide;
     u8  PlayersOnline;
     
-    u8  NewChallengerWait;
-    
+    u8  NewChallengerWait;  // 2e5
     char TimeWarpTimer;
     char PreRoundAnim;
+	char x02e8;
     char  PlyDrawOrder;		/* 0x02e9 */
     char  FirstFight;
     char  x02eb, x02ec, OnFinalStage, ContinueCount;
@@ -133,8 +133,8 @@ typedef struct game {
 	short	CoinsTaken;		// 02f4
     char  Uptime[4];  // 2f6 - a   
 	
-	u16	DemoStageIndex;
-	/**/
+	u16	DemoStageIndex;		// 02fe
+	short	x0300;
 	char	x0302;
     char	TimeWarpSlowdown, TimeWarpSlowdown2;	/* 0x303-4 */
     char	x0305; /* Bison cape signal */
@@ -142,8 +142,9 @@ typedef struct game {
     char    NotUsed;    /* some debug signal */
 	short	UsageCount[8];		// 308-318
 
-    u8  SeqPause;
-    u8  FastEndingFight;
+	char	x0318;
+    u8  SeqPause;				// 31a
+    u8  FastEndingFight;		// 31b
 	u8  Diff_GameCnt;		/* difficulty */
     u8  DifDebugJumper;
 	u8	x031e;
@@ -151,8 +152,6 @@ typedef struct game {
 	u8	x0320;		/* affects sonic holdback timer, setter not found */
     char    TwoHumans;
     char  Debug2;		// 0322
-
-
     u8	JapanJumper;
     
 	/* The Player Structures. 
@@ -256,7 +255,10 @@ typedef struct game {
     u8      PlayersThrowing;
     u8		x0ade;					// not found set
 	char	LastDrawOrder;			/* last draw order */
+
 	u8		ThrowEndHoldoff;
+	u8		KillAct48;				/* 0ae0 signal for Act48 hmm maybe wrong */
+
     char    FightOver;				/* 0ae1 */
 	u16		HumanMoveCnt;			
 	u16		x0ae4;
@@ -264,8 +266,7 @@ typedef struct game {
 	char    x0ae7;    
 	u8		x0ae8;					/* mode for low time remainining blinker */
 	u8		x0ae9;					/* Timer for flash */
-	u8		KillAct48;				/* 0ae0 signal for Act48 */
-    u8		FlagTimeWarp;			/* time slows down */
+    u8		FlagTimeWarp;			/* 0aeb time slows down */
 	
 	/* End 0x80 bytes cleared at 2cba  and 0x180 bytes at 2af2 */
 	char	x0b4a;		/* placeholder */

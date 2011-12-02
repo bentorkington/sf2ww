@@ -1356,13 +1356,6 @@ static void SMPlayerBlinker(Task *task, Player *ply) {		// 6ea4
 	}
 }
 
-void check_coin_lockout(void) {		//dfc move to coinage.c
-	if (g.NumberCredits >= 9) {
-		g.x02db &= 0xf3;
-	} else {
-		g.x02db |= 0xc;
-	}
-}
 
 
 void task_blinkers(void) {		// 6e64

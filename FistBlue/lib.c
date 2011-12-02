@@ -816,7 +816,7 @@ inline static void _init_difficulty(void) {
 	}
 }
 
-void LBInitPlayers(void) {
+void LBInitPlayers(void) {		// 2c8a
 	_init_difficulty();	
 	_init_energy();		
 	
@@ -1013,7 +1013,7 @@ void resetstate_B(void) {
     _LBResetState();
 }
                
-void LBResetState(void) {
+void LBResetState(void) {		// 2794
     clear_gstates();  
     _LBResetState();
 }
@@ -1499,7 +1499,8 @@ void sub_8e8e(void) {
 	}
 }		
 
-void setup_stage_actions (int sel) { /* 8227e */
+void setup_stage_actions (void) { /* 822be */
+	int sel = g.CurrentStage;
     int i;
 	const static short counts[]={ 4, 10, 17, 7, 13, 10, 2, 2, 7, 4, 24, 16, 0, 8, 1, 11, };
 	static const struct actionhdr data_82312[]={
@@ -1702,7 +1703,7 @@ void setup_stage_actions (int sel) { /* 8227e */
 		{0x08, 0x0f, 0x0c, 0x00, 0x00, 0x00, 0x0000, 0x0138, 0x00b0},
 		
 	};
-	const struct actionhdr *data_stageactions[]={ 
+	const struct actionhdr *data_stageactions[]={	// 8227e
 		data_82312, 
 		data_82350, 
 		data_823d6, 

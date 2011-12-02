@@ -10,7 +10,7 @@
 #define _SF2_COINAGE
 
 void task_creditscreen(void);
-
+void check_coin_lockout(void);
 
 struct coinslot {
 	char x0000;

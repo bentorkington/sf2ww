@@ -487,7 +487,7 @@ static void sub_7e6b8(void) {	// cousin of spritelib_drawall
 	ds_draw_hiragana();
 }
 
-/* 7e4dc 910300 160 not used yet */
+/* 7e4dc 910300 160 */
 void sub_7e4dc(void) {		
 	debughook(5);
 //	if(g.DisableDblBuf == 0 && g.CPS.ObjBase & 0x80) {

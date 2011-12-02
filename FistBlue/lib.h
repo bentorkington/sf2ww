@@ -49,7 +49,7 @@ void sub_8e8e(void);
 void process_projectiles(void);
 void actions_198a(void);
 void actions_530a(void);
-void setup_stage_actions(int sel);
+void setup_stage_actions(void);
 void quirkysound(short data);
 void set_ply_directions(Player *ply);
 short sub_2fe6(Player *ply, Object *a0, short yoke);

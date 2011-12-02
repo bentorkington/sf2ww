@@ -1970,7 +1970,7 @@ static void action_21(Object *obj) {    // 1153e
 
 #pragma mark Act22 RoundXFight!
 
-void action_start_22(void) { /* round X .. fight! */
+void action_start_22(void) { //  1abc6  round X .. fight!
 	const static u16 pals_1abf6[]={
 		0xf000, 0xffff, 0xfccb, 0xf887, 0xf8ff, 0xf4cc, 0xf1aa, 0xfcef,                             
 		0xfaef, 0xf8cf, 0xf69e, 0xf46e, 0xf04d, 0xf02c, 0xf00b, 0xf00a,
@@ -1981,7 +1981,7 @@ void action_start_22(void) { /* round X .. fight! */
 		obj->exists = TRUE;
 		obj->Sel = SF2ACT_PREROUNDANIM;
 	}
-	if ((g.CurrentStage == STAGE_THAILAND_BISON) && (g.RoundCnt != 0)) {		// check logic, should be ==0 ?
+	if ((g.CurrentStage == STAGE_THAILAND_BISON) && (g.RoundCnt != 0)) {
 		gemu_setpalette(11, pals_1abf6);
 	}
 }

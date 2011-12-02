@@ -648,7 +648,7 @@ static void gamemode_init_round (void) {
 			init_fightgfx();        
 			print_timeremaining();
 			action_start_22();          /* start the Round X ... anim */
-			setup_stage_actions(g.CurrentStage);
+			setup_stage_actions();
 			break;
 		case 6:
 			if(g.GSInitComplete) {
