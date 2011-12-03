@@ -34,7 +34,7 @@ void manual_init(void) {
 	RHInitThreads();
 	
 	startup();
-	if (1) {
+	if (0) {
 		create_task(task_attractSequence, 4, 0, 0, 0);
 	} else {
 		startgame(ONLY_P1);

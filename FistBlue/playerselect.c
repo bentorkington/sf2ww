@@ -82,7 +82,7 @@ static void update_player_display(Player *ply) {		// 8352
 }
 static int _update_cursor_vert(u16 d6) {		// 8554
 	int d2 = 0;
-	if (d6 & 2) {
+	if (d6 & 8) {
 		d2 = -4;
 	}
 	if (d6 & 4) {
@@ -210,8 +210,8 @@ void SM_player_select(void) {		//7fc4
 					GSInitForStage();
 					g.CPS.Scroll2X				= 0;
 					g.CPS.Scroll2Y				= 0;
-					gstate_Scroll3.XPI		= 0;
-					gstate_Scroll3.YPI		= 0x700;
+					gstate_Scroll3.XPI			= 0;
+					gstate_Scroll3.YPI			= 0x700;
 					GSSetupScr3(&gstate_Scroll3);
 					g.CPS.Scroll1X				= 0;
 					g.CPS.Scroll1Y				= 0x100;
