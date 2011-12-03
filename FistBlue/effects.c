@@ -708,11 +708,17 @@ static void sub_54bc(u16 **gfx_p, short x, short y, u8 *string) {
 		leadingzero = TRUE;
 		sub_516a(gfx_p, &cp, 0, &leadingzero, 13);	/* XXX really not sure where d3 (13) comes from */
 	} else {
-		// XXX little endian
-		sub_516a(gfx_p, &cp, string[3], &leadingzero, 13);
+#ifdef SF2_ENDIAN_LITTLE
+	 	sub_516a(gfx_p, &cp, string[3], &leadingzero, 13);
 		sub_5162(gfx_p, &cp, string[2], &leadingzero, 13);
 		sub_5162(gfx_p, &cp, string[1], &leadingzero, 13);
 		sub_5162(gfx_p, &cp, string[0], &leadingzero, 13);
+#else
+	 	sub_516a(gfx_p, &cp, string[0], &leadingzero, 13);
+		sub_5162(gfx_p, &cp, string[1], &leadingzero, 13);
+		sub_5162(gfx_p, &cp, string[2], &leadingzero, 13);
+		sub_5162(gfx_p, &cp, string[3], &leadingzero, 13);
+#endif		
 	}
 }
 
@@ -1023,7 +1029,7 @@ static void syslib_08 (void) {	// 4f3a Text Blinker, insert coin etc.
 
 static void syslib_26(void) {
 	Task *task = CURRENT_TASK;
-	sleep(10);
+	sf2sleep(10);
 	DIEFREE;
 }
 	
@@ -1057,7 +1063,6 @@ void task_scheduler(void) {		//14f2
 				g.effectCurrent &= 0xfc;
 			}
 		}
-		
 	}
 }
 
@@ -1364,8 +1369,7 @@ void task_blinkers(void) {		// 6e64
 	
 	task->params.x001f = TRUE;
 	while (TRUE) {
-		
-		check_coin_lockout();		// dfc
+		check_coin_lockout();
 		if (g.FreezeMachine == FALSE) {
 			SMPlayerBlinker(task, PLAYER1);
 			SMPlayerBlinker(task, PLAYER2);

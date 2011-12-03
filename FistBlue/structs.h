@@ -361,7 +361,8 @@ typedef struct game {
 	u8		x8a64[2];
 	char	x8a66[2];			// see action_0d
 	char	x8a68[12];			// flags on player select
-	char	x8a74, x8a75;		// skyscraper anim flags
+	char  	x8a74;				// skyscraper anim flags
+	unsigned char x8a75;		// skyscraper anim timer
 	u16		x8a76[10];		/* end round scoring */
 	u16		x8a8a[10];
 	u16		x8a9e[10];

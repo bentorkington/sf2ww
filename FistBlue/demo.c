@@ -178,7 +178,9 @@ void SMdemo_titlefightanim(void) {	// 0x6650 mode is 2,0
 			}
 			start_effect(2,3);
 			queuesound(SOUND_DEMOMUSIC);
-		case 2: if(g.Pause_9e1) {g.mode1 +=2;}
+			break;
+		case 2: if(g.Pause_9e1) {g.mode1 += 2;}
+			break;
 		case 4: 
 			gstate_Scroll2.Y.full+= 0x00008000;    /*half, parallax scroll*/
 			gstate_Scroll3.YPI   += 1;
@@ -188,18 +190,22 @@ void SMdemo_titlefightanim(void) {	// 0x6650 mode is 2,0
 				g.timer3 = 180;      /* 180 (decimal) ticks */
 				start_effect(0x0c1e, 3);
 			}
+			break;
 		case 6:
 			if (!g.timer2--) {
 				g.mode1 +=2;
 				g.Pause_9e1 = -1;
 				g.timer2 = 750;
 			}
+			break;
 		case 8:
 			if (!g.timer2--) {
 				g.mode0 +=2;
 				g.mode1  =0;
 				if (g.Version != VERSION_USA) { g.mode0 = 0x8; }
 			}
+			break;
+		FATALDEFAULT;
     }
     proc_actions();
     draw_background();

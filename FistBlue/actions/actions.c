@@ -2772,19 +2772,20 @@ static void skyskraperanim_00(Object *obj) {		// 1d176
 	switch (obj->mode0) {
 		case 0:
 			NEXT(obj->mode0);
-			g.x8a74 = 0;
-			g.x8a75 = 0xf0;
+			g.x8a74   = 0;
+			g.x8a75   = 0xf0;
 			obj->Pool = 4;
-			ud->OldY = obj->YPI;
+			ud->OldY  = obj->YPI;
 			setaction_list(obj, actlist_1d4f0, 0);
+			sub_25f8(obj);
 			break;
 		case 2:
 			switch (obj->mode1) {
 				case 0:
 					if (--g.x8a75 == 0) {
 						NEXT(obj->mode1);
-						g.x8a74 = 1;
-						g.x8a75 = 0x10;
+						g.x8a74  =  1;
+						g.x8a75  = 16;
 						obj->XPI = 0xc8;
 						setaction_list(obj, actlist_1d4f0, 2);
 					} else {
@@ -2795,7 +2796,7 @@ static void skyskraperanim_00(Object *obj) {		// 1d176
 					break;
 				case 2:
 					if (--g.x8a75 == 0) {
-						NEXT(g.mode1);
+						NEXT(obj->mode1);
 						g.x8a74 = -1;
 						g.x8a75 = 60;
 						obj->XPI = 0xb0;
@@ -2813,6 +2814,7 @@ static void skyskraperanim_00(Object *obj) {		// 1d176
 					break;
 				FATALDEFAULT;
 			}
+			break;
 		case 4:
 		case 6:
 			FreeActor(obj);
@@ -2844,7 +2846,7 @@ static void skyskraperanim_02(Object *obj) {		// 1d250
 					break;
 				case 2:
 					if (g.x8a74 < 0) {
-						NEXT(g.mode1);
+						NEXT(obj->mode1);
 						obj->XPI = 0x58;
 						obj->YPI = 0x610;
 						obj->Pool = 4;
