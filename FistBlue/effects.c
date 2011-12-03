@@ -703,15 +703,16 @@ static void syslib_10(void) {		// 4f9e
 static void sub_54bc(u16 **gfx_p, short x, short y, u8 *string) {
 	u32 cp = MakePointObj(x, y);
 	short leadingzero = FALSE;
-	if (string[0] == 0) {
+	if (*((u32 *)string) == 0) {
 		INC_GFX_CURSOR(&cp, 0x48, 0);
 		leadingzero = TRUE;
 		sub_516a(gfx_p, &cp, 0, &leadingzero, 13);	/* XXX really not sure where d3 (13) comes from */
 	} else {
-		sub_516a(gfx_p, &cp, string[0], &leadingzero, 13);
-		sub_5162(gfx_p, &cp, string[1], &leadingzero, 13);
+		// XXX little endian
+		sub_516a(gfx_p, &cp, string[3], &leadingzero, 13);
 		sub_5162(gfx_p, &cp, string[2], &leadingzero, 13);
-		sub_5162(gfx_p, &cp, string[3], &leadingzero, 13);
+		sub_5162(gfx_p, &cp, string[1], &leadingzero, 13);
+		sub_5162(gfx_p, &cp, string[0], &leadingzero, 13);
 	}
 }
 
@@ -971,7 +972,7 @@ static void syslib_20(void) {		//5410 increase player score
 		if (ply->Score > 0x9999999) {
 			ply->Score = 0x9999999;
 		}
-		if (task->params.Param1 == 0) {
+		//if (task->params.Param1 == 0) {
 			if (ply->Side == 0) {
 				OBJ_CURSOR_CPS(gfx_p, 0x910000);
 				sub_54bc(&gfx_p, 32, 240, (u8 *)&ply->Score);
@@ -979,7 +980,7 @@ static void syslib_20(void) {		//5410 increase player score
 				OBJ_CURSOR_CPS(gfx_p, 0x910038);
 				sub_54bc(&gfx_p, 296, 240, (u8 *)&ply->Score);
 			}
-		}
+		//}
 		if (g.TopScore < ply->Score) {
 			g.TopScore = ply->Score;
 			OBJ_CURSOR_CPS(gfx_p, 0x910098);

@@ -702,7 +702,7 @@ void draw_shadow(Player *ply, Object *obj) {
     if(obj->mode0 == 0) {
         obj->mode0  = 2;
         obj->exists = TRUE;
-        obj->LocalTimer  = ply->Side;
+        obj->LocalTimer  = ply->Side;		//???
     }
     if (ply->exists == FALSE) {
         obj->exists = FALSE;
