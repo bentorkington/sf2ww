@@ -804,9 +804,9 @@ void drawsprite(Object *obj) {         /* 7edaa */
 	short coordpair[2];
 	
 	
-    if(g.Debug && g.JPCost & JP_DBGSLEEP) {
+    //if(g.Debug && g.JPCost & JP_DBGSLEEP) {
 		dbg_draw_hitboxes((Player *)obj);
-    }
+    //}
     sprite_coords(obj, coordpair);	/* set coords in d0 and d1 to follow scroll X */
 	
     image = obj->ActionScript->Image;
@@ -1038,9 +1038,7 @@ static void sub_7ee58(Object *obj, const u16 *tilep, const short *offsets, short
 	
     x -= g.DSOffsetX;
 	y += g.DSOffsetY;
-	
-	//printf("sprite_7ee58 Side %d x %4d y %4d attr %04x\n",((Player *)obj)->Side,x,y,attr);
-	
+		
 	if (obj->Draw1 < 0) {
 		sub_7eea2(obj, tilep, offsets, x, y, tiles, attr);			/* draw with sin,cos effect */
 	} else {
@@ -1056,7 +1054,6 @@ static void sub_7ee58(Object *obj, const u16 *tilep, const short *offsets, short
 					sx= x + *offsets;
 					offsets++;
 					if(sx>512 || sx < 0) {
-						tilep++;
 						offsets++;
 						g.ObjTileBudget++;
 						g_tilecount -= 1;
@@ -1104,7 +1101,6 @@ static void sub_7ef2a(Object *obj, const u16 *tilep, const short *offsets,
 				sx= x - (*offsets - d5);
 				offsets++;
 				if(sx>512 || sx < 0) {
-					tilep++;
 					offsets++;
 					g.ObjTileBudget++;
 					g_tilecount -= 1;
@@ -1147,7 +1143,6 @@ static void sub_7ef86(Object *obj, const u16 *tilep, const short *offsets,
 				sx= x + *offsets;
 				offsets++;
 				if(sx < 0 || sx>512) {
-					tilep++;
 					offsets++;
 					g.ObjTileBudget++;
 					g_tilecount -= 1;
@@ -1192,7 +1187,6 @@ static void sub_7efd8(Object *obj, const u16 *tilep, const short *offsets,
 				sx= x - *offsets - d5;
 				offsets++;
 				if(sx < 0 || sx>512) {
-					tilep++;
 					offsets++;
 					g.ObjTileBudget++;
 					g_tilecount -= 1;

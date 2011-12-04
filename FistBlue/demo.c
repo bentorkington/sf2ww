@@ -22,6 +22,7 @@
 #include "collision.h"
 #include "fightgfx.h"
 #include "rules.h"
+#include "effects.h"
 
 extern Game g;
 extern GState gstate_Scroll1;
@@ -252,7 +253,7 @@ static void setupdemofight(void) {		// 69e2
 static void sub_6a54(void) {
 	NEXT(g.mode0);
 	g.mode1 = g.mode2 = g.mode2 = 0;
-	g.x0302 = 0;
+	g.x0302 = FALSE;
 	sound_cq_f0f7();
 	die_top8();
 	//task_kill(5);		// kill the konami watcher
@@ -321,11 +322,11 @@ static void sub_6964(void) {
 			sub_7e4dc();
 			break;
 		case 6:
-			if (--g.x0300 == 0) {
+			if (--g.DemoFightTimer == 0) {
 				sub_6a54();
 				return;
 			} else {
-				sub_8e8e();
+				LBCheckRoundResult();
 				if (g.RoundComplete) {
 					sub_6a54();
 					return;
@@ -427,11 +428,11 @@ void SMdemo_fight(void) {			// 6826
 					}
 					++g.DemoStageIndex;
 					g.DemoStageIndex &= 3;
-					g.x0300 = 0x708;
+					g.DemoFightTimer = 0x708;
 					g.DemoJoyP1Timer = 1;
 					g.DemoJoyP2Timer = 1;
 					g.FastEndingFight = FALSE;
-					g.x0302 = 1;
+					g.x0302 = TRUE;
 					g.Player1.SelectComplete = FALSE;
 					g.Player2.SelectComplete = FALSE;
 					g.Player1.Side = 0;

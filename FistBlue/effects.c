@@ -18,8 +18,9 @@
 #include "sprite.h"
 #include "sm.h"
 #include "sound.h"
-
 #include "text.h"
+#include "effects.h"
+#include "sf2io.h"
 
 extern struct executive_t Exec;
 

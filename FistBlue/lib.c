@@ -16,6 +16,7 @@
 #include "task.h"
 #include "rules.h"
 #include "sound.h"
+#include "sf2io.h"
 
 #include "actions.h"
 
@@ -1437,7 +1438,7 @@ static void decide_timeout_result(void) {   /* 0x901e */
 	}
 }
 /* check if time or bonus stage expired */
-void sub_8e8e(void) {
+void LBCheckRoundResult(void) {
 	if(g.OnBonusStage) {
 		/* 0x913a */
 		if(g.Player1.x02ae || g.Player2.x02ae) {

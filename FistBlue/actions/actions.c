@@ -18,6 +18,7 @@
 #include "sound.h"
 #include "actions.h"
 #include "gemu.h"
+#include "sf2io.h"
 
 #include "actiondata.h"
 
@@ -2135,7 +2136,7 @@ void ActStartVomit(Player *ply) {			// 1e304
 		obj->SubSel = 0;
 		obj->flag1  = TRUE;
 		obj->Sel    = SF2ACT_VOMIT;
-		obj->UserByte  = sf2rand() & 1;		// orange or grey vomit
+		obj->UserByte  = sf2rand() & 1;		// orange or grey vomit?
 		obj->Owner  = ply;
 		ud->x0093   = ply->Side;
 		ud->x008e   = &FreeActor;	//??
@@ -2285,13 +2286,13 @@ static Player *sub_1e7ae(Object *obj) {
 	x = data_1e804[ply->FighterID][obj->SubSel/2][0];
 	y = data_1e804[ply->FighterID][obj->SubSel/2][1];
 	
-	obj->XPI = ply->XPI + ply->Flip ? -x : x;
+	if (ply->Flip) {obj->XPI = ply->XPI - x;} else {obj->XPI = ply->XPI + x;}
 	obj->YPI = ply->YPI + y;
 
 	return ply;
 }
 
-static void sub_1e59a(Object *obj) {
+static void sub_1e59a(Object *obj) {		// birds and stars?
 	UD23 *ud = (UD23 *) &obj->UserData;
 	
 	Player *ply;
@@ -2308,7 +2309,7 @@ static void sub_1e59a(Object *obj) {
 				case 2:
 					if (--obj->LocalTimer == 0) {
 						NEXT(obj->mode0);
-						//sub_1e79e();
+						sub_1e79e(obj);
 						setaction_list(obj, actlist_1e8d6, obj->SubSel + obj->UserByte);
 						ply = sub_1e7ae(obj);
 						obj->Flip = ply->Flip;

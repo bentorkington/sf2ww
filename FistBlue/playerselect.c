@@ -24,7 +24,7 @@
 #include	"actions.h"
 #include	"sound.h"
 #include	"sprite.h"
-
+#include	"effects.h"
 #include "playerselect.h"
 
 extern Game g;

@@ -131,10 +131,10 @@ typedef struct game {
 	
 	char x02f0;
 	short	CoinsTaken;		// 02f4
-    char  Uptime[4];  // 2f6 - a   
+    char  Uptime[4];		// 2f6 - a   
 	
-	u16	DemoStageIndex;		// 02fe
-	short	x0300;
+	u16		DemoStageIndex;		// 02fe
+	short	DemoFightTimer;
 	char	x0302;
     char	TimeWarpSlowdown, TimeWarpSlowdown2;	/* 0x303-4 */
     char	x0305; /* Bison cape signal */
@@ -298,7 +298,7 @@ typedef struct game {
     /* pointers that we don't use any more omitted */
     Object Ply1Shadow;      /* 0x118a if you change the type change the param */
     Object Ply2Shadow;      /* 0x128a to memclear() in LBResetState()           */    
-    Object Objects1[8];	 /* sizeof 0xc0 138a - 258a */
+    Object Objects1[8];		/* sizeof 0xc0 138a - 258a */
     Object Objects2[16];    /* sizeof 0xc0 198a - 258a */
     Object Objects3[60];    /* sizeof 0xc0 258a - 528a */
     
@@ -339,7 +339,12 @@ typedef struct game {
 	// Tasks stuff moved to task.c
 	Object  x5dfe;			// used for the Hiragana draw at 7e884
 
-    
+	
+	//////////////////
+    // module globals/
+	//////////////////
+	
+	
 	u8		x8a30;
 	short	x8a36;	/* difficulty */
 	short	x8a38;	
@@ -372,12 +377,12 @@ typedef struct game {
 	u16 x8ab2;
 	u32	x8ab4;
 	u8	CanSpeedUpScoreCount;		// x8ab5
-	Object *x8ab6;	/* XXX Barrels something */
 	
+	Object		*x8ab6;	/* XXX Barrels something */
 	signed char x8ab8;
-	u8		x8ab9;		/* some other remain counter */
+	u8			x8ab9;		/* some other remain counter */
 
-	u8		x8abe;					// car
+	u8			x8abe;					// car
 	
 	Player *CheckPlyFirst;			// 0x8ac0 
 	Player *CheckPlySecond;
@@ -426,6 +431,11 @@ typedef struct game {
     short   GPCollDetect;		/* 8b12 boolean to indicate collision detected */
     short	x8b14;	/* gstate scroll1x minus temp in maint_scroll1x */
 	short	x8b16;
+	
+	/************************/
+	/* Testscreen globals   */
+	/************************/
+	
 	u16		*ts_scr1;	// 8b18 
 	u16		*ts_scr2;	// 8b1c
 	u16		*ts_scr3;	// 8b20

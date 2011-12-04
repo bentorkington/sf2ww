@@ -11,6 +11,7 @@
 #include "structs.h"
 
 #include "lib.h"
+#include "sf2io.h"
 
 #include "rules.h"
 

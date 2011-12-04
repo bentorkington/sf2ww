@@ -26,6 +26,7 @@
 #include "glwimp.h"
 #include "workarounds.h"
 #include "pthreads.h"
+#include "sf2io.h"				// XXX
 
 #include "game.h"
 

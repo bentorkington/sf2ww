@@ -18,6 +18,7 @@
 #include	"actions.h"
 #include	"sound.h"
 #include	"playerselect.h"
+#include	"effects.h"
 
 #include "gemu.h"
 
@@ -45,7 +46,7 @@ void SMFreePlay(void){		// 6cc8
 	int buttons = (!g.RawButtons0) & g.RawButtons0 & 0x30;
 	if (buttons) {
 		if (g.x0302) {
-			g.x0302 = 0;
+			g.x0302 = FALSE;
 		}
 		if (buttons & 0x20) {
 			if (g.FreePlay) {
@@ -95,7 +96,7 @@ void gamemode_fightmain (void) {
         fightstuff();
     } else {
         bumpdifficulty_08();
-        sub_8e8e();           /* check for timeout */
+        LBCheckRoundResult();           /* check for timeout */
         if(g.RoundComplete) {
             g.mode2    += 2;
             g.RoundCnt++;

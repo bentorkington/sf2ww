@@ -22,6 +22,7 @@
 #include "lib.h"
 #include "gfxlib.h"
 
+#include "projectiles.h"
 #include "guile.h"
 #include "guiledata.h"
 
@@ -531,7 +532,7 @@ void PSCBPowerGuile(Player *ply) {		/* 2fe26 PLSTAT_POWERMOVE callback */
 						if (((ply->AnimFlags & 0xff00) >> 8) == 1) {
 							if(obj=AllocProjectile()){
 								obj->exists = TRUE;
-								obj->Sel = SF2PROJ_SONICBOOM;
+								obj->Sel = SF2_PROJ_SONICBOOM;
 								obj->XPI = ply->XPI;
 								obj->YPI = ply->YPI;
 								obj->Flip = ply->Flip;

@@ -3418,7 +3418,7 @@ const Action *actlist_1e8d6[]={
 };
 
 #pragma mark MARK
-char data_1e804[12][3][2] = {
+const static char data_1e804[12][3][2] = {
 	{ 
 		{ 35, 84,  },
 		{ 1, 66,  },

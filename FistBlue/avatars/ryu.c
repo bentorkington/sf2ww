@@ -10,6 +10,8 @@
 #include "sf2types.h"
 #include "sf2macros.h"
 #include "sf2const.h"
+#include "sf2io.h"
+
 #include "structs.h"
 #include "player.h"
 #include "particle.h"
@@ -22,6 +24,7 @@
 #include "lib.h"
 #include "gfxlib.h"
 
+#include "projectiles.h"
 #include "ryu.h"
 #include "ryudata.h"
 #include "kendata.h"
@@ -218,7 +221,7 @@ static void _RyuSMHadouken(Player *ply) {		//2d778
 		NEXT(ply->mode2);
 		if (obj=AllocProjectile()) {
 			obj->exists=TRUE;
-			obj->Sel = SF2PROJ_HADOUKEN;
+			obj->Sel = SF2_PROJ_HADOUKEN;
 			obj->XPI = ply->XPI;
 			obj->YPI = ply->YPI;
 			obj->Flip = ply->Flip;

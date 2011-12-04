@@ -18,11 +18,13 @@
 #include "collision.h"
 #include "sound.h"
 #include "lib.h"
+#include "sf2io.h"
 
 #include "computer.h"
 #include "compdata.h"
 
 #include "ai.h"
+
 
 #include "ryu.h"		/* this is also Ken for the most part */
 #include "ehonda.h"

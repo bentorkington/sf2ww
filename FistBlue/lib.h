@@ -45,7 +45,7 @@ void FreeActor(Object *obj);
 Object2 *pop_5d0c(void);
 void clearpush_5d0c(Object2 *obj);
 void set_towardsaway(Player *ply);
-void sub_8e8e(void);
+void LBCheckRoundResult(void);
 void process_projectiles(void);
 void actions_198a(void);
 void actions_530a(void);

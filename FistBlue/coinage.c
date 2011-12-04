@@ -16,6 +16,7 @@
 #include "actions.h"
 #include "sound.h"
 #include "task.h"
+#include "effects.h"
 
 extern Game g;
 extern struct executive_t Exec;

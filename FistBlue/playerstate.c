@@ -15,7 +15,7 @@
 #include "sound.h"
 
 #include "gfxlib.h"
-
+#include "sf2io.h"
 
 #include "playerstate.h"
 #include "reactmode.h"
