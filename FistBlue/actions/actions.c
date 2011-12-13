@@ -30,7 +30,7 @@ extern GState gstate_Scroll3;
 
 
 static void _portrait_scroll2(const SimpleImage *a1, short d1, u16 **gfx_p);
-static struct offsetpair Act23RandomSmallOffset(void);
+static POINT16 Act23RandomSmallOffset(void);
 static Player *sub_1e7ae(Object *obj);
 static void sub_1e59a(Object *obj);
 static void sub_1e84c(Object *obj);
@@ -2167,24 +2167,24 @@ void action_1e336(Player *ply) {
 		}
 	}
 }
-static void sub_1e3c8(Player *ply, short d2) {
+static void _CreateDizzyObject(Player *ply, short d2) {		// 1e3c8
 	Object *obj;
 	UD23 *ud;
 	if (obj=AllocActor()) {
 		ud = (UD23 *)&obj->UserData;
-		ud->x008c = d2;	/* word */
+		ud->x008c	= d2;
 		obj->exists = TRUE;
-		obj->Sel = SF2ACT_VOMIT;
-		obj->SubSel = 4;
-		obj->UserByte = ply->DizzySpell < 0x8c ? 0 : 1 ;
+		obj->Sel	= SF2ACT_VOMIT;
+		obj->SubSel = 4;		
+		obj->UserByte = ply->DizzySpell < 0x8c ? 0 : 1 ;	// 0=stars,1=birds
 		obj->Owner = ply;
 		obj->X.full = obj->Y.full = 0;
 	}
 }
-void action_1e3bc(Player *ply) {
-	sub_1e3c8(ply, 0);
-	sub_1e3c8(ply, 8);
-	sub_1e3c8(ply, 16);
+void StartDizzyAnim(Player *ply) {				// 1e3bc
+	_CreateDizzyObject(ply, 0);
+	_CreateDizzyObject(ply, 8);
+	_CreateDizzyObject(ply, 16);
 }
 void ActBlankaBiteBlood(Player *ply) {			//1e402
 	Object *obj;
@@ -2195,20 +2195,17 @@ void ActBlankaBiteBlood(Player *ply) {			//1e402
 		obj->Owner = ply;
 	}
 }
-static void sub_1e79e(Object *obj) {
-	//todo
-}
 static void Act23SMVomit(Object *obj) {					// 1e43a
 	UD23 *ud = (UD23 *)obj->UserData;
-	struct offsetpair op;
+	POINT16 op;
 
 	switch (obj->mode0) {
 		case 0:
 			NEXT(obj->mode0);
 			setaction_list(obj, actlist_1e8d6, obj->SubSel + obj->UserByte);
 			obj->Flip = obj->Owner->Flip;
-			ud->x0088 = obj->Owner->XPI;
-			ud->x008a = obj->Owner->YPI;
+			ud->PlyX = obj->Owner->XPI;
+			ud->PlyY = obj->Owner->YPI;
 			obj->LocalTimer = 0x1e;
 			obj->Pool = 0;
 			sub_1e7ae(obj);
@@ -2220,10 +2217,10 @@ static void Act23SMVomit(Object *obj) {					// 1e43a
 			if (ud->x0093) { obj->Pool = 10; } else { obj->Pool = 8; }
 
 			// move the vomit with the player
-			obj->XPI += (obj->Owner->XPI - ud->x0088);
-			ud->x0088 = obj->Owner->XPI;
-			obj->YPI += (obj->Owner->YPI - ud->x008a);
-			ud->x008a = obj->Owner->YPI;
+			obj->XPI += (obj->Owner->XPI - ud->PlyX);
+			ud->PlyX = obj->Owner->XPI;
+			obj->YPI += (obj->Owner->YPI - ud->PlyY);
+			ud->PlyY = obj->Owner->YPI;
 			
 			if ((obj->AnimFlags & 0xff) == 0) {
 				if (--obj->LocalTimer == 0) {
@@ -2256,17 +2253,17 @@ static void Act23SMVomit(Object *obj) {					// 1e43a
 
 static void action_1e420(Object *obj) {		/* obj in %a6 */
 	switch (obj->SubSel) {
-		case 0:							// orange and grey vomit
-		case 2:
+		case 0:							//	teeth, blood
+		case 2:							//  orange and grey vomit
 			Act23SMVomit(obj);
 			break;
 		case 4:
-			sub_1e59a(obj);
+			sub_1e59a(obj);				// animated star, bird
 			break;
-		case 6:   
+		case 6:							// small star, bird
 			Act23SMBlood(obj);
 			break;
-		case 8:
+		case 8:							// blood again
 			sub_1e84c(obj);			
 			break;
 		FATALDEFAULT;
@@ -2277,14 +2274,12 @@ static void action_1e420(Object *obj) {		/* obj in %a6 */
 
 
 
-static Player *sub_1e7ae(Object *obj) {
+static Player *sub_1e7ae(Object *obj) {		// 1e7ae
 	char x,y;
-	
-	Player *ply = obj->Owner;
-	
-	// XXX data at 1e804 is suspect
-	x = data_1e804[ply->FighterID][obj->SubSel/2][0];
-	y = data_1e804[ply->FighterID][obj->SubSel/2][1];
+	Player *ply = obj->Owner;	
+
+	x = data_1e804[ply->FighterID][obj->SubSel/2].x;
+	y = data_1e804[ply->FighterID][obj->SubSel/2].y;
 	
 	if (ply->Flip) {obj->XPI = ply->XPI - x;} else {obj->XPI = ply->XPI + x;}
 	obj->YPI = ply->YPI + y;
@@ -2309,18 +2304,17 @@ static void sub_1e59a(Object *obj) {		// birds and stars?
 				case 2:
 					if (--obj->LocalTimer == 0) {
 						NEXT(obj->mode0);
-						sub_1e79e(obj);
 						setaction_list(obj, actlist_1e8d6, obj->SubSel + obj->UserByte);
 						ply = sub_1e7ae(obj);
 						obj->Flip = ply->Flip;
-						ud->x0088 = ply->XPI;
-						ud->x008a = ply->YPI;
-						ud->x0084 = obj->XPI;
-						ud->x0086 = obj->YPI;
-						temp = &data_1e622[ud->x008c];
-						obj->XPI += temp[0];
+						ud->PlyX = ply->XPI;
+						ud->PlyY = ply->YPI;
+						ud->ObjX = obj->XPI;
+						ud->ObjY = obj->YPI;
+						temp = &data_1e622[ud->x008c / 2];
+						obj->XPI      += temp[0];
 						obj->VelX.full = temp[1];
-						obj->YPI += temp[2];
+						obj->YPI      += temp[2];
 						obj->VelY.full = temp[3];
 					}
 					break;
@@ -2329,23 +2323,23 @@ static void sub_1e59a(Object *obj) {		// birds and stars?
 			break;
 		case 2:				// 1e63a
 			ply = obj->Owner;
-			if (ply->DizzyStun == 0 || (ply->mode1 != 0xe && ply->mode1 != 0x14) ) {
+			if (ply->DizzyStun == 0 || (ply->mode1 != PLSTAT_REEL && ply->mode1 != PLSTAT_TUMBLE) ) {
 				NEXT(obj->mode2);	/* no longer dizzy */
 			}
-			obj->VelX.full = obj->XPI < ud->x0084 ? 0x100 : -0x100;
-			obj->VelY.full = obj->YPI < ud->x0086 ?  0x40 : -0x40;
+			obj->VelX.full = obj->XPI < ud->ObjX ? 0x100 : -0x100;
+			obj->VelY.full = obj->YPI < ud->ObjY ?  0x40 : -0x40;
 			
-			temp2 = ply->XPI - ud->x0088;
+			temp2 = ply->XPI - ud->PlyX;
 			obj->XPI += temp2;
-			ud->x0084 += temp2;
-			ud->x0088 = ply->XPI;
+			ud->ObjX += temp2;
+			ud->PlyX = ply->XPI;
 			
-			temp2 = ply->YPI - ud->x008a;
+			temp2 = ply->YPI - ud->PlyY;
 			obj->YPI += temp2;
-			ud->x0086 += temp2;
-			ud->x008a = ply->YPI;
+			ud->ObjY += temp2;
+			ud->PlyY = ply->YPI;
 			
-			obj->Flip = ply->VelX.full < 0 ? -1 : 0;
+			obj->Flip = ply->VelX.full < 0 ? 1 : 0;
 			obj->Pool = obj->Flip * 4;
 			
 			
@@ -2364,44 +2358,50 @@ static void sub_1e59a(Object *obj) {		// birds and stars?
 		FATALDEFAULT;
 	}
 }
-static struct offsetpair Act23RandomSmallOffset(void) {		//1e888
+static POINT16 Act23RandomSmallOffset(void) {		//1e888
 	static const char data_1e8a6[] = {-2, 2, 0, -2, 2, 0, -2, 2 };
 	
-	struct offsetpair op;
+	POINT16 op;
 	short temp = sf2rand();
 	op.x = data_1e8a6[temp & 7];
 	op.y = data_1e8a6[(temp >> 3) & 7];
 	return op;
 }
 static void sub_1e77e(Object *obj) {
+	UD23 *ud = (UD23 *) &obj->UserData;
+
 	if (obj->AnimFlags && 0xff) {
 		NEXT(obj->mode0);
 	}
 	actiontick(obj);
-	if(--obj->UserData[0x12]) {
+	if(--ud->x0092) {
 		check_rect_queue_draw(obj);
 	} else {
-		obj->UserData[0x12] = 3;
+		ud->x0092 = 3;
 	}
 }
 
 static void Act23SMBlood(Object *obj) {		// 1e6fc
 	Player *a0;
 	short temp;
-	struct offsetpair op;
+	POINT16 op;
 	
 	switch (obj->mode0) {
 		case 0:
 			NEXT(obj->mode0);
 			a0 = obj->Owner;
-			obj->Flip = a0->Flip;
-			obj->XPI  = a0->XPI;
-			obj->YPI  = a0->YPI;
-			temp = (short []){-32, -37}[a0->FighterID==FID_BLANKA ? 0 : 1];
-			obj->XPI += obj->Flip ? -temp : temp ;
-			obj->YPI += (short []){ 69,  82}[a0->FighterID==FID_BLANKA ? 0 : 1];
+			obj->Flip = obj->Owner->Flip;
+			obj->XPI  = obj->Owner->XPI;
+			obj->YPI  = obj->Owner->YPI;
+			if (obj->Owner->FighterID == FID_BLANKA) {
+				obj->XPI += obj->Flip ? 32 : -32 ;		
+				obj->YPI += 69;
+			} else {
+				obj->XPI += obj->Flip ? 37 : -37 ;
+				obj->YPI += 82;
+			}
 			obj->LocalTimer = 30;
-			obj->Pool = 0;
+			obj->Pool		= 0;
 			op = Act23RandomSmallOffset();
 			obj->XPI += op.x;
 			obj->YPI += op.y;
@@ -2420,7 +2420,9 @@ static void Act23SMBlood(Object *obj) {		// 1e6fc
 
 
 static void sub_1e84c(Object *obj) {
-	struct offsetpair op;
+	UD23 *ud = (UD23 *) &obj->UserData;
+
+	POINT16 op;
 	
 	switch (obj->mode0) {
 		case 0:
@@ -2429,7 +2431,7 @@ static void sub_1e84c(Object *obj) {
 			op = Act23RandomSmallOffset();
 			obj->XPI += op.x;
 			obj->YPI += op.y;
-			obj->UserData[0x12] = 3;
+			ud->x0092 = 3;
 			setaction_direct(obj, actlist_1eb42);
 			/* FALL THRU */
 		case 2:

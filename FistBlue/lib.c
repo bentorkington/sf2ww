@@ -1501,7 +1501,6 @@ void LBCheckRoundResult(void) {
 }		
 
 void setup_stage_actions (void) { /* 822be */
-	int sel = g.CurrentStage;
     int i;
 	const static short counts[]={ 4, 10, 17, 7, 13, 10, 2, 2, 7, 4, 24, 16, 0, 8, 1, 11, };
 	static const struct actionhdr data_82312[]={

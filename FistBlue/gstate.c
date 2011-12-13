@@ -142,7 +142,7 @@ static void _GSInitDispEna(void) {
 #pragma mark ---- Coordinate Calculators ----
 
 static CP _GSCoordOffsetScr1 (GState *gs, short offset) {	// 83d68 checked
-    struct coordpair cp;
+    CP cp;
     static const short data_83d84[4][2] = {
 		{   -64,   352,  },
 		{   416,   352,  },

@@ -9,7 +9,7 @@ struct coordpair {
     short y;
 };
 
-typedef struct coordpair CP;
+typedef struct Point16 CP;
 
 typedef struct {
     u16 exists;

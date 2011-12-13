@@ -169,6 +169,7 @@ static void projsm_fireball(Object *obj, short d7) {
 			obj->YPI += data_22c00[obj->Sel];
 			obj->HitBoxes  = data_22c0a[obj->Sel].hb;
 			obj->MoreBoxes = data_22c0a[obj->Sel].mb;
+			
 			if(obj->Sel == 4) {							  /* Tiger? */
 				obj->Path = data_22c3e[obj->SubSel/2];    /* short[] *s */
 			} else {

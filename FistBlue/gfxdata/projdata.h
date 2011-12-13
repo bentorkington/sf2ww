@@ -117,16 +117,15 @@ struct {
 
 
 //velocities, XXX not all done
-short data_cf038[] = {0x300, 0,-0x300, 0};
-short data_cf040[] = {0x380, 0, -0x380, 0};
-short data_cf048[] = {0x400, 0, -0x400, 0};
-short data_cf05c[] = {0x500, 0, -0x500, 0};
-short data_cf07c[] = {0x700, 0, -0x700, 0};
+VECT16 data_cf038[] = {{0x300, 0}, {-0x300, 0}, {0x380, 0}, {-0x380, 0}};
+VECT16 data_cf048[] = {{0x400, 0}, {-0x400, 0}, {    0, 0}, { 0x480, 0}, {-0x480, 0}};		// very strange
+VECT16 data_cf05c[] = {{0x500, 0}, {-0x500, 0}, {0x580, 0}, {-0x580, 0}};
+VECT16 data_cf07c[] = {{0x700, 0}, {-0x700, 0}, {0x780, 0}, {-0x780, 0}};
 
 
 #pragma mark ---- Hadouken Data ----
 
-short *data_22c32[]={data_cf038, data_cf048 , data_cf05c};
+VECT16 *data_22c32[]={data_cf038, data_cf048 , data_cf05c};
 
 
 Image image_22e66 = {
@@ -228,11 +227,9 @@ const Action actlist_23018[] = {
 const Action *action_22e88[]={actlist_22e90, actlist_22f54, actlist_23018};
 
 
-#pragma mark ---- Another projectile ----
+#pragma mark ---- TIGER ----
 
-
-
-short *data_22c3e[]={data_cf038, data_cf05c, data_cf07c};
+VECT16 *data_22c3e[]={data_cf038, data_cf05c, data_cf07c};
 
 Image image_23268 = {
     6, 0x0011, 0x34, 0, 16,

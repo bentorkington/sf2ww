@@ -93,8 +93,8 @@ void PSEntry(Player *ply) {   /* 0x28396 was: player_per_frame */
     if(ply->exists && ply->VegaHasClaw) {
         if(offsetsel = ply->ActionScript->ExtraSprite) {
             ply->ExtraSpriteEna = TRUE;
-            ply->Draw_OffsetX = ply->Sprite2[offsetsel].Xoff;
-            ply->Draw_OffsetY = ply->Sprite2[offsetsel].Yoff;
+            ply->Draw_OffsetX = ply->Sprite2[offsetsel].Offset.x;
+            ply->Draw_OffsetY = ply->Sprite2[offsetsel].Offset.y;
             ply->Image2       = ply->Sprite2[offsetsel].Image;
         }
     }
@@ -1131,7 +1131,7 @@ void check_dizzy(Player *ply) {			/* 292a0 */
     ply->DizzyStun = TRUE;
     random_dizzyspell(ply);
     ply->DizzyFall = 0;		
-    action_1e3bc(ply);         /* dizzy stars action */
+    StartDizzyAnim(ply);         /* dizzy stars action */
 }
 
 void random_dizzyspell(Player *ply) {				/* 0x29f20 */

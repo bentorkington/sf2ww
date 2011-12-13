@@ -43,9 +43,12 @@ void actiontick(Object *obj) {		/* 23ec */
 
 void sub_25f8(Object *obj) {
 	GState *gs;
+	POINT16 point;
 	if (obj->exists) {
-		gs = get_graphics_context(obj);
-		if (obj->XPI > -64 && obj->XPI < 544) {
+		gs = get_graphics_context(obj);	
+		point.x = obj->XPI - gs->XPI;
+		point.y = obj->YPI - gs->YPI;
+		if ((point.x > -64 && point.x < 544) && (point.y > -96 && point.y < 512)) {
 			obj->flag1 = TRUE;
 			enqueue_and_layer(obj);
 		} else {
@@ -56,16 +59,17 @@ void sub_25f8(Object *obj) {
 void check_rect_queue_draw(Object *obj) {   /* 0x2540 */
     GState *gc;       
     short int x, y;
+	POINT16 point;
 
     if(obj->exists) {
         obj->flag1 = FALSE;
         gc = get_graphics_context(obj);
-        x = obj->XPI - gc->XPI;  /*world to camera */
-        x += VISIBLE_MARGIN;                                
-        if ((unsigned short)x > (SCREEN_WIDTH + 2 * VISIBLE_MARGIN)) { return; }
-        y = obj->YPI - gc->YPI;
-        y += VISIBLE_MARGIN;
-        if ((unsigned short)y > (SCREEN_HEIGHT + 2 * VISIBLE_MARGIN)) { return; }
+        point.x = obj->XPI - gc->XPI;  /*world to camera */
+        point.x += VISIBLE_MARGIN;                                
+        if ((unsigned short)point.x > (SCREEN_WIDTH + 2 * VISIBLE_MARGIN)) { return; }
+        point.y = obj->YPI - gc->YPI;
+        point.y += VISIBLE_MARGIN;
+        if ((unsigned short)point.y > (SCREEN_HEIGHT + 2 * VISIBLE_MARGIN)) { return; }
         obj->flag1=TRUE;
         enqueue_and_layer(obj);
     }

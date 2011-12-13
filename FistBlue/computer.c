@@ -224,7 +224,7 @@ static void comp_jump_physics(Player *ply) {		/* 2c854 */
 		actiontick((Object *)ply);
 		return;
 	}
-	if(check_ground_collision(ply)){
+	if(check_ground_collision((Object *)ply)){
 		/* 2c8da */
 		ply->Attacking		= FALSE;
 		ply->IsJumpThreat	= FALSE;

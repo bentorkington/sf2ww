@@ -134,24 +134,36 @@ struct Point8 {
 	char x;
 	char y;
 };
+typedef struct Point8 POINT8;
+struct Point16 {
+	short x;
+	short y;
+};
+typedef struct Point16 POINT16;
 struct Size8 {
 	char width;
 	char height;
 };
+typedef struct Size8 SIZE8;
 struct Rect8 {
 	struct Point8 origin;
 	struct Size8  size;
 };
+typedef struct Rect8 RECT8;
 struct Vect16 {
 	FIXED8_8 x;
 	FIXED8_8 y;
 };
-
+typedef struct Vect16 VECT16;
+struct Traj16 {
+	VECT16 Vel;
+	VECT16 Acl;
+};
+typedef struct Traj16 TRAJ16;
 
 struct extrasprite {
-    short Xoff;
-    short Yoff;
-    struct image *Image;
+	POINT16			Offset;
+    struct image	*Image;
 };    
 
 

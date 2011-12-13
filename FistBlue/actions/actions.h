@@ -32,7 +32,7 @@ void ActBlankaBiteBlood(Player *ply);
 
 
 void ActStartScreenWobble(void);
-void action_1e3bc(Player *ply);
+void StartDizzyAnim(Player *ply);
 void action_1cd3c(Player *ply);
 void ActStartGroundDust(Player *ply);
 
@@ -40,17 +40,6 @@ void ActStartGroundDust(Player *ply);
 void actionlib_draw_portraits(void);		/* 15f9e */
 void action_draw_ports(void);
 void action_print_chant(void);
-
-
-
-
-
-
-
-struct offsetpair {
-	short x;
-	short y;
-};
 
 
 
@@ -108,11 +97,11 @@ struct UserData_Act1e {
 };
 
 struct UserData_Act23 {
-	short	x0084;
-	short	x0086;
-	short	x0088;
-	short	x008a;
-	short	x008c;
+	short	ObjX;		//84
+	short	ObjY;		//86
+	short	PlyX;		//88
+	short	PlyY;		//8a
+	short	x008c;		//8c
 	void	*x008e;		// ptr to exit routine
 	
 	char	x0092;
@@ -126,7 +115,9 @@ void synth_plane_setup(Object *obj, int city_from, int city_to);
 struct UserData_Act2e {
 	u8	city_from;
 	u8	city_to;
-	short	x_to;
+	
+	// POINT16 destination;
+	short	x_to;		// get rid
 	short	y_to;
 	//
 	short	sound;	// 0096
@@ -156,7 +147,7 @@ struct UserData_Act3b {
 			u8	msb;		// XXX ENDIAN
 			u8	lsb;
 		} split;
-		u32 full;
+		u16 full;
 	} x0080;
 	u16 x0082;
 	
