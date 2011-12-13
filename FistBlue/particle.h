@@ -162,68 +162,67 @@ typedef struct hitbox_active HitBoxAct;
 
 typedef struct {
 #include "std_object.h"
-    FIXED8_8 AclX;
-    FIXED8_8 AclY;
-    u16 x0044;		
-    signed char UserByte;
-    char Timer2;					/* 0047 */
-    char BoundCheck;					/* also a void * */
-    char BlockStun;
-    char SufferHB5;				// 4a
-	char NextReactMode;			/* 4b */
-	char NextReactMode2;		/* 4c */
-	char	x004d;
-	char	*x004e;
-	u8		x004f[3];    /* for hitboxes 1,2,3 */
-	short   DSOffsetX;
-	char    Direction;			/* 0x54 FACING_LEFT=0, FACING_RIGHT=1 */
-	u8      ReactMode;			/* 0x55 see RM_* */
-	u8      ReactMode2;
-	char	OnPlatform;
-	char	OnPlatform2;
-	
-	u8      StepSave;
-	u8      Difficulty;
-	u8      x0059;
-	char    OnGround;
-	char    PlatformFallDir;      /* direction falling off platform */
-	short   DizzyClearCnt, DizzyCount, DizzySpell;
-	short   IsBlockingSuper;	// 0062
-	char    ThrowStat;
-	short   Throw[6];
-	char    x0070;
-	char    x0071;
-	
-	u8      ThrowTrajectory;    /* 0x0076 */
-	char    x0077;
-	short   UndealtDamage;
-	u16     RewardID;
-	short     Damage1;            /* 0x7c */
-	short     Damage2;
-	u8		UserData[0x80];
+    FIXED8_8		AclX;
+    FIXED8_8		AclY;
+    u16				x0044;		
+    signed char		UserByte;
+    char			Timer2;						/* 0047 */
+    char			BoundCheck;					/* 0x48 also a void *??? */
+    char			BlockStun;
+    char			SufferHB5;					// 0x4a
+	char			NextReactMode;				/* 0x4b */
+	char			NextReactMode2;				/* 0x4c */
+	char			OnPlatform;					// 0x4d
+	char			OnPlatform2;				// 0x4e
+	u8				x004f[3];					/* for hitboxes 1,2,3 */
+	short			DSOffsetX;
+	char			Direction;			/* 0x54 FACING_LEFT=0, FACING_RIGHT=1 */
+	u8				ReactMode;			/* 0x55 see RM_* */
+	u8				ReactMode2;
+	u8				StepSave;			// 0x57
+	u8				Difficulty;
+	u8				x0059;
+	char			OnGround;			// 0x5a
+	char			PlatformFallDir;			/* 0x5b direction falling off platform */
+	short			DizzyClearCnt, DizzyCount, DizzySpell;
+	short			IsBlockingSuper;	// 0062
+	char			ThrowStat;
+	short			Throw[6];			// XXX 3 x Point
+	char			x0070;
+	char			x0071;
+	// gap
+	u8				ThrowTrajectory;    /* 0x0076 */
+	char			x0077;
+	short			UndealtDamage;
+	u16				RewardID;
+	short			Damage1;            /* 0x7c */
+	short			Damage2;
+	u8				UserData[0x80];
 } Object;
+
 typedef struct {
 #include "std_object.h"
     signed char		x0040;			/* some palette index, values 1,2,3,5 */
 	signed char		x0041;
-	void	*x0042;      /* palette? data at 0x90000 set by 82c26 used 82c4c */
-    u8		UserByte;
-    signed char	Timer2;				/* 0047 prob not a timer in Object2*/
-	void	*x0048;
+	void			*x0042;			/* palette? data at 0x90000 set by 82c26 used 82c4c */
+    u8				UserByte;
+    signed char		Timer2;				/* 0047 prob not a timer in Object2*/
+	void			*x0048;
 	
-	u8 NextReactMode2;		/* 4c */
-	char	x004d;
-	signed char *x004e;	
-	u8		x004f[3];    /* for hitboxes 1,2,3 */
-	short   DSOffsetX;
-	char    Direction;      
-	u8      ReactMode;
-	u8      ReactMode2;
+	// rest of this could be rubbish
 	
-	char	OnPlatform;
-	char	OnPlatform2;
+	u8				NextReactMode2;		/* 4c */
+	char			x004d;
+	signed char		*x004e;	
+	short			DSOffsetX;
+	char			Direction;      
+	u8				ReactMode;
+	u8				ReactMode2;
 	
-	u8      StepSave;		// 0057
+	char			OnPlatform;
+	char			OnPlatform2;
+	
+	u8				StepSave;		// 0057
 	u8      Difficulty;
 	u8      x0059;
 	char    OnGround;				/* 0x5a TRUE or FALSE */

@@ -116,7 +116,7 @@ struct {
 };
 
 
-//velocities, not all done
+//velocities, XXX not all done
 short data_cf038[] = {0x300, 0,-0x300, 0};
 short data_cf040[] = {0x380, 0, -0x380, 0};
 short data_cf048[] = {0x400, 0, -0x400, 0};

@@ -1,7 +1,7 @@
     signed char		exists;
-    signed char		flag1;
-    signed char		mode0;
-    signed char		mode1;					/* Ply_Stat */
+    signed char		flag1;					// is Visible
+    signed char		mode0;					// 0x02
+    signed char		mode1;					/* Ply_Stat for Players */
     signed char		mode2;
     signed char		mode3;
     FIXED16_16		X;
@@ -12,25 +12,25 @@
     signed char		Flip;					// FACING_LEFT=0 (no flip) FACING_RIGHT=1 (flipped) 
     char			Draw1;	  				/* flag, should draw with Draw2 color instead */
     u16				AnimFlags;				/* 0x0014 maybe split into two? */
-	FIXED8_8		Draw2;					// 0x16
+	FIXED8_8		Draw2;					// 0x16	
     short			Timer;                  // 0x18 
-    const struct action	*ActionScript;
-    char			LocalTimer;				//001e	 another Timer 
+    const struct action	*ActionScript;		// 0X1a full 32 bit pointer on CPS
+    char			LocalTimer;				// 0x1e	 another Timer 
     char			x001f;
     signed char		Sel;					// 20
     signed char		SubSel;					// 21
     short			Layer;					// 22
     char			x0024;					/* Is threat */
-    char			Scroll;
-    struct player_t	*Owner;					/* this is a 16-bit ptr on CPS */
+    char			Scroll;					// 0x25
+    struct player_t	*Owner;					/* 0x26 this is a 16-bit ptr on CPS */
     u16				x0028;					/* Unused */
-    short			Energy;
-    short			EnergyDash;
+    short			Energy;					// 2a
+    short			EnergyDash;				// 2c
     char			x002e;
 	char			x002f;
-    short			*Path;					/* 0030 XXX special type for path */
-    const struct hitboxes *HitBoxes;				/* 0034 */
+    const short		*Path;					/* 0030 XXX special type for path */
+    const struct hitboxes *HitBoxes;		/* 0034 */
     signed char		*MoreBoxes;				/* 0038 */
     FIXED8_8		VelX;					// 3c
     FIXED8_8		VelY;					// 3e
- 
+			// up to 0x40

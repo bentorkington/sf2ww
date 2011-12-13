@@ -17,9 +17,6 @@
 
 extern Game g;
 
-
-
-
 #pragma mark ---- SOUND ---
 
 void sound_cq_addto(short data) {	/* 62ac */

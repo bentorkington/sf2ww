@@ -72,45 +72,41 @@ typedef struct {
 
 typedef struct {
 #include "std_object.h"
-    FIXED8_8 AclX;
-    FIXED8_8 AclY;
-    u16 x0044;		
-    u8		UserByte;
-    signed char	Timer2;				/* 0047 prob not a timer in Object2*/
-	char BoundCheck;
-	char BlockStun;
-	u8 NextReactMode2;		/* 4c */
-	char	x004d;
-	signed char *x004e;	
-	u8		x004f[3];    /* for hitboxes 1,2,3 */
-	short   DSOffsetX;
-	char    Direction;      
-	u8      ReactMode;
-	u8      ReactMode2;
-	
-	char	OnPlatform;
-	char	OnPlatform2;
-	
-	u8      StepSave;		// 0057
-	u8      Difficulty;
-	u8      x0059;
-	char    OnGround;
-	char    PlatformFallDir;      /* direction falling off platform */
-	short   DizzyClearCnt;
-	short   DizzyCount;
-	short   DizzySpell;
-	short   IsBlockingSuper;		//0062
-	char    ThrowStat;
-	short   Throw[6];
-	char    x0070;
-	char    x0071;
-	
-	u8      ThrowTrajectory;    /* 0x0076 */
-	char    x0077;
-	short   UndealtDamage;
-	u16     RewardID;
-	short     Damage1;            /* 0x7c */
-	short     Damage2;
+    FIXED8_8		AclX;
+    FIXED8_8		AclY;
+    u16				x0044;		
+    signed char		UserByte;
+    char			Timer2;						/* 0047 */
+    char			BoundCheck;					/* 0x48 also a void *??? */
+    char			BlockStun;
+    char			SufferHB5;					// 0x4a
+	char			NextReactMode;				/* 0x4b */
+	char			NextReactMode2;				/* 0x4c */
+	char			OnPlatform;					// 0x4d
+	char			OnPlatform2;				// 0x4e
+	u8				x004f[3];					/* for hitboxes 1,2,3 */
+	short			DSOffsetX;
+	char			Direction;					/* 0x54 FACING_LEFT=0, FACING_RIGHT=1 */
+	u8				ReactMode;					/* 0x55 see RM_* */
+	u8				ReactMode2;
+	u8				StepSave;					// 0x57
+	u8				Difficulty;
+	u8				x0059;
+	char			OnGround;					// 0x5a
+	char			PlatformFallDir;			/* 0x5b direction falling off platform */
+	short			DizzyClearCnt, DizzyCount, DizzySpell;
+	short			IsBlockingSuper;			// 0062
+	char			ThrowStat;
+	short			Throw[6];					// XXX 3 x Point
+	char			x0070;
+	char			x0071;
+	// gap
+	u8				ThrowTrajectory;			/* 0x0076 */
+	char			x0077;
+	short			UndealtDamage;
+	u16				RewardID;
+	short			Damage1;					/* 0x7c */
+	short			Damage2;
 	
 	/* userdata */
 	union userdata_obb2 {

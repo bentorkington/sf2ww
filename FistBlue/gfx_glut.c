@@ -115,10 +115,10 @@ void (*SCROLL[])(void) = {
 };
 
 struct texture_cache_t {
-	GLuint text_scr1[0x10000];
-	GLuint text_scr2[0x10000];
-	GLuint text_scr3[0x10000];
-	GLuint text_obj[0x10000][2];
+	GLuint text_scr1[0x10000][2];
+	GLuint text_scr2[0x10000][2];
+	GLuint text_scr3[0x10000][2];
+	GLuint text_obj [0x10000][2];
 } TC;
 int gemuCacheClear;
 
@@ -169,19 +169,19 @@ void gemu_clear_cache(void) {
 	for (i=0; i<0x10000; ++i) {
 		if (TC.text_scr1[i]) {
 			glDeleteTextures(1, &TC.text_scr1[i]);
-			TC.text_scr1[i] = 0;
+			TC.text_scr1[i][0] = 0;
 		}			
 	}
 	for (i=0; i<0x10000; ++i) {
 		if (TC.text_scr2[i]) {
 			glDeleteTextures(1, &TC.text_scr2[i]);
-			TC.text_scr2[i] = 0;
+			TC.text_scr2[i][0] = 0;
 		}			
 	}
 	for (i=0; i<0x10000; ++i) {
 		if (TC.text_scr3[i]) {
 			glDeleteTextures(1, &TC.text_scr3[i]);
-			TC.text_scr3[i] = 0;
+			TC.text_scr3[i][0] = 0;
 		}			
 	}
 	for (i=0; i<0x10000; ++i) {
@@ -198,58 +198,74 @@ void gemu_clear_cache(void) {
 
 void gemu_cache_scroll1(u16 tile, short palette) {
 	static GLuint tempmap[8][8][4];
-	if (TC.text_scr1[tile] == 0) {
+	if (TC.text_scr1[tile][0] && TC.text_scr1[tile][1] != palette) {
+		glDeleteTextures(1, &TC.text_scr1[tile][0]);
+		TC.text_scr1[tile][0] = 0;
+	}	
+	
+	if (TC.text_scr1[tile][0] == 0) {
 		gemu_readtile_scroll1(tile);
 		gemu_colortile_scroll1(palette, tempmap);
-		glGenTextures(1, &TC.text_scr1[tile]);
-		if (&TC.text_scr1[tile]==0) {
+		glGenTextures(1, &TC.text_scr1[tile][0]);
+		if (&TC.text_scr1[tile][0]==0) {
 			panic(999);
 		}
-		glBindTexture(GL_TEXTURE_2D, TC.text_scr1[tile]);
+		TC.text_scr1[tile][1] = palette;
+		glBindTexture(GL_TEXTURE_2D, TC.text_scr1[tile][0]);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
 		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, 8, 8, 0, GL_RGBA, GL_UNSIGNED_BYTE, tempmap);
 	} else {
-		glBindTexture(GL_TEXTURE_2D, TC.text_scr1[tile]);
+		glBindTexture(GL_TEXTURE_2D, TC.text_scr1[tile][0]);
 	}
 }
 void gemu_cache_scroll2(u16 tile, short palette) {
 	static GLubyte tempmap[16][16][4];
-	if (TC.text_scr2[tile] == 0) {
+	if (TC.text_scr2[tile][0] && TC.text_scr2[tile][1] != palette) {
+		glDeleteTextures(1, &TC.text_scr2[tile][0]);
+		TC.text_scr2[tile][0] = 0;
+	}		
+	if (TC.text_scr2[tile][0] == 0) {
 		gemu_readtile_scroll2(tile);
 		gemu_colortile_scroll2(palette, tempmap[0][0]);
-		glGenTextures(1, &TC.text_scr2[tile]);
-		if (&TC.text_scr2[tile]==0) {
+		glGenTextures(1, &TC.text_scr2[tile][0]);
+		if (&TC.text_scr2[tile][0]==0) {
 			panic(999);
 		}
-		glBindTexture(GL_TEXTURE_2D, TC.text_scr2[tile]);
+		TC.text_scr2[tile][1] = palette;
+		glBindTexture(GL_TEXTURE_2D, TC.text_scr2[tile][0]);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
 		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, 16, 16, 0, GL_RGBA, GL_UNSIGNED_BYTE, tempmap);
 	} else {
-		glBindTexture(GL_TEXTURE_2D, TC.text_scr2[tile]);
+		glBindTexture(GL_TEXTURE_2D, TC.text_scr2[tile][0]);
 	}
 }
 void gemu_cache_scroll3(u16 tile, short palette) {
 	static GLuint tempmap[32][32][4];
-	if (TC.text_scr3[tile] == 0) {
+	if (TC.text_scr3[tile][0] && TC.text_scr3[tile][1] != palette) {
+		glDeleteTextures(1, &TC.text_scr3[tile][0]);
+		TC.text_scr3[tile][0] = 0;
+	}	
+	if (TC.text_scr3[tile][0] == 0) {
 		gemu_readtile_scroll3(tile);
 		gemu_colortile_scroll3(palette, tempmap);
-		glGenTextures(1, &TC.text_scr3[tile]);
-		if (&TC.text_scr3[tile]==0) {
+		glGenTextures(1, &TC.text_scr3[tile][0]);
+		if (&TC.text_scr3[tile][0]==0) {
 			panic(999);
 		}
-		glBindTexture(GL_TEXTURE_2D, TC.text_scr3[tile]);
+		TC.text_scr3[tile][1] = palette;
+		glBindTexture(GL_TEXTURE_2D, TC.text_scr3[tile][0]);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
 		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, 32, 32, 0, GL_RGBA, GL_UNSIGNED_BYTE, tempmap);
 	} else {
-		glBindTexture(GL_TEXTURE_2D, TC.text_scr3[tile]);
+		glBindTexture(GL_TEXTURE_2D, TC.text_scr3[tile][0]);
 	}
 }
 void gemu_cache_object(u16 tile, short palette) {
 	static GLuint tempmap[16][16][4];
-	if (TC.text_obj[tile][0] == tile && TC.text_obj[tile][1] != palette) {
+	if (TC.text_obj[tile][0] && TC.text_obj[tile][1] != palette) {
 		glDeleteTextures(1, &TC.text_obj[tile][0]);
 		TC.text_obj[tile][0] = 0;
 	}

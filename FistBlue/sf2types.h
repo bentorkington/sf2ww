@@ -129,7 +129,24 @@ struct smalladjust {
     char x;
     char y;
 };
-    
+
+struct Point8 {
+	char x;
+	char y;
+};
+struct Size8 {
+	char width;
+	char height;
+};
+struct Rect8 {
+	struct Point8 origin;
+	struct Size8  size;
+};
+struct Vect16 {
+	FIXED8_8 x;
+	FIXED8_8 y;
+};
+
 
 struct extrasprite {
     short Xoff;

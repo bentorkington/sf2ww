@@ -111,7 +111,7 @@ void setpalette_scroll1(short palette) {		// emulation of 16ca
     }
 }
 
-inline void palette_scr1_16(void) {		/* 168c rename to be like palette_macro_NN */
+inline void palette_scr1_16(void) {		/* 168c  */
 	setpalette_scroll1(16);
 }
 inline void palette_scr1_19(void) {		// 1692
@@ -161,7 +161,6 @@ void clear_scrolls_123(Task *task) {           /* 0x4c3c */
     gfxrepeat((u16 *)BMAP_SCROLL2, 0xfff, GFXROM_SCROLL2       , 0);  /* first tile is blank */
     gfxrepeat((u16 *)BMAP_SCROLL3, 0xfff, GFXROM_SCROLL3       , 0);    
     DIEFREE;
-    /* can't get here */
 }
 
 
