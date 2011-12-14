@@ -144,13 +144,12 @@ Object *alloc_action_by_type(short type) {
 
 
 void update_motion(Object *obj) {		/* 2416 */
-    short *path= obj->Path;
-    short step = obj->Step * 2;
+    VECT16 *path= obj->Path;
 
     /* fixed precision arithmetic */
 	
-    obj->X.full += path[step+0] << 8;
-    obj->Y.full += path[step+1] << 8;
+    obj->X.full += (obj->Path[obj->Step].x.full << 8);
+    obj->Y.full += (obj->Path[obj->Step].y.full << 8);
 }
 
 

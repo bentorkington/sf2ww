@@ -242,15 +242,20 @@ u8 calc_flightpath(Object *obj, int x, int y) {		// 24d2 flightpath
 	u8 direction = 0;
 	int d3;
 	
-	if (y - obj->YPI == 0) {
+	if (y - obj->YPI < 5) {
 		if (obj->XPI < 0) {
-			return 0xc0;
-		} else {
 			return 0x40;
+		} else {
+			return 0xc0;
 		}
 	} else if (y - obj->YPI < 0) {
 		direction = 0x80;
-	} 
+		return 0x80;
+	} else {			// XXX
+		return 0x00;	// XXX
+	}					// XXX
+		// can't get here
+
 	if (x - obj->XPI == 0) {
 		return direction;
 	}

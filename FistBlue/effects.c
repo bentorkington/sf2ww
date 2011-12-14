@@ -200,7 +200,7 @@ void syslib_00 (void) {					// e12
 					sub_10e0(-0x1000);
 					TASKSLEEP;
 				} else {
-					g.FadeInEffect = FALSE;
+					g.FadeInEffect      = FALSE;
 					Exec.EffectIsSetUp  = TRUE;
 					g.CPS.DispEna &= 0xffc0;	
 					DIEFREE;

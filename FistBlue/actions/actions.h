@@ -96,17 +96,6 @@ struct UserData_Act1e {
 	
 };
 
-struct UserData_Act23 {
-	short	ObjX;		//84
-	short	ObjY;		//86
-	short	PlyX;		//88
-	short	PlyY;		//8a
-	short	x008c;		//8c
-	void	*x008e;		// ptr to exit routine
-	
-	char	x0092;
-	char	x0093;		// side of player
-};
 
 
 // The plane
@@ -116,9 +105,7 @@ struct UserData_Act2e {
 	u8	city_from;
 	u8	city_to;
 	
-	// POINT16 destination;
-	short	x_to;		// get rid
-	short	y_to;
+	POINT16 destination;
 	//
 	short	sound;	// 0096
 };

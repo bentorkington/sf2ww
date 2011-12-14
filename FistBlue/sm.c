@@ -1119,7 +1119,7 @@ void gamemode_24I (void) {		// 7970
 				g.mode3 +=2;
 				die_top8();
 				g.FadeBusy = TRUE;
-				QueueEffect(SL1C | CHALLENGER_2,3);
+				QueueEffect(SL0C | 0x1c,3);
 			} else if(check_if_new_player()) {
 				GEMU_CLEAR_OBJECT_72;             /* clear the "Press Start" message */
 				DSDrawAllMain();
@@ -1129,7 +1129,7 @@ void gamemode_24I (void) {		// 7970
 			set_waitmode();
 			if(g.FadeBusy == 0) {
 				g.mode3 += 2;
-				g.timer3 = 5;
+				g.timer3 = 0xb4;
 			}
 			break;
 		case 0xc:

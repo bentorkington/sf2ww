@@ -64,7 +64,8 @@ static void action_1f(Object *obj);
 static void action_20(Object *obj);
 static void action_21(Object *obj);
 static void action_22(Object *obj);
-static void action_1e420(Object *obj);
+
+void action_1e420(Object *obj);
 
 static void action_2c(Object *obj);
 
@@ -94,7 +95,6 @@ typedef struct UserData_Act0E UD0E;
 typedef struct UserData_Act11 UD11;
 typedef struct UserData_Act12 UD12;
 typedef struct UserData_Act1e UD1E;
-typedef struct UserData_Act23 UD23;
 typedef struct UserData_Act2e UD2E;
 typedef struct UserData_Act2f UD2F;
 
@@ -1853,7 +1853,7 @@ static void action_1f(Object *obj) {		//18e7e
 
 #pragma mark ACTION 0x20 hitstun splashes
 static void action_20(Object *obj) {
-	static const short data_1de94[4][2] = {{ -2, 0}, {2, -2}, {0, 0}, {-2, 2}};
+	static const POINT16 data_1de94[4] = {{ -2, 0}, {2, -2}, {0, 0}, {-2, 2}};
 	short temp;
 	if (obj->mode3 == 5) {
 		if (obj->LocalTimer) {
@@ -1874,8 +1874,8 @@ static void action_20(Object *obj) {
 					obj->Draw2.part.integer = 15;
 				}
 				temp = (sf2rand() & 0xc ) >> 2;
-				obj->XPI += data_1de94[temp][0];
-				obj->YPI += data_1de94[temp][1];
+				obj->XPI += data_1de94[temp].x;
+				obj->YPI += data_1de94[temp].y;
 				setaction_list(obj, actlist_1dec6, obj->SubSel);
 				break;
 			case 2:
@@ -2126,338 +2126,13 @@ static void action_22(Object *obj) {		// 1ac16
 
 #pragma mark ACTION 0x23 diziness, pukes
 /* Vomit, birds, stars etc */
-
-void ActStartVomit(Player *ply) {			// 1e304
-	UD23 *ud;
-	
-	Object *obj;
-	if (obj = AllocActor()) {
-		ud = (UD23 *)&obj->UserData;
-		obj->SubSel = 0;
-		obj->flag1  = TRUE;
-		obj->Sel    = SF2ACT_VOMIT;
-		obj->UserByte  = sf2rand() & 1;		// orange or grey vomit?
-		obj->Owner  = ply;
-		ud->x0093   = ply->Side;
-		ud->x008e   = &FreeActor;	//??
-	}
-}
-void action_1e336(Player *ply) {
-	UD23 *ud;
-
-	Object *obj;
-	char temp;
-	
-	static const char data_1e39c[] = {
-		0,0,0,1,1,2,2,2,0,0,0,1,1,2,2,2,
-		0,0,0,1,1,1,2,2,0,0,0,1,1,1,2,2,
-	};
-	
-	if (obj = AllocActor()) {
-		ud =  (UD23 *)&obj->UserData;
-		obj->SubSel = 2;
-		temp = data_1e39c[RAND32];
-		if (temp) {			// hmm, wierd, but checked.
-			obj->UserByte = temp-1;
-			obj->exists = TRUE;
-			obj->Sel = SF2ACT_VOMIT;	
-			obj->Owner = ply;
-			ud->x0093 = ply->Side;
-			ud->x008e = &FreeActor;
-		}
-	}
-}
-static void _CreateDizzyObject(Player *ply, short d2) {		// 1e3c8
-	Object *obj;
-	UD23 *ud;
-	if (obj=AllocActor()) {
-		ud = (UD23 *)&obj->UserData;
-		ud->x008c	= d2;
-		obj->exists = TRUE;
-		obj->Sel	= SF2ACT_VOMIT;
-		obj->SubSel = 4;		
-		obj->UserByte = ply->DizzySpell < 0x8c ? 0 : 1 ;	// 0=stars,1=birds
-		obj->Owner = ply;
-		obj->X.full = obj->Y.full = 0;
-	}
-}
-void StartDizzyAnim(Player *ply) {				// 1e3bc
-	_CreateDizzyObject(ply, 0);
-	_CreateDizzyObject(ply, 8);
-	_CreateDizzyObject(ply, 16);
-}
-void ActBlankaBiteBlood(Player *ply) {			//1e402
-	Object *obj;
-	if (obj=AllocActor()) {
-		obj->exists = TRUE;
-		obj->Sel = SF2ACT_VOMIT;
-		obj->SubSel = 6;
-		obj->Owner = ply;
-	}
-}
-static void Act23SMVomit(Object *obj) {					// 1e43a
-	UD23 *ud = (UD23 *)obj->UserData;
-	POINT16 op;
-
-	switch (obj->mode0) {
-		case 0:
-			NEXT(obj->mode0);
-			setaction_list(obj, actlist_1e8d6, obj->SubSel + obj->UserByte);
-			obj->Flip = obj->Owner->Flip;
-			ud->PlyX = obj->Owner->XPI;
-			ud->PlyY = obj->Owner->YPI;
-			obj->LocalTimer = 0x1e;
-			obj->Pool = 0;
-			sub_1e7ae(obj);
-			op = Act23RandomSmallOffset();
-			obj->XPI += op.x;
-			obj->YPI += op.y;
-			break;
-		case 2:
-			if (ud->x0093) { obj->Pool = 10; } else { obj->Pool = 8; }
-
-			// move the vomit with the player
-			obj->XPI += (obj->Owner->XPI - ud->PlyX);
-			ud->PlyX = obj->Owner->XPI;
-			obj->YPI += (obj->Owner->YPI - ud->PlyY);
-			ud->PlyY = obj->Owner->YPI;
-			
-			if ((obj->AnimFlags & 0xff) == 0) {
-				if (--obj->LocalTimer == 0) {
-					NEXT(obj->mode0);
-				}
-			} else {
-				NEXT(obj->mode0);
-			}
-			actiontick(obj);
-			if (obj->SubSel == 0) {
-				if (--ud->x0092) {
-					check_rect_queue_draw(obj);
-				} else {
-					ud->x0092 = 3;
-				}
-				
-			} else {
-				check_rect_queue_draw(obj);
-			}
-			break;
-		case 4:
-		case 6:
-			FreeActor(obj);
-			break;
-		FATALDEFAULT;
-	}
-}	
-
-
-
-static void action_1e420(Object *obj) {		/* obj in %a6 */
-	switch (obj->SubSel) {
-		case 0:							//	teeth, blood
-		case 2:							//  orange and grey vomit
-			Act23SMVomit(obj);
-			break;
-		case 4:
-			sub_1e59a(obj);				// animated star, bird
-			break;
-		case 6:							// small star, bird
-			Act23SMBlood(obj);
-			break;
-		case 8:							// blood again
-			sub_1e84c(obj);			
-			break;
-		FATALDEFAULT;
-	}
-}
-
-
-
-
-
-static Player *sub_1e7ae(Object *obj) {		// 1e7ae
-	char x,y;
-	Player *ply = obj->Owner;	
-
-	x = data_1e804[ply->FighterID][obj->SubSel/2].x;
-	y = data_1e804[ply->FighterID][obj->SubSel/2].y;
-	
-	if (ply->Flip) {obj->XPI = ply->XPI - x;} else {obj->XPI = ply->XPI + x;}
-	obj->YPI = ply->YPI + y;
-
-	return ply;
-}
-
-static void sub_1e59a(Object *obj) {		// birds and stars?
-	UD23 *ud = (UD23 *) &obj->UserData;
-	
-	Player *ply;
-	short *temp;
-	short temp2;
-	
-	switch (obj->mode0) {
-		case 0:
-			switch (obj->mode1) {
-				case 0:
-					NEXT(obj->mode1);
-					obj->LocalTimer = 1;
-					break;
-				case 2:
-					if (--obj->LocalTimer == 0) {
-						NEXT(obj->mode0);
-						setaction_list(obj, actlist_1e8d6, obj->SubSel + obj->UserByte);
-						ply = sub_1e7ae(obj);
-						obj->Flip = ply->Flip;
-						ud->PlyX = ply->XPI;
-						ud->PlyY = ply->YPI;
-						ud->ObjX = obj->XPI;
-						ud->ObjY = obj->YPI;
-						temp = &data_1e622[ud->x008c / 2];
-						obj->XPI      += temp[0];
-						obj->VelX.full = temp[1];
-						obj->YPI      += temp[2];
-						obj->VelY.full = temp[3];
-					}
-					break;
-				FATALDEFAULT;
-			}
-			break;
-		case 2:				// 1e63a
-			ply = obj->Owner;
-			if (ply->DizzyStun == 0 || (ply->mode1 != PLSTAT_REEL && ply->mode1 != PLSTAT_TUMBLE) ) {
-				NEXT(obj->mode2);	/* no longer dizzy */
-			}
-			obj->VelX.full = obj->XPI < ud->ObjX ? 0x100 : -0x100;
-			obj->VelY.full = obj->YPI < ud->ObjY ?  0x40 : -0x40;
-			
-			temp2 = ply->XPI - ud->PlyX;
-			obj->XPI += temp2;
-			ud->ObjX += temp2;
-			ud->PlyX = ply->XPI;
-			
-			temp2 = ply->YPI - ud->PlyY;
-			obj->YPI += temp2;
-			ud->ObjY += temp2;
-			ud->PlyY = ply->YPI;
-			
-			obj->Flip = ply->VelX.full < 0 ? 1 : 0;
-			obj->Pool = obj->Flip * 4;
-			
-			
-			setaction_list(obj, actlist_1e8d6, ((obj->Flip * 2) + 4 + obj->UserByte));
-			CAApplyVelocity(obj);		/* bottom half of calc-trajectory */
-			if (obj->UserByte) {
-				obj->Draw1 = TRUE;
-				obj->Draw2.part.integer = data_1e6f4[(g.tick & 0x6) / 2];
-			}
-			check_rect_queue_draw(obj);
-			break;
-		case 4:
-		case 6:
-			FreeActor(obj);
-			break;
-		FATALDEFAULT;
-	}
-}
-static POINT16 Act23RandomSmallOffset(void) {		//1e888
-	static const char data_1e8a6[] = {-2, 2, 0, -2, 2, 0, -2, 2 };
-	
-	POINT16 op;
-	short temp = sf2rand();
-	op.x = data_1e8a6[temp & 7];
-	op.y = data_1e8a6[(temp >> 3) & 7];
-	return op;
-}
-static void sub_1e77e(Object *obj) {
-	UD23 *ud = (UD23 *) &obj->UserData;
-
-	if (obj->AnimFlags && 0xff) {
-		NEXT(obj->mode0);
-	}
-	actiontick(obj);
-	if(--ud->x0092) {
-		check_rect_queue_draw(obj);
-	} else {
-		ud->x0092 = 3;
-	}
-}
-
-static void Act23SMBlood(Object *obj) {		// 1e6fc
-	Player *a0;
-	short temp;
-	POINT16 op;
-	
-	switch (obj->mode0) {
-		case 0:
-			NEXT(obj->mode0);
-			a0 = obj->Owner;
-			obj->Flip = obj->Owner->Flip;
-			obj->XPI  = obj->Owner->XPI;
-			obj->YPI  = obj->Owner->YPI;
-			if (obj->Owner->FighterID == FID_BLANKA) {
-				obj->XPI += obj->Flip ? 32 : -32 ;		
-				obj->YPI += 69;
-			} else {
-				obj->XPI += obj->Flip ? 37 : -37 ;
-				obj->YPI += 82;
-			}
-			obj->LocalTimer = 30;
-			obj->Pool		= 0;
-			op = Act23RandomSmallOffset();
-			obj->XPI += op.x;
-			obj->YPI += op.y;
-			setaction_list(obj, actlist_1e8d6, 8);		/* star */
-			break;
-		case 2:
-			sub_1e77e(obj);
-			break;
-		case 4:
-		case 6:
-			FreeActor(obj);
-		default:
-			break;
-	}
-}
-
-
-static void sub_1e84c(Object *obj) {
-	UD23 *ud = (UD23 *) &obj->UserData;
-
-	POINT16 op;
-	
-	switch (obj->mode0) {
-		case 0:
-			NEXT(obj->mode0);
-			obj->Flip ^= 1;
-			op = Act23RandomSmallOffset();
-			obj->XPI += op.x;
-			obj->YPI += op.y;
-			ud->x0092 = 3;
-			setaction_direct(obj, actlist_1eb42);
-			/* FALL THRU */
-		case 2:
-			sub_1e77e(obj);
-			break;
-		case 4:
-		case 6:
-			FreeActor(obj);
-		default:
-			break;
-	}
-	
-	
-}
-
+// gone to reels.c
 #pragma mark ----
 
 
 void action_1cd3c(Player *ply) {
 	/* XXX vegas claw falls off */
 }
-
-
-
-
-
 
 #pragma mark MARK
 
@@ -2614,7 +2289,7 @@ void synth_plane_setup(Object *obj, int city_from, int city_to) {
 
 static void action_2e(Object *obj) {		// 18f92
 	UD2E *ud = (UD2E *)obj->UserData;
-	static const short data_cfe74[64][2] = {
+	static const VECT16 data_cfe74[64] = {
 		{ 0x0000, 0x02a0,  },
 		{ 0x004b, 0x029c,  },
 		{ 0x0095, 0x0292,  },
@@ -2623,7 +2298,7 @@ static void action_2e(Object *obj) {		// 18f92
 		{ 0x0169, 0x024f,  },
 		{ 0x01aa, 0x022e,  },
 		{ 0x01e6, 0x0207,  },
-		{ 0x021e, 0x01da,  },
+		{ 0x021e, 0x01da,  },//8
 		{ 0x0251, 0x01a9,  },
 		{ 0x027e, 0x0174,  },
 		{ 0x02a4, 0x013c,  },
@@ -2631,7 +2306,7 @@ static void action_2e(Object *obj) {		// 18f92
 		{ 0x02de, 0x00c2,  },
 		{ 0x02f0, 0x0082,  },
 		{ 0x02fc, 0x0041,  },
-		{ 0x0300, 0x0000,  },
+		{ 0x0300, 0x0000,  },//10
 		{ 0x02fc, 0xffbf,  },
 		{ 0x02f0, 0xff7e,  },
 		{ 0x02de, 0xff3e,  },
@@ -2639,7 +2314,7 @@ static void action_2e(Object *obj) {		// 18f92
 		{ 0x02a4, 0xfec4,  },
 		{ 0x027e, 0xfe8c,  },
 		{ 0x0251, 0xfe57,  },
-		{ 0x021e, 0xfe26,  },
+		{ 0x021e, 0xfe26,  },//18
 		{ 0x01e6, 0xfdf9,  },
 		{ 0x01aa, 0xfdd2,  },
 		{ 0x0169, 0xfdb1,  },
@@ -2647,7 +2322,7 @@ static void action_2e(Object *obj) {		// 18f92
 		{ 0x00de, 0xfd7e,  },
 		{ 0x0095, 0xfd6e,  },
 		{ 0x004b, 0xfd64,  },
-		{ 0x0000, 0xfd60,  },
+		{ 0x0000, 0xfd60,  },//20
 		{ 0xffb5, 0xfd64,  },
 		{ 0xff6b, 0xfd6e,  },
 		{ 0xff22, 0xfd7e,  },
@@ -2655,7 +2330,7 @@ static void action_2e(Object *obj) {		// 18f92
 		{ 0xfe97, 0xfdb1,  },
 		{ 0xfe56, 0xfdd2,  },
 		{ 0xfe1a, 0xfdf9,  },
-		{ 0xfde2, 0xfe26,  },
+		{ 0xfde2, 0xfe26,  },//28
 		{ 0xfdaf, 0xfe57,  },
 		{ 0xfd82, 0xfe8c,  },
 		{ 0xfd5c, 0xfec4,  },
@@ -2663,7 +2338,7 @@ static void action_2e(Object *obj) {		// 18f92
 		{ 0xfd22, 0xff3e,  },
 		{ 0xfd10, 0xff7e,  },
 		{ 0xfd04, 0xffbf,  },
-		{ 0xfd00, 0x0000,  },
+		{ 0xfd00, 0x0000,  },//30
 		{ 0xfd04, 0x0041,  },
 		{ 0xfd10, 0x0082,  },
 		{ 0xfd22, 0x00c2,  },
@@ -2671,7 +2346,7 @@ static void action_2e(Object *obj) {		// 18f92
 		{ 0xfd5c, 0x013c,  },
 		{ 0xfd82, 0x0174,  },
 		{ 0xfdaf, 0x01a9,  },
-		{ 0xfde2, 0x01da,  },
+		{ 0xfde2, 0x01da,  },//38
 		{ 0xfe1a, 0x0207,  },
 		{ 0xfe56, 0x022e,  },
 		{ 0xfe97, 0x024f,  },
@@ -2680,7 +2355,7 @@ static void action_2e(Object *obj) {		// 18f92
 		{ 0xff6b, 0x0292,  },
 		{ 0xffb5, 0x029c,  },
 	};
-	const static u16 data_19040[12][2] = {
+	const static POINT16 city_coords[12] = {		// 19040
 		{ 0x00be, 0x00ab,  },
 		{ 0x00c4, 0x00b3,  },
 		{ 0x012c, 0x008c,  },
@@ -2699,6 +2374,8 @@ static void action_2e(Object *obj) {		// 18f92
 		case 0:
 			switch (obj->mode1) {
 				case 0:
+					printf("plane trip from city %d to %d\n", ud->city_from, ud->city_to);
+
 					NEXT(obj->mode1);
 					obj->LocalTimer = 0x32;
 					obj->Pool = 2;
@@ -2711,20 +2388,21 @@ static void action_2e(Object *obj) {		// 18f92
 						g.Pause_9e1 = -1;
 					} else {
 						//18fd8
-						obj->XPI = data_19040[ud->city_from][0];
-						obj->YPI = data_19040[ud->city_from][1];
-						ud->x_to = data_19040[ud->city_to][0];
-						ud->y_to = data_19040[ud->city_to][1];
-						d6 = calc_flightpath(obj, ud->x_to, ud->y_to);
-						//todo cheeky bitshifts
-						obj->Step = d6;
-						setaction_list(obj, actlist_19fa2, (d6+1) >> 3);
+						obj->XPI = city_coords[ud->city_from].x;
+						obj->YPI = city_coords[ud->city_from].y;
+						ud->destination.x = city_coords[ud->city_to].x;
+						ud->destination.y = city_coords[ud->city_to].y;
+						d6 = calc_flightpath(obj, ud->destination.x, ud->destination.y);
+						printf("start at %d,%d finish %d,%d path 0x%x", obj->XPI, obj->YPI, ud->destination.x, ud->destination.y, d6);
+						
+						obj->Step = (d6)>>2;
+						setaction_list(obj, actlist_19fa2, (obj->Step+1) >> 3);
 					}
 					break;
 				case 2:
 					if (--obj->LocalTimer == 0) {
 						NEXT(obj->mode0);
-						obj->mode3 = 0;
+						obj->mode1 = 0;
 						queuesound(SOUND_PLANE);
 					}
 					break;
@@ -2734,10 +2412,11 @@ static void action_2e(Object *obj) {		// 18f92
 		case 2:
 			//190a0
 			if (obj->mode1 == 0) {
-				d6 = calc_flightpath(obj, ud->x_to, ud->y_to);
-				obj->Step = (d6 + 2) >> 2;
-				if ((ABS(obj->XPI - ud->x_to) > 3)   ||
-					(ABS(obj->YPI - ud->y_to) > 3)) {
+				d6 = calc_flightpath(obj, ud->destination.x, ud->destination.y);
+				printf("flightpath 0x%02x\n", d6);
+				obj->Step = (d6) >> 2;
+				if ((ABS(obj->XPI - ud->destination.x) > 10)   ||	//XXX should be 3
+					(ABS(obj->YPI - ud->destination.y) > 10)) {
 					update_motion(obj);
 					enqueue_and_layer(obj);
 				} else {
