@@ -1955,31 +1955,8 @@ void sub_2c1a (void) {
 			g.OnLevel8 = TRUE;		/* u8 */
 		}
 	}
-	if (g.OnBonusStage == FALSE && g.ActiveHumans == 3) {
-		d2 = g.CurrentStage;
-		if(g.Player1.Human | g.Player1.x02ae) {
-			if(g.Player1.FighterID == d2) {
-				if(g.Player1.FighterSelect == g.CurrentStage) {
-					d2 = g.Player2.FighterID;
-				} else {
-					d2 = g.Player1.FighterSelect;
-				}
-				g.Player2.FighterID = d2;
-			}
-		} else {
-			/* 2c70 */
-			if(g.Player2.FighterID == d2) {
-				if(g.Player2.FighterSelect == g.CurrentStage) {
-					d2 = g.Player1.FighterID;
-				} else {
-					d2 = g.Player2.FighterSelect;
-				}
-				g.Player1.FighterID = d2;
-			}
-			
-		}
-	}
 }
+
 
 
 #pragma mark Synthetics

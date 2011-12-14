@@ -49,10 +49,10 @@ enum fighter_id_t {
 #define PLSTAT_STANDBLOCK        0x8
 #define PLSTAT_ATTACKING         0xa
 #define PLSTAT_IN_POWERMOVE      0xc
-#define PLSTAT_REEL        0xe
+#define PLSTAT_REEL				 0xe
 #define PLSTAT_VICTORY          0x10
 #define PLSTAT_LOSS             0x12
-#define PLSTAT_TUMBLE  0x14	// was THROWN_RECOVERY
+#define PLSTAT_TUMBLE			0x14	// was THROWN_RECOVERY
 
 /* DIESTAT, also used in player->mode1 */
 #define	DIESTAT_0				0

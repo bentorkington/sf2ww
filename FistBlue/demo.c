@@ -30,6 +30,8 @@ extern GState gstate_Scroll2;
 extern GState gstate_Scroll3;
 extern struct executive_t Exec;
 
+void SMdemo_fight(void);
+
 
 static void sub_65a2(void) {
 	Task *task = CURRENT_TASK;

@@ -1386,6 +1386,8 @@ void downandout(Player *ply) {		//2a052
 			ply->mode3 = 0;
 			ply->Tumble = FALSE;
 			actiontick((Object *)ply);
+			break;
+		FATALDEFAULT;
     }
 }
 
