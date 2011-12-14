@@ -113,8 +113,8 @@ struct actionhdr {
     u8  Sel;
     u8  Step;
     u8  Scroll;
-    u8  x0005;
-    u16 x0006;
+    u8  UserByte;
+    u16 ZDepth;
     u16 X;
     u16 Y;
 };

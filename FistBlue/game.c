@@ -42,7 +42,7 @@ void manual_init(void) {
 		//g.Player2.Human    = TRUE;
 		g.Player1.FighterID = FID_RYU;
 		g.Player2.FighterID = FID_E_HONDA;
-		g.CurrentStage = STAGE_USA_GUILE;
+		//g.CurrentStage = STAGE_USA_GUILE;
 		g.randSeed1    = 0x01;       /* initial random seed */
 		g.randSeed2    = 0xc2;
 	}

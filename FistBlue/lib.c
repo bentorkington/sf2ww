@@ -1734,13 +1734,13 @@ void setup_stage_actions (void) { /* 822be */
 	const struct actionhdr *data = data_stageactions[g.CurrentStage];
 	for (i=0; i<count; ++i) {
 		if (action = alloc_action_by_type(data[i].Type)) {
-			action->exists = TRUE;
-            action->SubSel = data[i].SubSel;
-            action->Sel    = data[i].Sel;
-            action->Step   = data[i].Step;
-            action->Scroll = data[i].Scroll;
-            action->UserByte  = data[i].x0005;
-            action->ZDepth  = data[i].x0006;
+			action->exists   = TRUE;
+            action->SubSel   = data[i].SubSel;
+            action->Sel      = data[i].Sel;
+            action->Step     = data[i].Step;
+            action->Scroll   = data[i].Scroll;
+            action->UserByte = data[i].UserByte;
+            action->ZDepth   = data[i].ZDepth;
             action->XPI      = data[i].X;
             action->YPI      = data[i].Y;			
 		}
@@ -1930,8 +1930,8 @@ void actionlibrary(void) {
             action->Sel    = data[i].Sel;
             action->Step   = data[i].Step;
             action->Scroll = data[i].Scroll;
-            action->UserByte  = data[i].x0005;
-            action->ZDepth  = data[i].x0006;
+            action->UserByte  = data[i].UserByte;
+            action->ZDepth  = data[i].ZDepth;
             action->XPI      = data[i].X;
             action->YPI      = data[i].Y;			
 		}
@@ -1939,7 +1939,7 @@ void actionlibrary(void) {
 }
 
 void _bumplevel(void) {		/* 2bf2 */
-	while(g.CurrentStage = g.LevelScript[g.LevelCursor] < 0) {
+	while((g.CurrentStage = g.LevelScript[g.LevelCursor]) < 0) {
 		/* 2b76 */
 		++g.LevelCursor;
 	}
@@ -1948,7 +1948,6 @@ void _bumplevel(void) {		/* 2bf2 */
 }
 
 void sub_2c1a (void) {
-	short d2;
 	if(g.LevelCursor >= 7) {
 		g.UpToBosses = TRUE;
 		if(g.LevelCursor == 8) {

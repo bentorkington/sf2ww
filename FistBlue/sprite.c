@@ -1033,7 +1033,7 @@ static void sub_7f244 (Object *obj, u16 tiles_in_image, const Image *image, shor
 /* 7ee58 Object with No Flip */
 static void sub_7ee58(Object *obj, const u16 *tilep, const short *offsets, short x, short y, unsigned short tiles, unsigned short attr) {     /* 7ee58 obj a1, a0, tilep a2, a3, x d0, y d1, tiles d3 */
 	short sx, sy;
-	short bx, by;
+//	short bx, by;
 	u16 tile;
 	
     x -= g.DSOffsetX;
@@ -1048,8 +1048,8 @@ static void sub_7ee58(Object *obj, const u16 *tilep, const short *offsets, short
 				offsets +=2;
 				continue;
 			}
-			for (bx=0; bx <= (attr & 0xf00)>>8; bx++) {
-				for (by=0;by <= (attr & 0xf000)>>12;by++){
+//			for (bx=0; bx <= (attr & 0xf00)>>8; bx++) {
+//				for (by=0;by <= (attr & 0xf000)>>12;by++){
 					
 					sx= x + *offsets;
 					offsets++;
@@ -1062,10 +1062,10 @@ static void sub_7ee58(Object *obj, const u16 *tilep, const short *offsets, short
 					/* 7ee86 */
 					sy = (y + *offsets) & 0x1ff;
 					offsets++;
-					OBJECT_DRAW_SINGLE(DSObjCur_g, sx, sy, tile+(by * 0x10)+bx, attr); 
+					OBJECT_DRAW_SINGLE(DSObjCur_g, sx, sy, tile, attr); 
 					OBJ_CURSOR_BUMP(DSObjCur_g);
-				}
-			}
+//				}
+//			}
 			--tiles;
 		}	// while(tiles)
 	}
@@ -1075,7 +1075,6 @@ static void sub_7ee58(Object *obj, const u16 *tilep, const short *offsets, short
 static void sub_7ef2a(Object *obj, const u16 *tilep, const short *offsets, 
 					  short x, short y, u16 tiles, u16 attr) {    
 	short sx, sy;
-	short bx, by;
 	u16 tile;
 	int d5 = ((attr & 0xf00) >> 4) + 16;
 	int count = 0;
@@ -1087,32 +1086,26 @@ static void sub_7ef2a(Object *obj, const u16 *tilep, const short *offsets,
     x += g.DSOffsetX;
 	y += g.DSOffsetY;
 	
-
 	while(tiles > 0) {
 		tile = *tilep++;
 		if(tile == 0) {
 			offsets +=2;
 			continue;
 		}
-		for (bx=0; bx <= (attr & 0xf00)>>8; bx++) {
-			for (by=0;by <= (attr & 0xf000)>>12;by++){
-
-				++count;
-				sx= x - (*offsets - d5);
-				offsets++;
-				if(sx>512 || sx < 0) {
-					offsets++;
-					g.ObjTileBudget++;
-					g_tilecount -= 1;
-					continue;
-				}
-				sy = (y + *offsets) & 0x1ff;
-				offsets++;
-				OBJECT_DRAW_SINGLE(DSObjCur_g, sx, sy, tile+(by * 0x10)+bx, attr); 
-				OBJ_CURSOR_BUMP(DSObjCur_g);
-			
-			}
+		++count;
+		sx = x - (*offsets + d5);
+		offsets++;
+		if(sx>512 || sx < 0) {
+			offsets++;
+			g.ObjTileBudget++;
+			g_tilecount -= 1;
+			continue;
 		}
+		sy = (y + *offsets) & 0x1ff;
+		offsets++;
+		OBJECT_DRAW_SINGLE(DSObjCur_g, sx, sy, tile, attr); 
+		OBJ_CURSOR_BUMP(DSObjCur_g);
+		
 		tiles--;
 	}
 }
@@ -1121,7 +1114,6 @@ static void sub_7ef2a(Object *obj, const u16 *tilep, const short *offsets,
 static void sub_7ef86(Object *obj, const u16 *tilep, const short *offsets, 
 					  short x, short y, u16 tiles, u16 attr) {     
 	short sx, sy;
-	short bx, by;
 	u16 tile;
 	int d6 = (attr & 0xf000) >> 8 + 0x10;
 	
@@ -1136,25 +1128,21 @@ static void sub_7ef86(Object *obj, const u16 *tilep, const short *offsets,
 			offsets +=2;
 			continue;
 		}
-		for (bx=0; bx <= (attr & 0xf00)>>8; bx++) {
-			for (by=0;by <= (attr & 0xf000)>>12;by++){
-				
-				++count;
-				sx= x + *offsets;
-				offsets++;
-				if(sx < 0 || sx>512) {
-					offsets++;
-					g.ObjTileBudget++;
-					g_tilecount -= 1;
-					continue;
-				}
-				sy = (y - *offsets - d6) & 0x1ff;
-				offsets++;
-				OBJECT_DRAW_SINGLE(DSObjCur_g, sx, sy, tile+(by * 0x10)+bx, attr); 
-				OBJ_CURSOR_BUMP(DSObjCur_g);
-				
-			}
+		
+		++count;
+		sx= x + *offsets;
+		offsets++;
+		if(sx < 0 || sx>512) {
+			offsets++;
+			g.ObjTileBudget++;
+			g_tilecount -= 1;
+			continue;
 		}
+		sy = (y - *offsets - d6) & 0x1ff;
+		offsets++;
+		OBJECT_DRAW_SINGLE(DSObjCur_g, sx, sy, tile, attr); 
+		OBJ_CURSOR_BUMP(DSObjCur_g);
+		
 		tiles--;
 	}
 }
@@ -1164,7 +1152,6 @@ static void sub_7efd8(Object *obj, const u16 *tilep, const short *offsets,
 					  short x, short y, u16 tiles, u16 attr) {     
 
 	short sx, sy;
-	short bx, by;
 	u16 tile;
 	int d6 = (attr & 0xf000) >> 8 + 0x10;
 	int d5 = (attr & 0xf00) >> 4 + 0x10;
@@ -1173,36 +1160,30 @@ static void sub_7efd8(Object *obj, const u16 *tilep, const short *offsets,
 	
     x += g.DSOffsetX;
 	y -= g.DSOffsetY;
-
+	
 	while(tiles>0) {
 		tile = *tilep++;
 		if(tile == 0) {
 			offsets +=2;
 			continue;
 		}
-		for (bx=0; bx <= (attr & 0xf00)>>8; bx++) {
-			for (by=0;by <= (attr & 0xf000)>>12;by++){
-				
-				++count;
-				sx= x - *offsets - d5;
-				offsets++;
-				if(sx < 0 || sx>512) {
-					offsets++;
-					g.ObjTileBudget++;
-					g_tilecount -= 1;
-					continue;
-				}
-				sy = (y - *offsets - d6) & 0x1ff;
-				offsets++;
-				OBJECT_DRAW_SINGLE(DSObjCur_g, sx, sy, tile+(by * 0x10)+bx, attr); 
-				OBJ_CURSOR_BUMP(DSObjCur_g);
-				
-			}
+		++count;
+		sx= x - *offsets - d5;
+		offsets++;
+		if(sx < 0 || sx>512) {
+			offsets++;
+			g.ObjTileBudget++;
+			g_tilecount -= 1;
+			continue;
 		}
+		sy = (y - *offsets - d6) & 0x1ff;
+		offsets++;
+		OBJECT_DRAW_SINGLE(DSObjCur_g, sx, sy, tile, attr); 
+		OBJ_CURSOR_BUMP(DSObjCur_g);
 		tiles--;
 	}
 }
-	
+
 
 #pragma mark HitBox Debugging
 

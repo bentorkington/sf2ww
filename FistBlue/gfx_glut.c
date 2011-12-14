@@ -585,11 +585,28 @@ static void draw_scroll1(void) {
 	glBindTexture(GL_TEXTURE_2D, 0);
 	glPopMatrix();
 }
+
+
+
 static void draw_object(void) {
+
+#define DRAWTILE(TILE,PAL,FLIP,SX,SY)										\
+gemu_cache_object(TILE, gemu.Tilemap_Object[i][3] & 0x1f);					\
+glBegin(GL_POLYGON);														\
+glTexCoord2f(flips[FLIP][0][0],flips[FLIP][0][1]);							\
+glVertex3f((SX * XFACT)+XFACT/2.0f, (SY * YFACT) + YFACT / 2.0f, -0.01f);	\
+glTexCoord2f(flips[FLIP][1][0],flips[FLIP][1][1]);							\
+glVertex3f((SX * XFACT)-XFACT/2.0f, (SY * YFACT) + YFACT / 2.0f, -0.01f);	\
+glTexCoord2f(flips[FLIP][2][0],flips[FLIP][2][1]);							\
+glVertex3f((SX * XFACT)-XFACT/2.0f, (SY * YFACT) - YFACT / 2.0f, -0.01f);	\
+glTexCoord2f(flips[FLIP][3][0],flips[FLIP][3][1]);							\
+glVertex3f((SX * XFACT)+XFACT/2.0f, (SY * YFACT) - YFACT / 2.0f, -0.01f);	\
+glEnd();
+	
 	if (!gemu_scroll_enable[0]) {
 		return;
 	}
-	int i,j;
+	int i,j, blockx, blocky, pal, bys, bxs ;
 	GLfloat x,y;
 	int tile, flip;
 	GLfloat master = (gemu.PalObject[0][0] & 0xf000) / 61140.0;
@@ -603,33 +620,85 @@ static void draw_object(void) {
 		}
 	}
 	for (i=j; i>=0; i--) {
-		
 		tile = gemu.Tilemap_Object[i][2];
 		if (tile != 0) {
-			
-			
-			flip = (gemu.Tilemap_Object[i][3] & 0x60) >> 5;
-			x    = (short)gemu.Tilemap_Object[i][0] / 16.0;
-			y    = ((short)gemu.Tilemap_Object[i][1] &  0x1ff) / 16.0;
-			
-			y -=  7.0;
-			x -= 20.0;
-			
-			gemu_cache_object(tile, gemu.Tilemap_Object[i][3] & 0x1f);
-			
-			glBegin(GL_POLYGON);
-			glTexCoord2f(flips[flip][0][0],flips[flip][0][1]);
-			glVertex3f((x * XFACT)+XFACT/2.0f, (y * YFACT) + YFACT / 2.0f, -0.01f);
-			glTexCoord2f(flips[flip][1][0],flips[flip][1][1]);
-			glVertex3f((x * XFACT)-XFACT/2.0f, (y * YFACT) + YFACT / 2.0f, -0.01f);        
-			glTexCoord2f(flips[flip][2][0],flips[flip][2][1]);
-			glVertex3f((x * XFACT)-XFACT/2.0f, (y * YFACT) - YFACT / 2.0f, -0.01f);
-			glTexCoord2f(flips[flip][3][0],flips[flip][3][1]);
-			glVertex3f((x * XFACT)+XFACT/2.0f, (y * YFACT) - YFACT / 2.0f, -0.01f);
-			glEnd();
+			pal    = gemu.Tilemap_Object[i][3] & 0x1f;
+			flip   = (gemu.Tilemap_Object[i][3] &   0x60) >>  5;
+			x      = ((short)gemu.Tilemap_Object[i][0] &  0x1ff) / 16.0;
+			y      = ((short)gemu.Tilemap_Object[i][1] &  0x1ff) / 16.0;			
+			x     -= 20.0;
+			y	  -=  7.0;
+
+			if (gemu.Tilemap_Object[i][3] & 0xff00) {
+				// handle blocking
+				blockx = ((gemu.Tilemap_Object[i][3] & 0x0f00) >>  8)+1;
+				blocky = ((gemu.Tilemap_Object[i][3] & 0xf000) >> 12)+1; 
+				if (flip & 2) {
+					// YFLIP
+					if (flip & 1) {
+						// X and Y FLIP
+						for (bys = 0; bys < blocky; bys++) {
+							for (bxs = 0; bxs < blockx; bxs++) {
+								DRAWTILE(
+										 (tile + (blockx - 1) - bxs + (0x10 * (blocky - 1 - bys))),
+										 pal,
+										 flip,
+										 (x + bxs),
+										 (y + bys)
+										 );
+							}
+						}
+					} else {
+						// only YFLIP
+						for (bys = 0; bys < blocky; bys++) {
+							for (bxs = 0; bxs < blockx; bxs++) {
+								DRAWTILE(
+										 (tile + bxs + (0x10 * (blocky - 1 -bys))),
+										 pal,
+										 flip,
+										 (x + bxs),
+										 (y + bys)
+										 );
+							}
+						}
+					}
+				} else {
+					if (flip & 1) {
+						// XFLIP
+						for (bys = 0; bys < blocky; bys++) {
+							for (bxs = 0; bxs < blockx; bxs++) {
+								DRAWTILE(
+									(tile + (blockx - 1) - bxs + (0x10 * bys)),
+									pal,
+									flip,
+								    (x + bxs),
+									(y + bys)
+								);
+							}
+						}
+					} else {
+						// NOFLIP
+						for (bys = 0; bys < blocky; bys++) {
+							for (bxs = 0; bxs < blockx; bxs++) {
+								DRAWTILE(
+										 (tile + bxs + (0x10 * bys)),
+										 pal,
+										 flip,
+										 (x + bxs),
+										 (y + bys)
+										 );
+							}
+						}
+					}
+				}
+			} else {
+				// only one tile
+				
+				DRAWTILE(tile,pal,flip,x,y);				
+			}
 		}
 	}
-	
+#undef DRAWTILE
 }
 static void draw_scroll2(void) {
 	int x,y, yloop, flip;

@@ -674,7 +674,6 @@ void sub_2b7c(void) {
 		g.CurrentStage = SF2_DEMO_STAGES[g.DemoStageIndex];       /* 2b60 */
 		return;
 	} else if (g.x0a0f == 0) {
-		/* 2b8e */
 		if(g.OnBonusStage == FALSE) {
 			g.LastFightStage = g.CurrentStage;	/* u16 */
 		} 

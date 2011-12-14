@@ -161,7 +161,7 @@ typedef struct game {
 
 	/* begin 9ca-b4a block */
 	
-    u16 CurrentStage, LevelCursor, CurrentDifficulty;		/* 0x9ca */
+    short CurrentStage, LevelCursor, CurrentDifficulty;		/* 0x9ca */
 	
 	/* check, may be 8_8fix */
     u16 StageMinX, StageMaxX, StageMinY, StageMaxY;
