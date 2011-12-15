@@ -149,8 +149,6 @@ void LBGetDamage(Player *ply, Player *opp, int index) {	/* 0x35c0 */
 
 void set_throw_trajectory(Player *ply, int trajectory, int direction, short damage) {	//3668 
     int temp;
-
-	printf("set_throw_trajectory: Player %08x dir %d\n", ply, direction);
 	
     ply->Opponent->ThrowTrajectory = trajectory;
     ply->Opponent->Direction       = direction;

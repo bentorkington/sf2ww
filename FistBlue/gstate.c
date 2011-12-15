@@ -41,8 +41,8 @@ static void gstate_nextlevel_scroll2(void);
 static void gstate_nextlevel_scroll3(void);
 */
  
-static void sub_84374(unsigned short *gfx_p, const u16 *tile_p, short count);
-static void sub_84336(GState *gs, unsigned short *gfx_p, const u16 *tile_p, CP cp);
+static void draw_n_rows(unsigned short *gfx_p, const u16 *tile_p, short count);
+static void _GSDrawScroll2C(GState *gs, unsigned short *gfx_p, const u16 *tile_p, CP cp);
 
 
 static const u16 *_GSLookupScroll1(GState *gs, CP cp);
@@ -818,6 +818,25 @@ static const u16 *_GSRealignScroll2A(GState *gs, u16 **gfx_p) {
 	gs->Index = (gs->Index + gs->Offset) & gs->OffMask;
 	return &data_e0000[gs->TileMaps[gs->Index/2]][gs->XCoarse/2];
 }
+static const u16 *skyscraper_realign(GState *gs, u16 **gfx_p) {			// 84384
+	u32 d0;
+	u32 d1;
+	int offset;
+	
+#ifdef CPS
+#warning Scroll cursor arithmetic not optimal for CPS
+#endif
+	*gfx_p -= 0x20;
+	offset = (*gfx_p - BMAP_SCROLL2) * sizeof(u16); 
+	d0 = offset & 0xfffff800;
+	d1 = (offset + 0x20) & 0xfff;
+	d0 |= d1;
+	*gfx_p = (u16 *)BMAP_SCROLL2 + (d0 / sizeof(u16));
+	
+	gs->InitialIndex = ((gs->InitialIndex + 2) & gs->x001a) | (gs->InitialIndex & gs->x001c);	
+	return &data_e0000[gs->TileMaps[gs->InitialIndex/2]][gs->YCoarse/2];
+}
+
 static const u16 *realign_scr3a(GState *gs, u16 **gfx_p) {	
 	// 84178 for realigning scroll3 cursor
 	u32 d0;
@@ -926,6 +945,35 @@ static void _GSDrawScroll2A(GState *gs, u16 *gfx_p, const u16 *tilep, CP cp) {  
 		*gfx_p++ = *tilep++;
 	}
 }
+static void draw_n_rows(u16 *gfx_p, const u16 *tile_p, short n_cols) {			// 84374
+	int i;
+    for(i=0; i<n_cols; i++) {
+        SCR2_DRAW_TILE(gfx_p, *tile_p, *tile_p+1);
+        SCR2_CURSOR_BUMP(gfx_p,  1, 0);
+        SCR2_CURSOR_BUMP(tile_p, 1, 0);
+    }
+}
+static void _GSDrawScroll2C(GState *gs, u16 *gfx_p, const u16 *tile_p, CP cp) {				// 84336
+    short d2, d0;
+    d2 = ((!cp.x) & 0xf0) >> 4;
+    
+    draw_n_rows(gfx_p, tile_p, d2);
+    
+    tile_p=skyscraper_realign(gs, &gfx_p);
+    draw_n_rows(gfx_p, tile_p, 15);
+    
+    tile_p=skyscraper_realign(gs, &gfx_p);
+    d2 += 17;
+    d0 = 41 - d2;
+    if(d0 < 15) {
+        draw_n_rows(gfx_p, tile_p, d0);
+    } else {
+		draw_n_rows(gfx_p, tile_p, 15);
+		tile_p=skyscraper_realign(gs, &gfx_p);
+		draw_n_rows(gfx_p, tile_p, d0 - 16);
+	}
+}
+
 static void _GSDrawScroll3A(GState *gs, u16 *gfx_p, const u16 *tilep, CP cp) {  /* 84138 for Scroll3 was funky2_draw*/
 	short d0 = ((~cp.y)  & 0xe0) >> 5;		// y / 32
 	short d3 = d0;
@@ -1038,7 +1086,7 @@ static void gstate_update_scroll2 (GState *gs) {
         
     }
     cp = _GSCoordOffsetScr2(gs, gs->x0024);
-    sub_84336(gs, _GSCoordsScroll2(cp), _GSCoordsScroll2(cp), cp);     /* seems to only be used on attract building */
+    _GSDrawScroll2C(gs, _GSCoordsScroll2(cp), _GSCoordsScroll2(cp), cp);     /* seems to only be used on attract building */
 }
 static void gstate_update_scroll3 (GState *gs) {
     short temp;
@@ -1134,44 +1182,7 @@ static void _GSUpdateRowScroll(ScrollState *gs, short *a0, u16 *a1) { /* 84592 *
 	
 }
 
-/* used to plot the skyscraper on the attract sequence */
-static void sub_84374(u16 *gfx_p, const u16 *tile_p, short count) {
-	int i;
-    for(i=0; i<count; i++) {
-        SCR2_DRAW_TILE(gfx_p, *tile_p, *tile_p+1);
-        SCR2_CURSOR_BUMP(gfx_p,  1, 0);
-        SCR2_CURSOR_BUMP(tile_p, 1, 0);
-    }
-}
-static void sub_84384(GState *gs, u16 **gfx_p, const u16 **tile_p) {
-    /* stuff from 84384 to 843a0 we can hopefully ignore */
-    /* then lookup tilep, set some gstate regs etc */
-}
-void sub_84336(GState *gs, u16 *gfx_p, const u16 *tile_p, CP cp) {
-    short d2;
-    short d0 = cp.x;
-    d2 = d0 = ((!d0) & 0xf0) >> 4;
     
-    sub_84374(gfx_p, tile_p, d0);
-    
-    sub_84384(gs, &gfx_p, &tile_p);
-    sub_84374(gfx_p, tile_p, 15);
-    
-    sub_84384(gs, &gfx_p, &tile_p);
-    d2 += 17;
-    d0 = 41 - d2;
-    if(d0 < 15) {
-        sub_84374(gfx_p, tile_p, d0);
-        return;
-    }
-    d2 = d0;
-    sub_84374(gfx_p, tile_p, 15);
-
-    sub_84384(gs, &gfx_p, &tile_p);
-    sub_84374(gfx_p, tile_p, d2 - 16);
-}
-    
-/* end attract sequence stuff    */
 #pragma mark Publics
 void GSMain (void) {		/* 8318a */
     debughook(4);
@@ -1183,7 +1194,7 @@ void GSMain (void) {		/* 8318a */
     } else {
 		/* 83196 */
         _GSMaintScroll2(&gstate_Scroll2);
-        //_GSMaintRowScroll(&g.gstate_RowScroll);
+        //_GSMaintRowScroll(&g.gstate_RowScroll);  todo
         _GSMaintScroll1(&gstate_Scroll1);
         _GSMaintScroll3(&gstate_Scroll3);
     }

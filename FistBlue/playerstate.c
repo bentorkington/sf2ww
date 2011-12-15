@@ -1306,7 +1306,6 @@ void downandout(Player *ply) {		//2a052
 			if(ply->Direction == FACING_LEFT) {
 				ply->VelX.full = -ply->VelX.full;
 			}
-			/* suboptimal - check conditional above */
 			ply->x012a = ply->VelX.full;
 			break;
 		case 4:

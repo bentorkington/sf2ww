@@ -350,7 +350,7 @@ void intproc(void) {        /* 0x1baa */
 }
 
 static void _controlscript_P1(void) {	// 225c fetch controls from script instead of user
-	u16 *data;
+	const u16 *data;
 	if(--g.DemoJoyP1Timer != 0) {
 		data = g.DemoJoyP1;
 		if (data[1]==0) {
@@ -362,7 +362,7 @@ static void _controlscript_P1(void) {	// 225c fetch controls from script instead
 	}
 }
 static void _controlscript_P2(void) {	// 2282 fetch controls from script instead of user
-	u16 *data;
+	const u16 *data;
 	if(--g.DemoJoyP2Timer != 0) {
 		data = g.DemoJoyP2;
 		if (data[1]==0) {
