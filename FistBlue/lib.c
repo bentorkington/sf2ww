@@ -780,7 +780,7 @@ void fadenwait5(short arg0) {		/* 21b0 */
 
 inline static void _init_energy(void) {			/* 2e6e */
 	g.Player1.Energy		= 
-	g.Player2.EnergyDash	=
+	g.Player1.EnergyDash	=
 	g.Player2.Energy		= 
 	g.Player2.EnergyDash	=
 	g.Player1.EnergyCursor	=

@@ -1191,7 +1191,7 @@ int is_holding_down(Player *ply) {			// 2a8aa
    nothing I can can say,
    A total eclipse of the heart */
 
-void turn_around(Player *ply) {	/* bright eyes */
+void turn_around(Player *ply) {	/* bright eyes 0x2a92a */
 	short temp;
 	ply->Flip = ply->EnemyDirection;
 	if(is_holding_down(ply))	{ 
