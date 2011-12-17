@@ -828,7 +828,7 @@ static const u16 *skyscraper_realign(GState *gs, u16 **gfx_p) {			// 84384
 #endif
 	*gfx_p -= 0x20;
 	offset = (*gfx_p - BMAP_SCROLL2) * sizeof(u16); 
-	d0 = offset & 0xfffff800;
+	d0 = offset & 0xfffff000;
 	d1 = (offset + 0x20) & 0xfff;
 	d0 |= d1;
 	*gfx_p = (u16 *)BMAP_SCROLL2 + (d0 / sizeof(u16));
@@ -836,6 +836,12 @@ static const u16 *skyscraper_realign(GState *gs, u16 **gfx_p) {			// 84384
 	gs->InitialIndex = ((gs->InitialIndex + 2) & gs->x001a) | (gs->InitialIndex & gs->x001c);	
 	return &data_e0000[gs->TileMaps[gs->InitialIndex/2]][gs->YCoarse/2];
 }
+
+//void decode_scr3_coord(int offset) {
+//	int x = (offset & 0x3e0) >> 5;
+//	int y = ((offset & 0x1c00) >> 8) + ((offset & 0x1c) >> 2);
+//	printf("X:%d Y:%d ",x, y);
+//}
 
 static const u16 *realign_scr3a(GState *gs, u16 **gfx_p) {	
 	// 84178 for realigning scroll3 cursor
@@ -855,14 +861,14 @@ static const u16 *realign_scr3a(GState *gs, u16 **gfx_p) {
 	gs->Index = (gs->Index + gs->Offset) & gs->OffMask;
 	return &data_d8000[gs->TileMaps[gs->Index/2]][gs->XCoarse/2];
 }
-static const u16 *realign_scr3b(GState *gs, u16 **gfx_p) {						// 8442a for scroll3
+static const u16 *realign_scr3b(GState *gs, u16 **gfx_p) {		// 8442a for scroll3
 	u32 d0;
 	u32 d1;
 	int offset;
 #ifdef CPS
 #warning Scroll cursor arithmetic not optimal for CPS 
 #endif	
-	*gfx_p -= 10;
+	*gfx_p -= 16;
 	offset = (*gfx_p - BMAP_SCROLL3) * sizeof(u16); 
 	d0 = offset & 0xfffff800;
 	d1 = (offset + 0x20) & 0x7ff;
@@ -945,7 +951,7 @@ static void _GSDrawScroll2A(GState *gs, u16 *gfx_p, const u16 *tilep, CP cp) {  
 		*gfx_p++ = *tilep++;
 	}
 }
-static void draw_n_rows(u16 *gfx_p, const u16 *tile_p, short n_cols) {			// 84374
+inline static void draw_n_rows(u16 *gfx_p, const u16 *tile_p, short n_cols) {			// 84374
 	int i;
     for(i=0; i<n_cols; i++) {
         SCR2_DRAW_TILE(gfx_p, *tile_p, *tile_p+1);
@@ -973,35 +979,31 @@ static void _GSDrawScroll2C(GState *gs, u16 *gfx_p, const u16 *tile_p, CP cp) {	
 		draw_n_rows(gfx_p, tile_p, d0 - 16);
 	}
 }
+static void sub_84170(int lines, u16 **gfx_p, const u16 **tilep) {
+	for (; lines >= 0; --lines) {		
+		*(*gfx_p)++ = *(*tilep)++;
+		*(*gfx_p)++ = *(*tilep)++;
+	}	
+}
+
 
 static void _GSDrawScroll3A(GState *gs, u16 *gfx_p, const u16 *tilep, CP cp) {  /* 84138 for Scroll3 was funky2_draw*/
 	short d0 = ((~cp.y)  & 0xe0) >> 5;		// y / 32
 	short d3 = d0;
-	for (; d0 >= 0; --d0) {			/* inlined 84170 */
-		*gfx_p++ = *tilep++;
-		*gfx_p++ = *tilep++;
-	}
+	sub_84170(d0, &gfx_p, &tilep);
+
 	tilep = realign_scr3a(gs, &gfx_p);
-	for (d0=0x7; d0>=0; --d0) {			
-		*gfx_p++ = *tilep++;
-		*gfx_p++ = *tilep++;
-	}
+	sub_84170(7, &gfx_p, &tilep);
+
 	tilep = realign_scr3a(gs, &gfx_p);
 	d3 += 0x8;
 	d0 = 0x10 - d3;
 	if (d0 < 8) {
-		for (; d0>=0; --d0) {			/* inlined 840dc */
-			*gfx_p++ = *tilep++;
-			*gfx_p++ = *tilep++;
-		}	
+		sub_84170(d0, &gfx_p, &tilep);
 	} else {
-		for (d0=0x7; d0>0; d0--) {			/* inlined 840dc */
-			*gfx_p++ = *tilep++;
-			*gfx_p++ = *tilep++;
-		}
+		sub_84170(7, &gfx_p, &tilep);
 		tilep = realign_scr3a(gs, &gfx_p);
-		*gfx_p++ = *tilep++;
-		*gfx_p++ = *tilep++;
+		sub_84170(1, &gfx_p, &tilep);
 	}
 }
 static void _GSDrawScroll3B(GState *gs, u16 *gfx_p, const u16 *tilep, CP cp) {  /* 843dc was funky3_draw*/
@@ -1243,7 +1245,7 @@ void GSSetupScr3(GState *gs) {			// 83cd2 was setup_scroll3
     cp.x = gs->XPI -  0xa0;
     cp.y = ~(gs->YPI + 0x180);
 	
-	for (i=0x15; i >= 0; --i) {
+	for (i=0x15; i >= 0; --i) {			// 0x15
 		_GSDrawScroll3A(gs, _GSCoordsScroll3(cp), _GSLookupScroll3(gs, cp), cp);
 		cp.x += 32;
 	}

@@ -757,33 +757,37 @@ static void draw_scroll2(void) {
 	glPopMatrix();
 }
 static void draw_scroll3(void) {
-	int x,y, flip;
+	int x,y, flip, ty, tilety;
+	float sx, sy;
+
 	if (!gemu_scroll_enable[3]) {
 		return;
 	}
 	glPushMatrix();
-	glTranslatef(-g.CPS.Scroll3X / 128.0, ((g.CPS.Scroll3Y & 0x7ff) / 128.0) - 15, 0);
+	glTranslatef(-g.CPS.Scroll3X / 128.0, ((g.CPS.Scroll3Y & 0x1f) / 128.0)  , 0);
 //	glTranslatef(-g.CPS.Scroll3X / 128.0, ((g.CPS.Scroll3Y & 0x7ff) / 128.0) - 22.5, 0);
-	
+	tilety = g.CPS.Scroll3Y / 32;
 	GLfloat master = (gemu.PalScroll3[0][0] & 0xf000) / 61140.0;
 	glColor3f(master, master, master);
 	
 	//glScalef(0.2, 0.2, 0.2);
-	for(y=0;y<64;y++) {
+	for(y=-1;y<65;y++) {
         for(x=0;x<64;x++) {
-            short sx, sy;
-			short record = ((y & 0x38)<<5) + (x << 3) + (y & 7);
-			
-			if (gemu.Tilemap_Scroll3[record][0] == 0x400) {
+			ty = (y + (56 - tilety)) & 0x3f;
+			if (ty == 0) {
 				continue;
-				//gemu.Tilemap_Scroll3[record][0] = 4;
+			}
+			short record = ((ty & 0x38)<<6) + (x << 3) + (ty & 7);
+			if (gemu.Tilemap_Scroll3[record][0] == 0x400) {
+				//continue;
+				gemu.Tilemap_Scroll3[record][0] = 0x6e8 + (y & 7);
 			} 			
 			gemu_cache_scroll3(gemu.Tilemap_Scroll3[record][0],
 							   gemu.Tilemap_Scroll3[record][1] & 0x1f);
 			
 			
-            sx = x-12.0; 
-			sy=y-3.5;
+            sx = (float)x-12.0; 
+			sy = (float)y-3.5;
 			flip = gemu.Tilemap_Scroll3[record][1] & 0x60;
 			flip = flip >>5;
 			
@@ -806,7 +810,7 @@ static void draw_scroll3(void) {
 
 void gfx_glut_drawgame(void) {
 	GLfloat gShapeSize = 11.0f;
-	float angle;
+	//float angle;
 	
 	GLdouble xmin, xmax, ymin, ymax;
 	// far frustum plane
