@@ -1413,7 +1413,7 @@ void sub_bcd_8(u8 op, u8 *bcd) {
 static void proc_round_timer(void) {	/* 905c process round timers */
 	if(g.TimeRemainBCD == 0 && g.TimeRemainTicks == 0) { return; }
 	if(g.DisableTimer || g.RoundResult) { return; }
-	if(g.TimeRemainBCD <= g.OnBonusStage ? 0x10 : 0x15) { 
+	if(g.TimeRemainBCD <= (g.OnBonusStage ? 0x10 : 0x15)) { 
 		sub_90c8();							/* start the timeremain counter flashing */
 	}
 	if(g.Debug && (g.JPCost & JP_DBGNOTICK)) { return; }
