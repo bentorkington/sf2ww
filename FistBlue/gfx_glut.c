@@ -771,7 +771,7 @@ static void draw_scroll3(void) {
 	glColor3f(master, master, master);
 	
 	//glScalef(0.2, 0.2, 0.2);
-	for(y=-1;y<65;y++) {
+	for(y=-1;y<9;y++) {
         for(x=0;x<64;x++) {
 			ty = (y + (56 - tilety)) & 0x3f;
 			if (ty == 0) {
@@ -779,8 +779,8 @@ static void draw_scroll3(void) {
 			}
 			short record = ((ty & 0x38)<<6) + (x << 3) + (ty & 7);
 			if (gemu.Tilemap_Scroll3[record][0] == 0x400) {
-				//continue;
-				gemu.Tilemap_Scroll3[record][0] = 0x6e8 + (y & 7);
+				continue;
+				//gemu.Tilemap_Scroll3[record][0] = 0x6e8 + (y & 7);
 			} 			
 			gemu_cache_scroll3(gemu.Tilemap_Scroll3[record][0],
 							   gemu.Tilemap_Scroll3[record][1] & 0x1f);

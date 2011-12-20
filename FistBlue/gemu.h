@@ -38,7 +38,7 @@
 #define SCR2_CURSOR_SET(gfx_p, x, y) \
 gfx_p = gemu.Tilemap_Scroll2[((y & 0x30)<<4)+(x*16+(y & 0xf)) ];
 #define SCR3_CURSOR_SET(gfx_p, x, y) \
-gfx_p = gemu.Tilemap_Scroll3[ ((y & 0x78)<<5) + (x << 3) + (y & 7) ];
+gfx_p = gemu.Tilemap_Scroll3[ ((y & 0x38)<<6) + ((x & 0x3f) << 3) + (y & 7) ];
 
 #define SCR1_CURSOR_BUMP(gfx_p, x, y) \
 (gfx_p) += (((y) & 0x100) << 3) + (((y) & 0xe0) >> 3) + (((x) << 2) & 0x0780);

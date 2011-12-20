@@ -740,7 +740,7 @@ static void _GSFillScroll3(GState *gs) {        /* 0x83b2a fill scroll3 from til
     g.CPS.Scroll3X = gs->XPI;
     g.CPS.Scroll3Y = gs->YPI;
     
-	SCR3_CURSOR_SET(gfx_p, 0, 24);   
+	SCR3_CURSOR_SET(gfx_p, 0, 24);			// XXX check these, wrong I reckon
 	
 	for(i=0;i<4; i++) {
         for(j=0; j<64; j++) {
@@ -748,11 +748,9 @@ static void _GSFillScroll3(GState *gs) {        /* 0x83b2a fill scroll3 from til
             SCR3_CURSOR_BUMP(gfx_p, 0, 1);
         }
     }
-    
-	
+    	
     SCR3_CURSOR_SET(gfx_p, 0, 56);         /* starting at tile y=56 */
 
-	
     for(i=4;i<8; i++) {
         for(j=0; j<64; j++) {
             SCR3_DRAW_TILE(gfx_p, data_d8000[ gs->TileMaps[i] ][ j*2 ], data_d8000[ gs->TileMaps[i] ][ (j*2)+1 ]);
