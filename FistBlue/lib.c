@@ -80,7 +80,7 @@ static void decode_jumpers(void);
 
 static void sub_2c38(void) {		// 2c38
 	int d2=g.CurrentStage;
-	if(g.OnBonusStage && g.ActiveHumans != 3) {
+	if(g.OnBonusStage==FALSE && g.ActiveHumans != 3) {
 		if (g.Player1.Human || g.Player1.x02ae) {
 			if (g.Player1.FighterID == d2) {
 				d2 = g.Player1.FighterSelect;
@@ -117,7 +117,7 @@ void init_fight_vars(void) {			/* 0x2b0c */
 	g.Player2.RoundsWon  = 0;
 	g.Player1.Continuing = FALSE;
 	g.Player2.Continuing = FALSE;
-	g.ActiveHumans = (g.Player1.Human | g.Player1.x02ae) + ((g.Player1.Human | g.Player2.x02ae) * 2);
+	g.ActiveHumans = (g.Player1.Human | g.Player1.x02ae) + ((g.Player2.Human | g.Player2.x02ae) * 2);
 	if(!g.OnBonusStage) {
 		sub_2c38();		/* disabled, stops identical fighters */
 	}
