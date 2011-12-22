@@ -701,42 +701,46 @@ glEnd();
 #undef DRAWTILE
 }
 static void draw_scroll2(void) {
-	int x,y, yloop, flip;
+	int x,y, yloop, flip, tx, ty, tiletx, tilety;
+	float sx, sy;
+	int record;
+
 	if (!gemu_scroll_enable[2]) {
 		return;
 	}
 	/* Draw Scroll2 */
 	glPushMatrix();
+	glTranslatef(-(g.CPS.Scroll2X & 0xf) / 128.0, ((g.CPS.Scroll2Y & 0xf) / 128.0)  , 0);
+
 	glTranslatef(-g.CPS.Scroll2X / 128.0, g.CPS.Scroll2Y / 128.0, 0);
-	
+	tilety = g.CPS.Scroll2Y / 16;
+	tiletx = g.CPS.Scroll2X / 16;
+
 	GLfloat master = (gemu.PalScroll2[0][0] & 0xf000) / 61140.0;
 	glColor3f(master, master, master);
 	
-	for(yloop=0;yloop<64;yloop++) {				//32
+	for(yloop=-1;yloop<16;yloop++) {				//32
 		y = yloop;
-        for(x=0;x<64;x++) {
-            short sx, sy;
-			
-			if (gemu.Tilemap_Scroll2[((y & 0x30) << 6) + (x * 16) + (y & 0x0f)][0] == 0x2800) {
+        for(x=-1;x<32;x++) {
+			ty = (y + (48 - tilety)) & 0x3f;
+			tx = (x + tiletx) & 0x3f;
+
+			record = ((ty & 0x30) << 6) + (tx * 16) + (ty & 0x0f);
+			if (gemu.Tilemap_Scroll2[((ty & 0x30) << 6) + (tx * 16) + (ty & 0x0f)][0] == 0x2800) {
 				continue;
+				//gemu.Tilemap_Scroll2[record][0] = 0x2804;
 			}
+				
+			if(ty == 0) {continue;}
+			gemu_cache_scroll2(gemu.Tilemap_Scroll2[((ty & 0x30) << 6) + (tx * 16) + (ty & 0x0f)][0],
+							   gemu.Tilemap_Scroll2[((ty & 0x30) << 6) + (tx * 16) + (ty & 0x0f)][1] & 0x1f);
 			
-            //glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, 16, 16, 0, GL_RGBA,
-            //             GL_UNSIGNED_BYTE, gemu.tiles_scroll2[x][y]);
-            
-			//glBindTexture(GL_TEXTURE_2D, gemu.textures_scroll2[x][y]);
-			
-			gemu_cache_scroll2(gemu.Tilemap_Scroll2[((y & 0x30) << 6) + (x * 16) + (y & 0x0f)][0],
-							   gemu.Tilemap_Scroll2[((y & 0x30) << 6) + (x * 16) + (y & 0x0f)][1] & 0x1f);
-			
-			flip = gemu.Tilemap_Scroll2[((y & 0x30) << 6) + (x * 16) + (y & 0x0f)][1] & 0x60;
+			flip = gemu.Tilemap_Scroll2[((ty & 0x30) << 6) + (tx * 16) + (ty & 0x0f)][1] & 0x60;
 			flip = flip >> 5;
 			
-			if (yloop <32) {
-				sx = x-64; sy = y-24;
-			} else {
-				sx = x; sy=y-40;
-			}
+			sx = x-16.0; 
+			sy = y-5.5;
+
 			//glColor4f(1.0, 0.0, 0.0, 0.25);
             glBegin(GL_POLYGON);
             //glTexCoord2f(1.0, 1.0);
@@ -757,27 +761,28 @@ static void draw_scroll2(void) {
 	glPopMatrix();
 }
 static void draw_scroll3(void) {
-	int x,y, flip, ty, tilety;
+	int x,y, flip, tx, ty, tilety, tiletx;
 	float sx, sy;
 
 	if (!gemu_scroll_enable[3]) {
 		return;
 	}
 	glPushMatrix();
-	glTranslatef(-g.CPS.Scroll3X / 128.0, ((g.CPS.Scroll3Y & 0x1f) / 128.0)  , 0);
+	glTranslatef(-(g.CPS.Scroll3X & 0x1f) / 128.0, ((g.CPS.Scroll3Y & 0x1f) / 128.0)  , 0);
 //	glTranslatef(-g.CPS.Scroll3X / 128.0, ((g.CPS.Scroll3Y & 0x7ff) / 128.0) - 22.5, 0);
 	tilety = g.CPS.Scroll3Y / 32;
+	tiletx = g.CPS.Scroll3X / 32;
 	GLfloat master = (gemu.PalScroll3[0][0] & 0xf000) / 61140.0;
 	glColor3f(master, master, master);
 	
-	//glScalef(0.2, 0.2, 0.2);
 	for(y=-1;y<9;y++) {
-        for(x=0;x<64;x++) {
+        for(x=-1;x<13;x++) {
 			ty = (y + (56 - tilety)) & 0x3f;
+			tx = (x + tiletx) & 0x3f;
 			if (ty == 0) {
 				continue;
 			}
-			short record = ((ty & 0x38)<<6) + (x << 3) + (ty & 7);
+			short record = ((ty & 0x38)<<6) + (tx << 3) + (ty & 7);
 			if (gemu.Tilemap_Scroll3[record][0] == 0x400) {
 				continue;
 				//gemu.Tilemap_Scroll3[record][0] = 0x6e8 + (y & 7);
@@ -786,7 +791,7 @@ static void draw_scroll3(void) {
 							   gemu.Tilemap_Scroll3[record][1] & 0x1f);
 			
 			
-            sx = (float)x-12.0; 
+            sx = (float)x-8.0; 
 			sy = (float)y-3.5;
 			flip = gemu.Tilemap_Scroll3[record][1] & 0x60;
 			flip = flip >>5;
