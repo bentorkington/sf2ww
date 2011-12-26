@@ -394,7 +394,7 @@ void SM_game (void) {			/* 76e0 */
     switch (g.mode0) {
     case 0:
         g.mode0 += 2;
-        g.TwoHumans = (g.PlayersOnline == 0x3 ? 0 : 1);  
+        g.TwoHumans = (g.PlayersOnline == 0x3 ? TRUE : FALSE);  
         /* copy protection not included */
         sound_cq_f0f7();
         LBResetState();

@@ -711,8 +711,8 @@ static void draw_scroll2(void) {
 	/* Draw Scroll2 */
 	glPushMatrix();
 	glTranslatef(-(g.CPS.Scroll2X & 0xf) / 128.0, ((g.CPS.Scroll2Y & 0xf) / 128.0)  , 0);
+	//glTranslatef(-g.CPS.Scroll2X / 128.0, g.CPS.Scroll2Y / 128.0, 0);
 
-	glTranslatef(-g.CPS.Scroll2X / 128.0, g.CPS.Scroll2Y / 128.0, 0);
 	tilety = g.CPS.Scroll2Y / 16;
 	tiletx = g.CPS.Scroll2X / 16;
 

@@ -299,8 +299,12 @@ static short comp_jump_plycallback(Player *ply) { /* 2c9be */
 		NULL,
 		/* XXX */
 	};
-	
-	return data_2c9cc[ply->FighterID](ply);
+	if (data_2c9cc[ply->FighterID] != NULL) {
+		return data_2c9cc[ply->FighterID](ply);
+	} else {
+		return 0;
+	}
+
 	
 	/* per fighter JT */
 	/*

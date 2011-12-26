@@ -175,47 +175,6 @@ void proc_actions(void) {			/* c7da */
 }
 
 
-static void sub_d2ba(Object *obj, Object *nobj1, Object *nobj2) {
-	struct UserData_Act2 *ud = (struct UserData_Act2 *)&obj->UserData;
-	struct UserData_Act2 *udn1 = (struct UserData_Act2 *)&nobj1->UserData;
-	
-	short temp;
-	const static short data_d326[] = { 29,30,31,29,30,31,29,30 } ;
-	
-	ud->x0080++;
-	nobj1->exists = TRUE;
-	nobj1->Sel = SF2ACT_0X02;
-	nobj1->SubSel = 1;
-	nobj1->Owner = (Player *)obj;
-	udn1->x0082 = nobj2;		/* u16 to pointer */
-	
-	nobj2->exists = TRUE;
-	nobj2->Sel = SF2ACT_0X02;
-	nobj2->SubSel = -1;
-	nobj2->Owner = (Player *)obj;
-	
-	if (sf2rand() & 1) {
-		nobj1->Step = 1;
-		nobj2->Step = 1;
-	}
-	nobj1->Draw1 = TRUE;
-	nobj2->Draw1 = TRUE;
-	
-	temp = data_d326[(sf2rand() & 0xe) >>1];	/* 8 x u16 */
-	nobj1->Draw2.part.integer = temp;
-	nobj2->Draw2.part.integer = temp;
-}
-static void sub_d3de(Object *obj) {
-	struct UserData_Act2 *ud = (struct UserData_Act2 *)&obj->UserData;
-	
-	if (obj->SubSel >= 0) {
-		ud->x0082->XPI = obj->XPI-8;
-		if (obj->Step) {
-			ud->x0082->XPI += 0x10;
-		}
-		ud->x0082->YPI = obj->YPI + 0x40;
-	}
-}
 
 
 
@@ -290,10 +249,54 @@ static void action_1(Object *obj) {	/* cb2a */
 			FreeActor(obj);
 			break;
 			FATALDEFAULT;
-			
-	}
-	
+	}	
 }
+
+
+#pragma mark ACT02 Bycycle riders on ChunLi Stage
+
+static void _create_bycycle(Object *obj, Object *nobj1, Object *nobj2) {		// d2ba
+	struct UserData_Act2 *ud   = (struct UserData_Act2 *)&obj->UserData;
+	struct UserData_Act2 *udn1 = (struct UserData_Act2 *)&nobj1->UserData;
+	
+	short temp;
+	const static short data_d326[] = { 29,30,31,29,30,31,29,30 };	// palettes
+	
+	ud->x0080++;
+	nobj1->exists = TRUE;
+	nobj1->Sel    = SF2ACT_0X02;
+	nobj1->SubSel = 1;
+	nobj1->Owner  = (Player *)obj;
+	udn1->x0082   = nobj2;		/* u16 to pointer */
+	
+	nobj2->exists = TRUE;
+	nobj2->Sel    = SF2ACT_0X02;
+	nobj2->SubSel = -1;				// shadow
+	nobj2->Owner  = (Player *)obj;
+	
+	if (sf2rand() & 1) {
+		nobj1->Step = 1;
+		nobj2->Step = 1;
+	}
+	nobj1->Draw1 = TRUE;
+	nobj2->Draw1 = TRUE;
+	
+	temp = data_d326[(sf2rand() & 0xe) >>1];	/* 8 x u16 */
+	nobj1->Draw2.part.integer = temp;
+	nobj2->Draw2.part.integer = temp;
+}
+static void sub_d3de(Object *obj) {
+	struct UserData_Act2 *ud = (struct UserData_Act2 *)&obj->UserData;
+	
+	if (obj->SubSel >= 0) {
+		ud->x0082->XPI = obj->XPI-8;
+		if (obj->Step) {
+			ud->x0082->XPI += 0x10;
+		}
+		ud->x0082->YPI = obj->YPI + 0x40;
+	}
+}
+
 static void action_2(Object *obj) {				//d240 Bicycle people
 	Object *nobj1, *nobj2;
 	struct UserData_Act2 *ud = (struct UserData_Act2 *)&obj->UserData;
@@ -307,26 +310,25 @@ static void action_2(Object *obj) {				//d240 Bicycle people
 				NEXT(obj->mode0);
 				obj->Pool   = 6;
 				obj->Scroll = 0;
-				obj->ZDepth  = 64;	
+				obj->ZDepth = 64;	
 				obj->Flip   = obj->Step;
 				obj->XPI    = gstate_Scroll2.XPI;
 				obj->XPI   += obj->Step ? -0x60 : 0x1d0;
 				obj->YPI    = 0x40;
-				obj->Path   = data_d3ae;			/* 4 x u16 */
-				if (obj->SubSel & 0x80) {
-					/* d39e */
+				obj->Path   = data_d3ae;
+				if (obj->SubSel >= 0) {
 					setaction_list(obj, actlist_d6e8, RAND8);
-				} else {
+				} else {		// shadow
 					setaction_direct(obj, actlist_d438);
 				}
 				break;
 			case 2:
 				/* d3b6 */
-				if(obj->SubSel & 0x80 == 0) {
-					if((g.libsplatter + g_d7) & 7 == 0) {
+				if(obj->SubSel >= 0) {
+					if(((g.libsplatter + g_d7) & 7) == 0) {
 						die_if_offscreen(obj);	/* check if still on screen */
+						update_motion(obj);
 					}
-					update_motion(obj);
 					sub_d3de(obj);
 					actiontick(obj);
 				}
@@ -337,30 +339,29 @@ static void action_2(Object *obj) {				//d240 Bicycle people
 				/* d412 */
 				if (obj->SubSel >= 0) {
 					struct UserData_Act2 *udowner = (struct UserData_Act2 *)&obj->Owner->UserData;
-					
-					udowner->x0080--;
-					udowner->x0082->mode0 = 6;
+					--udowner->x0080;
+					ud->x0082->mode0 = 6;
 				}
 				FreeActor(obj);
 				break;
 				
 				FATALDEFAULT;
 		}		
-	} else {
+	} else {		/* I am the controller object */
 		switch (obj->mode0) {
 			case 0:
 				NEXT(obj->mode0);
-				ud->x0080=0;
+				ud->x0080 = 0;
 				break;
 			case 2:
 				/* d266 */
 				if(obj->mode1) {
 					/* d292 */
-					if(obj->Timer-- == 0) {
+					if(--obj->Timer == 0) {
 						if (ud->x0080 < 4 && g.FreeLayer3 >= 2) {
 							nobj1 = AllocActor();
 							nobj2 = AllocActor();
-							sub_d2ba(obj,nobj1, nobj2);
+							_create_bycycle(obj,nobj1, nobj2);
 						}
 						obj->mode1 = 0;
 					}
@@ -373,11 +374,13 @@ static void action_2(Object *obj) {				//d240 Bicycle people
 			case 6:
 				FreeActor(obj);
 				break;
-				
 				FATALDEFAULT;
 		}
 	}
 }
+
+#pragma mark ACT03 Das Boat
+
 static void action_3(Object *obj) {    /* d81e Das Boat */
     switch(obj->mode0) {
 		case 0:

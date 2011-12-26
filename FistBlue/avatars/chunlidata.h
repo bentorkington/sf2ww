@@ -2505,6 +2505,5 @@ const CAFrame **data_56dbc[]={
 	data_56f78,
 	data_56f56,
 	data_56f66,
-	
 };
 
