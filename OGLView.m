@@ -120,18 +120,16 @@ GLfloat gShapeSize = 11.0f;
 											 repeats:YES] retain];
 }
 
+-(IBAction)resetGame:(id)sender
+{
+	NSLog(@"todo");
+}
+
 void renderDummy(void) {
 	glPushMatrix();
-	//	glTranslatef(192.0, 112.0, 0);
-	
-	//	glScalef(60.0, 60.0, 1.0);
 	
 	glEnable(GL_TEXTURE_2D);
 	gfx_glut_drawgame();
-//	draw_scroll1();
-//	draw_scroll3();
-//	draw_scroll2();
-//	draw_object();
 	
 	glDisable(GL_TEXTURE_2D);
 	glPopMatrix();
@@ -148,7 +146,7 @@ void renderDummy(void) {
 
 - (void)reshape
 {
-	NSRect baseRect = [self convertRectToBase:[self bounds]]; 
+	baseRect = [self convertRectToBase:[self bounds]]; 
 	gfx_glut_reshape(baseRect.size.width, baseRect.size.height);
 }
 
@@ -190,68 +188,54 @@ void renderDummy(void) {
 	
 	glEnable(GL_LIGHTING);
 	glColor3f(0.5, 0.5, 0.5);
-	
-//	if ([showTrackball value]) {
-//	if (0) {
-//
-//		glBegin(GL_LINE_STRIP);
-//		for(angle = 0.0f; angle <= (2.0f* 3.1415927)*3.0f; angle += 0.1f)
-//		{ 
-//			glVertex3f(sin(angle), 0.0, cos(angle)); 
-//		}
-//		glEnd();
-//		glBegin(GL_LINE_STRIP);
-//		for(angle = 0.0f; angle <= (2.0f* 3.1415927)*3.0f; angle += 0.1f)
-//		{ 
-//			glVertex3f(sin(angle), cos(angle), 0.0); 
-//		}
-//		glEnd();
-//		glBegin(GL_LINE_STRIP);
-//		for(angle = 0.0f; angle <= (2.0f* 3.1415927)*3.0f; angle += 0.1f)
-//		{ 
-//			glVertex3f(0.0, sin(angle), cos(angle)); 
-//		}
-//		glEnd();
-//	}
-	
+		
 	glFinish();
 }
+- (NSPoint)convertToOpenGL:(NSPoint)p 
+{
+	NSPoint q;
+	q.y = baseRect.size.height - p.y;
+	q.x = p.x;
+	return q;
+}
+
 - (void)mouseDown:(NSEvent *)event
 {
 	NSPoint p = [event locationInWindow];
-	gfx_glut_mousedown(p.x, p.y);
+	NSPoint q = [self convertToOpenGL:p];
+	gfx_glut_mousedown(q.x, q.y);
 }
 
 - (void)rightMouseDown:(NSEvent *)event
 {
-	NSPoint p = [event locationInWindow];
+	NSPoint p = [self convertToOpenGL:[event locationInWindow]];
 	gfx_glut_rightmousedown(p.x, p.y);
 }
 
 - (void)rightMouseDragged:(NSEvent *)event
 {
-	NSPoint p = [event locationInWindow];
+	NSPoint p = [self convertToOpenGL:[event locationInWindow]];
 	gfx_glut_rightmousedragged(p.x, p.y);
 	[self setNeedsDisplay:YES];
 }
 
 - (void)mouseDragged:(NSEvent *)event
 {
-	NSPoint p = [event locationInWindow];
+	NSPoint p = [self convertToOpenGL:[event locationInWindow]];
 	gfx_glut_mousedragged(p.x, p.y);
 	[self setNeedsDisplay:YES];
 }
 
 - (void)mouseUp:(NSEvent *)event
 {
-	NSPoint p = [event locationInWindow];
+	NSPoint p = [self convertToOpenGL:[event locationInWindow]];
 	gfx_glut_mouseup(p.x, p.y);
 
 }
 
 - (void)rightMouseUp:(NSEvent *)event
 {
-	NSPoint p = [event locationInWindow];
+	NSPoint p = [self convertToOpenGL: [event locationInWindow]];
 	gfx_glut_rightmouseup(p.x, p.y);
 }
 

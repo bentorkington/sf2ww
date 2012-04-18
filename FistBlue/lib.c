@@ -321,10 +321,7 @@ void LBDecodeInputs(void) {		// 2320
 
 void intproc(void) {        /* 0x1baa */
 #ifdef CPS
-	// XXX these should be out of CPS
-	// WHAT!?
-	
-    g.x008d = g.FlipDisplay ^ g.x02df;
+	g.x008d = g.FlipDisplay ^ g.x02df;
     (void *)CPS_VIDCNTL = (g.x008d >> 4) | g.x004c; /* might as well */
     (void *)CPS_DISPENA = g.DispEna;     /* need to emulate this */
     (void *)CPS_COINCTL = g.CoinCtrl;
@@ -1320,7 +1317,6 @@ void startgame(int players_online) {	/* 6d4e */
 		g.Player1.Human = TRUE;
 	}
 #endif //GUSTY_LOBSTER
-	
 	//XXX can't do this in the main thread
 	//fadenwait1();
 	

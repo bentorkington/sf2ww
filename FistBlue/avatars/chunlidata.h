@@ -2465,7 +2465,7 @@ const CAFrame **data_56dbc[]={
 	data_56e30,
 	data_56e38,
 	data_56e3a,
-	data_56e42,
+	data_56e42,				// 0x10
 	data_56e4a,
 	data_56e4c,
 	data_56e50,
@@ -2473,7 +2473,7 @@ const CAFrame **data_56dbc[]={
 	data_56e58,
 	data_56e5c,
 	data_56e62,
-	data_56e68,
+	data_56e68,				// 0x20
 	data_56e6e,
 	data_56e74,
 	data_56e7a,
@@ -2481,7 +2481,7 @@ const CAFrame **data_56dbc[]={
 	data_56e86,
 	data_56e88,
 	data_56e8a,
-	data_56e8c,
+	data_56e8c,				// 0x30
 	data_56e8e,
 	data_56e96,
 	data_56e9e,
@@ -2489,7 +2489,7 @@ const CAFrame **data_56dbc[]={
 	data_56eae,
 	data_56eb0,
 	data_56eb2,
-	data_56eb4,
+	data_56eb4,				// 0x40
 	data_56eea,
 	data_56efa,
 	data_56f0a,
@@ -2497,13 +2497,13 @@ const CAFrame **data_56dbc[]={
 	data_56f16,
 	data_56f28,
 	data_56f3c,
-	data_56f3e,
+	data_56f3e,				// 0x50
 	data_56f40,
 	data_56f44,
 	data_56f46,
 	data_56f76,
-	data_56f78,
-	data_56f56,
-	data_56f66,
+	data_56f78,				// 0x58
+	data_56f56,				
+	data_56f66,				// 0x5c
 };
 

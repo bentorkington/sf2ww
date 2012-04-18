@@ -17,8 +17,10 @@
 	int displayList;
 	GLfloat trans[3];
 	GLfloat pointSize;
+	NSRect baseRect;
 }
 
 - (BOOL) acceptsFirstResponder;
 - (BOOL) becomeFirstResponder;
+- (IBAction) resetGame:(id)sender;
 @end

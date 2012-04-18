@@ -74,8 +74,8 @@ static short PSGetRoundResult(void) {		/* 2a768 */
 
 void PSEntry(Player *ply) {   /* 0x28396 was: player_per_frame */
     short offsetsel;
-
-    if(ply->Human) {          /* human */
+	
+    if(ply->Human) {          /* XXX human */		
         human_per_frame(ply);
     } else {                  /* computer */
         if(g.OnBonusStage) {

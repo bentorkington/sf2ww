@@ -7,7 +7,8 @@
 //
 
 #import "MT2AppDelegate.h"
-@class OGLView;
+#import "OGLView.h"
+
 @implementation MT2AppDelegate
 
 @synthesize window;
