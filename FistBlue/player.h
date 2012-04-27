@@ -218,7 +218,7 @@ struct player_t {
     u8			CompDoThrow;					// 0146
     char		AISigAttack;				// was CompDoStandAttack
 	char		AISigSpecial;				// was CompDoPowerMove
-	char		x0149;					// set in AI Attack.
+	char		AIMultiCount;					// set in AI Special Params.
 	char		AIVolley;					// 014a
     char		MultiHoldoff;			/* 0x14b */
     char		VegaHasClaw;			/* 0x14c */

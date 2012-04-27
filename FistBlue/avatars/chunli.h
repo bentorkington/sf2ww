@@ -42,7 +42,7 @@ struct UserData_ChunLi {
 	short	x0082;		// XXX used as word for OppXDist, as byte for BirdKickTimer
 	char	x0083;
 	u8		x0084;		// buttonstrength / 2
-	char	x0085;
+	char	x0085;		// multi hit counter
 	short	x0086;
 	short	x0088;
 	char	x008a;

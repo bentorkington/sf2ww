@@ -22,8 +22,6 @@
 
 #include "particle.h"
 
-#include "gfxlib.h"
-
 #include "structs.h"
 #include "sprite.h"
 
@@ -1284,29 +1282,27 @@ static void _AIGotoNextStrategy(Player *ply) {		/* 2b8da was comp_main_exit */
 	}
 }
 static void _AISetAttackParams(Player *ply) {					//2b510
-	ply->PunchKick = 0;
-	ply->CompDoThrow = ply->AIVolley = ply->AISigSpecial = 0;	/* char */
-	if ((ply->AIParam1 & 0x80) == 0) {	
-		/* 2b536 */
-		if (ply->AIParam1 < 0x40) {
+	ply->PunchKick    = 
+	ply->CompDoThrow  = 
+	ply->AIVolley     = 
+	ply->AISigSpecial = 0;
+	
+	if (ply->AIParam1 & AIB_THROW) {	
+		ply->CompDoThrow    = TRUE;
+		ply->ButtonStrength = ply->AIParam1 & (AIB_THROW - 1);
+	} else {		
+		if (ply->AIParam1 < AIB_SHIFT) {				// Ordinary punch attack
 			ply->ButtonStrength = ply->AIParam1;			
+		} else if (ply->AIParam1 >= AIB_POWERMOVE) {
+			ply->PunchKick      = ply->AIParam1 & 0xf;
+			ply->ButtonStrength = ply->AIParam2;
+			ply->AIMultiCount   = ply->AIParam3;
+			ply->AISigSpecial   = 2;	
 		} else {
-			/* 2b542 */
-			if (ply->AIParam1 >= 0x50) {
-				ply->PunchKick = ply->AIParam1 & 0xf;
-				ply->ButtonStrength = ply->AIParam2;
-				ply->x0149 = ply->AIParam3;		/* char */
-				ply->AISigSpecial = 2;	
-			} else {
-				ply->ButtonStrength = ply->AIParam1 & 0xf;
-				ply->DiceRollCount = ply->AIParam2 - 1;		/* char */
-				ply->AIVolley = TRUE;
-			}
+			ply->ButtonStrength = ply->AIParam1 & 0xf;
+			ply->DiceRollCount  = ply->AIParam2 - 1;
+			ply->AIVolley = TRUE;
 		}
-	} else {
-		/* 2b526 */
-		ply->CompDoThrow = TRUE;
-		ply->ButtonStrength = ply->AIParam1 & 0x7f;
 	}
 }
 static void _AISetScriptEnd(Player *ply) {			/* 2b932 */
@@ -1390,7 +1386,7 @@ static void _AIB_WITHIN(Player *ply) {
 		FATALDEFAULT;
 	}
 	if (found == FALSE) {
-		_AISearchStrategy(ply, 0x80 + 0x30);
+		_AISearchStrategy(ply, AIB_BB2);
 	}
 #ifdef DEBUG_AI
 	printf("\n");
@@ -1422,7 +1418,7 @@ static void _AIDefHigh(Player *ply, short d0){
 			temp = _AIReadByte(ply);
 			if(temp == 8) {
 				ply->AIWallBounce = TRUE;
-				ply->AIStrategy = temp;
+				ply->AIStrategy   = temp;
 				_AILoadStrategyParams(ply, temp);
 			} else {
 				if (temp < 0) {
@@ -1470,7 +1466,7 @@ static void _AIDefHigh(Player *ply, short d0){
 			_AIGotoNextStrategy(ply);
 			break;
 		case 0x30:			//2bd5a  ae
-			_AISearchStrategy(ply, 0x80 + 0x32);
+			_AISearchStrategy(ply, AIB_LABEL_B2);
 			_AIGotoNextStrategy(ply);
 			break;
 		case 0x34:			//2bd6a	b2  Immune (a)
@@ -1568,14 +1564,12 @@ void AIPanic(const unsigned char *a2, short d2) {
 static short _AISkipOverParams(Player *ply, u8 d0, const unsigned char *a2, short *d2) {
 	/* 2bdce return value actually ignored, seems void, but we'll keep it for now */
 	
-	if (ply->AIForceDefensive && d0 == 0x80) {
-		/* 2be86 */
+	if (ply->AIForceDefensive && (d0 == 0x80)) {
 		return g.libsplatter;
 	} else if (d0 & 0x80) {
-		/* 2be44 */
 		switch (d0 & 0x7f) {
 			case 0:		case 2:		case 4:		case 6:
-				return g.libsplatter;	/* 2be86 */
+				return g.libsplatter;	
 			case 8:		case 0x10:	case 0x12:	case 0x14:	
 			case 0x16:	case 0x18:	case 0x1a:	case 0x1c:
 			case 0x20:	case 0x24:	case 0x28:	case 0x2c:
@@ -1592,10 +1586,10 @@ static short _AISkipOverParams(Player *ply, u8 d0, const unsigned char *a2, shor
 		}
 	} else if (d0 == 0) {
 		/* 2bdfe */
-		d0 = a2[*d2++];
+		d0 = a2[(*d2)++];
 		
 		if (d0 == 0x81 || d0 == 0xc0) {
-			return a2[*d2++];	
+			return a2[(*d2)++];	
 		} else {
 			return d0;
 		}

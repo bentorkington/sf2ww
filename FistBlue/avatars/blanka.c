@@ -1310,7 +1310,7 @@ static void sub_33ab8(Player *ply) {
 	switch (ply->PunchKick) {
 		case PLY_PUNCHING:			// 33936
 			queuesound(SOUND_SWOOSH1);
-			ud->x009a = ply->x0149;
+			ud->x009a = ply->AIMultiCount;
 			d0 = 0x3e + ply->ButtonStrength;
 
 			// 33b14 inlined

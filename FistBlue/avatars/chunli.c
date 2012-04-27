@@ -1321,11 +1321,11 @@ void PLCBCompAttackChunLi(Player *ply) {		//346be
 	} else {
 		if (ply->AISigSpecial) {
 			//34e06
-			if (ply->PunchKick) {			//34fc4
-				switch (ply->mode2) {
+			if (ply->PunchKick) {					//34fc4
+				switch (ply->mode2) {				// Lightning kick
 					case 0:
 						NEXT(ply->mode2);
-						ud->x0085 = ply->x0149;
+						ud->x0085 = ply->AIMultiCount;
 						CASetAnim2(ply, 0x58, ply->ButtonStrength/2);
 						break;
 					case 2:
