@@ -9,6 +9,7 @@
 
 #define IMAGE_ATTR	0x8000		/* images are in tile,attr pairs */
 
+// where did we get this from?
 #define TICKS_PER_SECOND  40		/* 40 decimal */
 
 
@@ -46,7 +47,11 @@
 #define FACING_LEFT		0
 #define FACING_RIGHT	1
 
+#define SF2_TEXTLIB_EOL				0x2f
 
+
+#define SF2_TILE_SC1_ASCII			0x4000
+#define SF2_TILE_OBJ_2ASCII			0x8000
 #define SF2_TILE_OBJ_ASCII			0x8080
 #define SF2_TILE_OBJ_HEXCHARS		0x8100
 #define SF2_TILE_OBJ_PEACE			0x815f
@@ -110,6 +115,7 @@
 #define VERISON_ETC 1
 #define VERSION_USA 2
 
+#define SCROLL_NONE	-1
 #define SCROLL_2	0
 #define SCROLL_1	2
 #define SCROLL_3	4

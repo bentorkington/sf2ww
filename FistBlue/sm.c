@@ -241,7 +241,7 @@ static void game_mode_28(void) {	// 7af0
 				obj = AllocActor();
 				obj->exists = TRUE;
 				obj->Sel = SF2ACT_0X1B;
-				obj->Scroll = 0;
+				obj->Scroll = SCROLL_2;
 				action_1606c(obj);
 				if (g.Version == VERSION_JAP) {
 					g.x5dfe.exists = TRUE;

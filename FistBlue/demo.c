@@ -143,7 +143,7 @@ static void sub_6704(void) {
 	if (obj=AllocActor()) {
 		obj->exists = TRUE;
 		obj->Sel = 0x12;
-		obj->Scroll = 4;
+		obj->Scroll = SCROLL_3;
 		obj->XPI = 192;
 		obj->YPI = 1956;
 		obj->SubSel = (char []) {

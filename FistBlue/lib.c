@@ -1137,7 +1137,7 @@ void clearpush_1174(Object *obj) {
 	obj->ZDepth = 0;
 	obj->Pool = obj->Step = obj->Flip = obj->Draw1 = 0;
 	obj->Sel = obj->SubSel = 0;
-	obj->x0024 = obj->Scroll = 0;
+	obj->x0024 = obj->Scroll = SCROLL_2;
 	obj->OnGround = 0;
 	
     g.FreeStack_Layer2[g.FreeLayer2++] = obj;    
@@ -1151,7 +1151,7 @@ void FreeProjectile(Object *obj) {
 	obj->ZDepth = 0;
 	obj->Pool = obj->Step = obj->Flip = obj->Draw1 = 0;
 	obj->Sel = obj->SubSel = 0;
-	obj->x0024 = obj->Scroll = 0;
+	obj->x0024 = obj->Scroll = SCROLL_2;
 	obj->OnGround = 0;
 	
     g.FreeStack_Layer1[g.FreeLayer1++] = obj;    
@@ -1165,7 +1165,7 @@ void FreeActor(Object *obj){
 	obj->ZDepth = 0;
 	obj->Pool = obj->Step = obj->Flip = obj->Draw1 = 0;
 	obj->Sel = obj->SubSel = 0;
-	obj->x0024 = obj->Scroll = 0;
+	obj->x0024 = obj->Scroll = SCROLL_2;
 	obj->OnGround = 0;
 	
 	g.FreeStack_Layer3[g.FreeLayer3++] = obj;
@@ -1179,7 +1179,7 @@ void clearpush_5d0c(Object2 *obj){
 	obj->ZDepth = 0;
 	obj->Pool = obj->Step = obj->Flip = obj->Draw1 = 0;
 	obj->Sel = obj->SubSel = 0;
-	obj->x0024 = obj->Scroll = 0;
+	obj->x0024 = obj->Scroll = SCROLL_2;
 	obj->OnGround = 0;
 	
 	g.FreeStack_530a[g.FreeCount_530a++] = obj;

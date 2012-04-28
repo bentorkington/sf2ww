@@ -36,7 +36,6 @@ static void drawsimple_scroll2noattr(Object *obj, const u16 *tiles, int width, i
 #define IMAGE_NEWLINE 0xffff
 
 
-
 #pragma mark ---- Palette Setters ----
 
 void palette_base_scroll1(void) {
@@ -257,21 +256,6 @@ void _putlong(u16 **cursor, short x, short y, int arg, short attr) {	//51fe
     _putword(cursor, &gfxcursor, arg >> 16   , attr);
     _putword(cursor, &gfxcursor, arg & 0xffff, attr);
 }
-static void sub_5152(u16 **cursor, u32 *gfxcursor, u16 arg, u16 attr) {
-	int lz = 0;		// XXX not really here
-	sub_516a(gfxcursor, cursor, arg >> 4, &lz, attr);
-	sub_516a(gfxcursor, cursor, arg     , &lz, attr);
-}
-static void sub_5148(u16 **cursor, u32 *gfxcursor, u16 arg, u16 attr) {
-	sub_5152(cursor, gfxcursor, arg >> 8, attr);
-	sub_5152(cursor, gfxcursor, arg     , attr);	
-}	
-
-void printlonghex2(u16 **cursor, short x, short y, int arg, short attr) {
-	u32 gfxcursor = MakePointObj(x, y);
-	sub_5148(cursor, &gfxcursor, (arg >> 4) & 0xfff, attr);
-	sub_5148(cursor, &gfxcursor, arg,                attr);
-}
 void sub_516a(u16 **gfx_p, u32 *cp_p, u8 d0, short *leading_zero, u16 d3 ) {
 	u32 cp;
 	if (*leading_zero == 0) {
@@ -288,8 +272,24 @@ void sub_516a(u16 **gfx_p, u32 *cp_p, u8 d0, short *leading_zero, u16 d3 ) {
 	OBJECT_DRAW(*gfx_p, CP_X, CP_Y, 0x80b0 + (d0 & 0xf),d3);
 	OBJ_CURSOR_BUMP(*gfx_p);
 	/* and other buffer */
-	INC_GFX_CURSOR(cp_p, 12, 0);
-	
+	INC_GFX_CURSOR(cp_p, 12, 0);	
+}
+
+static void sub_5152(u16 **cursor, u32 *gfxcursor, u16 arg, u16 attr) {
+	short lz = 0;		// XXX not really here
+	sub_516a(cursor, gfxcursor, arg >> 4, &lz, attr);
+	sub_516a(cursor, gfxcursor, arg     , &lz, attr);
+}
+
+static void sub_5148(u16 **cursor, u32 *gfxcursor, u16 arg, u16 attr) {
+	sub_5152(cursor, gfxcursor, arg >> 8, attr);
+	sub_5152(cursor, gfxcursor, arg     , attr);	
+}	
+
+void printlonghex2(u16 **cursor, short x, short y, int arg, short attr) {
+	u32 gfxcursor = MakePointObj(x, y);
+	sub_5148(cursor, &gfxcursor, (arg >> 4) & 0xfff, attr);
+	sub_5148(cursor, &gfxcursor, arg,                attr);
 }
 void sub_5162(u16 **gfx_p, u32 *cp, u8 d0, short *d2, u16 d3) {
 	sub_516a(gfx_p, cp, d0 >> 4, d2, d3);
@@ -755,7 +755,7 @@ static void drawsimple_scroll2noattr(Object *obj, const u16 *tiles, int width, i
     }
     /* original did return zero, should we? */
 }
-static void drawsimple_scroll2attr(Object *obj, const u16 *tiles, int width, int height, short attr) { /* 0x42f6 */
+static void drawsimple_scroll2attr(Object *obj, const u16 *tiles, int width, int height) { /* 0x42f6 */
 	int x,y;
     COORD coord=objcoords_scroll2(obj);
     COORD coord2;
@@ -772,9 +772,9 @@ static void drawsimple_scroll2attr(Object *obj, const u16 *tiles, int width, int
     }
     /* original did return zero, should we? */
 }
-static void drawsimple_scroll2attr_check(Object *obj, const u16 *tiles, int width, int height, short palette) {
+static void drawsimple_scroll2attr_check(Object *obj, const u16 *tiles, int width, int height) {
     if(test_offset_scroll2((Player *)obj)) { return; }
-    drawsimple_scroll2attr(obj, tiles, width, height, palette);
+    drawsimple_scroll2attr(obj, tiles, width, height);
 }
 static void drawsimple_scroll3noattr(Object *obj, const u16 *tiles, int width, int height) {  /* 0x432a */
 	int x,y;
@@ -821,11 +821,14 @@ static void drawsimple_scroll3attr_check(Object *obj, const u16 *tiles, int widt
 void (*DRAW_NOATTR_CHECK[3])(Object *, const u16 *, int, int)   =                            
 	{drawsimple_scroll2noattr_check, drawsimple_scroll1noattr_check, drawsimple_scroll3noattr_check};
 void (*DRAW_NOATTR_NOCHECK[3])(Object *obj, const u16 *, int, int ) =                  
-	{drawsimple_scroll2noattr, drawsimple_scroll1noattr, drawsimple_scroll3noattr}; /* check whether these are passed attrs */
-void (*DRAW_ATTR_CHECK[3])(Object *, const u16 *, int, int)     =                     
+	{drawsimple_scroll2noattr, drawsimple_scroll1noattr, drawsimple_scroll3noattr}; void (*DRAW_ATTR_CHECK[3])(Object *, const u16 *, int, int)     =                     
 	{drawsimple_scroll2attr_check,   drawsimple_scroll1attr_check,    drawsimple_scroll3attr_check};
 void (*DRAW_ATTR_NOCHECK[3])(Object *, const u16 *, int, int)   =                     
-	{drawsimple_scroll2attr,         drawsimple_scroll1attr,  drawsimple_scroll3attr};
+	{
+		drawsimple_scroll2attr, 
+		drawsimple_scroll1attr,  
+		drawsimple_scroll3attr
+	};
 
 
 void actiontickdraw(Object *obj) {		/* 0x41d4 */
@@ -850,10 +853,11 @@ void draw_simple(Object *obj) {             /* 0x4200 */
 	const u16 *tiles;
 	struct image2 *im = (struct image2 *)obj->ActionScript->Image;
 	
-    width = im->Width;
-    height = im->Height;
-    palette = im->Palette;
-	tiles = obj->ActionScript->Image->Tiles;
+    width   = im->Width;
+    height  = im->Height;
+    palette = im->Palette;		// not actually a palette: a flag indicating tile, attr pairs
+	
+	tiles = im->Tiles;
     if (palette == 0) {
         if(obj->Pool == 0) {
             DRAW_NOATTR_CHECK[obj->Scroll/2](obj, tiles, width, height);
@@ -917,9 +921,9 @@ void showtextbank0(char sel) {		// 5602 Scroll1
 			ch = *string++;
 			if (ch == 0) {
 				return;
-			} else if (ch == 0x2f) {
+			} else if (ch == SF2_TEXTLIB_EOL) {
 				string += 3;
-			} else if (ch != 0x20) {
+			} else if (ch != ' ') {
 				SCR1_DRAW_TILE(gfx_p, 0, 0);
 				SCR1_CURSOR_BUMP(gfx_p, 1, 0);
 			}
@@ -932,13 +936,13 @@ void showtextbank0(char sel) {		// 5602 Scroll1
 			ch = *string++;
 			if (ch == 0) {
 				return;
-			} else if (ch == 0x2f) {
+			} else if (ch == SF2_TEXTLIB_EOL) {
 				x = ((*string++) * 8) + 0x40;
 				y = (*string++) * 2;
 				attr = *string++;
 			} else {
-				if (ch != 0x20) {	/* whitespace */
-					SCR1_DRAW_TILE(gfx_p, ch + 0x4000, attr);
+				if (ch != ' ') {	/* whitespace */
+					SCR1_DRAW_TILE(gfx_p, ch + SF2_TILE_SC1_ASCII, attr);
 					SCR1_CURSOR_BUMP(gfx_p, 0, 1);
 				}
 				x+=8;
@@ -962,9 +966,9 @@ void showtextbank1(char sel) {		// 568c draw text in OBJECT
 			ch = *string++;
 			if (ch == 0) {
 				return;
-			} else if (ch == 0x2f) {
+			} else if (ch == SF2_TEXTLIB_EOL) {
 				string += 3;
-			} else if (ch != 0x20) {
+			} else if (ch != ' ') {
 				OBJECT_DRAW(gfx_p, 0, 0, 0, 0);
 				OBJ_CURSOR_BUMP(gfx_p);
 			}
@@ -977,13 +981,13 @@ void showtextbank1(char sel) {		// 568c draw text in OBJECT
 			ch = *string++;
 			if (ch == 0) {
 				 return;
-			} else if (ch == 0x2f) {
+			} else if (ch == SF2_TEXTLIB_EOL) {
 				x = ((*string++) * 8) + 0x40;
 				y = (*string++) * 2;
 				attr = *string++;
 			} else {
-				if (ch != 0x20) {	/* whitespace */
-					OBJECT_DRAW(gfx_p, x, y, ch + 0x8000, attr);
+				if (ch != ' ') {	/* whitespace */
+					OBJECT_DRAW(gfx_p, x, y, ch + SF2_TILE_OBJ_2ASCII, attr);
 					/* draw in two buffers */
 					OBJ_CURSOR_BUMP(gfx_p);
 				}

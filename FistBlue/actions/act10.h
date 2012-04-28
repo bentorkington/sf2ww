@@ -71,7 +71,7 @@ const CAFrame actlist_10ec8[] = {
 	{0,0,0,(struct image *)&actlist_10ec8[0], 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 }
 };
 
-const CAFrame **actlist_10bc2[]={
+const CAFrame *actlist_10bc2[]={
 	actlist_10da0, 	actlist_10e34, 	actlist_10ec8, 
 };
 

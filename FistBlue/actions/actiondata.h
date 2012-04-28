@@ -96,7 +96,7 @@ CASimpleFrame actlist_ca38[] = {
 	{0,0,0,(struct image2 *)&actlist_ca38[0],}
 };
 
-CASimpleFrame *data_c95c[]={
+const CASimpleFrame *data_c95c[]={
 	actlist_c964, actlist_c9c8, actlist_ca04, actlist_ca38
 };
 
@@ -520,7 +520,7 @@ CASimpleFrame actlist_e2d8[5] = {
 	{0,0,0,(struct image2 *)&actlist_e2d8[0],}
 };
 
-CASimpleFrame *simpleact_db1a[]={
+const CASimpleFrame *simpleact_db1a[]={
 	actlist_dff6, actlist_e048, actlist_e0e2, actlist_e174, actlist_e1e6, actlist_e24c, actlist_e288, actlist_e2d8, 
 };
 
@@ -563,7 +563,7 @@ CASimpleFrame actlist_e2fc[3] = {
 	{0,0,0,(struct image2 *)&actlist_e2fc[0],}
 };
 
-CASimpleFrame *simpleact_db4a[]={
+const CASimpleFrame *simpleact_db4a[]={
 	actlist_dff6, actlist_e094, actlist_e126, actlist_e198, actlist_e20a, actlist_e24c, actlist_e2b4, actlist_e2fc, 
 };
 
@@ -719,7 +719,7 @@ CASimpleFrame actlist_e690[3] = {
 	{0,0,0,(struct image2 *)&actlist_e690[0],}
 };
 
-CASimpleFrame *simpleact_db7e[]={
+const CASimpleFrame *simpleact_db7e[]={
 	actlist_e320, actlist_e3aa, actlist_e42a, actlist_e462, actlist_e49a, actlist_e51a, actlist_e5aa, actlist_e654, actlist_e690, 
 };
 SimpleImage image_e390 = {
@@ -806,7 +806,7 @@ CASimpleFrame actlist_e6b4[3] = {
 	{0,0,0,(struct image2 *)&actlist_e6b4[0],}
 };
 
-CASimpleFrame *simpleact_dbdc[]={
+const CASimpleFrame *simpleact_dbdc[]={
 	actlist_e374, actlist_e406, actlist_e43e, actlist_e476, actlist_e4ca, actlist_e586, actlist_e638, actlist_e67c, actlist_e6b4, 
 };
 
@@ -921,11 +921,11 @@ CASimpleFrame actlist_e9d2[5] = {
 	{0,0,0,(struct image2 *)&actlist_e9d2[0],}
 };
 
-CASimpleFrame *simpleact_e8ca[]={
+const CASimpleFrame *simpleact_e8ca[]={
 	actlist_e8fe, actlist_e8d2, actlist_e956, actlist_e92a, 
 };
 
-CASimpleFrame *simpleact_e982[]={
+const CASimpleFrame *simpleact_e982[]={
 	actlist_e9ae, actlist_e98a, actlist_e9f6, actlist_e9d2, 
 };
 
@@ -1116,7 +1116,7 @@ CASimpleFrame actlist_f4d4[9] = {
 	{0,0,0,(struct image2 *)&actlist_f4d4[0],}
 };
 
-CASimpleFrame *simpleact_f15e[]={
+const CASimpleFrame *simpleact_f15e[]={
 	actlist_f1a2, actlist_f20e, actlist_f27a, actlist_f30a, actlist_f346, actlist_f3b4, actlist_f3fc, actlist_f46c, actlist_f4d4, 
 };
 
@@ -1175,7 +1175,7 @@ CASimpleFrame actlist_f518[5] = {
 	{0,0,0,(struct image2 *)&actlist_f518[0],}
 };
 
-CASimpleFrame *simpleact_f190[]={
+const CASimpleFrame *simpleact_f190[]={
 	actlist_f1d6, actlist_f242, actlist_f2be, actlist_f31e, actlist_f37a, actlist_f3d8, actlist_f420, actlist_f490, actlist_f518, 
 };
 
@@ -1215,8 +1215,6 @@ const CAFrame actlist_f708[] = {
 };
 
 
-#pragma mark Act10
-#include "act10.h"
 
 
 #pragma mark MARK
@@ -1338,27 +1336,181 @@ const CAFrame *actlist_fb32[]={
 	actlist_fc2e, 	actlist_fc2e, 
 };
 
-#pragma mark Act19
-const Image image_1329a = {
-    5, 0x001e, 0x2d, 0, 0,
-    { 0x8690, 0x8691, 0x8692, 0x86a0, 0x86a1,  }
+
+#pragma mark Act0D
+
+const SimpleImage image_10526 = {
+    1, 2, 0,
+    { 0x01c8, 0x01cc,  }
 };
-const CAFrame actlist_13262[2] = {
-	{65535, 0x80, 0x0, &image_1329a, 0, 0, 0, 0, 0, 0, 0, 0x00, 0, 0, 0, 0, 0, 0, 0, 0}, /* LOOP BEGIN */ 
-	{0,0,0,(struct image *)&actlist_13262[0], 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 }
+const SimpleImage image_10530 = {
+    1, 2, 0,
+    { 0x032a, 0x032e,  }
 };
-const Image image_132ae = {
-    23, 0x001f, 0x12, 0, 0,
-    { 0x0000, 0x0000, 0x0000, 0x0000, 0x86d0, 0x0000, 0x0000, 0x0000, 0x86c1, 0x86d1, 0x0000, 0x86a2, 0x86b2, 0x86c2, 0x86d2, 0x8693, 0x86a3, 0x86b3, 0x86c3, 0x86d3, 0x8694, 0x86a4, 0x86b4, 0x86c4, 0x86d4, 0x8695, 0x86a5, 0x86b5, 0x86c5, 0x0000, 0x8696, 0x86a6,  }
+const SimpleImage image_1053a = {
+    1, 2, 0,
+    { 0x032b, 0x032e,  }
 };
-const CAFrame actlist_1327e[2] = {
-	{65535, 0x80, 0x0, &image_132ae, 0, 0, 0, 0, 0, 0, 0, 0x00, 0, 0, 0, 0, 0, 0, 0, 0}, /* LOOP BEGIN */ 
-	{0,0,0,(struct image *)&actlist_1327e[0], 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 }
+const CASimpleFrame actlist_104f6[] = {
+	{10, 0x00, 0x0, &image_10526},
+	{10, 0x00, 0x0, &image_10530},
+	{12, 0x80, 0x0, &image_1053a},
+	{0,0,0,(struct image2 *)&actlist_104f6[0] }
+};
+const SimpleImage image_10574 = {
+    1, 2, 0,
+    { 0x01c9, 0x01cd,  }
+};
+const SimpleImage image_1057e = {
+    1, 2, 0,
+    { 0x01fa, 0x01fe,  }
+};
+const SimpleImage image_10588 = {
+    1, 2, 0,
+    { 0x01fb, 0x01ff,  }
+};
+const CASimpleFrame actlist_10544[] = {
+	{ 7, 0x00, 0x0, &image_10574},
+	{11, 0x00, 0x0, &image_1057e},
+	{12, 0x80, 0x0, &image_10588},
+	{0,0,0,(struct image2 *)&actlist_10544[0] }
+};
+const SimpleImage image_105c2 = {
+    2, 3, 1,
+    { 0x0000, 0x0026, 0x0330, 0x0006, 0x0334, 0x0006, 0x0000, 0x0026, 0x0331, 0x0006, 0x0335, 0x0006,  }
+};
+const SimpleImage image_105e0 = {
+    2, 3, 1,
+    { 0x01e0, 0x0006, 0x01f1, 0x0006, 0x01f5, 0x0006, 0x0000, 0x0006, 0x01f2, 0x0006, 0x01f6, 0x0006,  }
+};
+const SimpleImage image_105fe = {
+    2, 3, 1,
+    { 0x0000, 0x0026, 0x01f3, 0x0006, 0x01f7, 0x0006, 0x01e4, 0x0026, 0x01f8, 0x0006, 0x01fc, 0x0006,  }
+};
+const CASimpleFrame actlist_10592[] = {
+	{13, 0x00, 0x0, &image_105c2},
+	{10, 0x00, 0x0, &image_105e0},
+	{ 9, 0x80, 0x0, &image_105fe},
+	{0,0,0,(struct image2 *)&actlist_10592[0] }
+};
+const SimpleImage image_10674 = {
+    2, 3, 1,
+    { 0x01fd, 0x0031, 0x01e9, 0x0031, 0x01ed, 0x0031, 0x01fd, 0x0011, 0x01e9, 0x0011, 0x01ed, 0x0011,  }
+};
+const CASimpleFrame actlist_1061c[] = {
+	{65535, 0x80, 0x0, &image_10674},
+	{0,0,0,(struct image2 *)&actlist_1061c[0] }
+};
+const SimpleImage image_10742 = {
+    1, 2, 0,
+    { 0x01ca, 0x01ce,  }
+};
+const SimpleImage image_1074c = {
+    1, 2, 0,
+    { 0x01ca, 0x01f9,  }
+};
+const CASimpleFrame actlist_1070a[] = {
+	{60, 0x00, 0x0, &image_10742},
+	{12, 0x00, 0x0, &image_1074c},
+	{90, 0x00, 0x0, &image_10742},
+	{11, 0x80, 0x0, &image_1074c},
+	{0,0,0,(struct image2 *)&actlist_1070a[0] }
+};
+const SimpleImage image_10692 = {
+    2, 3, 1,
+    { 0x01ea, 0x0031, 0x01ee, 0x0031, 0x01e7, 0x0031, 0x01ea, 0x0011, 0x01ee, 0x0011, 0x01e7, 0x0011,  }
+};
+const SimpleImage image_106b0 = {
+    2, 3, 1,
+    { 0x01eb, 0x0031, 0x01ef, 0x0031, 0x01e3, 0x0031, 0x01eb, 0x0011, 0x01ef, 0x0011, 0x01e3, 0x0011,  }
+};
+const SimpleImage image_106ce = {
+    2, 3, 1,
+    { 0x01f0, 0x0031, 0x01f4, 0x0031, 0x01e3, 0x0031, 0x01f0, 0x0011, 0x01f4, 0x0011, 0x01e3, 0x0011,  }
+};
+const SimpleImage image_106ec = {
+    2, 3, 1,
+    { 0x0328, 0x0031, 0x032c, 0x0031, 0x01e3, 0x0031, 0x0328, 0x0011, 0x032c, 0x0011, 0x01e3, 0x0011,  }
+};
+const CASimpleFrame actlist_10630[] = {
+	{ 8, 0x00, 0x0, &image_10692},
+	{28, 0x00, 0x0, &image_106b0},
+	{ 8, 0x00, 0x0, &image_106ce},
+	{ 8, 0x00, 0x0, &image_106ec},
+	{ 8, 0x00, 0x0, &image_106ce},
+	{ 8, 0x00, 0x0, &image_106ec},
+	{ 8, 0x00, 0x0, &image_106ce},
+	{90, 0x80, 0x0, &image_106b0},
+	{0,0,0,(struct image2 *)&actlist_10630[0] }
+};
+const CASimpleFrame actlist_10512[] = {
+	{ 6, 0x00, 0x0, &image_10530},
+	{ 7, 0x80, 0x0, &image_1053a},
+	{0,0,0,(struct image2 *)&actlist_10512[0] }
+};
+const CASimpleFrame actlist_10560[] = {
+	{ 6, 0x00, 0x0, &image_1057e},
+	{ 7, 0x80, 0x0, &image_10588},
+	{0,0,0,(struct image2 *)&actlist_10560[0] }
+};
+const CASimpleFrame actlist_105ae[] = {
+	{10, 0x00, 0x0, &image_105e0},
+	{11, 0x80, 0x0, &image_105fe},
+	{0,0,0,(struct image2 *)&actlist_105ae[0] }
+};
+const CASimpleFrame *actlist_10492[]={
+	actlist_104f6, 	actlist_10544, 	actlist_10592, 	actlist_1061c, 	actlist_1070a, 
+};
+const CASimpleFrame *actlist_10628[]={
+	actlist_10630, 
+};
+const CASimpleFrame *actlist_104c6[]={
+	actlist_10512, 	actlist_10560, 	actlist_105ae, 
 };
 
-const Action *actlist_1325e[]={
-	actlist_13262, actlist_1327e, 
+
+
+#pragma mark Act0E
+
+const Image image_1089e = {
+    1, 0x001c, 0x29, 0, 12,
+    { 0x8310,  }
 };
+const Image image_108aa = {
+    1, 0x001c, 0x29, 0, 11,
+    { 0x8311,  }
+};
+const Image image_108b6 = {
+    1, 0x001c, 0x29, 0, 12,
+    { 0x8312,  }
+};
+const Image image_108c2 = {
+    1, 0x001c, 0x29, 0, 14,
+    { 0x8300,  }
+};
+const Image image_108ce = {
+    1, 0x001c, 0x29, 0, 14,
+    { 0x8313,  }
+};
+const CAFrame actlist_10822[] = {
+	{ 4, 0x00, 0x0, &image_1089e, 0, 0, 0, 0, 0, 0, 0, 0x00, 0, 0, 0, 0, 0, 0, 0, 0},
+	{10, 0x00, 0x1, &image_108aa, 0, 0, 0, 0, 0, 0, 0, 0x00, 0, 0, 0, 0, 0, 0, 0, 0},
+	{ 5, 0x00, 0x0, &image_108b6, 0, 0, 0, 0, 0, 0, 0, 0x00, 0, 0, 0, 0, 0, 0, 0, 0},
+	{ 5, 0x00, 0x0, &image_108c2, 0, 0, 0, 0, 0, 0, 0, 0x00, 0, 0, 0, 0, 0, 0, 0, 0},
+	{ 5, 0x80, 0x0, &image_108ce, 0, 0, 0, 0, 0, 0, 0, 0x00, 0, 0, 0, 0, 0, 0, 0, 0},
+	{0,0,0,(struct image *)&actlist_10822[0], 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 }
+};
+
+const CAFrame actlist_10852[] = {
+	{ 5, 0x00, 0x0, &image_108b6, 0, 0, 0, 0, 0, 0, 0, 0x00, 0, 0, 0, 0, 0, 0, 0, 0},
+	{ 5, 0x00, 0x0, &image_108c2, 0, 0, 0, 0, 0, 0, 0, 0x00, 0, 0, 0, 0, 0, 0, 0, 0},
+	{ 5, 0x80, 0x0, &image_108ce, 0, 0, 0, 0, 0, 0, 0, 0x00, 0, 0, 0, 0, 0, 0, 0, 0},
+	{0,0,0,(struct image *)&actlist_10852[0], 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 }
+};
+
+
+#pragma mark Act10
+#include "act10.h"
 
 
 #pragma mark ACT11 
@@ -1706,6 +1858,27 @@ const CASimpleFrame *actlist_11c00[]={
 };
 
 
+#pragma mark Act19
+const Image image_1329a = {
+    5, 0x001e, 0x2d, 0, 0,
+    { 0x8690, 0x8691, 0x8692, 0x86a0, 0x86a1,  }
+};
+const CAFrame actlist_13262[2] = {
+	{65535, 0x80, 0x0, &image_1329a, 0, 0, 0, 0, 0, 0, 0, 0x00, 0, 0, 0, 0, 0, 0, 0, 0}, /* LOOP BEGIN */ 
+	{0,0,0,(struct image *)&actlist_13262[0], 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 }
+};
+const Image image_132ae = {
+    23, 0x001f, 0x12, 0, 0,
+    { 0x0000, 0x0000, 0x0000, 0x0000, 0x86d0, 0x0000, 0x0000, 0x0000, 0x86c1, 0x86d1, 0x0000, 0x86a2, 0x86b2, 0x86c2, 0x86d2, 0x8693, 0x86a3, 0x86b3, 0x86c3, 0x86d3, 0x8694, 0x86a4, 0x86b4, 0x86c4, 0x86d4, 0x8695, 0x86a5, 0x86b5, 0x86c5, 0x0000, 0x8696, 0x86a6,  }
+};
+const CAFrame actlist_1327e[2] = {
+	{65535, 0x80, 0x0, &image_132ae, 0, 0, 0, 0, 0, 0, 0, 0x00, 0, 0, 0, 0, 0, 0, 0, 0}, /* LOOP BEGIN */ 
+	{0,0,0,(struct image *)&actlist_1327e[0], 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 }
+};
+
+const Action *actlist_1325e[]={
+	actlist_13262, actlist_1327e, 
+};
 
 
 
@@ -2350,12 +2523,9 @@ const CAFrame actlist_1a144[] = {
 	{0,0,0,(struct image *)&actlist_1a144[0], 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 }
 };
 
-const CAFrame **actlist_1a10c[]={
+const CAFrame *actlist_1a10c[]={
 	actlist_1a110, 	actlist_1a144, 
 };
-
-
-
 
 
 #pragma mark Portriats
@@ -3246,7 +3416,7 @@ const CAFrame actlist_1f59c[] = {
 	{0,0,0,(struct image *)&actlist_1f59c[0], 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 }
 };
 
-const CAFrame **actlist_1f502[]={
+const CAFrame *actlist_1f502[]={
 	actlist_1f510, 	actlist_1f52c, 	actlist_1f548, 	actlist_1f564, 	actlist_1f580, 	actlist_1f59c, 
 };
 

@@ -316,7 +316,7 @@ static void action_2(Object *obj) {				//d240 Bicycle people
 			case 0:
 				NEXT(obj->mode0);
 				obj->Pool   = 6;
-				obj->Scroll = 0;
+				obj->Scroll = SCROLL_2;
 				obj->ZDepth = 64;	
 				obj->Flip   = obj->Step;
 				obj->XPI    = gstate_Scroll2.XPI;
@@ -537,7 +537,7 @@ static void action_06(Object *obj) {		//db5a
 static void action_07(Object *obj) {		//e6cc 
 	UD07 *ud = (UD07 *)&obj->UserData;
 	
-	static const char data_e816[] = {0, 0, 4, 4};
+	static const char data_e816[] = {SCROLL_2, SCROLL_2, SCROLL_3, SCROLL_3};
 	static const short data_e81a[][2] = {{0x1c8, 0xb8}, {0x2d8, 0xb8}, {0x170, 0xb0}, {0x2f0, 0xb0}};
 	
 	
@@ -916,7 +916,7 @@ static void action_0d(Object *obj) {			//1045e
 				g.x8a66[0] = 0;
 				g.x8a66[1] = 0;
 			}
-			// XXX setactiondraw(obj, actlist_10492, obj->SubSel);
+			setactiondraw(obj, actlist_10492, obj->SubSel);
 			break;
 		case 2:
 			if (obj->SubSel == 3) {
@@ -926,13 +926,14 @@ static void action_0d(Object *obj) {			//1045e
 				} else {
 					if (g.x8a66[obj->Step]) {
 						NEXT(obj->mode1);
-						// XXX setactiondraw(obj, actlist_10628, obj->Step);
+						setactiondraw(obj, actlist_10628, obj->Step);
+						// ?? any Step other than 0 is invalid access
 					}
 				}
 			} else {
 				if (obj->mode1 == 0 && g.FightOver) {
 					NEXT(obj->mode1);
-					// XXX setactiondraw(obj, actlist_104c6, obj->Step);
+					setactiondraw(obj, actlist_104c6, obj->Step);
 				} else {
 					actiontickdraw(obj);
 				} 
@@ -953,7 +954,7 @@ static void action_0e(Object *obj) {		// 10756
 		case 0:
 			NEXT(obj->mode0);
 			obj->Pool = 6;
-			// XXX setaction_direct(obj, actlist_10822);
+			setaction_direct(obj, actlist_10822);
 			break;
 		case 2:
 			switch (obj->mode1) {
@@ -978,7 +979,7 @@ static void action_0e(Object *obj) {		// 10756
 						NEXT(obj->mode1);
 						obj->LocalTimer = 15;
 						obj->YPI = ud->h0080s;
-						// XXX setaction_direct(obj, action_10852);
+						setaction_direct(obj, actlist_10852);
 					}
 					break;
 				case 6:
@@ -1158,7 +1159,7 @@ static void action_11(Object *obj) {
 							nobj->Sel = 0x11;
 							nobj->SubSel = 0x1;
 							nobj->ZDepth = obj->ZDepth;
-							nobj->Scroll = 0;
+							nobj->Scroll = SCROLL_2;
 							nobj->Pool = 6;
 							++g.x8a5c;
 						}
@@ -1190,7 +1191,7 @@ static void action_12(Object *obj) {		// "Street Fighter" logo
 			switch (obj->mode0) {
 				case 0:
 					NEXT(obj->mode0);
-					obj->Scroll = -1;
+					obj->Scroll = SCROLL_NONE;
 					obj->Pool	= 6;
 					obj->XPI	= 0xc0;
 					obj->YPI	= 0x98;
@@ -1486,7 +1487,7 @@ static void action_13(Object *obj) {  // 119ee
 			NEXT(obj->mode0);
 			obj->UserData[0] = 0;
 			obj->ZDepth = 0;
-			obj->Scroll = 0;
+			obj->Scroll = SCROLL_2;
 			obj->Pool = 0;
 			setaction_list(obj, actlist_11aca, obj->SubSel);
 			break;
@@ -1538,12 +1539,13 @@ static void action_15(Object *obj) {
 			setactiondraw(obj, actlist_11bc0, obj->SubSel);
 			break;
 		case 2:
-			if (obj->SubSel >= 4 || obj->mode1 || g.FightOver == 0) {
+			if (obj->SubSel >= 4 || obj->mode1 || g.FightOver == FALSE) {
 				actiontickdraw(obj);
 			} else {
 				NEXT(obj->mode1);
 				setactiondraw(obj, actlist_11c00, obj->SubSel);
 			}
+			break;
 		case 4:
 		case 6:
 			FreeActor(obj);
@@ -1957,7 +1959,7 @@ static void action_21(Object *obj) {    // 1153e
 	switch (obj->mode0) {
 		case 0:
 			NEXT(obj->mode0);
-			obj->Scroll = -1;
+			obj->Scroll = SCROLL_NONE;
 			obj->Pool	= 2;
 			obj->XPI	= 0xc0;
 			obj->YPI	= 0xcf;
@@ -2125,7 +2127,7 @@ static void action_22(Object *obj) {		// 1ac16
 		case 0:
 			NEXT(obj->mode0);
 			obj->Pool   = 2;
-			obj->Scroll = -1;
+			obj->Scroll = SCROLL_NONE;
 			obj->XPI	= 0xc0;
 			obj->YPI	= 0x90;
 			obj->Draw1  = -1;
@@ -3162,7 +3164,7 @@ static void action_3b(Object *obj) {	//203ba
 	switch (obj->mode0) {
 		case 0:							// init the animation
 			NEXT(obj->mode0);
-			obj->Scroll    = -1;
+			obj->Scroll    = SCROLL_NONE;
 			obj->Pool      = 2;
 			ud->x0080.full = 0;	
 			
@@ -3313,7 +3315,7 @@ static void action_48(Object *obj) {		//226b6
 			sub_22746(obj);
 			obj->LocalTimer = 4;
 			obj->Pool		= 0;
-			obj->Scroll		= -1;
+			obj->Scroll		= SCROLL_NONE;
 			obj->XPI		= 0xc0;
 			obj->YPI		= 0xa0;
 			obj->Draw1		= 0;

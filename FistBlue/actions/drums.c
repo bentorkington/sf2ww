@@ -371,7 +371,7 @@ void _SMAct05(Object_G2 *obj) {				// 24ff6 Act05 Bonus2
 			// redundant btst
 			obj->HitBoxes = &hitboxes_25958;
 			obj->Pool = 2;
-			obj->Scroll = 0;
+			obj->Scroll = SCROLL_2;
 			obj->Step = obj->Flip;
 			//setaction_direct(obj, action_25834);
 			
