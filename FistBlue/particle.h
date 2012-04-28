@@ -84,7 +84,7 @@ struct simpleaction {
 	u16 Delay;
 	u8	Loop;
 	u8	Next;
-	struct image2 *Image;
+	const struct image2 *Image;
 };
 
 typedef struct image Image;
@@ -95,14 +95,14 @@ struct image {
     u16		Dimensions;
 	short	OffsetX;
 	short	OffsetY;
-	u16		Tiles[];
+	u16		Tiles[];		// C99
 };
 
 struct image2 {
 	u16		Width;
 	u16		Height;
 	u16		Palette;
-	u16		Tiles[];
+	u16		Tiles[];		// C99
 };
 
 typedef struct image2 SimpleImage;

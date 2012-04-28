@@ -558,12 +558,12 @@ void sub_41c2(Object *obj, struct simpleaction *act) {		//41c2
     draw_simple(obj);
 }
 
-void setactiondraw(Object *obj, struct simpleaction **act, int step) {	//41b6
+void setactiondraw(Object *obj, const CASimpleFrame **act, int step) {	//41b6
 	/* 41c2 inlined for efficiency */
     obj->ActionScript = (Action *)act[step]; 
 	
     obj->Timer      = obj->ActionScript->Delay;
-    obj->AnimFlags = obj->ActionScript->Loop << 8 | obj->ActionScript->Next; 
+    obj->AnimFlags  = obj->ActionScript->Loop << 8 | obj->ActionScript->Next; 
   
     draw_simple(obj);
 }
@@ -716,7 +716,7 @@ static void drawsimple_scroll1noattr_check(Object *obj, const u16 *tiles, int wi
     if(test_offset_scroll1((Player *)obj)) { return; }
     drawsimple_scroll1noattr(obj, tiles, width, height);
 }
-static void drawsimple_scroll1attr(Object *obj,  const u16 *tiles, int width, int height, short attr) {	/* 0x4294 */
+static void drawsimple_scroll1attr(Object *obj,  const u16 *tiles, int width, int height) {	/* 0x4294 */
 	int x,y;
     u16 *coord=objcoords_scroll1(obj);
     u16 *coord2;
@@ -724,16 +724,16 @@ static void drawsimple_scroll1attr(Object *obj,  const u16 *tiles, int width, in
         coord2=coord;
         for(y=0; y<height; y++) {
 			/* tile, attr*/
-            SCR1_DRAW_TILE(coord2, tiles[0] + GFXROM_SCROLL1, attr);
+            SCR1_DRAW_TILE(coord2, tiles[0] + GFXROM_SCROLL1, tiles[1]);
 			tiles++;
 			SCR1_CURSOR_BUMP(coord2, 0, 1);
         }
 		SCR1_CURSOR_BUMP(coord, 1, 0);
     }
 }
-static void drawsimple_scroll1attr_check(Object *obj, const u16 *tiles, int width, int height, short palette) {		/* 0x428e */
+static void drawsimple_scroll1attr_check(Object *obj, const u16 *tiles, int width, int height) {		/* 0x428e */
     if(test_offset_scroll1((Player *)obj)) { return; }
-    drawsimple_scroll1attr(obj, tiles, width, height, palette);
+    drawsimple_scroll1attr(obj, tiles, width, height);
 }
 static void drawsimple_scroll2noattr_check(Object *obj, const u16 *tiles, int width, int height) {	/* 0x42c2 */
     if(test_offset_scroll2((Player *)obj)) { return; }
@@ -759,12 +759,13 @@ static void drawsimple_scroll2attr(Object *obj, const u16 *tiles, int width, int
 	int x,y;
     COORD coord=objcoords_scroll2(obj);
     COORD coord2;
-    for(x=0; x<width; x++) {
+	for(x=0; x<width; x++) {
         coord2=coord;
         for(y=0; y<height; y++) {
-			/* tile, attr, blank tiles etc*/
-            SCR2_DRAW_TILE(coord2, tiles[0] + GFXROM_SCROLL2, attr); 
-			tiles++;
+			if (tiles[0] & 0x8000 == 0) {
+				SCR2_DRAW_TILE(coord2, tiles[0] + GFXROM_SCROLL2, tiles[1]); 
+			}
+			tiles+=2;
 			SCR2_CURSOR_BUMP(coord2, 0, 1);
         }
         SCR2_CURSOR_BUMP(coord, 1, 0);
@@ -795,41 +796,47 @@ static void drawsimple_scroll3noattr_check(Object *obj, const u16 *tiles, int wi
     if(test_offset_scroll3((Player *)obj)) { return; }
     drawsimple_scroll3noattr(obj, tiles, width, height);
 }
-static void drawsimple_scroll3attr(Object *obj, const u16 *tiles, int width, int height, short attr) {  /* 0x4358 */
+static void drawsimple_scroll3attr(Object *obj, const u16 *tiles, int width, int height) {  /* 0x4358 */
 	int x,y;
     u16* coord=objcoords_scroll3(obj);
     u16 *coord2;
     for(x=0; x<width; x++) {
         coord2=coord;
         for(y=0; y<height; y++) {
-			/* tile, attr, blank tiles etc*/
-            SCR3_DRAW_TILE(coord2, tiles[0] + GFXROM_SCROLL3, attr);    
-			tiles++;
+			if (tiles[0] & 0x8000 == 0) {
+				SCR3_DRAW_TILE(coord2, tiles[0] + GFXROM_SCROLL3, tiles[1]);    
+			}
+			tiles += 2;
             SCR3_CURSOR_BUMP(coord2, 0, 1);
         }
         SCR3_CURSOR_BUMP(coord, 1, 0);
     }
     /* original did return zero, should we? */
 }
-static void drawsimple_scroll3attr_check(Object *obj, const u16 *tiles, int width, int height, short palette) { /* 4352 */
+static void drawsimple_scroll3attr_check(Object *obj, const u16 *tiles, int width, int height) { /* 4352 */
     if(test_offset_scroll3((Player *)obj)) { return; }
-    drawsimple_scroll3attr(obj, tiles, width, height, palette);
+    drawsimple_scroll3attr(obj, tiles, width, height);
 }
 
 void (*DRAW_NOATTR_CHECK[3])(Object *, const u16 *, int, int)   =                            
 	{drawsimple_scroll2noattr_check, drawsimple_scroll1noattr_check, drawsimple_scroll3noattr_check};
 void (*DRAW_NOATTR_NOCHECK[3])(Object *obj, const u16 *, int, int ) =                  
 	{drawsimple_scroll2noattr, drawsimple_scroll1noattr, drawsimple_scroll3noattr}; /* check whether these are passed attrs */
-void (*DRAW_ATTR_CHECK[3])(Object *, const u16 *, int, int, short)     =                     
+void (*DRAW_ATTR_CHECK[3])(Object *, const u16 *, int, int)     =                     
 	{drawsimple_scroll2attr_check,   drawsimple_scroll1attr_check,    drawsimple_scroll3attr_check};
-void (*DRAW_ATTR_NOCHECK[3])(Object *, const u16 *, int, int, short)   =                     
+void (*DRAW_ATTR_NOCHECK[3])(Object *, const u16 *, int, int)   =                     
 	{drawsimple_scroll2attr,         drawsimple_scroll1attr,  drawsimple_scroll3attr};
 
 
 void actiontickdraw(Object *obj) {		/* 0x41d4 */
     if(--obj->Timer) { return; }
+	
+	// XXX C messiness, not emulated
+	CASimpleFrame *temp = (CASimpleFrame *)obj->ActionScript;
+	temp++;
+	
     if(obj->ActionScript->Loop == 0) {
-        ((CASimpleFrame *)obj->ActionScript)++;
+		obj->ActionScript = (const Action *)temp;
 	} else {
 		obj->ActionScript = ((struct simpleaction *)obj->ActionScript)[1].Image;
     }
@@ -855,9 +862,9 @@ void draw_simple(Object *obj) {             /* 0x4200 */
         }
     } else {
         if(obj->Pool == 0) {
-            DRAW_ATTR_CHECK[obj->Scroll/2](obj, tiles, width, height, palette);
+            DRAW_ATTR_CHECK[obj->Scroll/2](obj, tiles, width, height);
         } else {
-            DRAW_ATTR_NOCHECK[obj->Scroll/2](obj, tiles, width, height, palette);
+            DRAW_ATTR_NOCHECK[obj->Scroll/2](obj, tiles, width, height);
         }
     }
 }

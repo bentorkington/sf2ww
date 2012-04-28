@@ -1535,14 +1535,14 @@ static void action_15(Object *obj) {
 		case 0:
 			NEXT(obj->mode0);
 			obj->Pool = (u8 []){0,0,0,0,0,0,0,2}[obj->SubSel];
-			//todo setactiondraw(obj, data_11bc0, obj->SubSel);
+			setactiondraw(obj, actlist_11bc0, obj->SubSel);
 			break;
 		case 2:
 			if (obj->SubSel >= 4 || obj->mode1 || g.FightOver == 0) {
 				actiontickdraw(obj);
 			} else {
 				NEXT(obj->mode1);
-				//todo setactiondraw(obj, data_11c00, obj->SubSel);
+				setactiondraw(obj, actlist_11c00, obj->SubSel);
 			}
 		case 4:
 		case 6:
