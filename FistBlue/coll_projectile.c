@@ -113,7 +113,7 @@ void CDCheckProjectile(Object *obj, int d7) {   /* 0x7d0c0 check for projectile 
             opp->BlockStun   = 0; 
         }
     }
-    opp->x0071 = 1;
+    opp->ProjectilePushBack = TRUE;
     
     set_newreact(opp, ply, a3);       
     make_collision_sound(opp, a3);

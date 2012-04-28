@@ -74,7 +74,7 @@ static void _RMKOSound(Player *ply) {		/* 29c66 */
 
 static void tumble_until_still(Player *ply) {		// 29cfe
 	/* inlined 29cfe */
-	downandout(ply);
+	SMTumble(ply);
 	if (ply->Tumble==0) {
 		NEXT(ply->mode2);
 		ply->PSFinishedParticipating = 1;
@@ -181,13 +181,13 @@ void RM_SM_knockedout(Player *ply) {			// 29c4c
 									0x100, 0x14, 0, 0x26);
 						ply->VelY.full = 0;
 						ply->Timer2 = 0;
-						downandout(ply);
+						SMTumble(ply);
 						NEXT(ply->mode2);
 						CASetAnim1(ply,STATUS_ELECTROCUTED);	
 					}
 					break;
 				case 4:		/* 29dda */
-					downandout(ply);
+					SMTumble(ply);
 					if (ply->VelY.full < 0) {
 						NEXT(ply->mode2);
 						CASetAnim2(ply, STATUS_KNOCKDOWN, 0);
@@ -304,7 +304,7 @@ void react_to_attack(Player *ply) {							/* 0x28ed8 */
 				} else {
 					b=2;
 				}
-				if(ply->x0071 !=0 || (ply->BoundCheck != b && ply->PlatformFallDir != b)){
+				if(ply->ProjectilePushBack !=0 || (ply->BoundCheck != b && ply->PlatformFallDir != b)){
 					ply->X.part.integer += a;
 					if(check_platform_end(ply)) {
 						set_falling_from_platform(ply);
@@ -358,7 +358,7 @@ void RMFootSwept(Player *ply) {		/* 29178 */
     switch (ply->mode2) {
 		case 0x0:
 			NEXT(ply->mode2);
-			ply->Flip = ply->Direction;
+			ply->Flip = ply->Direction ^ 1;
 			CASetAnim2(ply,STATUS_FOOTSWEPT,0);
 			break;
 		case 0x2:
@@ -400,7 +400,7 @@ void RMFootSwept(Player *ply) {		/* 29178 */
 			} else {
 				++ply->PSPushBacks;
 			}
-			if(ply->x0071) {
+			if(ply->ProjectilePushBack) {
 				temp2=1;
 				if(ply->x012a >= 0) {
 					temp = -temp;
@@ -427,7 +427,7 @@ static void sub_29426(Player *ply, short d6) {
 		a=0;
 	}
 	ply->PSPushBacks=cur;
-	if(ply->x0071==0){
+	if(ply->ProjectilePushBack == FALSE){
 		if(ply->x012a >= 0) {
 			a = -a;
 			b = 2;
@@ -511,13 +511,13 @@ void RMElectrocuted(Player *ply) {
         ply->VelX.full = 0;
         ply->Timer2    = 0;
 
-        downandout(ply);	
+        SMTumble(ply);	
         NEXT(ply->mode2);
         CASetAnim1(ply, STATUS_ELECTROCUTED);
         PSPushBack(ply);
         break;
     case 4:
-        downandout(ply);
+        SMTumble(ply);
         if(ply->VelY.full < 0) {
             NEXT(ply->mode2);
             CASetAnim1(ply, STATUS_KNOCKDOWN);
@@ -525,7 +525,7 @@ void RMElectrocuted(Player *ply) {
         PSPushBack(ply);
         break;
     case 6:
-        downandout(ply);
+        SMTumble(ply);
         if(ply->Tumble) {PSPushBack(ply); return; }
         NEXT(ply->mode2);
         ply->LocalTimer = 12;

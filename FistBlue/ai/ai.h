@@ -45,7 +45,7 @@ void AIInitDefensive(Player *ply);
 #define AIB_EXIT4			0x84
 #define AIB_EXITRAND		0x86
 #define AIB_COLLDIS			0x88
-#define AIB_EXIT5_1			0x8a
+#define AIB_EXIT5_1			0x8a		/* set threat mode */
 #define AIB_EXIT5_0			0x8c
 #define AIB_EXIT5_2			0x8e
 #define AIB_WALLBOUNCE		0x90

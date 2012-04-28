@@ -1746,12 +1746,10 @@ static void AIAggHigh(Player *ply, short d0) {
 	 */
 	int temp;
 	
-	//printf("AIAggHigh side %d arg 0x%x\n",ply->Side, d0);
-	
 	switch (d0) {
-		case 0:				/* 2ba62 */
+		case 0:				/* AIB_RESTART */
 			_AIRestartAggressive(ply); _AIGotoNextStrategy(ply); break;
-		case 2:				/* 2ba7c */
+		case AIB_EXIT3 - AIB_SHIFT:
 			_AIExit3(ply); _AIGotoNextStrategy(ply); break;
 		case 4:				/* 2baae */
 			_AIExit4(ply); _AIGotoNextStrategy(ply); break;
@@ -1772,10 +1770,10 @@ static void AIAggHigh(Player *ply, short d0) {
 			ply->AIThreatCheckMode = 1; _AIExit5(ply); _AIGotoNextStrategy(ply); break;
 		case 0xc:			/* 2bb06 Enable threat assessment */
 			ply->AIThreatCheckMode = 0; _AIExit5(ply); _AIGotoNextStrategy(ply); break;
-		case 0xe:			/* 2bb0e */
+		case 0xe:
 			ply->AIThreatCheckMode = 2; _AIExit5(ply); _AIGotoNextStrategy(ply); break;
 			
-		case 0x10:			/* 2bb24 */
+		case 0x10:
 			temp = _AIReadByte(ply);
 			if(temp == 8) {
 				ply->AIWallBounce = TRUE;
@@ -1792,9 +1790,9 @@ static void AIAggHigh(Player *ply, short d0) {
 			break;
 		case 0x12:
 			_AISearch94NotDizzy(ply); _AIGotoNextStrategy(ply); break;
-		case 0x16:			/* 2bb64 */
+		case 0x16:
 			ply->x0216 = TRUE;		  _AIGotoNextStrategy(ply); break;
-		case 0x18:			/* 2bb6e */
+		case 0x18:
 			if(ply->AIAgressive==0) {
 				if(comp_ply_difficulty_lookup(ply, data_97522)) {
 					_AIGoToAgg1(ply);
@@ -1802,7 +1800,7 @@ static void AIAggHigh(Player *ply, short d0) {
 			}
 			_AIGotoNextStrategy(ply);
 			break;
-		case 0x1a:		/* 2bbb0 */
+		case 0x1a:
 			if(ply->AIAgressive==0) {
 				ply->AIStartAgain = TRUE;
 				_AIGoToAgg1(ply);
@@ -1817,11 +1815,11 @@ static void AIAggHigh(Player *ply, short d0) {
 			}
 			_AIGotoNextStrategy(ply);
 			break;
-		case 0x1e:		/* 2bbd8 */
+		case 0x1e:
 			_AISearchA0DistLessOrEqual(ply); _AIGotoNextStrategy(ply); break;
-		case 0x22:	/* 2bbfa */
+		case 0x22:
 			_AISearchA4IfOppJump(ply);       _AIGotoNextStrategy(ply); break;
-		case 0x26:	// 2bc2e
+		case 0x26:
 			_AISearchA8IfOppXLessEqual(ply); _AIGotoNextStrategy(ply); break;
 
 		case 0x14:
@@ -1833,16 +1831,16 @@ static void AIAggHigh(Player *ply, short d0) {
 			_AIGotoNextStrategy(ply);
 			break;
 			
-		case 0x2a:		//2bc4e
+		case 0x2a:	
 			_AISearchACIfOppJump(ply);      _AIGotoNextStrategy(ply); break;
-		case 0x2e:		// 2bc8a
+		case 0x2e:
 			_AIB_WITHIN(ply);   _AIGotoNextStrategy(ply); break;
 		case 0x30:
-			_AISearchStrategy(ply, 0x80 + 0x32);			/* 2bd5a */
+			_AISearchStrategy(ply, AIB_LABEL_B2);
 			_AIGotoNextStrategy(ply);
 			break;
 		case 0x34:
-			ply->CompImmune = _AIReadByte(ply);	/* 2bd6a */
+			ply->CompImmune = _AIReadByte(ply);
 			_AIGotoNextStrategy(ply);
 			break;
 		FATALDEFAULT;

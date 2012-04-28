@@ -176,7 +176,7 @@ struct player_t {
 	char		ThrowStat;
 	short		Throw[6];
 	char		x0070;
-	char		x0071;
+	char		ProjectilePushBack;				// being pushed back by projectile
 	
 	u8			ThrowTrajectory;    /* 0x0076 */
 	//char		x0077;				// unused?
@@ -328,7 +328,7 @@ struct player_t {
 	u8	AITimer272;
 	u8	AIThreatCheckMode;			/* 0273 initially 2 */
 	u8	YokeAttackingMe;			// 0275
-	u8	x0276;
+	u8	x0276;						// apparently unused?
 	u8	AITimerThreatCheck;
 	u8	AIThreatFound;					// 0278 
 	u8	AIForceDefensive;		/* x0279 */

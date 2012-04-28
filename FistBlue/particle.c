@@ -58,7 +58,6 @@ void sub_25f8(Object *obj) {
 }
 void check_rect_queue_draw(Object *obj) {   /* 0x2540 */
     GState *gc;       
-    short int x, y;
 	POINT16 point;
 
     if(obj->exists) {
@@ -144,10 +143,7 @@ Object *alloc_action_by_type(short type) {
 
 
 void update_motion(Object *obj) {		/* 2416 */
-    VECT16 *path= obj->Path;
-
-    /* fixed precision arithmetic */
-	
+    /* fixed precision arithmetic */	
     obj->X.full += (obj->Path[obj->Step].x.full << 8);
     obj->Y.full += (obj->Path[obj->Step].y.full << 8);
 }

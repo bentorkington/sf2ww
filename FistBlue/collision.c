@@ -952,7 +952,7 @@ static void _CDCheckPlayer(Player *ply, Player *vict) {     /* 7cf38 */
             vict->BlockStun   = FALSE; 
         }  
     }
-    vict->x0071 = 0;						//7d000
+    vict->ProjectilePushBack = FALSE;						//7d000
     set_newreact(vict, ply, active);       
     make_collision_sound(vict, active);
     sub_7d74e(ply, vict, active);		     /* splash, see if vega loses claw */

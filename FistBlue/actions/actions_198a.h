@@ -99,7 +99,7 @@ typedef struct {
 	char			ThrowStat;
 	short			Throw[6];					// XXX 3 x Point
 	char			x0070;
-	char			x0071;
+	char			ProjectilePushBack;
 	// gap
 	u8				ThrowTrajectory;			/* 0x0076 */
 	char			x0077;

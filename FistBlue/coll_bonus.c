@@ -120,7 +120,7 @@ static void sub_7d314(Object *a6, Player *a2) {
 	a2->Timer2 = 14;
 	a2->Direction = a6->Flip;
 	--a2->Energy;
-	a2->x0071 = 0;
+	a2->ProjectilePushBack = FALSE;
 	set_newreact(a2, (Player *)a6, a3);
 	soundsting(SOUND_IMPACT5);
 	mac_stunhim_from76(a6, a2);
@@ -460,7 +460,7 @@ static void _CDCheckObjBonus2(Object *obj, Player *ply) {			// 7d2ae
 	ply->Timer2 = 14;
 	ply->Direction = obj->Flip;
 	ply->Energy--;
-	ply->x0071 = 0;
+	ply->ProjectilePushBack = FALSE;
 	ply->NextReactMode = RM_HITINAIR;
 	queuesound(45);
 	mac_stunhim_from76(obj, ply);

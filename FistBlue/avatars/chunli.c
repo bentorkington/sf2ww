@@ -1326,7 +1326,7 @@ void PLCBCompAttackChunLi(Player *ply) {		//346be
 					case 0:
 						NEXT(ply->mode2);
 						ud->x0085 = ply->AIMultiCount;
-						CASetAnim2(ply, 0x58, ply->ButtonStrength/2);
+						// XXX CASetAnim2(ply, 0x58, ply->ButtonStrength/2);
 						break;
 					case 2:
 						if (AF1) {

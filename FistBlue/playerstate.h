@@ -40,7 +40,7 @@ void set_crouchblock(Player *ply);
 void set_falling_from_platform(Player *ply);
 void set_jumping(Player *ply);
 void react_to_result(Player *ply);
-void downandout(Player *ply);
+void SMTumble(Player *ply);
 void ply_exit_stand(Player *ply);
 void ply_exit_crouch(Player *ply);
 void ply_exit_air(Player *ply);

@@ -75,9 +75,9 @@ static short PSGetRoundResult(void) {		/* 2a768 */
 void PSEntry(Player *ply) {   /* 0x28396 was: player_per_frame */
     short offsetsel;
 	
-    if(ply->Human) {          /* XXX human */		
+    if(ply->Human) {      		
         human_per_frame(ply);
-    } else {                  /* computer */
+    } else {             
         if(g.OnBonusStage) {
 			/* shouldn't happen */
             ply->PSFinishedParticipating = TRUE;
@@ -88,7 +88,7 @@ void PSEntry(Player *ply) {   /* 0x28396 was: player_per_frame */
     }
     check_ply_x_bounds(ply);
 	
-	// Draw an 'extra' sprite associated with an avatar, such as Vega's claw
+	// Update an 'extra' sprite associated with an avatar, such as Vega's claw
     ply->ExtraSpriteEna = FALSE;
     if(ply->exists && ply->VegaHasClaw) {
         if(offsetsel = ply->ActionScript->ExtraSprite) {
@@ -110,11 +110,12 @@ void (*playerstate_LU[11])(Player *ply) = {
 	proc_plstat_attacking,
 	proc_plstat_powermove,
 	proc_plstat_taking_hit,
-	proc_plstat_victory, //proc_plstat_victory1,
-	proc_plstat_victory, //proc_plstat_victory2,
+	proc_plstat_victory, 
+	proc_plstat_victory,
 	proc_plstat_thrown_recovery,
 };
 
+#pragma mark ---- Diziness ----
 
 static void PSMakeDizzy(Player *ply) {			/* 2a652 make dizzy */
 	ply->DizzyFall     = TRUE;
@@ -184,6 +185,9 @@ static void PSDizzyAccounting(Player *ply) {
 			break;
 	}
 }
+
+#pragma mark ---- Damage Accounting ----
+
 static void PSPlayerDamage(Player *ply, short energy){		//2a460
 	short temp;
 	ply->x01ac          = FALSE;			// set in react_to_attack, but never compared
@@ -234,28 +238,26 @@ static void PSPlayerKO(Player *ply) {		/* 2a508 */
 		DIESTAT_0, DIESTAT_12,
 	};		
 	
-	if(ply->mode1 == PLSTAT_TUMBLE) {
-		return;
+	if(ply->mode1 != PLSTAT_TUMBLE) {
+		if(g.RoundResult < 0 || g.RoundResult != (1<<ply->Side)) {
+			ply->mode0 += 2;		/* 2a544 */
+			ply->mode1 = ply->mode2 = ply->mode3 = 0;
+			ply->Attacking    = 0;
+			ply->IsJumpThreat = FALSE;
+			ply->ProjHit      = FALSE;
+			ply->DizzyStun    = FALSE;
+			ply->mode1        = data_2a574[ply->NextReactMode / 2];
+		} else {
+			x = ply->UndealtDamage;
+			ply->UndealtDamage = 0;
+			if(x) {
+				QueueEffect(ply->Opponent->RewardID, ply->Opponent->Side);
+			}
+			PSPlayerDamage(ply, 0);
+		}
 	}
-	if(g.RoundResult < 0 || g.RoundResult != (1<<ply->Side)) {
-		ply->mode0 += 2;		/* 2a544 */
-		ply->mode1 = ply->mode2 = ply->mode3 = 0;
-		ply->Attacking = 0;
-		ply->IsJumpThreat = FALSE;
-		ply->ProjHit = FALSE;
-		ply->DizzyStun = FALSE;
-		ply->mode1 = data_2a574[ply->NextReactMode / 2];
-		return;
-	}
-	
-	x = ply->UndealtDamage;
-	ply->UndealtDamage = 0;
-	if(x) {
-		QueueEffect(ply->Opponent->RewardID, ply->Opponent->Side);
-	}
-	PSPlayerDamage(ply, 0);
 }
-	
+
 void player_postamble(Player *ply) {	// 2a410 called after comp_proc_stat and human_per_frame
 	int temp;
 	if(ply->BlockStun) {
@@ -293,8 +295,9 @@ void human_per_frame(Player *ply) {		/* 285f4 */
     switch (ply->mode0) {
     case 0:
         NEXT(ply->mode0);
-        LBInitHitBoxes(ply);         /* init throwboxes and hitboxes */
-        ply->Step = ply->StepSave = STEP_STILL;
+        LBInitHitBoxes(ply);
+        ply->Step     = 
+		ply->StepSave = STEP_STILL;
         CASetAnim1(ply, STATUS_NORMAL);
         break;
     case 2:
@@ -306,15 +309,15 @@ void human_per_frame(Player *ply) {		/* 285f4 */
                 ply->Energy = ply->EnergyDash ^ 0x1;
             }
         }
-        if(ply->MultiHoldoff) {ply->MultiHoldoff--;}  
-			                  /* hit by chunli, honda or blanka multi */
-        
+        if(ply->MultiHoldoff)	/* hit by chunli, honda or blanka multi */
+			ply->MultiHoldoff--;  
+			                  
         check_powermove_input(ply);
         
         if(g.PreRoundAnim) {
             actiontick((Object *)ply);
         } else {
-            if(ply->TCollDis) {ply->TCollDis--;}
+            if(ply->TCollDis)  {ply->TCollDis--;}
             if(ply->NoThrow_t) {ply->NoThrow_t--;}
             if(ply->ThrowStat < 0) {
                 if(ply->DizzyClearCnt) {
@@ -346,7 +349,7 @@ void PSPushBack(Player *ply) {		/* 29ed4 handle pushback/tumble */
 	char x;
 	char a;
 	
-	if (ply->x0071)    { return; }
+	if (ply->ProjectilePushBack)    { return; }
 	if(ply->mode3 > 4) { return; }
 	x = *cur++;
 	if(x<=0) {
@@ -366,7 +369,7 @@ void PSPushBack(Player *ply) {		/* 29ed4 handle pushback/tumble */
 	}
 }
 void RMTumble(Player *ply) {	// 294f2
-	downandout(ply);
+	SMTumble(ply);
 	if (ply->Tumble) {
 		PSPushBack(ply); /* handle pushback */
 	} else {
@@ -459,6 +462,7 @@ static int is_projectile_near(Player *ply) {			/* 2a6fe */
 		return FALSE;
 	}
 }
+
 static int retreat_or_block(Player *ply) {     /* 2a6b8 */
 	u8 temp;
 
@@ -476,7 +480,6 @@ static int retreat_or_block(Player *ply) {     /* 2a6b8 */
 	}
 	return FALSE;
 }
-
 
 static void standblock_crouch(Player *ply) {	/* 2a8ca */
 	ply->mode1 = PLSTAT_STANDBLOCK;
@@ -504,6 +507,7 @@ void plstat_do_nextaction(Player *ply) {    /* 28924 */
     };
     data_28932[ ply->NextAction / 2 ] (ply);
 }
+
 void ply_set_standup(Player *ply) {         /* 0x287ec */
     ply->DSOffsetX    = 0;
     ply->mode1        = PLSTAT_CROUCH;    
@@ -513,7 +517,6 @@ void ply_set_standup(Player *ply) {         /* 0x287ec */
     CASetAnim1(ply, STATUS_STAND_UP);    /* status id 6 */
     proc_plstat_crouch(ply);
 }
-
 
 void sub_28814(Player *ply) {			// 28814
 	ply->mode1 = PLSTAT_JUMPING;
@@ -528,7 +531,7 @@ void proc_plstat_normal(Player *ply) {          /* 286cc */
 	
     switch (ply->mode2){
 		case 0:
-			NEXT(ply->mode2)      /* skip this initialisation next time */
+			NEXT(ply->mode2)    
 			ply->Airborne     = AIR_ONGROUND;
 			ply->Attacking    = FALSE;
 			ply->IsJumpThreat = FALSE;
@@ -645,12 +648,15 @@ void proc_plstat_attacking(Player *ply) {
     void (*PCB_ATTACK[8])(Player *ply) = {	
 		PSCBAttackRyu,
 		PSCBAttackEHonda,	
-		NULL,
+		NULL,					// todo
 		PSCBAttackGuile,	
 		PSCBAttackRyu,		//Ken is the same
 		PSCBAttackChunLi,
-		/* XXX */ };
-	/* 00028E44   0002 d168                    ;Ryu
+		NULL,
+		NULL,
+	};
+	/* 
+	 00028E44   0002 d168                    ;Ryu
 	 00028E48   0002 da12                     
 	 00028E4C   0002 e42a                       
 	 00028E50   0002 f81e                    ;Guile
@@ -693,7 +699,7 @@ void proc_plstat_powermove(Player *ply) {
 void proc_plstat_jumping(Player *ply) {         /* 28a46 */
     int temp;
 	switch(ply->mode2) {
-    case 0:
+    case 0:			// Init Jump
         actiontick((Object *)ply);
         if((ply->AnimFlags & 0xff) == 0) {
             NEXT(ply->mode2);
@@ -702,7 +708,7 @@ void proc_plstat_jumping(Player *ply) {         /* 28a46 */
             ply->OnPlatform2		= FALSE;
         }
         break;
-    case 2:
+    case 2:			// During jump, can attack
         temp = ply_cb_jumpmove(ply);
         if(temp) {
             if(temp<0) {
@@ -713,11 +719,10 @@ void proc_plstat_jumping(Player *ply) {         /* 28a46 */
                 ply->mode3 = 0;
                 if(ply->Timer2) {
                     ply->Timer2--;
-                    return;
+                } else {
+					CATrajectory((Object *)ply);
+					actiontick((Object *)ply);
                 }
-                CATrajectory((Object *)ply);
-                actiontick((Object *)ply);
-                return;
             } else {
                 ply->mode2 = 6;
                 ply->Attacking    = TRUE;
@@ -733,8 +738,8 @@ void proc_plstat_jumping(Player *ply) {         /* 28a46 */
 			jump_physics(ply);
 		}
         break;
-    case 4:                                 /* 28b6a */
-			/* never attacked in the jump */
+    case 4:  
+			/* normal end to jump, never attacked in the jump */
         if(PSGetRoundResult())          { react_to_result(ply); return; }
         if(is_facing_enemy(ply))        { turn_around(ply);     return; }
         if(is_holding_down(ply)) {
@@ -761,19 +766,19 @@ void proc_plstat_jumping(Player *ply) {         /* 28a46 */
         }
         jump_physics(ply);
         break;
-    case 8:
+    case 8:		// bounced off a wall, only for ChunLi, (maybe Vega?)
         if(--ply->TmrWallBounce2) {return;}
-        ply->mode2 = 4;
+        ply->mode2 = 2;
         ply->VelX.full   = 0x0400;
-        ply->AclX.full = 0x0005;
+        ply->AclX.full   = 0x0005;
         ply->VelY.full   = 0x0600;
-        ply->AclY.full = 0x0048;
+        ply->AclY.full   = 0x0048;
         ply->TmrWallBounce = 9;
         if(ply->Flip ^= 1 == 0) {
             ply->VelX.full = -ply->VelX.full;
             ply->AclX.full = -ply->AclX.full;
         }
-        CASetAnim1(ply, 0x4e);	/* makes no sense to me checked it again and again */
+        CASetAnim1(ply, 0x4e);
         break;
     }
 }
@@ -1022,10 +1027,10 @@ void jump_physics(Player *ply) {       /* 0x28aa4 do jump physics, player to gro
 	CATrajectory((Object *)ply);
     if(ply->VelY.full < 0) {    /* on the way back down? */
         if(check_ground_collision((Object *)ply)) {
-            /* 0x28b16  we landed after jumping */
+            /* we landed */
             ply->Attacking		= FALSE;
             ply->IsJumpThreat   = FALSE;
-            ply->mode2			= 4;
+            ply->mode2			= 4;		// normal ending to jump
             ply->LocalTimer     = 7;
             ply->Airborne		= AIR_ONGROUND;
             queuesound(SOUND_IMPACT8);
@@ -1248,8 +1253,8 @@ void set_attacking(Player *ply) {
 
 void set_falling_from_platform(Player *ply) {   /* was setjumping2 */
     ply->mode1 = PLSTAT_JUMPING;
-    ply->mode2 = 2;
-    ply->mode3   = 0;
+    ply->mode2 = 2;			// we init the jump ourselves
+    ply->mode3 = 0;
     ply->VelX.full = ply->VelY.full = ply->AclX.full = 0;
     ply->AclY.full = 0x48;          /* standard gravity */
     ply->Airborne = AIR_JUMPING;
@@ -1261,9 +1266,9 @@ void set_jumping(Player *ply) {
     set_towardsaway(ply);
 	
 	
-    ply->VelX.full    = data_2aa30[ply->FighterID][ply->Step ^ ply->Flip][0]; /* word */
+    ply->VelX.full  = data_2aa30[ply->FighterID][ply->Step ^ ply->Flip][0]; /* word */
     ply->AclX.full  = data_2aa30[ply->FighterID][ply->Step ^ ply->Flip][1];
-    ply->VelY.full    = data_2aa30[ply->FighterID][ply->Step ^ ply->Flip][2];
+    ply->VelY.full  = data_2aa30[ply->FighterID][ply->Step ^ ply->Flip][2];
     ply->AclY.full  = data_2aa30[ply->FighterID][ply->Step ^ ply->Flip][3];
     if(ply->Flip) {
         ply->VelX.full = -ply->VelX.full;
@@ -1273,7 +1278,7 @@ void set_jumping(Player *ply) {
 }
 
 	
-void downandout(Player *ply) {		//2a052
+void SMTumble(Player *ply) {		//2a052 was downandout()
     switch (ply->mode3) {
 		case 0:
 			NEXT(ply->mode3);
@@ -1287,9 +1292,9 @@ void downandout(Player *ply) {		//2a052
 				} else {
 					setstatus_icyman(ply);
 				}
-				return;
+			} else {
+				CASetAnim2(ply, ply->TumbleStatus, 0);
 			}
-			CASetAnim2(ply, ply->TumbleStatus, 0);
 			break;
 		case 2:		//2a0aa
 			if(ply->Timer2) {
@@ -1375,7 +1380,7 @@ void downandout(Player *ply) {		//2a052
 				actiontick((Object *)ply);
 			}
 			break;
-		case 0xa:
+		case 10:
 			if(find_apex(ply)) {         /* returns true at vertex of trajectory */
 				if(ply->PlatformFallDir == 0 && ply->BoundCheck == 0) {
 					actiontick((Object *)ply);
@@ -1425,6 +1430,8 @@ short PSSetNextAction(Player *ply) {		// 288c0
 	}
 	return FALSE;
 }
+
+#pragma mark ply_exit_*
 
 void ply_exit_stand(Player *ply) {	// 2876a
     if(ply->Human) {
