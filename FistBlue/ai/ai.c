@@ -1313,7 +1313,7 @@ static void _AISearchA8IfOppXLessEqual(Player *ply) {				//2bc2e
 	printf("AISearchA8IfOppXLessEqual: ");
 #endif
 	if(ply->OppXDist <= _AIReadByte(ply) & 0xff) {
-		_AISearchStrategy(ply, 0x80 + 0x28);
+		_AISearchStrategy(ply, AIB_LABEL_A8);
 	}
 #ifdef DEBUG_AI
 	printf("\n");
@@ -1333,7 +1333,7 @@ static void _AISearchACIfOppJump(Player *ply) {
 			return;
 		}
 	}
-	_AISearchStrategy(ply, 0x80 + 0x2c);
+	_AISearchStrategy(ply, AIB_LABEL_AC);
 #ifdef DEBUG_AI
 	printf("\n");
 #endif

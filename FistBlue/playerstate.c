@@ -1288,9 +1288,9 @@ void SMTumble(Player *ply) {		//2a052 was downandout()
 			ply->Airborne        = AIR_REEL1;
 			if(ply->ProjHit) {
 				if(ply->ProjHit == PROJHIT_FIERY) {
-					setstatus_burningman(ply);
+					CASetAnim_BurningFall(ply);
 				} else {
-					setstatus_icyman(ply);
+					CASetAnim_IcyFall(ply);
 				}
 			} else {
 				CASetAnim2(ply, ply->TumbleStatus, 0);

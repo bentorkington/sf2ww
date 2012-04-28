@@ -2999,6 +2999,62 @@ const CAFrame actlist_1da8c[] = {
 	{0,0,0,(struct image *)&actlist_1da8c[0], 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 }
 };
 
+#pragma mark Act33
+
+
+const Image image_1f5b8 = {
+    2, 0x1005, 0x32, 0, 0,
+    { 0x5426,  }
+};
+const CAFrame actlist_1f510[] = {
+	{65535, 0x80, 0x0, &image_1f5b8, 0, 0, 0, 0, 0, 0, 0, 0x00, 0, 0, 0, 0, 0, 0, 0, 0},
+	{0,0,0,(struct image *)&actlist_1f510[0], 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 }
+};
+const Image image_1f5c4 = {
+    4, 0x0001, 0x31, 0, 0,
+    { 0x54ef, 0x54ff, 0x5416, 0x62df,  }
+};
+const CAFrame actlist_1f52c[] = {
+	{65535, 0x80, 0x0, &image_1f5c4, 0, 0, 0, 0, 0, 0, 0, 0x00, 0, 0, 0, 0, 0, 0, 0, 0},
+	{0,0,0,(struct image *)&actlist_1f52c[0], 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 }
+};
+const Image image_1f5d6 = {
+    4, 0x1103, 0x31, 0, 0,
+    { 0x6298,  }
+};
+const CAFrame actlist_1f548[] = {
+	{65535, 0x80, 0x0, &image_1f5d6, 0, 0, 0, 0, 0, 0, 0, 0x00, 0, 0, 0, 0, 0, 0, 0, 0},
+	{0,0,0,(struct image *)&actlist_1f548[0], 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 }
+};
+const Image image_1f5e2 = {
+    2, 0x0001, 0x32, 0, 0,
+    { 0x60de, 0x60df, 
+	}
+};
+const CAFrame actlist_1f564[] = {
+	{65535, 0x80, 0x0, &image_1f5e2, 0, 0, 0, 0, 0, 0, 0, 0x00, 0, 0, 0, 0, 0, 0, 0, 0},
+	{0,0,0,(struct image *)&actlist_1f564[0], 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 }
+};
+const Image image_1f5f0 = {
+    4, 0x0002, 0x31, 0, 0,
+    { 0x2d87, 0x3151, 0x2d4e, 0x31e0,  }
+};
+const CAFrame actlist_1f580[] = {
+	{65535, 0x80, 0x0, &image_1f5f0, 0, 0, 0, 0, 0, 0, 0, 0x00, 0, 0, 0, 0, 0, 0, 0, 0},
+	{0,0,0,(struct image *)&actlist_1f580[0], 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 }
+};
+const Image image_1f602 = {
+    2, 0x000b, 0x2a, 0, 0,
+    { 0x5f0d, 0x5f4e,  }
+};
+const CAFrame actlist_1f59c[] = {
+	{65535, 0x80, 0x0, &image_1f602, 0, 0, 0, 0, 0, 0, 0, 0x00, 0, 0, 0, 0, 0, 0, 0, 0},
+	{0,0,0,(struct image *)&actlist_1f59c[0], 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 }
+};
+
+const CAFrame **actlist_1f502[]={
+	actlist_1f510, 	actlist_1f52c, 	actlist_1f548, 	actlist_1f564, 	actlist_1f580, 	actlist_1f59c, 
+};
 
 
 

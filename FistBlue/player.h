@@ -406,8 +406,8 @@ void CASetAnimWithStep(Player *ply, int status);
 void CASetAnim2(Player *ply, int statusd1, int argd0);
 void CASetAnim1(Player *ply, short status);
 
-void setstatus_burningman(Player *ply);
-void setstatus_icyman(Player *ply);
+void CASetAnim_BurningFall(Player *ply);
+void CASetAnim_IcyFall(Player *ply);
 
 short ply_cb_standmove(Player *ply);	/* 2a81a */
 short ply_cb_crouchmove(Player *ply);	/* 2a84a */

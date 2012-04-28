@@ -70,7 +70,7 @@ void object_dot_cloth(void) {
 	for (x=0; x<24; x++) {
 		for (y=0; y<16; y++) {
 			cp = MakePointObj(x * 16, y * 16);
-			OBJECT_DRAW_ID((x * 16) + y, cp >> 16, cp & 0xffff, 0x8080 + (((x * 16) + y)&0xf), 0);
+			OBJECT_DRAW_ID((x * 16) + y, cp >> 16, cp & 0xffff, SF2_TILE_OBJ_ASCII + (((x * 16) + y)&0xf), 0);
 		}
 	}
 	

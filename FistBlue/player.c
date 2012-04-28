@@ -499,11 +499,11 @@ void CASetAnim1(Player *ply, short status) {
 }
 
 
-void setstatus_burningman(Player *ply) {        /* 0x3a8e */
+void CASetAnim_BurningFall(Player *ply) {        /* 0x3a8e */
 	setaction_direct((Object *)ply, actlist_3aa4);
 }
 
-void setstatus_icyman(Player *ply) {
+void CASetAnim_IcyFall(Player *ply) {
 	setaction_direct((Object *)ply, actlist_3bc8);
 }
 

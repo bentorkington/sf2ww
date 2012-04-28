@@ -369,10 +369,10 @@ void RMFootSwept(Player *ply) {		/* 29178 */
 				ply->GroundSoundDisa = FALSE;
 				ply->ReactTimer = 0;
 				ply->Airborne   = -1;
-				ply->VelX.full  = 0x0200;
+				ply->VelX.full  = 0x0200;		//2.00
 				ply->AclX.full  = 0x0000;
-				ply->VelY.full  = 0x05c0;
-				ply->AclY.full  = 0x0048; /* standard gravity */
+				ply->VelY.full  = 0x05c0;		//5.75
+				ply->AclY.full  = 0x0048; /* standard gravity 0.28125 */
 				if(ply->Flip) {ply->VelX.full = -ply->VelX.full;}
 				ply->x012a = ply->VelX.full;
 				ply->PSPushBacks = data_29150;

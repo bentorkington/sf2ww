@@ -47,8 +47,18 @@
 #define FACING_RIGHT	1
 
 
-#define SF2_TILE_OBJ_PEACE		0x815f
+#define SF2_TILE_OBJ_ASCII			0x8080
+#define SF2_TILE_OBJ_HEXCHARS		0x8100
+#define SF2_TILE_OBJ_PEACE			0x815f
 #define SF2_TILE_OBJ_DOTCLOTH	   0x4
+
+#define TILE_FRAMECORNER2	0x7fd4
+#define TILE_FRAMECORNER	0x7fd5
+#define TILE_BIGDIGIT		0x8100
+#define TILE_ENERGY_FULL	0x81de
+#define TILE_ENERGY_EMPTY	0x81ee
+
+
 
 #pragma mark Projectile Library
 #define SF2PROJ_HADOUKEN		 0x0

@@ -89,13 +89,6 @@ gfx_p += 4;
 
 #endif	/* CPS */
 
-#define TILE_FRAMECORNER2	0x7fd4
-#define TILE_FRAMECORNER	0x7fd5
-#define TILE_BIGDIGIT		0x8100
-#define TILE_ENERGY_FULL	0x81de
-#define TILE_ENERGY_EMPTY	0x81ee
-
-
 /* Graphics tile offsets */
 #define GFXROM_OBJECT   0x0
 #define GFXROM_SCROLL1  0x4000

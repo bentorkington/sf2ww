@@ -57,6 +57,7 @@ static void action_11(Object *obj);
 static void action_12(Object *obj);
 static void action_13(Object *obj);
 
+static void action_15(Object *obj);
 static void action_19(Object *obj);
 
 static void action_1e(Object *obj);
@@ -72,6 +73,8 @@ static void action_2c(Object *obj);
 static void action_2e(Object *obj);
 static void action_2f(Object *obj);
 static void action_30(Object *obj);
+
+static void action_33(Object *obj);
 
 static void action_35(Object *obj);
 static void action_36(Object *obj);	/* screenwobble */
@@ -140,6 +143,7 @@ void proc_actions(void) {			/* c7da */
 				ACT117C(0x12, action_12)
 				ACT117C(0x13, action_13)
 				
+				ACT117C(0x15, action_15)
 				
 				ACT117C(0x19, action_19)
 				
@@ -155,6 +159,8 @@ void proc_actions(void) {			/* c7da */
 				ACT117C(0x2e, action_2e)
 				ACT117C(0x2f, action_2f)
 				ACT117C(0x30, action_30)
+				
+				ACT117C(0x33, action_33)
 				
 				ACT117C(0x35, action_35)
 				ACT117C(0x36, action_36)
@@ -1517,6 +1523,30 @@ static void action_13(Object *obj) {  // 119ee
 				check_rect_queue_draw(obj);
 			}
 			break;
+			// todo destructor
+		default:
+			break;
+	}
+}
+
+#pragma mark Act15
+static void action_15(Object *obj) {
+	switch (obj->mode0) {
+		case 0:
+			NEXT(obj->mode0);
+			obj->Pool = (u8 []){0,0,0,0,0,0,0,2}[obj->SubSel];
+			//todo setactiondraw(obj, data_11bc0, obj->SubSel);
+			break;
+		case 2:
+			if (obj->SubSel >= 4 || obj->mode1 || g.FightOver == 0) {
+				actiontickdraw(obj);
+			} else {
+				NEXT(obj->mode1);
+				//todo setactiondraw(obj, data_11c00, obj->SubSel);
+			}
+		case 4:
+		case 6:
+			FreeActor(obj);
 		default:
 			break;
 	}
@@ -1824,7 +1854,7 @@ static void action_1f(Object *obj) {		//18e7e
 		{   240,    32,  },
 	};
 	
-	Player *ply = obj->SubSel ? PLAYER1 : PLAYER2;
+	Player *ply = obj->SubSel ? PLAYER2 : PLAYER1;
 	switch (obj->mode0) {
 		case 0:
 			if (ply->Human) {
@@ -2710,6 +2740,24 @@ static void action_30(Object *obj) {		// 1da4a
 			FreeActor(obj);
 			break;
 			FATALDEFAULT;
+	}
+}
+#pragma mark Act33 random stage decor
+static void action_33(Object *obj) {
+	switch (obj->mode0) {
+		case 0:
+			NEXT(obj->mode0);
+			obj->Flip = obj->Step;
+			obj->Pool = obj->UserByte;
+			setaction_list(obj, actlist_1f502, obj->SubSel);
+			break;
+		case 2:
+			check_rect_queue_draw(obj);
+			break;
+		case 4:
+		case 6:
+			FreeActor(obj);
+		FATALDEFAULT;
 	}
 }
 

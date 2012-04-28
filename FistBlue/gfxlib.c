@@ -215,7 +215,7 @@ void printnibble (u16 **cursor, u32 *gfxcursor, u16 attr, u8 arg, u8 *printzeroe
     *printzeroes=TRUE;
 	x = *gfxcursor >> 16;
 	y = *gfxcursor & 0xffff;
-    OBJECT_DRAW(*cursor, x, y, (arg & 0xf) + 0x8100, attr);
+    OBJECT_DRAW(*cursor, x, y, (arg & 0xf) + SF2_TILE_OBJ_HEXCHARS, attr);
     INC_GFX_CURSOR(gfxcursor, 16, 0);
     OBJ_CURSOR_BUMP(*cursor);
 }
@@ -244,7 +244,7 @@ static void _putchar(u16 **cursor, u32 *gfxcursor, u16 arg, u16 attr) { /* 521a 
 	x = *gfxcursor >> 16;
 	y = *gfxcursor && 0xffff;
 	
-    OBJECT_DRAW(*cursor, x, y , arg & 0xff + 0x8080, attr);  /* main charset */ 
+    OBJECT_DRAW(*cursor, x, y , arg & 0xff + SF2_TILE_OBJ_ASCII, attr);  /* main charset */ 
     INC_GFX_CURSOR(gfxcursor, 12,0);
     OBJ_CURSOR_BUMP(cursor);
 }
@@ -481,7 +481,7 @@ void clear_scrolls(void) {		/* 0x5f10 */
 	short i;
 	/* clear Scroll1, Scroll2, Scroll3 & Object */
 	for (i=0; i<0x1000; i++) {	
-		gemu.Tilemap_Scroll1[i][0] = GFXROM_SCROLL1 + 0x20;	/* whitespace */
+		gemu.Tilemap_Scroll1[i][0] = GFXROM_SCROLL1 + ' ';	/* whitespace */
 		gemu.Tilemap_Scroll1[i][1] = 0;
 		gemu.Tilemap_Scroll2[i][0] = GFXROM_SCROLL2;
 		gemu.Tilemap_Scroll2[i][1] = 0;
