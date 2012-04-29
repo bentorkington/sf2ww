@@ -1739,7 +1739,7 @@ void ApplyPhysicsRules(void) {		/* 28340 */
 	ply_calc_draw_order();				/* calc player draw order */
 	ply_set_enemydirection();			/* set directions */
 	_PSPlayerDelta();					/* inertia? */
-	CDCheckPushBoxes();					/* check pushboxes */
+	 CDCheckPushBoxes();				/* check pushboxes */
 	_PSCalcOppDistances();				/* calc x/y differences */
 }
 	

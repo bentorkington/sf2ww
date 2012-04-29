@@ -56,9 +56,14 @@ static void action_10(Object *obj);
 static void action_11(Object *obj);
 static void action_12(Object *obj);
 static void action_13(Object *obj);
-
+static void action_14(Object *obj);
 static void action_15(Object *obj);
+static void action_16(Object *obj);
+
 static void action_19(Object *obj);
+static void action_1a(Object *obj);
+static void action_1b(Object *obj);
+static void action_1c(Object *obj);
 
 static void action_1e(Object *obj);
 static void action_1f(Object *obj);
@@ -142,10 +147,14 @@ void proc_actions(void) {			/* c7da */
 				ACT117C(0x11, action_11)
 				ACT117C(0x12, action_12)
 				ACT117C(0x13, action_13)
-				
+				ACT117C(0x14, action_14)
 				ACT117C(0x15, action_15)
+				ACT117C(0x16, action_16)
 				
 				ACT117C(0x19, action_19)
+				ACT117C(0x1a, action_1a)
+				ACT117C(0x1b, action_1b)
+				ACT117C(0x1c, action_1c)
 				
 				ACT117C(0x1e, action_1e)
 				ACT117C(0x1f, action_1f)
@@ -1529,6 +1538,32 @@ static void action_13(Object *obj) {  // 119ee
 			break;
 	}
 }
+#pragma mark Act14
+static void action_14(Object *obj) {
+	// doesn't call FreeActor(), needs to be wiped out.
+	
+	if (obj->SubSel) {
+		if (obj->mode0) {
+			actiontick(obj);
+			check_rect_queue_draw(obj);
+		} else {
+			setaction_direct(obj, action_1237c);
+		}
+	} else {
+		switch (obj->mode0) {
+			case 0:
+				NEXT(obj->mode0);
+				sub_41c2(obj, simpleaction_126e8);
+				break;
+			case 2:
+				actiontickdraw(obj);
+				break;
+			default:
+				break;
+		}
+	}
+
+}
 
 #pragma mark Act15
 static void action_15(Object *obj) {
@@ -1551,6 +1586,87 @@ static void action_15(Object *obj) {
 			FreeActor(obj);
 		default:
 			break;
+	}
+}
+#pragma mark Act16
+static int sub_12890(Object *obj) {
+	if (obj->UserByte & 1) {
+		return (g.x8a60[obj->UserByte / 2] & 0xf);
+	} else {
+		return ((g.x8a60[obj->UserByte / 2] & 0xf0) >> 4);
+	}
+}
+
+
+static void action_16(Object *obj) {
+	switch (obj->SubSel) {
+		case 0:
+		case 1:
+			switch (obj->mode0) {
+				case 0:
+					NEXT(obj->mode0);
+					obj->Pool = 2;
+					setactiondraw(obj, actlist_128d2, obj->SubSel);
+					break;
+				case 2:
+					actiontickdraw(obj);
+					break;
+				FATALDEFAULT;
+			}
+			break;
+		case 2:
+			switch (obj->mode0) {
+				case 0:
+					NEXT(obj->mode0);
+					obj->Pool = 4;
+					g.x8a64[0] = 0;
+					setaction_direct(obj, action_12b70);
+					check_rect_queue_draw(obj);
+					break;
+				case 2:
+					if (g.x8a64[0]) {
+						g.x8a64[0] = 0;
+						setaction_direct(obj, action_12b70);
+					}
+					actiontick(obj);
+					check_rect_queue_draw(obj);
+					break;
+				FATALDEFAULT;
+			}
+			break;
+		case 3:
+			if (obj->mode0 == 0) {
+				NEXT(obj->mode0);
+				obj->Pool = 6;
+				g.x8a60[0] = g.x8a60[1] = 0;
+				g.x8a62[0] = 0;
+				obj->Draw1 = TRUE;
+				obj->Draw2.part.integer = 0x1d;
+				obj->XPI = (short []){0x30, 0x50, 0x138, 0x158}[obj->UserByte];
+				obj->YPI = 0xa4;
+				setaction_list(obj, actlist_12c60, sub_12890(obj));
+			} else {
+				obj->Draw2.part.integer = 0x1d;
+				if (g.x8a62[obj->UserByte / 2]) {
+					--g.x8a62[obj->UserByte / 2];
+					if ((g.libsplatter & 2) == 0) {
+						obj->Draw2.part.integer = 6;
+					}
+				}
+				setaction_list(obj, actlist_12c60, sub_12890(obj));
+				check_rect_queue_draw(obj);
+			}
+			break;
+		case 4:
+			if (obj->mode0 == 0) {
+				NEXT(obj->mode0);
+				obj->Pool = 6;
+				setaction_direct(obj, action_12e90);
+			}
+			check_rect_queue_draw(obj);
+			break;
+			
+		FATALDEFAULT;
 	}
 }
 
@@ -1610,6 +1726,74 @@ static void action_17(Object *obj) {
 	
 }
 
+#pragma mark Act18
+static int sub_12fe6(Object *obj) {
+	if (obj->SubSel) {
+		if (gstate_Scroll1.XPI < 448) {
+			return TRUE;
+		} else {
+			return FALSE;
+		}
+	} else {
+		if (gstate_Scroll1.XPI < 416) {
+			return TRUE;
+		} else {
+			return FALSE;
+		}		
+	}
+}
+
+static void action_18(Object *obj) {
+	Object *nobj;
+	
+	switch (obj->mode0) {
+		case 0:
+			NEXT(obj->mode0);
+			obj->Scroll = SCROLL_1;
+			obj->XPI = (short []){0x144, 0x344}[obj->SubSel];
+			obj->YPI = 0xe4;
+			break;
+		case 2:
+			switch (obj->mode1) {
+				case 0:
+					NEXT(obj->mode1);
+					for (int i=14; i>=0; --i) {
+						// not quite same, sf2ua bails on
+						// first fail of AllocActor
+						if (nobj = AllocActor()) {
+							nobj->exists = TRUE;
+							nobj->Sel = 0x17;
+							nobj->Scroll = SCROLL_1;
+							nobj->XPI = obj->XPI + 10;
+							nobj->YPI = obj->YPI - 64;
+							nobj->SubSel =
+								(char []){0,1,2,3,4,0,1,2,3,4,0,1,2,3,4,0}[RAND16];
+						}
+					
+					}
+					g.x8a66[nobj->SubSel] = 1;
+					break;
+				case 2:
+					if (sub_12fe6(obj) == FALSE) {
+						NEXT(obj->mode1);
+						drawsimple_scroll1attr(obj, tiles_1300c, 0x11, 8);
+					}
+					break;
+				case 4:
+					if (sub_12fe6(obj)) {
+						obj->mode1 = 2;
+					}
+					break;
+				FATALDEFAULT;
+			}
+		case 4:
+		case 6:
+			FreeActor(obj);
+		FATALDEFAULT;
+	}
+}
+
+
 #pragma mark Act19 Guile Plane Tail
 static void action_19(Object *obj) {     // 1322c
 	switch (obj->mode0) {
@@ -1628,7 +1812,19 @@ static void action_19(Object *obj) {     // 1322c
 	}
 }
 
-#pragma mark MARK
+#pragma mark Act1A
+static int action_13bf8(void) {
+	Object *nobj;
+	if (nobj = AllocActor()) {
+		nobj->exists = TRUE;
+		nobj->Sel = 0x1a;
+		nobj->XPI = g.GPCollX;
+		nobj->YPI = g.GPCollY;
+		return TRUE;
+	}
+	return FALSE;
+}
+
 static void sub_13c1a(Object *obj) {
 	if (obj->UserData[0] & 0x80) {
 		if (0xaaaa & (1 << (RAND16))) {
@@ -1642,8 +1838,227 @@ static void sub_13c1a(Object *obj) {
 		} else {
 			setaction_list(obj, actlist_13c54,obj->UserData[1]);
 		}
-
+		
 	}
+}
+
+static void action_1a(Object *obj) {		// 13a3a
+	int temp;
+	
+	static const short data_13ae6[] = {
+		0xFFFC, 0x0002, 0xFFFD, 0xFFFE, 0x0003, 0x0000, 0x0002, 0x0001, 
+		0xFFFE, 0x0002, 0x0004, 0x0002, 0x0002, 0xFFFE, 0xFFFE, 0xFFFF,
+	};
+	static const char data_13ac6 []={
+		0x28, 0x03, 0x14, 0x05, 0x11, 0x02, 0x45, 0x08, 0x16, 0x07, 0x19, 0x02, 0x0A, 0x03, 0x32, 0x05,
+		0x2B, 0x06, 0x0D, 0x0D, 0x28, 0x06, 0x0B, 0x07, 0x0D, 0x03, 0x23, 0x06, 0x17, 0x04, 0x24, 0x11
+	};
+	
+	static const u16 data_13b06 [3][8][4]={{
+		{0x0020, 0x0000, 0x0230, 0x0058, },
+		{0xFFCE, 0x0000, 0x0180, 0x0048, },
+		{0x0040, 0x0000, 0x0180, 0x0060, },
+		{0xFFCF, 0x0000, 0x0190, 0x0010, },
+		{0x0025, 0x0000, 0x0190, 0x0058, },
+		{0xFFF0, 0x0000, 0x0200, 0x0048, },
+		{0x0022, 0x0000, 0x0210, 0x0050, },
+		{0xFFEE, 0x0000, 0x02C0, 0x0050, },
+	}, {
+		{0x0100, 0x0000, 0x0400, 0x0062, },
+		{0x0110, 0x0000, 0x0540, 0x0053, },
+		{0xFEA0, 0x0000, 0x0330, 0x0042, },
+		{0xFEE0, 0x0000, 0x0130, 0x0053, },
+		{0x0120, 0x0000, 0x0400, 0x0045, },
+		{0x0120, 0x0000, 0x0530, 0x0063, },
+		{0xFEEB, 0x0000, 0x0340, 0x0053, },
+		{0xFED0, 0x0000, 0x0530, 0x0043, },
+	}, {
+		{0x0223, 0x0000, 0x0600, 0x0052, },
+		{0xFEA0, 0x0000, 0x0480, 0x0040, },
+		{0x0183, 0x0000, 0x0480, 0x0040, },
+		{0xFE40, 0x0000, 0x0600, 0x0045, },
+		{0x0223, 0x0000, 0x0600, 0x0054, },
+		{0xFCD0, 0x0000, 0x0480, 0x0050, },
+		{0x0143, 0x0000, 0x0480, 0x0040, },
+		{0xFDD0, 0x0000, 0x0600, 0x0064, },
+	}};
+		
+		
+	switch (obj->mode0) {
+		case 0:
+			NEXT(obj->mode0);
+			// XXX dual write of 0x1e, 0x1f?
+			obj->LocalTimer = data_13ac6[(sf2rand() & 0x3e)  ];
+			obj->x001f      = data_13ac6[(sf2rand() & 0x3e)+1];
+			obj-> XPI      += data_13ae6[RAND16W];
+			obj-> YPI      += data_13ae6[RAND16W];
+			
+			temp = RAND8;
+			// 8x8x4
+			obj->VelX.full = data_13b06[obj->UserData[2]][temp][0];
+			obj->AclX.full = data_13b06[obj->UserData[2]][temp][1];
+			obj->VelY.full = data_13b06[obj->UserData[2]][temp][2];
+			obj->AclY.full = data_13b06[obj->UserData[2]][temp][3];
+			
+			sub_13c1a(obj);
+			break;
+		case 2:
+			CATrajectory(obj);
+			if (--obj->LocalTimer == 0) {
+				NEXT(obj->mode0);
+			}
+			actiontick(obj);
+			if (obj->x001f) {
+				--obj->x001f;
+				check_rect_queue_draw(obj);
+			} else if ((obj->Timer & 1) == 0) {
+				check_rect_queue_draw(obj);
+			}
+			break;
+		case 4:
+		case 6:
+			FreeActor(obj);
+		FATALDEFAULT;
+	}
+	
+}
+
+
+
+#pragma mark Act1B 
+
+//13f18
+static void action_1b(Object *obj) {
+	static const short sounds[]={
+		SOUND_ONE,		SOUND_TWO,		SOUND_THREE,	SOUND_FOUR,	
+		SOUND_FIVE,		SOUND_SIX,		SOUND_SEVEN,	SOUND_EIGHT,
+		SOUND_NINE
+	};	// there is no zero
+	
+	Player *ply;
+	switch (obj->mode0) {
+		case 0:
+			NEXT(obj->mode0);
+			obj->XPI = 0x110;
+			obj->YPI = 0x50;
+			obj->LocalTimer = 0x7f;
+			if (g.PlyLostToComp) {
+				ply = &g.Player2;
+				ply->SubSel = 1;
+			} else {
+				ply = &g.Player1;
+				ply->SubSel = 0;
+			}
+			obj->Owner = ply;
+			obj->LocalTimer = 0;		// ??
+			/* FALLTHRU */
+		case 2:
+			if (obj->Owner->SubSel & (1 << g.ContinueBits)) {
+				if (obj->LocalTimer != ply->ContinueSecs) {
+					obj->LocalTimer = ply->ContinueSecs;
+					queuesound(sounds[obj->LocalTimer]);
+					setaction_list(obj, actlist_13fba, obj->LocalTimer);
+				}
+			}
+			actiontick(obj);
+			enqueue_and_layer(obj);
+			break;
+		case 4:
+		case 6:
+			FreeActor(obj);
+		FATALDEFAULT;
+	}
+}
+
+#pragma mark Act1C
+static void action_1c(Object *obj) {
+	static const u16 data_1585a[]={0x0200, 0xFEC0, 0x0180, 0xFEA0, 0x0160, 0xFE80, 0x0140, 0xFE00, };
+	static const u16 data_1586a[]={0x04E0, 0x03C0, 0x04B0, 0x0390, 0x05A0, 0x03F0, 0x0510, 0x0480, };
+	static const u16 data_1587a[]={0xFFD0, 0x0015, 0x0000, 0x0020, 0xFFEB, 0xFFE0, 0x0010, 0xFFF0, };
+	static const u16 data_1588a[]={0x0020, 0x0000, 0x0008, 0x0005, 0x0015, 0x0013, 0x0010, 0x0017, };
+	static const u16 data_1589a[]={0x0000, 0xFFFC, 0x0004, 0x0002, 0xFFFE, 0x0001, 0xFFFF, 0xFFFD, };
+	static const u16 data_158ea[]={0x0280, 0x02A0, 0x0240, 0x0260, 0x0250, 0x02B0, 0x0290, 0x0270, };
+	
+	switch (obj->mode0) {
+		case 0:
+			NEXT(obj->mode0);
+			obj->UserData[0] = 0;
+			obj->UserData[1] = 0;
+			if (obj->SubSel >= 5) {
+				obj->UserData[1] = 1;
+				if (obj->UserByte) {
+					obj->Pool = 6;
+				}
+			} else {
+				if (0x9249 & (1<<RAND16)) {
+					obj->Pool = 6;
+				}
+			}
+			setaction_list(obj, actlist_158fe, obj->SubSel);
+			break;
+		case 2:
+			switch (obj->mode1) {
+				case 0:
+					NEXT(obj->mode1);
+					if (obj->UserData[1]) {
+						if (obj->UserByte) {
+							if (obj->SubSel == 5) {
+								obj->VelX.full = 0x400;
+								obj->VelY.full = 0x680;
+							} else {
+								obj->VelX.full = 0x300;
+								obj->VelY.full = 0x500;
+							}							
+						} else {
+							if (obj->SubSel == 5) {
+								obj->VelX.full = 0x300;
+								obj->VelY.full = 0x580;
+							} else {
+								obj->VelX.full = 0x200;
+								obj->VelY.full = 0x400;
+							}
+						}
+					} else {
+						obj->VelX.full = data_1585a[RAND8W];
+						obj->VelY.full = data_1586a[RAND8W];
+						obj->XPI += data_1587a[RAND8W];
+						obj->YPI += data_1588a[RAND8W];
+					}
+					obj->UserData[2] = data_1589a[RAND8W] + 0x28;
+					if (obj->Step == 0) {
+						obj->VelX.full = -obj->VelX.full;
+						obj->Flip ^= 1;
+					}
+					obj->AclX.full = 0;
+					obj->AclY.full = 0x0040;
+					obj->LocalTimer = 0x50;
+					break;
+				case 2:
+					if (--obj->LocalTimer == 0) {
+						NEXT(obj->mode0);
+						obj->mode1 = 0;
+					}
+					CATrajectory(obj);
+					if (obj->VelY.full < 0 && obj->YPI <= obj->UserData[2]) {
+						obj->VelY.full = data_158ea[RAND8W];
+					}
+					break;
+				FATALDEFAULT;
+			}
+			if (((g_d7 + g.libsplatter) & 1) == 0) {
+				check_rect_queue_draw(obj);
+			}
+			break;
+		case 4:
+		case 6:
+			FreeActor(obj);
+		FATALDEFAULT;
+	}
+}
+
+#pragma mark Act1D
+static void action_1d(Object *obj) {
+	
 }
 
 

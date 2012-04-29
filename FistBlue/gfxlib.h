@@ -49,6 +49,9 @@ void sub_90c8(void);	/* start the timeremain flashing */
 void sub_4386(short d1, short d3, short d4, const 
 			  u16 *a1, u16 **gfx_p);
 
+void drawsimple_scroll1attr(Object *obj,  const u16 *tiles, int width, int height);
+
+
 void set_shadow_pen(void);
 
 void showtextbank1(char sel);

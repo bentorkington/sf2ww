@@ -19,19 +19,18 @@
 #define VISIBLE_MARGIN  0x40
 #define STAGE_LENGTH	640		//0x280
 
-
-
-/* game params */
-#define ENERGY_START	0x90 
-#define VS_SCREEN_DELAY 180 /* ticks */
-
-
 /* end compile-time params */
 
 
 #define TRUE  1
 #define FALSE 0
 
+///////////////////////////////////
+//// FistBlue
+///////////////////////////////////
+/* game params */
+#define ENERGY_START	0x90 
+#define VS_SCREEN_DELAY 180 /* ticks */
 
 
 #define STRENGTH_LOW		0
@@ -47,10 +46,23 @@
 #define FACING_LEFT		0
 #define FACING_RIGHT	1
 
+#define BOTH_COMPUTER  0
+#define ONLY_P1        1
+#define ONLY_P2        2
+#define BOTH_HUMAN     3
+
+
+///////////////////////////////////
+//// Text library constants
+///////////////////////////////////
 #define SF2_TEXTLIB_EOL				0x2f
 
+///////////////////////////////////
+//// Tile constants
+///////////////////////////////////
 
 #define SF2_TILE_SC1_ASCII			0x4000
+
 #define SF2_TILE_OBJ_2ASCII			0x8000
 #define SF2_TILE_OBJ_ASCII			0x8080
 #define SF2_TILE_OBJ_HEXCHARS		0x8100
@@ -64,6 +76,9 @@
 #define TILE_ENERGY_EMPTY	0x81ee
 
 
+///////////////////////////////////
+//// Action library ids
+///////////////////////////////////
 
 #pragma mark Projectile Library
 #define SF2PROJ_HADOUKEN		 0x0
@@ -105,10 +120,6 @@
 #define SF2ACT_0X40				0x40
 #define SF2ACT_SPEAK_WINLOSE    0x48
 
-#define BOTH_COMPUTER  0
-#define ONLY_P1        1
-#define ONLY_P2        2
-#define BOTH_HUMAN     3
 
 
 #define VERSION_JAP 0
