@@ -40,7 +40,7 @@ int test_offset_scroll1(Player *ply);
 int test_offset_scroll2(Player *ply);
 int test_offset_scroll3(Player *ply);
 void setactiondraw(Object *obj, const CASimpleFrame **act, int step);
-void sub_41c2(Object *obj, struct simpleaction *act);		//41c2
+void sub_41c2(Object *obj, const struct simpleaction *act);		//41c2
 void actiontickdraw(Object *obj);
 void draw_simple(Object *obj);
 void print_timeremaining(void);

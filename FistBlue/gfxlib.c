@@ -550,7 +550,7 @@ int test_offset_scroll3(Player *ply) {
     return 0;
 }
 
-void sub_41c2(Object *obj, struct simpleaction *act) {		//41c2
+void sub_41c2(Object *obj, const struct simpleaction *act) {		//41c2
 	obj->ActionScript = (Action *)act; 
     obj->Timer      = obj->ActionScript->Delay;
     obj->AnimFlags  = obj->ActionScript->Loop << 8 | obj->ActionScript->Next; 

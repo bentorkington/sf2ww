@@ -35,7 +35,10 @@ typedef struct {
     /*  so on ... */
 	u16	Prio[4];
 	/* Priority Masks */
-	u16 Scroll1XDash, Scroll1YDash, Scroll2XDash, Scroll2YDash, Scroll3XDash, Scroll3YDash, Star1XDash, Star2XDash;
+	u16 Scroll1XDash, Scroll1YDash;
+	u16 Scroll2XDash, Scroll2YDash;
+	u16 Scroll3XDash, Scroll3YDash;
+	u16 Star1XDash, Star2XDash;
 } CPSParam;
 
 
@@ -64,11 +67,9 @@ struct state_playerselect{
 #define SOUND_QUEUE_LENGTH  128
 
 typedef struct game {
-    u16 mode0;      /* variables for the main state machine */
-    u16 timer0, mode1, timer1, mode2, timer2, mode3, timer3;
-    u16 mode4;          /* 0x10 */
-    u16 timer4, mode5, timer5, mode6, timer6;
-    u8  tick,libsplatter;
+    u16 mode0, timer0, mode1, timer1, mode2, timer2, mode3, timer3;
+    u16 mode4, timer4, mode5, timer5, mode6, timer6;
+    u8  tick, libsplatter;
     u16 effectNext, effectCurrent;     /* 0x1e CQ cursors */
     u16 soundNext,  soundCurrent;    
 
@@ -102,36 +103,36 @@ typedef struct game {
 	u8	ContinueCredits;
 	u8	x02a5;		
 
-    u8  StartServiceButtons;
-    u8  SoundOutstanding;
-    u16 ObjTileBudget;      /* x02b6 tile draw budget */
-    u16 x02b8;				/* x02b8 screen dirty? seems not used */
-	u16	x02ba;				/* also unused? */
-	u8	DisableDblBuf;		/* x02bc */
-	short *x02be;			/* RowScroll Cursor used in spritecoords for scroll2 follow */
-    u16 Version;			/* 0x02c2 JapEtcUsa */
-    u8  randSeed1, randSeed2;			/* 0x2c4,5 */
-    u16 Difficulty;			/* 02c6 */
+    u8		StartServiceButtons;
+    u8		SoundOutstanding;
+    u16		ObjTileBudget;      /* x02b6 tile draw budget */
+    u16		x02b8;				/* x02b8 screen dirty? seems not used */
+	u16		x02ba;				/* also unused? */
+	u8		DisableDblBuf;		/* x02bc */
+	short	*x02be;				/* RowScroll Cursor used in spritecoords for scroll2 follow */
+    u16		Version;			/* 0x02c2 JapEtcUsa */
+    u8		randSeed1, randSeed2;			/* 0x2c4,5 */
+    u16		Difficulty;			/* 02c6 */
     /* 0x02c8 - 0x02cd unused */
-    u8  AllowContinue;  /* 02ce */
-    u8  SpecialCostJumper, DemoSound, FlipDisplay, FreePlay, ContinueCoin;
-    u8  FreezeMachine;  /* 02d6 */
-    u8  Debug, InTestMode, ActiveHumans, x02db, x02dc, InDemo, NumberCredits, NumberCreditsDash;
+    u8		AllowContinue;  /* 02ce */
+    u8		SpecialCostJumper, DemoSound, FlipDisplay, FreePlay, ContinueCoin;
+    u8		FreezeMachine;  /* 02d6 */
+    u8		Debug, InTestMode, ActiveHumans, x02db, x02dc, InDemo, NumberCredits, NumberCreditsDash;
  
     char	x02e0, WaitMode, NoInterrupt, DebugNoCollide;
-    u8  PlayersOnline;
+    u8		PlayersOnline;
     
-    u8  NewChallengerWait;  // 2e5
-    char TimeWarpTimer;
-    char PreRoundAnim;
-	char x02e8;
-    char  PlyDrawOrder;		/* 0x02e9 */
-    char  FirstFight;
-    char  x02eb, x02ec, OnFinalStage, ContinueCount;
+    u8		NewChallengerWait;  // 2e5
+    char	TimeWarpTimer;
+    char	PreRoundAnim;
+	char	x02e8;
+    char	PlyDrawOrder;		/* 0x02e9 */
+    char	FirstFight;
+    char	x02eb, x02ec, OnFinalStage, ContinueCount;
 	
-	char x02f0;
+	char	x02f0;
 	short	CoinsTaken;		// 02f4
-    char  Uptime[4];		// 2f6 - a   
+    char	Uptime[4];		// 2f6 - a   
 	
 	u16		DemoStageIndex;		// 02fe
 	short	DemoFightTimer;
@@ -143,55 +144,55 @@ typedef struct game {
 	short	UsageCount[8];		// 308-318
 
 	char	x0318;
-    u8  SeqPause;				// 31a
-    u8  FastEndingFight;		// 31b
-	u8  Diff_GameCnt;		/* difficulty */
-    u8  DifDebugJumper;
-	u8	x031e;
-    u8  SkipEnding;
-	u8	x0320;		/* affects sonic holdback timer, setter not found */
+    u8		SeqPause;				// 31a
+    u8		FastEndingFight;		// 31b
+	u8		Diff_GameCnt;		/* difficulty */
+    u8		DifDebugJumper;
+	u8		x031e;
+    u8		SkipEnding;
+	u8		x0320;		/* affects sonic holdback timer, setter not found */
     char    TwoHumans;
-    char  Debug2;		// 0322
-    u8	JapanJumper;
+    char	Debug2;		// 0322
+    u8		JapanJumper;
     
 	/* The Player Structures. 
 	   These are at 0x03c6 and 0x06c6 on sf2ua */
 
-    struct player_t Player1, Player2;   
+    struct	player_t Player1, Player2;   
 
 	/* begin 9ca-b4a block */
 	
-    short CurrentStage, LevelCursor, CurrentDifficulty;		/* 0x9ca */
+    short	CurrentStage, LevelCursor, CurrentDifficulty;		/* 0x9ca */
 	
 	/* check, may be 8_8fix */
-    u16 StageMinX, StageMaxX, StageMinY, StageMaxY;
-    u16 GroundPlaneY;		// 9d8
-    u8  NewPlayers;			// 9da
-    u8  PlayerSelectDone;   /* PlaneFlightDone  0x09db */
-    u8  PlayersSelected;
-    u8  PlayersSelectedDash;
-    u8  BattleOver;
-    char  OnBonusStage;
+    u16		StageMinX, StageMaxX, StageMinY, StageMaxY;
+    u16		GroundPlaneY;		// 9d8
+    u8		NewPlayers;			// 9da
+    u8		PlayerSelectDone;   /* PlaneFlightDone  0x09db */
+    u8		PlayersSelected;
+    u8		PlayersSelectedDash;
+    u8		BattleOver;
+    char	OnBonusStage;
     char    Pause_9e1;
-    u16 ActionLibSel;
-    u16 Palette1;       /* 0x09e4 */
-    u8  BattleWinner;
-    u8  BattleLoser;
-    u8  BisonBeater;
-    u8  Defeated[12];   /* 0x09e9 */
-    u8  NoLoser;        /* set to TRUE to avoid chant, for bonus stages */
-	u8  x09f5;			// found set, not used
-	u8	x09f6;			// found set, not used
-    u8  BattleWinSide;  /* 0x09f7 */
-    u8  PlyLostToPly;
-    u8  x09f9;					// not found set
-    u8  BonusDone;
-    u8  UpToBosses;						// 9fb
-	u8	ContinueBits;				/* 0x09fc */
+    u16		ActionLibSel;
+    u16		Palette1;       /* 0x09e4 */
+    u8		BattleWinner;
+    u8		BattleLoser;
+    u8		BisonBeater;
+    u8		Defeated[12];   /* 0x09e9 */
+    u8		NoLoser;        /* set to TRUE to avoid chant, for bonus stages */
+	u8		x09f5;			// found set, not used
+	u8		x09f6;			// found set, not used
+    u8		BattleWinSide;  /* 0x09f7 */
+    u8		PlyLostToPly;
+    u8		x09f9;					// not found set
+    u8		BonusDone;
+    u8		UpToBosses;						// 9fb
+	u8		ContinueBits;				/* 0x09fc */
 	
-	u8	x09fe;
-	u8	OnLevel8;
-    u16 LastFightStage;
+	u8		x09fe;
+	u8		OnLevel8;
+    u16		LastFightStage;
 	char	x0a02;
 	char	x0a03;
     short	Diff_0a04;				/* max of a04,6,8 */
@@ -203,12 +204,12 @@ typedef struct game {
 	u8		x0a0f;
 	
 	u16		x0a10;				// not found set
-	Player *ClockingPly;		/* 0a12 was U16 ptr */
-	u8	BisonBeatSide;			/* x0a14 */
-	u8	VictoryCnt;					/* 0a15 incremented each victory */
-	u16	x0a16;			// difficulty, array index
-    u8  x0a18;			// Max Difficulty if true, not found set yet
-	u8	ComputerWon;	/* 0x0a19 */
+	Player	*ClockingPly;		/* 0a12 was U16 ptr */
+	u8		BisonBeatSide;			/* x0a14 */
+	u8		VictoryCnt;					/* 0a15 incremented each victory */
+	u16		x0a16;			// difficulty, array index
+    u8		x0a18;			// Max Difficulty if true, not found set yet
+	u8		ComputerWon;	/* 0x0a19 */
     
 	
 	
@@ -219,10 +220,10 @@ typedef struct game {
 
     u8		WinningFighter, LosingFighter;
 	
-	u8  HumanWinner;		// 0a52
-	u8	HumanLoser, RoundWinnerSide;
-    u8  RoundLoserSide, PlyLostToComp;
-    u8	x0a50;
+	u8		HumanWinner;		// 0a52
+	u8		HumanLoser, RoundWinnerSide;
+    u8		RoundLoserSide, PlyLostToComp;
+    u8		x0a50;
 
 	char	Diff06Cnt;		// 0a55
 		
@@ -372,11 +373,11 @@ typedef struct game {
 	u16		x8a8a[10];
 	u16		x8a9e[10];
 	// u32 x8aa8;
-	u32	x8aac;
-	u16	x8ab0;		
-	u16 x8ab2;
-	u32	x8ab4;
-	u8	CanSpeedUpScoreCount;		// x8ab5
+	u32		x8aac;
+	u16		x8ab0;		
+	u16		x8ab2;
+	u32		x8ab4;
+	u8		CanSpeedUpScoreCount;		// x8ab5
 	
 	Object		*x8ab6;	/* XXX Barrels something */
 	signed char x8ab8;

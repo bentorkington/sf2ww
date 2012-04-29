@@ -548,7 +548,7 @@ static void sub_2adee(Player *ply) {		/* 2adee not ForceDefensive */
 static void _AIBeginAgain(Player *ply) {	
 	debug_ai_recurse++;
 
-	if (debug_ai_recurse > 8) {
+	if (debug_ai_recurse > 20) {
 		printf("AI Recursed too deep!\n");
 		panic(0);
 	}
@@ -716,16 +716,19 @@ static void _AIStratStandStill(Player *ply) {		/* 2ae50 standing still*/
 	switch (ply->AIMode2) {
 		case 0:
 			/* 2ae68 */
+			printf("standstill: %02x %02x\n", ply->AIParam1, ply->AIParam2);
 			NEXT(ply->AIMode2);
-			ply->CompDoJump = ply->AISigAttack = ply->CompDoBlockStun =
-			ply->x0236 = 0;		/* all u8 */
+			ply->CompDoJump       = 
+			ply->AISigAttack      = 
+			ply->CompDoBlockStun  =
+			ply->x0236            = 0;
 			ply->AIWalkDirection |= STEP_STILL;
+			
 			if(ply->AIParam1 & 0x80) {
-				if (ply->AIParam1 & 1) {
-					/* 2aedc */
-					ply->AIMode2 = 8;			//AINewTimerTooClose
+				if (ply->AIParam1 & 1) {				/* 2aedc */
+					ply->AIMode2    = 8;				//AINewTimerTooClose
 					ply->AITooClose = ply->AIParam2;
-					ply->AITimer = (char []){	/* data_2af08 */ 
+					ply->AITimer    = (char []){		/* data_2af08 */ 
 						120, 120, 120, 120, 120, 120, 120, 120, 100, 100, 100, 100, 100, 100, 100, 100, 
 						80,  80,  80,  80,  80,  80,  80,  80,  60,  60,  60,  60,  60,  60,  60,  60, 
 					}[RAND32];
@@ -753,6 +756,7 @@ static void _AIStratStandStill(Player *ply) {		/* 2ae50 standing still*/
 					_AINewIfNoFireball(ply);
 				}
 			} else {
+
 				ply->AITimer = ply->AITimers[ply->AIParam1];
 				_AINewTimer(ply);
 			}
@@ -938,6 +942,8 @@ static void _AIStratLongWalk(Player *ply) { // 2b19a AIStrategy approach / retre
 	int temp,temp2;
 	switch (ply->AIMode2) {
 		case 0:
+			printf("longwalk: %02x %02x\n", ply->AIParam1, ply->AIParam2);
+
 			NEXT(ply->AIMode2);
 			ply->CompDoJump  = FALSE;
 			ply->CompDoBlock = FALSE;

@@ -1887,14 +1887,12 @@ static void action_1a(Object *obj) {		// 13a3a
 	switch (obj->mode0) {
 		case 0:
 			NEXT(obj->mode0);
-			// XXX dual write of 0x1e, 0x1f?
 			obj->LocalTimer = data_13ac6[(sf2rand() & 0x3e)  ];
 			obj->x001f      = data_13ac6[(sf2rand() & 0x3e)+1];
 			obj-> XPI      += data_13ae6[RAND16W];
 			obj-> YPI      += data_13ae6[RAND16W];
 			
 			temp = RAND8;
-			// 8x8x4
 			obj->VelX.full = data_13b06[obj->UserData[2]][temp][0];
 			obj->AclX.full = data_13b06[obj->UserData[2]][temp][1];
 			obj->VelY.full = data_13b06[obj->UserData[2]][temp][2];
@@ -2811,10 +2809,9 @@ static void action_2e(Object *obj) {		// 18f92
 					obj->LocalTimer = 0x32;
 					obj->Pool = 2;
 					obj->Path = data_cfe74;
-					if (ud->city_from == ud->city_to) {
-						// 1901e
+					if (ud->city_from == ud->city_to) {				// 1901e
 						g.x8a68[ud->city_to] = TRUE;
-						obj->mode0 = 6;		// die
+						obj->mode0 = 6;						// die
 						obj->mode1 = 0;
 						g.Pause_9e1 = -1;
 					} else {

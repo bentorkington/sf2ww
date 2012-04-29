@@ -81,7 +81,6 @@ void justdie() {
 
 void diefree() {
 	Task *task = &Exec.Tasks[Exec.CurrentTask];
-	printf("diefree() task  %d\n", task->RHThreadID);
 	memclear(&task->params, sizeof(TaskParam));
 	task->status = TASK_EMPTY;
 
@@ -281,9 +280,7 @@ DESPATCH_STARTAGAIN:
 			if (Exec.Tasks[i].code == NULL) {
 				Exec.Tasks[i].status=0;
 				printf("!!!: NULL task %d\n", i);
-				// XXX deallocate the task
 			} else {
-				//printf("despatcher entering %d\n", i);
 #ifdef CPS
 				switch (task.status) {
 					case 0x4:

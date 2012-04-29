@@ -53,22 +53,22 @@ static int _ChunLiButtons(Player *ply) {				// 3015c
 	u16 buttons = (~ply->JoyDecodeDash.full) & ply->JoyDecode.full & BUTTON_MASK;
 	if(buttons) {
 		if (buttons & 0x10) {
-			ply->ButtonStrength = 0;
+			ply->ButtonStrength = STRENGTH_LOW;
 			ply->PunchKick		= PLY_PUNCHING;
 		} else if (buttons & 0x20) {
-			ply->ButtonStrength = 2;
+			ply->ButtonStrength = STRENGTH_MED;
 			ply->PunchKick		= PLY_PUNCHING;			
 		} else if (buttons & 0x40) {
-			ply->ButtonStrength = 4;
+			ply->ButtonStrength = STRENGTH_HIGH;
 			ply->PunchKick		= PLY_PUNCHING;			
 		} else if (buttons & 0x100) {
-			ply->ButtonStrength = 0;
+			ply->ButtonStrength = STRENGTH_LOW;
 			ply->PunchKick		= PLY_KICKING;			
-		} else if (buttons & 0x100) {
-			ply->ButtonStrength = 2;
+		} else if (buttons & 0x200) {
+			ply->ButtonStrength = STRENGTH_MED;
 			ply->PunchKick		= PLY_KICKING;			
-		} else if (buttons & 0x100) {
-			ply->ButtonStrength = 4;
+		} else if (buttons & 0x400) {
+			ply->ButtonStrength = STRENGTH_HIGH;
 			ply->PunchKick		= PLY_KICKING;			
 		}
 		return 1;
@@ -470,14 +470,14 @@ static int sub_3067c(Player *ply) {
 		case PLY_PUNCHING:
 			ud->x0091 = 0;
 			switch (ply->ButtonStrength) {
-				case 0:
+				case STRENGTH_LOW:
 					ply->Move = ply->VelX.full == 0 ? 0 : 3;
 					quirkysound(0);
 					break;
-				case 2:
+				case STRENGTH_MED:
 					sub_306ee(ply);
 					break;
-				case 4:
+				case STRENGTH_HIGH:
 					sub_3073e(ply);
 					break;
 				FATALDEFAULT;
@@ -487,11 +487,11 @@ static int sub_3067c(Player *ply) {
 		case PLY_KICKING:
 			ud->x0091 = 0;
 			switch (ply->ButtonStrength) {
-				case 0:
+				case STRENGTH_LOW:
 					ply->Move = ply->VelX.full == 0 ? 0 : 5;
 					quirkysound(0);
 					break;
-				case 2:
+				case STRENGTH_MED:
 					if (ply->VelX.full == 0) {
 						ply->Move = 3;
 						if (ply->JoyDecode.full & 4) {
@@ -510,7 +510,7 @@ static int sub_3067c(Player *ply) {
 						quirkysound(1);
 					}
 					break;
-				case 4:
+				case STRENGTH_HIGH:
 					if (ply->VelX.full == 0) {
 						ply->Move = 4;
 						quirkysound(2);
@@ -837,13 +837,13 @@ void PSCBAttackChunLi(Player *ply) {
 		if (ud->x0085) {
 			--ud->x0085;
 			switch (ply->StandSquat) {
-				case 0:
+				case PLY_STAND:
 					sub_30884(ply);
 					break;
-				case 2:
+				case PLY_CROUCH:
 					sub_308b2(ply);
 					break;
-				case 4:
+				case PLY_JUMP:
 					sub_30afe(ply);
 					break;
 				FATALDEFAULT;
@@ -933,12 +933,12 @@ static void sub_34d5e(Player *ply) {
 }
 static void sub_34ddc(Player *ply) {
 	ply->AISigAttack = FALSE;
-	ply->AIVolley = FALSE;
+	ply->AIVolley    = FALSE;
 	exit_comp_normal(ply);
 }
 static void sub_34dea(Player *ply) {
 	ply->AISigAttack = FALSE;
-	ply->AIVolley = FALSE;
+	ply->AIVolley    = FALSE;
 	exit_to_compdisp1(ply);
 }
 static void sub_34dd2(Player *ply) {
@@ -1326,7 +1326,7 @@ void PLCBCompAttackChunLi(Player *ply) {		//346be
 					case 0:
 						NEXT(ply->mode2);
 						ud->x0085 = ply->AIMultiCount;
-						// XXX CASetAnim2(ply, 0x58, ply->ButtonStrength/2);
+						CASetAnim2(ply, 0x58, ply->ButtonStrength/2);
 						break;
 					case 2:
 						if (AF1) {
@@ -1351,7 +1351,7 @@ void PLCBCompAttackChunLi(Player *ply) {		//346be
 				case 0:	_ChunLiStandComp(ply);			break;
 				case 2:	_ChunLiCrouchComp(ply);			break;
 				case 4:
-					//sub_34be4(ply);
+					//XXX sub_34be4(ply);
 					break;
 				FATALDEFAULT;
 			}

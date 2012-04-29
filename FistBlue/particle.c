@@ -24,7 +24,7 @@ void setaction_list(Object *obj, const Action **list, short sel ) {		/* 0x23ce *
 }
 
 void setaction_direct(Object *obj, const Action *act) {			/* 23da */
-    obj->ActionScript       = act;
+	obj->ActionScript       = act;
     obj->Timer              = act->Delay;
     obj->AnimFlags          = act->Loop << 8 | act->Next;
 }
