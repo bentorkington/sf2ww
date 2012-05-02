@@ -283,6 +283,7 @@ struct player_t {
 	u8	AIMode1;
 	u8	AIMode2;
 	
+	u8	x0203;			/* used in AI Test Screen */
 	unsigned char		AIStrategy, AIParam1;
 	signed char			AIParam2, AIParam3, AIParam4;
 	
@@ -291,7 +292,7 @@ struct player_t {
 	signed char x020b, x020c, x020d;
 	
 	u8		AITypeAgg0;			/* 0x020e */
-	u8		AITypeAgg1;
+	u8		AITypeAgg1;			/* RND NO= */
 	char	AISaveState;		/* 0210 def. signed */
 	u8		AIWalkDirection;
 	u8		CompDoBlock;			/* x0212 */
@@ -368,7 +369,7 @@ struct player_t {
 	/* "copy of 28e" */
 	char	x02ae;			
 	
-    u8  x02de;
+    u8		x02de;
 	
 	short	x02e0;	/* 0x02e0  Highscore timer */
 	short	x02e2;	/*         Highscore autorepeat */

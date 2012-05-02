@@ -19,6 +19,8 @@
 		B56A718C1411B0D300DF7F02 /* game.c in Sources */ = {isa = PBXBuildFile; fileRef = B56A718B1411B0D300DF7F02 /* game.c */; };
 		B56BBD5514859AA100FF84CB /* fbtests.c in Sources */ = {isa = PBXBuildFile; fileRef = B56BBD5414859AA100FF84CB /* fbtests.c */; };
 		B5871ED71408E4F4004A45F5 /* pthreads.c in Sources */ = {isa = PBXBuildFile; fileRef = B5871ED61408E4F4004A45F5 /* pthreads.c */; };
+		B5AC69E71550AC9C00C9339E /* aitests.c in Sources */ = {isa = PBXBuildFile; fileRef = B527F61415508A0800BC70D8 /* aitests.c */; };
+		B5AC6A611550BDBB00C9339E /* testlib.c in Sources */ = {isa = PBXBuildFile; fileRef = B5AC6A601550BDBB00C9339E /* testlib.c */; };
 		B5ADB7A913B2B2EA00905DFE /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = B5ADB7A813B2B2EA00905DFE /* MainMenu.xib */; };
 		B5ADB7AD13B2B34900905DFE /* OGLView.m in Sources */ = {isa = PBXBuildFile; fileRef = B5ADB7AC13B2B34900905DFE /* OGLView.m */; };
 		B5ADB7B213B2B38400905DFE /* trackball.c in Sources */ = {isa = PBXBuildFile; fileRef = B5ADB7B013B2B38400905DFE /* trackball.c */; };
@@ -81,6 +83,8 @@
 		B51533F3147EEBDB004A87B0 /* drums.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = drums.h; sourceTree = "<group>"; };
 		B51533F4147EEBDB004A87B0 /* drums.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = drums.c; sourceTree = "<group>"; };
 		B51867D01429504F003EE3BC /* act48.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = act48.h; sourceTree = "<group>"; };
+		B527F61315508A0800BC70D8 /* aitests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = aitests.h; sourceTree = "<group>"; };
+		B527F61415508A0800BC70D8 /* aitests.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = aitests.c; sourceTree = "<group>"; };
 		B551553314773E8A00A8BBD9 /* coinage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = coinage.h; sourceTree = "<group>"; };
 		B551553414773E8A00A8BBD9 /* coinage.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = coinage.c; sourceTree = "<group>"; };
 		B55196BB148B0385002300A3 /* sf2io.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = sf2io.h; sourceTree = "<group>"; };
@@ -98,6 +102,8 @@
 		B5869A8413B561F1001844D9 /* graphics.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = graphics.c; sourceTree = "<group>"; };
 		B5871ED51408E4F4004A45F5 /* pthreads.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = pthreads.h; sourceTree = "<group>"; };
 		B5871ED61408E4F4004A45F5 /* pthreads.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = pthreads.c; sourceTree = "<group>"; };
+		B5AC6A5F1550BDBB00C9339E /* testlib.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = testlib.h; sourceTree = "<group>"; };
+		B5AC6A601550BDBB00C9339E /* testlib.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = testlib.c; sourceTree = "<group>"; };
 		B5ADB7A813B2B2EA00905DFE /* MainMenu.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MainMenu.xib; sourceTree = "<group>"; };
 		B5ADB7AB13B2B34900905DFE /* OGLView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OGLView.h; sourceTree = "<group>"; };
 		B5ADB7AC13B2B34900905DFE /* OGLView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OGLView.m; sourceTree = "<group>"; };
@@ -548,6 +554,10 @@
 				B5AEA9D91405A46600DD9798 /* cpstests.c */,
 				B56BBD5314859AA100FF84CB /* fbtests.h */,
 				B56BBD5414859AA100FF84CB /* fbtests.c */,
+				B527F61315508A0800BC70D8 /* aitests.h */,
+				B527F61415508A0800BC70D8 /* aitests.c */,
+				B5AC6A5F1550BDBB00C9339E /* testlib.h */,
+				B5AC6A601550BDBB00C9339E /* testlib.c */,
 			);
 			path = tests;
 			sourceTree = "<group>";
@@ -664,6 +674,8 @@
 				B558918F1485B04A00BBB0BA /* coll_bonus.c in Sources */,
 				B5FD9F801488260A00DDF4D9 /* demo.c in Sources */,
 				B5EB38E1149816D5007100DB /* reels.c in Sources */,
+				B5AC69E71550AC9C00C9339E /* aitests.c in Sources */,
+				B5AC6A611550BDBB00C9339E /* testlib.c in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -476,7 +476,7 @@ static void draw_world_map(void) {		//856c mode 2,4,2
 					} else if (obj = AllocActor()) {
 						obj->exists = TRUE;
 						obj->Sel = SF2ACT_0X2E;
-						synth_plane_setup(obj, g.CurrentStage, g.LastFightStage);
+						synth_plane_setup(obj, g.LastFightStage, g.CurrentStage);
 						NEXT(g.mode4);
 						check_if_new_player();
 					}

@@ -121,7 +121,7 @@ void comp_recovery_complete(Player *ply) { /* 2b700 */
 	ply->x0236				= 0;
 	ply->InGroundAttack		= FALSE;
 	
-	ply->AIWalkDirection	|= 0x2;
+	ply->AIWalkDirection	|= STEP_STILL;
 	
 	if(ply->AIForceDefensive) {					/* x0279 */
 		AIPrepareNewState(ply, ply->AITypeDef);		// 2b6f8

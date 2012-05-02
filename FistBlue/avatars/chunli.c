@@ -1284,6 +1284,7 @@ static void _ChunLiStandComp(Player *ply) {		//346ec
 				case 4:	sub_349c0(ply);	break;
 				FATALDEFAULT;
 			}
+			break;
 		FATALDEFAULT;
 	}
 }

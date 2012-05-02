@@ -985,6 +985,7 @@ void bumpdifficulty_10(void) {		/* 0x46b4 */
 	g.Diff_0a04 = (g.Diff_0a04 + 2) & 0xff;
 	bumpdifficulty();
 }
+
 void bump_difficulty_4816(void) {  /* 0x4816 */
 	if(g.ActiveHumans != BOTH_HUMAN && g.OnBonusStage == 0) { 
 		g.Diff_0a04++;

@@ -10,7 +10,7 @@
 
 //#define DEBUG_AI TRUE
 
-#include	<stdio.h>
+#include <stdio.h>
 
 #include "sf2const.h"
 
@@ -237,14 +237,6 @@ static const char data_2b8a4[16] = { 1,2,1,0,1,2,1,0,2,1,2,1,1,1,2,1 };
 
 #pragma mark ---- AI Init ----
 struct dualptr _AILookupStrategy(Player *ply) {		// 2b78e
-
-	static const struct dualptr *dataAIAggressive[]={
-		data_9966e, data_9a1be, data_9adc0, data_9be68,
-		data_9c96a, data_9d2fe, data_9dce0, data_9e740, 
-		data_9f374, data_9fff6, data_a0b22, data_a16ce, 
-	};
-
-
 	struct dualptr retval;
 	retval.a1 = dataAIAggressive[ply->FighterID]->a1;
 	retval.a2 = dataAIAggressive[ply->FighterID]->a2;
@@ -884,8 +876,7 @@ static void _AIStratShortWalk(Player *ply) {		/* 2afb0 */
 			}
 			break;
 		FATALDEFAULT;
-	}
-	
+	}	
 }
 
 //STRAT_ATTACK	0x2b4be
@@ -917,7 +908,6 @@ static void _AIStratAttack(Player *ply) {
 			break;
 		FATALDEFAULT;
 	}
-	
 }
 
 static short _AISetWalkTarget(Player *ply) {		/* 2b25c */
@@ -1003,7 +993,6 @@ static void _AIStratLongWalk(Player *ply) { // 2b19a AIStrategy approach / retre
 			break;
 		FATALDEFAULT;
 	}
-	
 }
 
 // STRAT_SETBLOCK	0x2b4a8
@@ -1147,12 +1136,6 @@ static void _AICheckUpdate(Player *ply) {	/* 2b8b4 checked */
 
 
 void AIInitDefensive(Player *ply) {				// 2b82a
-	static const struct defense_strategy **dataAIDefensive[]={		//9960e
-		data_a23ce, data_a3336, data_a427a, data_a51ea, 
-		data_a607e, data_a6e40, data_a7d3c, data_a8c28, 
-		data_a9aa4, data_aa95e, data_ab7d6, data_ac66e, 
-	};
-		
 	const struct defense_strategy *DS;
 	
 #ifdef DEBUG_AI
@@ -1176,6 +1159,7 @@ void AIInitDefensive(Player *ply) {				// 2b82a
 
 /* fetch the next character from the script, not only strategy IDs but also 
  parameters */
+// XXX check pre/post increment!
 static char _AIReadByte(Player *ply) {		// 2bf02
 
 	if(ply->AIForceDefensive) {

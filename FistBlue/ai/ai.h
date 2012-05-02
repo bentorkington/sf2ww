@@ -17,6 +17,26 @@ void AICheckThreats(Player *ply);		// 2c056 per-frame before comp_frontend
 void AIPrepareNewState(Player *ply, short a);
 void AIInitDefensive(Player *ply);
 
+// XXX these should be in ai.h
+struct data_2b7ea {
+	const char	x023e[32];
+	const unsigned char *x0134[16];	 
+};
+
+typedef const struct data_2b7ea AIAggTable;
+
+struct dualptr {
+	const u8	*a1;
+	const AIAggTable  *a2;
+};
+
+struct defense_strategy {
+	char		high_energy[32];
+	char		low_energy[32];		/* selector to use if energy is very low */
+	const u8	*codes[];		
+};
+
+
 #define AIB_TYPE0		0
 #define AIB_TYPE2		2
 #define	AIB_TYPE4		4
@@ -49,21 +69,21 @@ void AIInitDefensive(Player *ply);
 #define AIB_EXIT5_0			0x8c
 #define AIB_EXIT5_2			0x8e
 #define AIB_WALLBOUNCE		0x90
-#define AIB_B94_NODIZZY		0x92
+#define AIB_B94_NODIZZY		0x92		// YON
 #define AIB_LABEL_94		0x94
 #define AIB_SET_0216		0x96
 #define AIB_MAYBE_AGG1		0x98
 #define AIB_GO_AGG1			0x9a
 #define AIB_MAYBE_RESTART	0x9c
-#define AIB_BA0_DIST_LE		0x9e
+#define AIB_BA0_DIST_LE		0x9e		// KYON
 #define	AIB_LABEL_A0		0xa0
-#define AIB_BA4_OPPJUMP		0xa2
+#define AIB_BA4_OPPJUMP		0xa2		// TAN 
 #define AIB_LABEL_A4		0xa4
-#define	AIB_BA8_OPPX_LE		0xa6
+#define	AIB_BA8_OPPX_LE		0xa6		// GTAN
 #define	AIB_LABEL_A8		0xa8
 #define AIB_BAC_OPPJUMP		0xaa
 #define AIB_LABEL_AC		0xac
-#define AIB_BB0_NOTWITHIN	0xae
+#define AIB_BB0_NOTWITHIN	0xae		// TIGA
 #define AIB_BB2				0xb0
 #define AIB_LABEL_B2		0xb2
 #define AIB_SETIMMUNE		0xb4

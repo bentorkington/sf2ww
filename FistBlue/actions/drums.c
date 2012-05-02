@@ -106,7 +106,7 @@ const CAFrame actlist_28184[] = {
 	{ 1, 0x80, 0x0, &image_28248, 0, 0, 0, 0, 1, 0, 0, 0x00, 0, 0, 0, 0, 0, 0, 0, 0},
 	{0,0,0,(struct image *)&actlist_28184[0], 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 }
 };
-const CAFrame **actlist_27fa6[]={
+const CAFrame *actlist_27fa6[]={
 	actlist_27fb0, 	actlist_27fcc, 	actlist_280a8, 	actlist_28184, 
 };
 

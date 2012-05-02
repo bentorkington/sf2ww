@@ -37,25 +37,7 @@ void comp_do_next_action(Player *ply);		/* 2c668 */
 #define COMP_CHK_BLOCKSTUN if(check_compDoBlockStun(ply))
 #define COMP_CHK_27BZ if(check_ply_27b(ply)==0)
 
-struct data_2b7ea {
-	const char	x023e[32];
-	const unsigned char *x0134[16];	 
-};
 
-typedef const struct data_2b7ea AIAggTable;
-
-
-
-struct dualptr {
-	const u8	*a1;
-	const AIAggTable  *a2;
-};
-
-struct defense_strategy {
-	char		high_energy[32];
-	char		low_energy[32];		/* selector to use if energy is very low */
-	const u8	*codes[];		
-};
 
 
 

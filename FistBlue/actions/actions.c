@@ -2843,11 +2843,13 @@ static void action_2e(Object *obj) {		// 18f92
 				d6 = calc_flightpath(obj, ud->destination.x, ud->destination.y);
 				printf("flightpath 0x%02x\n", d6);
 				obj->Step = (d6) >> 2;
-				if ((ABS(obj->XPI - ud->destination.x) > 10)   ||	//XXX should be 3
-					(ABS(obj->YPI - ud->destination.y) > 10)) {
-					update_motion(obj);
-					enqueue_and_layer(obj);
-				} else {
+
+// XXX too buggy				
+//				if ((ABS(obj->XPI - ud->destination.x) > 20)   ||	//XXX should be 3
+//					(ABS(obj->YPI - ud->destination.y) > 20)) {
+//					update_motion(obj);
+//					enqueue_and_layer(obj);
+//				} else {
 					NEXT(obj->mode1);	// flight over
 					g.Pause_9e1=-1;
 					g.x8a68[ud->city_to] = TRUE;
@@ -2858,7 +2860,8 @@ static void action_2e(Object *obj) {		// 18f92
 					}[ud->city_to];
 					obj->LocalTimer = 0x32;
 					enqueue_and_layer(obj);
-				}
+// XXX
+//				}
 			} else {
 				if (--obj->LocalTimer == 0) {
 					queuesound(ud->sound);

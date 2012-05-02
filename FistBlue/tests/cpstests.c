@@ -12,9 +12,10 @@
 #include "sf2types.h"
 #include "sf2macros.h"
 #include "gemu.h"
-
+#include "sf2io.h"
 #include "structs.h"
 
+#include "testlib.h"
 #include	"lib.h"
 #include	"gfxlib.h"
 extern CPSGFXEMU gemu;
@@ -37,12 +38,6 @@ const char data_865e0[2][4]={"OFF\x20", "ON\x20\x20"};
 
 void draw_testmenu(int);
 
-void test_dimscreenout(void) {		// 84ccc
-	// todo, fade out and clear screen
-}
-void test_fadescreenin(void) {
-	//todo fade up.
-}
 void sub_86114(u16 **scrp, u16 **scrp_min, u16 **scrp_max) {
 	SCR1_DRAW_TILE(*scrp, GFXROM_SCROLL1 + ' ', 0);
 	SCR1_CURSOR_BUMP(scrp, 0, 3);
@@ -134,13 +129,13 @@ void _test_stage_update(u16 *scrp, int arg) {	// 85702
 
 void sub_856e6(int arg) {
 	u16 *scrp;
-	SCR1_CURSOR_ABS(scrp, 0x90c514);
+	SCR1_CURSOR_CPS(scrp, 0x90c514);
 	_test_stage_update(scrp, ++arg);
 }
 
 void sub_856f6(int arg) {
 	u16 *scrp;
-	SCR1_CURSOR_ABS(scrp, 0x90ca10);
+	SCR1_CURSOR_CPS(scrp, 0x90ca10);
 	_test_stage_update(scrp, ++arg);
 }
 
@@ -160,9 +155,9 @@ void sub_858d8(void) {
 			sub_862a8(   );
 			sub_8630e(   );
 			sub_86570(   );
-			SCR1_CURSOR_ABS(scrp, 0x90cf0c);
+			SCR1_CURSOR_CPS(scrp, 0x90cf0c);
 			test_putbool(&scrp, (g.x8b2e & ATTR_Y_FLIP) / ATTR_Y_FLIP);
-			SCR1_CURSOR_ABS(scrp, 0x90d48c);
+			SCR1_CURSOR_CPS(scrp, 0x90d48c);
 			test_putbool(&scrp, (g.x8b2e & ATTR_X_FLIP) / ATTR_X_FLIP);
 			sub_864ea(   );
 			NEXT(g.mode6);
@@ -393,7 +388,6 @@ void sub_86216(u16 *scrp, int d5) {
 }
 
 void sub_86266(u16 *scrp, int d5) {
-
-
-
 }
+
+
