@@ -29,7 +29,6 @@ extern GState gstate_Scroll3;
 extern int gdrawallcnt;
 static void sprite_coords(Object *obj, short *coordpair);
 
-extern struct geepee GP;
 
 /* globals for sprite lib */
 u16 *DSObjCur_g;			/* number of next object tile to draw to */

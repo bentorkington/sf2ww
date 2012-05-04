@@ -11,6 +11,26 @@ void task_blinkers(void);
 void task_game(void);
 void task_scheduler(void);
 
+void fadenwait1(void);
+void fadenwait2(void);
+void fadenwait3(void);
+void fadenwait4(short argd0);
+void fadenwait5(short arg0);
+
+
+struct effectstate {
+	int		FadeCounter;	// 5d3a 
+	int		FadeObject;
+	int		FadeScroll1;
+	int		FadeScroll2;	// 5d46 
+	int		FadeScroll3;
+	int		x5d4e;
+	int		x5d52;
+	char	x5d56;
+	char	FadeInEffect;	// 5d58 check this 
+	u8		FadeBusy;       // 0x5d59   
+};	
+
 #define LIBTEXT_ERASE		0x80
 enum libtextgfx_sel {
 	INSERT_COIN_P1,

@@ -31,6 +31,7 @@
 
 
 extern Game g;
+extern struct effectstate es;
 extern GState gstate_Scroll1;
 extern GState gstate_Scroll2;
 extern GState gstate_Scroll3;
@@ -149,11 +150,11 @@ static void game_mode_28(void) {	// 7af0
 	switch (g.mode2) {
 		case 0:
 			NEXT(g.mode2);
-			g.FadeBusy = TRUE;
+			es.FadeBusy = TRUE;
 			QueueEffect(SL0C | SL0C_FO_CLW, 3);
 			break;
 		case 2:
-			if (g.FadeBusy==0) {
+			if (es.FadeBusy==0) {
 				NEXT(g.mode2);
 				sound_cq_f0f7();
 				LBResetState();
@@ -196,7 +197,7 @@ static void game_mode_28(void) {	// 7af0
 				NEXT(g.mode2);
 				g.WaitMode = FALSE;
 				die_top8();
-				g.FadeBusy = TRUE;
+				es.FadeBusy = TRUE;
 				QueueEffect(SL0C | SL0C_FO_CLW, 3);
 			} else {
 				Player *winner;
@@ -220,7 +221,7 @@ static void game_mode_28(void) {	// 7af0
 			}
 			break;
 		case 8:
-			if (g.FadeBusy==0) {
+			if (es.FadeBusy==0) {
 				NEXT(g.mode2);
 				LBResetState();
 				if (g.PlyLostToPly) {
@@ -356,7 +357,7 @@ static void sub_7eb4(void) {		// 7eb4 game mode 2,C
 				NEXT(g.mode2);
 				ClearEffectQueue();		/* at 21c2 */
 				die_top8();
-				g.FadeBusy = TRUE;
+				es.FadeBusy = TRUE;
 				QueueEffect(SL0C | SL0C_FO_CLW, 0x100);
 			} else {
 				if(g.timer3--==0) {
@@ -373,7 +374,7 @@ static void sub_7eb4(void) {		// 7eb4 game mode 2,C
 			}
 			break;
 		case 4:
-			if(g.FadeBusy==0) {
+			if(es.FadeBusy==0) {
 				NEXT(g.mode2);
 				LBResetState();
 			}
@@ -504,11 +505,11 @@ static void draw_world_map(void) {		//856c mode 2,4,2
 			switch (g.mode4) {
 				case 0:
 					NEXT(g.mode4);
-					g.FadeBusy = TRUE;
+					es.FadeBusy = TRUE;
 					QueueEffect(SL1C | CHALLENGER_2, 0x3);
 					break;
 				case 2:
-					if (g.FadeBusy == FALSE) {
+					if (es.FadeBusy == FALSE) {
 						NEXT(g.mode2);
 						g.mode3		= 0;
 						g.mode4		= 0;
@@ -602,7 +603,7 @@ void gamemode_vs_screen (void) {
 		case 2:
 			if(--g.timer3==0) {
 				g.mode3 += 2;
-				g.FadeBusy=TRUE;
+				es.FadeBusy=TRUE;
 				start_effect(0x0c1c, 0x3);
 			} else {
 				proc_actions();
@@ -612,7 +613,7 @@ void gamemode_vs_screen (void) {
 			break;
 			
 		case 4:   /* case 4 87c8 */
-			if(!g.FadeBusy) {
+			if(!es.FadeBusy) {
 				g.mode2 +=   2;      /* Go to 2,4,6 */
 				g.mode3  =   0;
 				g.WaitMode = 0;
@@ -1025,11 +1026,11 @@ void gamemode_24G (void) {		//7916
     case 0:
 			DEBUG_SM("gamemode_24G");
         g.mode3 +=2;
-        g.FadeBusy = TRUE;
+        es.FadeBusy = TRUE;
         start_effect(0xc1c, 3);
         break;
     case 2:
-        if(g.FadeBusy == 0) {
+        if(es.FadeBusy == 0) {
             g.mode3 +=2;
             sound_cq_f0f7();
             g.timer3 = 5;
@@ -1080,11 +1081,11 @@ void gamemode_24I (void) {		// 7970
 			break;
 		case 2:
 			g.mode3 +=2;
-			g.FadeBusy = TRUE;
+			es.FadeBusy = TRUE;
 			start_effect(0xc1c, 3);
 			break;
 		case 4:
-			if (g.FadeBusy == 0) {
+			if (es.FadeBusy == 0) {
 
 				g.mode3 +=2;
 				LBResetState();
@@ -1118,7 +1119,7 @@ void gamemode_24I (void) {		// 7970
 			if(g.timer3 == 0) {
 				g.mode3 +=2;
 				die_top8();
-				g.FadeBusy = TRUE;
+				es.FadeBusy = TRUE;
 				QueueEffect(SL0C | 0x1c,3);
 			} else if(check_if_new_player()) {
 				GEMU_CLEAR_OBJECT_72;             /* clear the "Press Start" message */
@@ -1127,7 +1128,7 @@ void gamemode_24I (void) {		// 7970
 			break;
 		case 0xa:
 			set_waitmode();
-			if(g.FadeBusy == 0) {
+			if(es.FadeBusy == 0) {
 				g.mode3 += 2;
 				g.timer3 = 0xb4;
 			}

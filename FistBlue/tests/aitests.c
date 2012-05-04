@@ -45,7 +45,6 @@ static void _test_ai_putbyte(int scr1c, int value) {			// 89e58
 	SCR1_CURSOR_BUMP(scrp, 1, 0);
 	SCR1_DRAW_TILE(scrp, (value & 0xf), 0);
 }
-
 static void _test_ai_dumpstatus(Player *ply) {					// 89d34
 	_test_ai_putmsg("\x02\x10\x01ENEMY=\x00");
 	_test_ai_putbyte(0x90c410, ply->FighterID);
@@ -79,17 +78,17 @@ static void _test_ai_dumpstatus(Player *ply) {					// 89d34
 }
 
 static void _test_ai_setup_agg0(Player *ply) {			// 89a8a
-	ply->AIStratAgg0 = dataAIAggressive[ply->FighterID][ply->OpponentID].a1[ply->RoughTimeRemain];
+	ply->AIStratAgg0 = dataAIAggressive[ply->FighterID][ply->OpponentID].a1;
 	ply->AIStratIndexAgg0 = 0;
 }
 static void _test_ai_setup_agg1(Player *ply) {			// 89ad0
-	//ply->AIStratAgg1 = dataAIAggressive[ply->FighterID][ply->OpponentID].a2[ply->RoughTimeRemain];
-	// XXX todo
+	ply->AIStratAgg1 = dataAIAggressive[ply->FighterID][ply->OpponentID].a2->x0134[
+						dataAIAggressive[ply->FighterID][ply->OpponentID].a2->x023e[ply->RoughTimeRemain]
+																				   ];
 	ply->AIStratIndexAgg1 = 0;
 }
 static void _test_ai_setup_def(Player *ply) {			// 89b32
 	ply->AIStratDef = dataAIDefensive[ply->FighterID][ply->x0203]->codes[ply->x020c & 0x3f];
-	// XXX todo
 	ply->AIStratIndexDef = 0;
 }
 
@@ -188,8 +187,7 @@ static int _test_ai_getnextbyte(Player *ply) {					// 89c96
 				return ply->AIStratDef[_test_ai_D2];
 				_test_ai_D2++;
 				break;
-			default:
-				break;
+			FATALDEFAULT;
 		}
 	} else {
 		switch (g.mode1) {
@@ -202,10 +200,10 @@ static int _test_ai_getnextbyte(Player *ply) {					// 89c96
 			case 4:
 				return ply->AIStratDef[++ply->AIStratIndexDef];
 				break;
-			default:
-				break;
+			FATALDEFAULT;
 		}
 	}
+	return 0;	// can't get here
 }
 
 // check return status
@@ -444,7 +442,6 @@ static int _test_ai_check_highai(Player *ply, int instr) {			// 898fc
 				} else {
 					instr = _test_ai_getnextbyte(ply);
 					_test_ai_searchtoken(ply, 0xb0);
-					// XXX return values?
 					_test_ai_searchtoken(ply, 0xb2);
 					return 0;
 				}

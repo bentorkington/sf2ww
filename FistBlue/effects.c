@@ -29,6 +29,8 @@ extern CPSGFXEMU gemu;
 extern Game g;
 extern int gsupertaskcnt;
 
+struct effectstate es;
+
 
 #define CPS_VIDEO_SCROLL1 (u16 *)&gemu.Tilemap_Scroll1
 #define CPS_VIDEO_SCROLL2 (u16 *)&gemu.Tilemap_Scroll2
@@ -110,7 +112,7 @@ static void blackadder(GPAL *palbase, int *fadebase, int count, short arg) {		//
     for(i=count; i >= 0; --i) {
         adder(&palbase, fadebase, arg, i);
     }
-    g.FadeCounter += *fadebase;
+    es.FadeCounter += *fadebase;
 }
 static void whiteadder(GPAL *palbase, int *fadebase, int count, short arg) {			//11c2
 	int d0;
@@ -125,7 +127,7 @@ static void whiteadder(GPAL *palbase, int *fadebase, int count, short arg) {			/
 	} else {
 		d0 &= ~(1 << 31);
 	}
-	g.FadeCounter += d0;
+	es.FadeCounter += d0;
 }
 	
 
@@ -139,46 +141,46 @@ void _clear_scr23_wait_die(Task *task) {		// 4bd6
     sf2sleep(1);
     clear_rowscroll();
     sf2sleep(4 + task->params.Param2);
-    g.FadeBusy = FALSE;
+    es.FadeBusy = FALSE;
     DIEFREE;
 }
 
 void sub_1030(int arg) {        /* fade all layers */
-    g.FadeCounter = 0;
-    blackadder(gemu.PalObject[0],  &g.FadeObject,  0x1f, arg);
-    blackadder(gemu.PalScroll1[0], &g.FadeScroll1, 0x1f, arg);
-    blackadder(gemu.PalScroll2[0], &g.FadeScroll2, 0x1f, arg);
-    blackadder(gemu.PalScroll3[0], &g.FadeScroll3, 0x1f, arg);
-    blackadder(gemu.PalUnk1[0]	 , &g.x5d4e,       0x7,  arg);       /* probably the "PRESS START" */
-    blackadder(gemu.PalUnk2[0]   , &g.x5d52,       0x7,  arg);       /* blinkers                   */
+    es.FadeCounter = 0;
+    blackadder(gemu.PalObject[0],  &es.FadeObject,  0x1f, arg);
+    blackadder(gemu.PalScroll1[0], &es.FadeScroll1, 0x1f, arg);
+    blackadder(gemu.PalScroll2[0], &es.FadeScroll2, 0x1f, arg);
+    blackadder(gemu.PalScroll3[0], &es.FadeScroll3, 0x1f, arg);
+    blackadder(gemu.PalUnk1[0]	 , &es.x5d4e,       0x7,  arg);       /* probably the "PRESS START" */
+    blackadder(gemu.PalUnk2[0]   , &es.x5d52,       0x7,  arg);       /* blinkers                   */
 }
 void sub_1078 (Task *task) {        /* enable layers specified in task->params.Param1 */
     const u16 LAYERBITS[4]= { 0x0000, 0x0008, 0x0010, 0x0002 };
     g.CPS.DispEna |= LAYERBITS[ ((task->params.Param1 & 0xe0) >> 5) ];
 }
 void sub_140e (int arg) {
-	g.FadeCounter = 0;
-    blackadder(gemu.PalScroll3[0], &g.FadeScroll3, 0x1f, arg);
-    blackadder(gemu.PalUnk1[0]   , &g.x5d4e,       0x7,  arg);
-    blackadder(gemu.PalUnk2[0]   , &g.x5d52,       0x7,  arg);          
+	es.FadeCounter = 0;
+    blackadder(gemu.PalScroll3[0], &es.FadeScroll3, 0x1f, arg);
+    blackadder(gemu.PalUnk1[0]   , &es.x5d4e,       0x7,  arg);
+    blackadder(gemu.PalUnk2[0]   , &es.x5d52,       0x7,  arg);          
 }
 static void sub_10e0(short data) {
-	g.FadeCounter = 0;
-	blackadder(gemu.PalObject[0], &g.FadeObject, 0x1f, data);
-	blackadder(gemu.PalScroll1[0], &g.FadeScroll1, 0x1f, data);
-	blackadder(gemu.PalScroll2[0], &g.FadeScroll2, 0x1f, data);
-	blackadder(gemu.PalScroll3[0], &g.FadeScroll3, 0x1f, data);
-	blackadder(gemu.PalUnk1[0], &g.x5d4e, 7, data);
-	blackadder(gemu.PalUnk2[0], &g.x5d52, 7, data);
+	es.FadeCounter = 0;
+	blackadder(gemu.PalObject[0], &es.FadeObject, 0x1f, data);
+	blackadder(gemu.PalScroll1[0], &es.FadeScroll1, 0x1f, data);
+	blackadder(gemu.PalScroll2[0], &es.FadeScroll2, 0x1f, data);
+	blackadder(gemu.PalScroll3[0], &es.FadeScroll3, 0x1f, data);
+	blackadder(gemu.PalUnk1[0], &es.x5d4e, 7, data);
+	blackadder(gemu.PalUnk2[0], &es.x5d52, 7, data);
 }
 static void sub_1152(short data) {	// same as 10e0, but doesn't do Object0
-	g.FadeCounter = 0;
-	whiteadder(gemu.PalObject[1],  &g.FadeObject,  0x1e, data);
-	blackadder(gemu.PalScroll1[0], &g.FadeScroll1, 0x1f, data);
-	blackadder(gemu.PalScroll2[0], &g.FadeScroll2, 0x1f, data);
-	blackadder(gemu.PalScroll3[0], &g.FadeScroll3, 0x1f, data);
-	blackadder(gemu.PalUnk1[0], &g.x5d4e, 7, data);
-	blackadder(gemu.PalUnk2[0], &g.x5d52, 7, data);
+	es.FadeCounter = 0;
+	whiteadder(gemu.PalObject[1],  &es.FadeObject,  0x1e, data);
+	blackadder(gemu.PalScroll1[0], &es.FadeScroll1, 0x1f, data);
+	blackadder(gemu.PalScroll2[0], &es.FadeScroll2, 0x1f, data);
+	blackadder(gemu.PalScroll3[0], &es.FadeScroll3, 0x1f, data);
+	blackadder(gemu.PalUnk1[0], &es.x5d4e, 7, data);
+	blackadder(gemu.PalUnk2[0], &es.x5d52, 7, data);
 }
 
 void syslib_00 (void) {					// e12
@@ -193,14 +195,14 @@ void syslib_00 (void) {					// e12
 				}
 				Exec.EffectIsSetUp = FALSE;
 			}
-			g.FadeInEffect = TRUE;
+			es.FadeInEffect = TRUE;
 			
 			while (TRUE) {
-				if (g.FadeCounter != 0x1fa) {
+				if (es.FadeCounter != 0x1fa) {
 					sub_10e0(-0x1000);
 					TASKSLEEP;
 				} else {
-					g.FadeInEffect      = FALSE;
+					es.FadeInEffect      = FALSE;
 					Exec.EffectIsSetUp  = TRUE;
 					g.CPS.DispEna &= 0xffc0;	
 					DIEFREE;
@@ -216,13 +218,13 @@ void syslib_00 (void) {					// e12
 				} 
 				Exec.EffectIsSetUp = TRUE;
 			}
-			g.FadeInEffect = TRUE;
+			es.FadeInEffect = TRUE;
 			/* FALLTHRU */			// fallthru to what?
-			while (g.FadeCounter) {
+			while (es.FadeCounter) {
 				sub_10e0(0x1000);
 				TASKSLEEP;
 			}
-			g.FadeInEffect     = FALSE;
+			es.FadeInEffect     = FALSE;
 			Exec.EffectIsSetUp = FALSE;
 			DIEFREE;
 			break;
@@ -240,34 +242,34 @@ void syslib_00 (void) {					// e12
 			 ***************************/
 			
 		case 0xa:                       /* OBJECT */
-			if (g.FadeObject == -1) {
+			if (es.FadeObject == -1) {
 				DIEFREE;
 			} else {
-				massadder(CPS_PALBASE_OBJECT, &g.FadeObject, -0x1000);
+				massadder(CPS_PALBASE_OBJECT, &es.FadeObject, -0x1000);
 				TASKSLEEP;
 			}
 			break;  
 		case 0xc:                       /* SCROLL1 */
-			if (g.FadeScroll1 == -1) {
+			if (es.FadeScroll1 == -1) {
 				DIEFREE;
 			} else {
-				massadder(CPS_PALBASE_SCROLL1, &g.FadeScroll1, -0x1000);
+				massadder(CPS_PALBASE_SCROLL1, &es.FadeScroll1, -0x1000);
 				TASKSLEEP;
 			}
 			break;
 		case 0xe:                       /* SCROLL2 */
-			if (g.FadeScroll2 == -1) {
+			if (es.FadeScroll2 == -1) {
 				DIEFREE;
 			} else {
-				massadder(CPS_PALBASE_SCROLL2, &g.FadeScroll2, -0x1000);
+				massadder(CPS_PALBASE_SCROLL2, &es.FadeScroll2, -0x1000);
 				TASKSLEEP;
 			}
 			break;
 		case 0x10:                      /* SCROLL3 */
-			if (g.FadeScroll3 == -1) {
+			if (es.FadeScroll3 == -1) {
 				DIEFREE;
 			} else {
-				massadder(CPS_PALBASE_SCROLL3, &g.FadeScroll3, -0x1000);
+				massadder(CPS_PALBASE_SCROLL3, &es.FadeScroll3, -0x1000);
 				TASKSLEEP;
 			}
 			break;
@@ -276,32 +278,32 @@ void syslib_00 (void) {					// e12
 			/* FADE IN */
 			
 		case 0x12:                       /* OBJECT */
-			if (g.FadeObject == -1) {
+			if (es.FadeObject == -1) {
 				DIEFREE;
 			} else {
-				massadder(CPS_PALBASE_OBJECT, &g.FadeObject, -0x1000);
+				massadder(CPS_PALBASE_OBJECT, &es.FadeObject, -0x1000);
 				TASKSLEEP;
 			}
 			break;  
 		case 0x14:                       /* SCROLL1 */
-			if (g.FadeScroll1 == -1) {
+			if (es.FadeScroll1 == -1) {
 				DIEFREE;
 			} else {
-				massadder(CPS_PALBASE_SCROLL1, &g.FadeScroll1, -0x1000);
+				massadder(CPS_PALBASE_SCROLL1, &es.FadeScroll1, -0x1000);
 				TASKSLEEP;
 			}
 			break;
 		case 0x16:                       /* SCROLL2 */
-			if (g.FadeScroll2 == -1) {
+			if (es.FadeScroll2 == -1) {
 				DIEFREE;
 			} else {
-				massadder(CPS_PALBASE_SCROLL2, &g.FadeScroll2, -0x1000);
+				massadder(CPS_PALBASE_SCROLL2, &es.FadeScroll2, -0x1000);
 				TASKSLEEP;
 			}
 			break;
 		case 0x18:                      /* SCROLL3 */
-			while (g.FadeScroll3 != -1) {
-				massadder(CPS_PALBASE_SCROLL3, &g.FadeScroll3, -0x1000);
+			while (es.FadeScroll3 != -1) {
+				massadder(CPS_PALBASE_SCROLL3, &es.FadeScroll3, -0x1000);
 				TASKSLEEP;
 			}
 			DIEFREE;
@@ -314,12 +316,12 @@ void syslib_00 (void) {					// e12
 					DIEFREE;
 				}
 			}
-			g.FadeInEffect = TRUE;
+			es.FadeInEffect = TRUE;
 			do {
 				sub_1152(-0x1000);
 				TASKSLEEP;
-			} while (g.FadeCounter != 0x1fa);
-			g.FadeInEffect = FALSE;
+			} while (es.FadeCounter != 0x1fa);
+			es.FadeInEffect = FALSE;
 			Exec.EffectIsSetUp = TRUE;
 			g.CPS.DispEna &= 0xffc0;
 			DIEFREE;
@@ -327,20 +329,20 @@ void syslib_00 (void) {					// e12
             /* XXX some missing */
 			
 		case 0x1e:
-			while(g.FadeScroll3 != 0xffffffff)  {
-				massadder(CPS_PALBASE_SCROLL1, &g.FadeScroll1, -0x1000);
-				massadder(CPS_PALBASE_SCROLL2, &g.FadeScroll2, -0x1000);
-				massadder(CPS_PALBASE_SCROLL3, &g.FadeScroll3, -0x1000);
+			while(es.FadeScroll3 != 0xffffffff)  {
+				massadder(CPS_PALBASE_SCROLL1, &es.FadeScroll1, -0x1000);
+				massadder(CPS_PALBASE_SCROLL2, &es.FadeScroll2, -0x1000);
+				massadder(CPS_PALBASE_SCROLL3, &es.FadeScroll3, -0x1000);
 				TASKSLEEP;
 			}
 			DIEFREE;
 			break;
 		case 0x20:
 			while(TRUE) {
-				if(g.FadeScroll3 == 0xffffffff) { DIEFREE; }
-				massadder(CPS_PALBASE_SCROLL1, &g.FadeScroll1, 0x1000);
-				massadder(CPS_PALBASE_SCROLL2, &g.FadeScroll2, 0x1000);
-				massadder(CPS_PALBASE_SCROLL3, &g.FadeScroll3, 0x1000);
+				if(es.FadeScroll3 == 0xffffffff) { DIEFREE; }
+				massadder(CPS_PALBASE_SCROLL1, &es.FadeScroll1, 0x1000);
+				massadder(CPS_PALBASE_SCROLL2, &es.FadeScroll2, 0x1000);
+				massadder(CPS_PALBASE_SCROLL3, &es.FadeScroll3, 0x1000);
 				TASKSLEEP;
 			}
 			break; 
@@ -353,22 +355,22 @@ void syslib_00 (void) {					// e12
 			break;
 		case 0x24:
 			while(TRUE) {
-				if(g.FadeObject == 0) { DIEFREE; }
-				massadder(CPS_PALBASE_OBJECT, &g.FadeObject, 0x1000);
+				if(es.FadeObject == 0) { DIEFREE; }
+				massadder(CPS_PALBASE_OBJECT, &es.FadeObject, 0x1000);
 				TASKSLEEP;
 			}
 			break;
 		case 0x26:
 			while(TRUE) {
-				if(g.FadeObject == 0) { DIEFREE; }
-				massadder(CPS_PALBASE_SCROLL2, &g.FadeScroll2, 0x1000);
+				if(es.FadeObject == 0) { DIEFREE; }
+				massadder(CPS_PALBASE_SCROLL2, &es.FadeScroll2, 0x1000);
 				TASKSLEEP;
 			}
 			break;
 		case 0x28:
 			while(TRUE) {
-				if(g.FadeObject == 0) { DIEFREE; }
-				massadder(CPS_PALBASE_SCROLL3, &g.FadeScroll3, 0x1000);
+				if(es.FadeObject == 0) { DIEFREE; }
+				massadder(CPS_PALBASE_SCROLL3, &es.FadeScroll3, 0x1000);
 				TASKSLEEP;
 			}
 			break;
@@ -407,7 +409,7 @@ void syslib_0c (void) {
 			SETSLEEP(1);
 			clear_rowscroll();
 			SETSLEEP(4 + task->params.Param2);
-			g.FadeBusy = FALSE;
+			es.FadeBusy = FALSE;
 			DIEFREE;
 			break;  
 		case 0:
@@ -454,11 +456,11 @@ void syslib_0c (void) {
 			QueueEffect(LC0_LIGHT_ALL_ENABLE, task->params.Param2);
 			do {sf2sleep(1);} while (Exec.EffectIsSetUp);
 			sf2sleep(task->params.Param2);
-			g.FadeBusy = FALSE;
+			es.FadeBusy = FALSE;
 			DIEBREAK;
 		case 0x12:
 			QueueEffect(LC0_DARK_OBJECT, task->params.Param2);    
-			do {sf2sleep(1);} while (g.FadeObject != 0xffffffff);
+			do {sf2sleep(1);} while (es.FadeObject != 0xffffffff);
 			g.x02b8 = 0;
 			g.x02ba = 0;
 			clear_object();
@@ -466,21 +468,21 @@ void syslib_0c (void) {
 			DIEBREAK;
 		case 0x14:
 			QueueEffect(LC0_DARK_SCROLL1, task->params.Param2);    
-			do {sf2sleep(1);} while (g.FadeScroll1 != 0xffffffff);    
+			do {sf2sleep(1);} while (es.FadeScroll1 != 0xffffffff);    
 			gfxrepeat(CPS_VIDEO_SCROLL1, 0xfff, GFXROM_SCROLL1 + ' ', 0);
-			g.FadeBusy = FALSE;
+			es.FadeBusy = FALSE;
 			DIEBREAK;
 		case 0x16:
 			QueueEffect(LC0_DARK_123, task->params.Param2);    
-			do {sf2sleep(1);} while (g.FadeScroll2 != 0xffffffff);    
+			do {sf2sleep(1);} while (es.FadeScroll2 != 0xffffffff);    
 			gfxrepeat(CPS_VIDEO_SCROLL2, 0xfff, GFXROM_SCROLL2 , 0);
-			g.FadeBusy = FALSE;
+			es.FadeBusy = FALSE;
 			DIEBREAK; 
 		case 0x18:
 			QueueEffect(LC0_DARK_SCROLL3, task->params.Param2);    
-			do {sf2sleep(1);} while (g.FadeScroll3 != 0xffffffff);    
+			do {sf2sleep(1);} while (es.FadeScroll3 != 0xffffffff);    
 			gfxrepeat(CPS_VIDEO_SCROLL3, 0xfff, GFXROM_SCROLL3 , 0);
-			g.FadeBusy = FALSE;
+			es.FadeBusy = FALSE;
 			DIEBREAK;
 		case 0x1a:
 			QueueEffect(LC0_DARK_ALL_DISABLE, task->params.Param2);
@@ -489,19 +491,19 @@ void syslib_0c (void) {
 			break;
 		case 0x1e:
 			QueueEffect(LC0_DARK_123, task->params.Param2);
-			do {sf2sleep(1);} while (g.FadeScroll3 != 0xffffffff);  
+			do {sf2sleep(1);} while (es.FadeScroll3 != 0xffffffff);  
 			clear_scrolls_123(task);      /* dies */
 			break;
 		case 0x20:
-			g.FadeObject = 0;
-			g.FadeScroll2 = 0;
-			g.FadeScroll3 = 0;
+			es.FadeObject = 0;
+			es.FadeScroll2 = 0;
+			es.FadeScroll3 = 0;
 			
 			start_effect(LC0_DARK_OBJECT,  task->params.Param2);
 			start_effect(LC0_DARK_SCROLL2, task->params.Param2);
 			start_effect(LC0_DARK_SCROLL3, task->params.Param2);
 			
-			do { sf2sleep(1); } while (g.FadeScroll3 != 0xffffffff);
+			do { sf2sleep(1); } while (es.FadeScroll3 != 0xffffffff);
 			_clear_scr23_wait_die(task);
     }
 }
@@ -1128,6 +1130,36 @@ static void sub_716a(Player *ply) {
 		/* both buffers */
 	}
 }
+
+#pragma mark ---- Fade Entries ----
+
+void fadenwait1 (void) {			/* 0x2138 */
+    es.FadeBusy = TRUE;
+    QueueEffect(SL0C | SL0C_FO_CL, 0x3);
+	SIG_WAIT(es.FadeBusy);
+}
+void fadenwait2 (void) {		/* 215a */
+    es.FadeBusy = TRUE;
+    QueueEffect(SL0C | SL0C_FI_W, 0x3);
+	SIG_WAIT(es.FadeBusy);
+}
+void fadenwait3 (void) {		/* 217c */
+    es.FadeBusy = TRUE;
+    QueueEffect(SL0C | SL0C_FO_CLW, 0x3);
+	SIG_WAIT(es.FadeBusy);
+}
+void fadenwait4 (short arg0) {		/* 219e */
+    es.FadeBusy = TRUE;
+    QueueEffect(SL0C | SL0C_FO_CL, arg0);
+	SIG_WAIT(es.FadeBusy);
+}
+void fadenwait5(short arg0) {		/* 21b0 */
+	es.FadeBusy = TRUE;
+	QueueEffect(SL0C | SL0C_FI_W, arg0);
+	SIG_WAIT(es.FadeBusy);
+}
+
+
 static void sub_70d2(Player *ply) {		// coin inserted, reset continue
 										// counter to 9
 	if (ply->ContinueCredits < g.NumberCredits) {

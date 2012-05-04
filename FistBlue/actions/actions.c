@@ -38,12 +38,12 @@ static void Act23SMBlood(Object *obj);
 
 static void action_0(Object *obj);
 static void action_1(Object *obj);	/* cb2a */
-static void action_2(Object *obj);
+extern void action_2(Object *obj);
 static void action_3(Object *obj);
 static void action_4(Object *obj);
 static void action_05(Object *obj);
 static void action_06(Object *obj);
-static void action_07(Object *obj);
+extern void action_07(Object *obj);
 static void action_08(Object *obj);
 static void action_09(Object *obj);
 static void action_0a(Object *obj);
@@ -65,7 +65,7 @@ static void action_1a(Object *obj);
 static void action_1b(Object *obj);
 static void action_1c(Object *obj);
 
-static void action_1e(Object *obj);
+extern void action_1e(Object *obj);
 static void action_1f(Object *obj);
 static void action_20(Object *obj);
 static void action_21(Object *obj);
@@ -73,10 +73,12 @@ static void action_22(Object *obj);
 
 void action_1e420(Object *obj);
 
-static void action_2c(Object *obj);
+extern void action_2c(Object *obj);
 
-static void action_2e(Object *obj);
+extern void action_2e(Object *obj);
+
 static void action_2f(Object *obj);
+
 static void action_30(Object *obj);
 
 static void action_33(Object *obj);
@@ -96,14 +98,11 @@ short g_d7;
 static void _draw_frame_corners(u16 **gfx_p, u32 cp );	/* 15df6 */
 
 
-typedef struct UserData_Act07 UD07;
 typedef struct UserData_Act09 UD09;
 typedef struct UserData_Act0B UD0B;
 typedef struct UserData_Act0E UD0E;
 typedef struct UserData_Act11 UD11;
 typedef struct UserData_Act12 UD12;
-typedef struct UserData_Act1e UD1E;
-typedef struct UserData_Act2e UD2E;
 typedef struct UserData_Act2f UD2F;
 
 typedef struct UserData_Act35 UD35;
@@ -270,130 +269,7 @@ static void action_1(Object *obj) {	/* cb2a */
 
 #pragma mark ACT02 Bycycle riders on ChunLi Stage
 
-static void _create_bycycle(Object *obj, Object *nobj1, Object *nobj2) {		// d2ba
-	struct UserData_Act2 *ud   = (struct UserData_Act2 *)&obj->UserData;
-	struct UserData_Act2 *udn1 = (struct UserData_Act2 *)&nobj1->UserData;
-	
-	short temp;
-	const static short data_d326[] = { 29,30,31,29,30,31,29,30 };	// palettes
-	
-	ud->x0080++;
-	nobj1->exists = TRUE;
-	nobj1->Sel    = SF2ACT_0X02;
-	nobj1->SubSel = 1;
-	nobj1->Owner  = (Player *)obj;
-	udn1->x0082   = nobj2;		/* u16 to pointer */
-	
-	nobj2->exists = TRUE;
-	nobj2->Sel    = SF2ACT_0X02;
-	nobj2->SubSel = -1;				// shadow
-	nobj2->Owner  = (Player *)obj;
-	
-	if (sf2rand() & 1) {
-		nobj1->Step = 1;
-		nobj2->Step = 1;
-	}
-	nobj1->Draw1 = TRUE;
-	nobj2->Draw1 = TRUE;
-	
-	temp = data_d326[(sf2rand() & 0xe) >>1];
-	nobj1->Draw2.part.integer = temp;
-	nobj2->Draw2.part.integer = temp;
-}
-static void _update_bicycle_shadow(Object *obj) {				// d3de
-	struct UserData_Act2 *ud = (struct UserData_Act2 *)&obj->UserData;
-	
-	if (obj->SubSel >= 0) {
-		ud->x0082->XPI = obj->XPI-8;
-		if (obj->Step) {
-			ud->x0082->XPI += 16;
-		}
-		ud->x0082->YPI = obj->YPI + 0x40;
-	}
-	printf("bycycle %d X %d\n", obj->SubSel, obj->XPI);
-}
 
-static void action_2(Object *obj) {				//d240 Bicycle people
-	Object *nobj1, *nobj2;
-	struct UserData_Act2 *ud = (struct UserData_Act2 *)&obj->UserData;
-	
-	short data_d3ae[]={-0x200, 0, 0x200, 0};
-	
-	if(obj->SubSel) {
-		/* d33a */
-		switch (obj->mode0) {
-			case 0:
-				NEXT(obj->mode0);
-				obj->Pool   = 6;
-				obj->Scroll = SCROLL_2;
-				obj->ZDepth = 64;	
-				obj->Flip   = obj->Step;
-				obj->XPI    = gstate_Scroll2.XPI;
-				obj->XPI   += obj->Step ? -80 : 464;
-				obj->YPI    = 64;
-				obj->Path   = data_d3ae;
-				if (obj->SubSel < 0) {
-					setaction_list(obj, actlist_d6e8, RAND8);
-				} else {		// shadow
-					setaction_direct(obj, actlist_d438);
-				}
-				break;
-			case 2:
-				/* d3b6 */
-				if(obj->SubSel >= 0) {
-					if(((g.libsplatter + g_d7) & 7) == 0) {
-						die_if_offscreen(obj);	/* check if still on screen */
-						update_motion(obj);
-					}
-					_update_bicycle_shadow(obj);
-					actiontick(obj);
-				}
-				check_rect_queue_draw(obj);
-				break;
-			case 4:
-			case 6:		//object went offscreen
-				/* d412 */
-				if (obj->SubSel >= 0) {
-					struct UserData_Act2 *udowner = (struct UserData_Act2 *)&obj->Owner->UserData;
-					--udowner->x0080;
-					ud->x0082->mode0 = 6;
-				}
-				FreeActor(obj);
-				break;
-				
-				FATALDEFAULT;
-		}		
-	} else {		/* I am the controller object */
-		switch (obj->mode0) {
-			case 0:
-				NEXT(obj->mode0);
-				ud->x0080 = 0;
-				break;
-			case 2:
-				/* d266 */
-				if(obj->mode1) {
-					/* d292 */
-					if(--obj->Timer == 0) {
-						if (ud->x0080 < 4 && g.FreeLayer3 >= 2) {
-							nobj1 = AllocActor();
-							nobj2 = AllocActor();
-							_create_bycycle(obj,nobj1, nobj2);
-						}
-						obj->mode1 = 0;
-					}
-				} else {
-					NEXT(obj->mode1);
-					obj->Timer = (u16 []){60,300,300,420,420,420,420,300}[(RAND32 & 0xe) >> 1];
-				}
-				break;
-			case 4:
-			case 6:
-				FreeActor(obj);
-				break;
-				FATALDEFAULT;
-		}
-	}
-}
 
 #pragma mark ACT03 Das Boat
 
@@ -543,135 +419,6 @@ static void action_06(Object *obj) {		//db5a
 }
 
 #pragma mark Act07 Dhalsim Elephants
-static void action_07(Object *obj) {		//e6cc 
-	UD07 *ud = (UD07 *)&obj->UserData;
-	
-	static const char data_e816[] = {SCROLL_2, SCROLL_2, SCROLL_3, SCROLL_3};
-	static const short data_e81a[][2] = {{0x1c8, 0xb8}, {0x2d8, 0xb8}, {0x170, 0xb0}, {0x2f0, 0xb0}};
-	
-	
-	short elephant, i;
-	Object *child;
-	
-	if (obj->SubSel == 0) {		// Controller
-		switch (obj->mode0) {
-			case 0:
-				NEXT(obj->mode0);
-				for (i=0; i<4; i++) {
-					if (child = AllocActor()) {
-						obj->exists = TRUE;
-						obj->Sel = SF2ACT_INDIA_ELEPHANTS;
-						obj->SubSel = i+1;
-						ud->x0080[i]=child;
-						obj->Pool = 2;
-					}
-				}
-				break;
-			case 2:
-				switch (obj->mode1) {
-					case 0:
-						NEXT(obj->mode1);
-						obj->LocalTimer = (short []){0x36, 0x78, 0xb4, 0x3c, 0x78, 0x3c, 0xb4, 0x78}[RAND8];
-						break;
-					case 2:
-						if (--obj->LocalTimer == 0) {
-							obj->mode1 = 0;
-							elephant = RAND4;
-							if (ud->x0080[elephant]->UserData[0] == 0) {
-								ud->x0080[elephant]->UserData[1] = TRUE;
-							}
-						}
-						break;
-					FATALDEFAULT;
-				}
-				if (g.FightOver) {
-					NEXT(obj->mode0);
-					obj->mode1 = 0 ;
-				}
-				break;
-			case 4:			//e78a
-				switch (obj->mode1) {
-					case 0:
-						for (i=0; i<4; i++) {
-							if (ud->x0080[i]->UserData[0]) {
-								return;
-							}
-							/* all elephants have finished speaking */
-							NEXT(obj->mode1);
-						}
-						break;
-					case 2:
-						NEXT(obj->mode0);	// die and kill the elephants
-						obj->mode1 = 0;
-						for (i=0; i<4; i++) {
-							ud->x0080[i]->mode1 = 4;
-						}
-						break;
-					FATALDEFAULT;
-				}
-				break;
-			case 6:
-				FreeActor(obj);
-				break;
-			FATALDEFAULT;
-		}
-	} else {
-		/* e7da child elephant */
-		switch (obj->mode0) {
-			case 0:
-				NEXT(obj->mode0);
-				obj->UserData[0] = 0;
-				obj->UserData[1] = 0;
-				obj->Scroll = data_e816[obj->SubSel];
-				obj->XPI = data_e81a[obj->SubSel][0];
-				obj->YPI = data_e81a[obj->SubSel][1];
-				break;
-			case 2:
-				switch (obj->mode1) {
-					case 0:
-						if (obj->UserData[1] != 0) {
-							NEXT(obj->mode1);
-							obj->UserData[1] = 0;
-							obj->LocalTimer = 0x70;
-							obj->UserData[0]=TRUE;
-							setactiondraw(obj, simpleact_e8ca,obj->SubSel - 1);
-							queuesound(SOUND_ELEPHANT);
-						}
-						break;
-					case 2:
-						if (--obj->LocalTimer == 0) {
-							obj->mode3 = 0;
-							obj->UserData[0] = FALSE;
-						}
-						actiontickdraw(obj);
-						break;
-					case 4:
-						NEXT(obj->mode1);
-						setactiondraw(obj, simpleact_e982, obj->SubSel - 1);
-						if (obj->SubSel == 1) {
-							queuesound(SOUND_ELEPHANT);
-						}
-						break;
-					case 6:
-						actiontickdraw(obj);
-						if (obj->SubSel == 1) {
-							if (obj->AnimFlags & 1) {
-								gstate_Scroll1.YPI = 0xf8;
-							} else {
-								gstate_Scroll1.YPI = 0;
-							}
-						}
-						break;
-					default:
-						break;
-				}
-				break;
-			default:
-				break;
-		}
-	}
-}
-
 #pragma mark Act08
 static void action_08(Object *obj) {		//f13a
 	switch (obj->mode0) {
@@ -2102,159 +1849,6 @@ void action_1606c() {
 }
 
 
-#pragma mark Act1E
-static void sub_18d9a(Object *obj, Player *ply) {
-	UD1E *ud = (UD1E *)&obj->UserData;
-
-	if (ply->Human && ply->FighterID == obj->UserByte) {
-		if (ply->SelectComplete) {
-			ud->x0080 = ply->Side ? actlist_1916a : actlist_1915a;
-		} else {
-			ud->x0080 = actlist_19142;
-		}
-	}
-}
-static void sub_18e52(Object *obj) {
-	setaction_list(obj, actlist_19142, obj->UserByte);
-}
-
-
-
-static void action_1e(Object *obj) {		//18c1c
-	UD1E *ud = (UD1E *)&obj->UserData;
-	static const char data_18e2a[][2]={{0x78, 0x78},{0x28,0xc8},{0x50,0xa0}};
-	switch (obj->SubSel) {
-		case 3:
-			if (obj->mode0 == 0) {		
-				setaction_list(obj, actlist_1912a, obj->UserByte);		// flags
-			}
-			enqueue_and_layer(obj);
-			break;
-		case 0 ... 2:
-			switch (obj->mode0) {
-				case 0:
-					NEXT(obj->mode0);
-					obj->LocalTimer = 60;
-					ud->x0084 = 0;			//byte
-					g.x8a68[obj->UserByte] = 0;
-					ud->x0080 = actlist_1912a;
-					setaction_list(obj, actlist_1912a, obj->UserByte);
-					if (obj->UserByte >= STAGE_THAILAND_BISON) {
-						if (g.UpToBosses == 0) {
-							obj->mode0 = 6;
-							return;
-						}
-						if (obj->UserByte != STAGE_THAILAND_BISON) {
-							if (obj->UserByte == STAGE_THAILAND_SAGAT && g.OnLevel8 && g.x0a03 == 0) {
-								obj->mode0 = 6;
-								return;
-							}
-						} else {
-							if (g.OnLevel8 == 0) {
-								obj->mode0 = 6;
-								return;
-							}
-						}
-
-					}
-					//18cc0
-					if (obj->SubSel == 2) {
-						obj->mode1 = 4;
-					} else if (g.CurrentStage == STAGE_USA_BALROG) {
-						return;
-					} else if (obj->SubSel == 1) {
-						if (g.x0a02) {
-							obj->mode3 = 0x10;
-							sub_18e52(obj);
-						} else {
-							obj->mode3 = 0xa;
-						}
-					}
-					
-					break;
-				case 2:
-					if (g.CurrentStage != STAGE_USA_BALROG && obj->UserByte == 0 && obj->Step == 0 && obj->mode2 == 0) {
-						if (--obj->LocalTimer == 0) {
-							g.Pause_9e1 = 1;
-							obj->mode2 += 2;
-						}
-					}
-					switch (obj->mode1) {
-						case 0:
-						FLAGAGAIN:
-							if (g.Defeated[obj->UserByte]) {
-								ud->x0080 = actlist_1917a;
-							} else {
-								ud->x0080 = actlist_1912a;	
-							}
-							sub_18d9a(obj, PLAYER1);
-							sub_18d9a(obj, PLAYER2);
-							setaction_list(obj, ud->x0080, obj->UserByte);
-							if (g.x8a68[obj->UserByte]) {
-								NEXT(obj->mode1);
-							}
-							break;
-						case 2:				
-							actiontick(obj);
-							break;
-						case 4:
-							NEXT(obj->mode1);
-							obj->LocalTimer = 0xb4;
-							setaction_list(obj, actlist_1a200, obj->UserByte);
-							break;
-						case 6:
-							if (--obj->LocalTimer == 0) {
-								NEXT(obj->mode1);
-								g.x0a03 = 1;
-								g.Pause_9e1 = -1;
-							}
-							break;
-						case 8:		/* nothing */  break;
-						case 10:
-							NEXT(obj->mode1);
-							ud->x0084 = 1;
-							obj->LocalTimer = data_18e2a[obj->UserByte - 9][0];
-							obj->x001f      = data_18e2a[obj->UserByte - 9][1];
-							setaction_list(obj, actlist_1a200, obj->UserByte);
-							break;
-						case 12:
-							if (--obj->LocalTimer == 0) {
-								NEXT(obj->mode1);
-								ud->x0084 = 0;
-								queuesound(0x23);
-							}
-							break;
-						case 14:
-							if (--obj->x001f == 0) {
-								NEXT(obj->mode1);
-								sub_18e52(obj);
-								}
-							break;
-						case 16:
-							obj->mode1 = 0;
-							if (obj->UserByte == STAGE_THAILAND_SAGAT) {
-								g.Pause_9e1 = 1;
-								g.x0a02 = 1;
-							}
-							goto FLAGAGAIN;			// suck it, bitches
-							break;
-						FATALDEFAULT;
-					}
-					if (ud->x0084 == 0) {
-						enqueue_and_layer(obj);
-					}
-				case 4:
-				case 6:
-					FreeActor(obj);
-				default:
-					break;
-			}
-			break;
-		default:
-			break;
-	}
-
-}
 
 #pragma mark Act1f Player Select Cursor
 static void action_1f(Object *obj) {		//18e7e
@@ -2699,184 +2293,9 @@ void action_draw_ports(void) {	/* 15c2e after a fight, one beaten up */
 
 
 #pragma mark Act2C Playerselect something
-static void action_2c (Object *obj) {
-	switch (obj->SubSel) {
-		case 0:
-		case 2:
-			break;
-		FATALDEFAULT;
-	}
-	switch (obj->mode0) {
-		case 0:
-			NEXT(obj->mode0);
-			obj->Pool = 6;
-			setaction_list(obj, actlist_1a200, obj->UserByte);
-			break;
-		case 2:
-			if(g.Defeated[obj->UserByte]) {
-				if (g.Player1.Human == FALSE || g.Player1.FighterID != obj->UserByte) {
-					if (g.Player2.Human == FALSE || g.Player2.FighterID != obj->UserByte) {
-						enqueue_and_layer(obj);
-					}
-				}
-			}
-			break;
-		case 4:
-		case 6:
-			FreeActor(obj);
-			break;
-		FATALDEFAULT;
-	}
-}
 
 #pragma mark Act2E Plane
-void synth_plane_setup(Object *obj, int city_from, int city_to) {
-	UD2E *ud = (UD2E *)obj->UserData;
-	ud->city_from = city_from;
-	ud->city_to   = city_to;
-}
-
-static void action_2e(Object *obj) {		// 18f92
-	UD2E *ud = (UD2E *)obj->UserData;
-	static const VECT16 data_cfe74[64] = {
-		{ 0x0000, 0x02a0, }, { 0x004b, 0x029c, }, { 0x0095, 0x0292, }, { 0x00de, 0x0282, },
-		{ 0x0125, 0x026c, }, { 0x0169, 0x024f, }, { 0x01aa, 0x022e, }, { 0x01e6, 0x0207, },	
-		{ 0x021e, 0x01da, }, { 0x0251, 0x01a9, }, { 0x027e, 0x0174, }, { 0x02a4, 0x013c, },
-		{ 0x02c4, 0x0100, }, { 0x02de, 0x00c2, }, { 0x02f0, 0x0082, }, { 0x02fc, 0x0041, },
-		{ 0x0300, 0x0000, },//10
-		{ 0x02fc, 0xffbf, },
-		{ 0x02f0, 0xff7e, },
-		{ 0x02de, 0xff3e, },
-		{ 0x02c4, 0xff00, },
-		{ 0x02a4, 0xfec4, },
-		{ 0x027e, 0xfe8c, },
-		{ 0x0251, 0xfe57, },
-		{ 0x021e, 0xfe26, },//18
-		{ 0x01e6, 0xfdf9, },
-		{ 0x01aa, 0xfdd2, },
-		{ 0x0169, 0xfdb1, },
-		{ 0x0125, 0xfd94, },
-		{ 0x00de, 0xfd7e, },
-		{ 0x0095, 0xfd6e, },
-		{ 0x004b, 0xfd64, },
-		{ 0x0000, 0xfd60, },//20
-		{ 0xffb5, 0xfd64, },
-		{ 0xff6b, 0xfd6e, },
-		{ 0xff22, 0xfd7e, },
-		{ 0xfedb, 0xfd94, },
-		{ 0xfe97, 0xfdb1, },
-		{ 0xfe56, 0xfdd2, },
-		{ 0xfe1a, 0xfdf9, },
-		{ 0xfde2, 0xfe26, },//28
-		{ 0xfdaf, 0xfe57, },
-		{ 0xfd82, 0xfe8c, },
-		{ 0xfd5c, 0xfec4, },
-		{ 0xfd3c, 0xff00, },
-		{ 0xfd22, 0xff3e, },
-		{ 0xfd10, 0xff7e, },
-		{ 0xfd04, 0xffbf, },
-		{ 0xfd00, 0x0000, },//30
-		{ 0xfd04, 0x0041, },
-		{ 0xfd10, 0x0082, },
-		{ 0xfd22, 0x00c2, },
-		{ 0xfd3c, 0x0100, },
-		{ 0xfd5c, 0x013c, },
-		{ 0xfd82, 0x0174, },
-		{ 0xfdaf, 0x01a9, },
-		{ 0xfde2, 0x01da, },//38
-		{ 0xfe1a, 0x0207, },
-		{ 0xfe56, 0x022e, },
-		{ 0xfe97, 0x024f, },
-		{ 0xfedb, 0x026c, },
-		{ 0xff22, 0x0282, },
-		{ 0xff6b, 0x0292, },
-		{ 0xffb5, 0x029c, },
-	};
-	const static POINT16 city_coords[12] = {		// 19040
-		{ 0x00be, 0x00ab, }, { 0x00c4, 0x00b3, }, { 0x012c, 0x008c, }, { 0x0117, 0x00ac, },
-		{ 0x0112, 0x00bb, }, { 0x00ae, 0x00b6, }, { 0x0088, 0x00bf, }, { 0x0092, 0x00a3, },
-		{ 0x00a0, 0x00a0, }, { 0x00a4, 0x00a4, }, { 0x0103, 0x00b0, }, { 0x004e, 0x00b6, },
-	};
-	
-	int d6;
-	switch (obj->mode0) {
-		case 0:
-			switch (obj->mode1) {
-				case 0:
-					printf("plane trip from city %d to %d\n", ud->city_from, ud->city_to);
-
-					NEXT(obj->mode1);
-					obj->LocalTimer = 0x32;
-					obj->Pool = 2;
-					obj->Path = data_cfe74;
-					if (ud->city_from == ud->city_to) {				// 1901e
-						g.x8a68[ud->city_to] = TRUE;
-						obj->mode0 = 6;						// die
-						obj->mode1 = 0;
-						g.Pause_9e1 = -1;
-					} else {
-						//18fd8
-						obj->XPI = city_coords[ud->city_from].x;
-						obj->YPI = city_coords[ud->city_from].y;
-						ud->destination.x = city_coords[ud->city_to].x;
-						ud->destination.y = city_coords[ud->city_to].y;
-						d6 = calc_flightpath(obj, ud->destination.x, ud->destination.y);
-						printf("start at %d,%d finish %d,%d path 0x%x", obj->XPI, obj->YPI, ud->destination.x, ud->destination.y, d6);
-						
-						obj->Step = (d6)>>2;
-						setaction_list(obj, actlist_19fa2, (obj->Step+1) >> 3);
-					}
-					break;
-				case 2:
-					if (--obj->LocalTimer == 0) {
-						NEXT(obj->mode0);
-						obj->mode1 = 0;
-						queuesound(SOUND_PLANE);
-					}
-					break;
-				FATALDEFAULT;
-			}
-			break;
-		case 2:
-			//190a0
-			if (obj->mode1 == 0) {
-				d6 = calc_flightpath(obj, ud->destination.x, ud->destination.y);
-				printf("flightpath 0x%02x\n", d6);
-				obj->Step = (d6) >> 2;
-
-// XXX too buggy				
-//				if ((ABS(obj->XPI - ud->destination.x) > 20)   ||	//XXX should be 3
-//					(ABS(obj->YPI - ud->destination.y) > 20)) {
-//					update_motion(obj);
-//					enqueue_and_layer(obj);
-//				} else {
-					NEXT(obj->mode1);	// flight over
-					g.Pause_9e1=-1;
-					g.x8a68[ud->city_to] = TRUE;
-					ud->sound = (short []) {
-						SOUND_JAPAN,	SOUND_JAPAN,	SOUND_BRAZIL,	SOUND_USA,
-						SOUND_USA,		SOUND_CHINA,	SOUND_USSR,		SOUND_INDIA,
-						SOUND_THAILAND,	SOUND_THAILAND, SOUND_USA,		SOUND_SPAIN,
-					}[ud->city_to];
-					obj->LocalTimer = 0x32;
-					enqueue_and_layer(obj);
-// XXX
-//				}
-			} else {
-				if (--obj->LocalTimer == 0) {
-					queuesound(ud->sound);
-				}
-				enqueue_and_layer(obj);
-			}
-			break;
-		case 4:
-		case 6:
-			FreeActor(obj);
-			break;
-		FATALDEFAULT;
-	}
-}
-
+//act2e_plane.c
 
 #pragma mark Act2f	Attract sequence fighters
 static void skyskraperanim_00(Object *obj) {		// 1d176

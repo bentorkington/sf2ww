@@ -66,6 +66,11 @@ struct state_playerselect{
 #define EFFECT_QUEUE_LENGTH 128
 #define SOUND_QUEUE_LENGTH  128
 
+typedef struct gamestate {
+    u16 mode0, timer0, mode1, timer1, mode2, timer2, mode3, timer3;
+    u16 mode4, timer4, mode5, timer5, mode6, timer6;
+} GameState;	
+
 typedef struct game {
     u16 mode0, timer0, mode1, timer1, mode2, timer2, mode3, timer3;
     u16 mode4, timer4, mode5, timer5, mode6, timer6;
@@ -315,18 +320,7 @@ typedef struct game {
 	
 	/* 5d36 is top of free stack for 5d0c */
 	
-	
-	int		FadeCounter;	/* 5d3a */
-	int		FadeObject;
-	int		FadeScroll1;
-	int		FadeScroll2;	/* 5d46 */
-	int		FadeScroll3;
-	int		x5d4e;
-	int		x5d52;
-	char	x5d56;
-	char	FadeInEffect;	/* 5d58 check this */
-	u8		FadeBusy;        /* 0x5d59 */  
-	
+	/* 5d3a - 5d59 gone to struct effectstate */
 	
 	/*****************/
 	/* Player Select */

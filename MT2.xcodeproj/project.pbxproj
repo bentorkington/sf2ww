@@ -59,6 +59,10 @@
 		B5ADB86D13B2B57E00905DFE /* sprite.c in Sources */ = {isa = PBXBuildFile; fileRef = B5ADB84513B2B57E00905DFE /* sprite.c */; };
 		B5ADB86E13B2B57E00905DFE /* task.c in Sources */ = {isa = PBXBuildFile; fileRef = B5ADB84913B2B57E00905DFE /* task.c */; };
 		B5ADB87213B2B59A00905DFE /* glwimp.c in Sources */ = {isa = PBXBuildFile; fileRef = B5ADB87013B2B59A00905DFE /* glwimp.c */; };
+		B5B075B31554803E009D301D /* act2e_plane.c in Sources */ = {isa = PBXBuildFile; fileRef = B5B075B21554803E009D301D /* act2e_plane.c */; };
+		B5B0761615548649009D301D /* act1e_worldflags.c in Sources */ = {isa = PBXBuildFile; fileRef = B5B0761515548649009D301D /* act1e_worldflags.c */; };
+		B5B0763D155489B5009D301D /* act02_bicycleriders.c in Sources */ = {isa = PBXBuildFile; fileRef = B5B0763C155489B5009D301D /* act02_bicycleriders.c */; };
+		B5B0764615548B28009D301D /* act07_elephants.c in Sources */ = {isa = PBXBuildFile; fileRef = B5B0764515548B28009D301D /* act07_elephants.c */; };
 		B5BA3ACE147F0EBC0069ACD3 /* actions.c in Sources */ = {isa = PBXBuildFile; fileRef = B5ADB7E413B2B57D00905DFE /* actions.c */; };
 		B5E9056313B2D5FE00833C5A /* ParamController.m in Sources */ = {isa = PBXBuildFile; fileRef = B5E9056213B2D5FE00833C5A /* ParamController.m */; };
 		B5E9056513B2D61900833C5A /* ParamController.xib in Resources */ = {isa = PBXBuildFile; fileRef = B5E9056413B2D61900833C5A /* ParamController.xib */; };
@@ -216,10 +220,17 @@
 		B5ADB84C13B2B57E00905DFE /* workarounds.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = workarounds.h; sourceTree = "<group>"; };
 		B5ADB87013B2B59A00905DFE /* glwimp.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = glwimp.c; sourceTree = "<group>"; };
 		B5ADB87113B2B59A00905DFE /* glwimp.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = glwimp.h; sourceTree = "<group>"; };
-		B5AE80EB14159F2500881BD6 /* plane.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = plane.h; sourceTree = "<group>"; };
 		B5AE82E41416C8CC00881BD6 /* act10.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = act10.h; sourceTree = "<group>"; };
 		B5AEA9D81405A46600DD9798 /* cpstests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = cpstests.h; sourceTree = "<group>"; };
 		B5AEA9D91405A46600DD9798 /* cpstests.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = cpstests.c; sourceTree = "<group>"; };
+		B5B075B11554803E009D301D /* act2e_plane.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = act2e_plane.h; sourceTree = "<group>"; };
+		B5B075B21554803E009D301D /* act2e_plane.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = act2e_plane.c; sourceTree = "<group>"; };
+		B5B0761415548649009D301D /* act1e_worldflags.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = act1e_worldflags.h; sourceTree = "<group>"; };
+		B5B0761515548649009D301D /* act1e_worldflags.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = act1e_worldflags.c; sourceTree = "<group>"; };
+		B5B0763B155489B5009D301D /* act02_bicycleriders.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = act02_bicycleriders.h; sourceTree = "<group>"; };
+		B5B0763C155489B5009D301D /* act02_bicycleriders.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = act02_bicycleriders.c; sourceTree = "<group>"; };
+		B5B0764415548B28009D301D /* act07_elephants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = act07_elephants.h; sourceTree = "<group>"; };
+		B5B0764515548B28009D301D /* act07_elephants.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = act07_elephants.c; sourceTree = "<group>"; };
 		B5E9056113B2D5FE00833C5A /* ParamController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ParamController.h; sourceTree = "<group>"; };
 		B5E9056213B2D5FE00833C5A /* ParamController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ParamController.m; sourceTree = "<group>"; };
 		B5E9056413B2D61900833C5A /* ParamController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ParamController.xib; sourceTree = "<group>"; };
@@ -440,7 +451,6 @@
 				B51533EF147EEB1A004A87B0 /* actions_b */,
 				B51867D01429504F003EE3BC /* act48.h */,
 				B5AE82E41416C8CC00881BD6 /* act10.h */,
-				B5AE80EB14159F2500881BD6 /* plane.h */,
 				B56E0DC913B95EB600FC837B /* actions_198a_data.h */,
 				B5ADB7E313B2B57D00905DFE /* actiondata.h */,
 				B5ADB7E413B2B57D00905DFE /* actions.c */,
@@ -453,6 +463,14 @@
 				B5ADB7EB13B2B57D00905DFE /* actions_7c000.h */,
 				B5EB38DF149816D5007100DB /* reels.h */,
 				B5EB38E0149816D5007100DB /* reels.c */,
+				B5B0763B155489B5009D301D /* act02_bicycleriders.h */,
+				B5B0763C155489B5009D301D /* act02_bicycleriders.c */,
+				B5B0764415548B28009D301D /* act07_elephants.h */,
+				B5B0764515548B28009D301D /* act07_elephants.c */,
+				B5B0761415548649009D301D /* act1e_worldflags.h */,
+				B5B0761515548649009D301D /* act1e_worldflags.c */,
+				B5B075B11554803E009D301D /* act2e_plane.h */,
+				B5B075B21554803E009D301D /* act2e_plane.c */,
 			);
 			path = actions;
 			sourceTree = "<group>";
@@ -676,6 +694,10 @@
 				B5EB38E1149816D5007100DB /* reels.c in Sources */,
 				B5AC69E71550AC9C00C9339E /* aitests.c in Sources */,
 				B5AC6A611550BDBB00C9339E /* testlib.c in Sources */,
+				B5B075B31554803E009D301D /* act2e_plane.c in Sources */,
+				B5B0761615548649009D301D /* act1e_worldflags.c in Sources */,
+				B5B0763D155489B5009D301D /* act02_bicycleriders.c in Sources */,
+				B5B0764615548B28009D301D /* act07_elephants.c in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

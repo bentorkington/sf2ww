@@ -52,14 +52,7 @@ void action_print_chant(void);
 
 // may need to use  __attribute__((packed))
 
-struct UserData_Act2 {
-	short x0080;
-	Object *x0082;
-};
 
-struct UserData_Act07 {
-	Object *x0080[4];
-};
 
 struct UserData_Act09 {
 	short	h0080s;
@@ -90,25 +83,7 @@ struct UserData_Act1d {
 	Player *x0088;
 };
 
-struct UserData_Act1e {
-	const CAFrame **x0080;
-	char	x0084;
-	
-};
 
-
-
-// The plane
-void synth_plane_setup(Object *obj, int city_from, int city_to);
-
-struct UserData_Act2e {
-	u8	city_from;
-	u8	city_to;
-	
-	POINT16 destination;
-	//
-	short	sound;	// 0096
-};
 	
 struct UserData_Act2f {
 	short	OldY;

@@ -189,9 +189,10 @@ static short _RyuKenCheckThrow(Player *ply, short d6) {	//2cfb6
 	ply->Throw[2] =  0x18;
 	ply->Throw[3] =  0x10;
 	if(throwvalid(ply)) {
-		ply->Flip = FACING_RIGHT;
-		if (ply->JoyDecode.full & JOY_UP==0) {
+		if (ply->JoyDecode.full & JOY_UP==0) {		// ???
 			ply->Flip = FACING_LEFT;
+		} else {
+			ply->Flip = FACING_RIGHT;
 		}
 		return TRUE;
 	}

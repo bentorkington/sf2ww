@@ -14,24 +14,27 @@
 #include "gemu.h"
 #include "sf2io.h"
 #include "structs.h"
+#include "effects.h"
 
 #include	"lib.h"
 #include	"gfxlib.h"
-extern CPSGFXEMU gemu;
 
-extern Game g;
+//extern CPSGFXEMU gemu;
+
+extern struct effectstate es;
+//extern Game g;
 
 void test_dimscreenout(void) {		// 84ccc
-	g.FadeBusy = TRUE;
+	es.FadeBusy = TRUE;
 	QueueEffect(0x0c00, 2);
-	while (g.FadeBusy) {
+	while (es.FadeBusy) {
 		sf2sleep(1);
 	}
 }
 void test_fadescreenin(void) {
-	g.FadeBusy = TRUE;
+	es.FadeBusy = TRUE;
 	QueueEffect(0x0c10, 2);
-	while (g.FadeBusy) {
+	while (es.FadeBusy) {
 		sf2sleep(1);
 	}
 }
