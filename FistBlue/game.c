@@ -26,7 +26,7 @@ struct game g;
 
 
 void manual_init(void) {
-	//fistblue_run_tests();
+	fistblue_run_tests();
 	memclear(&g, sizeof(struct game));
 	LBResetState();
 	g.CurrentDifficulty = 0x7;

@@ -195,7 +195,7 @@ int check_ground_collision(Object *ply) {		//3152
 
 void update_obj_path(Object *ply) {		/* 31b0 */
     int dx, dy;
-    short *path= ply->Path; 
+    short *path = ply->Path; 
     dx = path[(ply->Step ^ ply->Flip)*2 + 0] << 8;
     dy = path[(ply->Step ^ ply->Flip)*2 + 1] << 8;
     if (ply->Flip != FACING_LEFT) { 

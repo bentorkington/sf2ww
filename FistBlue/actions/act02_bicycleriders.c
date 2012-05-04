@@ -165,14 +165,13 @@ static void _update_bicycle_shadow(Object *obj) {				// d3de
 		}
 		ud->x0082->YPI = obj->YPI + 0x40;
 	}
-	printf("bycycle %d X %d\n", obj->SubSel, obj->XPI);
 }
 
 void action_2(Object *obj) {				//d240 Bicycle people
 	Object *nobj1, *nobj2;
 	struct UserData_Act2 *ud = (struct UserData_Act2 *)&obj->UserData;
 	
-	short data_d3ae[]={-0x200, 0, 0x200, 0};
+	const short data_d3ae[]={-0x200, 0,  0x200, 0};
 	
 	if(obj->SubSel) {
 		/* d33a */
@@ -186,7 +185,7 @@ void action_2(Object *obj) {				//d240 Bicycle people
 				obj->XPI    = gstate_Scroll2.XPI;
 				obj->XPI   += obj->Step ? -80 : 464;
 				obj->YPI    = 64;
-				obj->Path   = data_d3ae;
+				obj->Path   = (const VECT16 *)data_d3ae;
 				if (obj->SubSel < 0) {
 					setaction_list(obj, actlist_d6e8, RAND8);
 				} else {		// shadow
@@ -198,8 +197,8 @@ void action_2(Object *obj) {				//d240 Bicycle people
 				if(obj->SubSel >= 0) {
 					if(((g.libsplatter + g_d7) & 7) == 0) {
 						die_if_offscreen(obj);	/* check if still on screen */
-						update_motion(obj);
 					}
+					update_motion(obj);
 					_update_bicycle_shadow(obj);
 					actiontick(obj);
 				}
@@ -228,7 +227,7 @@ void action_2(Object *obj) {				//d240 Bicycle people
 				/* d266 */
 				if(obj->mode1) {
 					/* d292 */
-					if(--obj->Timer == 0) {
+					if(--obj->LocalTimer == 0) {
 						if (ud->x0080 < 4 && g.FreeLayer3 >= 2) {
 							nobj1 = AllocActor();
 							nobj2 = AllocActor();
@@ -238,7 +237,7 @@ void action_2(Object *obj) {				//d240 Bicycle people
 					}
 				} else {
 					NEXT(obj->mode1);
-					obj->Timer = (u16 []){60,300,300,420,420,420,420,300}[(RAND32 & 0xe) >> 1];
+					obj->LocalTimer = (u16 []){60,300,300,420,420,420,420,300}[(RAND32 & 0xe) >> 1];
 				}
 				break;
 			case 4:

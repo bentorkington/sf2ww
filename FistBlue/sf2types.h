@@ -69,7 +69,7 @@ typedef union FIXED16_16tag {
     struct part16_16tag {
         unsigned int fraction: 16;
         signed int integer: 16;
-    } part;
+    } __attribute__((packed)) part;
 } FIXED16_16;
 
 typedef union FIXED8_8tag {
@@ -77,7 +77,7 @@ typedef union FIXED8_8tag {
     struct part8_8tag {
         unsigned int fraction: 8;
         signed int integer: 8;
-    } part;
+    } __attribute__((packed)) part;
 } FIXED8_8;
 
 typedef union DUALtag {
@@ -85,7 +85,7 @@ typedef union DUALtag {
     struct dualtag {
         u8 p0;
         u8 p1;
-    } part;
+    }  __attribute__((packed)) part;
 } DUAL;
 
 
@@ -97,7 +97,7 @@ typedef union FIXED16_16tag {
     struct part16_16tag {
         signed int integer: 16;
         unsigned int fraction: 16;
-    } part;
+    }  __attribute__((packed))part;
 } FIXED16_16;
 
 typedef union FIXED8_8tag {
@@ -105,7 +105,7 @@ typedef union FIXED8_8tag {
     struct part8_8tag {
         signed int integer: 8;
         unsigned int fraction: 8;
-    } part;
+    } __attribute__((packed)) part;
 } FIXED8_8;
 
 typedef union DUALtag {
@@ -113,7 +113,7 @@ typedef union DUALtag {
     struct dualtag {
         u8 p1;
         u8 p0;
-    } part;
+    }  __attribute__((packed))part;
 } DUAL;
 
 #endif
@@ -153,7 +153,7 @@ typedef struct Rect8 RECT8;
 struct Vect16 {
 	FIXED8_8 x;
 	FIXED8_8 y;
-};
+} __attribute__((packed));
 typedef struct Vect16 VECT16;
 struct Traj16 {
 	VECT16 Vel;

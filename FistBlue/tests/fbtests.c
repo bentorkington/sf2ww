@@ -48,6 +48,9 @@ void fistblue_run_tests(void) {
 	printf("fixed-precision types in types.h: ");
 	FIXED8_8 testorder16;
 	FIXED16_16 testorder32;
+
+	assert(sizeof(FIXED8_8) == 2);
+	assert(sizeof(FIXED16_16) == 4);
 	
 	testorder16.full= 0x1234;
 	testorder32.full= 0x12345678;
@@ -59,5 +62,5 @@ void fistblue_run_tests(void) {
 	
 	
 	
-	exit(0);
+	//exit(0);
 }

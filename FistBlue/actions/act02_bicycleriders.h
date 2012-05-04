@@ -8,6 +8,6 @@
  */
 
 struct UserData_Act2 {
-	short x0080;
-	Object *x0082;
+	short x0080;			// numOnScreen only for controller
+	Object *x0082;			// shadow, only for child
 };
