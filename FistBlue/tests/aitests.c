@@ -40,6 +40,7 @@ static void _test_ai_check_strategy(Player *ply, int instr);
 
 static void _test_ai_putbyte(int scr1c, int value) {			// 89e58
 	u16 *scrp;
+	printf("%% AI-BYTE: %02x\n",value);
 	SCR1_CURSOR_CPS(scrp, scr1c);
 	SCR1_DRAW_TILE(scrp, (value >> 4), 0);
 	SCR1_CURSOR_BUMP(scrp, 1, 0);
@@ -78,13 +79,12 @@ static void _test_ai_dumpstatus(Player *ply) {					// 89d34
 }
 
 static void _test_ai_setup_agg0(Player *ply) {			// 89a8a
-	ply->AIStratAgg0 = dataAIAggressive[ply->FighterID][ply->OpponentID].a1;
+	ply->AIStratAgg0 = (dataAIAggressive[ply->FighterID]->a1[ply->OpponentID])[ply->RoughTimeRemain];
 	ply->AIStratIndexAgg0 = 0;
 }
 static void _test_ai_setup_agg1(Player *ply) {			// 89ad0
-	ply->AIStratAgg1 = dataAIAggressive[ply->FighterID][ply->OpponentID].a2->x0134[
-						dataAIAggressive[ply->FighterID][ply->OpponentID].a2->x023e[ply->RoughTimeRemain]
-																				   ];
+	AIAggTable *b = dataAIAggressive[ply->FighterID]->a2[ply->OpponentID];
+	ply->AIStratAgg1 = b->x0134[b->x023e[ply->RoughTimeRemain]];
 	ply->AIStratIndexAgg1 = 0;
 }
 static void _test_ai_setup_def(Player *ply) {			// 89b32
@@ -112,8 +112,10 @@ static void _test_ai_sm(void) {				// 896f0
 					for (ply->FighterID = 0; ply->FighterID < 12; ply->FighterID++) {
 						for (ply->OpponentID = 0; ply->OpponentID < 8; ply->OpponentID++) {
 							for (ply->RoughTimeRemain = 0; ply->RoughTimeRemain < 8; ply->RoughTimeRemain++) {
+								printf("fid %02x opp %02x lvl %02x >", ply->FighterID, ply->OpponentID, ply->RoughTimeRemain);
 								_test_ai_setup_agg0(ply);
-								_test_ai_checkall(ply);						
+								_test_ai_checkall(ply);		
+								printf("\n");
 							}
 						}
 					}
@@ -162,7 +164,7 @@ static void _test_ai_checkexit(void) {			// 896d0
 		// todo exit out.
 	}
 }
-static void test_ai_main(void) {						// 896c2
+void test_ai_main(void) {						// 896c2
 	while (TRUE) {
 		sf2sleep(1);
 		_test_ai_sm();
@@ -192,13 +194,13 @@ static int _test_ai_getnextbyte(Player *ply) {					// 89c96
 	} else {
 		switch (g.mode1) {
 			case 0:
-				return ply->AIStratAgg0[++ply->AIStratIndexAgg0];
+				return ply->AIStratAgg0[ply->AIStratIndexAgg0++];
 				break;
 			case 2:
-				return ply->AIStratAgg1[++ply->AIStratIndexAgg1];
+				return ply->AIStratAgg1[ply->AIStratIndexAgg1++];
 				break;
 			case 4:
-				return ply->AIStratDef[++ply->AIStratIndexDef];
+				return ply->AIStratDef[ply->AIStratIndexDef++];
 				break;
 			FATALDEFAULT;
 		}
@@ -246,6 +248,7 @@ static void _test_ai_specialskip(Player *ply) {		// 898b4
 	}
 }
 static void _test_ai_skipparams(Player *ply, int instr) {			// 8989c
+	printf("SK:%02x ", instr);
 	switch (instr) {
 		case 0:
 		case 2:
@@ -467,8 +470,10 @@ static void _test_ai_checkall(Player *ply) {					// 89822
 		_test_ai_putmsg("\x02\x0c\x00ERROR! NO INIT DATA\x00");
 		_test_ai_dumpstatus(ply);
 	}
+	printf("TYPE:%x ", instr);
 nextinstr:
 	instr = _test_ai_getnextbyte(ply);
+	printf("%02x ", instr);
 	if (instr & 0x80) {
 		res = _test_ai_clearsave_check_highai(ply, instr);
 		if (res >= 0) {
@@ -486,6 +491,7 @@ newline:
 	SCR1_CURSOR_SET(scrp, message[0], message[1]);
 	int attr = message[2];
 	message += 3;
+	printf("%%AI-ERROR: %s\n", message);
 	
 	if (message[0] == SF2_TEXTLIB_EOL) {
 		++message;

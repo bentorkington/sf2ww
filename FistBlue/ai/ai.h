@@ -26,8 +26,8 @@ struct data_2b7ea {
 typedef const struct data_2b7ea AIAggTable;
 
 struct dualptr {
-	const u8	*a1;
-	const AIAggTable  *a2;
+	const u8	***a1;
+	const AIAggTable  ***a2;
 };
 
 struct defense_strategy {

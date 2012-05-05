@@ -19,6 +19,7 @@
 #include "pthreads.h"
 #include "demo.h"
 #include "task.h"
+#include "aitests.h"
 
 struct game g;
 //struct player_t Player1;
@@ -35,7 +36,8 @@ void manual_init(void) {
 	
 	startup();
 	if (0) {
-		create_task(task_attractSequence, 4, 0, 0, 0);
+		//create_task(task_attractSequence, 4, 0, 0, 0);
+		create_task(test_ai_main, 4, 0, 0, 0);
 	} else {
 		startgame(ONLY_P1);
 		//g.Player1.Human     = TRUE;

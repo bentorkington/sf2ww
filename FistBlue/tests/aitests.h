@@ -7,3 +7,4 @@
  *
  */
 
+void test_ai_main(void);

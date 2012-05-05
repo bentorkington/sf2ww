@@ -64,7 +64,7 @@ static void _AINewGoAggressive(Player *ply);
 static void _AISearchStrategy (Player *ply, unsigned char d3);
 static void _AIExit1(Player *ply);
 static void AIAggHigh(Player *ply, short d0);
-static void _AISetAgg1(Player *ply, AIAggTable *a2);	// 2b7ea
+static void _AISetAgg1(Player *ply, AIAggTable **a2);	// 2b7ea
 static void _AIDefHigh(Player *ply, short d0);
 
 
@@ -238,29 +238,29 @@ static const char data_2b8a4[16] = { 1,2,1,0,1,2,1,0,2,1,2,1,1,1,2,1 };
 #pragma mark ---- AI Init ----
 struct dualptr _AILookupStrategy(Player *ply) {		// 2b78e
 	struct dualptr retval;
-	retval.a1 = dataAIAggressive[ply->FighterID]->a1;
-	retval.a2 = dataAIAggressive[ply->FighterID]->a2;
+	retval.a1 = dataAIAggressive[ply->FighterID]->a1[ply->OpponentID];
+	retval.a2 = dataAIAggressive[ply->FighterID]->a2[ply->OpponentID];
 		
 	return retval;
 }
-static void AISetAgg0(Player *ply, const u8 *a1, const AIAggTable *a2) {	// 2b7ce
+static void AISetAgg0(Player *ply, const u8 **a1, const AIAggTable **a2) {	// 2b7ce
 	/* do something with a1 and a2 returned by _AILookupStrategy */
 	
-	ply->AIStratAgg0  = a1;
+	ply->AIStratAgg0  = a1[ply->RoughTimeRemain];
 	ply->AITypeAgg0 = *ply->AIStratAgg0;		/* lookup and store first instruction */
 	ply->AIStratIndexAgg0 = 1;
 	
 	_AISetAgg1(ply, a2);
 }
 // in original, a2 points to u16[] of offsets to chars
-static void _AISetAgg1(Player *ply, const AIAggTable *a2) {		// 2b7ea
+static void _AISetAgg1(Player *ply, const AIAggTable **a2) {		// 2b7ea
 	
-	//struct data_2b7ea *ptr = &data_99dbe[a2[ply->RoughTimeRemain]]; 
-	ply->x023e = a2->x023e[RAND32];
+	struct data_2b7ea *ptr = a2[ply->RoughTimeRemain]; 
+	ply->x023e = ptr->x023e[RAND32];
 	
 	
 	
-	ply->AIStratAgg1 = a2->x0134[ply->x023e];
+	ply->AIStratAgg1 = ptr->x0134[ply->x023e];
 	
 	ply->AITypeAgg1 = *ply->AIStratAgg1;
 	ply->AIStratIndexAgg1 = 1;	

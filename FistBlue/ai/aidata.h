@@ -21,6 +21,7 @@
 #include "aibyte_balrog.h"
 #include "aibyte_vega.h"
 
+
 const struct defense_strategy **dataAIDefensive[]={		//9960e
 	data_a23ce, data_a3336, data_a427a, data_a51ea, 
 	data_a607e, data_a6e40, data_a7d3c, data_a8c28, 
@@ -28,9 +29,9 @@ const struct defense_strategy **dataAIDefensive[]={		//9960e
 };
 
 const struct dualptr *dataAIAggressive[]={				// 9963e
-	data_9966e, data_9a1be, data_9adc0, data_9be68,
-	data_9c96a, data_9d2fe, data_9dce0, data_9e740, 
-	data_9f374, data_9fff6, data_a0b22, data_a16ce, 
+	&data_9966e, &data_9a1be, &data_9adc0, &data_9be68,
+	&data_9c96a, &data_9d2fe, &data_9dce0, &data_9e740, 
+	&data_9f374, &data_9fff6, &data_a0b22, &data_a16ce, 
 };
 
 
