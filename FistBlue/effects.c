@@ -219,12 +219,11 @@ void syslib_00 (void) {					// e12
 				Exec.EffectIsSetUp = TRUE;
 			}
 			es.FadeInEffect = TRUE;
-			/* FALLTHRU */			// fallthru to what?
 			while (es.FadeCounter) {
 				sub_10e0(0x1000);
 				TASKSLEEP;
 			}
-			es.FadeInEffect     = FALSE;
+			es.FadeInEffect    = FALSE;
 			Exec.EffectIsSetUp = FALSE;
 			DIEFREE;
 			break;

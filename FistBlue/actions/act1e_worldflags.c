@@ -178,9 +178,6 @@ const CAFrame actlist_19b40[] = {
 	{10, 0x80, 0x0, &image_19ba6, 0, 0, 0, 0, 0, 0, 0, 0x00, 0, 0, 0, 0, 0, 0, 0, 0},
 	{0,0,0,(struct image *)&actlist_19b40[0], 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 }
 };
-const CAFrame *actlist_1916a[]={
-	actlist_19276, 	actlist_19276, 	actlist_19438, 	actlist_195fa, 	actlist_195fa, 	actlist_197bc, 	actlist_1997e, 	actlist_19b40, 
-};
 
 const Image image_191d2 = {
     4, 0x111d, 0x31, 0, 0,
@@ -248,10 +245,6 @@ const CAFrame actlist_19c36[] = {
 	{10, 0x80, 0x0, &image_19c5e, 0, 0, 0, 0, 0, 0, 0, 0x00, 0, 0, 0, 0, 0, 0, 0, 0},
 	{0,0,0,(struct image *)&actlist_19c36[0], 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 }
 };
-const CAFrame *actlist_19142[]={
-	actlist_191aa, 	actlist_191aa, 	actlist_1936c, 	actlist_1952e, 	actlist_1952e, 	actlist_196f0, 	actlist_198b2, 	actlist_19a74, 	actlist_19df8, 	actlist_19df8, 	actlist_1952e, 	actlist_19c36, 
-};
-
 
 
 
@@ -494,6 +487,15 @@ const CAFrame actlist_19d9a[] = {
 	{65535, 0x80, 0x0, &image_19db6, 0, 0, 0, 0, 0, 0, 0, 0x00, 0, 0, 0, 0, 0, 0, 0, 0},
 	{0,0,0,(struct image *)&actlist_19d9a[0], 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 }
 };
+const CAFrame *actlist_19142[]={
+	actlist_191aa, 	actlist_191aa, 	actlist_1936c, 	actlist_1952e, 	
+	actlist_1952e, 	actlist_196f0, 	actlist_198b2, 	actlist_19a74, 	
+	actlist_19df8, 	actlist_19df8, 	actlist_1952e, 	actlist_19c36, 
+};
+const CAFrame *actlist_1916a[]={
+	actlist_19276, 	actlist_19276, 	actlist_19438, 	actlist_195fa, 	
+	actlist_195fa, 	actlist_197bc, 	actlist_1997e, 	actlist_19b40, 
+};
 const CAFrame *actlist_1915a[]={
 	actlist_191de, 	actlist_191de, 	actlist_193a0, 	actlist_19562, 	
 	actlist_19562, 	actlist_19724, 	actlist_198e6, 	actlist_19aa8, 
@@ -508,7 +510,7 @@ const CAFrame *actlist_1a200[]={
 	actlist_1a2b8, 	actlist_1a2e0, 	actlist_1a308, 	actlist_1a330, 	
 	actlist_1a358, 	actlist_1a380, 	actlist_1a3a8, 	actlist_1a3d0, 
 };
-const CAFrame *actlist_1917a[]={
+const CAFrame *actlist_grayflags[]={			// 1917a
 	actlist_1930e, 	actlist_1930e, 	actlist_194d0, 	actlist_19692, 	
 	actlist_19692, 	actlist_19854, 	actlist_19a16, 	actlist_19bd8, 	
 	actlist_19f5c, 	actlist_19f5c, 	actlist_19692, 	actlist_19d9a, 
@@ -530,8 +532,6 @@ static void sub_18e52(Object *obj) {
 	setaction_list(obj, actlist_19142, obj->UserByte);
 }
 
-
-
 void action_1e(Object *obj) {		//18c1c
 	UD1E *ud = (UD1E *)&obj->UserData;
 	static const char data_18e2a[][2]={{0x78, 0x78},{0x28,0xc8},{0x50,0xa0}};
@@ -547,12 +547,12 @@ void action_1e(Object *obj) {		//18c1c
 				case 0:
 					NEXT(obj->mode0);
 					obj->LocalTimer = 60;
-					ud->x0084 = 0;			//byte
-					g.x8a68[obj->UserByte] = 0;
+					ud->x0084 = 0;
+					g.PlaneLandedInCity[obj->UserByte] = FALSE;
 					ud->x0080 = actlist_1912a;
 					setaction_list(obj, actlist_1912a, obj->UserByte);
 					if (obj->UserByte >= STAGE_THAILAND_BISON) {
-						if (g.UpToBosses == 0) {
+						if (g.UpToBosses == FALSE) {
 							obj->mode0 = 6;
 							return;
 						}
@@ -568,11 +568,11 @@ void action_1e(Object *obj) {		//18c1c
 							}
 						}
 						
-					}
+					} 
 					//18cc0
 					if (obj->SubSel == 2) {
 						obj->mode1 = 4;
-					} else if (g.CurrentStage == STAGE_USA_BALROG) {
+					} else if (g.CurrentStage != STAGE_USA_BALROG) {
 						return;
 					} else if (obj->SubSel == 1) {
 						if (g.x0a02) {
@@ -582,7 +582,6 @@ void action_1e(Object *obj) {		//18c1c
 							obj->mode3 = 0xa;
 						}
 					}
-					
 					break;
 				case 2:
 					if (g.CurrentStage != STAGE_USA_BALROG && obj->UserByte == 0 && obj->Step == 0 && obj->mode2 == 0) {
@@ -595,14 +594,14 @@ void action_1e(Object *obj) {		//18c1c
 						case 0:
 						FLAGAGAIN:
 							if (g.Defeated[obj->UserByte]) {
-								ud->x0080 = actlist_1917a;
+								ud->x0080 = actlist_grayflags;
 							} else {
 								ud->x0080 = actlist_1912a;	
 							}
 							sub_18d9a(obj, PLAYER1);
 							sub_18d9a(obj, PLAYER2);
 							setaction_list(obj, ud->x0080, obj->UserByte);
-							if (g.x8a68[obj->UserByte]) {
+							if (g.PlaneLandedInCity[obj->UserByte]) {
 								NEXT(obj->mode1);
 							}
 							break;
@@ -633,7 +632,7 @@ void action_1e(Object *obj) {		//18c1c
 							if (--obj->LocalTimer == 0) {
 								NEXT(obj->mode1);
 								ud->x0084 = 0;
-								queuesound(0x23);
+								queuesound(0x23);		/*dingdong!*/
 							}
 							break;
 						case 14:
@@ -646,7 +645,7 @@ void action_1e(Object *obj) {		//18c1c
 							obj->mode1 = 0;
 							if (obj->UserByte == STAGE_THAILAND_SAGAT) {
 								g.Pause_9e1 = 1;
-								g.x0a02 = 1;
+								g.x0a02     = 1;
 							}
 							goto FLAGAGAIN;			// suck it, bitches
 							break;
@@ -655,6 +654,7 @@ void action_1e(Object *obj) {		//18c1c
 					if (ud->x0084 == 0) {
 						enqueue_and_layer(obj);
 					}
+					break;
 				case 4:
 				case 6:
 					FreeActor(obj);

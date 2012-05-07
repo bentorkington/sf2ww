@@ -1880,24 +1880,25 @@ void actionlibrary(void) {
 	static const struct actionhdr data_83178[]={
 		
 	};
-	const struct actionhdr *data_actions[]={ data_82d7c, 
+	const struct actionhdr *data_actions[]={ 
+		data_82d7c, 
 		data_82e02, 
 		data_82f0c, 
 		data_82f32, 
-		data_82f4c, 
+		data_82f4c,			//4
 		data_82f66, 
 		data_82f74, 
 		data_82f8e, 
-		data_82fa8, 
+		data_82fa8,			//8
 		data_82fc2, 
 		data_82fe8, 
 		data_82ff6, 
-		data_83034, 
+		data_83034,			//c
 		data_83042, 
 		data_83044, 
 		data_83046, 
-		data_83048, 
-		data_8306e, 
+		data_83048,			//10
+		data_8306e,			//11 world map
 		data_82d62, 
 		data_83178, 
 	};
@@ -1909,7 +1910,7 @@ void actionlibrary(void) {
 	if (count < 0) { return; }
 	
 	const struct actionhdr *data = data_actions[g.ActionLibSel];
-	for (i=0; i< count; ++i) {
+	for (i=0; i< count; i++) {
 		if (action = alloc_action_by_type(data[i].Type)) {
 			action->exists = TRUE;
             action->SubSel = data[i].SubSel;
@@ -1919,7 +1920,7 @@ void actionlibrary(void) {
             action->UserByte  = data[i].UserByte;
             action->ZDepth  = data[i].ZDepth;
             action->XPI      = data[i].X;
-            action->YPI      = data[i].Y;			
+            action->YPI      = data[i].Y;	
 		}
 	}
 }

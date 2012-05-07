@@ -22,6 +22,8 @@
 
 #include "gemu.h"
 
+#include "act2e_plane.h"
+
 #include <stdio.h>
 #define DEBUG_SM(string)        \
 		printf ("SM:");			\
@@ -516,6 +518,7 @@ static void draw_world_map(void) {		//856c mode 2,4,2
 						g.WaitMode	= FALSE;
 						LBResetState();
 					}
+					break;
 				FATALDEFAULT;
 			}
 			break;

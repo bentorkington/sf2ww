@@ -326,7 +326,7 @@ typedef struct game {
 	/* Player Select */
 	/*****************/
 	
-	char	LevelScript[32];	/* 5d7e */
+	short	LevelScript[16];	/* 5d7e */
 	struct state_playerselect PLSL;		// 5dbe, sizeof 0x20;
 	char	x5dde;		/* placeholder only */
 
@@ -360,7 +360,7 @@ typedef struct game {
 	u8		x8a62[2];
 	u8		x8a64[2];
 	char	x8a66[2];			// see action_0d
-	char	x8a68[12];			// flags on player select
+	char	PlaneLandedInCity[12];	// 8a68 
 	char  	x8a74;				// skyscraper anim flags
 	unsigned char x8a75;		// skyscraper anim timer
 	u16		x8a76[10];		/* end round scoring */

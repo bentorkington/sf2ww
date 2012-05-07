@@ -174,8 +174,18 @@ void action_2e(Object *obj) {		// 18f92
 					obj->LocalTimer = 0x32;
 					obj->Pool = 2;
 					obj->Path = data_cfe74;
+					
+					/// XXX too buggy, bail out and unpause
+					g.PlaneLandedInCity[ud->city_to] = TRUE;
+					g.Pause_9e1 = -1;
+					obj->mode0 = 6;
+					obj->mode1 = 0;
+					return;
+					// XXX
+					
+					
 					if (ud->city_from == ud->city_to) {				// 1901e
-						g.x8a68[ud->city_to] = TRUE;
+						g.PlaneLandedInCity[ud->city_to] = TRUE;
 						obj->mode0 = 6;						// die
 						obj->mode1 = 0;
 						g.Pause_9e1 = -1;
@@ -206,26 +216,26 @@ void action_2e(Object *obj) {		// 18f92
 			//190a0
 			if (obj->mode1 == 0) {
 				d6 = calc_flightpath(obj, ud->destination.x, ud->destination.y);
-				printf("flightpath 0x%02x\n", d6);
+				//printf("flightpath 0x%02x\n", d6);
 				obj->Step = (d6) >> 2;
 				
 				//XXX too buggy				
-								if ((ABS(obj->XPI - ud->destination.x) > 20)   ||	//XXX should be 3
-									(ABS(obj->YPI - ud->destination.y) > 20)) {
-									update_motion(obj);
-									enqueue_and_layer(obj);
-								} else {
-				NEXT(obj->mode1);	// flight over
-				g.Pause_9e1=-1;
-				g.x8a68[ud->city_to] = TRUE;
-				ud->sound = (short []) {
-					SOUND_JAPAN,	SOUND_JAPAN,	SOUND_BRAZIL,	SOUND_USA,
-					SOUND_USA,		SOUND_CHINA,	SOUND_USSR,		SOUND_INDIA,
-					SOUND_THAILAND,	SOUND_THAILAND, SOUND_USA,		SOUND_SPAIN,
-				}[ud->city_to];
-				obj->LocalTimer = 0x32;
-				enqueue_and_layer(obj);
-				// XXX
+				if ((ABS(obj->XPI - ud->destination.x) > 20)   ||	//XXX should be 3
+					(ABS(obj->YPI - ud->destination.y) > 20)) {
+					update_motion(obj);
+					enqueue_and_layer(obj);
+				} else {
+					NEXT(obj->mode1);	// flight over
+					printf("plane flight finished");
+					g.Pause_9e1 = -1;
+					g.PlaneLandedInCity[ud->city_to] = TRUE;
+					ud->sound = (short []) {
+						SOUND_JAPAN,	SOUND_JAPAN,	SOUND_BRAZIL,	SOUND_USA,
+						SOUND_USA,		SOUND_CHINA,	SOUND_USSR,		SOUND_INDIA,
+						SOUND_THAILAND,	SOUND_THAILAND, SOUND_USA,		SOUND_SPAIN,
+					}[ud->city_to];
+					obj->LocalTimer = 0x32;
+					enqueue_and_layer(obj);
 				}
 			} else {
 				if (--obj->LocalTimer == 0) {

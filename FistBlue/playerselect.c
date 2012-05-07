@@ -26,6 +26,7 @@
 #include	"sprite.h"
 #include	"effects.h"
 #include "playerselect.h"
+#include "act2e_plane.h"
 
 extern Game g;
 extern GState gstate_Scroll1;
@@ -355,11 +356,12 @@ void SM_player_select(void) {		//7fc4
 						if (obj = AllocActor()) {
 							obj->exists      = TRUE;
 							obj->Sel         = SF2ACT_0X2E;			// Plane
-							obj->UserData[1] = g.LevelCursor;
-							obj->UserData[0] = g.PlayersSelectedDash;
 							if (g.PLSL.PLSLNewPlayers) {
-								obj->UserData[0] = g.PLSL.x5dc8;
+								synth_plane_setup(obj, g.PLSL.x5dc8, g.CurrentStage);
+							} else {
+								synth_plane_setup(obj, g.PlayersSelectedDash, g.CurrentStage);
 							}
+
 						}
 					}
 					break;
@@ -395,8 +397,6 @@ void SM_player_select(void) {		//7fc4
 			break;
 		FATALDEFAULT;
 	}
-	
-	
 }
 
 

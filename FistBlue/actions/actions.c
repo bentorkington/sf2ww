@@ -119,7 +119,7 @@ void proc_actions(void) {			/* c7da */
 	short i;
 	debughook(2);
 	g_d7=0x3b;
-	for(i=0; i<0x3b; i++) {
+	for(i=0; i<=0x3b; i++) {
 		if(g.Objects3[i].exists == 0) {continue;}
 		Object *obj = &g.Objects3[i];
 
@@ -2654,10 +2654,10 @@ static void action_35(Object *obj) {			//1f9fa
 			} else if (d0 < 0) {
 				NEXT(obj->mode0);
 			} else if (g.CurrentStage == STAGE_JAPAN_EHONDA) {
-				setaction_list(obj, actlist_1fb52, d0);	
+				setaction_list(obj, actlist_1fb52, d0);			// water splashes
 				check_rect_queue_draw(obj);
 			} else {
-				setaction_list(obj, actlist_1fb46, d0);
+				setaction_list(obj, actlist_1fb46, d0);			// dust clouds
 				check_rect_queue_draw(obj);
 			}
 			break;

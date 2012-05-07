@@ -284,6 +284,9 @@ void renderDummy(void) {
 			case 'T':
 				print_task_table();
 				break;
+			case 'K':
+				g.Player2.Energy = -1;
+				break;
 			case 'W':
 				gGameInWindow = 1-gGameInWindow;
 				break;
