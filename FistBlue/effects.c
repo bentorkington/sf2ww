@@ -18,7 +18,6 @@
 #include "sprite.h"
 #include "sm.h"
 #include "sound.h"
-#include "text.h"
 #include "effects.h"
 #include "sf2io.h"
 
@@ -531,152 +530,6 @@ static void sub_5072(u16 **gfx_p, short d0, short d2, u16 d3) {		//5072
 }
 
 
-static void showtextbank4(u8 d0)  {		//58c0 showtextbank4
-	Task *task = &Exec.Tasks[Exec.CurrentTask];
-
-	u16			*gfx_p;
-	const u16	*data;
-	const u8	*data2;
-	u32			cp;
-	short		palette;
-	
-	short x2,y2;
-	u16 ch, format;
-	const short *offsets;
-	short count;
-	
-	if(d0 & 0x80) {
-		//593a 
-		data = data_8e2ac[d0 & 0x7f];
-		
-		
-		OBJ_CURSOR_CPS(gfx_p, 0x91000 + *data++);
-		data ++;
-		count = *data;
-		for(--count; count >= 0; count--) {
-			OBJECT_DRAW(gfx_p, 0, 0, 0, 0);
-		}
-	} else {
-		data = data_8e2ac[d0];
-		OBJ_CURSOR_CPS(gfx_p, 0x910000 + data[0]);
-		cp = MakePointObj(data[1], data[2]);
-		count = data[3];
-		--count;
-		palette = data[4];
-		format = data[5];
-		offsets = sub_7f224(format);
-		data2 += 6;
-		for (;count >= 0; count--) {
-			ch = data2[0];
-			if (ch == 0) {
-				offsets += 2;
-			} else {
-				x2 = *offsets++ + (cp >> 16);
-				y2 = *offsets++ + (cp & 0xffff);
-				OBJECT_DRAW(gfx_p, x2, y2, ch, palette);
-			}
-		}
-		
-	}
-
-}
-
-static void sub_5982(Task *task) {		// 5982 in scroll1
-	u8			ch;	
-	u32			cp;		//XXX
-	u16			*gfx_p;
-	const u8	*data;
-	short		palette;
-	
-	if (task->params.Param0 & 0x80) {
-		//59f4
-		// word objoffset
-		// byte x
-		// byte y
-		// byte palette
-		
-		
-		data = data_8d2ac[(task->params.Param0 & 0x7f)];
-		data += 2;		// skip the object offset
-		
-		SCR1_CURSOR_SET(gfx_p, data[0], data[1]);
-		cp = data[0] * 128;
-		cp += data[1];
-		palette = data[2];
-		data += 3;
-		while (TRUE) {		/* we return out */
-			ch = data[0];
-			if (ch == 0) {		// 59de
-				if (task->params.Param1) {
-					g.TextEffectBusy = FALSE;
-				}
-				if (task->params.x0014 == 0) {
-					DIEFREE;
-					return;
-				}
-				return;
-			} else if (ch == 0x2f) {
-				// zero regs
-				cp = data[0] * 128;
-				cp += data[1];
-				palette = data[2];
-				data += 3;
-			} else {
-				//SCR1_DRAW_TILE(gemu.Tilemap_Scroll1[cp], GFXROM_SCROLL1 + 0x20, palette);
-				SCR1_DRAW_TILE(gfx_p, GFXROM_SCROLL1 + 0x20, palette);
-				SCR1_CURSOR_BUMP(cp, 0, 1);
-				SCR1_CURSOR_BUMP(gfx_p, 0, 1);
-				
-				data++;
-				
-				if (task->params.Param2) {
-					SETSLEEP(task->params.Param2);
-				}
-			}
-		}
-		
-	} else {
-		data = data_8d2ac[(task->params.Param0 & 0xff)];
-		data += 2;
-		
-		SCR1_CURSOR_SET(gfx_p, data[0], data[1]);
-
-		cp = data[0] * 128;
-		cp += data[1];
-		palette = data[2];
-		data += 3;
-		while (TRUE) {		/* we return out */
-			ch = data[0];
-			if (ch == 0) {		// 59de
-				if (task->params.Param1) {
-					g.TextEffectBusy = FALSE;
-				}
-				if (task->params.x0014 == 0) {
-					DIEFREE;
-					return;
-				}
-				return;
-			} else if (ch == 0x2f) {
-				// zero regs
-				cp = data[0] * 128;
-				cp += data[1];
-				palette = data[2];
-				data += 3;
-			} else {
-				//SCR1_DRAW_TILE(gemu.Tilemap_Scroll1[cp], GFXROM_SCROLL1 + ch, palette);
-				SCR1_DRAW_TILE(gfx_p, GFXROM_SCROLL1 + ch, palette);
-				SCR1_CURSOR_BUMP(cp, 0, 1);
-				SCR1_CURSOR_BUMP(gfx_p, 0, 1);
-				
-				data++;
-				if (task->params.Param2) {
-					SETSLEEP(task->params.Param2);
-					return;
-				}
-			}
-		}
-	}
-}
 
 static void syslib_04(void) {		// SL04	 597a version string
 	Task *task = &Exec.Tasks[Exec.CurrentTask];
@@ -716,28 +569,6 @@ static void syslib_10(void) {		// 4f9e
 	}
 }
 
-// print a player's score
-static void sub_54bc(u16 **gfx_p, short x, short y, u8 *string) {
-	u32 cp = MakePointObj(x, y);
-	short leadingzero = FALSE;
-	if (*((u32 *)string) == 0) {
-		INC_GFX_CURSOR(&cp, 0x48, 0);
-		leadingzero = TRUE;
-		sub_516a(gfx_p, &cp, 0, &leadingzero, 13);	/* XXX really not sure where d3 (13) comes from */
-	} else {
-#ifdef SF2_ENDIAN_LITTLE
-	 	sub_516a(gfx_p, &cp, string[3], &leadingzero, 13);
-		sub_5162(gfx_p, &cp, string[2], &leadingzero, 13);
-		sub_5162(gfx_p, &cp, string[1], &leadingzero, 13);
-		sub_5162(gfx_p, &cp, string[0], &leadingzero, 13);
-#else
-	 	sub_516a(gfx_p, &cp, string[0], &leadingzero, 13);
-		sub_5162(gfx_p, &cp, string[1], &leadingzero, 13);
-		sub_5162(gfx_p, &cp, string[2], &leadingzero, 13);
-		sub_5162(gfx_p, &cp, string[3], &leadingzero, 13);
-#endif		
-	}
-}
 
 static void syslib_18(void) {		//5b22
 	Task *task = &Exec.Tasks[Exec.CurrentTask];
@@ -745,6 +576,7 @@ static void syslib_18(void) {		//5b22
 	const u8	*data;
 	u32			cp;
 	short		palette;
+	extern const u8 *data_8dbc4[];
 	
 	if (task->params.Param0 & 0x80) {
 		//5bba todo erase
@@ -794,7 +626,7 @@ SYSLIB18LOOP:
 		if (task->params.Param2) {
 			SETSLEEP(task->params.Param2);
 		} 
-		goto SYSLIB18LOOP;		// YES!!!
+		goto SYSLIB18LOOP;
 		
 	}
 }
@@ -1184,13 +1016,13 @@ static void sub_70d2(Player *ply) {		// coin inserted, reset continue
 	}	
 }
 
-inline static short LBPlayerStartDown(Player *ply) {			// 725e
+static short LBPlayerStartDown(Player *ply) {			// 725e
 	if (g.RawButtons0Dash &  (1 <<(ply->Side ? 5 : 4)) ) {
 		return 1;
 	}
 	return 0;
 }
-inline static short LBCheckPaidStart(Player *ply) {		// 7252
+static short LBCheckPaidStart(Player *ply) {		// 7252
 	if ((g.FreePlay == 0) && (g.NumberCredits == 0)) {
 		return 0;
 	}

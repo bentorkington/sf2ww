@@ -70,7 +70,6 @@ void palette_from_game(void) {			// 160c
     setpalette_scroll3(g.Palette1);
 }
 void palettes_nextlevel(void) {			// 1698
-	printf("palettes_nextlevel %d\n", g.CurrentStage);
 
     setpalette_objtop (g.CurrentStage);
     setpalette_scroll1(g.CurrentStage);
@@ -78,7 +77,6 @@ void palettes_nextlevel(void) {			// 1698
     setpalette_scroll3(g.CurrentStage);
 }
 void palette_macro(int palette) {			
-	printf("palette_macro %d\n", palette);
     setpalette_objtop (palette);
     setpalette_scroll1(palette);
     setpalette_scroll2(palette);
@@ -91,7 +89,6 @@ void setpalette_scroll1_CS(void) {
 }
 void setpalette_scroll1(short palette) {		// emulation of 16ca
     int u,v;
-	printf("palette_scr1 %d\n", palette);
 
     for(u=0; u<32; u++) {
         for(v=0; v<16; v++) {
@@ -109,7 +106,6 @@ inline void palette_scr1_19(void) {		// 1692
 
 void setpalette_scroll2(short palette) {		// emulation of 16ea
     int u,v;
-	printf("palette_scr2 %d\n", palette);
 
     for(u=0; u<32; u++) {
         for(v=0; v<16; v++) {
@@ -119,7 +115,6 @@ void setpalette_scroll2(short palette) {		// emulation of 16ea
 }
 void setpalette_scroll3(short palette) {		// emulation of 1706
     int u,v;
-	printf("palette_scr3 %d\n", palette);
 
     for(u=0; u<32; u++) {
         for(v=0; v<16; v++) {
@@ -131,7 +126,6 @@ void setpalette_scroll3(short palette) {		// emulation of 1706
 
 void sub_1742(int palette) {
 	short u, v;
-	printf("palette_obj %d\n", palette);
 
     for(u=16; u<32; u++) {
         for(v=0;v<16; v++) {
@@ -250,7 +244,7 @@ void _putlong(u16 **cursor, short x, short y, int arg, short attr) {	//51fe
     _putword(cursor, &gfxcursor, arg >> 16   , attr);
     _putword(cursor, &gfxcursor, arg & 0xffff, attr);
 }
-void sub_516a(u16 **gfx_p, u32 *cp_p, u8 d0, short *leading_zero, u16 d3 ) {
+void sub_516a(u16 **gfx_p, u32 *cp_p, u8 d0, short *leading_zero, u16 d3 ) {		// 516a
 	u32 cp;
 	if (*leading_zero == 0) {
 		if (d0 & 0xf) {
@@ -270,7 +264,7 @@ void sub_516a(u16 **gfx_p, u32 *cp_p, u8 d0, short *leading_zero, u16 d3 ) {
 }
 
 static void sub_5152(u16 **cursor, u32 *gfxcursor, u16 arg, u16 attr) {
-	short lz = 0;		// XXX not really here
+	short lz = 0;
 	sub_516a(cursor, gfxcursor, arg >> 4, &lz, attr);
 	sub_516a(cursor, gfxcursor, arg     , &lz, attr);
 }
@@ -893,114 +887,3 @@ void sub_1a0c(void) {			//1a0c
 	setpalette_scroll3(g.Palette1);
 }
 	
-
-void showtextbank0(char sel) {		// 5602 Scroll1
-	u8 *data = data_8d2ac[sel & 0x7f];
-	u16 *gfx_p;
-	u8 cx,cy;
-	
-	cx = *data++;
-	cy = *data++;
-	SCR1_CURSOR_SET(gfx_p, cx, cy);
-	
-	u8 *string = data;
-	char ch;
-	short x,y,attr;
-	
-	if (sel & 0x80) {
-		// 564e
-		string += 3;
-		while (1) {
-			ch = *string++;
-			if (ch == 0) {
-				return;
-			} else if (ch == SF2_TEXTLIB_EOL) {
-				string += 3;
-			} else if (ch != ' ') {
-				SCR1_DRAW_TILE(gfx_p, 0, 0);
-				SCR1_CURSOR_BUMP(gfx_p, 1, 0);
-			}
-		}
-	} else {  // 5606
-		x = ((*string++) * 8) + 0x40;
-		y = (*string++) * 2;		// XXX never read
-		attr = *string++;
-		while(1) {	// 56c0
-			ch = *string++;
-			if (ch == 0) {
-				return;
-			} else if (ch == SF2_TEXTLIB_EOL) {
-				x = ((*string++) * 8) + 0x40;
-				y = (*string++) * 2;
-				attr = *string++;
-			} else {
-				if (ch != ' ') {	/* whitespace */
-					SCR1_DRAW_TILE(gfx_p, ch + SF2_TILE_SC1_ASCII, attr);
-					SCR1_CURSOR_BUMP(gfx_p, 0, 1);
-				}
-				x+=8;
-			}
-		}
-	}
-}
-void showtextbank1(char sel) {		// 568c draw text in OBJECT
-	u8 *data = data_8d2ac[sel & 0x7f];
-
-	u16 *gfx_p;
-	OBJ_CURSOR_SET(gfx_p, *data++);
-	u8 *string = (u8 *)data;
-	char ch;
-	short x,y,attr;
-	
-	if (sel & 0x80) {
-		// 56fe
-		string += 3;
-		while (1) {
-			ch = *string++;
-			if (ch == 0) {
-				return;
-			} else if (ch == SF2_TEXTLIB_EOL) {
-				string += 3;
-			} else if (ch != ' ') {
-				OBJECT_DRAW(gfx_p, 0, 0, 0, 0);
-				OBJ_CURSOR_BUMP(gfx_p);
-			}
-		}
-	} else {
-		x = ((*string++) * 8) + 0x40;
-		y = (*string++) * 2;
-		attr = *string++;
-		while(1) {	// 56c0
-			ch = *string++;
-			if (ch == 0) {
-				 return;
-			} else if (ch == SF2_TEXTLIB_EOL) {
-				x = ((*string++) * 8) + 0x40;
-				y = (*string++) * 2;
-				attr = *string++;
-			} else {
-				if (ch != ' ') {	/* whitespace */
-					OBJECT_DRAW(gfx_p, x, y, ch + SF2_TILE_OBJ_2ASCII, attr);
-					/* draw in two buffers */
-					OBJ_CURSOR_BUMP(gfx_p);
-				}
-				x+=8;
-			}
-		}
-	}
-}
-
-void showtextbank2(int sel) {		// 574a Winners chants
-	const char *string;
-	u16 *gfx_p;
-	if (sel & 0x80) {
-		// 57ca
-		//string = data_8dbc4[sel & 0x7f];
-	} else {
-		//string = data_8dbc4[sel];
-		OBJ_CURSOR_CPS(gfx_p, 0x910000 + string[0]);
-		// todo...
-		
-	}
-}
-

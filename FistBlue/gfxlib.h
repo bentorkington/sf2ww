@@ -8,10 +8,8 @@ void gfxrepeat(unsigned short *gfxram, int count, unsigned short character, unsi
 void setpalette_objtop(short palette);
 void palette_from_game(void);
 void palettes_nextlevel(void);
-void palette_macro_10(void);
-void palette_macro_11(void);
-void palette_macro_12(void);
-void palette_macro_13(void);
+
+void palette_macro(int palette);
 
 void palette_scr1_16(void);
 void palette_scr1_19(void);

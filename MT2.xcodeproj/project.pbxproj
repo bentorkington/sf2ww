@@ -21,6 +21,7 @@
 		B551553514773E8A00A8BBD9 /* coinage.c in Sources */ = {isa = PBXBuildFile; fileRef = B551553414773E8A00A8BBD9 /* coinage.c */; };
 		B55891431485AB2A00BBB0BA /* coll_projectile.c in Sources */ = {isa = PBXBuildFile; fileRef = B55891421485AB2A00BBB0BA /* coll_projectile.c */; };
 		B558918F1485B04A00BBB0BA /* coll_bonus.c in Sources */ = {isa = PBXBuildFile; fileRef = B558918E1485B04A00BBB0BA /* coll_bonus.c */; };
+		B5613C3B155F9917001E127A /* text.c in Sources */ = {isa = PBXBuildFile; fileRef = B5613C3A155F9917001E127A /* text.c */; };
 		B56A718C1411B0D300DF7F02 /* game.c in Sources */ = {isa = PBXBuildFile; fileRef = B56A718B1411B0D300DF7F02 /* game.c */; };
 		B56BBD5514859AA100FF84CB /* fbtests.c in Sources */ = {isa = PBXBuildFile; fileRef = B56BBD5414859AA100FF84CB /* fbtests.c */; };
 		B5871ED71408E4F4004A45F5 /* pthreads.c in Sources */ = {isa = PBXBuildFile; fileRef = B5871ED61408E4F4004A45F5 /* pthreads.c */; };
@@ -94,6 +95,7 @@
 		B51867D01429504F003EE3BC /* act48.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = act48.h; sourceTree = "<group>"; };
 		B527F61315508A0800BC70D8 /* aitests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = aitests.h; sourceTree = "<group>"; };
 		B527F61415508A0800BC70D8 /* aitests.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = aitests.c; sourceTree = "<group>"; };
+		B529FCEC15606B0A005EE9B7 /* textdata.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = textdata.c; sourceTree = "<group>"; };
 		B53EBC57155F86F400581C8D /* act29_wwlogo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = act29_wwlogo.h; sourceTree = "<group>"; };
 		B53EBC58155F86F400581C8D /* act29_wwlogo.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = act29_wwlogo.c; sourceTree = "<group>"; };
 		B53EBC60155F8A4600581C8D /* act3e_capcomlogos.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = act3e_capcomlogos.h; sourceTree = "<group>"; };
@@ -111,6 +113,7 @@
 		B55891421485AB2A00BBB0BA /* coll_projectile.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = coll_projectile.c; sourceTree = "<group>"; };
 		B558918D1485B04A00BBB0BA /* coll_bonus.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = coll_bonus.h; sourceTree = "<group>"; };
 		B558918E1485B04A00BBB0BA /* coll_bonus.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = coll_bonus.c; sourceTree = "<group>"; };
+		B5613C3A155F9917001E127A /* text.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = text.c; sourceTree = "<group>"; };
 		B56A715D1411AA1000DF7F02 /* io.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = io.h; sourceTree = "<group>"; };
 		B56A718A1411B0D300DF7F02 /* game.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = game.h; sourceTree = "<group>"; };
 		B56A718B1411B0D300DF7F02 /* game.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = game.c; sourceTree = "<group>"; };
@@ -454,7 +457,9 @@
 				B5ADB84813B2B57E00905DFE /* structs.h */,
 				B5ADB84913B2B57E00905DFE /* task.c */,
 				B5ADB84A13B2B57E00905DFE /* task.h */,
+				B5613C3A155F9917001E127A /* text.c */,
 				B5ADB84B13B2B57E00905DFE /* text.h */,
+				B529FCEC15606B0A005EE9B7 /* textdata.c */,
 				B5ADB84C13B2B57E00905DFE /* workarounds.h */,
 			);
 			path = FistBlue;
@@ -728,6 +733,7 @@
 				B53EBC6E155F8C0600581C8D /* act_3f.c in Sources */,
 				B53EBC80155F91F900581C8D /* act17.c in Sources */,
 				B53EBC84155F927300581C8D /* act16.c in Sources */,
+				B5613C3B155F9917001E127A /* text.c in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
