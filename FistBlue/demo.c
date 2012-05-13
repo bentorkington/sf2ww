@@ -48,7 +48,7 @@ static void sub_65a2(void) {
 		die_top8();
 		// sound sub_62ec();
 		create_task(task_creditscreen, 2, 0, 0, 0);
-		DIEFREE;
+		task_die();
 	}
 }
 

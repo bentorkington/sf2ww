@@ -955,9 +955,11 @@ static void action_12(Object *obj) {		// "Street Fighter" logo
 					/* FALLTHRU */
 				case 2:
 					enqueue_and_layer(obj);
+					break;
 				case 4:
 				case 6:
 					FreeActor(obj);
+					break;
 				FATALDEFAULT;
 			}
 			break;

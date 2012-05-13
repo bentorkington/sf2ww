@@ -804,7 +804,7 @@ void drawsprite(Object *obj) {         /* 7edaa */
 	
 	
     //if(g.Debug && g.JPCost & JP_DBGSLEEP) {
-		dbg_draw_hitboxes((Player *)obj);
+	//	dbg_draw_hitboxes((Player *)obj);
     //}
     sprite_coords(obj, coordpair);	/* set coords in d0 and d1 to follow scroll X */
 	

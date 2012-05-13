@@ -49,33 +49,26 @@ static ucontext_t uctx_main;
 static void despatch_tasks(void);
 
 void task_timer(void){
-    int i;
     sf2_interrupt();
 	gtimercount++;
-	
-//    for (i=0; i<MAX_TASKS; i++) {
-//        if(Exec.Tasks[i].status == TASK_SLEEP) {
-//            if(--Exec.Tasks[i].timer == 0) {
-//                Exec.Tasks[i].status = TASK_READY;
-//            }
-//        }
-//    }
-    despatch_tasks();
+	despatch_tasks();
 }
 
 void printtasktable(void) {
 	int i;
 	
-	printf("Task Table:");
+	printf("Task Table:\n");
 	for (i=0; i<MAX_TASKS; i++) {
-		printf("Task %2d: stat %02x code %08x\n", i, Exec.Tasks[i].status, Exec.Tasks[i].code);
+		printf("Task %2d: stat %02x code %016x\n", i, Exec.Tasks[i].status, (unsigned int)Exec.Tasks[i].code);
 	}
 }
 
-void justdie() {
+void justdie() {			// XXX doesn't work
 	Task *task = &Exec.Tasks[Exec.CurrentTask];
 	memclear(&task->params, sizeof(TaskParam));
 	task->status = TASK_EMPTY;
+	printf("just_die %d\n", Exec.CurrentTask);
+	pthread_exit(NULL);
 }	
 	
 
@@ -87,6 +80,7 @@ void diefree() {
 	--Exec.NextFreeTask;
 	Exec.NextFreeTask[0] = task;
 	++Exec.FreeTasks;
+	RHKill(task);
 	/* would swapstacks() here on 68k */
 }
 
@@ -211,12 +205,16 @@ void task_kill(unsigned short id) {
 void die_top8(void) {
 	int i;
 	printf("die_top8()\n");
+	printtasktable();
+
 	for (i=8; i<16; i++) {
 		if (Exec.Tasks[i].status != TASK_EMPTY) {
 			
 #ifndef CPS
 			RHKill(&Exec.Tasks[i]);
 #endif
+			
+			memclear(&Exec.Tasks[i].params, sizeof(TaskParam));
 			
 			Exec.Tasks[i].status = TASK_EMPTY;
 			Exec.Tasks[i].params.Param0 = 0;
@@ -229,6 +227,8 @@ void die_top8(void) {
 			Exec.FreeTasks++;
 		}
 	}
+	printtasktable();
+
 }
 
 void create_task(void *task, short taskid, u16 param, u8 param1, u8 param2) {
@@ -276,7 +276,6 @@ DESPATCH_STARTAGAIN:
             if(Exec.Tasks[i].status == TASK_READY) {
                 Exec.Tasks[i].status = TASK_RUN;
             }
-			printf("into task %d\n", i);
 			if (Exec.Tasks[i].code == NULL) {
 				Exec.Tasks[i].status=0;
 				printf("!!!: NULL task %d\n", i);

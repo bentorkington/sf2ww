@@ -521,7 +521,6 @@ void sf2_interrupt (void) {
     for(i = 0; i<MAX_TASKS; ++i) {
         if(Exec.Tasks[i].status == TASK_SLEEP) {
 			if (--Exec.Tasks[i].timer == 0) {
-				printf("woken task %d\n", i);
 				Exec.Tasks[i].status = TASK_READY;
 			}
         }
@@ -1315,7 +1314,7 @@ void startgame(int players_online) {	/* 6d4e */
 	
 	TASK_CREATE(task_blinkers, 3, 0, 0, 0);
 	TASK_CREATE(task_game, 4, 0, 0, 0);
-	justdie();
+	task_die();
 }
 	
 void wait_for_ply_PSFinishedParticipating(void) {  /* 0x9048 */

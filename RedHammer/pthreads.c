@@ -45,6 +45,7 @@ char pt_go_task[NTHREADS];
 // RHWait(task): yield execution after setting time to sleep
 
 void RHWait(Task *task) {
+	int state;
 	// todo: learn to use signals
 	//printf("RHWait: worker %d waits (%s)\n", task->RHThreadID, task->signal);
 	pthread_mutex_lock(&ptmx_despatcher);
@@ -55,11 +56,24 @@ void RHWait(Task *task) {
 	pthread_cond_broadcast(&ptcv_despatcher);
 	
 	pt_go_task[task->RHThreadID] = FALSE;
+
 	while (!pt_go_task[task->RHThreadID]) {
 		pthread_cond_wait(&ptcv_go_task, &ptmx_go_task);
 	}
+	state = pt_go_task[task->RHThreadID];
+	if (state == -1) {
+		pt_go_task[task->RHThreadID] = 0;
+	}
 	pthread_mutex_unlock(&ptmx_go_task);
+	if (state == -1) {
+		printf("killed\n");
+		
+		pthread_exit(NULL);
+	}
 	//printf("RHWait: worker %d awakens\n", task->RHThreadID);
+}
+void RHCleanup(Task *task) {
+	pthread_mutex_unlock(&ptmx_go_task);
 }
 void RHExit(Task *task) {
 	//printf("RHExit worker\n");
@@ -75,13 +89,21 @@ void RHExit(Task *task) {
 	pthread_exit(NULL);
 }
 void RHKill (Task *task) {
-	pthread_cancel(pt_threads[task->RHThreadID]);
+	
+//	if(pthread_cancel(pt_threads[task->RHThreadID])) {
+//		printf("error cancelling task %x",task);
+//	}
+	pthread_mutex_lock(&ptmx_go_task);	
+	pt_go_task[task->RHThreadID] = -1;
+	pthread_cond_broadcast(&ptcv_go_task);
+	pthread_mutex_unlock(&ptmx_go_task);
+	
 }
 void RHResume(Task *task) {
 	pthread_mutex_lock(&ptmx_despatcher);
 	InChild = TRUE;
-	pthread_mutex_lock(&ptmx_go_task);
 	
+	pthread_mutex_lock(&ptmx_go_task);	
 	pt_go_task[task->RHThreadID] = TRUE;
 	pthread_cond_broadcast(&ptcv_go_task);
 	pthread_mutex_unlock(&ptmx_go_task);
@@ -129,7 +151,6 @@ void *RHThreadWorker(void *arg) {
 		pthread_cond_wait(&ptcv_go_task, &ptmx_go_task);
 	}
 	pthread_mutex_unlock(&ptmx_go_task);
-	
 	
 	//printf("RHThreadWorker worker %d %s beginning\n", task->RHThreadID, task->name);
 	if(task->code) {
