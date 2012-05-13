@@ -37,8 +37,8 @@ void action_1cd3c(Player *ply);
 void ActStartGroundDust(Player *ply);
 
 
-void actionlib_draw_portraits(void);		/* 15f9e */
-void action_draw_ports(void);
+void draw_portraits_prefight(void);		/* 15f9e */
+void draw_portraits_postfight(void);
 void action_print_chant(void);
 
 

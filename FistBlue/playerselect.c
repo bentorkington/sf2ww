@@ -27,6 +27,7 @@
 #include	"effects.h"
 #include "playerselect.h"
 #include "act2e_plane.h"
+#include "sf2io.h"
 
 extern Game g;
 extern GState gstate_Scroll1;
@@ -153,7 +154,7 @@ static void _check_cursor_changes(Player *ply_a4, Player *ply_a3) {		// 82c6
 					update_player_display(ply_a4);
 				}
 			} else {
-				if ((~g.RawButtons0 & g.RawButtons0Dash) & (ply_a4->Side ? 0x20 : 0x10)) {
+				if ((~g.RawButtons0 & g.RawButtons0Dash) & (ply_a4->Side ? IPT_START2 : IPT_START1)) {
 					_player_selected(ply_a4);
 				} else {
 					joydecode &= BUTTON_MASK;

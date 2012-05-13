@@ -8,3 +8,4 @@
  */
 
 void fistblue_run_tests(void);
+void fistblue_test_gfx(void);

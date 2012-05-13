@@ -21,9 +21,12 @@
 
 
 extern Game g;
+extern GState gstate_Scroll1;
+extern GState gstate_Scroll2;
+extern GState gstate_Scroll3;
+
 
 void fistblue_run_tests(void) {
-	int i;
 	memclear(&g, sizeof(struct game));	
 	
 	printf("fistblue_run_tests:\n");
@@ -63,4 +66,35 @@ void fistblue_run_tests(void) {
 	
 	
 	//exit(0);
+}
+
+void fistblue_test_gfx(void) {
+
+//	while (TRUE) {
+//		SM_game();
+//	}
+	
+	g.CPS.DispEna		= 0x12da;
+	g.Palette1			= 0x11;
+	palette_macro(0x11);
+	GSInitForStage();
+	g.CPS.Scroll2X		= 0;
+	g.CPS.Scroll2Y		= 0;
+	
+	gstate_Scroll3.XPI = 0x0;
+	gstate_Scroll3.YPI = 0x700;
+	GSSetupScr3(&gstate_Scroll3);	// draw the world map background
+	
+	fadenwait4();
+	//start_effect(LC0_LIGHT_ALL_ENABLE, 0x1);
+	//test_fadescreenin();
+	printf("screen fading up...\n");
+	sf2sleep(60);
+	printf("showing ports...\n");
+	draw_portraits_prefight();
+	sf2sleep(60);
+	printf("showing ports post...\n");
+	draw_portraits_postfight();
+	sf2sleep(60);
+	exit(0);
 }

@@ -29,7 +29,7 @@ extern GState gstate_Scroll2;
 extern GState gstate_Scroll3;
 
 
-static void _portrait_scroll2(const SimpleImage *a1, short d1, u16 **gfx_p);
+static void _draw_portrait_scr2(const SimpleImage *a1, short d1, u16 **gfx_p);
 static POINT16 Act23RandomSmallOffset(void);
 static Player *sub_1e7ae(Object *obj);
 static void sub_1e59a(Object *obj);
@@ -1136,7 +1136,7 @@ static void DrawFighterPortrait(u16 **gfx_p, short fighterid, short flip) {	//15
 		&image_16732, &image_167fc, &image_168c6, &image_16990, 
 	};
 	
-	_portrait_scroll2(data_15f8e[fighterid], flip, gfx_p);
+	_draw_portrait_scr2(data_15f8e[fighterid], flip, gfx_p);
 }
 
 void PrintPlayerPic(Player *ply, short side, short fighterid) {	
@@ -1954,6 +1954,7 @@ void action_start_21(void) {		//1152a
 
 static void sub_117f8() {
 	if (g.Debug && (g.JPCost & 0x4)) {
+		
 		/* Debugging stuff todo later */
 	}
 }
@@ -1965,11 +1966,12 @@ static void sub_11820(void) {
 static void action_21(Object *obj) {    // 1153e
 	switch (obj->mode0) {
 		case 0:
+			g.x8a5e = FALSE;
 			NEXT(obj->mode0);
 			obj->Scroll = SCROLL_NONE;
 			obj->Pool	= 2;
-			obj->XPI	= 0xc0;
-			obj->YPI	= 0xcf;
+			obj->XPI	= 192;
+			obj->YPI	= 207;
 			setaction_direct(obj, actlist_117aa);	/* Flashing KO */
 			/* FALLTHRU */
 		case 2:
@@ -1979,7 +1981,6 @@ static void action_21(Object *obj) {    // 1153e
 						NEXT(obj->mode1);
 						
 						// Speed up the stage music
-						
 						queuesound((const short []){
 							0x0079, 0x007a, 0x007b, 0x007c,             
 							0x007d, 0x007e, 0x007f, 0x0080,                       
@@ -2179,7 +2180,7 @@ void action_1cd3c(Player *ply) {
 
 #pragma mark MARK
 
-static void _animate_beaten_port(u16 **scr_p, char d2, char d3) {		//15cfr2
+static void _draw_portrait_beaten(u16 **scr_p, char d2, char d3) {		//15cfr2
 	static const u16 *data_15d36[60]={
 		data_17522, data_17522, data_17608, data_17608, 
 		data_17522, data_176ee, data_177d4, data_178ba, 
@@ -2199,10 +2200,12 @@ static void _animate_beaten_port(u16 **scr_p, char d2, char d3) {		//15cfr2
 	};
 	/* next address 00015dae */
 	
+	
+	/* anti-copying wierdness, fuck it */
 	d3 *= 11;
 	d3 += ((sf2rand() & 0xe) + (g.libsplatter & 6)) % 10;
 	
-	_portrait_scroll2((const SimpleImage *)data_15d36[d3/2], d2, scr_p);
+	_draw_portrait_scr2((const SimpleImage *)data_15d36[d3/2], d2, scr_p);
 }
 
 
@@ -2218,49 +2221,50 @@ static void _draw_frame_corners(u16 **gfx_p, u32 cp ){	/* 15df6 */
 	OBJECT_DRAW(*gfx_p, CP_X, CP_Y, TILE_FRAMECORNER, 0x1f | ATTR_NO_FLIP);
 }
 
-static void _portrait_scroll2(const SimpleImage *a1, short d1, u16 **scr_p) {			// 1601c
+static void _draw_portrait_scr2(const SimpleImage *a1, short flip, u16 **scr_p) {			// 1601c
 	short width, height;
 	const u16 *img = (const u16 *)a1;
 	width  = *img++;
 	height = *img++;
 	img++;
-	sub_4386(d1, width, height, img, scr_p);	/*backside of drawsimple_scroll2attr_nocheck */
+	sub_4386(flip, width, height, img, scr_p);	/*backside of drawsimple_scroll2attr_nocheck */
 }
 
-static void sub_15c02(u16 **scr_p, short d1, short fid_d3) {
+static void _draw_portrait_prefight(u16 **scr_p, short flip, short fid_d3) {		// 15c02
 	static const u16 *data_15c16[12]={
 		data_16a5a, data_16b40, data_16c26, data_16d0c, 
 		data_16df2, data_16ed8, data_16fbe, data_170a4, 
 		data_1718a, data_17270, data_17356, data_1743c, 
 	};
-	_portrait_scroll2((const SimpleImage *)data_15c16[fid_d3], d1, scr_p);		/* offsets to simpleimages x 18 */
+	_draw_portrait_scr2((const SimpleImage *)data_15c16[fid_d3], flip, scr_p);		/* offsets to simpleimages x 18 */
 }
-static void sub_15ff0(u16 **scr_p, short d1, short fid_d3) {
+static void sub_15ff0(u16 **scr_p, short flip, short fid_d3) {
 	static const u16 *data_16004[12]={
 		data_16a5a, data_16b40, data_16c26, data_16d0c, 
 		data_16df2, data_16ed8, data_16fbe, data_170a4, 
 		data_1718a, data_17270, data_17356, data_1743c, 
 	};
 	
-	_portrait_scroll2((const SimpleImage *)data_16004[fid_d3], d1, scr_p);			/* 12 * offset simpleimage */
+	_draw_portrait_scr2((const SimpleImage *)data_16004[fid_d3], flip, scr_p);			/* 12 * offset simpleimage */
 }
 
 /* portrait drawing, not scheduled */
-void actionlib_draw_portraits(void) {		/* 15f9e */
+void draw_portraits_prefight(void) {		/* 15f9e */
 	u16 *gfx_p;
 	u16 *scr_p;
 	
 	gfx_p = CPS_OBJ(0x910080);
 	_draw_frame_corners(&gfx_p,  MakePointObj(240, 112));		// draw corners
 	scr_p = coords_scroll2(240, 192);
-	sub_15ff0(&scr_p, 0, g.Player2.FighterID);		// was 0
+	sub_15ff0(&scr_p, FALSE, g.Player2.FighterID);		// was 0
 
 	gfx_p = CPS_OBJ(0x910070);
 	_draw_frame_corners(&gfx_p, MakePointObj(16, 112));
 	scr_p = coords_scroll2(16, 192);
-	sub_15ff0(&scr_p, 1, g.Player1.FighterID);		// was 1
+	sub_15ff0(&scr_p, TRUE, g.Player1.FighterID);		// was 1
 }
-void action_draw_ports(void) {	/* 15c2e after a fight, one beaten up */
+
+void draw_portraits_postfight(void) {	/* 15c2e after a fight, one beaten up */
 	u16 *gfx_p;
 	u16 *scr_p;
 	
@@ -2269,25 +2273,25 @@ void action_draw_ports(void) {	/* 15c2e after a fight, one beaten up */
 		_draw_frame_corners(&gfx_p, MakePointObj(16, 112));			
 		
 		scr_p = coords_scroll2(16, 192);
-		_animate_beaten_port(&scr_p, 1, g.BattleLoser);
+		_draw_portrait_beaten(&scr_p, TRUE, g.BattleLoser);
 		
 		gfx_p=CPS_OBJ(0x910080);
 		_draw_frame_corners(&gfx_p, MakePointObj(240, 112));
 		
 		scr_p = coords_scroll2(240, 192);
-		sub_15c02(&scr_p, 0, g.BattleWinner);		
+		_draw_portrait_prefight(&scr_p, FALSE, g.BattleWinner);		
 	} else {
 		gfx_p=CPS_OBJ(0x910070);
 		_draw_frame_corners(&gfx_p, MakePointObj(16, 112));
 		
 		scr_p = coords_scroll2(16, 192);
-		sub_15c02(&scr_p, 1, g.BattleWinner);
+		_draw_portrait_prefight(&scr_p, TRUE, g.BattleWinner);
 		
 		gfx_p=CPS_OBJ(0x910080);
 		_draw_frame_corners(&gfx_p, MakePointObj(240, 112));
 		
 		scr_p=coords_scroll2(240, 192);
-		_animate_beaten_port(&scr_p, 0, g.BattleLoser);
+		_draw_portrait_beaten(&scr_p, FALSE, g.BattleLoser);
 	}
 }
 

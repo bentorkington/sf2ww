@@ -113,10 +113,8 @@ struct executive_t {
 
 
 #define SIG_WAIT(varname)													\
-	printf("Task %d waits on %s\n", Exec.CurrentTask, __STRING(varname));	\
 	Exec.Tasks[Exec.CurrentTask].signal = __STRING(varname);				\
 	while(varname) { sf2sleep(1); }											\
-	printf("Task %d wakes from %s\n", Exec.CurrentTask, __STRING(varname));
 
 #define CURRENT_TASK &Exec.Tasks[Exec.CurrentTask]
 

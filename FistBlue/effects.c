@@ -41,7 +41,7 @@ struct effectstate es;
 #define CPS_PALBASE_SCROLL3 (u16 *)&gemu.PalScroll3
 
 static void syslib_00 (void);
-static void sub_597a(void);
+static void syslib_04(void);
 static void syslib_08 (void);
 static void syslib_0c (void);
 static void syslib_10 (void);
@@ -56,7 +56,7 @@ static void showtextbank4(u8 d0)  ;		//showtextbank4
 
 void *data_155c[] = {
 	syslib_00,
-	sub_597a,	// 597a	copyright notices etc.
+	syslib_04,	// 597a	copyright notices etc.
 	syslib_08,	// 4f3a insert coin blinker
 	syslib_0c,	// 4ade
 	syslib_10,	//4f9e,
@@ -166,12 +166,12 @@ void sub_140e (int arg) {
 }
 static void sub_10e0(short data) {
 	es.FadeCounter = 0;
-	blackadder(gemu.PalObject[0], &es.FadeObject, 0x1f, data);
+	blackadder(gemu.PalObject[0],  &es.FadeObject,  0x1f, data);
 	blackadder(gemu.PalScroll1[0], &es.FadeScroll1, 0x1f, data);
 	blackadder(gemu.PalScroll2[0], &es.FadeScroll2, 0x1f, data);
 	blackadder(gemu.PalScroll3[0], &es.FadeScroll3, 0x1f, data);
-	blackadder(gemu.PalUnk1[0], &es.x5d4e, 7, data);
-	blackadder(gemu.PalUnk2[0], &es.x5d52, 7, data);
+	blackadder(gemu.PalUnk1[0],    &es.x5d4e,          7, data);
+	blackadder(gemu.PalUnk2[0],    &es.x5d52,          7, data);
 }
 static void sub_1152(short data) {	// same as 10e0, but doesn't do Object0
 	es.FadeCounter = 0;
@@ -183,13 +183,17 @@ static void sub_1152(short data) {	// same as 10e0, but doesn't do Object0
 	blackadder(gemu.PalUnk2[0], &es.x5d52, 7, data);
 }
 
+#pragma mark SYSLIB_00
+
 void syslib_00 (void) {					// e12
     Task *task = &Exec.Tasks[Exec.CurrentTask];
+	printf("Syslib00_%02x %02x BEGIN\n", task->params.Param0, Exec.CurrentTask);
     switch (task->params.Param0) {
 			
 		case LC0_DARK_ALL_DISABLE:                     /* Fade out and disable all layers */
 			if(Exec.EffectIsSetUp != FALSE) {
-				if((gemu.PalScroll3[0][0] & 0xf000) == 0xf000) {
+				if((gemu.PalScroll3[0][0] & 0xf000) == 0x0000) {
+					printf("Syslib00_%02x %02x ENDFIRST\n", task->params.Param0, Exec.CurrentTask);
 					DIEFREE;
 					return;
 				}
@@ -198,15 +202,15 @@ void syslib_00 (void) {					// e12
 			es.FadeInEffect = TRUE;
 			
 			while (TRUE) {
-				if (es.FadeCounter != 0x1fa) {
+				do {
 					sub_10e0(-0x1000);
 					TASKSLEEP;
-				} else {
-					es.FadeInEffect      = FALSE;
-					Exec.EffectIsSetUp  = TRUE;
-					g.CPS.DispEna &= 0xffc0;	
-					DIEFREE;
-				}
+				} while  (es.FadeCounter != 0x1fa);
+				es.FadeInEffect      = FALSE;
+				Exec.EffectIsSetUp   = TRUE;
+				g.CPS.DispEna       &= 0xffc0;	
+				printf("Syslib00_%02x %02x END\n", task->params.Param0, Exec.CurrentTask);
+				DIEFREE;
 			}
 			break;
 		case LC0_LIGHT_ALL_ENABLE:                    /* Enable and fade up all layers */
@@ -219,21 +223,21 @@ void syslib_00 (void) {					// e12
 				Exec.EffectIsSetUp = TRUE;
 			}
 			es.FadeInEffect = TRUE;
-			while (es.FadeCounter) {
+			do {
 				sub_10e0(0x1000);
 				TASKSLEEP;
-			}
+			} while (es.FadeCounter);
 			es.FadeInEffect    = FALSE;
 			Exec.EffectIsSetUp = FALSE;
-			DIEFREE;
+			//DIEFREE;
 			break;
-			
 		case 4:
 			/* dunno */  
 			break;  
 		case 6:
 			sub_1078(task);         /*set layer enable according to task->params.Param1*/
 			/* XXX whoa */
+			printf("XXX unimplemented SL00_06");
 			break;
 			
 			/***************************
@@ -373,7 +377,10 @@ void syslib_00 (void) {					// e12
 				TASKSLEEP;
 			}
 			break;
+		FATALDEFAULT;
     }
+	printf("Syslib00_%02x %02x END\n", task->params.Param0, Exec.CurrentTask);
+
 	DIEFREE;	
 }        
 
@@ -394,6 +401,8 @@ static void sub_4cb2() {
 
 void syslib_0c (void) {
     Task *task = &Exec.Tasks[Exec.CurrentTask];
+	printf("Syslib0C_%02x BEGIN\n", task->params.Param0);
+
     switch (task->params.Param0) {
 		case 0x1c:			/* fade out, clear all, wait */
 			QueueEffect(LC0_DARK_DUNNO, task->params.Param2);
@@ -654,6 +663,7 @@ static void sub_5982(Task *task) {		// 5982 in scroll1
 			} else {
 				SCR1_DRAW_TILE(gemu.Tilemap_Scroll1[cp], GFXROM_SCROLL1 + ch, palette);
 				SCR1_CURSOR_BUMP(cp, 0, 1);
+				data++;
 				if (task->params.Param2) {
 					SETSLEEP(task->params.Param2);
 					return;
@@ -663,7 +673,7 @@ static void sub_5982(Task *task) {		// 5982 in scroll1
 	}
 }
 
-static void sub_597a(void) {
+static void syslib_04(void) {		// SL04	 597a version string
 	Task *task = &Exec.Tasks[Exec.CurrentTask];
 	task->params.x0014 = 0;
 	sub_5982(task);

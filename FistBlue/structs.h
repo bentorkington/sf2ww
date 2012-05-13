@@ -102,9 +102,7 @@ typedef struct game {
     u16 soundQueue[SOUND_QUEUE_LENGTH];         /* 1a2 */
 #endif
     
-//#ifdef COINAGE
     Coinslot    coinslot1, coinslot2;
-//#endif    
 	u8	ContinueCredits;
 	u8	x02a5;		
 

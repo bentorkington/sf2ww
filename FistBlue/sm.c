@@ -19,8 +19,9 @@
 #include	"sound.h"
 #include	"playerselect.h"
 #include	"effects.h"
-
+#include	"demo.h"
 #include "gemu.h"
+#include "sf2io.h"
 
 #include "act2e_plane.h"
 
@@ -46,7 +47,7 @@ static void gamemode_init_round (void);
 
 
 void SMFreePlay(void){		// 6cc8
-	int buttons = (!g.RawButtons0) & g.RawButtons0 & 0x30;
+	int buttons = (!g.RawButtons0Dash) & g.RawButtons0 & (IPT_START1 | IPT_START2);
 	if (buttons) {
 		if (g.x0302) {
 			g.x0302 = FALSE;
@@ -180,7 +181,7 @@ static void game_mode_28(void) {	// 7af0
 					}
 				} else {
 					g.NewChallengerWait = FALSE;
-					action_draw_ports();
+					draw_portraits_postfight();
 					action_print_chant();		/* do the chant */
 					start_effect(LC0_LIGHT_ALL_ENABLE, 3);
 					soundsting(SOUND_VICTORY);
@@ -333,7 +334,7 @@ static void sub_7dca(void) {		// 7dca game mode 2,A
 				g.x02eb = 0;
 				g.mode0=g.mode1=g.mode2=g.mode3=g.mode4 = 0;
 				task_kill(3);
-				//todo:		create_task(attractsequence, 1, 0, 0, 0);
+				create_task(task_attractSequence, 1, 0, 0, 0);
 				task_die();
 			}
 			break;
@@ -445,7 +446,7 @@ static void draw_world_map(void) {		//856c mode 2,4,2
 			g.NewChallengerWait = FALSE;
 			g.CPS.DispEna		= 0x12da;
 			g.Palette1			= 0x11;
-			palette_macro_11();
+			palette_macro(0x11);
 			GSInitForStage();
 			g.CPS.Scroll2X		= 0;
 			g.CPS.Scroll2Y		= 0;
@@ -594,7 +595,7 @@ void gamemode_vs_screen (void) {
 			
 			g.CPS.Scroll2Y        = 0x0;
 			GSSetupScr3(&gstate_Scroll3);
-			actionlib_draw_portraits();
+			draw_portraits_prefight();
 			palette_from_game();
 			/* CPS anti-tampering @ 0x8756 not included */
 			queuesound(SOUND_VS_SCREEN);
@@ -1056,9 +1057,9 @@ void gamemode_24I (void) {		// 7970
     switch(g.mode3) {
 		case 0:
 			g.mode3 +=2;
-			if(g.OnBonusStage == 0 && g.ActiveHumans == BOTH_HUMAN) {
+			if(g.OnBonusStage == 0 && g.ActiveHumans != BOTH_HUMAN) {
 				g.LevelCursor++;
-				sub_4720();		/* some bumpdifficulty */
+				sub_4720();				/* some bumpdifficulty */
 			}
 			g.NoLoser = g.OnBonusStage;       /* don't show the chant screen for bonus stg */
 			if (g.SkipEnding == 0) {
@@ -1100,7 +1101,7 @@ void gamemode_24I (void) {		// 7970
 					g.Palette1 = 0x11;
 					palette_from_game();
 					queuesound(SOUND_VICTORY);
-					action_draw_ports();
+					draw_portraits_postfight();
 					action_print_chant();
 					start_effect(LC0_LIGHT_ALL_ENABLE,3);
 				} else {
@@ -1157,80 +1158,80 @@ void task_initmachine (void) {		// 639e
 		SL04 | SL4_VERSION_USA,
 		SL04 | SL4_VERSION_ETC,
 	};
-	
-    switch(g.mode0) {
-		case 0:
-			g.mode0 +=2;
-			g.randSeed1 = 0x01;       /* initial random seed */
-			g.randSeed2 = 0xc3; 
-			g.WaitMode	= 0;
-			break;
-		case 2:
-			g.mode0 +=2;
-#ifdef COINAGE
-			coincosts();
-#endif
-			decode_difficulty();
-			decode_params();
-			g.InDemo = TRUE;
-			g.x02b8  = 0x100;
-			palette_scr1_19();
-#ifdef COINAGE
-			check_coin_lockout();
-#endif
-			break;
-		case 4:
-			g.mode0  +=2;
-			g.timer0 = 180;
-			QueueEffect(LC0_LIGHT_ALL_ENABLE, 5);
-			QueueEffect(data_645e[g.Version],0x0100); 
-			break;
-		case 6:
-			if(g.TextEffectBusy == 0) {g.mode0 += 2;}
-			break;
-		case 8:
-		case 0xe:
-			g.timer0--;
-			if(g.timer0 == 0) {
-				g.mode0   += 2;
-				g.WaitMode = 0;
-				fadenwait1();
-			} else {
+	while (TRUE) {
+		switch(g.mode0) {
+			case 0:
+				g.mode0 +=2;
+				g.randSeed1 = 0x01;       /* initial random seed */
+				g.randSeed2 = 0xc3; 
+				g.WaitMode	= 0;
+				break;
+			case 2:
+				g.mode0 +=2;
+				decode_coincosts();
+				decode_difficulty();
+				decode_params();
+				g.InDemo = TRUE;
+				g.x02b8  = 0x100;
+				palette_scr1_19();
+				check_coin_lockout();
+				break;
+			case 4:
+				g.mode0  +=2;
+				g.timer0 = 180;
+				QueueEffect(LC0_LIGHT_ALL_ENABLE, 5);
+				QueueEffect(data_645e[g.Version],0x0100); 
+				break;
+			case 6:
+				if(g.TextEffectBusy == 0) {
+					g.mode0 += 2;
+				}
+				break;
+			case 8:
+			case 0xe:
+				g.timer0--;
+				if(g.timer0 == 0) {
+					g.mode0   += 2;
+					g.WaitMode = 0;
+					fadenwait1();
+				} else {
+					startup_impatience();
+				}
+				break;
+			case 0xa:
+				g.mode0 +=2;
+				g.timer0 = 60;
+				QueueEffect(LC0_LIGHT_ALL_ENABLE,5);
+				QueueEffect((short []){
+					SL04 | COPYRIGHT_JAP,
+					SL04 | COPYRIGHT_USA,
+					SL04 | COPYRIGHT_ETC,
+				}[g.Version], 0x101);
+				
+				break;
+			case 0xc:
+				if(g.TextEffectBusy == 0) {
+					g.WaitMode = 0;
+					g.mode0   += 2;
+				}
 				startup_impatience();
-			}
-			break;
-		case 0xa:
-			g.mode0 +=2;
-			g.timer0 = 60;
-			QueueEffect(LC0_LIGHT_ALL_ENABLE,5);
-			QueueEffect((short []){
-				SL04 | COPYRIGHT_JAP,
-				SL04 | COPYRIGHT_USA,
-				SL04 | COPYRIGHT_ETC,
-			}[g.Version], 0x101);
-			
-			break;
-		case 0xc:
-			if(g.TextEffectBusy == 0) {
-				g.WaitMode = 0;
-				g.mode0   += 2;
-			}
-			startup_impatience();
-			break;
-		case 0x10:
-			RESET_MODES;
-			//if(g.RawButtons0Dash & BUTTON_TESTMENU || g.GameMode == 1) {
-			//    create_task(&task_test_mode,7,0, 0, 0);
-			//    task_die();
-			//} 
-			/* not included: copy protection with CPS1B */
-			
-			panic(1);
-			//create_task(task_attract_sequence, 1, 0,0,0);
-			
-			break;
-			FATALDEFAULT;
-    }
+				break;
+			case 0x10:
+				RESET_MODES;
+				//if(g.RawButtons0Dash & IPT_SERVICE || g.GameMode == 1) {
+				//    create_task(&task_test_mode,7,0, 0, 0);
+				//    task_die();
+				//} 
+				/* not included: copy protection with CPS1B */
+				
+				create_task(task_attractSequence, 1, 0,0,0);
+				
+				task_die();
+				break;
+				FATALDEFAULT;
+		}		
+		sf2sleep(1);
+	}
 }
 
 

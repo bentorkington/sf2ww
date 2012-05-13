@@ -18,6 +18,7 @@
 #include "task.h"
 #include "effects.h"
 #include "gfxlib.h"
+#include "sf2io.h"
 
 extern Game g;
 extern struct executive_t Exec;
@@ -29,33 +30,33 @@ static void sub_dee(void) {
 
 void decode_start_service(void) {	// 1e7a was swirlything
 	g.StartServiceButtons =
-		((g.RawButtons0Dash & 0x4) >> 2 ) |
-		((g.RawButtons0     & 0x4) >> 1 ) |
-		((g.x0078           & 0x4) >> 0 ) |
-		((g.x0079			& 0x4) << 1 );
+		((g.RawButtons0Dash & IPT_SERVICE) >> 2 ) |
+		((g.RawButtons0     & IPT_SERVICE) >> 1 ) |
+		((g.x0078           & IPT_SERVICE) >> 0 ) |
+		((g.x0079			& IPT_SERVICE) << 1 );
 	g.coinslot1.x0007 =
-	((g.RawButtons0Dash & 0x1) << 3 ) |
-	((g.RawButtons0     & 0x1) << 2 ) |
-	((g.x0078           & 0x1) << 1 ) |
-	((g.x0079			& 0x1) >> 0 );
+	((g.RawButtons0Dash & IPT_COIN1) << 3 ) |
+	((g.RawButtons0     & IPT_COIN1) << 2 ) |
+	((g.x0078           & IPT_COIN1) << 1 ) |
+	((g.x0079			& IPT_COIN1) >> 0 );
 	g.coinslot2.x0007 =
-	((g.RawButtons0Dash & 0x2) << 2 ) |
-	((g.RawButtons0     & 0x2) << 1 ) |
-	((g.x0078           & 0x2) << 0 ) |
-	((g.x0079			& 0x2) >> 1 );
+	((g.RawButtons0Dash & IPT_COIN2) << 2 ) |
+	((g.RawButtons0     & IPT_COIN2) << 1 ) |
+	((g.x0078           & IPT_COIN2) << 0 ) |
+	((g.x0079			& IPT_COIN2) >> 1 );
 }
 
-static void sub_1d9a(void) {
+void decode_coincosts(void) {			// 1d9a
 	const static char data_1de0[][2] = {
 		{1,1}, {1,2}, {1,3}, {1,4}, {1,6}, {2, 1}, {3, 1}, {4, 1},
 	};
 	
 	
-	g.coinslot1.nCoins   = data_1de0[g.JPCost & 0x7][0];
-	g.coinslot1.nCredits = data_1de0[g.JPCost & 0x7][1];
-	g.coinslot2.nCoins   = data_1de0[(g.JPCost & 0x38)>>3][0];
-	g.coinslot2.nCredits = data_1de0[(g.JPCost & 0x38)>>3][1];
-	g.ContinueCoin = (g.JPCost & 0x40) >> 6;
+	g.coinslot1.nCoins   = data_1de0[g.JPCost & JP_COSTMASK1][0];
+	g.coinslot1.nCredits = data_1de0[g.JPCost & JP_COSTMASK1][1];
+	g.coinslot2.nCoins   = data_1de0[(g.JPCost & JP_COSTMASK2)>>3][0];
+	g.coinslot2.nCredits = data_1de0[(g.JPCost & JP_COSTMASK2)>>3][1];
+	g.ContinueCoin = (g.JPCost & JP_CONTINUECOIN) >> 6;
 	g.DemoSound    = (g.JPCost & 0x80) >> 7;
 }
 static void sub_1f9e(Coinslot *cs, const char *a0) {
@@ -199,7 +200,7 @@ void task_creditscreen(void) {          /* 6b52 */
     g.CPS.Scroll1Y = 0x100;
     LBResetState();
     sound_cq_f7_ff();
-    palette_macro_10();
+    palette_macro(0x10);
     if (act = AllocActor()) {
         act->exists = TRUE;
         act->Sel    = SF2ACT_SF2LOGO;
@@ -215,7 +216,7 @@ void task_creditscreen(void) {          /* 6b52 */
     }
 	
     while(TRUE) {
-		if (g.RawButtons0Dash & 0x40 || (g.Debug & (!g.JPCost & 0x80))) {
+		if (g.RawButtons0Dash & IPT_SERVICE_NOTOGGLE || (g.Debug & (!g.JPCost & 0x80))) {
             //init_test_menu();
             return;
         }

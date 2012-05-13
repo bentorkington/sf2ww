@@ -399,9 +399,9 @@ const u8 data_8dbae[] = {
 	0x00, 0x00, 0x40, 0x00, 
 };
 const u8 *data_8d2ac[]={
-	data_8d2ec,
-	data_8d43c,
-	data_8d5ca,
+	data_8d2ec,		// 0 Copyright Japan
+	data_8d43c,		// 1 Copyright USA
+	data_8d5ca,		// 2 Copyright ETC
 	data_8d77c,
 	data_8d786,		//4
 	data_8d792,
@@ -416,9 +416,9 @@ const u8 *data_8d2ac[]={
 	data_8d86c,
 	data_8d8aa,
 	data_8d8e6,		//16
-	data_8d8f2,
-	data_8d948,
-	data_8d99c,
+	data_8d8f2,		//17 Version Japan
+	data_8d948,		//18 Version USA
+	data_8d99c,		//19 Version ETC
 	data_8d9f2,		//20
 	data_8d9fe,
 	data_8da6e,

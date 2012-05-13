@@ -33,7 +33,19 @@
 #define JP_DBGSLEEP		0x01
 #define JP_DBGNOTICK	0x08
 #define JP_DBGTACTICS	0x10
+#define JP_CONTINUECOIN	0x40
 
+#define JP_COSTMASK1	0x07
+#define JP_COSTMASK2	0x38
+
+
+/* CPS IN0 */
+#define IPT_COIN1	0x01
+#define IPT_COIN2	0x02
+#define IPT_SERVICE	0x04
+#define IPT_START1	0x10
+#define IPT_START2	0x20
+#define IPT_SERVICE_NOTOGGLE	0x40
 
 
 /* other IO */
@@ -51,9 +63,5 @@
 #ifndef BUTTON_MASK
 #define BUTTON_MASK	( BUTTON_A | BUTTON_B | BUTTON_C | BUTTON_D | BUTTON_E | BUTTON_F )
 #endif
-//RawButtons
-#define BUTTON_P1ST			0x10
-#define BUTTON_P2ST			0x20
-#define BUTTON_TESTMENU     0x40
 
 #endif

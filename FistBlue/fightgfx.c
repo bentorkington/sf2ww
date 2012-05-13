@@ -49,7 +49,7 @@ void init_fightgfx(void) {                /* 0x9254 */
 		draw_peacesigns();
 		draw_fight_dsk_init();
         fight_player_names();
-        action_start_21();
+        action_start_21();				// "KO" sign
         check_newtopscore();
     }
     /* tamper protection not included */

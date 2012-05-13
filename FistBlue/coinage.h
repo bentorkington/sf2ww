@@ -11,6 +11,9 @@
 
 void task_creditscreen(void);
 void check_coin_lockout(void);
+void decode_coincosts(void);
+void sub_1fe2(void);
+void sub_1ed0(void);
 
 struct coinslot {
 	char x0000;

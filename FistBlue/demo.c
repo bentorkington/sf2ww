@@ -58,7 +58,7 @@ static void SMdemo_show_high_scores(void) {		//6aaa
 			NEXT(g.mode1);
 			g.timer1 = 0xb4;
 			g.Palette1 = 0x10;
-			palette_macro_10();
+			palette_macro(0x10);
 			GSInitForStage();
 			gstate_Scroll2.XPI = 0x200;
 			gstate_Scroll2.YPI = 0x700;
@@ -103,7 +103,6 @@ static void SMDemo(void) {
 			break;
 		FATALDEFAULT;
 	}
-	check_coin_lockout();
 }
 void task_attractSequence(void) {
 	g.InDemo = TRUE;
@@ -162,7 +161,7 @@ void SMdemo_titlefightanim(void) {	// 0x6650 mode is 2,0
 			LBResetState();
 			sub_6704();     /* setup street fighter logo animation */
 			actionlibrary();
-			palette_macro_10();
+			palette_macro(0x10);
 			GSInitForStage();
 			g.CPS.DispEna = 0x079a;
 			
@@ -222,7 +221,7 @@ void SMdemo_winnersusedrugs (void) {
 			g.timer2 = 0xb4;
 			LBResetState();
 			actionlibrary();
-			palette_macro_10();
+			palette_macro(0x10);
 			GSInitForStage();
 			g.CPS.DispEna = 0x6da;
 			gstate_Scroll2.XPI = 0;

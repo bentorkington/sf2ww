@@ -281,6 +281,16 @@ void renderDummy(void) {
 				gInputs.p10 |= 0x02; break;
 			case NSRightArrowFunctionKey:
 				gInputs.p10 |= 0x01; break;
+				
+			case '1':
+				gInputs.in0 |= IPT_START1;	break;
+			case '2':
+				gInputs.in0 |= IPT_START2;	break;
+			case '5':
+				gInputs.in0 |= IPT_COIN1;	break;
+			case '6':
+				gInputs.in0 |= IPT_COIN2;	break;
+			
 			case 'T':
 				print_task_table();
 				break;
@@ -290,9 +300,9 @@ void renderDummy(void) {
 			case 'W':
 				gGameInWindow = 1-gGameInWindow;
 				break;
-			case '0' ... '3':
-				gemu_flip_scroll_enable(keypress - '0');
-				break;
+//			case '0' ... '3':
+//				gemu_flip_scroll_enable(keypress - '0');
+//				break;
 			case 'p':
 				g.JPParam ^= JP_FREEZE;
 				break;
@@ -312,6 +322,15 @@ void renderDummy(void) {
 		case 'a':		gInputs.p11 &= 0xfe;   break;
 		case 's':		gInputs.p11 &= 0xfd;   break;
 		case 'd':		gInputs.p11 &= 0xfb;   break;
+		case '1':
+			gInputs.in0 &= ~IPT_START1;	break;
+		case '2':
+			gInputs.in0 &= ~IPT_START2;	break;
+		case '5':
+			gInputs.in0 &= ~IPT_COIN1;	break;
+		case '6':
+			gInputs.in0 &= ~IPT_COIN2;	break;
+			
 		case NSUpArrowFunctionKey:
 			gInputs.p10 &= 0xf7;
 			break;

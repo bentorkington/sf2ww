@@ -27,6 +27,7 @@
 #include "projectiles.h"
 #include "collision.h"
 #include "effects.h"
+#include "sm.h"
 
 
 #ifdef __APPLE__
@@ -173,9 +174,7 @@ void decode_difficulty(void) {
 	}
 }
 static void decode_jumpers(void) {
-#ifdef COINAGE
 	decode_coincosts();
-#endif
 	decode_difficulty();
 	decode_params();
 }
@@ -506,10 +505,8 @@ void sf2_interrupt (void) {
     sub_b06();
     debughook(0);	/* not correct value */
     soundhook();
-#ifdef COINAGE
     sub_1ed0();   /* coin accounting */
     sub_1fe2();   /* play coin sounds, update credit display */
-#endif
     _refresh_jumpers();   /* reread some jumpers, some debug stuff */
 	
     g.tick++;
@@ -574,7 +571,7 @@ void startup (void) {
     g.Version = VERSION_USA;
 	
     palette_base_1k();		// checkme
-    palette_macro_10();
+    palette_macro(0x10);
     read_jumpers();
     decode_jumpers();
 	
@@ -594,8 +591,8 @@ void startup (void) {
 	Exec.NextFreeTask = &Exec.FreeTaskStack[0];
     g.NotUsed      = FALSE;
 	
-/* todo:   create_task(&task_initmachine, 0, 0, 0, 0); */   /* init vars, copyright notices etc */
-    TASK_CREATE(task_scheduler  , 6, 0, 0, 0);   /* the CQ processor */
+	TASK_CREATE(task_initmachine, 0, 0, 0, 0);		/* init vars, copyright notices etc */
+    TASK_CREATE(task_scheduler  , 6, 0, 0, 0);      /* the CQ processor */
     
     /* startup done */
 #ifdef CPS

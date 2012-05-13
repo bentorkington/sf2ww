@@ -20,6 +20,7 @@
 #include "demo.h"
 #include "task.h"
 #include "aitests.h"
+#include "sm.h"
 
 struct game g;
 //struct player_t Player1;
@@ -35,17 +36,19 @@ void manual_init(void) {
 	RHInitThreads();
 	
 	startup();
-	if (0) {
-		//create_task(task_attractSequence, 4, 0, 0, 0);
-		create_task(test_ai_main, 4, 0, 0, 0);
-	} else {
-		startgame(ONLY_P1);
-		//g.Player1.Human     = TRUE;
-		//g.Player2.Human    = TRUE;
-		//g.Player1.FighterID = FID_RYU;
-		//g.Player2.FighterID = FID_KEN;
-		//g.CurrentStage = STAGE_USA_GUILE;
-		g.randSeed1    = 0x01;       /* initial random seed */
-		g.randSeed2    = 0xc2;
-	}
+	
+//	if (1) {
+//		create_task(task_initmachine, 4, 0, 0, 0);
+//		//create_task(test_ai_main, 4, 0, 0, 0);
+//		//create_task(fistblue_test_gfx, 4, 0, 0, 0);
+//	} else {
+//		startgame(ONLY_P1);
+//		//g.Player1.Human     = TRUE;
+//		//g.Player2.Human    = TRUE;
+//		//g.Player1.FighterID = FID_RYU;
+//		//g.Player2.FighterID = FID_KEN;
+//		//g.CurrentStage = STAGE_USA_GUILE;
+//		g.randSeed1    = 0x01;       /* initial random seed */
+//		g.randSeed2    = 0xc2;
+//	}
 }

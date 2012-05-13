@@ -62,47 +62,37 @@ void setpalette_objtop(short palette) {		// 16ae
     }
 }
 void palette_from_game(void) {			// 160c
+	printf("palettes_from_game %d\n", g.Palette1);
+
     setpalette_objtop (g.Palette1);
     setpalette_scroll1(g.Palette1);
     setpalette_scroll2(g.Palette1);
     setpalette_scroll3(g.Palette1);
 }
 void palettes_nextlevel(void) {			// 1698
+	printf("palettes_nextlevel %d\n", g.CurrentStage);
+
     setpalette_objtop (g.CurrentStage);
     setpalette_scroll1(g.CurrentStage);
     setpalette_scroll2(g.CurrentStage);
     setpalette_scroll3(g.CurrentStage);
 }
-void palette_macro_10(void) {			// 162c
-    setpalette_objtop (0x10);
-    setpalette_scroll1(0x10);
-    setpalette_scroll2(0x10);
-    setpalette_scroll3(0x10);
+void palette_macro(int palette) {			
+	printf("palette_macro %d\n", palette);
+    setpalette_objtop (palette);
+    setpalette_scroll1(palette);
+    setpalette_scroll2(palette);
+    setpalette_scroll3(palette);
 }
-void palette_macro_11(void) {			// 1644
-    setpalette_objtop (0x11);
-    setpalette_scroll1(0x11);
-    setpalette_scroll2(0x11);
-    setpalette_scroll3(0x11);
-}
-void palette_macro_12(void) {			// 165c
-    setpalette_objtop (0x12);
-    setpalette_scroll1(0x12);
-    setpalette_scroll2(0x12);
-    setpalette_scroll3(0x12);
-}
-void palette_macro_13(void) {			// 1674
-    setpalette_objtop (0x13);
-    setpalette_scroll1(0x13);
-    setpalette_scroll2(0x13);
-    setpalette_scroll3(0x13);
-}
+
+
 void setpalette_scroll1_CS(void) {
     setpalette_scroll1(g.CurrentStage);
 }
 void setpalette_scroll1(short palette) {		// emulation of 16ca
     int u,v;
-    
+	printf("palette_scr1 %d\n", palette);
+
     for(u=0; u<32; u++) {
         for(v=0; v<16; v++) {
 			gemu.PalScroll1[u][v] = data_c0000[palette][u][v];
@@ -119,7 +109,8 @@ inline void palette_scr1_19(void) {		// 1692
 
 void setpalette_scroll2(short palette) {		// emulation of 16ea
     int u,v;
-    
+	printf("palette_scr2 %d\n", palette);
+
     for(u=0; u<32; u++) {
         for(v=0; v<16; v++) {
 			gemu.PalScroll2[u][v] = data_c5000[palette][u][v];
@@ -128,7 +119,8 @@ void setpalette_scroll2(short palette) {		// emulation of 16ea
 }
 void setpalette_scroll3(short palette) {		// emulation of 1706
     int u,v;
-    
+	printf("palette_scr3 %d\n", palette);
+
     for(u=0; u<32; u++) {
         for(v=0; v<16; v++) {
 			gemu.PalScroll3[u][v] = data_ca000[palette][u][v];
@@ -139,6 +131,8 @@ void setpalette_scroll3(short palette) {		// emulation of 1706
 
 void sub_1742(int palette) {
 	short u, v;
+	printf("palette_obj %d\n", palette);
+
     for(u=16; u<32; u++) {
         for(v=0;v<16; v++) {
 			gemu.PalObject[u][v] = data_8aaac[palette][u-16][v] | 0xf000; 
@@ -627,7 +621,7 @@ void fight_player_names() {			// 961a
 	
 	u16 *gfx_p;
 	
-	if (g.OnBonusStage == 0 || g.Player1.Human) {
+	if (g.OnBonusStage == FALSE || g.Player1.Human) {
 		OBJ_CURSOR_CPS(gfx_p, 0x9100e0);
 		if (g.Version == VERSION_JAP) {
 			DrawFighterNameAt(gfx_p, MakePointObj(32, 208), PLAYER1, player_names_japan);
@@ -635,7 +629,7 @@ void fight_player_names() {			// 961a
 			DrawFighterNameAt(gfx_p, MakePointObj(32, 208), PLAYER1, player_names_other);
 		}
 	}
-	if (g.OnBonusStage == 0 || g.Player2.Human) {
+	if (g.OnBonusStage == FALSE || g.Player2.Human) {
 		OBJ_CURSOR_CPS(gfx_p, 0x910128);
 		if (g.Version == VERSION_JAP) {
 			DrawFighterNameAt(gfx_p, MakePointObj(data_969e[g.Player2.FighterID], 208), PLAYER2, player_names_japan);
