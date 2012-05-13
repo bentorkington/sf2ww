@@ -143,8 +143,6 @@ void RHInitThreads(void) {
 }
 void *RHThreadWorker(void *arg) {
 	Task *task = (Task *)arg;
-
-	void *retval;
 	// wait until our turn, then begin
 	pthread_mutex_lock(&ptmx_go_task);
 	while (!pt_go_task[task->RHThreadID]) {

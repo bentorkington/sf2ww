@@ -73,6 +73,8 @@ static void action_22(Object *obj);
 
 void action_1e420(Object *obj);
 
+extern void action_29(Object *obj);
+
 extern void action_2c(Object *obj);
 
 extern void action_2e(Object *obj);
@@ -90,6 +92,9 @@ static void action_38(Object *obj);
 static void action_39(Object *obj);
 static void action_3a(Object *obj);
 static void action_3b(Object *obj);
+
+extern void action_3e(Object *obj);
+extern void action_3f(Object *obj);
 
 static void action_48(Object *obj);
 short g_d7;
@@ -162,6 +167,7 @@ void proc_actions(void) {			/* c7da */
 				ACT117C(0x22, action_22)
 				ACT117C(0x23, action_1e420)
 				
+				ACT117C(0x29, action_29)
 				ACT117C(0x2c, action_2c)
 				
 				ACT117C(0x2e, action_2e)
@@ -177,6 +183,9 @@ void proc_actions(void) {			/* c7da */
 				ACT117C(0x39, action_39)
 				ACT117C(0x3a, action_3a)
 				ACT117C(0x3b, action_3b)
+				
+				ACT117C(0x3e, action_3e)
+				ACT117C(0x3f, action_3f)
 				
 				ACT117C(0x48, action_48)
 			default:
@@ -1338,142 +1347,7 @@ static void action_15(Object *obj) {
 	}
 }
 #pragma mark Act16
-static int sub_12890(Object *obj) {
-	if (obj->UserByte & 1) {
-		return (g.x8a60[obj->UserByte / 2] & 0xf);
-	} else {
-		return ((g.x8a60[obj->UserByte / 2] & 0xf0) >> 4);
-	}
-}
 
-
-static void action_16(Object *obj) {
-	switch (obj->SubSel) {
-		case 0:
-		case 1:
-			switch (obj->mode0) {
-				case 0:
-					NEXT(obj->mode0);
-					obj->Pool = 2;
-					setactiondraw(obj, actlist_128d2, obj->SubSel);
-					break;
-				case 2:
-					actiontickdraw(obj);
-					break;
-				FATALDEFAULT;
-			}
-			break;
-		case 2:
-			switch (obj->mode0) {
-				case 0:
-					NEXT(obj->mode0);
-					obj->Pool = 4;
-					g.x8a64[0] = 0;
-					setaction_direct(obj, action_12b70);
-					check_rect_queue_draw(obj);
-					break;
-				case 2:
-					if (g.x8a64[0]) {
-						g.x8a64[0] = 0;
-						setaction_direct(obj, action_12b70);
-					}
-					actiontick(obj);
-					check_rect_queue_draw(obj);
-					break;
-				FATALDEFAULT;
-			}
-			break;
-		case 3:
-			if (obj->mode0 == 0) {
-				NEXT(obj->mode0);
-				obj->Pool = 6;
-				g.x8a60[0] = g.x8a60[1] = 0;
-				g.x8a62[0] = 0;
-				obj->Draw1 = TRUE;
-				obj->Draw2.part.integer = 0x1d;
-				obj->XPI = (short []){0x30, 0x50, 0x138, 0x158}[obj->UserByte];
-				obj->YPI = 0xa4;
-				setaction_list(obj, actlist_12c60, sub_12890(obj));
-			} else {
-				obj->Draw2.part.integer = 0x1d;
-				if (g.x8a62[obj->UserByte / 2]) {
-					--g.x8a62[obj->UserByte / 2];
-					if ((g.libsplatter & 2) == 0) {
-						obj->Draw2.part.integer = 6;
-					}
-				}
-				setaction_list(obj, actlist_12c60, sub_12890(obj));
-				check_rect_queue_draw(obj);
-			}
-			break;
-		case 4:
-			if (obj->mode0 == 0) {
-				NEXT(obj->mode0);
-				obj->Pool = 6;
-				setaction_direct(obj, action_12e90);
-			}
-			check_rect_queue_draw(obj);
-			break;
-			
-		FATALDEFAULT;
-	}
-}
-
-
-#pragma mark Act17
-
-static void action_17(Object *obj) {
-	//UD17 *ud = (UD17 *)&obj->UserData;
-	
-	switch (obj->mode0) {
-		case 0:
-			NEXT(obj->mode0);
-			//ud->h0082c = 0;
-			if (0x9249 & (1 << RAND16) == 0) {
-				obj->Pool = 6;
-			}
-			//setaction_list(obj, data_10a72, obj->SubSel);
-			break;
-		case 2:
-			switch (obj->mode1) {
-				case 0:
-					NEXT(obj->mode1);
-					//obj->VelX = data_[RAND8W];
-					//obj->VelY = data_[RAND8W];
-					//obj->XPI += data_[RAND16W];
-					//obj->YPI += data_[RAND8W];
-					//ud->h0080w += 0x28;
-					obj->AclY.full = 0x0040;
-					obj->AclX.full = 0;
-					obj->LocalTimer = 0x32;
-					break;
-				case 2:
-					if (--obj->LocalTimer == 0) {
-						NEXT(obj->mode1);
-						//ud->h0082c = 0x1e;
-					}
-					CATrajectory(obj);
-					if (obj->VelY.full < 0) {
-						/* XXX oh god! */
-					}
-				case 4:
-					//todo
-					
-					
-					break;
-				FATALDEFAULT;
-			}
-			//if ((ud->h0085c & 1) == 0) {
-			//	check_rect_queue_draw(obj);
-			//}
-			break;
-		case 4:
-		case 6:
-			FreeActor(obj);
-		FATALDEFAULT;
-	}
-	
-}
 
 #pragma mark Act18
 static int sub_12fe6(Object *obj) {
