@@ -187,17 +187,15 @@ static void sub_1152(short data) {	// same as 10e0, but doesn't do Object0
 
 void syslib_00 (void) {					// e12
     Task *task = &Exec.Tasks[Exec.CurrentTask];
-	printf("Syslib00_%02x %02x BEGIN\n", task->params.Param0, Exec.CurrentTask);
     switch (task->params.Param0) {
 			
 		case LC0_DARK_ALL_DISABLE:                     /* Fade out and disable all layers */
-			if(Exec.EffectIsSetUp != FALSE) {
+			if(Exec.FadeOutComplete) {
 				if((gemu.PalScroll3[0][0] & 0xf000) == 0x0000) {
-					printf("Syslib00_%02x %02x ENDFIRST\n", task->params.Param0, Exec.CurrentTask);
 					DIEFREE;
 					return;
 				}
-				Exec.EffectIsSetUp = FALSE;
+				Exec.FadeOutComplete = FALSE;
 			}
 			es.FadeInEffect = TRUE;
 			
@@ -206,21 +204,21 @@ void syslib_00 (void) {					// e12
 					sub_10e0(-0x1000);
 					TASKSLEEP;
 				} while  (es.FadeCounter != 0x1fa);
-				es.FadeInEffect      = FALSE;
-				Exec.EffectIsSetUp   = TRUE;
+				
+				es.FadeInEffect        = FALSE;
+				Exec.FadeOutComplete   = TRUE;
 				g.CPS.DispEna       &= 0xffc0;	
-				printf("Syslib00_%02x %02x END\n", task->params.Param0, Exec.CurrentTask);
 				DIEFREE;
 			}
 			break;
 		case LC0_LIGHT_ALL_ENABLE:                    /* Enable and fade up all layers */
 			g.CPS.DispEna |= 0x1a;           
-			if(Exec.EffectIsSetUp == FALSE) {
-				if((gemu.PalScroll3[0][0] & 0xf000) == 0xf000) {
+			if(Exec.FadeOutComplete == FALSE) {
+				if(((gemu.PalScroll3[0][0]+0x1000) & 0xf000) == 0x0000) {
 					DIEFREE;
 					return;
 				} 
-				Exec.EffectIsSetUp = TRUE;
+				Exec.FadeOutComplete = TRUE;
 			}
 			es.FadeInEffect = TRUE;
 			do {
@@ -228,7 +226,7 @@ void syslib_00 (void) {					// e12
 				TASKSLEEP;
 			} while (es.FadeCounter);
 			es.FadeInEffect    = FALSE;
-			Exec.EffectIsSetUp = FALSE;
+			Exec.FadeOutComplete = FALSE;
 			//DIEFREE;
 			break;
 		case 4:
@@ -312,9 +310,9 @@ void syslib_00 (void) {					// e12
 			DIEFREE;
 			break;
 		case 0x1a:			// ef4
-			if (Exec.EffectIsSetUp) {
+			if (Exec.FadeOutComplete) {
 				if (gemu.PalScroll3[0][0] & 0xf000) {
-					Exec.EffectIsSetUp = FALSE;
+					Exec.FadeOutComplete = FALSE;
 				} else {
 					DIEFREE;
 				}
@@ -325,7 +323,7 @@ void syslib_00 (void) {					// e12
 				TASKSLEEP;
 			} while (es.FadeCounter != 0x1fa);
 			es.FadeInEffect = FALSE;
-			Exec.EffectIsSetUp = TRUE;
+			Exec.FadeOutComplete = TRUE;
 			g.CPS.DispEna &= 0xffc0;
 			DIEFREE;
 			break;
@@ -379,8 +377,6 @@ void syslib_00 (void) {					// e12
 			break;
 		FATALDEFAULT;
     }
-	printf("Syslib00_%02x %02x END\n", task->params.Param0, Exec.CurrentTask);
-
 	DIEFREE;	
 }        
 
@@ -401,13 +397,12 @@ static void sub_4cb2() {
 
 void syslib_0c (void) {
     Task *task = &Exec.Tasks[Exec.CurrentTask];
-	printf("Syslib0C_%02x BEGIN\n", task->params.Param0);
 
     switch (task->params.Param0) {
 		case 0x1c:			/* fade out, clear all, wait */
 			QueueEffect(LC0_DARK_DUNNO, task->params.Param2);
 			SETSLEEP(1);
-			SIG_WAIT(!Exec.EffectIsSetUp);
+			SIG_WAIT(!Exec.FadeOutComplete);
 			gfxrepeat(CPS_VIDEO_SCROLL1, 0xfff, GFXROM_SCROLL1 + ' ', 0);  /* a whitespace */
 			gfxrepeat(CPS_VIDEO_SCROLL2, 0xfff, GFXROM_SCROLL2      , 0);  /* first tile is blank */
 			gfxrepeat(CPS_VIDEO_SCROLL3, 0xfff, GFXROM_SCROLL3      , 0);
@@ -423,7 +418,7 @@ void syslib_0c (void) {
 		case 0:
 			QueueEffect(LC0_DARK_ALL_DISABLE, task->params.Param2);
 			SETSLEEP(1);
-			SIG_WAIT(Exec.EffectIsSetUp);
+			SIG_WAIT(!Exec.FadeOutComplete);
 			gfxrepeat(CPS_VIDEO_SCROLL1, 0xfff, GFXROM_SCROLL1 + ' ', 0);  /* a whitespace */
 			_clear_scr23_wait_die(task);     /* dies */ 
 			break;          
@@ -462,7 +457,7 @@ void syslib_0c (void) {
 			break;
 		case 0x10:
 			QueueEffect(LC0_LIGHT_ALL_ENABLE, task->params.Param2);
-			do {sf2sleep(1);} while (Exec.EffectIsSetUp);
+			do {sf2sleep(1);} while (Exec.FadeOutComplete);
 			sf2sleep(task->params.Param2);
 			es.FadeBusy = FALSE;
 			DIEBREAK;
@@ -494,7 +489,7 @@ void syslib_0c (void) {
 			DIEBREAK;
 		case 0x1a:
 			QueueEffect(LC0_DARK_ALL_DISABLE, task->params.Param2);
-			do {sf2sleep(1);} while (Exec.EffectIsSetUp == 0);
+			do {sf2sleep(1);} while (Exec.FadeOutComplete == 0);
 			_clear_scr23_wait_die(task); /* dies */
 			break;
 		case 0x1e:
@@ -588,7 +583,8 @@ static void showtextbank4(u8 d0)  {		//58c0 showtextbank4
 
 static void sub_5982(Task *task) {		// 5982 in scroll1
 	u8			ch;	
-	u32			cp;
+	u32			cp;		//XXX
+	u16			*gfx_p;
 	const u8	*data;
 	short		palette;
 	
@@ -603,6 +599,7 @@ static void sub_5982(Task *task) {		// 5982 in scroll1
 		data = data_8d2ac[(task->params.Param0 & 0x7f)];
 		data += 2;		// skip the object offset
 		
+		SCR1_CURSOR_SET(gfx_p, data[0], data[1]);
 		cp = data[0] * 128;
 		cp += data[1];
 		palette = data[2];
@@ -625,8 +622,11 @@ static void sub_5982(Task *task) {		// 5982 in scroll1
 				palette = data[2];
 				data += 3;
 			} else {
-				SCR1_DRAW_TILE(gemu.Tilemap_Scroll1[cp], GFXROM_SCROLL1 + 0x20, palette);
+				//SCR1_DRAW_TILE(gemu.Tilemap_Scroll1[cp], GFXROM_SCROLL1 + 0x20, palette);
+				SCR1_DRAW_TILE(gfx_p, GFXROM_SCROLL1 + 0x20, palette);
 				SCR1_CURSOR_BUMP(cp, 0, 1);
+				SCR1_CURSOR_BUMP(gfx_p, 0, 1);
+				
 				data++;
 				
 				if (task->params.Param2) {
@@ -639,6 +639,8 @@ static void sub_5982(Task *task) {		// 5982 in scroll1
 		data = data_8d2ac[(task->params.Param0 & 0xff)];
 		data += 2;
 		
+		SCR1_CURSOR_SET(gfx_p, data[0], data[1]);
+
 		cp = data[0] * 128;
 		cp += data[1];
 		palette = data[2];
@@ -661,8 +663,11 @@ static void sub_5982(Task *task) {		// 5982 in scroll1
 				palette = data[2];
 				data += 3;
 			} else {
-				SCR1_DRAW_TILE(gemu.Tilemap_Scroll1[cp], GFXROM_SCROLL1 + ch, palette);
+				//SCR1_DRAW_TILE(gemu.Tilemap_Scroll1[cp], GFXROM_SCROLL1 + ch, palette);
+				SCR1_DRAW_TILE(gfx_p, GFXROM_SCROLL1 + ch, palette);
 				SCR1_CURSOR_BUMP(cp, 0, 1);
+				SCR1_CURSOR_BUMP(gfx_p, 0, 1);
+				
 				data++;
 				if (task->params.Param2) {
 					SETSLEEP(task->params.Param2);

@@ -167,7 +167,7 @@ void renderDummy(void) {
 
 - (void)timerCallback
 {
-	intproc();
+	//intproc();
 	task_timer();
 	
 	[self setNeedsDisplay:YES];

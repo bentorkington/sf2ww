@@ -89,7 +89,7 @@ typedef struct {
 struct executive_t {
 	Task	Tasks[MAX_TASKS];
 	int		CurrentTask;
-	char	EffectIsSetUp;
+	char	FadeOutComplete;
 	
 	Task	**NextFreeTask;		// 8208
 	u16		FreeTasks;			/* 820c tasks free */

@@ -191,9 +191,9 @@ void check_coin_lockout(void) {		//dfc move to coinage.c
 void task_creditscreen(void) {          /* 6b52 */
     Object *act;
 	
-    Exec.EffectIsSetUp = FALSE;
+    Exec.FadeOutComplete = FALSE;
     QueueEffect(LC0_DARK_ALL_DISABLE,1);
-    while(Exec.EffectIsSetUp == FALSE) { sf2sleep(1); }
+    while(Exec.FadeOutComplete == FALSE) { sf2sleep(1); }
     clear_scrolls();
     sf2sleep(1);
     g.CPS.Scroll1X   = 0x0;

@@ -510,15 +510,17 @@ void sf2_interrupt (void) {
     _refresh_jumpers();   /* reread some jumpers, some debug stuff */
 	
     g.tick++;
-    Exec.x820e = -1;
+#ifdef CPS
+    //Exec.x820e = -1;
+#endif
     g.NoInterrupt = FALSE;
     
-    for(i = 0; i<MAX_TASKS; i++) {
+    for(i = 0; i<MAX_TASKS; ++i) {
         if(Exec.Tasks[i].status == TASK_SLEEP) {
-            Exec.Tasks[i].timer--;
-        }
-        if (Exec.Tasks[i].timer == 0) {
-            Exec.Tasks[i].status = TASK_READY;
+			if (--Exec.Tasks[i].timer == 0) {
+				printf("woken task %d\n", i);
+				Exec.Tasks[i].status = TASK_READY;
+			}
         }
     }
     /* return to arch-specific return */
@@ -1305,7 +1307,7 @@ void startgame(int players_online) {	/* 6d4e */
 	}
 #endif //GUSTY_LOBSTER
 	//XXX can't do this in the main thread
-	//fadenwait1();
+	fadenwait1();
 	
 	
 	TASK_CREATE(task_blinkers, 3, 0, 0, 0);

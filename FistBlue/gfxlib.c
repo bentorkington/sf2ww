@@ -902,7 +902,6 @@ void showtextbank0(char sel) {		// 5602 Scroll1
 	cx = *data++;
 	cy = *data++;
 	SCR1_CURSOR_SET(gfx_p, cx, cy);
-	gfx_p = &gemu.Tilemap_Scroll1[ (cx << 5) + (cy >> 2)];
 	
 	u8 *string = data;
 	char ch;

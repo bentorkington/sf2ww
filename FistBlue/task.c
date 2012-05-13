@@ -50,16 +50,16 @@ static void despatch_tasks(void);
 
 void task_timer(void){
     int i;
-    /* sf2_interrupt(); */
+    sf2_interrupt();
 	gtimercount++;
 	
-    for (i=0; i<MAX_TASKS; i++) {
-        if(Exec.Tasks[i].status == TASK_SLEEP) {
-            if(--Exec.Tasks[i].timer == 0) {
-                Exec.Tasks[i].status = TASK_READY;
-            }
-        }
-    }
+//    for (i=0; i<MAX_TASKS; i++) {
+//        if(Exec.Tasks[i].status == TASK_SLEEP) {
+//            if(--Exec.Tasks[i].timer == 0) {
+//                Exec.Tasks[i].status = TASK_READY;
+//            }
+//        }
+//    }
     despatch_tasks();
 }
 
@@ -258,7 +258,7 @@ static void despatch_tasks (void)
     int i;
 #ifdef CPS
 	while (1) {		// CPS busies in here
-		g.x820e = 0;
+		Exec.x820e = 0;
 DESPATCH_STARTAGAIN:
 #endif	
     for (i=0; i<MAX_TASKS; i++) {
@@ -266,7 +266,7 @@ DESPATCH_STARTAGAIN:
 		__asm__ volatile {
 			move	0x2600, %sr
 		}
-		if (g.x820e) {
+		if (Exec.x820e) {
 			goto DESPATCH_STARTAGAIN;
 		}
 #endif
@@ -276,7 +276,7 @@ DESPATCH_STARTAGAIN:
             if(Exec.Tasks[i].status == TASK_READY) {
                 Exec.Tasks[i].status = TASK_RUN;
             }
-			
+			printf("into task %d\n", i);
 			if (Exec.Tasks[i].code == NULL) {
 				Exec.Tasks[i].status=0;
 				printf("!!!: NULL task %d\n", i);

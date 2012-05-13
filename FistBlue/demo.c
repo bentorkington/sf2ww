@@ -130,7 +130,7 @@ void SMdemo_fade_and_clear(void) {		// 6618
         g.mode1 +=2;
         start_effect(0,3);
     case 2:
-        if (Exec.EffectIsSetUp) {
+        if (Exec.FadeOutComplete) {
             g.mode0 += 2;
             g.mode1  = 0;
             clear_scrolls();
@@ -141,10 +141,10 @@ static void sub_6704(void) {
 	Object *obj;
 	if (obj=AllocActor()) {
 		obj->exists = TRUE;
-		obj->Sel = 0x12;
+		obj->Sel    = 0x12;
 		obj->Scroll = SCROLL_3;
-		obj->XPI = 192;
-		obj->YPI = 1956;
+		obj->XPI    = 192;
+		obj->YPI    = 1956;
 		obj->SubSel = (char []) {
 			1,2,1,2,2,1,2,1,1,2,1,2,2,1,2,1
 		}[RAND16];
@@ -172,6 +172,7 @@ void SMdemo_titlefightanim(void) {	// 0x6650 mode is 2,0
 			gstate_Scroll3.XPI =    0x0;
 			gstate_Scroll3.YPI =  0x600;
 			GSSetupScr3(&gstate_Scroll3);
+			
 			g.x02dc = TRUE;
 			if(g.FreePlay) {
 				QueueEffect(SL08 | INSERT_COIN, 0x101);

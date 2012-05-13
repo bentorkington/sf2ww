@@ -32,6 +32,8 @@ extern Game g;
 #include "gfxlib.h"
 #include "gfx_glut.h"
 #include "trackball.h"
+#include "effects.h"
+
 
 
 extern CPSGFXEMU gemu;
@@ -39,6 +41,9 @@ extern GLfloat gWimpScale;
 extern GState gstate_Scroll1;
 extern GState gstate_Scroll2;
 extern GState gstate_Scroll3;
+
+extern struct executive_t Exec;
+extern struct effectstate es;
 
 int gemu_scroll_enable[4];
 
@@ -1098,6 +1103,12 @@ void drawGLText(recCamera cam) {
 						 gemu.PalScroll3[0][0] & 0xf000
 						 );
 				drawGLString(10, (lineSpacing * line++) + startOffest, outString);
+				sprintf (outString, "FadeOutComplete %d FadeBusy %d",
+						 Exec.FadeOutComplete,
+						 es.FadeBusy
+						 );
+		drawGLString(10, (lineSpacing * line++) + startOffest, outString);
+		
 		
 		
 		glTranslatef(-infoView.rect.left, -infoView.rect.top, 0.0);
