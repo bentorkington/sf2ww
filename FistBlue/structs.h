@@ -83,8 +83,8 @@ typedef struct game {
     /* input variables */
     u8  RawButtons0;			//76
     u8  RawButtons0Dash;		//77
-	u8	x0078;
-	u8	x0079;
+	u8	RawButtons0Dash2;
+	u8	RawButtons0Dash3;
 	//gap
     DUAL ContrP1, ContrP1DB, ContrP2, ContrP2DB;		//7e,80,82,84
 	// gap

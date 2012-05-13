@@ -332,6 +332,9 @@ void intproc(void) {        /* 0x1baa */
     (void *)CPS_PRIO2   = g.x0058;
     (void *)CPS_PRIO3   = g.x005a;
 #endif
+	// these were bitshifts on a longword
+	g.RawButtons0Dash3 = g.RawButtons0Dash2;
+	g.RawButtons0Dash2 = g.RawButtons0Dash;
     g.RawButtons0Dash = g.RawButtons0;
     g.RawButtons0 = GET_INPUT_1;     /* start, coin, and service buttons */
     g.ContrP1DB.full = g.ContrP1.full;

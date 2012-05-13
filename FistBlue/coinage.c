@@ -30,20 +30,20 @@ static void sub_dee(void) {
 
 void decode_start_service(void) {	// 1e7a was swirlything
 	g.StartServiceButtons =
-		((g.RawButtons0Dash & IPT_SERVICE) >> 2 ) |
-		((g.RawButtons0     & IPT_SERVICE) >> 1 ) |
-		((g.x0078           & IPT_SERVICE) >> 0 ) |
-		((g.x0079			& IPT_SERVICE) << 1 );
+		((g.RawButtons0Dash		& IPT_SERVICE) >> 2 ) |
+		((g.RawButtons0			& IPT_SERVICE) >> 1 ) |
+		((g.RawButtons0Dash2    & IPT_SERVICE) >> 0 ) |
+		((g.RawButtons0Dash3	& IPT_SERVICE) << 1 );
 	g.coinslot1.x0007 =
-	((g.RawButtons0Dash & IPT_COIN1) << 3 ) |
-	((g.RawButtons0     & IPT_COIN1) << 2 ) |
-	((g.x0078           & IPT_COIN1) << 1 ) |
-	((g.x0079			& IPT_COIN1) >> 0 );
+	((g.RawButtons0Dash		& IPT_COIN1) << 3 ) |
+	((g.RawButtons0			& IPT_COIN1) << 2 ) |
+	((g.RawButtons0Dash2    & IPT_COIN1) << 1 ) |
+	((g.RawButtons0Dash3	& IPT_COIN1) >> 0 );
 	g.coinslot2.x0007 =
-	((g.RawButtons0Dash & IPT_COIN2) << 2 ) |
-	((g.RawButtons0     & IPT_COIN2) << 1 ) |
-	((g.x0078           & IPT_COIN2) << 0 ) |
-	((g.x0079			& IPT_COIN2) >> 1 );
+	((g.RawButtons0Dash		& IPT_COIN2) << 2 ) |
+	((g.RawButtons0			& IPT_COIN2) << 1 ) |
+	((g.RawButtons0Dash2	& IPT_COIN2) << 0 ) |
+	((g.RawButtons0Dash3	& IPT_COIN2) >> 1 );
 }
 
 void decode_coincosts(void) {			// 1d9a
@@ -93,7 +93,7 @@ static void sub_1f1c(Coinslot *cs) {
 		++cs->x0000;
 		cs->x0006 = 120;	// 2 seconds
 	}
-	if (cs->x0007 == 12) {
+	if (cs->x0007 == 0xc) {
 		++g.CoinsTaken;
 		++g.SoundOutstanding;
 		sub_1f5a(cs);
