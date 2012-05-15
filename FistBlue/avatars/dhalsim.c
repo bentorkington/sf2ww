@@ -667,16 +667,12 @@ void PSCBVictoryDhalsim(Player *ply) {		//328a8
 						} else {
 							sub_32906(ply, 1);
 						}
-
 					}
-
 				}
 			}
-
 		} else {
 			return;
 		}
-
 	} else {
 		if (ud->x0082) {
 			if (ply->AnimFlags) {

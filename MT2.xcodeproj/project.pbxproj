@@ -73,6 +73,7 @@
 		B5E9056313B2D5FE00833C5A /* ParamController.m in Sources */ = {isa = PBXBuildFile; fileRef = B5E9056213B2D5FE00833C5A /* ParamController.m */; };
 		B5E9056513B2D61900833C5A /* ParamController.xib in Resources */ = {isa = PBXBuildFile; fileRef = B5E9056413B2D61900833C5A /* ParamController.xib */; };
 		B5EB38E1149816D5007100DB /* reels.c in Sources */ = {isa = PBXBuildFile; fileRef = B5EB38E0149816D5007100DB /* reels.c */; };
+		B5F335381562FFA4005A4637 /* zangeif.c in Sources */ = {isa = PBXBuildFile; fileRef = B5F335371562FFA4005A4637 /* zangeif.c */; };
 		B5FD9F801488260A00DDF4D9 /* demo.c in Sources */ = {isa = PBXBuildFile; fileRef = B5FD9F7E1488260A00DDF4D9 /* demo.c */; };
 /* End PBXBuildFile section */
 
@@ -254,6 +255,8 @@
 		B5E9056413B2D61900833C5A /* ParamController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ParamController.xib; sourceTree = "<group>"; };
 		B5EB38DF149816D5007100DB /* reels.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = reels.h; sourceTree = "<group>"; };
 		B5EB38E0149816D5007100DB /* reels.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = reels.c; sourceTree = "<group>"; };
+		B5F335361562FFA4005A4637 /* zangeif.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = zangeif.h; sourceTree = "<group>"; };
+		B5F335371562FFA4005A4637 /* zangeif.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = zangeif.c; sourceTree = "<group>"; };
 		B5FD9F7E1488260A00DDF4D9 /* demo.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = demo.c; sourceTree = "<group>"; };
 		B5FD9F7F1488260A00DDF4D9 /* demo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = demo.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -556,6 +559,8 @@
 				B5ADB81413B2B57D00905DFE /* vega.c */,
 				B5ADB81513B2B57D00905DFE /* vega.h */,
 				B5ADB81613B2B57D00905DFE /* vegadata.h */,
+				B5F335361562FFA4005A4637 /* zangeif.h */,
+				B5F335371562FFA4005A4637 /* zangeif.c */,
 			);
 			path = avatars;
 			sourceTree = "<group>";
@@ -734,6 +739,7 @@
 				B53EBC80155F91F900581C8D /* act17.c in Sources */,
 				B53EBC84155F927300581C8D /* act16.c in Sources */,
 				B5613C3B155F9917001E127A /* text.c in Sources */,
+				B5F335381562FFA4005A4637 /* zangeif.c in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

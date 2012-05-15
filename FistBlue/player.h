@@ -242,9 +242,9 @@ struct player_t {
     signed char Jumping;
     short		OppXDist;
     short		OppYDist;			/* 0x0184 */
-    signed char PunchKick;
-    signed char ButtonStrength;
-    signed char StandSquat;
+    signed char PunchKick;			// 0186
+    signed char ButtonStrength;		// 0187
+    signed char StandSquat;			// 0188
     
     char		Attacking;      /* 0x018b */
 	
