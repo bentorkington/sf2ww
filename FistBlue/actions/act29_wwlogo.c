@@ -78,6 +78,7 @@ void action_29(Object *obj) {
 					break;
 				FATALDEFAULT;
 			}
+			enqueue_and_layer(obj);			//??
 			break;
 		case 4:
 		case 6:

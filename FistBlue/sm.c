@@ -47,7 +47,7 @@ static void gamemode_init_round (void);
 
 
 void SMFreePlay(void){		// 6cc8
-	int buttons = (!g.RawButtons0Dash) & g.RawButtons0 & (IPT_START1 | IPT_START2);
+	int buttons = (~g.RawButtons0Dash) & g.RawButtons0 & (IPT_START1 | IPT_START2);
 	if (buttons) {
 		if (g.x0302) {
 			g.x0302 = FALSE;

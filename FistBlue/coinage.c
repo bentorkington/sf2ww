@@ -230,10 +230,12 @@ void task_creditscreen(void) {          /* 6b52 */
 					} else {
 						sub_6c38();
 					}
+					break;
 				case 2:
 					g.mode0 +=2;
 					QueueEffect(SL10 | 0x0, 0x0);
 					fadenwait5(1);
+					break;
 				case 4:
 					SMFreePlay();  /* only way out */
             }

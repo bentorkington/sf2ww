@@ -1015,6 +1015,7 @@ static void action_12(Object *obj) {		// "Street Fighter" logo
 					}
 					sub_11516(obj);
 					check_rect_queue_draw(obj);
+					break;
 				case 4:
 				case 6:
 					FreeActor(obj);

@@ -22,7 +22,10 @@
 extern Game g;
 typedef struct UserData_3f * UD;
 
-const Image image_21066 = {
+// Display the bonus completion score of 30000 in the center of display,
+// then move it toward the winning player's score, and award them those points
+
+const Image image_21066 = {		//"30000"
     5, 0x000d, 0x2d, 0, 0,
     { 0x8103, 0x8100, 0x8100, 0x8100, 0x8100,  }
 };
@@ -30,8 +33,6 @@ const CAFrame actlist_2104a[] = {
 	{ 4, 0x80, 0x0, &image_21066, 0, 0, 0, 0, 0, 0, 0, 0x00, 0, 0, 0, 0, 0, 0, 0, 0},
 	{0,0,0,(struct image *)&actlist_2104a[0], 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 }
 };
-
-
 
 void action_3f(Object *obj) {
 	UD ud=(UD)&obj->UserData;
