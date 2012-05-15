@@ -236,6 +236,7 @@ struct player_t {
 	u8			PushDirection;				/* being pushed */
     char		InGroundAttack;			/* 0x0161 */
     char		ClawCnt;
+	char		x0163;
     /**/
     signed char Move;				/* 0x180 */
     signed char Jumping;

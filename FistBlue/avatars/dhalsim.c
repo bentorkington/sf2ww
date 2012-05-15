@@ -40,10 +40,12 @@ typedef struct dhalsim_powermove DM;
 
 struct UserData_Dhalsim {
 	signed char x0080;
+	signed char x0082;
 	DM			x0090;
 	DM			x0098;
 	signed char x00c0;
 	signed char x00c2;
+	short		x00d0;
 	int			x00f0;
 	int			x00f4;
 };
@@ -235,6 +237,12 @@ static void sub_32664(Player *ply) {
 		ply_exit_crouch(ply);
 	}	
 }
+static void sub_3262c(Player *ply) {
+	UD *ud = (UD *)ply->UserData;
+	ud->x00c2 = 0;
+	ply_exit_stand(ply);
+}
+
 void PSCBAttackDhalsim(Player *ply) {			// 3258e
 	UD *ud = (UD *)ply->UserData;
 	// suicide code removed
@@ -344,10 +352,173 @@ void PSCBAttackDhalsim(Player *ply) {			// 3258e
 				}
 				break;
 			case 6:
-				
+				if (ply->ButtonStrength == 4) {
+					if (ply->mode2 == 0) {
+						NEXT(ply->mode2);
+						ply->mode3 = 0;
+						if (ply->JoyDecode.full & 1) {
+							ply->Flip = 0;
+						} else {
+							ply->Flip = 1;
+						}
+						ply->Opponent->Flip = ply->Flip ^ 1;
+						CASetAnim2(ply, 0x50, ply->Move);
+					} else {
+						if (ply->mode3 == 0) {
+							if (AF2) {
+								NEXT(ply->mode3);
+								set_throw_trajectory(ply, 0, ply->Flip ^ 1, 12);
+							}
+							PLAYERTICK;
+						} else {
+							if (AF1) {
+								ply->Flip ^= 1;
+								ply->EnemyDirection = ply->Flip;
+								sub_3262c(ply);
+							} else {
+								PLAYERTICK;
+							}
+						}
+					}
+				} else {
+					if (ply->mode2 == 0) {
+						random_damage_adjust_2(ply, 0x25);
+						random_damage_adjust_2(ply, 0xc);	
+						ply->LocalTimer = 0xb4;
+						setstatus4(ply, 0x50);
+					} else {
+						if (--ply->LocalTimer == 0) {
+							sub_369a(ply, ply->Flip);
+							sub_3262c(ply);
+						} else {
+							if(sub_3fd8(ply)) {
+								sub_369a(ply, ply->Flip);
+								sub_3262c(ply);
+							} else {
+								if (sub_3fee(ply)) {
+									ply->Timer = 1;
+								}
+								if (AF2) {
+									if (sub_3466(ply, 0, 2, ply->Flip ? 32 : -32, 0x56, 0x29)) {
+										sub_3262c(ply);
+									} else {
+										PLAYERTICK;
+									}
+								} else {
+									PLAYERTICK;
+								}
+							}
+						}
+					}
+				}
+
+				//todo
 				break;
 			FATALDEFAULT;
 		}
+	}
+}
+static void sub_323bc(Player *ply) {
+	UD *ud = (UD *)ply->UserData;
+	NEXT(ply->mode2);
+	soundsting(0x85);
+	ud->x00d0 = 0xa;
+	if (ud->x00c0) {
+		CASetAnim2(ply, 0x4c, (ply->ButtonStrength / 2) + 3);
+	} else {
+		CASetAnim2(ply, 0x4c, ply->ButtonStrength / 2);
+	}	
+}
+static int sub_32c3a(Player *ply) {
+	UD *ud = (UD *)ply->UserData;
+	if (ply->Projectile) {
+		if(--ud->x00d0 == 0) {
+			soundsting(0x6f);
+		}
+		PLAYERTICK;
+		return 1;
+	} else {
+		return 0;
+	}
+}
+static int sub_32bba(Player *ply) {
+	UD *ud = (UD *)ply->UserData;
+	if (--ply->LocalTimer) {
+		if (--ud->x00d0 == 0) {
+			soundsting(0x6e);
+		}
+		PLAYERTICK;
+	}
+	return AF1;	
+}
+
+void PSCBPowerDhalsim(Player *ply) {		// 32b1a
+	UD *ud = (UD *)ply->UserData;
+	Object *obj;
+	switch (ud->x00c0) {
+		case 0:
+			switch (ply->mode2) {
+				case 0:
+					sub_323bc(ply);
+					break;
+				case 2:
+					if (AF2 == 1) {
+						NEXT(ply->mode2);
+						if (obj = AllocProjectile()) {
+							obj->exists = TRUE;
+							obj->Sel = 1;
+							obj->XPI = ply->XPI;
+							obj->YPI = ply->YPI;
+							obj->Flip = ply->Flip;
+							obj->SubSel = ply->ButtonStrength;
+							obj->Owner = ply;
+							ply->Projectile = obj;							
+						}
+						obj->LocalTimer = 40;
+					}
+					PLAYERTICK;
+					break;
+				case 4:
+					if (sub_32bba(ply)) {
+						ud->x00c2 = 0;
+						ply_exit_stand(ply);
+					}
+					break;
+				FATALDEFAULT;
+			}
+			break;
+		case 2:
+			switch (ply->mode2) {
+				case 0:
+					sub_323bc(ply);
+					break;
+				case 2:
+					if (AF1 == 1) {
+						NEXT(ply->mode2);
+						if (obj=AllocProjectile()) {
+							obj->exists = TRUE;
+							obj->Sel = 2;
+							obj->XPI = ply->XPI;
+							obj->YPI = ply->YPI;
+							obj->Flip = ply->Flip;
+							obj->SubSel = ply->ButtonStrength;
+							obj->Owner = ply;
+							ply->Projectile = obj;
+							soundsting(0x6f);
+						}						
+					}
+					PLAYERTICK;
+					break;
+				case 4:
+					if (sub_32c3a(ply)) {
+						ud->x00c2 = 0;
+						ply_exit_stand(ply);
+					}
+					break;
+				FATALDEFAULT;
+			}
+			break;
+		FATALDEFAULT;
 	}
 }
 
@@ -457,6 +628,76 @@ int PLCBPowerDhalsim(Player *ply) {
 	}
 	return 0;	// always returns 0
 }
+static void sub_32906(Player *ply, int arg) {
+	UD *ud = (UD *)ply->UserData;
+	ud->x0082 = arg;
+	CASetAnim2(ply, 0x4e, arg);
+	ply->x0163 = TRUE;
+	PLAYERTICK;
+}
+void PSCBVictoryDhalsim(Player *ply) {		//328a8
+	static const int data_cf6f4[] = {
+		0x0000, 0x00E0, 0x0031, 0x00DB, 0x0061, 0x00CE, 0x008E, 0x00BA, 
+		0x00B4, 0x009E, 0x00D4, 0x007C, 0x00EC, 0x0055, 0x00FA, 0x002B, 
+		0x0100, 0x0000, 0x00FA, 0xFFD5, 0x00EC, 0xFFAB, 0x00D4, 0xFF84, 
+		0x00B4, 0xFF62, 0x008E, 0xFF46, 0x0061, 0xFF32, 0x0031, 0xFF25, 
+		0x0000, 0xFF20, 0xFFCF, 0xFF25, 0xFF9F, 0xFF32, 0xFF72, 0xFF46, 
+		0xFF4C, 0xFF62, 0xFF2C, 0xFF84, 0xFF14, 0xFFAB, 0xFF06, 0xFFD5, 
+		0xFF00, 0x0000, 0xFF06, 0x002B, 0xFF14, 0x0055, 0xFF2C, 0x007C, 
+		0xFF4C, 0x009E, 0xFF72, 0x00BA, 0xFF9F, 0x00CE, 0xFFCF, 0x00DB, 
+	};
+	UD *ud = (UD *)ply->UserData;
+	if (ply->mode3 == 0) {
+		if (ply->x02e6 == 0) {
+			if (ud->x0082 == 0) {
+				ud->x0082 += 2;
+				ply->LocalTimer = 60;
+			} else {
+				if (--ply->LocalTimer == 0) {
+					NEXT(ply->mode3);
+					ply->PSFinishedParticipating = TRUE;
+					g.FightOver = TRUE;
+					ply->LocalTimer = 0;		// unneeded
+
+					if (g.OnBonusStage) {
+						sub_32906(ply, 0);
+					} else {
+						if ((ply->RoundsWon ? 0x1088 : 0xef77) & (1 << RAND32)) {
+							sub_32906(ply, 0);
+						} else {
+							sub_32906(ply, 1);
+						}
+
+					}
+
+				}
+			}
+
+		} else {
+			return;
+		}
+
+	} else {
+		if (ud->x0082) {
+			if (ply->AnimFlags) {
+				ply->Y.full += (data_cf6f4[ply->LocalTimer * 2] << 8);
+				++ply->LocalTimer;
+				ply->LocalTimer &= 0x1f;
+			} else {
+				PLAYERTICK;
+			}
+		} else {
+			if (AF2) {
+				ply->Flip ^= 1;
+			}
+			PLAYERTICK;
+		}
+
+	}
+
+	
+}
+
 static short sub_35f7e(Player *ply, int d0) {
 	UD *ud = (UD *)ply->UserData;
 	

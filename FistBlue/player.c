@@ -352,7 +352,7 @@ void check_powermove_input(Player *ply) { /* 2a7ea, actually void() */
 		PLCBPowerGuile,
 		PLCBPowerRyu,
 		PLCBPowerChunLi,
-		//PLCBPowerZangeif
+		NULL,				//PLCBPowerZangeif
 		PLCBPowerDhalsim
 	} ;  /* other fighters
 		 

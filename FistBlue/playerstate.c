@@ -49,7 +49,7 @@ static void standblock_crouch(Player *ply);	/* 2a8ca */
 static void sub_28d36(Player *ply);
 
 void PSCBAttackDhalsim(Player *ply);
-
+void PSCBPowerDhalsim(Player *ply);
 
 // reco as 12 * 4 * struct Vect8
 short data_2abb0[12][8] = {
@@ -682,6 +682,9 @@ void proc_plstat_powermove(Player *ply) {
 		PSCBPowerNULL,	 //Blanka same as EHonda, nothing
 		PSCBPowerGuile,	 
 		PSCBPowerRyu,	 //Ken
+		NULL,
+		NULL,
+		PSCBPowerDhalsim,
 		/* XXX */
     };
     PCB_POWERMOVE[ply->FighterID](ply);
