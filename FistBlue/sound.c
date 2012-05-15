@@ -44,7 +44,7 @@ void sound_cq_f0f7(void) {			/* 62d4 */
 void coinsound(void) {				/* 635a */
 	ssound1(0x20);
 }
-void quirkysound(short data) {
+void quirkysound(short data) {		// 6300
 	queuesound(data + 0x25);
 	/* was full of tamper protection - removed */
 }

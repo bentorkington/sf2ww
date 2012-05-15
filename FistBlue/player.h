@@ -172,7 +172,7 @@ struct player_t {
 	short		DizzyClearCnt;
 	short		DizzyCount;
 	short		DizzySpell;
-	short		IsBlockingSuper;		//0062
+	short		IsBlockingSuper;		//0062 should be char?
 	char		ThrowStat;
 	short		Throw[6];
 	char		x0070;

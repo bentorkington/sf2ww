@@ -48,6 +48,7 @@ static void _PSStandBlockToCrouchBlock(Player *ply);		// 28d7e
 static void standblock_crouch(Player *ply);	/* 2a8ca */
 static void sub_28d36(Player *ply);
 
+void PSCBAttackDhalsim(Player *ply);
 
 
 // reco as 12 * 4 * struct Vect8
@@ -653,7 +654,7 @@ void proc_plstat_attacking(Player *ply) {
 		PSCBAttackRyu,		//Ken is the same
 		PSCBAttackChunLi,
 		NULL,
-		NULL,
+		PSCBAttackDhalsim,
 	};
 	/* 
 	 00028E44   0002 d168                    ;Ryu

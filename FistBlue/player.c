@@ -24,10 +24,16 @@
 #include "blanka.h"
 #include "chunli.h"
 
-
 #include "dhalsim.h"
 #include "mbison.h"
 
+int PLCBStandDhalsim(Player *ply);
+int PLCBCrouchDhalsim(Player *ply);
+int PLCBJumpDhalsim(Player *ply);
+int PLCBPowerDhalsim(Player *ply);
+void pl_cb_setstatus1_dhalsim(Player *ply, short status);
+void pl_cb_setstatus2_dhalsim(Player *ply, short status);
+void pl_cb_setstatus3_dhalsim(Player *ply, short status);
 
 
 extern Game g;
@@ -347,7 +353,7 @@ void check_powermove_input(Player *ply) { /* 2a7ea, actually void() */
 		PLCBPowerRyu,
 		PLCBPowerChunLi,
 		//PLCBPowerZangeif
-		//PLCBPowerDhalsim
+		PLCBPowerDhalsim
 	} ;  /* other fighters
 		 
 		 0002A7FE   0002 de90            ;E.Honda
@@ -369,6 +375,8 @@ short ply_cb_standmove(Player *ply) {	/* 2a81a */
 		PLCBStandGuile,
 		PLCBStandRyu,
 		PLCBStandChunLi,
+		NULL,
+		PLCBStandDhalsim,
 	};	/* XXX do other fighters
 		 
 		 0002A82E   0002 de2e     ;E.Honda
@@ -392,6 +400,8 @@ short ply_cb_crouchmove(Player *ply) {	/* 2a84a */
 		PLCBCrouchGuile,		// Guile
 		PLCBCrouchRyu,
 		PLCBCrouchChunLi,
+		NULL,
+		PLCBCrouchDhalsim,
 	};	/* XXX do other fighters
 		 0002A85E   0002 de60                      
 		 0002A862   0002 e928                       
@@ -413,6 +423,8 @@ short ply_cb_jumpmove(Player *ply) {	/* 2a87a */
 		PLCBJumpGuile,
 		PLCBJumpRyu,
 		PLCBJumpChunLi,
+		NULL,
+		PLCBJumpDhalsim,
 	};
 	/* other fighters 
 	 0002A88E   0002 de7c                       
@@ -435,7 +447,7 @@ void (*PL_CB_SETSTATUS3[])(Player *ply, short status)={
 	pl_cb_setstatus3_ken,
 	pl_cb_setstatus3_chunli,
 	NULL,
-	NULL,
+	pl_cb_setstatus3_dhalsim,
 	pl_cb_setstatus3_mbison,
 	NULL,
 	NULL,
@@ -450,7 +462,7 @@ void (*PL_CB_SETSTATUS2[])(Player *ply, short status, int argd0)={
 	pl_cb_setstatus2_ken,
 	pl_cb_setstatus2_chunli,
 	NULL,
-	NULL,
+	pl_cb_setstatus2_dhalsim,
 	pl_cb_setstatus2_mbison,
 	NULL,
 	NULL,
@@ -465,7 +477,7 @@ void (*PL_CB_SETSTATUS1[])(Player *ply, short status)={
 	pl_cb_setstatus1_ken,
 	pl_cb_setstatus1_chunli,
 	NULL,
-	NULL,
+	pl_cb_setstatus1_dhalsim,
 	pl_cb_setstatus1_mbison,
 	NULL,
 	NULL,
