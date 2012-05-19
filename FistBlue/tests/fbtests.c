@@ -110,6 +110,7 @@ void fistblue_run_tests(void) {
 	update_obj_path(obj);
 	assert(obj->X.full = 0xffff0000);
 	assert(obj->Y.full = 0x00c00000);
+	
 	obj->Path = &_fb_test_path[1];
 	obj->X.full = 0x00c00000;		// 192
 	obj->Y.full = 0x00c00000;
@@ -136,6 +137,28 @@ void fistblue_run_tests(void) {
 	update_obj_path(obj);
 	assert(obj->X.full = 0x00c00000);
 	assert(obj->Y.full = 0x00c00000);
+	
+	
+	/* Test CATrajectory */
+	
+	obj->X.full = 0x00c00000;		// 192
+	obj->Y.full = 0x00c00000;
+	obj->Flip = obj->Step = 0;
+	obj->VelX.full = 0;
+	obj->VelY.full = 0;
+	obj->AclX.full = 0x0180;
+	obj->AclY.full = 0x0048;
+	CATrajectory(obj);
+	CATrajectory(obj);
+	CATrajectory(obj);
+	CATrajectory(obj);
+	assert(obj->X.full == 0x00b10000);
+	assert(obj->Y.full == 0x00bd3000);
+	assert((u16)obj->VelX.full == 0xfa00);
+	assert((u16)obj->VelY.full == 0xfee0);
+	assert((u16)obj->AclX.full == 0x0180);
+	assert((u16)obj->AclY.full == 0x0048);
+	
 	
 	free(obj);
 		

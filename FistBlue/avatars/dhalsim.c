@@ -418,7 +418,8 @@ void PSCBAttackDhalsim(Player *ply) {			// 3258e
 		}
 	}
 }
-static void sub_323bc(Player *ply) {
+
+static void sub_32b3c(Player *ply) {
 	UD *ud = (UD *)ply->UserData;
 	NEXT(ply->mode2);
 	soundsting(0x85);
@@ -428,6 +429,24 @@ static void sub_323bc(Player *ply) {
 	} else {
 		CASetAnim2(ply, 0x4c, ply->ButtonStrength / 2);
 	}	
+}
+static void sub_32b64(Player *ply) {
+	Object *obj;
+	if (AF2 == 1) {
+		NEXT(ply->mode2);
+		if (obj = AllocProjectile()) {
+			obj->exists = TRUE;
+			obj->Sel = 1;
+			obj->XPI = ply->XPI;
+			obj->YPI = ply->YPI;
+			obj->Flip = ply->Flip;
+			obj->SubSel = ply->ButtonStrength;
+			obj->Owner = ply;
+			ply->Projectile = obj;							
+		}
+		obj->LocalTimer = 40;
+	}
+	PLAYERTICK;
 }
 static int sub_32c3a(Player *ply) {
 	UD *ud = (UD *)ply->UserData;
@@ -451,32 +470,36 @@ static int sub_32bba(Player *ply) {
 	}
 	return AF1;	
 }
+static void sub_32be4(Player *ply) {
+	Object *obj;
+
+	if (AF1 == 1) {
+		NEXT(ply->mode2);
+		if (obj=AllocProjectile()) {
+			obj->exists = TRUE;
+			obj->Sel = 2;
+			obj->XPI = ply->XPI;
+			obj->YPI = ply->YPI;
+			obj->Flip = ply->Flip;
+			obj->SubSel = ply->ButtonStrength;
+			obj->Owner = ply;
+			ply->Projectile = obj;
+			soundsting(0x6f);
+		}						
+	}
+	PLAYERTICK;	
+}
 
 void PSCBPowerDhalsim(Player *ply) {		// 32b1a
 	UD *ud = (UD *)ply->UserData;
-	Object *obj;
 	switch (ud->x00c0) {
 		case 0:
 			switch (ply->mode2) {
 				case 0:
-					sub_323bc(ply);
+					sub_32b3c(ply);
 					break;
 				case 2:
-					if (AF2 == 1) {
-						NEXT(ply->mode2);
-						if (obj = AllocProjectile()) {
-							obj->exists = TRUE;
-							obj->Sel = 1;
-							obj->XPI = ply->XPI;
-							obj->YPI = ply->YPI;
-							obj->Flip = ply->Flip;
-							obj->SubSel = ply->ButtonStrength;
-							obj->Owner = ply;
-							ply->Projectile = obj;							
-						}
-						obj->LocalTimer = 40;
-					}
-					PLAYERTICK;
+					sub_32b64(ply);
 					break;
 				case 4:
 					if (sub_32bba(ply)) {
@@ -490,24 +513,10 @@ void PSCBPowerDhalsim(Player *ply) {		// 32b1a
 		case 2:
 			switch (ply->mode2) {
 				case 0:
-					sub_323bc(ply);
+					sub_32b3c(ply);
 					break;
 				case 2:
-					if (AF1 == 1) {
-						NEXT(ply->mode2);
-						if (obj=AllocProjectile()) {
-							obj->exists = TRUE;
-							obj->Sel = 2;
-							obj->XPI = ply->XPI;
-							obj->YPI = ply->YPI;
-							obj->Flip = ply->Flip;
-							obj->SubSel = ply->ButtonStrength;
-							obj->Owner = ply;
-							ply->Projectile = obj;
-							soundsting(0x6f);
-						}						
-					}
-					PLAYERTICK;
+					sub_32be4(ply);
 					break;
 				case 4:
 					if (sub_32c3a(ply)) {
@@ -710,6 +719,11 @@ static void sub_36166(Player *ply) {
 		}
 	}
 }
+static void sub_35dd2(Player *ply) {
+	ply->AISigAttack = FALSE;
+	ply->AIVolley    = FALSE;
+	exit_comp_normal(ply);	
+}
 static void sub_35d46(Player *ply) {
 	switch (ply->mode2) {
 		case 0:
@@ -731,9 +745,7 @@ static void sub_35d46(Player *ply) {
 			break;
 		case 2:
 			if (AF1) {
-				ply->AISigAttack = FALSE;
-				ply->AIVolley    = FALSE;
-				exit_comp_normal(ply);
+				sub_35dd2(ply);
 			}
 			break;
 		FATALDEFAULT;
@@ -846,12 +858,107 @@ static void sub_35ffa(Player *ply) {
 	}
 }
 static void sub_36078(Player *ply) {
-	
-	//todo
+	if (ply->ButtonStrength == 4) {
+		if (ply->mode2 == 0) {
+			NEXT(ply->mode2);
+			ply->Step = ply->IsWithinBounds ^ 1;
+			ply->Flip = ply->Step;
+			ply->Opponent->Flip = ply->Flip ^ 1;
+			CASetAnim2(ply, 0x50, ply->Move);
+		} else {
+			if (ply->mode3 == 0) {
+				if (AF2) {
+					NEXT(ply->mode3);
+					set_throw_trajectory(ply, 0, ply->Flip, 12);
+				}
+				PLAYERTICK;
+			} else {
+				if (AF1) {
+					ply->Flip ^= 1;
+					ply->EnemyDirection = ply->Flip;
+					sub_35dd2(ply);
+				} else {
+					PLAYERTICK;
+				}
+			}
+
+		}
+	} else {
+		if (ply->mode2 == 0) {
+			random_damage_adjust_2(ply, 0x25);
+			random_damage_adjust_1(ply, 12, 9);
+			ply->LocalTimer = 0xb4;
+			setstatus4(ply, 0x50);
+		} else {
+			if (--ply->LocalTimer == 0) {
+				ply_grip_release(ply, ply->Flip);
+				sub_35dd2(ply);
+			} else {
+				if (ply_opp_has_struggled_free(ply)) {
+					ply_grip_release(ply, ply->Flip);
+					sub_35dd2(ply);
+				} else  {
+					if (sub_3fee(ply)) {
+						ply->Timer = 1;
+					}
+					if (AF2) {
+						if(sub_3466(ply, 0, 3, (ply->Flip ? 16 : -16), 0x56, 0x29)){
+							sub_35dd2(ply);
+						} else {
+							PLAYERTICK;
+						}
+					} else {
+						PLAYERTICK;
+					}
+				}
+			}
+
+		}
+
+	}
 }
 static void sub_361d8(Player *ply) {
-	//todo
+	UD *ud = (UD *)ply->UserData;
+	switch (ply->PunchKick) {
+		case PLY_PUNCHING:
+			switch (ply->mode2) {
+				case 0:
+					ud->x00c0 = ply->PunchKick;
+					sub_32b3c(ply);
+					break;
+				case 2:
+					sub_32b64(ply);
+					break;
+				case 4:
+					if (sub_32bba(ply) == 0) {
+						sub_35dd2(ply);
+					}
+					break;
+				FATALDEFAULT;
+			}
+			break;
+		case PLY_KICKING:
+		case 4:
+			switch (ply->mode2) {
+				case 0:
+					ud->x00c0 = ply->PunchKick;
+					sub_32b3c(ply);
+					break;
+				case 2:
+					sub_32be4(ply);
+					break;
+				case 4:
+					if (sub_32c3a(ply)==0) {
+						sub_35dd2(ply);
+					}
+					break;
+				FATALDEFAULT;
+			}
+			break;
+		FATALDEFAULT;
+	}
 }
+
 void PLCBCompAttackDhalsim(Player *ply) {
 	if (ply->Timer2) {
 		--ply->Timer2;
@@ -910,3 +1017,24 @@ short sub_35fe6(Player *ply) {
 	}
 	return 0;
 }
+static void sub_35f54(Player *ply, int move) {
+	ply->Move = move;
+	CASetAnim2(ply, (ply->PunchKick ? 0x4a : 0x48), ply->Move);
+}
+
+int PLCBCompJumpDhalsim(Player *ply) {
+	if (ply->ButtonStrength > 3) {
+		if (ply->VelY.full < -0x0100 && ply->VelY.full > 0x100) {
+			sub_35f54(ply, ply->ButtonStrength);
+			return TRUE;
+		} else {
+			return sub_35f7e(ply, ply->ButtonStrength + 1);
+		}
+	} else {
+		sub_35f54(ply, ply->ButtonStrength + 1);
+		return TRUE;
+	}
+}
+
+
+

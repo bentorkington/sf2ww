@@ -39,6 +39,7 @@
 extern Game g;
 
 void PLCBCompAttackDhalsim(Player *ply);
+int	PLCBCompJumpDhalsim(Player *ply);
 
 extern short data_2aa30[12][4][4];
 
@@ -294,7 +295,7 @@ static short comp_jump_plycallback(Player *ply) { /* 2c9be */
 		sub_32d7e,
 		NULL,			// chunli
 		NULL,
-		NULL,
+		PLCBCompJumpDhalsim,
 		PLCBCompJumpMBison,
 		NULL,
 		NULL,
