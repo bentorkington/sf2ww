@@ -53,7 +53,7 @@ struct UserData_Dhalsim {
 typedef struct UserData_Dhalsim UD;
 
 void pl_cb_setstatus2_dhalsim(Player *ply, short status, int argd0) {
-	setaction_list((Object *)ply, data_5de06[status / 2], argd0);
+//XXX	setaction_list((Object *)ply, data_5de06[status / 2], argd0);
 }
 void pl_cb_setstatus3_dhalsim(Player *ply, short status) {
 	pl_cb_setstatus2_dhalsim(ply, status, ply->Step ^ ply->Flip);
@@ -388,11 +388,11 @@ void PSCBAttackDhalsim(Player *ply) {			// 3258e
 						setstatus4(ply, 0x50);
 					} else {
 						if (--ply->LocalTimer == 0) {
-							sub_369a(ply, ply->Flip);
+							ply_grip_release(ply, ply->Flip);
 							sub_3262c(ply);
 						} else {
-							if(sub_3fd8(ply)) {
-								sub_369a(ply, ply->Flip);
+							if(ply_opp_has_struggled_free(ply)) {
+								ply_grip_release(ply, ply->Flip);
 								sub_3262c(ply);
 							} else {
 								if (sub_3fee(ply)) {

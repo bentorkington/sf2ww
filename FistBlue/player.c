@@ -27,6 +27,16 @@
 #include "dhalsim.h"
 #include "mbison.h"
 
+
+int PLCBStandZangeif(Player *ply);
+int PLCBCrouchZangeif(Player *ply);
+int PLCBJumpZangeif(Player *ply);
+int PLCBPowerZangeif(Player *ply);
+void pl_cb_setstatus1_zangeif(Player *ply, short status);
+void pl_cb_setstatus2_zangeif(Player *ply, short status);
+void pl_cb_setstatus3_zangeif(Player *ply, short status);
+
+
 int PLCBStandDhalsim(Player *ply);
 int PLCBCrouchDhalsim(Player *ply);
 int PLCBJumpDhalsim(Player *ply);
@@ -171,18 +181,18 @@ void set_throw_trajectory(Player *ply, int trajectory, int direction, short dama
     LBThrowClear(ply, ply->Opponent);
 } 
 
-void sub_369a(Player *ply, int direction) {		//369a	XXX probably takes d0,d1 and d2 args
+void ply_grip_release(Player *ply, int direction) {		//369a	
     Player *opp = ply->Opponent;
-    opp->mode1 = PLSTAT_REEL;
+    opp->mode1 = 0xe;
     opp->mode2 = 0;
     opp->mode3 = 0;
 
     if(opp->DizzyFall) {
-        ply->NextReactMode = RM_FIREBALLDOWN;
-        ply->ReactMode     = RM_FIREBALLDOWN;
+        ply->NextReactMode = 0x12;
+        ply->ReactMode     = 0x12;
     } else {
-        opp->NextReactMode = RM_HITINAIR;	
-        opp->ReactMode     = RM_HITINAIR;     
+        opp->NextReactMode = 0x10;	
+        opp->ReactMode     = 0x10;     
     }
     opp->BlockStun = 0;
     opp->Direction = direction;
@@ -352,7 +362,7 @@ void check_powermove_input(Player *ply) { /* 2a7ea, actually void() */
 		PLCBPowerGuile,
 		PLCBPowerRyu,
 		PLCBPowerChunLi,
-		NULL,				//PLCBPowerZangeif
+		PLCBPowerZangeif,
 		PLCBPowerDhalsim
 	} ;  /* other fighters
 		 
@@ -375,7 +385,7 @@ short ply_cb_standmove(Player *ply) {	/* 2a81a */
 		PLCBStandGuile,
 		PLCBStandRyu,
 		PLCBStandChunLi,
-		NULL,
+		PLCBStandZangeif,
 		PLCBStandDhalsim,
 	};	/* XXX do other fighters
 		 
@@ -400,7 +410,7 @@ short ply_cb_crouchmove(Player *ply) {	/* 2a84a */
 		PLCBCrouchGuile,		// Guile
 		PLCBCrouchRyu,
 		PLCBCrouchChunLi,
-		NULL,
+		PLCBCrouchZangeif,
 		PLCBCrouchDhalsim,
 	};	/* XXX do other fighters
 		 0002A85E   0002 de60                      
@@ -423,7 +433,7 @@ short ply_cb_jumpmove(Player *ply) {	/* 2a87a */
 		PLCBJumpGuile,
 		PLCBJumpRyu,
 		PLCBJumpChunLi,
-		NULL,
+		PLCBJumpZangeif,
 		PLCBJumpDhalsim,
 	};
 	/* other fighters 
@@ -446,7 +456,7 @@ void (*PL_CB_SETSTATUS3[])(Player *ply, short status)={
 	pl_cb_setstatus3_guile,
 	pl_cb_setstatus3_ken,
 	pl_cb_setstatus3_chunli,
-	NULL,
+	pl_cb_setstatus3_zangeif,
 	pl_cb_setstatus3_dhalsim,
 	pl_cb_setstatus3_mbison,
 	NULL,
@@ -461,7 +471,7 @@ void (*PL_CB_SETSTATUS2[])(Player *ply, short status, int argd0)={
 	pl_cb_setstatus2_guile,
 	pl_cb_setstatus2_ken,
 	pl_cb_setstatus2_chunli,
-	NULL,
+	pl_cb_setstatus2_zangeif,
 	pl_cb_setstatus2_dhalsim,
 	pl_cb_setstatus2_mbison,
 	NULL,
@@ -476,7 +486,7 @@ void (*PL_CB_SETSTATUS1[])(Player *ply, short status)={
 	pl_cb_setstatus1_guile,
 	pl_cb_setstatus1_ken,
 	pl_cb_setstatus1_chunli,
-	NULL,
+	pl_cb_setstatus1_zangeif,
 	pl_cb_setstatus1_dhalsim,
 	pl_cb_setstatus1_mbison,
 	NULL,

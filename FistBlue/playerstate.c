@@ -50,6 +50,10 @@ static void sub_28d36(Player *ply);
 
 void PSCBAttackDhalsim(Player *ply);
 void PSCBPowerDhalsim(Player *ply);
+void PSCBVictoryDhalsim(Player *ply);
+void PSCBAttackZangeif(Player *ply);
+void PSCBPowerZangeif(Player *ply);
+void PSCBVictoryZangeif(Player *ply);
 
 // reco as 12 * 4 * struct Vect8
 short data_2abb0[12][8] = {
@@ -653,7 +657,7 @@ void proc_plstat_attacking(Player *ply) {
 		PSCBAttackGuile,	
 		PSCBAttackRyu,		//Ken is the same
 		PSCBAttackChunLi,
-		NULL,
+		PSCBAttackZangeif,
 		PSCBAttackDhalsim,
 	};
 	/* 
@@ -683,9 +687,8 @@ void proc_plstat_powermove(Player *ply) {
 		PSCBPowerGuile,	 
 		PSCBPowerRyu,	 //Ken
 		NULL,
-		NULL,
+		PSCBPowerZangeif,
 		PSCBPowerDhalsim,
-		/* XXX */
     };
     PCB_POWERMOVE[ply->FighterID](ply);
 	/*
@@ -922,10 +925,9 @@ void proc_plstat_victory(Player *ply) {		//296f2
 		sub_2ff6e,
 		PSCBVictoryRyu,
 		PSCBVictoryChunLi,
-		NULL,
-		
+		PSCBVictoryZangeif,
+		PSCBVictoryDhalsim,
 		// Victory callbacks per player
-		NULL,	/* XXX */
 	};
 	
 	switch (ply->PSRoundReactMode) {

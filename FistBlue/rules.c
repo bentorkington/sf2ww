@@ -377,12 +377,12 @@ void copy_level_table(short d0) {		// 2ecc
 	}
 }
 
-int sub_3fd8(Player *ply) {
+int ply_opp_has_struggled_free(Player *ply) {			// 3fd8
 	ply->Opponent->Damage1 -= sub_4004(ply->Opponent);
 	if (ply->Opponent->Damage1 > 0) {
-		return 0;
+		return FALSE;
 	}
-	return 1;
+	return TRUE;
 }
 	
 

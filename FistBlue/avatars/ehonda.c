@@ -528,7 +528,7 @@ static void sub_2dd08(Player *ply) {	//2dd08
 		case 2:
 			if (--ply->LocalTimer == 0) {
 				//2dd9a
-				sub_369a(ply, ply->Flip);
+				ply_grip_release(ply, ply->Flip);
 				sub_2dda2(ply);
 			} else {
 				if (sub_3fee(ply)) {
@@ -979,7 +979,7 @@ static void sub_332f6(Player *ply, 	short xoff /* %d4 */, short yoff /* %d5 */) 
 	}	
 }
 static void sub_3330a(Player *ply) {
-	sub_369a(ply, ply->Flip);
+	ply_grip_release(ply, ply->Flip);
 	sub_330fc(ply);
 }
 static void sub_33272(Player *ply) {
@@ -1001,7 +1001,7 @@ static void sub_33272(Player *ply) {
 				sub_3330a(ply); 
 				return;
 			} else {
-				if(sub_3fd8(ply)) { sub_3330a(ply); return; }
+				if(ply_opp_has_struggled_free(ply)) { sub_3330a(ply); return; }
 				if (sub_3fee(ply)) { ply->Timer = 1;}
 				if (AF2 == 0) {
 					PLAYERTICK;

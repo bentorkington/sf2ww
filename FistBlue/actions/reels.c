@@ -86,7 +86,7 @@ void StartDizzyAnim(Player *ply) {				// 1e3bc
 	_CreateDizzyObject(ply, 8);
 	_CreateDizzyObject(ply, 16);
 }
-void ActBlankaBiteBlood(Player *ply) {			//1e402
+void ActBlankaBiteBlood(Player *ply) {			//1e402 not just Blanka XXX
 	Object *obj;
 	if (obj=AllocActor()) {
 		obj->exists = TRUE;

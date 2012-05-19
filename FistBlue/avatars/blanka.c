@@ -789,8 +789,8 @@ static void _BlankaSMCatch(Player *ply) {		// 2e7d2
 			_BlankaCatchSet(ply);
 			break;
 		case 2:
-			if (--ply->LocalTimer == 0 || sub_3fd8(ply)) {
-				sub_369a(ply, ply->Flip);		// d1 = 0, d2 = 0x20;
+			if (--ply->LocalTimer == 0 || ply_opp_has_struggled_free(ply)) {
+				ply_grip_release(ply, ply->Flip);		// d1 = 0, d2 = 0x20;
 				NEXT(ply->mode2);
 				sub_33ada(ply, 0x7a);
 			} else {
@@ -1175,7 +1175,7 @@ static void sub_33704(Player *ply) {
 	}
 }
 static void sub_338d8(Player *ply) {
-	sub_369a(ply, ply->Flip);		// %d0 = 0, %d1 = flip,  %d2 = 0x20
+	ply_grip_release(ply, ply->Flip);		// %d0 = 0, %d1 = flip,  %d2 = 0x20
 	NEXT(ply->mode3);
 	sub_33ada(ply, 0x7a);
 }
@@ -1196,7 +1196,7 @@ static void sub_33854(Player *ply) {
 				sub_338d8(ply); 
 				return;
 			} else {
-				if(sub_3fd8(ply)) { sub_338d8(ply); return; }
+				if(ply_opp_has_struggled_free(ply)) { sub_338d8(ply); return; }
 				if (sub_3fee(ply)) { ply->Timer = 1;}
 				if (AF2 == 0) {
 					PLAYERTICK;

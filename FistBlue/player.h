@@ -393,7 +393,7 @@ int find_apex(Player *ply);
 void LBGetDamage(Player *ply, Player *opp, int d2);
 void set_throw_trajectory(Player *ply, int trajectory, int direction, short damage);	//3668 
 
-void sub_369a(Player *ply, int direction);
+void ply_grip_release(Player *ply, int direction);
 void sub_36d6(Player *ply, short x, short y, short throwtrajd0, char direction, int damage, int sound, short subsel_d3);
 void LBThrowClear(Player *ply, Player *opp);
 void LBInitHitBoxes(Player *ply);
