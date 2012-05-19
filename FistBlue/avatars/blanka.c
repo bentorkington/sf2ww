@@ -653,7 +653,7 @@ static void _BlankaSMCannonBall(Player *ply) {		// 2e5b2
 			break;
 		case 8:
 			CATrajectory((Object *)ply);
-			if (check_ground_collision(ply)) {
+			if (check_ground_collision((Object *)ply)) {
 				sub_2e6da(ply);
 			} else {
 				if (AF2 && ply->Timer == 1) {
@@ -1161,7 +1161,7 @@ static void sub_33704(Player *ply) {
 			break;
 		case 6:
 			CATrajectory((Object *)ply);
-			if (check_ground_collision(ply)) {
+			if (check_ground_collision((Object *)ply)) {
 				queuesound(SOUND_IMPACT8);
 				sub_336d0(ply);
 			} else {

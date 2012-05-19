@@ -7,6 +7,7 @@
  *
  */
 #include <stdio.h>
+#include <memory.h>
 #include <assert.h>
 
 #include "sf2types.h"
@@ -63,8 +64,65 @@ void fistblue_run_tests(void) {
 	assert(testorder32.part.fraction == 0x5678);
 	printf("PASSED \n");
 	
+	// test particle
+	Object *obj = calloc(sizeof(Object), 1);
+	short _fb_test_path[][4] = {
+		{0x0100, 0x0000, -0x0100, 0x0000},
+		{0x0180, 0x0280, -0x0180, 0x0280},
+	};
+	obj->Path = &_fb_test_path[0];
+	obj->X.full = 0x00c00000;		// 192
+	obj->Y.full = 0x00c00000;
+	obj->Flip = obj->Step = 0;
+	update_obj_path(obj);
+	assert(obj->X.full = 0x00c10000);
+	assert(obj->Y.full = 0x00c00000);
+	update_obj_path(obj);
+	update_obj_path(obj);
+	assert(obj->X.full = 0x00c30000);
+	assert(obj->Y.full = 0x00c00000);
+	obj->Flip = 1;
+	update_obj_path(obj);
+	assert(obj->X.full = 0x00c20000);
+	assert(obj->Y.full = 0x00c00000);
+	update_obj_path(obj);
+	obj->Step = 1;
+	obj->Flip = 0;
+	update_obj_path(obj);
+	assert(obj->X.full = 0x00c00000);
+	assert(obj->Y.full = 0x00c00000);
+	obj->X.full = 0;
+	update_obj_path(obj);
+	assert(obj->X.full = 0xffff0000);
+	assert(obj->Y.full = 0x00c00000);
+	
+	obj->Path = &_fb_test_path[1];
+	obj->X.full = 0x00c00000;		// 192
+	obj->Y.full = 0x00c00000;
+	obj->Flip = obj->Step = 0;
+	update_obj_path(obj);
+	assert(obj->X.full = 0x00c18000);
+	assert(obj->Y.full = 0x00c28000);
+	update_obj_path(obj);
+	assert(obj->X.full = 0x00c30000);
+	assert(obj->Y.full = 0x00c50000);
+	obj->Flip = 1;
+	update_obj_path(obj);
+	assert(obj->X.full = 0x00c18000);
+	assert(obj->Y.full = 0x00c78000);
 	
 	
+	
+	
+	printf("X %08x Y %08X\n", obj->X.full, obj->Y.full);
+	update_obj_path(obj);
+	printf("X %08x Y %08X\n", obj->X.full, obj->Y.full);
+	update_obj_path(obj);
+	printf("X %08x Y %08X\n", obj->X.full, obj->Y.full);
+	update_obj_path(obj);
+	printf("X %08x Y %08X\n", obj->X.full, obj->Y.full);
+		free(obj);
+		
 	//exit(0);
 }
 

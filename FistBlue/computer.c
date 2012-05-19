@@ -38,6 +38,8 @@
 
 extern Game g;
 
+void PLCBCompAttackDhalsim(Player *ply);
+
 extern short data_2aa30[12][4][4];
 
 static void comp_changetactics(Player *ply, short d0);	/* 2c1b4 */
@@ -763,7 +765,7 @@ static void comp_attack_plycallback (Player *ply) { /* 2cc58 */
 		PLCBCompAttackRyuKen,
 		PLCBCompAttackChunLi,
 		NULL,
-		NULL,
+		PLCBCompAttackDhalsim,
 		PLCBCompAttackMBison,
 		NULL,
 		NULL,

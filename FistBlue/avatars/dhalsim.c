@@ -53,7 +53,7 @@ struct UserData_Dhalsim {
 typedef struct UserData_Dhalsim UD;
 
 void pl_cb_setstatus2_dhalsim(Player *ply, short status, int argd0) {
-//XXX	setaction_list((Object *)ply, data_5de06[status / 2], argd0);
+	setaction_list((Object *)ply, data_64fbe[status / 2], argd0);
 }
 void pl_cb_setstatus3_dhalsim(Player *ply, short status) {
 	pl_cb_setstatus2_dhalsim(ply, status, ply->Step ^ ply->Flip);
@@ -688,11 +688,190 @@ void PSCBVictoryDhalsim(Player *ply) {		//328a8
 			}
 			PLAYERTICK;
 		}
-
-	}
-
-	
+	}	
 }
+
+static int sub_361c0(Player *ply) {
+	if (ply->AISigSpecial && ply->Projectile == NULL) {
+		ply->StandSquat = 8;
+		return TRUE;
+	}
+	return FALSE;
+}
+static void sub_36166(Player *ply) {
+	if (ply->CompDoThrow && ply->PunchKick == PLY_PUNCHING && ply->ButtonStrength != 0) {
+		ply->Throw[0] = 0xffe0;
+		ply->Throw[1] = 0x0035;
+		ply->Throw[2] = 0x0020;
+		ply->Throw[3] = 0x0010;
+		if (throwvalid(ply)) {
+			ply->StandSquat = 6;
+			ply->Move = ply->ButtonStrength / 4;
+		}
+	}
+}
+static void sub_35d46(Player *ply) {
+	switch (ply->mode2) {
+		case 0:
+			if (ply->PunchKick == PLY_PUNCHING) {
+				ply->Move = ply->ButtonStrength;
+				if (ply->OppXDist > (short []){51, 48, 60}[ply->ButtonStrength/2]) {
+					++ply->Move;
+				}
+				quirkysound(ply->ButtonStrength/2);
+				setstatus4(ply, 0x40);
+			} else {
+				ply->Move = ply->ButtonStrength * 2;
+				if (ply->OppXDist > (short []){51, 56, 66}[ply->ButtonStrength/2]) {
+					ply->Move += 2;
+				}
+				quirkysound(ply->ButtonStrength - 1);
+				setstatus4(ply, 0x42);
+			}
+			break;
+		case 2:
+			if (AF1) {
+				ply->AISigAttack = FALSE;
+				ply->AIVolley    = FALSE;
+				exit_comp_normal(ply);
+			}
+			break;
+		FATALDEFAULT;
+	}
+}
+static void sub_35e28(Player *ply) {
+	if (AF1) {
+		ply->AISigAttack = FALSE;
+		ply->AIVolley    = FALSE;
+		exit_to_compdisp1(ply);
+	}	
+}
+static void sub_35de0(Player *ply) {
+	UD *ud = (UD *)ply->UserData;
+	switch (ply->PunchKick) {
+		case PLY_PUNCHING:
+			if (ply->mode2 == 0) {
+				ply->Move = ply->ButtonStrength;
+				if (ply->OppXDist > (short []){47, 47, 41}[ply->ButtonStrength/2]) {
+					++ply->Move;
+				}
+				quirkysound(ply->ButtonStrength/2);
+				setstatus4(ply, 0x44);
+			} else {
+				sub_35e28(ply);
+			}
+			break;
+		case PLY_KICKING:
+			if (ply->mode2 == 0) {
+				ply->Move = ply->ButtonStrength;
+				if (ply->OppXDist > (short []){50, 60, 51}[ply->ButtonStrength/2]) {
+					++ply->Move;
+				}
+			}
+			switch (ply->Move) {
+				case 0:
+				case 2:
+					if (ply->mode2 == 0) {
+						quirkysound(ply->ButtonStrength/2);
+						setstatus4(ply, 0x46);
+					} else {
+						sub_35e28(ply);
+					}
+					break;
+				case 1:
+				case 3:
+				case 4:
+				case 5:
+					switch (ply->mode2) {
+						case 0:
+							NEXT(ply->mode2);
+							ud->x00f4 = 0xffff0000;
+							ud->x00f0 = (int[]){0xa0000,0xc0000,0xe0000}[ply->ButtonStrength/2];
+							CASetAnim2(ply, 0x46, ply->Move);
+							break;
+						case 2:
+							if (AF2) {
+								NEXT(ply->mode2);
+							}
+							PLAYERTICK;
+							break;
+						case 4:
+							if (ply->Flip) {
+								ply->XPI += ud->x00f0;
+							} else {
+								ply->XPI -= ud->x00f0;
+							}
+							ud->x00f0 += ud->x00f4;
+							if (ud->x00f0 < 0) {
+								NEXT(ply->mode2);
+							}
+							if (((g.libsplatter + ply->Side) & 3) == 0) {
+								if (ply->OnPlatform2 && ply->OnPlatform == 0) {
+									ply->OnPlatform2 = FALSE;
+									comp_setjumping_main(ply);		// todo checkme, @2c5c0
+								}
+							}
+							break;
+						case 6:
+							if (AF1) {
+								ply->AISigAttack = FALSE;
+								ply->AIVolley    = FALSE;
+								exit_to_compdisp1(ply);
+							}
+							break;
+						FATALDEFAULT;
+					}
+					break;
+				FATALDEFAULT;
+			}
+			break;
+		FATALDEFAULT;
+	}
+}
+static void sub_36020(Player *ply) {
+	UD *ud = (UD *)ply->UserData;
+	ply->X.full += ply->Path[ud->x0080].x.full;
+	ply->Y.full += ply->Path[ud->x0080].y.full;
+}
+static void sub_35ffa(Player *ply) {
+	ply->mode2 = 2;
+	sub_36020(ply);
+	if (check_ground_collision((Object *)ply)) {
+		ply->Airborne = 0;
+		ply->CompDoJump = FALSE;
+		soundsting(0x2f);
+		comp_setjumping_main(ply);
+	} else {
+		PLAYERTICK;
+	}
+}
+static void sub_36078(Player *ply) {
+	
+	//todo
+}
+static void sub_361d8(Player *ply) {
+	//todo
+}
+void PLCBCompAttackDhalsim(Player *ply) {
+	if (ply->Timer2) {
+		--ply->Timer2;
+	} else {
+		if (ply->mode2 == 0) {
+			if(sub_361c0(ply) == 0) {
+				sub_36166(ply);
+			}
+		}
+		switch (ply->StandSquat) {
+			case PLY_STAND:		sub_35d46(ply);		break;
+			case PLY_CROUCH:	sub_35de0(ply);		break;
+			case 4:				sub_35ffa(ply);		break;
+			case 6:				sub_36078(ply);		break;
+			case 8:				sub_361d8(ply);		break;
+			FATALDEFAULT;
+		}
+	}
+}
+
 
 static short sub_35f7e(Player *ply, int d0) {
 	UD *ud = (UD *)ply->UserData;

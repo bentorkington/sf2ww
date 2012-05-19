@@ -1098,8 +1098,6 @@ void PSCBVictoryZangeif(Player *ply) {		// 31f48
 		default:
 			break;
 	}
-	
-	
 }
 
 

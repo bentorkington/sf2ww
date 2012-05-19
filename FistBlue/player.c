@@ -405,22 +405,14 @@ short ply_cb_standmove(Player *ply) {	/* 2a81a */
 short ply_cb_crouchmove(Player *ply) {	/* 2a84a */
 	short (*data_2a85a[])(Player *)={
 		PLCBCrouchRyu,
-		PLCBCrouchEHonda,		// XXX
+		PLCBCrouchEHonda,		
 		PLCBCrouchBlanka,
-		PLCBCrouchGuile,		// Guile
+		PLCBCrouchGuile,		
 		PLCBCrouchRyu,
 		PLCBCrouchChunLi,
 		PLCBCrouchZangeif,
 		PLCBCrouchDhalsim,
-	};	/* XXX do other fighters
-		 0002A85E   0002 de60                      
-		 0002A862   0002 e928                       
-		 0002A866   0002 efe6                        
-		 0002A86A   0002 d05a            ;ken is same as ryu                     
-		 0002A86E   0003 0130                       
-		 0002A872   0003 0f7a                      
-		 0002A876   0003 23ee   
-		 */
+	};			
 	
 	return data_2a85a[ply->FighterID](ply);
 }
@@ -428,7 +420,7 @@ short ply_cb_crouchmove(Player *ply) {	/* 2a84a */
 short ply_cb_jumpmove(Player *ply) {	/* 2a87a */
 	short (*data_2a88a[])(Player *)={
 		PLCBJumpRyu,
-		PLCBJumpEHonda,		// XXX
+		PLCBJumpEHonda,		
 		PLCBJumpBlanka,
 		PLCBJumpGuile,
 		PLCBJumpRyu,
