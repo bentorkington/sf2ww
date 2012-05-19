@@ -65,11 +65,26 @@ void fistblue_run_tests(void) {
 	printf("PASSED \n");
 	
 	// test particle
+	
+	/* Test update_obj_path */
+	
 	Object *obj = calloc(sizeof(Object), 1);
+	assert(obj != NULL);
 	short _fb_test_path[][4] = {
 		{0x0100, 0x0000, -0x0100, 0x0000},
 		{0x0180, 0x0280, -0x0180, 0x0280},
 	};
+	short _fb_test_longpath[][4]={
+		{0, 0, 0, 0},
+		{0, 0, 0, 0},
+		{0, 0, 0, 0},
+		{0, 0, 0, 0},
+		{0x0040, 0x0000, -0x0040, 0x0000},
+		{0x0080, 0x0100, -0x0080, 0x0100},
+		{0x0100, 0x0200, -0x0100, 0x0200},
+		{0x0200, 0x0300, -0x0200, 0x0300},
+	};
+	
 	obj->Path = &_fb_test_path[0];
 	obj->X.full = 0x00c00000;		// 192
 	obj->Y.full = 0x00c00000;
@@ -95,7 +110,6 @@ void fistblue_run_tests(void) {
 	update_obj_path(obj);
 	assert(obj->X.full = 0xffff0000);
 	assert(obj->Y.full = 0x00c00000);
-	
 	obj->Path = &_fb_test_path[1];
 	obj->X.full = 0x00c00000;		// 192
 	obj->Y.full = 0x00c00000;
@@ -111,17 +125,19 @@ void fistblue_run_tests(void) {
 	assert(obj->X.full = 0x00c18000);
 	assert(obj->Y.full = 0x00c78000);
 	
-	
-	
-	
-	printf("X %08x Y %08X\n", obj->X.full, obj->Y.full);
+	obj->Path = &_fb_test_longpath[0];
+	obj->X.full = 0x00c00000;		// 192
+	obj->Y.full = 0x00c00000;
+	obj->Flip = obj->Step = 0;
 	update_obj_path(obj);
-	printf("X %08x Y %08X\n", obj->X.full, obj->Y.full);
+	assert(obj->X.full = 0x00c00000);
+	assert(obj->Y.full = 0x00c00000);
+	obj->Step = 7 * 2;
 	update_obj_path(obj);
-	printf("X %08x Y %08X\n", obj->X.full, obj->Y.full);
-	update_obj_path(obj);
-	printf("X %08x Y %08X\n", obj->X.full, obj->Y.full);
-		free(obj);
+	assert(obj->X.full = 0x00c00000);
+	assert(obj->Y.full = 0x00c00000);
+	
+	free(obj);
 		
 	//exit(0);
 }
