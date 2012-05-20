@@ -17,7 +17,7 @@ void pl_cb_setstatus2_ken(Player *player, short status, int argd0);
 void pl_cb_setstatus3_ken(Player *player, short status);
 
 
-short sub_32d7e (Player *ply);	/* callback from 2c9be */
+short PLCBCompJumpRyuKen (Player *ply);	/* callback from 2c9be */
 void PLCBCompAttackRyuKen(Player *ply);
 short PLCBStandRyu(Player *ply);
 short PLCBCrouchRyu(Player *ply);

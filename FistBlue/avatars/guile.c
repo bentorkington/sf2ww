@@ -1244,9 +1244,10 @@ static short sub_3414c(Player *ply) {
 				return 0;
 				
 			}
-		default:
 			break;
+		FATALDEFAULT;
 	}
+	return 0;
 }
 
 static short sub_341c6(Player *ply) {
@@ -1268,7 +1269,7 @@ static short sub_3413e(Player *ply) {
 	return 0;
 }
 
-short sub_3404a(Player *ply) {
+int PLCBCompJumpGuile(Player *ply) {		// 3404a
 	short temp;
 	temp = sub_3413e(ply);
 	if(temp < 0) {

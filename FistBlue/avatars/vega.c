@@ -84,7 +84,7 @@ static void sub_37648(Player *ply) {
 				ply->Airborne = AIR_ONGROUND;
 			}
 			CATrajectory((Object *)ply);
-			if (check_ground_collision(ply)) {
+			if (check_ground_collision((Object *)ply)) {
 				ply->YPI = g.GroundPlaneY;
 			}
 			PLAYERTICK;
@@ -239,7 +239,7 @@ static void sub_379ae(Player *ply) {
 				sub_37a02(ply);	// set throw traj
 			} else {
 				CATrajectory((Object *)ply);
-				if (check_ground_collision(ply)) {
+				if (check_ground_collision((Object *)ply)) {
 					ply->CompDoJump = FALSE;
 					sub_37d86(ply, 0x50);
 					sub_37a02(ply);
@@ -250,7 +250,7 @@ static void sub_379ae(Player *ply) {
 			break;
 		case 6:
 			CATrajectory((Object *)ply);
-			if (check_ground_collision(ply)) {
+			if (check_ground_collision((Object *)ply)) {
 				ply->CompDoJump = FALSE;
 				sub_3758a(ply);
 			} else {
@@ -282,7 +282,7 @@ static void sub_37a2a(Player *ply) {
 		case 2:
 			ply->CompImmune = ply->VelY.full < 0 ? 0 : 2;
 			CATrajectory((Object *)ply);
-			if (check_ground_collision(ply)) {
+			if (check_ground_collision((Object *)ply)) {
 				sub_3758a(ply);
 			} else if (AF2) {
 				PLAYERTICK;
@@ -326,7 +326,7 @@ static void sub_37a2a(Player *ply) {
 			}
 			break;
 		case 10:
-			if (check_ground_collision(ply)) {
+			if (check_ground_collision((Object *)ply)) {
 				NEXT(ply->mode3);
 				ply->YPI = g.GroundPlaneY;
 				sub_36d6(ply, ply->Flip ? 0x40 : -0x40, 0, 2, ply->Flip, 13, 0x2e, 2);
@@ -374,7 +374,7 @@ static void sub_37cc6(Player *ply) {
 	}
 }
 
-static void sub_37ca2(Player *ply, short arg_d2) {
+static int sub_37ca2(Player *ply, short arg_d2) {
 	const static char data_37cea[4][12] = {
 		{ 0x1, 0x2, 0x2, 0x4, 0x3, 0x4, 0x3, 0x4, 0x3, 0x4, 0x3, 0x4,  },
 		{ 0x1, 0x6, 0x1, 0x6, 0x1, 0x6, 0x1, 0x8, 0x2, 0xa, 0x1, 0x8,  },
@@ -388,8 +388,10 @@ static void sub_37ca2(Player *ply, short arg_d2) {
 	data += ply->PunchKick * 6;
 	if (data[1] == 0) {
 		sub_37cc6(ply);
+		return 0;
 	} else {
 		sub_37d98(ply, data[1], data[0]);
+		return 1;
 	}
 }
 
@@ -484,7 +486,7 @@ static void sub_3771e(Player *ply) {
 			break;
 		case 6:
 			CATrajectory((Object *)ply);
-			if (check_ground_collision(ply)) {
+			if (check_ground_collision((Object *)ply)) {
 				sub_3758a(ply);
 			}
 			break;
@@ -496,7 +498,7 @@ static void sub_37982(Player *ply) {
 	ply->CompImmune = 2;
 	if (ply->VelY.full < 0) {
 		ply->CompImmune = 0;
-		if (check_ground_collision(ply)) {
+		if (check_ground_collision((Object *)ply)) {
 			sub_3758a(ply);
 			return;
 		}
@@ -612,7 +614,6 @@ static void sub_374da(Player *ply) {
 				sub_3771e(ply);
 				break;
 			case 0x1c:
-				//379aa;
 				sub_37554(ply);
 				break;
 			case 0x1e:
@@ -640,12 +641,17 @@ static void sub_37d1a(Player *ply) {
 			ply->Attacking = FALSE;
 			sub_37daa(ply, 0x18);
 			break;
-			
 		FATALDEFAULT;
 	}
 }
 
-
+static int sub_37c94(Player *ply) {
+	if (ply->VelX.full == 0) {
+		return sub_37ca2(ply, 8);
+	} else {
+		return sub_37ca2(ply, 12);
+	}	
+}
 		//37498
 void PLCBCompAttackVega(Player *ply) {
 	UD *ud=(UD *)&ply->UserData;
@@ -671,11 +677,7 @@ void PLCBCompAttackVega(Player *ply) {
 							sub_37ca2(ply, 4);
 							break;
 						case 4:
-							if (ply->VelX.full == 0) {
-								sub_37ca2(ply, 8);
-							} else {
-								sub_37ca2(ply, 12);
-							}
+							sub_37c94(ply);
 							break;
 						FATALDEFAULT;
 					}
@@ -688,4 +690,40 @@ void PLCBCompAttackVega(Player *ply) {
 			FATALDEFAULT;
 		}
 	}
+}
+
+static int sub_37624(Player *ply) {
+	short y = ply->YPI - 0x28;
+	
+	if (y < 0 || y >= 0x40) {
+		return TRUE;
+	}
+	return FALSE;
+}
+
+static int sub_37602(Player *ply) {
+	UD *ud=(UD *)&ply->UserData;
+	struct vegathrow vt;
+	if (sub_37624(ply) == 0) {
+		return FALSE;
+	} else {
+		vt = sub_37c12(ply);
+		if (vt.success) {
+			sub_37daa(ply, vt.move);
+			ply->mode1 = 0xa;
+			ud->x0096 = 1;
+			return -1;
+		}
+	}
+	return 0;
+}
+int PLCBCompJumpVega (Player *ply) {		// 37486
+	if (ply->CompDoThrow == 0) {
+		return sub_37c94(ply);
+	} else {
+		if (sub_37602(ply) == 0) {
+			return sub_37c94(ply);
+		}
+	}
+	return 0;
 }

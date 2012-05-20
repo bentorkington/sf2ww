@@ -22,7 +22,7 @@ void PSCBAttackGuile(Player *ply);		/* PLSTAT_ATTACKING callback */
 void PSCBPowerGuile(Player *ply);		/* PLSTAT_POWERMOVE callback */
 
 void PLCBCompAttackGuile(Player *ply);		//33b4c
-short sub_3404a(Player *ply);
+int  PLCBCompJumpGuile(Player *ply);
 
 
 struct UserData_Guile {

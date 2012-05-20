@@ -352,10 +352,10 @@ static void sub_3645e(Player *ply) {
 	}
 }
 
-void PLCBCompJumpMBison(Player *ply) {		//362ba
+int PLCBCompJumpMBison(Player *ply) {		//362ba
 	CASetAnim2(ply, 0x4e, ply->VelX.full == 0 ? 0 : 1);
 	quirkysound(ply->ButtonStrength / 2);
-	// return 0;
+	return 0;
 }
 
 void PLCBCompAttackMBison(Player *ply) {

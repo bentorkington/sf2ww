@@ -1121,7 +1121,7 @@ static void sub_334ba(Player *ply, short d2) {
 	sub_33598(ply, retval.d2, retval.d0);
 }
 
-void PLCBCompJumpEHonda(Player *ply) {	//33012
+int PLCBCompJumpEHonda(Player *ply) {	//33012
 	//334ac
 	if (ply->VelX.full == 0) {
 		sub_334ba(ply, 8);

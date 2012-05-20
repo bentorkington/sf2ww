@@ -16,6 +16,8 @@
 #include "particle.h"
 #include "rules.h"
 #include "playerstate.h"
+#include "actions.h"
+
 
 #include "computer.h"
 
@@ -657,7 +659,7 @@ static void sub_31780(Player *ply) {
 			}
 			CATrajectory((Object *)ply);
 			if (ply->VelY.full < 0) {
-				if (check_ground_collision(ply)) {
+				if (check_ground_collision((Object *)ply)) {
 					NEXT(ply->mode2);
 					ply->Timer2          = 12;
 					ply->Opponent->Timer = 12;
@@ -692,7 +694,6 @@ static void sub_31780(Player *ply) {
 	}
 }
 static void sub_318b0(Player *ply) {
-	UD *ud = (UD*)&ply->UserData;
 	switch (ply->mode2) {
 		case 0:
 			NEXT(ply->mode2);
@@ -1101,6 +1102,103 @@ void PSCBVictoryZangeif(Player *ply) {		// 31f48
 }
 
 
+int PLCBCompJumpZangeif (Player *ply) {		// 3500e
+	switch (ply->PunchKick) {
+		case PLY_PUNCHING:
+			switch (ply->ButtonStrength) {
+				case 0:
+					CASetAnim2(ply, 0x48, (ply->VelX.full ? 7 : 0));
+					quirkysound(0);
+					break;
+				case 2:
+					if (ply->CompDoAirThrow) {
+						CASetAnim2(ply, 0x48, 8);
+					} else {
+						CASetAnim2(ply, 0x48, (ply->VelX.full ? 2 : 1));						
+					}
+					quirkysound(1);
+					break;
+				case 4:
+					if (ply->CompDoAirThrow) {
+						CASetAnim2(ply, 0x48, (ply->VelX.full ? 6 : 4));
+					} else {
+						CASetAnim2(ply, 0x48, (ply->VelX.full ? 5 : 3));
+					}
+					quirkysound(2);
+					break;
+				FATALDEFAULT;
+			}
+			break;
+		case PLY_KICKING:
+			switch (ply->ButtonStrength) {
+				case 0:
+					CASetAnim2(ply, 0x4a, (ply->VelX.full ? 3 : 0));
+					quirkysound(0);
+					break;
+				case 2:
+					CASetAnim2(ply, 0x4a, (ply->VelX.full ? 4 : 1));
+					quirkysound(1);
+					break;
+				case 4:
+					CASetAnim2(ply, 0x4a, (ply->VelX.full ? 5 : 2));
+					quirkysound(2);
+					break;
+					FATALDEFAULT;
+			}
+			break;
+		FATALDEFAULT;
+	}
+	return 0;
+}
+static void sub_35af8(Player *ply) {
+	ply->AISigAttack = FALSE;
+	ply->AIVolley    = FALSE;
+	exit_comp_normal(ply);
+}
+static void sub_35b06(Player *ply) {
+	ply->AISigAttack = FALSE;
+	ply->AIVolley    = FALSE;
+	exit_to_compdisp1(ply);
+}
+static void sub_35b14(Player *ply) {
+	ply->AISigAttack = FALSE;
+	ply->AIVolley    = FALSE;
+	comp_setjumping_main(ply);
+}
+
+static void sub_35b22(Player *ply) {
+	if (ply->PunchKick == PLY_PUNCHING) {
+		if (ply->mode2 == 0) {
+			NEXT(ply->mode2);
+			ply->LocalTimer = 60;
+			ply->Move = 8;
+			CASetAnim2(ply, 0x40, ply->Move);
+			BumpDiff_PowerMove();
+			soundsting(0x47);
+		} else {
+			if (--ply->LocalTimer == 0) {
+				sub_35af8(ply);
+			} else {
+				if ((g.libsplatter & 0xf) == 0) {
+					soundsting(0x3c);
+				}
+				PLAYERTICK;
+			}
+		}
+	} else {
+		//todo
+	}
+}
+void PLCBCompAttackZangeif(Player *ply) {			// 350f8
+	if (ply->Timer2) {
+		--ply->Timer2;
+	} else {
+		if (ply->AISigSpecial) {
+			
+		}
+	}
+
+}
 
 
 

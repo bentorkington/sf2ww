@@ -51,7 +51,8 @@ struct UserData_ChunLi {
 	short	x008e;
 	u8	x0090;
 	char	x0091;
-	u8	x0092;
+	u8		x0092;
+	u8		x0093;
 	u16		x0094;		// Thousand foot buttons
 	char	x0096;		// thousand foot kick state
 	char	x0098;

@@ -40,6 +40,15 @@ extern Game g;
 
 void PLCBCompAttackDhalsim(Player *ply);
 int	PLCBCompJumpDhalsim(Player *ply);
+int PLCBCompJumpChunLi(Player *ply);
+void PLCBCompAttackZangeif(Player *ply);
+int PLCBCompJumpZangeif(Player *ply);
+int PLCBCompJumpVega(Player *ply);
+int PLCBCompJumpBalrog(Player *ply);
+int PLCBCompJumpSagat(Player *ply);
+int PLCBCompAttackBalrog(Player *ply);
+int PLCBCompAttackSagat(Player *ply);
+
 
 extern short data_2aa30[12][4][4];
 
@@ -287,20 +296,19 @@ static void comp_jump_dhalsimcheck(Player *ply) {		/* 2c828 */
 #pragma mark ---- Per-Avatar Callbacks ----
 
 static short comp_jump_plycallback(Player *ply) { /* 2c9be */
-	short (*data_2c9cc[])(Player *) = {
-		sub_32d7e,
+	int (*data_2c9cc[])(Player *) = {
+		PLCBCompJumpRyuKen,
 		PLCBCompJumpEHonda,
 		PLCBCompJumpBlanka,
-		sub_3404a,
-		sub_32d7e,
-		NULL,			// chunli
-		NULL,
+		PLCBCompJumpGuile,
+		PLCBCompJumpRyuKen,
+		PLCBCompJumpChunLi,			// chunli
+		PLCBCompJumpZangeif,
 		PLCBCompJumpDhalsim,
 		PLCBCompJumpMBison,
-		NULL,
-		NULL,
-		NULL,
-		/* XXX */
+		PLCBCompJumpSagat,
+		PLCBCompJumpBalrog,
+		PLCBCompJumpVega,
 	};
 	if (data_2c9cc[ply->FighterID] != NULL) {
 		return data_2c9cc[ply->FighterID](ply);
@@ -765,13 +773,12 @@ static void comp_attack_plycallback (Player *ply) { /* 2cc58 */
 		PLCBCompAttackGuile,
 		PLCBCompAttackRyuKen,
 		PLCBCompAttackChunLi,
-		NULL,
+		PLCBCompAttackZangeif,
 		PLCBCompAttackDhalsim,
 		PLCBCompAttackMBison,
-		NULL,
-		NULL,
+		PLCBCompAttackSagat,
+		PLCBCompAttackBalrog,
 		PLCBCompAttackVega,
-		/* XXX */
 	};
 	data_2cc66[ply->FighterID](ply);	
 	

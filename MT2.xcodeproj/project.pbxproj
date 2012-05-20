@@ -70,6 +70,8 @@
 		B5B0763D155489B5009D301D /* act02_bicycleriders.c in Sources */ = {isa = PBXBuildFile; fileRef = B5B0763C155489B5009D301D /* act02_bicycleriders.c */; };
 		B5B0764615548B28009D301D /* act07_elephants.c in Sources */ = {isa = PBXBuildFile; fileRef = B5B0764515548B28009D301D /* act07_elephants.c */; };
 		B5BA3ACE147F0EBC0069ACD3 /* actions.c in Sources */ = {isa = PBXBuildFile; fileRef = B5ADB7E413B2B57D00905DFE /* actions.c */; };
+		B5E21389156894FA00D96161 /* sagat.c in Sources */ = {isa = PBXBuildFile; fileRef = B5E21388156894FA00D96161 /* sagat.c */; };
+		B5E2138C1568950900D96161 /* balrog.c in Sources */ = {isa = PBXBuildFile; fileRef = B5E2138B1568950900D96161 /* balrog.c */; };
 		B5E9056313B2D5FE00833C5A /* ParamController.m in Sources */ = {isa = PBXBuildFile; fileRef = B5E9056213B2D5FE00833C5A /* ParamController.m */; };
 		B5E9056513B2D61900833C5A /* ParamController.xib in Resources */ = {isa = PBXBuildFile; fileRef = B5E9056413B2D61900833C5A /* ParamController.xib */; };
 		B5EB38E1149816D5007100DB /* reels.c in Sources */ = {isa = PBXBuildFile; fileRef = B5EB38E0149816D5007100DB /* reels.c */; };
@@ -251,6 +253,10 @@
 		B5B0764415548B28009D301D /* act07_elephants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = act07_elephants.h; sourceTree = "<group>"; };
 		B5B0764515548B28009D301D /* act07_elephants.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = act07_elephants.c; sourceTree = "<group>"; };
 		B5D8C90315673D0400629A7E /* zangeifdata.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = zangeifdata.h; sourceTree = "<group>"; };
+		B5E21387156894FA00D96161 /* sagat.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = sagat.h; sourceTree = "<group>"; };
+		B5E21388156894FA00D96161 /* sagat.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = sagat.c; sourceTree = "<group>"; };
+		B5E2138A1568950900D96161 /* balrog.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = balrog.h; sourceTree = "<group>"; };
+		B5E2138B1568950900D96161 /* balrog.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = balrog.c; sourceTree = "<group>"; };
 		B5E9056113B2D5FE00833C5A /* ParamController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ParamController.h; sourceTree = "<group>"; };
 		B5E9056213B2D5FE00833C5A /* ParamController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ParamController.m; sourceTree = "<group>"; };
 		B5E9056413B2D61900833C5A /* ParamController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ParamController.xib; sourceTree = "<group>"; };
@@ -534,6 +540,8 @@
 		B5ADB7FC13B2B57D00905DFE /* avatars */ = {
 			isa = PBXGroup;
 			children = (
+				B5E2138B1568950900D96161 /* balrog.c */,
+				B5E2138A1568950900D96161 /* balrog.h */,
 				B5ADB7FD13B2B57D00905DFE /* blanka.c */,
 				B5ADB7FE13B2B57D00905DFE /* blanka.h */,
 				B5ADB7FF13B2B57D00905DFE /* blankadata.h */,
@@ -557,6 +565,8 @@
 				B5ADB81113B2B57D00905DFE /* ryu.c */,
 				B5ADB81213B2B57D00905DFE /* ryu.h */,
 				B5ADB81313B2B57D00905DFE /* ryudata.h */,
+				B5E21387156894FA00D96161 /* sagat.h */,
+				B5E21388156894FA00D96161 /* sagat.c */,
 				B5ADB81413B2B57D00905DFE /* vega.c */,
 				B5ADB81513B2B57D00905DFE /* vega.h */,
 				B5ADB81613B2B57D00905DFE /* vegadata.h */,
@@ -742,6 +752,8 @@
 				B53EBC84155F927300581C8D /* act16.c in Sources */,
 				B5613C3B155F9917001E127A /* text.c in Sources */,
 				B5F335381562FFA4005A4637 /* zangeif.c in Sources */,
+				B5E21389156894FA00D96161 /* sagat.c in Sources */,
+				B5E2138C1568950900D96161 /* balrog.c in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

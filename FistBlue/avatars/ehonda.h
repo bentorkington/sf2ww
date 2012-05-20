@@ -15,7 +15,7 @@ void pl_cb_setstatus3_ehonda(Player *player, short status);
 void PLCBPowerEHonda(Player *ply);
 void PSCBAttackEHonda(Player *ply);		/* attacking callback */
 void PLCBCompAttackEHonda(Player *ply);
-void PLCBCompJumpEHonda(Player *ply);
+int PLCBCompJumpEHonda(Player *ply);
 short PLCBStandEHonda(Player *ply);
 short PLCBCrouchEHonda(Player *ply);
 short PLCBJumpEHonda(Player *ply);

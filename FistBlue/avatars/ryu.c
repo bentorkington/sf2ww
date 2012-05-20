@@ -1128,7 +1128,7 @@ void PLCBCompAttackRyuKen(Player *ply) {
 	
 }
 
-short sub_32d7e (Player *ply) {	/* callback from 2c9be */
+short PLCBCompJumpRyuKen (Player *ply) {	/* callback from 2c9be */
 	quirkysound(ply->ButtonStrength >> 1);
 	if(ply->VelX.full == 0) {
 		ply->Move = ply->ButtonStrength;

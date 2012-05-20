@@ -1359,5 +1359,90 @@ void PLCBCompAttackChunLi(Player *ply) {		//346be
 		}
 	}
 }
+static int sub_34572(Player *ply) {
+	short y = ply->YPI - 0x28;
+	
+	if (y < 0 || y >= 0x30) {
+		return TRUE;
+	}
+	return FALSE;
+}
 
+static int sub_3452e(Player *ply) {
+	if (ply->PunchKick == PLY_PUNCHING 
+		&& ply->CompDoThrow 
+		&& ply->ButtonStrength != 0
+		&& sub_34572(ply) != 0) {
+		
+		ply->Throw[0] = 0xffe2;
+		ply->Throw[1] = 0x0038;
+		ply->Throw[2] = 0x0025;
+		ply->Throw[3] = 0x0024;
+		if (airthrowvalid(ply)) {
+			ply->mode1 = 0xa;
+			return -1;
+		}
+	}
+	return 0;
+}
+
+int PLCBCompJumpChunLi(Player *ply) {		// 34596
+	UD *ud=(UD *)&ply->UserData;
+	int retval = sub_3452e(ply);
+	if (retval < 0) {
+		return retval;
+	}
+	switch (ply->PunchKick) {
+		case PLY_PUNCHING:
+			switch (ply->ButtonStrength) {
+				case 0:
+					CASetAnim2(ply, 0x48, (ply->VelX.full ? 3 : 0));
+					quirkysound(0);
+					break;
+				case 2:
+					CASetAnim2(ply, 0x48, (ply->VelX.full ? 4 : 1));
+					quirkysound(1);
+					break;
+				case 4:
+					CASetAnim2(ply, 0x48, (ply->VelX.full ? 5 : 2));
+					quirkysound(2);
+					break;
+				FATALDEFAULT;
+			}
+			break;
+		case PLY_KICKING:
+			ud->x0091 = 0;
+			switch (ply->ButtonStrength) {
+				case 0:
+					CASetAnim2(ply, 0x4a, (ply->VelX.full ? 5 : 1));
+					quirkysound(0);
+					break;
+				case 2:
+					if (ply->CompDoAirThrow) {
+						ud->x0091 = 1;
+						ud->x0092 = 0;	
+						ud->x0093 = 0;
+						CASetAnim2(ply, 0x4a, (ply->VelX.full ? 8 : 1));
+						quirkysound(1);
+					} else {
+						CASetAnim2(ply, 0x4a, (ply->VelX.full ? 6 : 3));
+						quirkysound(1);						
+					}
+					break;
+				case 4:
+					CASetAnim2(ply, 0x4a, (ply->VelX.full ? 7 : 4));
+					quirkysound(2);
+					break;
+				FATALDEFAULT;
+			}
+			if (ud->x0091) {
+				ply->mode1 = 0xa;
+				return -1;
+			}
+			return 0;
+			break;
+		FATALDEFAULT;
+	}
+	return 0;
+}
 
