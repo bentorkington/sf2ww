@@ -48,9 +48,24 @@ struct UserData_Zangeif {
 	short		x0092;	
 	signed char	x0094;		//victory submode
 };
+struct UserDataComp_Zangeif {
+	signed char x0080;
+	signed char x0081;
+	signed char	x0082;
+	signed char	x0084;
+	
+	signed char x0086;
+	signed char x0087;
+	short		x0088;		// overlaps with 89, checked
+	signed char x0089;		// close move
+	signed char x008a;		// far move
+	signed char	x008b;
+	short		x008c;		// distance
+	short		x008e;		
+};
 
 typedef struct UserData_Zangeif UD;
-
+typedef struct UserDataComp_Zangeif UDCOMP;
 
 void pl_cb_setstatus2_zangeif(Player *ply, short status, int argd0) {
 	setaction_list((Object *)ply, data_5de06[status / 2], argd0);
@@ -1101,6 +1116,10 @@ void PSCBVictoryZangeif(Player *ply) {		// 31f48
 	}
 }
 
+/////////////////////
+#pragma mark COMPUTER 
+/////////////////////
+
 
 int PLCBCompJumpZangeif (Player *ply) {		// 3500e
 	switch (ply->PunchKick) {
@@ -1165,8 +1184,23 @@ static void sub_35b14(Player *ply) {
 	ply->AIVolley    = FALSE;
 	comp_setjumping_main(ply);
 }
+static void sub_35bfa(Player *ply) {
+	if (AF2) {
+		ply->AnimFlags = 0;
+		soundsting(0x27);		
+	}
+}
+static void sub_35aee(Player *ply) {
+	if (ply->ActionScript->Crouch) {
+		sub_35b06(ply);
+	} else {
+		sub_35af8(ply);
+	}
+}
 
 static void sub_35b22(Player *ply) {
+	UDCOMP *ud = (UDCOMP *)&ply->UserData;
+	
 	if (ply->PunchKick == PLY_PUNCHING) {
 		if (ply->mode2 == 0) {
 			NEXT(ply->mode2);
@@ -1186,18 +1220,657 @@ static void sub_35b22(Player *ply) {
 			}
 		}
 	} else {
-		//todo
+		switch (ply->mode2) {
+			case 0:
+				ud->x0084 = ply->ButtonStrength / 2;
+				if (zang_setupthrow(ply) == 0) {
+					sub_35aee(ply);
+				} else {
+					NEXT(ply->mode2);
+					CASetAnim1(ply, 0x4c);
+					soundsting(0x47);
+				}
+				break;
+			case 2:
+				if (AF2) {
+					NEXT(ply->mode2);
+					ply->Airborne = 1;
+					PLY_TRAJ0(0x0100, 0x0000, 0x0800, 0x0048);
+					if (ud->x0087) {
+						ply->VelX.full = -ply->VelX.full;
+					}
+					sub_35bfa(ply);
+				} else {
+					PLAYERTICK;
+				}
+				break;
+			case 4:
+				CATrajectory((Object *)ply);
+				if (ply->VelY.full > 0) {
+					sub_35bfa(ply);
+				} else if (check_ground_collision((Object *)ply) == 0) {
+					sub_35bfa(ply);
+				} else {
+					NEXT(ply->mode2);
+					CASetAnim2(ply, 0x4c, 1);
+				}
+				break;
+			case 6:
+				NEXT(ply->mode2);
+				ply->Timer2 = 12;
+				ply->Opponent->Timer2 = 12;
+				sub_36d6(ply, 0, 0, 2, ply->Flip, 16, 0x2e, ud->x0084);
+				PLY_TRAJ0(0x0280, 0x0300, 0x0000, 0x0048);
+				if (ply->Flip) {
+					ply->VelX.full = -ply->VelX.full;
+				}
+				ActStartScreenWobble();
+				break;
+			case 8:
+				NEXT(ply->mode2);
+				ply->Timer = 1;
+				PLAYERTICK;
+				break;
+			case 10:
+				CATrajectory((Object *)ply);
+				if (ply->VelY.full < 0) {
+					if (check_ground_collision((Object *)ply)) {
+						sub_35b14(ply);
+					}
+				}
+				break;
+			FATALDEFAULT;
+		}
 	}
 }
+static void sub_35ab6(Player *ply) {
+	CASetAnim2(ply, 
+			   (short []){0x40,0x42,0x44,0x46}[(ply->PunchKick/2) + ply->StandSquat], 
+			   ply->Move);
+}
+static void sub_35ad6(Player *ply)  { 
+	UDCOMP *ud = (UDCOMP *)&ply->UserData;
+	if (ply->OppXDist < ud->x008c) {
+		ply->Move = ud->x0089;		
+	} else {
+		ply->Move = ud->x008a;
+	}
+	sub_35ab6(ply);
+}
+static void sub_35a7a(Player *ply) {
+	UDCOMP *ud = (UDCOMP *)&ply->UserData;
+	if (AF1) {
+		sub_35aee(ply);
+	} else if (AF2 == 0 || ud->x008b == 0) {
+		PLAYERTICK;
+	} else if (comp_diceroll(ply) == 0) {
+		PLAYERTICK;
+	} else if (comp_setnextaction(ply)) {
+		comp_do_next_action(ply);
+	} else {
+		quirkysound(ply->ButtonStrength/2);
+		sub_35ad6(ply);
+	}
+}
+static void sub_3513e(Player *ply) {
+	UDCOMP *ud = (UDCOMP *)&ply->UserData;
+	switch (ply->mode2) {
+		case 0:
+			NEXT(ply->mode2);
+			ud->x0089         = 0;
+			ud->x008a         = 1;
+			ud->x008b         = 1;
+			ud->x008c         = 40;
+			quirkysound(0);
+			sub_35ad6(ply);
+			break;
+		case 2:
+			sub_35a7a(ply);
+			break;
+		FATALDEFAULT;
+	}
+}
+static void sub_35240(Player *ply) {
+	const static short data_3527a[] = {0xb4, 0x96, 0xb4, 0xb4, };	// 316f4  
+	UDCOMP *ud = (UDCOMP *)&ply->UserData;
+	NEXT(ply->mode2);
+	random_damage_adjust_2(ply, 0x23);
+	random_damage_adjust_1(ply, 12, 5);
+	ud->x0088 = data_3527a[ud->x008e];
+}
+static void sub_3529a(Player *ply) {
+	const static char data_3528a[] = { 1, 2, 1, 2, };				// 316fc   
+	const static char data_3528e[] = {0xab, 0xd6, 0xb1, 0xb1};		// 31700   
+	const static char data_35292[] = {0x55, 0x52, 0x48, 0x48};		// 31704   
+	const static char data_35296[] = {0x46, 0x2c, 0x47, 0x47};		// 31708   
+	UDCOMP *ud = (UDCOMP *)&ply->UserData;
+	if (--ud->x0088 == 0) {
+		ply_grip_release(ply, ply->Flip);
+	} else {
+		if (ply_opp_has_struggled_free(ply)) {
+			ply_grip_release(ply, ply->Flip);
+		} else {
+			if (sub_3fee(ply)) {
+				ply->Timer = 1;
+			}
+			if (AF2) {
+				ply->AnimFlags &= 0xff00;
+				if (ud->x008e == 1) {
+					ActBlankaBiteBlood(ply);
+				}
+				if(sub_3466(ply, 0, data_3528a[ud->x008e], data_3528e[ud->x008e],
+							data_35292[ud->x008e], data_35296[ud->x008e])) {
+					
+					sub_35aee(ply);
+					return;
+				}
+			}
+			PLAYERTICK;
+		}
+	}	
+}
+static void sub_35174(Player *ply) {
+	UDCOMP *ud = (UDCOMP *)&ply->UserData;
+	
+	switch (ply->mode2) {
+		case 0:
+			if (ply->CompDoThrow) {
+				if (ply->OppXDist <= 40) {
+					if (zang_setupthrow(ply)) {
+						ply->mode2 = 8;
+						ply->Move = 4;
+						CASetAnim2(ply, 0x40, ply->Move);
+						soundsting(0x46);
+						return;
+					}
+				} else if (ply->OppXDist <= 0x38) {
+					if (zang_setupthrow(ply)) {
+						ply->mode2 = 4;
+						ud->x008e = 0;
+						ply->Move = 5;
+						CASetAnim2(ply, 0x40, ply->Move);
+						return;
+					}
+				}
+			}
+			NEXT(ply->mode2);
+			ud->x0089 = 2;
+			ud->x008a = 2;
+			ud->x008b = 0;
+			ud->x008c = 0;
+			quirkysound(1);
+			sub_35ad6(ply);
+			break;
+		case 2:
+			sub_35a7a(ply);
+			break;
+		case 4:				// GRIPS  35240
+			sub_35240(ply);
+			break;
+		case 6:
+			sub_3529a(ply);
+			break;
+		case 8:
+			PLAYERTICK;
+			if (AF2) {
+				NEXT(ply->mode2);
+				ud->x0086 = 0;
+				PLY_TRAJ0(0x0200, 0x0600, 0x0, 0x0048);
+				if (ply->IsWithinBounds == 0) {
+					ply->VelX.full = -ply->VelX.full;
+				}
+			}
+			break;
+		case 10:
+			if (ud->x0086 == 0) {
+				PLAYERTICK;
+				if (AF2 == 2) {
+					ud->x0086 = 1;
+				}
+			}
+			CATrajectory((Object *)ply);
+			if (ply->VelY.full < 0) {
+				if (check_ground_collision((Object *)ply)) {
+					NEXT(ply->mode2);
+					ply->Timer2 = 12;
+					ply->Opponent->Timer2 = 12;
+					if (ud->x0086 == 0) {
+						ply->Timer = 1;
+						PLAYERTICK;
+					}
+					ply->EnemyDirection = ply->Flip;
+					sub_36d6(ply, (ply->Flip ? 16 : -16), 0, 2, ply->Flip, 13, 0x2e, 2);
+					ActStartScreenWobble();
+				}
+			}
+			break;
+		case 12:
+			NEXT(ply->mode1);
+			ply->Timer = 1;
+			PLAYERTICK;
+			PLY_TRAJ0(0x0280, 0x0280, 0x0, 0x0048);
+			if (ply->Flip) {
+				ply->VelX.full = -ply->VelX.full;
+			}
+			break;
+		case 14:
+			CATrajectory((Object *)ply);
+			if (ply->VelY.full < 0) {
+				if (check_ground_collision((Object *)ply)) {
+					sub_35b14(ply);
+				}
+			}
+			break;
+		FATALDEFAULT;
+	}
+}
+static void sub_35400(Player *ply) {
+	UDCOMP *ud = (UDCOMP *)&ply->UserData;
+
+	switch (ply->mode2) {
+		case 0:
+			if (ply->CompDoThrow) {
+				if (ply->OppXDist <= 40) {
+					if (zang_setupthrow(ply)) {
+						ply->mode2 = 8;
+						ply->Flip = ply->IsWithinBounds ^ 1;
+						ply->Move = 6;
+						CASetAnim2(ply, 0x40, ply->Move);
+						soundsting(0x47);
+						return;
+					}
+				} else if (ply->OppXDist <= 0x38) {
+					if (zang_setupthrow(ply)) {
+						ply->mode2 = 4;
+						ud->x008e = 1;
+						ply->Move = 5;
+						CASetAnim2(ply, 0x40, ply->Move);
+						return;
+					}
+				}
+			}
+			NEXT(ply->mode2);
+			ud->x0089 = 3;
+			ud->x008a = 3;
+			ud->x008b = 0;
+			ud->x008c = 0;
+			quirkysound(2);
+			sub_35ad6(ply);
+			break;
+		case 2:
+			sub_35a7a(ply);
+			break;
+		case 4:
+			sub_35240(ply);
+			break;
+		case 6:
+			sub_3529a(ply);
+			break;
+		case 8:
+			if (AF2) {
+				NEXT(ply->mode2);
+				ply->Timer2 = 12;
+				ply->Opponent->Timer2 = 12;
+				ply->EnemyDirection = ply->Flip;
+				sub_36d6(ply, (ply->Flip ? -0x77 : 0x77), 0, 
+						 0, ply->Flip ^ 1, 13, 0x2e, 2);
+				ply->LocalTimer = 20;
+				ActStartScreenWobble();
+			} else {
+				PLAYERTICK;
+			}
+			break;
+		case 10:
+			if (--ply->LocalTimer == 0) {
+				NEXT(ply->mode2);
+				ply->Timer = 1;
+				PLAYERTICK;
+			}
+			break;
+		case 12:
+			if (AF1) {
+				sub_35af8(ply);
+			} else {
+				PLAYERTICK;
+			}
+			break;
+		FATALDEFAULT;
+	}
+}
+static void sub_35566(Player *ply) {
+	UDCOMP *ud = (UDCOMP *)&ply->UserData;
+	switch (ply->mode2) {
+		case 0:
+			NEXT(ply->mode2);
+			ud->x0089 = 0;
+			ud->x008a = 1;
+			ud->x008b = 0;
+			ud->x008c = 32;
+			quirkysound(0);
+			sub_35ad6(ply);			
+			break;
+		case 2:
+			sub_35a7a(ply);
+			break;
+		FATALDEFAULT;
+	}
+}
+static void sub_3559c(Player *ply) {
+	UDCOMP *ud = (UDCOMP *)&ply->UserData;
+	switch (ply->mode2) {
+		case 0:
+			if (ply->CompDoThrow) {
+				if (ply->OppXDist <= 48) {
+					if (zang_setupthrow(ply)) {
+						ply->mode2 = 4;
+						ply->Flip = ply->IsWithinBounds;
+						ply->Move = 6;
+						CASetAnim2(ply, 0x42, ply->Move);
+						soundsting(0x47);
+						return;
+					}
+				}
+			}
+			NEXT(ply->mode2);
+			ud->x0089 = 2;
+			ud->x008a = 3;
+			ud->x008b = 0;
+			ud->x008c = 0x38;
+			quirkysound(1);
+			sub_35ad6(ply);			
+			break;
+		case 2:
+			sub_35a7a(ply);
+			break;
+		case 4:
+			if (AF2) {
+				NEXT(ply->mode2);
+				ply->Timer2 = 12;
+				ply->Opponent->Timer2 = 12;
+				ply->EnemyDirection = ply->Flip;
+				sub_36d6(ply, (ply->Flip ? 0x64 : -0x64), 0, 2, ply->Flip, 13, 0x2e, 2);
+				ply->LocalTimer = 20;
+				ActStartScreenWobble();
+			} else {
+				PLAYERTICK;
+			}
+			break;
+		case 6:
+			if (--ply->LocalTimer == 0) {
+				NEXT(ply->mode2);
+				ply->Timer = 1;
+				PLAYERTICK;
+			}
+			break;
+		case 8:
+			if (AF1) {
+				sub_35af8(ply);
+			} else {
+				PLAYERTICK;
+			}			
+			break;
+		FATALDEFAULT;
+	}
+}
+static void sub_356a0(Player *ply) {
+	UDCOMP *ud = (UDCOMP *)&ply->UserData;
+	switch (ply->mode2) {
+		case 0:
+			if (ply->CompDoThrow) {
+				if (ply->OppXDist <= 48) {
+					if (zang_setupthrow(ply)) {
+						ply->mode2 = 4;
+						ply->Flip = ply->IsWithinBounds;
+						ply->Move = 7;
+						CASetAnim2(ply, 0x42, ply->Move);
+						soundsting(0x47);
+						return;
+					}
+				}
+			}
+			NEXT(ply->mode2);
+			ud->x0089 = 5;
+			ud->x008a = 4;
+			ud->x008b = 0;
+			ud->x008c = 0x26;
+			quirkysound(2);
+			sub_35ad6(ply);			
+			break;
+		case 2:
+			sub_35a7a(ply);
+			break;
+		case 4:
+			if (AF2) {
+				NEXT(ply->mode2);
+				ply->Timer2 = 12;
+				ply->Opponent->Timer2 = 12;
+				ply->EnemyDirection = ply->Flip;
+				sub_36d6(ply, (ply->Flip ? -0x60 : 0x60), 0, 2, ply->Flip, 13, 0x2e, 2);
+				ply->LocalTimer = 20;
+				ActStartScreenWobble();
+			} else {
+				PLAYERTICK;
+			}
+			break;
+		case 6:
+			if (--ply->LocalTimer == 0) {
+				NEXT(ply->mode2);
+				ply->Timer = 1;
+				PLAYERTICK;
+			}
+			break;
+		case 8:
+			if (AF1) {
+				sub_35af8(ply);
+			} else {
+				PLAYERTICK;
+			}			
+			break;
+			FATALDEFAULT;
+	}
+}
+#pragma mark Computer Crouching
+static void sub_357c6(Player *ply) {
+	UDCOMP *ud = (UDCOMP *)&ply->UserData;
+	switch (ply->mode2) {
+		case 0:
+			NEXT(ply->mode2);
+			ud->x0089 = 0;
+			ud->x008a = 0;
+			ud->x008b = 1;
+			ud->x008c = 0;
+			quirkysound(0);
+			sub_35ad6(ply);						
+			break;
+		case 2:
+			sub_35a7a(ply);
+			break;
+		default:
+			break;
+	}
+}
+static void sub_357fc(Player *ply) {
+	UDCOMP *ud = (UDCOMP *)&ply->UserData;
+	switch (ply->mode2) {
+		case 0:
+			if (ply->CompDoThrow) {
+				if (ply->OppXDist <= 40) {
+					if (zang_setupthrow(ply)) {
+						ply->mode2 = 4;
+						ply->Move  = 3;
+						ply->Flip  = ply->IsWithinBounds ^ 1;
+						CASetAnim2(ply, 0x44, ply->Move);
+						soundsting(0x46);
+						return;
+					}
+				} else if (ply->OppXDist <= 0x38) {
+					if (zang_setupthrow(ply)) {
+						ply->mode2 = 10;
+						ud->x008e  = 2;
+						ply->Move  = 5;
+						CASetAnim2(ply, 0x44, ply->Move);
+						return;
+					}
+				}
+			}
+			NEXT(ply->mode2);
+			ud->x0089 = 1;
+			ud->x008a = 1;
+			ud->x008b = 0;
+			ud->x008c = 0;
+			quirkysound(1);
+			sub_35ad6(ply);
+			break;
+		case 2:
+			sub_35a7a(ply);
+			break;
+		case 4:
+			PLAYERTICK;
+			if (AF2) {
+				NEXT(ply->mode2);
+			}
+			break;
+		case 6:
+			NEXT(ply->mode2);
+			ply->LocalTimer = 20;
+			set_throw_trajectory(ply, 4, ply->Flip ^ 1, 12);
+			ActStartScreenWobble();
+			break;
+		case 8:
+			if (--ply->LocalTimer == 0) {
+				ply->Flip ^= 1;
+				ply->EnemyDirection = ply->Flip;
+				sub_35af8(ply);
+			}
+			break;
+		case 10:
+			sub_35240(ply);
+			break;
+		case 12:
+			sub_3529a(ply);
+			break;
+		FATALDEFAULT;
+	}
+}
+static void sub_35922(Player *ply) {
+	UDCOMP *ud = (UDCOMP *)&ply->UserData;
+	switch (ply->mode2) {
+		case 0:
+			if (ply->CompDoThrow) {
+				if (ply->OppXDist <= 40) {
+					if (zang_setupthrow(ply)) {
+						ply->mode2 = 4;
+						ply->Move  = 4;
+						ply->Flip  = ply->IsWithinBounds ^ 1;
+						CASetAnim2(ply, 0x44, ply->Move);
+						soundsting(0x46);
+						return;
+					}
+				} else if (zang_setupthrow(ply)) {
+						ply->mode2 = 10;
+						ud->x008e  = 3;
+						ply->Move  = 6;
+						CASetAnim2(ply, 0x44, ply->Move);
+						return;
+					
+				}
+			}
+			NEXT(ply->mode2);
+			ud->x0089 = 2;
+			ud->x008a = 2;
+			ud->x008b = 0;
+			ud->x008c = 0;
+			quirkysound(2);
+			sub_35ad6(ply);
+			break;
+		case 2:
+			sub_35a7a(ply);
+			break;
+		case 4:
+			if (AF1) {
+				NEXT(ply->mode2);
+			}
+			PLAYERTICK;
+			break;
+		case 6:
+			NEXT(ply->mode2);
+			ply->LocalTimer = 20;
+			set_throw_trajectory(ply, 6, ply->Flip ^ 1, 12);
+			break;
+		case 8:
+			if (--ply->LocalTimer == 0) {
+				ply->EnemyDirection = ply->Flip ^ 1;
+				sub_35b06(ply);
+			}
+			break;
+		case 10:
+			sub_35240(ply);
+			break;
+		case 12:
+			sub_3529a(ply);
+			break;
+		FATALDEFAULT;
+	}
+}
+static void sub_35a36(Player *ply) {
+	UDCOMP *ud = (UDCOMP *)&ply->UserData;
+	switch (ply->mode2) {
+		case 0:
+			NEXT(ply->mode2);
+			ud->x0089 = ply->ButtonStrength / 2;
+			ud->x008a = ply->ButtonStrength / 2;
+			ud->x008b = (ply->ButtonStrength ? 1 : 0);
+			ud->x008c = 0;
+			quirkysound(ply->ButtonStrength/2);
+			sub_35ad6(ply);
+			break;
+		case 2:
+			sub_35a7a(ply);
+			break;
+		FATALDEFAULT;
+	}
+}
+
+
 void PLCBCompAttackZangeif(Player *ply) {			// 350f8
 	if (ply->Timer2) {
 		--ply->Timer2;
 	} else {
 		if (ply->AISigSpecial) {
-			
+			sub_35b22(ply);
+		} else {
+			switch (ply->StandSquat) {
+				case PLY_STAND: switch (ply->PunchKick) {
+					case PLY_PUNCHING: switch (ply->ButtonStrength) {
+						case 0:		sub_3513e(ply); break;
+						case 2:		sub_35174(ply); break;
+						case 4:		sub_35400(ply); break;
+						FATALDEFAULT;}
+						break;
+					case PLY_KICKING: switch (ply->ButtonStrength) {
+						case 0:		sub_35566(ply); break;
+						case 2:		sub_3559c(ply); break;
+						case 4:		sub_356a0(ply); break;
+						FATALDEFAULT;}
+						break;
+					FATALDEFAULT;}
+					break;
+				case PLY_CROUCH: switch (ply->PunchKick) {
+					case PLY_PUNCHING: switch (ply->ButtonStrength) {
+						case 0:		sub_357c6(ply); break;
+						case 2:		sub_357fc(ply); break;
+						case 4:		sub_35922(ply); break;
+						FATALDEFAULT;}
+						break;
+					case PLY_KICKING: 
+						sub_35a36(ply);
+						break;
+					FATALDEFAULT;}
+					break;
+				FATALDEFAULT;
+			}
 		}
 	}
-
 }
 
 

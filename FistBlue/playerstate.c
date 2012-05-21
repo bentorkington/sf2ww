@@ -469,10 +469,7 @@ static int is_projectile_near(Player *ply) {			/* 2a6fe */
 }
 
 static int retreat_or_block(Player *ply) {     /* 2a6b8 */
-	u8 temp;
-
 	if (is_projectile_near(ply) || (ply->Opponent->Attacking && ply->OppXDist <= 0xe0)) {	
-		temp = ply->JoyDecode.full;		// XXX never read
 		if(ply->Flip) {
 			if (ply->JoyDecode.full & 2) {
 				return TRUE;

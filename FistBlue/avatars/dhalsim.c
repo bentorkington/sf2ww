@@ -444,7 +444,7 @@ static void sub_32b64(Player *ply) {
 			obj->Owner = ply;
 			ply->Projectile = obj;							
 		}
-		obj->LocalTimer = 40;
+		ply->LocalTimer = 40;
 	}
 	PLAYERTICK;
 }

@@ -274,7 +274,7 @@ int PLCBCompJumpBalrog (Player *ply) {			//371c2
 		case PLY_KICKING:
 			/* nothing */
 			break;
-			FATALDEFAULT;
+		FATALDEFAULT;
 	}
 	return 0;	
 }
@@ -288,7 +288,7 @@ void PLCBCompAttackBalrog (Player *ply) {		// 36f3a
 		switch (ply->StandSquat) {
 			case PLY_STAND:	sub_36f64(ply);	break;
 			case 2:			sub_37114(ply);	break;
-			case 4:			PLCBCompJumpBalrog(ply); break;
+			case 4:PLCBCompJumpBalrog(ply); break;
 			case 6:			sub_37250(ply); break;
 			FATALDEFAULT;
 		}
