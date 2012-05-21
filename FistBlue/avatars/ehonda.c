@@ -1049,21 +1049,23 @@ static void sub_33316(Player *ply) {
 	}
 }
 
-
-static int sub_33598(Player *ply, short d2, short d0) {	
+static int sub_335aa(Player *ply, int d0) {
 	UD *ud=(UD *)&ply->UserData;
-
-	if (d2) {
-		quirkysound((d2 & 0xff) - 1);
-	}
 	ud->x008a = 0;
 	ud->x0090 = d0;
 	ply->mode3 = 0;
 	sub_33570(ply, d0);
-	return 1;
+	return 1;	
 }
 
-static void sub_334ba(Player *ply, short d2) {
+static int sub_33598(Player *ply, short d2, short d0) {	
+	if (d2) {
+		quirkysound((d2 & 0xff) - 1);
+	}
+	return sub_335aa(ply, d0);
+}
+
+static int sub_334ba(Player *ply, short d2) {
 	const char *data;
 	static const char data_33500[4][2][3][4] = {
 		{ 
@@ -1118,17 +1120,35 @@ static void sub_334ba(Player *ply, short d2) {
 
 	retval.d0 = data[2];
 	retval.d2 = data[1];
-	sub_33598(ply, retval.d2, retval.d0);
+	return sub_33598(ply, retval.d2, retval.d0);
 }
 
 int PLCBCompJumpEHonda(Player *ply) {	//33012
 	//334ac
 	if (ply->VelX.full == 0) {
-		sub_334ba(ply, 8);
+		return sub_334ba(ply, 8);
 	} else {
-		sub_334ba(ply, 0xc);
+		return sub_334ba(ply, 12);
 	}
 }	
+static void sub_333b4(Player *ply) {
+	UD *ud=(UD *)&ply->UserData;
+	ud->x0093 = ply->AIMultiCount;
+	sub_335aa(ply, (short[]){0x34, 0x36, 0x38}[ply->ButtonStrength/2]);
+}
+static void sub_3338a(Player *ply) {
+	static const data_333a8[3][2]={
+		{0x3a, 0x0600},
+		{0x3c, 0x0800},
+		{0x3e, 0x0a00},
+	};
+	if (ply->Flip) {
+		ply->VelX.full =  data_333a8[ply->ButtonStrength/2][1];
+	} else {
+		ply->VelX.full = -data_333a8[ply->ButtonStrength/2][1];
+	}
+	sub_335aa(ply, data_333a8[ply->ButtonStrength/2][0]);
+}
 
 void PLCBCompAttackEHonda(Player *ply) {		//33016
 	struct ehondathrow ET;
@@ -1142,19 +1162,20 @@ void PLCBCompAttackEHonda(Player *ply) {		//33016
 			if (ET.success == TRUE) {
 				sub_33598(ply, ET.d2, ET.d0);
 			} else if (ply->CompDoThrow != FALSE) {
-				// 33 todo
+				if (ply->PunchKick) {
+					sub_3338a(ply);
+				} else {
+					sub_333b4(ply);
+				}
 			} else {
 				switch (ply->StandSquat) {
 					case 0:
-						//334a2 
 						sub_334ba(ply, 0);
 						break;
 					case 2:
-						//334a6
 						sub_334ba(ply, 4);
 						break;
 					case 4:
-						//334ac
 						if (ply->VelX.full == 0) {
 							sub_334ba(ply, 8);
 						} else {
@@ -1165,7 +1186,7 @@ void PLCBCompAttackEHonda(Player *ply) {		//33016
 				}	
 			}
 			break;
-		case 2:							//33052
+		case 2:			
 			if (ply->Timer2) {
 				--ply->Timer2;
 				ud->x008a = 1;
