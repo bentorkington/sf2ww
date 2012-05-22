@@ -174,7 +174,9 @@ struct player_t {
 	short		DizzySpell;
 	short		IsBlockingSuper;		//0062 should be char?
 	char		ThrowStat;
-	short		Throw[6];
+	short		Throw[4];
+	short		ThrowCatchX;
+	short		ThrowCatchY;
 	char		x0070;
 	char		ProjectilePushBack;				// being pushed back by projectile
 	

@@ -567,12 +567,12 @@ int _check_throw(int airthrow, Player *ply) {		/* 0x3338 */
 	{ return 0; }
     
     if (opp->DizzyStun == 0 && 
-        opp->mode1 == PLSTAT_REEL) { return 0; }
+        opp->mode1 == PLSTAT_REEL)		{ return 0; }
     
     
-    if (!airthrow && opp->Airborne)   { return 0; } 
+    if (!airthrow && opp->Airborne)		{ return 0; } 
     
-    if (opp->NoThrow_t)						{ return 0; }
+    if (opp->NoThrow_t)					{ return 0; }
     if (opp->ActionScript->HB_Head == 0 &&
 		opp->ActionScript->HB_Body == 0 &&
 		opp->ActionScript->HB_Foot == 0 &&
@@ -580,16 +580,17 @@ int _check_throw(int airthrow, Player *ply) {		/* 0x3338 */
     if (opp->Invincible)						{ return 0; }
     if (opp->TCollDis)							{ return 0; }
     
-    temp5 = ply->Throw[0];
+    temp5 = ply->Throw[0];		// x offset
     if (ply->Flip) { temp5 = -temp5; }
-    temp5 = temp5 + ply->XPI - opp->XPI + ply->Throw[2] + opp->Throw[4];
+	///      
+    temp5 = temp5 + ply->XPI - opp->XPI + ply->Throw[2] + opp->ThrowCatchX;
     temp4 = 2 * (ply->Throw[2] + opp->Throw[4]);
     
     
     
     if (temp5 > temp4 || temp5 < 0) { return 0; }
     
-	temp6 = ply->YPI + ply->Throw[1] - (opp->YPI + opp->Throw[5]) + ply->Throw[3];
+	temp6 = ply->YPI + ply->Throw[1] - (opp->YPI + opp->ThrowCatchY) + ply->Throw[3];
     if (temp6 > (2 * ply->Throw[3]) || temp6 < 0 )   { return 0; }
     
     opp->DSOffsetX = 0;

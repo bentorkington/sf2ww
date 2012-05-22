@@ -19,6 +19,7 @@
 #include "playerstate.h"
 #include "computer.h"
 #include "sound.h"
+#include "sf2io.h"
 
 #include "lib.h"
 #include "gfxlib.h"
@@ -128,7 +129,7 @@ static void _BlankaSetAnim(Player *ply, u16 d0, u16 d1) {		// 2ef68
 }		
 static int  _CheckBuzz1(Player *ply) {		//2eb88
 	UD *ud=(UD *)&ply->UserData;
-	if (ud->x0082 & 0x10) {
+	if (ud->x0082 & BUTTON_A) {
 		if (ud->pm1.b < 10) {
 			if (ud->x0088 != 0x1ff) {
 				return 0;
@@ -144,7 +145,7 @@ static int  _CheckBuzz1(Player *ply) {		//2eb88
 }
 static int  _CheckBuzz2(Player *ply) {		//2eb9c
 	UD *ud=(UD *)&ply->UserData;
-	if (ud->x0082 & 0x20) {
+	if (ud->x0082 & BUTTON_B) {
 		if (ud->pm1.b < 10) {		// xxx check it's really pm1.b
 			if (ud->x0088 != 0x1ff) {
 				return 0;
@@ -160,18 +161,18 @@ static int  _CheckBuzz2(Player *ply) {		//2eb9c
 }
 static int  _CheckBuzz3(Player *ply) {		//2ebb0
 	UD *ud=(UD *)&ply->UserData;
-	if (ud->x0082 & 0x40) {
+	if (ud->x0082 & BUTTON_C) {
 		if (ud->pm1.b < 10) {		// xxx check it's really pm1.b
 			if (ud->x0088 != 0x1ff) {
 				return 0;
 			}
 		}
 		if (check_special_ability(ply)) {
-			return 0;
+			return FALSE;
 		}
-		return 1;
+		return TRUE;
 	} else {
-		return 0;
+		return FALSE;
 	}
 }
 /* xxx refactor */
@@ -266,11 +267,11 @@ static u16  _BlankaCheckCannonStart(Player *ply) {		//2eb28
 			}
 		}
 		if(check_special_ability(ply)){
-			return 0;
+			return FALSE;
 		}
-		return 1;
+		return TRUE;
 	}
-	return 0;
+	return FALSE;
 }
 static void _BlankaStartCannon(Player *ply) {		// 2eb5e
 	ply->VelX.full = (short []){0x600, 0x800, 0xa00}[ply->ButtonStrength/2];
@@ -351,9 +352,9 @@ void PLCBPowerBlanka(Player *ply) {
 	ud->x0082 = (~ply->JoyCorrectDash & ply->JoyCorrect);
 	
 	_BlankaCheckCannonBall(ply);
-	_BlankaChargeCheck(ply, &ud->pm1, 0x10, 0xf);
-	_BlankaChargeCheck(ply, &ud->pm2, 0x20, 0xa);
-	_BlankaChargeCheck(ply, &ud->pm3, 0x40, 0x5);
+	_BlankaChargeCheck(ply, &ud->pm1, BUTTON_A, 0xf);
+	_BlankaChargeCheck(ply, &ud->pm2, BUTTON_B, 0xa);
+	_BlankaChargeCheck(ply, &ud->pm3, BUTTON_C, 0x5);
 	if (ud->x0082 & 0x70) {
 		ud->x0088 = (sf2rand() & 1) << 16 + sf2rand();
 	} else {
@@ -410,10 +411,7 @@ static struct blankathrow _BlankaCheckThrow(Player *ply) {		// 2ec0e
 			return retval;
 		}
 	} else {
-		ply->Throw[0]=data[1];
-		ply->Throw[1]=data[2];
-		ply->Throw[2]=data[3];
-		ply->Throw[3]=data[4];
+		PLY_THROW_SET(data[1], data[2], data[3], data[4]);
 		if (_check_throw(airthrow_d6, ply)) {
 			retval.d2 = data[5];
 			retval.success = TRUE;
@@ -463,15 +461,15 @@ static void _BlankaCheckMoves(Player *ply, u16 d0, short initial_d2) {		//2ee5c
 		}, };
 	/* next address 0002ef2c */
 	ud->x0084 = d0;
-	if (d0 & 0x10) {
+	if (d0 & BUTTON_A) {
 		d2 = 0;
-	} else if (d0 & 0x20) {
+	} else if (d0 & BUTTON_B) {
 		d2 = 4;
-	} else if (d0 & 0x40) {
+	} else if (d0 & BUTTON_C) {
 		d2 = 8;
-	} else if (d0 & 0x100) {
+	} else if (d0 & BUTTON_D) {
 		d2 = 0xc;
-	} else if (d0 & 0x200) {
+	} else if (d0 & BUTTON_E) {
 		d2 = 0x10;
 	} else {
 		d2 = 0x14;
@@ -590,7 +588,7 @@ static void sub_2e670(Player *ply) {
 static void sub_2e6da(Player *ply) {		// 2e6da
 	UD *ud=(UD *)&ply->UserData;
 
-	soundsting(0x2f);
+	soundsting(SOUND_IMPACT8);
 	ply->VelX.full = 0;
 	ud->x008a = 0;
 	ply_exit_air(ply);
@@ -684,7 +682,7 @@ static void _BzztSound(Player *ply) {		// 2e7ba
 	UD *ud=(UD *)&ply->UserData;
 	if (--ud->x00a1 == 0) {
 		ud->x00a1 = 8;
-		soundsting(0x87);
+		soundsting(SOUND_ZAP1_AGAIN);
 	}
 	PLAYERTICK;
 }
@@ -701,20 +699,20 @@ static int _IDFromButton(Player *ply) {		//2efa6
 	if (d1 == 0) {
 		return 0;
 	}
-	if (d1 & 0x10) {
+	if (d1 & BUTTON_A) {
 		return 1;
 	}
-	if (d1 & 0x20) {
+	if (d1 & BUTTON_B) {
 		return 2;
 	}
-	if (d1 & 0x30) {
+	if (d1 & BUTTON_C) {
 		return 3;
 	}
 	ply->PunchKick = PLY_KICKING;
-	if (d1 & 0x100) {
+	if (d1 & BUTTON_D) {
 		return 4;
 	}
-	if (d1 & 0x200) {
+	if (d1 & BUTTON_E) {
 		return 5;
 	}
 	return 6;
@@ -744,7 +742,7 @@ static void _BlankaSMElectric(Player *ply) {		// 2e6f0
 				ud->x009a = 20;
 				_BzztSound(ply);
 			} else if (check_platform_end(ply)) {
-				soundsting(0x87);
+				soundsting(SOUND_ZAP1_AGAIN);
 				exit_jumping2(ply);
 			} else {
 				_CheckFlip(ply);
@@ -771,7 +769,7 @@ static void _BlankaSMElectric(Player *ply) {		// 2e6f0
 			if (--ud->x009a) {
 				_BzztSound(ply);
 			} else {
-				soundsting(0x87);
+				soundsting(SOUND_ZAP1_AGAIN);
 				ply_exit_stand(ply);
 			}
 			break;
@@ -811,7 +809,7 @@ static void _BlankaSMCatch(Player *ply) {		// 2e7d2
 			break;
 		case 4:
 			if (AF2) {
-				soundsting(0x2f);
+				soundsting(SOUND_IMPACT8);
 				ply->YPI = g.GroundPlaneY;
 				ply_exit_stand(ply);
 			} else {
@@ -986,10 +984,7 @@ static struct blankathrow sub_33956(Player *ply, short airthrow_d6) {
 			return retval;
 		}
 	} else {
-		ply->Throw[0]=data[1];
-		ply->Throw[1]=data[2];
-		ply->Throw[2]=data[3];
-		ply->Throw[3]=data[4];
+		PLY_THROW_SET(data[1], data[2], data[3], data[4]);
 		if (_check_throw(airthrow_d6, ply)) {
 			retval.d2 = data[5];
 			retval.success = TRUE;

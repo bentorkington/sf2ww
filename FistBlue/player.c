@@ -254,8 +254,8 @@ void LBInitHitBoxes(Player *ply) {	/* 388c initialise player hitboxes, vega clar
     ply->exists = TRUE;
     ply->flag1  = TRUE;
     ply->HitBoxes = data_38e8[ply->FighterID].HitBoxList;
-    ply->Throw[4] = data_38e8[ply->FighterID].ThrowX;
-    ply->Throw[5] = data_38e8[ply->FighterID].ThrowY;
+    ply->ThrowCatchX = data_38e8[ply->FighterID].ThrowX;
+    ply->ThrowCatchY = data_38e8[ply->FighterID].ThrowY;
 #if 0	
     if(ply->FighterID == FID_VEGA) {
         ply->Sprite2 = data_7b520;

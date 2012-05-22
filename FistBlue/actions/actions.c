@@ -2351,7 +2351,7 @@ static void skyskraperanim_06(Object *obj) {		// 1d394
 				case 2:
 					if (g.x8a74 < 0) {
 						NEXT(obj->mode1);
-						soundsting(0x2a);
+						soundsting(SOUND_IMPACT3);
 						obj->XPI = 0x40;
 						obj->YPI = 0x650;
 						obj->Pool = 6;
@@ -2399,7 +2399,7 @@ static void skyskraperanim_08(Object *obj) {		// 1d41a
 				case 2:
 					if (g.x8a74 < 0) {
 						NEXT(obj->mode1);
-						soundsting(0x2a);
+						soundsting(SOUND_IMPACT3);
 						obj->XPI = 0x30;
 						obj->YPI = 0x640;
 						obj->Pool = 4;

@@ -284,10 +284,7 @@ static int sub_304a8(Player *ply, u16 joys) {
 			break;
 		case 2:
 			if ((joys & 0xb) && ply->OppXDist < 0x23) {
-				ply->Throw[0] = 0xffe0;
-				ply->Throw[1] = 0x0035;
-				ply->Throw[2] = 0x0020;
-				ply->Throw[3] = 0x0010;
+				PLY_THROW_SET(0xffe0, 0x0035, 0x0020, 0x0010);
 				if (throwvalid(ply)) {
 					ply->Move = 6;
 					return 1;
@@ -299,10 +296,7 @@ static int sub_304a8(Player *ply, u16 joys) {
 			break;
 		case 4:
 			if ((joys & 0xb) && ply->OppXDist < 0x23) {
-				ply->Throw[0] = 0xffe0;
-				ply->Throw[1] = 0x0035;
-				ply->Throw[2] = 0x0020;
-				ply->Throw[3] = 0x0010;
+				PLY_THROW_SET(0xffe0, 0x0035, 0x0020, 0x0010);
 				if (throwvalid(ply)) {
 					ply->Move = 7;
 					return 1;
@@ -380,10 +374,7 @@ static int sub_30830(Player *ply) {
 static void sub_306ee(Player *ply) {
 	UD *ud=(UD *)&ply->UserData;
 	if (sub_30830(ply) && (ply->JoyDecode.full & 7)) {
-		ply->Throw[0] = 0xffe2;
-		ply->Throw[1] = 0x38;
-		ply->Throw[2] = 0x35;
-		ply->Throw[3] = 0x2e;
+		PLY_THROW_SET(0xffe2, 0x0038, 0x0035, 0x002e);
 		if (airthrowvalid(ply)) {
 			ud->x0091 = 1;
 			ply->Move = 6;
@@ -398,10 +389,7 @@ static void sub_306ee(Player *ply) {
 static void sub_3073e(Player *ply) {
 	UD *ud=(UD *)&ply->UserData;
 	if (sub_30830(ply) && (ply->JoyDecode.full & 7)) {
-		ply->Throw[0] = 0xffe2;
-		ply->Throw[1] = 0x38;
-		ply->Throw[2] = 0x25;
-		ply->Throw[3] = 0x24;
+		PLY_THROW_SET(0xffe2, 0x0038, 0x0025, 0x0024);
 		if (airthrowvalid(ply)) {
 			ud->x0091 = 1;
 			ply->Move = 7;
@@ -611,7 +599,7 @@ static void sub_30942(Player *ply) {
 			NEXT(ply->mode2);
 			ply->Flip = ply->JoyDecode.full & 1;
 			CASetAnim2(ply, STATUS_PUNCH, ply->Move);
-			soundsting(0x48);
+			soundsting(SOUND_CHUNLI_YUP);
 			break;
 		case 2:
 			PLAYERTICK;
@@ -657,7 +645,7 @@ static void sub_309ee(Player *ply) {
 		case 4:
 			CATrajectory((Object *)ply);
 			if (check_ground_collision(ply)) {
-				soundsting(0x2f);
+				soundsting(SOUND_IMPACT8);
 				ply->Jumping = 0;
 				ply_exit_stand(ply);
 			} else {
@@ -682,7 +670,7 @@ static void sub_30a6a(Player *ply) {
 		case 2:
 			CATrajectory((Object *)ply);
 			if (check_ground_collision(ply)) {
-				soundsting(0x2f);
+				soundsting(SOUND_IMPACT8);
 				ply->Jumping = 0;
 				ply->Flip ^= 1;
 				ply_exit_stand(ply);
@@ -750,7 +738,7 @@ static void sub_30afe(Player *ply) {
 						ply->Flip = 0;
 					}
 					ply->Timer2 = 12;
-					soundsting(0x48);
+					soundsting(SOUND_CHUNLI_YUP);
 					break;
 				case 2:
 					CATrajectory((Object *)ply);
@@ -1374,10 +1362,7 @@ static int sub_3452e(Player *ply) {
 		&& ply->ButtonStrength != 0
 		&& sub_34572(ply) != 0) {
 		
-		ply->Throw[0] = 0xffe2;
-		ply->Throw[1] = 0x0038;
-		ply->Throw[2] = 0x0025;
-		ply->Throw[3] = 0x0024;
+		PLY_THROW_SET(0xffe2, 0x0038, 0x0025, 0x0024);
 		if (airthrowvalid(ply)) {
 			ply->mode1 = 0xa;
 			return -1;

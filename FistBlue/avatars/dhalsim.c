@@ -16,7 +16,7 @@
 #include "particle.h"
 #include "rules.h"
 #include "playerstate.h"
-
+#include "sound.h"
 #include "computer.h"
 
 #include "lib.h"
@@ -126,10 +126,7 @@ int sub_32512(Player *ply) {
 int sub_32386(Player *ply) {
 	g_dhalsim_d6 &= 3;
 	if (g_dhalsim_d6 & ply->PunchKick==0 &ply->ButtonStrength != 0) {
-		ply->Throw[0]=0xffe0;
-		ply->Throw[1]=0x0035;
-		ply->Throw[1]=0x0020;
-		ply->Throw[3]=0x0010;
+		PLY_THROW_SET(0xffe0, 0x0035, 0x0020, 0x0010);
 		if(throwvalid(ply)) {
 			return 1;
 		}
@@ -345,7 +342,7 @@ void PSCBAttackDhalsim(Player *ply) {			// 3258e
 				sub_3278c(ply);
 				if (check_ground_collision((Object *)ply)) {
 					ply->Jumping = FALSE;
-					soundsting(0x2f);
+					soundsting(SOUND_IMPACT8);
 					ply_exit_air(ply);
 				} else {
 					actiontick((Object *)ply);
@@ -420,7 +417,7 @@ void PSCBAttackDhalsim(Player *ply) {			// 3258e
 static void sub_32b3c(Player *ply) {
 	UD *ud = (UD *)ply->UserData;
 	NEXT(ply->mode2);
-	soundsting(0x85);
+	soundsting(SOUND_YOGA);
 	ud->x00d0 = 0xa;
 	if (ud->x00c0) {
 		CASetAnim2(ply, 0x4c, (ply->ButtonStrength / 2) + 3);
@@ -450,7 +447,7 @@ static int sub_32c3a(Player *ply) {
 	UD *ud = (UD *)ply->UserData;
 	if (ply->Projectile) {
 		if(--ud->x00d0 == 0) {
-			soundsting(0x6f);
+			soundsting(SOUND_FLAME);
 		}
 		PLAYERTICK;
 		return 1;
@@ -462,7 +459,7 @@ static int sub_32bba(Player *ply) {
 	UD *ud = (UD *)ply->UserData;
 	if (--ply->LocalTimer) {
 		if (--ud->x00d0 == 0) {
-			soundsting(0x6e);
+			soundsting(SOUND_FIRE);
 		}
 		PLAYERTICK;
 	}
@@ -482,7 +479,7 @@ static void sub_32be4(Player *ply) {
 			obj->SubSel = ply->ButtonStrength;
 			obj->Owner = ply;
 			ply->Projectile = obj;
-			soundsting(0x6f);
+			soundsting(SOUND_FLAME);
 		}						
 	}
 	PLAYERTICK;	
@@ -707,10 +704,7 @@ static int sub_361c0(Player *ply) {
 }
 static void sub_36166(Player *ply) {
 	if (ply->CompDoThrow && ply->PunchKick == PLY_PUNCHING && ply->ButtonStrength != 0) {
-		ply->Throw[0] = 0xffe0;
-		ply->Throw[1] = 0x0035;
-		ply->Throw[2] = 0x0020;
-		ply->Throw[3] = 0x0010;
+		PLY_THROW_SET(0xffe0, 0x0035, 0x0020, 0x0010);
 		if (throwvalid(ply)) {
 			ply->StandSquat = 6;
 			ply->Move = ply->ButtonStrength / 4;
@@ -849,7 +843,7 @@ static void sub_35ffa(Player *ply) {
 	if (check_ground_collision((Object *)ply)) {
 		ply->Airborne = 0;
 		ply->CompDoJump = FALSE;
-		soundsting(0x2f);
+		soundsting(SOUND_IMPACT8);
 		comp_setjumping_main(ply);
 	} else {
 		PLAYERTICK;

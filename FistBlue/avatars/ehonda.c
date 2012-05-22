@@ -253,7 +253,7 @@ void _EHondaSMOink(Player *ply) {	//2db28
 				ply->VelY.full = 0;
 				ply->UserData[0xa] = 0;
 				ply->Airborne = AIR_JUMPING;
-				soundsting(0x6c);
+				soundsting(SOUND_OINK);
 				PLAYERTICK;
 			}
 			break;
@@ -291,7 +291,7 @@ void _EHondaSMOink(Player *ply) {	//2db28
 			CATrajectory((Object *)ply);
 			if (AF2 != 2) {
 				NEXT(ply->mode2);
-				soundsting(0x2f);
+				soundsting(SOUND_IMPACT8);
 			}
 			PLAYERTICK;
 			break;
@@ -361,10 +361,7 @@ static struct ehondathrow sub_2e14c(Player *ply) {		//2e14c
 				return retval;
 			}
 		} else {
-			ply->Throw[0]=data[1];
-			ply->Throw[1]=data[2];
-			ply->Throw[2]=data[3];
-			ply->Throw[3]=data[4];
+			PLY_THROW_SET(data[1], data[2], data[3], data[4]);
 			if (_check_throw(airthrow_d6, ply)) {
 				retval.d2 = data[5];
 				retval.success = TRUE;
@@ -608,7 +605,7 @@ static void _EHondaSMHandslap(Player *ply) {		// 2dc3a
 				sub_2dcea(ply);
 				return;
 			} else if (AF2 == 0x60 && ply->Timer == 1) {
-				soundsting(0x47);		/* Hua */
+				soundsting(SOUND_HUA);		/* Hua */
 			}
 			if (g.RoundResult) {
 				NEXT(ply->mode2);
@@ -657,7 +654,7 @@ static void sub_2ddac(Player *ply) {
 			if (AF2) {
 				NEXT(ply->mode2);
 				set_throw_trajectory(ply, 0, ply->Flip ^ 1, 14);
-				soundsting(0x47);
+				soundsting(SOUND_HUA);
 			}
 			PLAYERTICK;
 			break;
@@ -795,10 +792,7 @@ static struct ehondathrow sub_333cc(Player *ply, short airthrow_d6) {
 			return retval;
 		}
 	} else {
-		ply->Throw[0]=data[1];
-		ply->Throw[1]=data[2];
-		ply->Throw[2]=data[3];
-		ply->Throw[3]=data[4];
+		PLY_THROW_SET(data[1], data[2], data[3], data[4]);
 		if (_check_throw(airthrow_d6, ply)) {
 			retval.d2 = data[5];
 			retval.success = TRUE;

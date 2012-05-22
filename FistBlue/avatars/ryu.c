@@ -155,8 +155,8 @@ KRBtns sub_2d0d8(Player *ply) {
 
 short doublebtn(Player *ply) {		/* 2d4f0 */
 	short data_2d50e[]={
-		0x10,  0x20,  0x40,
-		0x100, 0x200, 0x400,
+		BUTTON_A,	BUTTON_B,	BUTTON_C,
+		BUTTON_D,	BUTTON_E,	BUTTON_F,
 	};
 	
 	if (ply->AnimFlags & 0xff) {
@@ -184,10 +184,7 @@ static short _RyuKenCheckThrow(Player *ply, short d6) {	//2cfb6
 	if (d6==0 || ply->ButtonStrength==0) {
 		return 0;
 	}
-	ply->Throw[0] = -0x18;
-	ply->Throw[1] =  0x35;
-	ply->Throw[2] =  0x18;
-	ply->Throw[3] =  0x10;
+	PLY_THROW_SET(-0x18, 0x35, 0x18, 0x10);
 	if(throwvalid(ply)) {
 		if (ply->JoyDecode.full & JOY_UP==0) {		// ???
 			ply->Flip = FACING_LEFT;
@@ -221,18 +218,17 @@ static void _RyuSMHadouken(Player *ply) {		//2d778
 	if (AF1) {
 		NEXT(ply->mode2);
 		if (obj=AllocProjectile()) {
-			obj->exists=TRUE;
-			obj->Sel = SF2_PROJ_HADOUKEN;
-			obj->XPI = ply->XPI;
-			obj->YPI = ply->YPI;
-			obj->Flip = ply->Flip;
+			obj->exists = TRUE;
+			obj->Sel	= SF2_PROJ_HADOUKEN;
+			obj->XPI	= ply->XPI;
+			obj->YPI	= ply->YPI;
+			obj->Flip	= ply->Flip;
 			obj->SubSel = ply->ButtonStrength;
-			obj->Owner = ply;
+			obj->Owner	= ply;
 			ply->Projectile = obj;
-			
-			queuesound(SOUND_HADOUKEN);		/* Hadouken! */
+			queuesound(SOUND_HADOUKEN);
 		}
-		ply->LocalTimer = 0x28;
+		ply->LocalTimer = 40;
 	} 
 	actiontick((Object *)ply);
 	
@@ -498,9 +494,9 @@ static void _RyuAttack6(Player *ply) {		//2d28e
 				if (ply->Flip != FACING_LEFT) {
 					ud->ShoryukenX.full = -ud->ShoryukenX.full;
 				}
-				ud->ShoryukenY.full = 0x20000;
+				ud->ShoryukenY.full     = 0x00020000;
 				ud->ShoryukenYDash.full = 0xffffe000;
-				soundsting(0x47);
+				soundsting(SOUND_HUA);
 				CASetAnim2(ply, 0x54, ply->Move);
 				break;
 			case 2:
@@ -515,7 +511,7 @@ static void _RyuAttack6(Player *ply) {		//2d28e
 						if(_RyuAtApex(ply) < 0) { check_ground_collision((Object *)ply); }
 						if (AF2) {
 							/* inlined 2d2d0 */
-							set_throw_trajectory(ply, 0, ply->Flip ^ 1, 0xd);
+							set_throw_trajectory(ply, 0, ply->Flip ^ 1, 13);
 							NEXT(ply->mode3);
 						}
 						actiontick((Object *)ply);
@@ -549,14 +545,14 @@ static void _RyuAttack6(Player *ply) {		//2d28e
 		switch (ply->mode2) {
 			case 0:
 				ply->mode2 += 2;
-				soundsting(0x47);
+				soundsting(SOUND_HUA);
 				CASetAnim2(ply, 0x54, ply->Move);
 				break;
 			case 2:
 				switch (ply->mode3) {
 					case 0:
 						if (AF2) {
-							set_throw_trajectory(ply, 0, ply->Flip ^ 1, 0xd);
+							set_throw_trajectory(ply, 0, ply->Flip ^ 1, 13);
 							NEXT(ply->mode3)
 						}
 						actiontick((Object *)ply);
@@ -1146,10 +1142,7 @@ short PLCBCompJumpRyuKen (Player *ply) {	/* callback from 2c9be */
 static void sub_32efa(Player *ply) {	
 	/* simplified from original */
 	if(ply->CompDoThrow == 0) { return; }
-	ply->Throw[0] = -0x18;
-	ply->Throw[1] =  0x35;
-	ply->Throw[2] =  0x18;
-	ply->Throw[3] =  0x10;
+	PLY_THROW_SET(-0x18, 0x35, 0x18, 0x10);
 	if(throwvalid(ply)) {		/* 0x3338 */
 		ply->StandSquat = 0x6;
 		ply->Move = ply->PunchKick << 1;	

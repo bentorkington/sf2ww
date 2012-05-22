@@ -17,7 +17,7 @@
 #include "rules.h"
 #include "playerstate.h"
 #include "actions.h"
-
+#include "sound.h"
 
 #include "computer.h"
 
@@ -79,10 +79,7 @@ void pl_cb_setstatus1_zangeif(Player *ply, short status) {
 
 
 static int zang_setupthrow(Player *ply) {
-	ply->Throw[0] = 0xffdb;
-	ply->Throw[1] = 0x35;
-	ply->Throw[2] = 0x25;
-	ply->Throw[3] = 0x10;
+	PLY_THROW_SET(0xffdb, 0x0035, 0x0025, 0x0010);
 	return throwvalid(ply);
 }
 inline static void sub_315b8(Player *ply) {
@@ -161,7 +158,7 @@ static int sub_30f9e(Player *ply) {
 
 static void sub_31044(Player *ply) {
 	ply->Move = 8;
-	soundsting(0x47);
+	soundsting(SOUND_HUA);
 }
 static void sub_31056(Player *ply) {		// zang punch little
 	UD *ud = (UD*)&ply->UserData;
@@ -591,7 +588,7 @@ static void sub_31654(Player *ply) {		// lariat punch
 	} else {
 		if (--ply->LocalTimer) {
 			if ((g.libsplatter & 0xf) == 0) {
-				soundsting(0x3c);
+				soundsting(SOUND_SWOOSH3);
 			}
 			PLAYERTICK;
 		} else {
@@ -652,7 +649,7 @@ static void sub_31780(Player *ply) {
 		case 0:
 			NEXT(ply->mode2);
 			CASetAnim2(ply, STATUS_PUNCH, ply->Move);
-			soundsting(0x46);
+			soundsting(SOUND_GINK);
 			break;
 		case 2:
 			PLAYERTICK;
@@ -714,7 +711,7 @@ static void sub_318b0(Player *ply) {
 			NEXT(ply->mode2);
 			ply->Flip = ((ply->JoyDecode.full & 1) ? 0 : 1);
 			CASetAnim2(ply, STATUS_PUNCH, ply->Move);
-			soundsting(0x47);
+			soundsting(SOUND_HUA);
 			break;
 		case 2:
 			if (AF2) {
@@ -752,7 +749,7 @@ static void sub_3198c(Player *ply) {
 			NEXT(ply->mode2);
 			ply->Flip = ((ply->JoyDecode.full & 2) ? 0 : 1);
 			CASetAnim2(ply, STATUS_KICK, ply->Move);
-			soundsting(0x47);
+			soundsting(SOUND_HUA);
 			break;
 		case 2:
 			if (AF2) {
@@ -790,7 +787,7 @@ static void sub_31a46(Player *ply) {
 			NEXT(ply->mode2);
 			ply->Flip = ((ply->JoyDecode.full & 2) ? 0 : 1);
 			CASetAnim2(ply, STATUS_KICK, ply->Move);
-			soundsting(0x47);
+			soundsting(SOUND_HUA);
 			break;
 		case 2:
 			if (AF2) {
@@ -828,7 +825,7 @@ static void sub_31b2c(Player *ply) {
 			NEXT(ply->mode2);
 			ply->Flip = ((ply->JoyDecode.full & 2) ? 0 : 1);
 			CASetAnim2(ply, STATUS_CROUCH_PUNCH, ply->Move);
-			soundsting(0x46);
+			soundsting(SOUND_GINK);
 			break;
 		case 2:
 			PLAYERTICK;
@@ -857,7 +854,7 @@ static void sub_31bbc(Player *ply) {
 		case 0:
 			NEXT(ply->mode2);
 			CASetAnim2(ply, STATUS_CROUCH_PUNCH, ply->Move);
-			soundsting(0x46);
+			soundsting(SOUND_GINK);
 			break;
 		case 2:
 			if (AF1) {
@@ -981,7 +978,7 @@ void PSCBPowerZangeif(Player *ply) {		// 31dec
 			case 0:
 				NEXT(ply->mode2);
 				CASetAnim2(ply, 0x4c, 0);
-				soundsting(0x47);
+				soundsting(SOUND_HUA);
 				break;
 			case 2:
 				if (AF2) {
@@ -1003,7 +1000,7 @@ void PSCBPowerZangeif(Player *ply) {		// 31dec
 					} else {
 						if (AF2) {
 							ply->AnimFlags &= 0xff00;
-							soundsting(0x27);
+							soundsting(SOUND_PUNCH3);
 						}
 						PLAYERTICK;
 					}
@@ -1187,7 +1184,7 @@ static void sub_35b14(Player *ply) {
 static void sub_35bfa(Player *ply) {
 	if (AF2) {
 		ply->AnimFlags = 0;
-		soundsting(0x27);		
+		soundsting(SOUND_PUNCH3);		
 	}
 }
 static void sub_35aee(Player *ply) {
@@ -1208,13 +1205,13 @@ static void sub_35b22(Player *ply) {
 			ply->Move = 8;
 			CASetAnim2(ply, STATUS_PUNCH, ply->Move);
 			BumpDiff_PowerMove();
-			soundsting(0x47);
+			soundsting(SOUND_HUA);
 		} else {
 			if (--ply->LocalTimer == 0) {
 				sub_35af8(ply);
 			} else {
 				if ((g.libsplatter & 0xf) == 0) {
-					soundsting(0x3c);
+					soundsting(SOUND_SWOOSH3);
 				}
 				PLAYERTICK;
 			}
@@ -1228,7 +1225,7 @@ static void sub_35b22(Player *ply) {
 				} else {
 					NEXT(ply->mode2);
 					CASetAnim1(ply, 0x4c);
-					soundsting(0x47);
+					soundsting(SOUND_HUA);
 				}
 				break;
 			case 2:
@@ -1380,7 +1377,7 @@ static void sub_35174(Player *ply) {
 						ply->mode2 = 8;
 						ply->Move = 4;
 						CASetAnim2(ply, STATUS_PUNCH, ply->Move);
-						soundsting(0x46);
+						soundsting(SOUND_GINK);
 						return;
 					}
 				} else if (ply->OppXDist <= 0x38) {
@@ -1476,7 +1473,7 @@ static void sub_35400(Player *ply) {
 						ply->Flip = ply->IsWithinBounds ^ 1;
 						ply->Move = 6;
 						CASetAnim2(ply, STATUS_PUNCH, ply->Move);
-						soundsting(0x47);
+						soundsting(SOUND_HUA);
 						return;
 					}
 				} else if (ply->OppXDist <= 0x38) {
@@ -1566,7 +1563,7 @@ static void sub_3559c(Player *ply) {
 						ply->Flip = ply->IsWithinBounds;
 						ply->Move = 6;
 						CASetAnim2(ply, STATUS_KICK, ply->Move);
-						soundsting(0x47);
+						soundsting(SOUND_HUA);
 						return;
 					}
 				}
@@ -1623,7 +1620,7 @@ static void sub_356a0(Player *ply) {
 						ply->Flip = ply->IsWithinBounds;
 						ply->Move = 7;
 						CASetAnim2(ply, STATUS_KICK, ply->Move);
-						soundsting(0x47);
+						soundsting(SOUND_HUA);
 						return;
 					}
 				}
@@ -1700,7 +1697,7 @@ static void sub_357fc(Player *ply) {
 						ply->Move  = 3;
 						ply->Flip  = ply->IsWithinBounds ^ 1;
 						CASetAnim2(ply, STATUS_CROUCH_PUNCH, ply->Move);
-						soundsting(0x46);
+						soundsting(SOUND_GINK);
 						return;
 					}
 				} else if (ply->OppXDist <= 0x38) {
@@ -1763,7 +1760,7 @@ static void sub_35922(Player *ply) {
 						ply->Move  = 4;
 						ply->Flip  = ply->IsWithinBounds ^ 1;
 						CASetAnim2(ply, STATUS_CROUCH_PUNCH, ply->Move);
-						soundsting(0x46);
+						soundsting(SOUND_GINK);
 						return;
 					}
 				} else if (zang_setupthrow(ply)) {

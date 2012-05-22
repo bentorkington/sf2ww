@@ -104,7 +104,7 @@ static void sub_36d20(Player *ply) {
 					obj->UserByte = ply->PunchKick;
 					obj->Owner = ply;
 					ply->Projectile = obj;
-					soundsting(0x76);
+					soundsting(SOUND_TIGER);
 				}
 				obj->LocalTimer = 0x19;
 			} 

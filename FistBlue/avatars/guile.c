@@ -21,6 +21,7 @@
 #include "sound.h"
 #include "lib.h"
 #include "gfxlib.h"
+#include "sf2io.h"
 
 #include "projectiles.h"
 #include "guile.h"
@@ -148,13 +149,13 @@ static void sub_2f850(Player *ply) {		/* 2f850 Guile stand punch */
 						_GuileExitStand(ply);
 					} else if (AF2 == 0) {
 						PLAYERTICK;
-					} else if (~ply->JoyDecodeDash.full & ply->JoyDecode.full & 0x10) {
+					} else if (~ply->JoyDecodeDash.full & ply->JoyDecode.full & BUTTON_A) {
 						if(PSSetNextAction(ply)) {
 							plstat_do_nextaction(ply);
 						} else {
 							g.HumanMoveCnt++;
 							ply->Opponent->SufferHB5 = 0;
-							if (ply->OppXDist >= 0x14) {
+							if (ply->OppXDist >= 20) {
 								ply->Move = 1;
 							} else {
 								ply->Move = 0;
@@ -229,9 +230,7 @@ static void sub_2f850(Player *ply) {		/* 2f850 Guile stand punch */
 						NEXT(ply->mode2);
 						sub_36d6(ply, 
 								 ply->Flip ? 128 : -128,
-								 0,
-								 2, ply->Flip, 0xd, // traj, direction, damage
-								 46, 2);			// Sound effect
+								 0, 2, ply->Flip, 13, 46, 2);			
 						ActStartScreenWobble();		// Screen wobble
 					} else {
 						PLAYERTICK;
@@ -264,7 +263,7 @@ static void sub_2fa2c(Player *ply) {
 					if (AF1) {
 						_GuileExitStand(ply);
 					} else if (AF2 
-					           && (~ply->JoyDecodeDash.full & ply->JoyDecode.full & 0x100) ) {
+					           && (~ply->JoyDecodeDash.full & ply->JoyDecode.full & BUTTON_D) ) {
 						if (PSSetNextAction(ply)) {
 							plstat_do_nextaction(ply);
 						} else {
@@ -306,7 +305,7 @@ static void sub_2faf8(Player *ply) {
 				case 2:
 					if (AF1) {
 						_GuileExitCrouch(ply);
-					} else if (AF2 && (NEWBUTTONS & 0x10)) {
+					} else if (AF2 && (NEWBUTTONS & BUTTON_A)) {
 						if(PSSetNextAction(ply)) {
 							plstat_do_nextaction(ply);
 						} else {
@@ -342,7 +341,7 @@ static void sub_2fbac(Player *ply) {
 				case 2:
 					if (AF1) {
 						_GuileExitCrouch(ply);
-					} else if (AF2 && (NEWBUTTONS & 0x100)) {
+					} else if (AF2 && (NEWBUTTONS & BUTTON_D)) {
 						if(PSSetNextAction(ply)) {
 							plstat_do_nextaction(ply);
 						} else {
@@ -434,7 +433,7 @@ static void sub_2fc80(Player *ply) {
 				case 6:
 					PLAYERTICK;
 					if (AF1) {
-						set_throw_trajectory(ply, 0, ply->Flip, 0x20);
+						set_throw_trajectory(ply, 0, ply->Flip, 0x20);	//XXX high damage!
 						_GuileExitJump(ply);
 					}
 					break;
@@ -470,7 +469,7 @@ static void sub_2fc80(Player *ply) {
 					ply->Timer2 = 12;
 					ply->Opponent->Timer2 = 12;
 					
-					sub_36d6(ply, ply->Flip ? 16 : -16, 0x3c, 10, ply->Flip, 16, 0x2e, 2);
+					sub_36d6(ply, (ply->Flip ? 16 : -16), 0x3c, 10, ply->Flip, 16, 0x2e, 2);
 					ActStartScreenWobble();
 					break;
 				case 6:
@@ -497,14 +496,14 @@ void PSCBAttackGuile(Player *ply) {		/* PLSTAT_ATTACKING callback */
 		ud->x008d++;
 		
 		switch (ply->StandSquat) {
-			case 0:			//2f840 Standing
+			case PLY_STAND:	
 				STDPUNCHKICK(sub_2f850, sub_2fa2c);
 				break;
-			case 2:				//2fae8 Crouching 
+			case PLY_CROUCH:
 				STDPUNCHKICK(sub_2faf8, sub_2fbac)
 				break;
-			case 4:
-				sub_2fc80(ply);	// Throwing
+			case PLY_THROW:
+				sub_2fc80(ply);
 				break;
 			FATALDEFAULT;
 		}
@@ -706,10 +705,7 @@ static void guile_comp_punch(Player *ply) {	// 33b86
 					break;
 				case 2:
 					if (ply->CompDoThrow) {
-						ply->Throw[0] = -24;
-						ply->Throw[1] = 0x35;
-						ply->Throw[2] = 24;
-						ply->Throw[3] = 16;
+						PLY_THROW_SET(-24, 0x0035, 24, 16);
 						if (throwvalid(ply)) {
 							ply->Move = 6;
 							return;
@@ -720,10 +716,7 @@ static void guile_comp_punch(Player *ply) {	// 33b86
 					break;
 				case 4:
 					if (ply->CompDoThrow) {
-						ply->Throw[0] = -24;
-						ply->Throw[1] = 0x35;
-						ply->Throw[2] = 24;
-						ply->Throw[3] = 16;
+						PLY_THROW_SET(-24, 0x0035, 24, 16);
 						if (throwvalid(ply)) {
 							ply->Move = 7;
 							return;
@@ -1218,10 +1211,7 @@ static short sub_3414c(Player *ply) {
 	switch (ply->PunchKick) {
 		case PLY_PUNCHING:
 			if (ply->ButtonStrength) {
-				ply->Throw[0] = 0xffe2;
-				ply->Throw[1] = 0x38;
-				ply->Throw[2] = 0x25;
-				ply->Throw[3] = 0x24;
+				PLY_THROW_SET(0xffe2, 0x0038, 0x0025, 0x0024);
 				if (airthrowvalid(ply)) {
 					ply->Move = 0;
 					ply->mode1 = 0xa;
@@ -1232,10 +1222,7 @@ static short sub_3414c(Player *ply) {
 			break;
 		case PLY_KICKING:
 			if (ply->ButtonStrength) {
-				ply->Throw[0] = 0xffe2;
-				ply->Throw[1] = 0x38;
-				ply->Throw[2] = 0x25;
-				ply->Throw[3] = 0x24;
+				PLY_THROW_SET(0xffe2, 0x0038, 0x0025, 0x0024);
 				if (airthrowvalid(ply)) {
 					ply->Move = 1;
 					ply->mode1 = 0xa;
@@ -1650,10 +1637,7 @@ static short GuileStandMove(Player *ply) {		/* 2f3b2*/
 						return _GuileMidPunch(ply);
 					} else {
 						/* 2f404 */
-						ply->Throw[0] = 0xffe8;
-						ply->Throw[1] = 0x35;
-						ply->Throw[2] = 0x18;
-						ply->Throw[3] = 0x10;
+						PLY_THROW_SET(0xffe8, 0x0035, 0x0018, 0x0010);
 						if (throwvalid(ply)) {
 							/* Twist-throw, or Invisible Throw bug */
 							ply->Move = 6;
@@ -1668,10 +1652,7 @@ static short GuileStandMove(Player *ply) {		/* 2f3b2*/
 						return _GuileBigPunch(ply);
 					} else {
 						/* 2f452 */
-						ply->Throw[0] = 0xffe8;
-						ply->Throw[1] = 0x35;
-						ply->Throw[2] = 0x18;
-						ply->Throw[3] = 0x10;
+						PLY_THROW_SET(0xffe8, 0x0035, 0x0018, 0x0010);
 						if (throwvalid(ply)) {
 							/* Backbreaker throw */
 							ply->Move = 7;
@@ -1755,10 +1736,7 @@ static short GuileJumpMove(Player *ply) {		// 2f5e2
 					break;
 				case 2:
 					if (sub_2f6fa(ply) && (ply->JoyDecode.full & 0x7)) {
-						ply->Throw[0] = -30;
-						ply->Throw[1] =  56;
-						ply->Throw[2] =  37;
-						ply->Throw[3] =  36;
+						PLY_THROW_SET(-30, 56, 37, 36);
 						if (airthrowvalid(ply)) {
 							ply->Move = 0;
 							ud->AirThrow = TRUE;
@@ -1773,10 +1751,7 @@ static short GuileJumpMove(Player *ply) {		// 2f5e2
 				case 4:
 					// 2f6a8
 					if (sub_2f6fa(ply) && (ply->JoyDecode.full & 7)) {
-						ply->Throw[0] = -30;
-						ply->Throw[1] =  56;
-						ply->Throw[2] =  37;
-						ply->Throw[3] =  36;
+						PLY_THROW_SET(-30, 56, 37, 36);
 						if (airthrowvalid(ply)) {
 							ply->Move = 0;
 							ud->AirThrow = TRUE;
@@ -1809,10 +1784,7 @@ static short GuileJumpMove(Player *ply) {		// 2f5e2
 					break;
 				case 2:
 					if (sub_2f6fa(ply) && (ply->JoyDecode.full & 7)) {
-						ply->Throw[0] = -30;
-						ply->Throw[1] =  56;
-						ply->Throw[2] =  37;
-						ply->Throw[3] =  36;
+						PLY_THROW_SET(-30, 56, 37, 36);
 						if (airthrowvalid(ply)) {
 							ply->Move = 1;
 							ud->AirThrow2 = TRUE;
@@ -1827,10 +1799,7 @@ static short GuileJumpMove(Player *ply) {		// 2f5e2
 					break;
 				case 4:
 					if (sub_2f6fa(ply) && (ply->JoyDecode.full & 7)) {
-						ply->Throw[0] = -30;
-						ply->Throw[1] =  56;
-						ply->Throw[2] =  37;
-						ply->Throw[3] =  36;
+						PLY_THROW_SET(-30, 56, 37, 36);
 						if (airthrowvalid(ply)) {
 							ply->Move = 1;
 							ud->AirThrow2 = TRUE;
@@ -1872,7 +1841,7 @@ static void guile_attack_bison(Player *ply) {
 				{ply->Flip = 0;} else {ply->Flip = 1;}
 				ply->Step = ply->Flip;
 				ply->Path = data_3003c;
-				CASetAnim2(ply, 0, 0);	// walk up to M.Bison
+				CASetAnim2(ply, STATUS_WALKING, 0);	// walk up to M.Bison
 				PLAYERTICK;
 				break;
 			case 2:
@@ -1889,7 +1858,7 @@ static void guile_attack_bison(Player *ply) {
 						}
 					}
 					if (obj=AllocActor()) {
-						INITOBJC(obj,0x25, 0xb, 0, 0);
+						INITOBJC(obj, 0x25, 0xb, 0, 0);
 						obj->Pool = 6;
 						obj->Owner = ply;
 					}
