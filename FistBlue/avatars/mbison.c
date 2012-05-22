@@ -100,12 +100,12 @@ void sub_3623e(Player *ply) {		// 3623e cape processing
 	switch (ply->UserData[5]) {
 		case 0:
 			NEXT(ply->UserData[5]);
-			CASetAnim2(ply, 0x42, 0);
+			CASetAnim2(ply, STATUS_KICK, 0);
 			break;
 		case 2:
 			if (g.x0305 == 0) {
 				NEXT(ply->UserData[5]);
-				CASetAnim2(ply, 0x42, 1);
+				CASetAnim2(ply, STATUS_KICK, 1);
 				return;
 			} 
 			/* FALLTHRU */
@@ -156,7 +156,7 @@ static void sub_36318(Player *ply) {
 							ply->mode2 = 4;
 							ply->Flip = ply->IsWithinBounds ^ 1;
 							ply->Move = 3;
-							CASetAnim2(ply, 0x44, ply->Move);
+							CASetAnim2(ply, STATUS_CROUCH_PUNCH, ply->Move);
 							return;
 						}
 					} 
@@ -282,7 +282,7 @@ static void sub_3645e(Player *ply) {
 				case 0:
 					NEXT(ply->mode2);
 					ply->Move = 0;
-					CASetAnim2(ply, 0x46, ply->Move);
+					CASetAnim2(ply, STATUS_CROUCH_KICK, ply->Move);
 					quirkysound(0);
 					break;
 				case 2:
@@ -322,7 +322,7 @@ static void sub_3645e(Player *ply) {
 				case 0:
 					NEXT(ply->mode2);
 					ply->Move = 2;
-					CASetAnim2(ply, 0x46, ply->Move);
+					CASetAnim2(ply, STATUS_CROUCH_KICK, ply->Move);
 					break;
 				case 2:
 					if (AF2 == 0) {

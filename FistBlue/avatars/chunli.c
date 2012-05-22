@@ -482,7 +482,7 @@ static int sub_3067c(Player *ply) {
 					break;
 				FATALDEFAULT;
 			}
-			CASetAnim2(ply, 0x48, ply->Move);
+			CASetAnim2(ply, STATUS_JUMP_PUNCH, ply->Move);
 			break;
 		case PLY_KICKING:
 			ud->x0091 = 0;
@@ -521,7 +521,7 @@ static int sub_3067c(Player *ply) {
 					break;
 				FATALDEFAULT;
 			}
-			CASetAnim2(ply, 0x4a, ply->Move);
+			CASetAnim2(ply, STATUS_JUMP_KICK, ply->Move);
 			break;
 		FATALDEFAULT;
 	}
@@ -575,7 +575,7 @@ static void sub_308b2(Player *ply) {		// 308b2 sm for most moves
 	switch (ply->mode2) {
 		case 0:
 			NEXT(ply->mode2);
-			CASetAnim2(ply, (short []){0x40,0x42,0x44,0x46}
+			CASetAnim2(ply, (short []){STATUS_PUNCH, STATUS_KICK, 0x44,0x46}
 					   [ply->StandSquat + (ply->PunchKick/2)],
 					   ply->Move);
 			break;
@@ -593,7 +593,7 @@ static void sub_308b2(Player *ply) {		// 308b2 sm for most moves
 					} else {
 						ply->Move = ud->x00a3;
 					}
-					CASetAnim2(ply, (short []){0x40,0x42,0x44,0x46}
+					CASetAnim2(ply, (short []){STATUS_PUNCH,STATUS_KICK,0x44,0x46}
 							   [ply->StandSquat + (ply->PunchKick/2)],
 							   ply->Move);
 					
@@ -610,7 +610,7 @@ static void sub_30942(Player *ply) {
 		case 0:
 			NEXT(ply->mode2);
 			ply->Flip = ply->JoyDecode.full & 1;
-			CASetAnim2(ply, 0x40, ply->Move);
+			CASetAnim2(ply, STATUS_PUNCH, ply->Move);
 			soundsting(0x48);
 			break;
 		case 2:
@@ -640,7 +640,7 @@ static void sub_309ee(Player *ply) {
 	switch (ply->mode2) {
 		case 0:
 			NEXT(ply->mode2);
-			CASetAnim2(ply, 0x42, ply->Move);
+			CASetAnim2(ply, STATUS_KICK, ply->Move);
 			break;
 		case 2:
 			PLAYERTICK;
@@ -677,7 +677,7 @@ static void sub_30a6a(Player *ply) {
 			ply->AclX.full = 0;
 			ply->Jumping = 1;
 			ply->YPI += 0x10;
-			CASetAnim2(ply, 0x42, ply->Move);
+			CASetAnim2(ply, STATUS_KICK, ply->Move);
 			break;
 		case 2:
 			CATrajectory((Object *)ply);
@@ -757,7 +757,7 @@ static void sub_30afe(Player *ply) {
 					if (ply->VelY.full < 0) {
 						if (check_ground_collision(ply)) {
 							NEXT(ply->mode2);
-							CASetAnim2(ply, 0x48, 8);
+							CASetAnim2(ply, STATUS_JUMP_PUNCH, 8);
 							return;
 						}
 					}
@@ -894,7 +894,7 @@ void PSCBVictoryChunLi(Player *ply) {
 static void sub_34d9a(Player *ply) {		// 34d9a
 	CASetAnim2(
 			   ply, 
-			   (short []){0x40, 0x42, 0x44, 0x46}[ply->StandSquat + ply->PunchKick/2],
+			   (short []){STATUS_PUNCH, 0x42, 0x44, 0x46}[ply->StandSquat + ply->PunchKick/2],
 				ply->Move
 	);
 }
@@ -975,7 +975,7 @@ static void sub_347ec(Player *ply) {
 			ply->mode2 = 4;
 			ply->Flip = ply->IsWithinBounds;
 			ply->Move = 7;
-			CASetAnim2(ply, 0x40, ply->Move);
+			CASetAnim2(ply, STATUS_PUNCH, ply->Move);
 			queuesound(SOUND_CHUNLI_YUP);
 			return;
 		}
@@ -1039,7 +1039,7 @@ static void sub_34744(Player *ply) {
 					ply->mode2 = 4;
 					ply->Flip = ply->IsWithinBounds;
 					ply->Move = 7;
-					CASetAnim2(ply, 0x40, ply->Move);
+					CASetAnim2(ply, STATUS_PUNCH, ply->Move);
 					queuesound(SOUND_CHUNLI_YUP);
 					return;
 				}
@@ -1054,7 +1054,7 @@ static void sub_34744(Player *ply) {
 			break;
 		case 4:
 			NEXT(ply->mode2);
-			CASetAnim2(ply, 0x40, ply->Move);
+			CASetAnim2(ply, STATUS_PUNCH, ply->Move);
 			break;
 		case 6:
 			sub_34874(ply);
@@ -1078,7 +1078,7 @@ static void sub_347d4(Player *ply) {
 			break;
 		case 4:
 			NEXT(ply->mode2);
-			CASetAnim2(ply, 0x40, ply->Move);
+			CASetAnim2(ply, STATUS_PUNCH, ply->Move);
 			break;
 		case 6:
 			sub_34874(ply);
@@ -1125,7 +1125,7 @@ static void sub_34906(Player *ply) {
 			break;
 		case 4:
 			NEXT(ply->mode2);
-			CASetAnim2(ply, 0x42, ply->Move);
+			CASetAnim2(ply, STATUS_KICK, ply->Move);
 			break;
 		case 6:
 			PLAYERTICK;
@@ -1168,7 +1168,7 @@ static void sub_349c0(Player *ply) {
 			quirkysound(2);
 			ply->Airborne = AIR_JUMPING;
 			ply->YPI += 16;
-			CASetAnim2(ply, 0x42, ply->Move);
+			CASetAnim2(ply, STATUS_KICK, ply->Move);
 			break;
 		case 6:
 			CATrajectory((Object *)ply);
@@ -1396,15 +1396,15 @@ int PLCBCompJumpChunLi(Player *ply) {		// 34596
 		case PLY_PUNCHING:
 			switch (ply->ButtonStrength) {
 				case 0:
-					CASetAnim2(ply, 0x48, (ply->VelX.full ? 3 : 0));
+					CASetAnim2(ply, STATUS_JUMP_PUNCH, (ply->VelX.full ? 3 : 0));
 					quirkysound(0);
 					break;
 				case 2:
-					CASetAnim2(ply, 0x48, (ply->VelX.full ? 4 : 1));
+					CASetAnim2(ply, STATUS_JUMP_PUNCH, (ply->VelX.full ? 4 : 1));
 					quirkysound(1);
 					break;
 				case 4:
-					CASetAnim2(ply, 0x48, (ply->VelX.full ? 5 : 2));
+					CASetAnim2(ply, STATUS_JUMP_PUNCH, (ply->VelX.full ? 5 : 2));
 					quirkysound(2);
 					break;
 				FATALDEFAULT;
@@ -1414,7 +1414,7 @@ int PLCBCompJumpChunLi(Player *ply) {		// 34596
 			ud->x0091 = 0;
 			switch (ply->ButtonStrength) {
 				case 0:
-					CASetAnim2(ply, 0x4a, (ply->VelX.full ? 5 : 1));
+					CASetAnim2(ply, STATUS_JUMP_KICK, (ply->VelX.full ? 5 : 1));
 					quirkysound(0);
 					break;
 				case 2:
@@ -1422,15 +1422,15 @@ int PLCBCompJumpChunLi(Player *ply) {		// 34596
 						ud->x0091 = 1;
 						ud->x0092 = 0;	
 						ud->x0093 = 0;
-						CASetAnim2(ply, 0x4a, (ply->VelX.full ? 8 : 1));
+						CASetAnim2(ply, STATUS_JUMP_KICK, (ply->VelX.full ? 8 : 1));
 						quirkysound(1);
 					} else {
-						CASetAnim2(ply, 0x4a, (ply->VelX.full ? 6 : 3));
+						CASetAnim2(ply, STATUS_JUMP_KICK, (ply->VelX.full ? 6 : 3));
 						quirkysound(1);						
 					}
 					break;
 				case 4:
-					CASetAnim2(ply, 0x4a, (ply->VelX.full ? 7 : 4));
+					CASetAnim2(ply, STATUS_JUMP_KICK, (ply->VelX.full ? 7 : 4));
 					quirkysound(2);
 					break;
 				FATALDEFAULT;

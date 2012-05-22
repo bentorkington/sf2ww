@@ -33,7 +33,7 @@ int PLCBCompJumpSagat (Player *ply) {		// 36cd6
 	} else {
 		ply->Move = ply->ButtonStrength + 1;
 	}
-	CASetAnim2(ply, 0x48, ply->Move);
+	CASetAnim2(ply, STATUS_JUMP_PUNCH, ply->Move);
 	return TRUE;
 }
 
@@ -89,7 +89,7 @@ static void sub_36d20(Player *ply) {
 		case 0:
 			//suicide code removed
 			NEXT(ply->mode2);
-			CASetAnim2(ply, 0x4a, ply->PunchKick / 2);			
+			CASetAnim2(ply, STATUS_JUMP_KICK, ply->PunchKick / 2);			
 			break;
 		case 2:
 			if (AF1) {

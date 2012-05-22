@@ -144,9 +144,9 @@ static int sub_3257a(Player *ply) {
 static void sub_32480(Player *ply, int move) {
 	ply->Move = move;
 	if (ply->PunchKick) {
-		CASetAnim2(ply, 0x4a, move);
+		CASetAnim2(ply, STATUS_JUMP_KICK, move);
 	} else {
-		CASetAnim2(ply, 0x48, move);
+		CASetAnim2(ply, STATUS_JUMP_PUNCH, move);
 	}
 }
 static void sub_32a58(Player *ply, DM *dm, int buttons) {
@@ -261,7 +261,7 @@ void PSCBAttackDhalsim(Player *ply) {			// 3258e
 					}
 				} else {
 					quirkysound(ply->ButtonStrength / 2);
-					setstatus4(ply, (ply->PunchKick ? 0x42 : 0x40));
+					setstatus4(ply, (ply->PunchKick ? STATUS_KICK : STATUS_PUNCH));
 				}
 				break;
 			case 2:
@@ -302,7 +302,7 @@ void PSCBAttackDhalsim(Player *ply) {			// 3258e
 									ud->x00f4 = 0xffff0000;
 									ud->x00f0 = (int []){0xa0000, 0xc0000, 0xe0000}[ply->ButtonStrength / 2];
 									quirkysound(ply->ButtonStrength / 2);
-									CASetAnim2(ply, 0x46, ply->Move);
+									CASetAnim2(ply, STATUS_CROUCH_KICK, ply->Move);
 									break;
 								case 2:
 									if (AF2) {
@@ -411,8 +411,6 @@ void PSCBAttackDhalsim(Player *ply) {			// 3258e
 						}
 					}
 				}
-
-				//todo
 				break;
 			FATALDEFAULT;
 		}
@@ -580,14 +578,14 @@ int PLCBJumpDhalsim(Player *ply) {
 				ply->Move = ply->ButtonStrength + 1;
 				ply->Path = (VECT16 *)data_cfaf4;
 				if (ply->PunchKick) {
-					CASetAnim2(ply, 0x4a, ply->ButtonStrength + 1);
+					CASetAnim2(ply, STATUS_JUMP_KICK, ply->ButtonStrength + 1);
 					if (ply->Flip) {
 						ud->x0080 =  0xb;
 					} else {
 						ud->x0080 = 0x15;
 					}
 				} else {
-					CASetAnim2(ply, 0x48, ply->ButtonStrength + 1);
+					CASetAnim2(ply, STATUS_JUMP_PUNCH, ply->ButtonStrength + 1);
 					if (ply->Flip) {
 						ud->x0080 =	 0xa;
 					} else {
@@ -733,14 +731,14 @@ static void sub_35d46(Player *ply) {
 					++ply->Move;
 				}
 				quirkysound(ply->ButtonStrength/2);
-				setstatus4(ply, 0x40);
+				setstatus4(ply, STATUS_PUNCH);
 			} else {
 				ply->Move = ply->ButtonStrength * 2;
 				if (ply->OppXDist > (short []){51, 56, 66}[ply->ButtonStrength/2]) {
 					ply->Move += 2;
 				}
 				quirkysound(ply->ButtonStrength - 1);
-				setstatus4(ply, 0x42);
+				setstatus4(ply, STATUS_KICK);
 			}
 			break;
 		case 2:
@@ -799,7 +797,7 @@ static void sub_35de0(Player *ply) {
 							NEXT(ply->mode2);
 							ud->x00f4 = 0xffff0000;
 							ud->x00f0 = (int[]){0xa0000,0xc0000,0xe0000}[ply->ButtonStrength/2];
-							CASetAnim2(ply, 0x46, ply->Move);
+							CASetAnim2(ply, STATUS_CROUCH_KICK, ply->Move);
 							break;
 						case 2:
 							if (AF2) {
@@ -820,7 +818,7 @@ static void sub_35de0(Player *ply) {
 							if (((g.libsplatter + ply->Side) & 3) == 0) {
 								if (ply->OnPlatform2 && ply->OnPlatform == 0) {
 									ply->OnPlatform2 = FALSE;
-									comp_setjumping_main(ply);		// todo checkme, @2c5c0
+									comp_setjumping_main(ply);	
 								}
 							}
 							break;

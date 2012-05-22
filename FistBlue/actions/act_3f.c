@@ -36,11 +36,11 @@ const CAFrame actlist_2104a[] = {
 
 void action_3f(Object *obj) {
 	UD ud=(UD)&obj->UserData;
-
+	extern const VECT16 data_cfe74[];
 	switch (obj->mode0) {
 		case 0:
 			NEXT(obj->mode0);
-			// todo obj->Path = data_cfe74;
+			obj->Path = data_cfe74;
 			obj->XPI = 192;
 			obj->YPI = 144;
 			setaction_direct(obj, actlist_2104a);

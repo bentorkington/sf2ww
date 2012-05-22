@@ -66,7 +66,7 @@ static void sub_36f64(Player *ply) {
 					break;
 					FATALDEFAULT;
 			}
-			CASetAnim2(ply, (ply->PunchKick ? 0x42 : 0x40), ply->Move);
+			CASetAnim2(ply, (ply->PunchKick ? STATUS_KICK : STATUS_PUNCH), ply->Move);
 			PLAYERTICK;
 			break;
 		case 2:
@@ -127,7 +127,7 @@ static void sub_37114(Player *ply) {
 					break;
 				FATALDEFAULT;
 			}
-			CASetAnim2(ply, 0x44, ply->Move);
+			CASetAnim2(ply, STATUS_CROUCH_PUNCH, ply->Move);
 			PLAYERTICK;
 			break;
 		case 2:
@@ -269,7 +269,7 @@ int PLCBCompJumpBalrog (Player *ply) {			//371c2
 					break;
 					FATALDEFAULT;
 			}
-			CASetAnim2(ply, 0x46, ply->Move);
+			CASetAnim2(ply, STATUS_CROUCH_KICK, ply->Move);
 			break;
 		case PLY_KICKING:
 			/* nothing */

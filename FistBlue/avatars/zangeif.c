@@ -87,7 +87,7 @@ static int zang_setupthrow(Player *ply) {
 }
 inline static void sub_315b8(Player *ply) {
 	CASetAnim2(ply, 
-			   (short[]){0x40,0x42,0x44,0x46}[((ply->StandSquat * 2) + ply->PunchKick)/2], 
+			   (short[]){STATUS_PUNCH, STATUS_KICK, 0x44, 0x46}[((ply->StandSquat * 2) + ply->PunchKick)/2], 
 			   ply->Move
 			   );	
 }
@@ -459,7 +459,7 @@ int PLCBJumpZangeif(Player *ply) {			// 30f8c
 					case 4: sub_314a4(ply); break;
 						FATALDEFAULT;
 				}
-				CASetAnim2(ply, 0x48, ply->Move);
+				CASetAnim2(ply, STATUS_JUMP_PUNCH, ply->Move);
 				return TRUE;
 				break;
 			case PLY_KICKING:
@@ -469,7 +469,7 @@ int PLCBJumpZangeif(Player *ply) {			// 30f8c
 					case 4: sub_31534(ply); break;
 					FATALDEFAULT;
 				}
-				CASetAnim2(ply, 0x4a, ply->Move);
+				CASetAnim2(ply, STATUS_JUMP_KICK, ply->Move);
 				return TRUE;
 				break;
 			FATALDEFAULT;
@@ -586,7 +586,7 @@ static void sub_31654(Player *ply) {		// lariat punch
 	if (ply->mode2 == 0) {
 		NEXT(ply->mode2);
 		ply->LocalTimer = 60;
-		CASetAnim2(ply, 0x40, ply->Move);
+		CASetAnim2(ply, STATUS_PUNCH, ply->Move);
 		BumpDiff_PowerMove();
 	} else {
 		if (--ply->LocalTimer) {
@@ -614,7 +614,7 @@ static void sub_31696(Player *ply) {
 			random_damage_adjust_2(ply, 0x23);
 			random_damage_adjust_1(ply, 12, 5);
 			ud->x0088.full = data_316f4[ud->x0092];
-			CASetAnim2(ply, (ply->StandSquat ? 0x44 : 0x40), ply->Move);
+			CASetAnim2(ply, (ply->StandSquat ? STATUS_CROUCH_PUNCH : STATUS_PUNCH), ply->Move);
 			break;
 		case 2:
 			if (--ud->x0088.full == 0) {
@@ -651,7 +651,7 @@ static void sub_31780(Player *ply) {
 	switch (ply->mode2) {
 		case 0:
 			NEXT(ply->mode2);
-			CASetAnim2(ply, 0x40, ply->Move);
+			CASetAnim2(ply, STATUS_PUNCH, ply->Move);
 			soundsting(0x46);
 			break;
 		case 2:
@@ -713,7 +713,7 @@ static void sub_318b0(Player *ply) {
 		case 0:
 			NEXT(ply->mode2);
 			ply->Flip = ((ply->JoyDecode.full & 1) ? 0 : 1);
-			CASetAnim2(ply, 0x40, ply->Move);
+			CASetAnim2(ply, STATUS_PUNCH, ply->Move);
 			soundsting(0x47);
 			break;
 		case 2:
@@ -751,7 +751,7 @@ static void sub_3198c(Player *ply) {
 		case 0:
 			NEXT(ply->mode2);
 			ply->Flip = ((ply->JoyDecode.full & 2) ? 0 : 1);
-			CASetAnim2(ply, 0x42, ply->Move);
+			CASetAnim2(ply, STATUS_KICK, ply->Move);
 			soundsting(0x47);
 			break;
 		case 2:
@@ -789,7 +789,7 @@ static void sub_31a46(Player *ply) {
 		case 0:
 			NEXT(ply->mode2);
 			ply->Flip = ((ply->JoyDecode.full & 2) ? 0 : 1);
-			CASetAnim2(ply, 0x42, ply->Move);
+			CASetAnim2(ply, STATUS_KICK, ply->Move);
 			soundsting(0x47);
 			break;
 		case 2:
@@ -827,7 +827,7 @@ static void sub_31b2c(Player *ply) {
 		case 0:
 			NEXT(ply->mode2);
 			ply->Flip = ((ply->JoyDecode.full & 2) ? 0 : 1);
-			CASetAnim2(ply, 0x44, ply->Move);
+			CASetAnim2(ply, STATUS_CROUCH_PUNCH, ply->Move);
 			soundsting(0x46);
 			break;
 		case 2:
@@ -856,7 +856,7 @@ static void sub_31bbc(Player *ply) {
 	switch (ply->mode2) {
 		case 0:
 			NEXT(ply->mode2);
-			CASetAnim2(ply, 0x44, ply->Move);
+			CASetAnim2(ply, STATUS_CROUCH_PUNCH, ply->Move);
 			soundsting(0x46);
 			break;
 		case 2:
@@ -1126,22 +1126,22 @@ int PLCBCompJumpZangeif (Player *ply) {		// 3500e
 		case PLY_PUNCHING:
 			switch (ply->ButtonStrength) {
 				case 0:
-					CASetAnim2(ply, 0x48, (ply->VelX.full ? 7 : 0));
+					CASetAnim2(ply, STATUS_JUMP_PUNCH, (ply->VelX.full ? 7 : 0));
 					quirkysound(0);
 					break;
 				case 2:
 					if (ply->CompDoAirThrow) {
-						CASetAnim2(ply, 0x48, 8);
+						CASetAnim2(ply, STATUS_JUMP_PUNCH, 8);
 					} else {
-						CASetAnim2(ply, 0x48, (ply->VelX.full ? 2 : 1));						
+						CASetAnim2(ply, STATUS_JUMP_PUNCH, (ply->VelX.full ? 2 : 1));						
 					}
 					quirkysound(1);
 					break;
 				case 4:
 					if (ply->CompDoAirThrow) {
-						CASetAnim2(ply, 0x48, (ply->VelX.full ? 6 : 4));
+						CASetAnim2(ply, STATUS_JUMP_PUNCH, (ply->VelX.full ? 6 : 4));
 					} else {
-						CASetAnim2(ply, 0x48, (ply->VelX.full ? 5 : 3));
+						CASetAnim2(ply, STATUS_JUMP_PUNCH, (ply->VelX.full ? 5 : 3));
 					}
 					quirkysound(2);
 					break;
@@ -1151,15 +1151,15 @@ int PLCBCompJumpZangeif (Player *ply) {		// 3500e
 		case PLY_KICKING:
 			switch (ply->ButtonStrength) {
 				case 0:
-					CASetAnim2(ply, 0x4a, (ply->VelX.full ? 3 : 0));
+					CASetAnim2(ply, STATUS_JUMP_KICK, (ply->VelX.full ? 3 : 0));
 					quirkysound(0);
 					break;
 				case 2:
-					CASetAnim2(ply, 0x4a, (ply->VelX.full ? 4 : 1));
+					CASetAnim2(ply, STATUS_JUMP_KICK, (ply->VelX.full ? 4 : 1));
 					quirkysound(1);
 					break;
 				case 4:
-					CASetAnim2(ply, 0x4a, (ply->VelX.full ? 5 : 2));
+					CASetAnim2(ply, STATUS_JUMP_KICK, (ply->VelX.full ? 5 : 2));
 					quirkysound(2);
 					break;
 					FATALDEFAULT;
@@ -1206,7 +1206,7 @@ static void sub_35b22(Player *ply) {
 			NEXT(ply->mode2);
 			ply->LocalTimer = 60;
 			ply->Move = 8;
-			CASetAnim2(ply, 0x40, ply->Move);
+			CASetAnim2(ply, STATUS_PUNCH, ply->Move);
 			BumpDiff_PowerMove();
 			soundsting(0x47);
 		} else {
@@ -1285,7 +1285,7 @@ static void sub_35b22(Player *ply) {
 }
 static void sub_35ab6(Player *ply) {
 	CASetAnim2(ply, 
-			   (short []){0x40,0x42,0x44,0x46}[(ply->PunchKick/2) + ply->StandSquat], 
+			   (short []){STATUS_PUNCH, STATUS_KICK, 0x44,0x46}[(ply->PunchKick/2) + ply->StandSquat], 
 			   ply->Move);
 }
 static void sub_35ad6(Player *ply)  { 
@@ -1379,7 +1379,7 @@ static void sub_35174(Player *ply) {
 					if (zang_setupthrow(ply)) {
 						ply->mode2 = 8;
 						ply->Move = 4;
-						CASetAnim2(ply, 0x40, ply->Move);
+						CASetAnim2(ply, STATUS_PUNCH, ply->Move);
 						soundsting(0x46);
 						return;
 					}
@@ -1388,7 +1388,7 @@ static void sub_35174(Player *ply) {
 						ply->mode2 = 4;
 						ud->x008e = 0;
 						ply->Move = 5;
-						CASetAnim2(ply, 0x40, ply->Move);
+						CASetAnim2(ply, STATUS_PUNCH, ply->Move);
 						return;
 					}
 				}
@@ -1475,7 +1475,7 @@ static void sub_35400(Player *ply) {
 						ply->mode2 = 8;
 						ply->Flip = ply->IsWithinBounds ^ 1;
 						ply->Move = 6;
-						CASetAnim2(ply, 0x40, ply->Move);
+						CASetAnim2(ply, STATUS_PUNCH, ply->Move);
 						soundsting(0x47);
 						return;
 					}
@@ -1484,7 +1484,7 @@ static void sub_35400(Player *ply) {
 						ply->mode2 = 4;
 						ud->x008e = 1;
 						ply->Move = 5;
-						CASetAnim2(ply, 0x40, ply->Move);
+						CASetAnim2(ply, STATUS_PUNCH, ply->Move);
 						return;
 					}
 				}
@@ -1565,7 +1565,7 @@ static void sub_3559c(Player *ply) {
 						ply->mode2 = 4;
 						ply->Flip = ply->IsWithinBounds;
 						ply->Move = 6;
-						CASetAnim2(ply, 0x42, ply->Move);
+						CASetAnim2(ply, STATUS_KICK, ply->Move);
 						soundsting(0x47);
 						return;
 					}
@@ -1622,7 +1622,7 @@ static void sub_356a0(Player *ply) {
 						ply->mode2 = 4;
 						ply->Flip = ply->IsWithinBounds;
 						ply->Move = 7;
-						CASetAnim2(ply, 0x42, ply->Move);
+						CASetAnim2(ply, STATUS_KICK, ply->Move);
 						soundsting(0x47);
 						return;
 					}
@@ -1699,7 +1699,7 @@ static void sub_357fc(Player *ply) {
 						ply->mode2 = 4;
 						ply->Move  = 3;
 						ply->Flip  = ply->IsWithinBounds ^ 1;
-						CASetAnim2(ply, 0x44, ply->Move);
+						CASetAnim2(ply, STATUS_CROUCH_PUNCH, ply->Move);
 						soundsting(0x46);
 						return;
 					}
@@ -1708,7 +1708,7 @@ static void sub_357fc(Player *ply) {
 						ply->mode2 = 10;
 						ud->x008e  = 2;
 						ply->Move  = 5;
-						CASetAnim2(ply, 0x44, ply->Move);
+						CASetAnim2(ply, STATUS_CROUCH_PUNCH, ply->Move);
 						return;
 					}
 				}
@@ -1762,7 +1762,7 @@ static void sub_35922(Player *ply) {
 						ply->mode2 = 4;
 						ply->Move  = 4;
 						ply->Flip  = ply->IsWithinBounds ^ 1;
-						CASetAnim2(ply, 0x44, ply->Move);
+						CASetAnim2(ply, STATUS_CROUCH_PUNCH, ply->Move);
 						soundsting(0x46);
 						return;
 					}
@@ -1770,7 +1770,7 @@ static void sub_35922(Player *ply) {
 						ply->mode2 = 10;
 						ud->x008e  = 3;
 						ply->Move  = 6;
-						CASetAnim2(ply, 0x44, ply->Move);
+						CASetAnim2(ply, STATUS_CROUCH_PUNCH, ply->Move);
 						return;
 					
 				}

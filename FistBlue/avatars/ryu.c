@@ -310,7 +310,7 @@ static void _RyuSMShoryuken(Player *ply) {		//2d84a
 			ply->Y.full += ud->ShoryukenY.full;
 			ud->ShoryukenY.full += ud->ShoryukenYDash.full;
 			if (ud->ShoryukenY.full < 0) {
-				if (check_ground_collision(ply)) {
+				if (check_ground_collision((Object *)ply)) {
 					NEXT(ply->mode3);
 					ply->Airborne = AIR_ONGROUND;
 					soundsting(SOUND_IMPACT8);
@@ -433,9 +433,9 @@ static void _RyuAttack0(Player *ply) {		// 2d1b4
 		case 0:
 			quirkysound(ply->ButtonStrength / 2);
 			if (ply->PunchKick != 0) {
-				setstatus4(ply, 0x42);
+				setstatus4(ply, STATUS_KICK);
 			} else {
-				setstatus4(ply, 0x40);
+				setstatus4(ply, STATUS_PUNCH);
 			}
 			break;
 		case 2:
@@ -461,10 +461,10 @@ static void _RyuAttack2(Player *ply) {		//2d214
 	switch (ply->mode2) {
 		case 0:
 			quirkysound(ply->ButtonStrength / 2);
-			if (ply->PunchKick != 0) {
-				setstatus4(ply, 0x46);
+			if (ply->PunchKick) {
+				setstatus4(ply, STATUS_CROUCH_KICK);
 			} else {
-				setstatus4(ply, 0x44);
+				setstatus4(ply, STATUS_CROUCH_PUNCH);
 			}
 			break;
 		case 2:
@@ -485,7 +485,6 @@ static void _RyuAttack2(Player *ply) {		//2d214
 		FATALDEFAULT;
 	}
 	actiontick((Object *)ply);
-
 }
 static void _RyuAttack6(Player *ply) {		//2d28e
 	UD *ud=(UD *)&ply->UserData;
@@ -513,7 +512,7 @@ static void _RyuAttack6(Player *ply) {		//2d28e
 						actiontick((Object *)ply);
 						break;
 					case 2:
-						if(_RyuAtApex(ply) < 0) { check_ground_collision(ply); }
+						if(_RyuAtApex(ply) < 0) { check_ground_collision((Object *)ply); }
 						if (AF2) {
 							/* inlined 2d2d0 */
 							set_throw_trajectory(ply, 0, ply->Flip ^ 1, 0xd);
@@ -523,7 +522,7 @@ static void _RyuAttack6(Player *ply) {		//2d28e
 						break;
 					case 4:
 						if(_RyuAtApex(ply) < 0) {
-							if(check_ground_collision(ply)) {
+							if(check_ground_collision((Object *)ply)) {
 								NEXT(ply->mode3);
 								ActStartScreenWobble(); 
 							}
@@ -609,7 +608,6 @@ static void _RyuPowerStrCheck(Player *ply, char *user, u16 d0){		//2d632
 }
 static void RyuCheckSequence(Player *ply, u16 *movedata, char *otherdata, char *user) {	// 2d58e
 	u16 buttons;
-	//printf("RCS %d %d %d\n", user[0], user[1], user[2]);
 	switch (user[0]) {
 		case 0:
 			if ((ply->JoyCorrect2 & 0xf) == movedata[0]) {
@@ -859,7 +857,7 @@ static void _RyuSMHurricane(Player *ply) {		//2d96e
 			break;
 		case 4:
 			_RyuAtApex(ply);
-			if (check_ground_collision(ply)) {
+			if (check_ground_collision((Object *)ply)) {
 				NEXT(ply->mode2);
 				ply->mode3=0;
 				ply->Airborne = AIR_ONGROUND;
@@ -1061,7 +1059,7 @@ void PLCBCompAttackRyuKen(Player *ply) {
 									break;
 								case 2:
 									if(_RyuAtApex(ply) < 0) {
-										check_ground_collision(ply);
+										check_ground_collision((Object *)ply);
 									}
 									if (ply->AnimFlags & 0xff) {
 										ryu_throwtrajectory(ply);
@@ -1071,7 +1069,7 @@ void PLCBCompAttackRyuKen(Player *ply) {
 									break;
 								case 4:
 									if(_RyuAtApex(ply)<0) {
-										if(check_ground_collision(ply)){
+										if(check_ground_collision((Object *)ply)){
 											NEXT(ply->mode3);
 											ActStartScreenWobble();
 										}

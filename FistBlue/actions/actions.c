@@ -1292,7 +1292,9 @@ static void action_13(Object *obj) {  // 119ee
 				check_rect_queue_draw(obj);
 			}
 			break;
-			// todo destructor
+		case 4:
+		case 6:
+			FreeActor(obj);
 		default:
 			break;
 	}

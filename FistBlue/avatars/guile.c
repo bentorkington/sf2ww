@@ -141,7 +141,7 @@ static void sub_2f850(Player *ply) {		/* 2f850 Guile stand punch */
 			switch (ply->mode2) {		// 2f86e		Little punches
 				case 0:
 					NEXT(ply->mode2);
-					CASetAnim2(ply, 0x40, ply->Move);
+					CASetAnim2(ply, STATUS_PUNCH, ply->Move);
 					break;
 				case 2:
 					if (AF1) {
@@ -159,7 +159,7 @@ static void sub_2f850(Player *ply) {		/* 2f850 Guile stand punch */
 							} else {
 								ply->Move = 0;
 							}
-							CASetAnim2(ply, 0x40, ply->Move);
+							CASetAnim2(ply, STATUS_PUNCH, ply->Move);
 							quirkysound(0);
 						}
 					} else {
@@ -176,7 +176,7 @@ static void sub_2f850(Player *ply) {		/* 2f850 Guile stand punch */
 			switch (ply->mode2) {		// 2f8f4 All other punches
 				case 0:
 					NEXT(ply->mode2);
-					CASetAnim2(ply, 0x40, ply->Move);
+					CASetAnim2(ply, STATUS_PUNCH, ply->Move);
 					break;
 				case 2:
 					if (AF1) {
@@ -193,7 +193,7 @@ static void sub_2f850(Player *ply) {		/* 2f850 Guile stand punch */
 				case 0:
 					NEXT(ply->mode2);
 					ply->Flip = ply->JoyDecode.full & 1 ? 0 : 1;
-					CASetAnim2(ply, 0x40, ply->Move);
+					CASetAnim2(ply, STATUS_PUNCH, ply->Move);
 					break;
 				case 2:
 					if (AF2) {
@@ -220,7 +220,7 @@ static void sub_2f850(Player *ply) {		/* 2f850 Guile stand punch */
 				case 0:
 					NEXT(ply->mode2);
 					ply->Flip = ply->JoyDecode.full & 1 ? 0 : 1;
-					CASetAnim2(ply, 0x40, ply->Move);
+					CASetAnim2(ply, STATUS_PUNCH, ply->Move);
 					break;
 				case 2:
 					if (AF2) {
@@ -258,7 +258,7 @@ static void sub_2fa2c(Player *ply) {
 			switch (ply->mode2) {
 				case 0:
 					NEXT(ply->mode2);
-					CASetAnim2(ply, 0x42, ply->Move);
+					CASetAnim2(ply, STATUS_KICK, ply->Move);
 					break;
 				case 2:
 					if (AF1) {
@@ -271,7 +271,7 @@ static void sub_2fa2c(Player *ply) {
 							// 2fa92
 							g.HumanMoveCnt++;
 							ply->Opponent->SufferHB5 = 0;
-							CASetAnim2(ply, 0x42, 0);
+							CASetAnim2(ply, STATUS_KICK, 0);
 							quirkysound(0);
 						}
 					} else {
@@ -301,7 +301,7 @@ static void sub_2faf8(Player *ply) {
 			switch (ply->mode2) {
 				case 0:
 					NEXT(ply->mode2);
-					CASetAnim2(ply, 0x44, ply->Move);
+					CASetAnim2(ply, STATUS_CROUCH_PUNCH, ply->Move);
 					break;
 				case 2:
 					if (AF1) {
@@ -312,7 +312,7 @@ static void sub_2faf8(Player *ply) {
 						} else {
 							g.HumanMoveCnt++;
 							ply->Opponent->SufferHB5 = 0;
-							CASetAnim2(ply, 0x44, ply->Move);
+							CASetAnim2(ply, STATUS_CROUCH_PUNCH, ply->Move);
 							quirkysound(0);
 						}
 					} else {
@@ -337,7 +337,7 @@ static void sub_2fbac(Player *ply) {
 			switch (ply->mode2) {
 				case 0:
 					NEXT(ply->mode2);
-					CASetAnim2(ply, 0x46, ply->Move);
+					CASetAnim2(ply, STATUS_CROUCH_KICK, ply->Move);
 					break;
 				case 2:
 					if (AF1) {
@@ -348,7 +348,7 @@ static void sub_2fbac(Player *ply) {
 						} else {
 							g.HumanMoveCnt++;
 							ply->Opponent->SufferHB5 = 0;
-							CASetAnim2(ply, 0x46, ply->Move);
+							CASetAnim2(ply, STATUS_CROUCH_KICK, ply->Move);
 							quirkysound(0);
 						}
 					} else {
@@ -364,7 +364,7 @@ static void sub_2fbac(Player *ply) {
 			switch (ply->mode2) {		
 				case 0:
 					NEXT(ply->mode2);
-					CASetAnim2(ply, 0x46, ply->Move);
+					CASetAnim2(ply, STATUS_CROUCH_KICK, ply->Move);
 					break;
 				case 2:
 					if (AF1) {
@@ -407,7 +407,7 @@ static void sub_2fc80(Player *ply) {
 					ply->EnemyDirection = ply->Flip;
 					CASetAnim2(ply, 0x52, ply->Move);
 					CATrajectory((Object *)ply);
-					if (ply->VelY.full < 0 && check_ground_collision(ply)) {
+					if (ply->VelY.full < 0 && check_ground_collision((Object *)ply)) {
 						ply->mode2 = 6;
 						CASetAnim1(ply, 0x54);
 					}
@@ -418,14 +418,14 @@ static void sub_2fc80(Player *ply) {
 						NEXT(ply->mode2);
 						set_throw_trajectory(ply, 8, ply->Flip, 15);
 						CATrajectory((Object *)ply);
-						if (ply->VelY.full < 0 && check_ground_collision(ply)) {
+						if (ply->VelY.full < 0 && check_ground_collision((Object *)ply)) {
 							ply->mode2 = 6;
 							CASetAnim1(ply, 0x54);
 						}	
 					}
 					break;
 				case 4:
-					if (ply->VelY.full < 0 && check_ground_collision(ply)) {
+					if (ply->VelY.full < 0 && check_ground_collision((Object *)ply)) {
 						_GuileExitJump(ply);
 					} else {
 						CATrajectory((Object *)ply);
@@ -460,7 +460,7 @@ static void sub_2fc80(Player *ply) {
 				case 2:
 					PLAYERTICK;
 					CATrajectory((Object *)ply);
-					if (check_ground_collision(ply)) {
+					if (check_ground_collision((Object *)ply)) {
 						NEXT(ply->mode2);
 						CASetAnim1(ply, 0x56);
 					}
@@ -584,7 +584,7 @@ void PSCBPowerGuile(Player *ply) {		/* 2fe26 PLSTAT_POWERMOVE callback */
 							PLAYERTICK;
 						} else {
 							CATrajectory((Object *)ply);
-							if (ply->VelY.full >= 0 || check_ground_collision(ply) == 0) {
+							if (ply->VelY.full >= 0 || check_ground_collision((Object *)ply) == 0) {
 								PLAYERTICK;
 							} else {
 								ply->Airborne = AIR_ONGROUND;
@@ -900,7 +900,7 @@ static void guile_comp_crouch_punch(Player *ply) {		// 33ed4
 			/* was a switch statement with only three cases */
 			ply->Move = ply->ButtonStrength / 2;	
 			quirkysound(ply->ButtonStrength / 2);
-			CASetAnim2(ply, 0x44, ply->Move);
+			CASetAnim2(ply, STATUS_CROUCH_PUNCH, ply->Move);
 			break;
 		case 2:
 			switch (ply->Move) {
@@ -993,7 +993,7 @@ static void guile_comp_jump_punch(Player *ply) {		//341ea, bad name
 			CASetAnim2(ply, 0x52, ply->Move);
 			CATrajectory((Object *)ply);
 			if (ply->VelY.full < 0) {
-				if (check_ground_collision(ply)) {
+				if (check_ground_collision((Object *)ply)) {
 					ply->mode2 = 6;
 					CASetAnim2(ply, 0x54, ply->Move);
 				}
@@ -1007,7 +1007,7 @@ static void guile_comp_jump_punch(Player *ply) {		//341ea, bad name
 			}
 				CATrajectory((Object *)ply);
 				if (ply->VelY.full < 0) {
-					if (check_ground_collision(ply)) {
+					if (check_ground_collision((Object *)ply)) {
 						ply->mode2 = 6;
 						CASetAnim2(ply, 0x54, ply->Move);
 					}
@@ -1017,7 +1017,7 @@ static void guile_comp_jump_punch(Player *ply) {		//341ea, bad name
 		case 4:		// 3428c
 			if (ply->VelY.full > 0  ) {
 				CATrajectory((Object *)ply);
-			} else if (check_ground_collision(ply) == 0) {
+			} else if (check_ground_collision((Object *)ply) == 0) {
 				CATrajectory((Object *)ply);
 			} 
 			ply->CompDoJump = FALSE;
@@ -1052,7 +1052,7 @@ static void sub_342c6(Player *ply) {
 		case 2:
 			PLAYERTICK;
 			CATrajectory((Object *)ply);
-			if(check_ground_collision(ply)) {
+			if(check_ground_collision((Object *)ply)) {
 				NEXT(ply->mode2);
 				CASetAnim1(ply, 0x56);
 			}
@@ -1138,7 +1138,7 @@ static void sub_3444e(Player *ply) {
 			} else {
 				CATrajectory((Object *)ply);
 				if (ply->VelY.full < 0) {
-					if (check_ground_collision(ply)) {
+					if (check_ground_collision((Object *)ply)) {
 						ply->Airborne = AIR_ONGROUND;
 						sub_33b3e(ply);
 					}
@@ -1293,7 +1293,7 @@ int PLCBCompJumpGuile(Player *ply) {		// 3404a
 					break;
 				FATALDEFAULT;
 			}
-			CASetAnim2(ply, 0x48, ply->Move);
+			CASetAnim2(ply, STATUS_JUMP_PUNCH, ply->Move);
 			break;
 		case PLY_KICKING:
 			switch (ply->ButtonStrength) {
@@ -1311,7 +1311,7 @@ int PLCBCompJumpGuile(Player *ply) {		// 3404a
 					break;
 				FATALDEFAULT;
 			}
-			CASetAnim2(ply, 0x4a, ply->Move);
+			CASetAnim2(ply, STATUS_JUMP_KICK, ply->Move);
 			break;
 		FATALDEFAULT;
 	}
@@ -1796,7 +1796,7 @@ static short GuileJumpMove(Player *ply) {		// 2f5e2
 				ply->mode2 = ply->mode3 = 0;
 				return -1;
 			} else {
-				CASetAnim2(ply, 0x48, ply->Move);
+				CASetAnim2(ply, STATUS_JUMP_PUNCH, ply->Move);
 				return 1;
 			}
 			break;
@@ -1850,7 +1850,7 @@ static short GuileJumpMove(Player *ply) {		// 2f5e2
 				ply->mode2 = ply->mode3 = 0;
 				return -1;
 			} else {
-				CASetAnim2(ply, 0x4a, ply->Move);
+				CASetAnim2(ply, STATUS_JUMP_KICK, ply->Move);
 				return 1;
 			}
 			break;
@@ -1862,7 +1862,7 @@ static short GuileJumpMove(Player *ply) {		// 2f5e2
 
 static void guile_attack_bison(Player *ply) {
 	Object *obj;
-	static short data_3003c[] = {0xfca0, 0x0, 0x360, 0x0};
+	const static VECT16 data_3003c[] = {{0xfca0, 0x0}, {0x360, 0x0}};
 	
 	if (g.Pause_9e1 == 2) {
 		switch (ply->UserData[5]) {
@@ -1898,7 +1898,7 @@ static void guile_attack_bison(Player *ply) {
 						obj->Pool = 6;
 					}
 					PLAYERY -= 6;
-					//setaction_direct((Object *)ply, actlist_4d22e);
+					//setaction_direct((Object *)ply, actlist_4d22e);  todo
 				} else {
 					PLAYERTICK;
 				}
