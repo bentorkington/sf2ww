@@ -56,16 +56,18 @@ static void SMdemo_show_high_scores(void) {		//6aaa
 	switch (g.mode1) {
 		case 0:
 			NEXT(g.mode1);
-			g.timer1 = 0xb4;
-			g.Palette1 = 0x10;
+			g.timer1    = 0xb4;
+			g.Palette1  = 0x10;
 			palette_macro(0x10);
 			GSInitForStage();
 			gstate_Scroll2.XPI = 0x200;
 			gstate_Scroll2.YPI = 0x700;
 			GSSetupScr2(&gstate_Scroll2);
+			
 			gstate_Scroll3.XPI = 0x200;
 			gstate_Scroll3.YPI = 0x700;
 			GSSetupScr3(&gstate_Scroll3);
+			
 			QueueEffect(SL10 | 0x2, 0);
 			QueueEffect(0x02, 3);
 			queuesound(0x14);
@@ -247,7 +249,7 @@ static void setupdemofight(void) {		// 69e2
 	} while (g.timer4 != gstate_Scroll2.XPI);
 	NEXT(g.mode3);
 	g.mode4 = 0;
-	//create_task(konami_94888, 5, 0, 0, 0);
+	//todo  create_task(konami_94888, 5, 0, 0, 0);
 	setstagemusic();
 	g.PreRoundAnim = TRUE;
 	start_effect(0x02, 3);

@@ -8,35 +8,12 @@
  */
 
 
-#define D 0x4
-#define B 0x1
-#define F 0x2
-#define K 0x700
-#define P 0x070
-
-u16 RyuMoveFireball[4]  = {  D  , D|F,  F,  P };		//2d674 fireball
-u16 RyuMoveHurricane[4] = {  D  , D|B,  B,  K };		//2d67c hurricane
-u16 RyuMoveShoyuken[4]  = {  F  , D,  D|F,  P };		//2d684 shoryken
-
-#undef B
-#undef K
-#undef D
-#undef F
-#undef P
 
 
-char data_2d68c[32]={
-	10,   8,   8,  11,   8,   8,   9,   8,
-	9,   8,   8,  10,   8,   8,  11,  13, 
-	8,  15,   9,   8,  10,  12,   8,   8,  
-	11,   8,   9,   8,  14,  12,   8,  10, 
-};
 /* next address 0002d6ac */
 /* Two more the same at 2d6ac, 2d6ce, with a 68000 NOP at 2d6cc?! */
 /* next address 0002d6ee */
 
-short data_2cfaa[]={0x19, 0x1f, 0x29};
-short data_2cfb0[]={ 0,  0, 40};
 
 int data_2d962[3]={ 0x00028000, 0x00030000, 0x00038000 };
 

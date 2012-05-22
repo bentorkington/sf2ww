@@ -84,7 +84,7 @@ static void sub_37648(Player *ply) {
 				ply->Airborne = AIR_ONGROUND;
 			}
 			CATrajectory((Object *)ply);
-			if (check_ground_collision((Object *)ply)) {
+			if (PLAYERGROUND) {
 				ply->YPI = g.GroundPlaneY;
 			}
 			PLAYERTICK;
@@ -239,7 +239,7 @@ static void sub_379ae(Player *ply) {
 				sub_37a02(ply);	// set throw traj
 			} else {
 				CATrajectory((Object *)ply);
-				if (check_ground_collision((Object *)ply)) {
+				if (PLAYERGROUND) {
 					ply->CompDoJump = FALSE;
 					sub_37d86(ply, 0x50);
 					sub_37a02(ply);
@@ -250,7 +250,7 @@ static void sub_379ae(Player *ply) {
 			break;
 		case 6:
 			CATrajectory((Object *)ply);
-			if (check_ground_collision((Object *)ply)) {
+			if (PLAYERGROUND) {
 				ply->CompDoJump = FALSE;
 				sub_3758a(ply);
 			} else {
@@ -282,7 +282,7 @@ static void sub_37a2a(Player *ply) {
 		case 2:
 			ply->CompImmune = ply->VelY.full < 0 ? 0 : 2;
 			CATrajectory((Object *)ply);
-			if (check_ground_collision((Object *)ply)) {
+			if (PLAYERGROUND) {
 				sub_3758a(ply);
 			} else if (AF2) {
 				PLAYERTICK;
@@ -326,7 +326,7 @@ static void sub_37a2a(Player *ply) {
 			}
 			break;
 		case 10:
-			if (check_ground_collision((Object *)ply)) {
+			if (PLAYERGROUND) {
 				NEXT(ply->mode3);
 				ply->YPI = g.GroundPlaneY;
 				sub_36d6(ply, ply->Flip ? 0x40 : -0x40, 0, 2, ply->Flip, 13, 0x2e, 2);
@@ -486,7 +486,7 @@ static void sub_3771e(Player *ply) {
 			break;
 		case 6:
 			CATrajectory((Object *)ply);
-			if (check_ground_collision((Object *)ply)) {
+			if (PLAYERGROUND) {
 				sub_3758a(ply);
 			}
 			break;
@@ -498,7 +498,7 @@ static void sub_37982(Player *ply) {
 	ply->CompImmune = 2;
 	if (ply->VelY.full < 0) {
 		ply->CompImmune = 0;
-		if (check_ground_collision((Object *)ply)) {
+		if (PLAYERGROUND) {
 			sub_3758a(ply);
 			return;
 		}

@@ -16,6 +16,16 @@ void pl_cb_setstatus1_ken(Player *player, short status);
 void pl_cb_setstatus2_ken(Player *player, short status, int argd0);
 void pl_cb_setstatus3_ken(Player *player, short status);
 
+void RyuKenStartHadouken(Player *ply);
+void RyuSMHadouken(Player *ply);
+void RyuSMHurricane(Player *ply);
+void RyuStartShoryuken(Player *ply);
+void RyuSMShoryuken(Player *ply);
+void RyuStartHurricane(Player *ply);
+void RyuSMHurricane(Player *ply);
+short sub_2d7d2(Player *ply);
+
+int RyuAtApex(Player *ply);
 
 short PLCBCompJumpRyuKen (Player *ply);	/* callback from 2c9be */
 void PLCBCompAttackRyuKen(Player *ply);

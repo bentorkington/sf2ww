@@ -328,8 +328,8 @@ struct player_t {
 	
 	
 	u8	AIAllowAggressive;
-	u8	AITimer271;
-	u8	AITimer272;
+	u8	AIAggTimer0;					// 0271
+	u8	AIAggTimer1;
 	u8	AIThreatCheckMode;			/* 0273 initially 2 */
 	u8	YokeAttackingMe;			// 0275
 	u8	x0276;						// apparently unused?
@@ -423,6 +423,7 @@ void check_powermove_input(Player *ply);
 #define AF1 (ply->AnimFlags & 0x8000)
 
 #define PLAYERTICK actiontick((Object *)ply);
+#define PLAYERGROUND check_ground_collision((Object *)ply)
 
 #define CA_ENDFLAG AnimFlags & 0x8000
 #define CA_ANIMFLAG AnimFlags & 0xff

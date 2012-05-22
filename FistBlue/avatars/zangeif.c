@@ -18,7 +18,7 @@
 #include "playerstate.h"
 #include "actions.h"
 #include "sound.h"
-
+#include "sf2io.h"
 #include "computer.h"
 
 #include "lib.h"
@@ -32,35 +32,39 @@ extern Game g;
 extern GState gstate_Scroll2;
 int g_zangeif_d5;
 
+
+
+#define ZANGEIF_USER_COMMON			\
+signed char	x0094;					\
+
+
 struct UserData_Zangeif {
-	signed char x0080;
-	signed char x0081;
-	signed char	x0082;
+	ZANGEIF_USER_COMMON
+	signed char mode_power;
+	signed char power_sel;
+	signed char	power_potential;
 	signed char	x0084;
-	signed char	x0085;
+	signed char	special_holdoff;
 	signed char	x0086;
 	signed char	x0087;
 	DUAL		x0088;
-	short		x008a;		// Joymask for NextAction
-	short		x008c;
-	signed char	x008e;		// close move
-	signed char x008f;		// far move
-	short		x0092;	
-	signed char	x0094;		//victory submode
+	short		volley_joymask;		// Joymask for NextAction
+	short		distance;
+	signed char	closemove;		// 008e close move
+	signed char farmove;		// 008f far move
+	short		grip_select;	
 };
 struct UserDataComp_Zangeif {
-	signed char x0080;
-	signed char x0081;
-	signed char	x0082;
+	ZANGEIF_USER_COMMON
 	signed char	x0084;
 	
 	signed char x0086;
 	signed char x0087;
 	short		x0088;		// overlaps with 89, checked
-	signed char x0089;		// close move
-	signed char x008a;		// far move
+	signed char comp_closemove;		// close move
+	signed char comp_farmove;		// far move
 	signed char	x008b;
-	short		x008c;		// distance
+	short		comp_distance;		// distance
 	short		x008e;		
 };
 
@@ -106,7 +110,7 @@ static void sub_315a4(Player *ply) {
 			if (AF1) {
 				sub_3163e(ply);
 			} else if (ud->x0088.part.p1 == 0 || AF2 == 0 ||
-					   (~ply->JoyDecodeDash.full & ply->JoyDecode.full & ud->x008a) == 0) {
+					   (~ply->JoyDecodeDash.full & ply->JoyDecode.full & ud->volley_joymask) == 0) {
 				PLAYERTICK;
 			} else if (PSSetNextAction(ply)) {
 				plstat_do_nextaction(ply);
@@ -114,10 +118,10 @@ static void sub_315a4(Player *ply) {
 				quirkysound(ply->PunchKick / 2);
 				++g.HumanMoveCnt;
 				ply->Opponent->SufferHB5 = 0;
-				if (ply->OppXDist >= ud->x008c) {
-					ply->Move = ud->x008f;					
+				if (ply->OppXDist >= ud->distance) {
+					ply->Move = ud->farmove;					
 				} else {
-					ply->Move = ud->x008e;
+					ply->Move = ud->closemove;
 				}
 				sub_315b8(ply);
 			}
@@ -165,10 +169,10 @@ static void sub_31056(Player *ply) {		// zang punch little
 	quirkysound(0);
 	ply->Move = (ply->OppXDist > 40 ? 1 : 0);
 	ud->x0088.part.p1 = 1;
-	ud->x008c = 1;
-	ud->x008e = 0;
-	ud->x008f = 1;
-	ud->x008a = 0x10;
+	ud->distance = 1;
+	ud->closemove = 0;
+	ud->farmove = 1;
+	ud->volley_joymask = BUTTON_A;
 	// suicide code:
 }
 static void sub_310b4(Player *ply) {		// zang punch mid
@@ -182,7 +186,7 @@ static void sub_310b4(Player *ply) {		// zang punch mid
 		}
 		if (ply->OppXDist <= 0x38) {
 			if (zang_setupthrow(ply)) {
-				ud->x0092 = 0;
+				ud->grip_select = 0;
 				ud->x0088.full = 0x00b4;
 				ply->Move = 5;
 				return;
@@ -203,7 +207,7 @@ static void sub_31134(Player *ply) {		// zang punch hi
 		}
 		if (ply->OppXDist <= 0x38) {
 			if (zang_setupthrow(ply)) {
-				ud->x0092 = 1;
+				ud->grip_select = 1;
 				ply->Move = 7;
 				return;
 			}
@@ -242,7 +246,7 @@ static void sub_31234(Player *ply) {		// zang kick hi
 static int sub_31d92(Player *ply, int d6) {
 	UD *ud = (UD*)&ply->UserData;
 	ud->x0084 = d6;
-	if (check_special_ability(ply) || ud->x0085 == 0 || zang_setupthrow(ply)== 0) {
+	if (check_special_ability(ply) || ud->special_holdoff == 0 || zang_setupthrow(ply)== 0) {
 		return 0;
 	}
 	ud->x0087 = (ply->JoyDecode.full & 1 ? 0 : 1);
@@ -254,11 +258,11 @@ static int sub_31d92(Player *ply, int d6) {
 }
 static int sub_31d56(Player *ply, int buttons) {
 	UD *ud = (UD*)&ply->UserData;
-	if (buttons & 0x10) {
+	if (buttons & BUTTON_A) {
 		return sub_31d92(ply, 0);
-	} else if (buttons & 0x20 && ud->x0082 <= 10) {
+	} else if (buttons & BUTTON_B && ud->power_potential <= 10) {
 		return sub_31d92(ply, 1);
-	} else if (buttons & 0x40 && ud->x0082 <= 8) {
+	} else if (buttons & BUTTON_C && ud->power_potential <= 8) {
 		return sub_31d92(ply, 2);
 	} else {
 		return 0;
@@ -307,7 +311,7 @@ int PLCBStandZangeif(Player *ply) {
 		}
 		return TRUE;
 	} else {
-		ud->x0085 = 5;
+		ud->special_holdoff = 5;
 		return FALSE;
 	}
 }
@@ -317,10 +321,10 @@ static void sub_312bc(Player *ply) {			// zang crouch punch little
 	quirkysound(0);
 	ply->Move = 0;
 	ud->x0088.part.p1 = 1;
-	ud->x008c = 0;
-	ud->x008e = 0;
-	ud->x008f = 9;
-	ud->x008a = 0;
+	ud->distance = 0;
+	ud->closemove = 0;
+	ud->farmove = 9;
+	ud->volley_joymask = 0;
 }
 static void sub_312ea(Player *ply) {			//zang crouch punch little
 	UD *ud = (UD*)&ply->UserData;
@@ -332,7 +336,7 @@ static void sub_312ea(Player *ply) {			//zang crouch punch little
 	}
 	if (ply->OppXDist < 0x38) {
 		if (zang_setupthrow(ply)) {
-			ud->x0092 = 2;
+			ud->grip_select = 2;
 			ply->Move = 5;
 			return;
 		}
@@ -350,7 +354,7 @@ static void sub_31360(Player *ply) {			// zang crouch punch big
 	}
 	if (ply->OppXDist < 0x38) {
 		if (zang_setupthrow(ply)) {
-			ud->x0092 = 2;
+			ud->grip_select = 2;
 			ply->Move = 6;
 			return;
 		}
@@ -380,10 +384,10 @@ int PLCBCrouchZangeif(Player *ply) {			// 30f7a
 				ply->Move = ply->ButtonStrength / 2;
 				if (ply->Move == 0) {
 					ud->x0088.part.p1 = 1;
-					ud->x008c = 0;
-					ud->x008e = 0;
-					ud->x008f = 0;
-					ud->x008a = 0x10;
+					ud->distance = 0;
+					ud->closemove = 0;
+					ud->farmove = 0;
+					ud->volley_joymask = BUTTON_A;
 				}
 				return TRUE;
 				break;
@@ -391,7 +395,7 @@ int PLCBCrouchZangeif(Player *ply) {			// 30f7a
 		}
 		return 1;
 	} else {
-		ud->x0085 = 5;
+		ud->special_holdoff = 5;
 		return 0;
 	}
 }
@@ -473,7 +477,7 @@ int PLCBJumpZangeif(Player *ply) {			// 30f8c
 		}
 		return 1;
 	} else {
-		ud->x0085 = 5;
+		ud->special_holdoff = 5;
 		return 0;
 	}	
 }
@@ -481,7 +485,7 @@ int PLCBJumpZangeif(Player *ply) {			// 30f8c
 inline static void sub_31f18(Player *ply) {
 	UD *ud = (UD*)&ply->UserData;
 	
-	ud->x0082 = (char[]){
+	ud->power_potential = (char[]){
 		8,8,9,8,8,10,13,8,9,9,8,8,11,8,10,14,
 		8,12,10,8,8,12,11,11,9,8,8,8,8,10,8,15
 	}[RAND32];
@@ -490,8 +494,8 @@ inline static void sub_31f18(Player *ply) {
 
 static void sub_31c84(Player *ply, int d1) {
 	UD *ud = (UD*)&ply->UserData;
-	NEXT(ud->x0080);
-	ud->x0081 = d1;
+	NEXT(ud->mode_power);
+	ud->power_sel = d1;
 	sub_31f18(ply);
 }
 
@@ -506,10 +510,10 @@ int PLCBPowerZangeif(Player *ply) {			// 31c40
 	const static char data_31d2e[] = {
 		4, 8, 4, 8, 2, 1, 2, 1
 	};
-	switch (ud->x0080) {
+	switch (ud->mode_power) {
 		case 0:
 			if (ply->JoyDecode.full & 0xf == 0) {
-				ud->x0080 = 0;
+				ud->mode_power = 0;
 				return 0;
 			} else {
 				switch (ply->JoyDecode.part.p1) {
@@ -524,41 +528,41 @@ int PLCBPowerZangeif(Player *ply) {			// 31c40
 			}
 			break;
 		case 2:
-			if (--ud->x0082 == 0) {
-				ud->x0080 = 0;
+			if (--ud->power_potential == 0) {
+				ud->mode_power = 0;
 				return 0;
 			}
 			if (ply->JoyDecode.full & 0xf) {
-				if ((ply->JoyDecode.full & 0xf) == data_31cd0[ud->x0081]) {
-					NEXT(ud->x0080);
-					ud->x0081 = 0;
+				if ((ply->JoyDecode.full & 0xf) == data_31cd0[ud->power_sel]) {
+					NEXT(ud->mode_power);
+					ud->power_sel = 0;
 					sub_31f18(ply);
-				} else if ((ply->JoyDecode.full & 0xf) == data_31cd0[ud->x0081+1]) {
-					NEXT(ud->x0080);
-					ud->x0081 = 1;
+				} else if ((ply->JoyDecode.full & 0xf) == data_31cd0[ud->power_sel+1]) {
+					NEXT(ud->mode_power);
+					ud->power_sel = 1;
 					sub_31f18(ply);
 				}
 			}
 			break;
 		case 4:
-			if (--ud->x0082 == 0) {
-				ud ->x0080 = 0;
+			if (--ud->power_potential == 0) {
+				ud ->mode_power = 0;
 				return 0;
 			}
 			if (ply->JoyDecode.full & 0xf) {
-				if ((ply->JoyDecode.full & 0xf) == data_31cfc[ud->x0081]) {
-					NEXT(ud->x0080);
+				if ((ply->JoyDecode.full & 0xf) == data_31cfc[ud->power_sel]) {
+					NEXT(ud->mode_power);
 				}
 			}
 			break;
 		case 6:
-			if (--ud->x0082 == 0) {
-				ud ->x0080 = 0;
+			if (--ud->power_potential == 0) {
+				ud ->mode_power = 0;
 				return 0;
 			}
 			if (ply->JoyDecode.full & 0xf) {
-				if ((ply->JoyDecode.full & 0xf) == data_31d2e[ud->x0081]) {
-					NEXT(ud->x0080);
+				if ((ply->JoyDecode.full & 0xf) == data_31d2e[ud->power_sel]) {
+					NEXT(ud->mode_power);
 				}
 			}
 			break;
@@ -568,9 +572,9 @@ int PLCBPowerZangeif(Player *ply) {			// 31c40
 			} else if (~ply->JoyDecode.full & ply->JoyDecodeDash.full & 0x70) {
 				return sub_31d56(ply, ~ply->JoyDecodeDash.full & ply->JoyDecode.full & 0x70);
 			} else {
-				++ud->x0082; 
-				if (ud->x0082 >= 0xe) {
-					ud->x0080 = 0;
+				++ud->power_potential; 
+				if (ud->power_potential >= 0xe) {
+					ud->mode_power = 0;
 				}
 				return 0;
 			}
@@ -610,7 +614,7 @@ static void sub_31696(Player *ply) {
 			NEXT(ply->mode2);
 			random_damage_adjust_2(ply, 0x23);
 			random_damage_adjust_1(ply, 12, 5);
-			ud->x0088.full = data_316f4[ud->x0092];
+			ud->x0088.full = data_316f4[ud->grip_select];
 			CASetAnim2(ply, (ply->StandSquat ? STATUS_CROUCH_PUNCH : STATUS_PUNCH), ply->Move);
 			break;
 		case 2:
@@ -628,11 +632,15 @@ static void sub_31696(Player *ply) {
 					PLAYERTICK;
 				} else {
 					ply->AnimFlags &= 0xff00;
-					if (ud->x0092 == 1) {
+					if (ud->grip_select == 1) {
 						ActBlankaBiteBlood(ply);
 					}
-					if(sub_3466(ply, 0, data_316fc[ud->x0092], data_31700[ud->x0092],
-								data_31704[ud->x0092], data_31708[ud->x0092])) {
+					if(ply_opp_apply_grip_damage(ply, 0, 
+								data_316fc[ud->grip_select], 
+								data_31700[ud->grip_select],
+								data_31704[ud->grip_select], 
+								data_31708[ud->grip_select]
+								)) {
 						sub_3163e(ply);
 					} else {
 						PLAYERTICK;
@@ -671,7 +679,7 @@ static void sub_31780(Player *ply) {
 			}
 			CATrajectory((Object *)ply);
 			if (ply->VelY.full < 0) {
-				if (check_ground_collision((Object *)ply)) {
+				if (PLAYERGROUND) {
 					NEXT(ply->mode2);
 					ply->Timer2          = 12;
 					ply->Opponent->Timer = 12;
@@ -697,7 +705,7 @@ static void sub_31780(Player *ply) {
 		case 8:
 			CATrajectory((Object *)ply);
 			if (ply->VelY.full < 0) {
-				if (check_ground_collision((Object *)ply)) {
+				if (PLAYERGROUND) {
 					ply_exit_air(ply);
 				}
 			}
@@ -946,8 +954,8 @@ void PSCBAttackZangeif(Player *ply) {		// 3154e
 	if (ply->Timer2) {
 		--ply->Timer2;
 	} else {
-		if (ud->x0085) {
-			--ud->x0085;
+		if (ud->special_holdoff) {
+			--ud->special_holdoff;
 		}
 		switch (ply->StandSquat) {
 			case PLY_STAND:
@@ -994,7 +1002,7 @@ void PSCBPowerZangeif(Player *ply) {		// 31dec
 			case 4:
 				CATrajectory((Object *)ply);
 				if (ply->VelY.full < 0) {
-					if (check_ground_collision((Object *)ply)) {
+					if (PLAYERGROUND) {
 						NEXT(ply->mode2);
 						CASetAnim2(ply, 0x4c, 1);
 					} else {
@@ -1026,7 +1034,7 @@ void PSCBPowerZangeif(Player *ply) {		// 31dec
 			case 10:
 				CATrajectory((Object *)ply);
 				if (ply->VelY.full < 0) {
-					if (check_ground_collision((Object *)ply)) {
+					if (PLAYERGROUND) {
 						ply_exit_air(ply);
 					}
 				}
@@ -1245,7 +1253,7 @@ static void sub_35b22(Player *ply) {
 				CATrajectory((Object *)ply);
 				if (ply->VelY.full > 0) {
 					sub_35bfa(ply);
-				} else if (check_ground_collision((Object *)ply) == 0) {
+				} else if (PLAYERGROUND == 0) {
 					sub_35bfa(ply);
 				} else {
 					NEXT(ply->mode2);
@@ -1271,7 +1279,7 @@ static void sub_35b22(Player *ply) {
 			case 10:
 				CATrajectory((Object *)ply);
 				if (ply->VelY.full < 0) {
-					if (check_ground_collision((Object *)ply)) {
+					if (PLAYERGROUND) {
 						sub_35b14(ply);
 					}
 				}
@@ -1287,10 +1295,10 @@ static void sub_35ab6(Player *ply) {
 }
 static void sub_35ad6(Player *ply)  { 
 	UDCOMP *ud = (UDCOMP *)&ply->UserData;
-	if (ply->OppXDist < ud->x008c) {
-		ply->Move = ud->x0089;		
+	if (ply->OppXDist < ud->comp_distance) {
+		ply->Move = ud->comp_closemove;		
 	} else {
-		ply->Move = ud->x008a;
+		ply->Move = ud->comp_farmove;
 	}
 	sub_35ab6(ply);
 }
@@ -1314,10 +1322,10 @@ static void sub_3513e(Player *ply) {
 	switch (ply->mode2) {
 		case 0:
 			NEXT(ply->mode2);
-			ud->x0089         = 0;
-			ud->x008a         = 1;
+			ud->comp_closemove         = 0;
+			ud->comp_farmove         = 1;
 			ud->x008b         = 1;
-			ud->x008c         = 40;
+			ud->comp_distance         = 40;
 			quirkysound(0);
 			sub_35ad6(ply);
 			break;
@@ -1355,7 +1363,7 @@ static void sub_3529a(Player *ply) {
 				if (ud->x008e == 1) {
 					ActBlankaBiteBlood(ply);
 				}
-				if(sub_3466(ply, 0, data_3528a[ud->x008e], data_3528e[ud->x008e],
+				if(ply_opp_apply_grip_damage(ply, 0, data_3528a[ud->x008e], data_3528e[ud->x008e],
 							data_35292[ud->x008e], data_35296[ud->x008e])) {
 					
 					sub_35aee(ply);
@@ -1391,10 +1399,10 @@ static void sub_35174(Player *ply) {
 				}
 			}
 			NEXT(ply->mode2);
-			ud->x0089 = 2;
-			ud->x008a = 2;
+			ud->comp_closemove = 2;
+			ud->comp_farmove = 2;
 			ud->x008b = 0;
-			ud->x008c = 0;
+			ud->comp_distance = 0;
 			quirkysound(1);
 			sub_35ad6(ply);
 			break;
@@ -1427,7 +1435,7 @@ static void sub_35174(Player *ply) {
 			}
 			CATrajectory((Object *)ply);
 			if (ply->VelY.full < 0) {
-				if (check_ground_collision((Object *)ply)) {
+				if (PLAYERGROUND) {
 					NEXT(ply->mode2);
 					ply->Timer2 = 12;
 					ply->Opponent->Timer2 = 12;
@@ -1453,7 +1461,7 @@ static void sub_35174(Player *ply) {
 		case 14:
 			CATrajectory((Object *)ply);
 			if (ply->VelY.full < 0) {
-				if (check_ground_collision((Object *)ply)) {
+				if (PLAYERGROUND) {
 					sub_35b14(ply);
 				}
 			}
@@ -1487,10 +1495,10 @@ static void sub_35400(Player *ply) {
 				}
 			}
 			NEXT(ply->mode2);
-			ud->x0089 = 3;
-			ud->x008a = 3;
+			ud->comp_closemove = 3;
+			ud->comp_farmove = 3;
 			ud->x008b = 0;
-			ud->x008c = 0;
+			ud->comp_distance = 0;
 			quirkysound(2);
 			sub_35ad6(ply);
 			break;
@@ -1539,10 +1547,10 @@ static void sub_35566(Player *ply) {
 	switch (ply->mode2) {
 		case 0:
 			NEXT(ply->mode2);
-			ud->x0089 = 0;
-			ud->x008a = 1;
+			ud->comp_closemove = 0;
+			ud->comp_farmove = 1;
 			ud->x008b = 0;
-			ud->x008c = 32;
+			ud->comp_distance = 32;
 			quirkysound(0);
 			sub_35ad6(ply);			
 			break;
@@ -1569,10 +1577,10 @@ static void sub_3559c(Player *ply) {
 				}
 			}
 			NEXT(ply->mode2);
-			ud->x0089 = 2;
-			ud->x008a = 3;
+			ud->comp_closemove = 2;
+			ud->comp_farmove = 3;
 			ud->x008b = 0;
-			ud->x008c = 0x38;
+			ud->comp_distance = 0x38;
 			quirkysound(1);
 			sub_35ad6(ply);			
 			break;
@@ -1626,10 +1634,10 @@ static void sub_356a0(Player *ply) {
 				}
 			}
 			NEXT(ply->mode2);
-			ud->x0089 = 5;
-			ud->x008a = 4;
+			ud->comp_closemove = 5;
+			ud->comp_farmove = 4;
 			ud->x008b = 0;
-			ud->x008c = 0x26;
+			ud->comp_distance = 0x26;
 			quirkysound(2);
 			sub_35ad6(ply);			
 			break;
@@ -1672,10 +1680,10 @@ static void sub_357c6(Player *ply) {
 	switch (ply->mode2) {
 		case 0:
 			NEXT(ply->mode2);
-			ud->x0089 = 0;
-			ud->x008a = 0;
+			ud->comp_closemove = 0;
+			ud->comp_farmove = 0;
 			ud->x008b = 1;
-			ud->x008c = 0;
+			ud->comp_distance = 0;
 			quirkysound(0);
 			sub_35ad6(ply);						
 			break;
@@ -1711,10 +1719,10 @@ static void sub_357fc(Player *ply) {
 				}
 			}
 			NEXT(ply->mode2);
-			ud->x0089 = 1;
-			ud->x008a = 1;
+			ud->comp_closemove = 1;
+			ud->comp_farmove = 1;
 			ud->x008b = 0;
-			ud->x008c = 0;
+			ud->comp_distance = 0;
 			quirkysound(1);
 			sub_35ad6(ply);
 			break;
@@ -1773,10 +1781,10 @@ static void sub_35922(Player *ply) {
 				}
 			}
 			NEXT(ply->mode2);
-			ud->x0089 = 2;
-			ud->x008a = 2;
+			ud->comp_closemove = 2;
+			ud->comp_farmove = 2;
 			ud->x008b = 0;
-			ud->x008c = 0;
+			ud->comp_distance = 0;
 			quirkysound(2);
 			sub_35ad6(ply);
 			break;
@@ -1814,10 +1822,10 @@ static void sub_35a36(Player *ply) {
 	switch (ply->mode2) {
 		case 0:
 			NEXT(ply->mode2);
-			ud->x0089 = ply->ButtonStrength / 2;
-			ud->x008a = ply->ButtonStrength / 2;
+			ud->comp_closemove = ply->ButtonStrength / 2;
+			ud->comp_farmove = ply->ButtonStrength / 2;
 			ud->x008b = (ply->ButtonStrength ? 1 : 0);
-			ud->x008c = 0;
+			ud->comp_distance = 0;
 			quirkysound(ply->ButtonStrength/2);
 			sub_35ad6(ply);
 			break;

@@ -461,24 +461,24 @@ static short _AIOpponentClose(Player *ply) {
 static void _AIAggressiveIfClose(Player *ply) {			/* 2bfac checked, one caller */
 	if (_AIOpponentClose(ply)==FALSE) {
 		/* 2bffe */
-		ply->AITimer272 = ply->AITimer271 = ply->AIAllowAggressive = 0;
-	} else if (ply->AITimer272) {
+		ply->AIAggTimer1 = ply->AIAggTimer0 = ply->AIAllowAggressive = 0;
+	} else if (ply->AIAggTimer1) {
 		/* 2c00c */
-		ply->AITimer272--;
+		ply->AIAggTimer1--;
 	} else if (ply->AIAllowAggressive) {
 		return;
-	} else if (ply->AITimer271) {
+	} else if (ply->AIAggTimer0) {
 		/* 2bfcc */
-		if(--ply->AITimer271) { return; }
+		if(--ply->AIAggTimer0) { return; }
 		if (comp_ply_difficulty_lookup(ply, data_97b3a)) {
 			ply->AIAllowAggressive = 1;
 		}
 		else {
-			ply->AITimer272 = 30;		/* flattened lookup all same */
-			ply->AITimer271 = ply->AIAllowAggressive = 0;
+			ply->AIAggTimer1 = 30;		/* flattened lookup all same */
+			ply->AIAggTimer0 = ply->AIAllowAggressive = 0;
 		}
 	} else {
-		ply->AITimer271 = ply->AITimers[1];
+		ply->AIAggTimer0 = ply->AITimers[1];
 	}
 }
 static void _AIStrat14(Player *ply) {
@@ -642,7 +642,7 @@ static void _AINewGoAggressive(Player *ply) {		// 2bf90
 	printf("_AINewGoAggressive side %d\n",ply->Side);
 #endif
 	ply->AIAgressive = 2;
-	ply->AIAllowAggressive = ply->AITimer271 = ply->AITimer272 = 0;
+	ply->AIAllowAggressive = ply->AIAggTimer0 = ply->AIAggTimer1 = 0;
 	ply->AIStratIndexAgg1 = 1;
 	_AIFinish(ply);
 }
@@ -1499,7 +1499,7 @@ static void _AIExit3(Player *ply) {		/* 2ba7c */
 	} else {
 	printf("AIExit3 side %d going aggressive\n",ply->Side);
 
-	ply->AITimer271 = ply->AIAllowAggressive = ply->AITimer272 = 0;
+	ply->AIAggTimer0 = ply->AIAllowAggressive = ply->AIAggTimer1 = 0;
 	ply->AIAgressive      = 2;
 	ply->AIMode1          = 0;
 	ply->AIMode2          = 0;
@@ -1511,7 +1511,7 @@ static void _AIExit4(Player *ply) {	/* 2baae */
 	if(ply->AIAgressive == 0) {
 		_AIRestartAggressive(ply);
 	} else {
-		ply->AITimer271 = ply->AIAllowAggressive = ply->AITimer272 = 0;
+		ply->AIAggTimer0 = ply->AIAllowAggressive = ply->AIAggTimer1 = 0;
 		ply->AIAgressive = 0;
 		ply->AIMode1 = ply->AIMode2 = 0;
 		ply->AISaveState = 1;
@@ -1703,7 +1703,7 @@ static short _AIClosestThreat(Player *ply) {		// 2bcd8 closest threat
 }
 static void _AIGoToAgg1(Player *ply) {			//2bb84
 	struct dualptr DP;
-	ply->AITimer271 = ply->AIAllowAggressive = ply->AITimer272 = 0;
+	ply->AIAggTimer0 = ply->AIAllowAggressive = ply->AIAggTimer1 = 0;
 	ply->AIAgressive = 2;
 	_AIResetState(ply);
 	ply->AISaveState = 1;
@@ -1739,7 +1739,7 @@ static void AIAggHigh(Player *ply, short d0) {
 	switch (d0) {
 		case 0:				/* AIB_RESTART */
 			_AIRestartAggressive(ply); _AIGotoNextStrategy(ply); break;
-		case AIB_EXIT3 - AIB_SHIFT:
+		case 2:
 			_AIExit3(ply); _AIGotoNextStrategy(ply); break;
 		case 4:				/* 2baae */
 			_AIExit4(ply); _AIGotoNextStrategy(ply); break;

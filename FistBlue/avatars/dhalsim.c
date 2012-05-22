@@ -273,7 +273,7 @@ void PSCBAttackDhalsim(Player *ply) {			// 3258e
 							break;
 						FATALDEFAULT;
 					}
-					actiontick((Object *)ply);
+					PLAYERTICK;
 				} else {
 					switch (ply->Move) {
 						case 0:
@@ -305,7 +305,7 @@ void PSCBAttackDhalsim(Player *ply) {			// 3258e
 									if (AF2) {
 										NEXT(ply->mode2);
 									}
-									actiontick((Object *)ply);
+									PLAYERTICK;
 									break;
 								case 4:
 									if (ply->Flip) {
@@ -328,7 +328,7 @@ void PSCBAttackDhalsim(Player *ply) {			// 3258e
 										ud->x00c2 = 0;
 										ply_exit_crouch(ply);
 									} else {
-										actiontick((Object *)ply);
+										PLAYERTICK;
 									}
 									break;
 								FATALDEFAULT;
@@ -340,12 +340,12 @@ void PSCBAttackDhalsim(Player *ply) {			// 3258e
 				break;
 			case 4:
 				sub_3278c(ply);
-				if (check_ground_collision((Object *)ply)) {
+				if (PLAYERGROUND) {
 					ply->Jumping = FALSE;
 					soundsting(SOUND_IMPACT8);
 					ply_exit_air(ply);
 				} else {
-					actiontick((Object *)ply);
+					PLAYERTICK;
 				}
 				break;
 			case 6:
@@ -396,7 +396,7 @@ void PSCBAttackDhalsim(Player *ply) {			// 3258e
 									ply->Timer = 1;
 								}
 								if (AF2) {
-									if (sub_3466(ply, 0, 2, ply->Flip ? 32 : -32, 0x56, 0x29)) {
+									if (ply_opp_apply_grip_damage(ply, 0, 2, ply->Flip ? 32 : -32, 0x56, 0x29)) {
 										sub_3262c(ply);
 									} else {
 										PLAYERTICK;
@@ -840,7 +840,7 @@ static void sub_36020(Player *ply) {
 static void sub_35ffa(Player *ply) {
 	ply->mode2 = 2;
 	sub_36020(ply);
-	if (check_ground_collision((Object *)ply)) {
+	if (PLAYERGROUND) {
 		ply->Airborne = 0;
 		ply->CompDoJump = FALSE;
 		soundsting(SOUND_IMPACT8);
@@ -894,7 +894,7 @@ static void sub_36078(Player *ply) {
 						ply->Timer = 1;
 					}
 					if (AF2) {
-						if(sub_3466(ply, 0, 3, (ply->Flip ? 16 : -16), 0x56, 0x29)){
+						if(ply_opp_apply_grip_damage(ply, 0, 3, (ply->Flip ? 16 : -16), 0x56, 0x29)){
 							sub_35dd2(ply);
 						} else {
 							PLAYERTICK;

@@ -286,9 +286,11 @@ void ply_thrown(Player *ply) {        /* 3948 data at 93440 */
     
 void random_damage_adjust_1(Player *ply, int damage_d0, int damage_d1) {			// 3f62
 	const static char data_3fb8[32]={
-		0,  -6,  -3,   0,   0,   0,   0,  -3,   0,   0,  -9,   0,   0,   0,  -6,  -9, 
-		0,   0,   0,   0,   0,  -3,   0,   0,  -3,   0,  -6,   0,   0,   0,   0,   0, 
-	};											/* next address 00003fd8 */
+		0,  -6,  -3,   0,   0,   0,   0,  -3,   
+		0,   0,  -9,   0,   0,   0,  -6,  -9, 
+		0,   0,   0,   0,   0,  -3,   0,   0,  
+	   -3,   0,  -6,   0,   0,   0,   0,   0, 
+	};
 	ply->x0150 = damage_d1;
 	
     _ApplyDamageAdjustment(ply->Opponent, damage_d0, data_3fb8);
@@ -296,9 +298,11 @@ void random_damage_adjust_1(Player *ply, int damage_d0, int damage_d1) {			// 3f
 }
 void random_damage_adjust_2(Player *ply, int damage) {			// 3f76
 	const static char data_3f98[32]={
-		0, -12,  -6,   0,   0,   0,   0,  -6,   0,   0,   0,   0,  -9,  -6,   0,   0, 
-		0,  -9,   0,  -6,   0,   0,  -9,   0,  -6,   0,   0,   0,  -9, -12, -15,   0, 
-	};														/* next address 00003fb8 */
+		0, -12,  -6,   0,   0,   0,   0,  -6,   
+		0,   0,   0,   0,  -9,  -6,   0,   0, 
+		0,  -9,   0,  -6,   0,   0,  -9,   0, 
+	   -6,   0,   0,   0,  -9, -12, -15,   0, 
+	};	
     _ApplyDamageAdjustment(ply->Opponent, damage, data_3f98);
 }    
 
@@ -325,10 +329,10 @@ void proc_player_actions(void) {		/* 282a8 */
 		PSEntry(g.CheckPlySecond);
 	} else {
 		if(0x55555555L & (RAND32 << 1)) {		// 50/50 chance
-			g.PlayerFirst = PLAYER2;
+			g.PlayerFirst  = PLAYER2;
 			g.PlayerSecond = PLAYER1;
 		} else {
-			g.PlayerFirst = PLAYER1;
+			g.PlayerFirst  = PLAYER1;
 			g.PlayerSecond = PLAYER2;
 		}
 		PSEntry(g.PlayerFirst);
@@ -364,16 +368,7 @@ void check_powermove_input(Player *ply) { /* 2a7ea, actually void() */
 		PLCBPowerChunLi,
 		PLCBPowerZangeif,
 		PLCBPowerDhalsim
-	} ;  /* other fighters
-		 
-		 0002A7FE   0002 de90            ;E.Honda
-		 0002A802   0002 e968            ;Blanka
-		 0002A806   0002 effa            ;Guile
-		 0002A80A   0002 d51a            ;Ken - same as Ryu
-		 0002A80E   0003 0154            ;Chun-Li
-		 0002A812   0003 1c40            ;Zhangeif
-		 0002A816   0003 2964            ;Dhalsim
-		 */
+	} ; 
 	return data_2a7fa[ply->FighterID](ply);
 }
 
@@ -387,18 +382,7 @@ short ply_cb_standmove(Player *ply) {	/* 2a81a */
 		PLCBStandChunLi,
 		PLCBStandZangeif,
 		PLCBStandDhalsim,
-	};	/* XXX do other fighters
-		 
-		 0002A82E   0002 de2e     ;E.Honda
-		 0002A832   0002 e8e6     ;Blanka
-		 0002A836   0002 efdc                            ;Guile
-		 0002A83A   0002 cf44                            ;Ken - same as Ryu
-		 0002A83E   0003 011e                            ;Chun-Li
-		 0002A842   0003 0f68                            ;Zhangeif
-		 0002A846   0003 2302                            ;Dhalsim
-		 
-		 */
-
+	};
 	return data_2a82a[ply->FighterID](ply);
 }
 
@@ -428,15 +412,6 @@ short ply_cb_jumpmove(Player *ply) {	/* 2a87a */
 		PLCBJumpZangeif,
 		PLCBJumpDhalsim,
 	};
-	/* other fighters 
-	 0002A88E   0002 de7c                       
-	 0002A892   0002 e954                        
-	 0002A896   0002 eff0                        
-	 0002A89A   0002 d08e                        ;ken is same as ryu                    
-	 0002A89E   0003 0142                   
-	 0002A8A2   0003 0f8c                    
-	 0002A8A6   0003 245a                     
-	 */
 	return data_2a88a[ply->FighterID](ply);
 }
 

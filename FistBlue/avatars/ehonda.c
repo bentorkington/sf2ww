@@ -18,6 +18,7 @@
 #include "playerstate.h"
 #include "computer.h"
 #include "sound.h"
+#include "sf2io.h"
 
 
 #include "lib.h"
@@ -67,15 +68,15 @@ static struct ehondares sub_2e0c2(Player *ply) {
 	UD *ud=(UD *)&ply->UserData;
 	struct ehondares EH;
 	
-	if (ud->x0082 & (1 << 4)) {
+	if (ud->x0082 & BUTTON_A) {
 		if (ud->x0098 >= 8)     {EH.d0 = 2; EH.d1=1; return EH;}
 		if (ud->x0088 == 0x1ff) {EH.d0 = 2; EH.d1= 1; return EH;}
 	}
-	if (ud->x0082 & (1 << 5)) {
+	if (ud->x0082 & BUTTON_B) {
 		if (ud->x009a >= 8)     {EH.d0 = 4; EH.d1=1; return EH; }
 		if (ud->x0088 == 0x1ff) {EH.d0 = 4; EH.d1 = 1; return EH;}
 	}
-	if (ud->x0082 & (1 << 6)) {
+	if (ud->x0082 & BUTTON_C) {
 		if (ud->x009c >= 8)     {EH.d0 = 6; EH.d1 = 1; return EH; }
 		if (ud->x0088 == 0x1ff) {EH.d0 = 6; EH.d1 = 1; return EH;}
 	}
@@ -187,7 +188,7 @@ static void sub_2dad8(Player *ply) {
 	if (AF1) {
 		sub_2daf6(ply);
 	} else {
-		actiontick((Object *)ply);
+		PLAYERTICK;
 	}
 }	
 static short _ButtonMask(Player *ply, short d1) {		// 2e392
@@ -284,7 +285,6 @@ void _EHondaSMOink(Player *ply) {	//2db28
 				}
 				ply->mode2 += 4;
 				CAApplyVelocity((Object *)ply);
-				
 			}
 			break;
 		case 6:					// Oink hits
@@ -532,12 +532,12 @@ static void sub_2dd08(Player *ply) {	//2dd08
 					ply->Timer = 1;
 				}
 				if (AF2==2) {
-					if(sub_3466(ply, 0, 2, ply->Flip ? 0x28 : -0x28, 0x4d, 0x47)) {
+					if(ply_opp_apply_grip_damage(ply, 0, 2, ply->Flip ? 0x28 : -0x28, 0x4d, 0x47)) {
 						sub_2dda2(ply);
 						return;
 					} 
 				} else {
-					if (sub_3466(ply, 0, 2, ply->Flip ? 0x39 : -0x39, 0x40, 0x47)) {
+					if (ply_opp_apply_grip_damage(ply, 0, 2, ply->Flip ? 0x39 : -0x39, 0x40, 0x47)) {
 						sub_2dda2(ply);
 						return;
 					}
@@ -684,9 +684,9 @@ void PLCBPowerEHonda(Player *ply) {	    //2de90
 	ud->x0082 = (~ply->JoyCorrectDash & ply->JoyCorrect);
 	
 	_EHondaSMCheckOink(ply);
-	_CheckCharge(ply, &ud->pm1, 0x10, 0xf);
-	_CheckCharge(ply, &ud->pm2, 0x20, 0xa);
-	_CheckCharge(ply, &ud->pm3, 0x40, 0x5);
+	_CheckCharge(ply, &ud->pm1, BUTTON_A, 0xf);
+	_CheckCharge(ply, &ud->pm2, BUTTON_B, 0xa);
+	_CheckCharge(ply, &ud->pm3, BUTTON_C, 0x5);
 	if (ud->x0082 & 0x70) {
 		ud->x0088 = (sf2rand() & 1) << 16 + sf2rand();
 	} else {
@@ -744,7 +744,7 @@ void PSCBAttackEHonda(Player *ply) {		/* 2da12 attack callback */
 			break;
 		case 0x42:	case 0x44: case 0x46: case 0x48:
 			/* this is 2db24 */
-			actiontick((Object *)ply);
+			PLAYERTICK;
 			break;
 		case 0x3a:	case 0x3c:	case 0x3e:		//Oinks
 			_EHondaSMOink(ply);
@@ -966,7 +966,7 @@ static void sub_332f6(Player *ply, 	short xoff /* %d4 */, short yoff /* %d5 */) 
 	if (ply->Flip != FACING_LEFT) {
 		xoff = -xoff;
 	}
-	if(sub_3466(ply, 0, 2, xoff, yoff, 0x47)) {
+	if(ply_opp_apply_grip_damage(ply, 0, 2, xoff, yoff, 0x47)) {
 		sub_330fc(ply);
 	} else {
 		PLAYERTICK;
@@ -1131,7 +1131,7 @@ static void sub_333b4(Player *ply) {
 	sub_335aa(ply, (short[]){0x34, 0x36, 0x38}[ply->ButtonStrength/2]);
 }
 static void sub_3338a(Player *ply) {
-	static const data_333a8[3][2]={
+	static const short data_333a8[3][2]={
 		{0x3a, 0x0600},
 		{0x3c, 0x0800},
 		{0x3e, 0x0a00},

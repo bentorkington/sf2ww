@@ -24,6 +24,10 @@
 		B5613C3B155F9917001E127A /* text.c in Sources */ = {isa = PBXBuildFile; fileRef = B5613C3A155F9917001E127A /* text.c */; };
 		B56A718C1411B0D300DF7F02 /* game.c in Sources */ = {isa = PBXBuildFile; fileRef = B56A718B1411B0D300DF7F02 /* game.c */; };
 		B56BBD5514859AA100FF84CB /* fbtests.c in Sources */ = {isa = PBXBuildFile; fileRef = B56BBD5414859AA100FF84CB /* fbtests.c */; };
+		B56BFC68156B43C500DC7BAD /* blanka_comp.c in Sources */ = {isa = PBXBuildFile; fileRef = B56BFC67156B43C500DC7BAD /* blanka_comp.c */; };
+		B56BFC70156B444F00DC7BAD /* blanka_human.c in Sources */ = {isa = PBXBuildFile; fileRef = B56BFC6F156B444F00DC7BAD /* blanka_human.c */; };
+		B56BFC8F156B48F600DC7BAD /* ryuken_human.c in Sources */ = {isa = PBXBuildFile; fileRef = B56BFC8E156B48F600DC7BAD /* ryuken_human.c */; };
+		B56BFC92156B48FD00DC7BAD /* ryuken_comp.c in Sources */ = {isa = PBXBuildFile; fileRef = B56BFC91156B48FD00DC7BAD /* ryuken_comp.c */; };
 		B5871ED71408E4F4004A45F5 /* pthreads.c in Sources */ = {isa = PBXBuildFile; fileRef = B5871ED61408E4F4004A45F5 /* pthreads.c */; };
 		B5AC69E71550AC9C00C9339E /* aitests.c in Sources */ = {isa = PBXBuildFile; fileRef = B527F61415508A0800BC70D8 /* aitests.c */; };
 		B5AC6A611550BDBB00C9339E /* testlib.c in Sources */ = {isa = PBXBuildFile; fileRef = B5AC6A601550BDBB00C9339E /* testlib.c */; };
@@ -122,6 +126,10 @@
 		B56A718B1411B0D300DF7F02 /* game.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = game.c; sourceTree = "<group>"; };
 		B56BBD5314859AA100FF84CB /* fbtests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = fbtests.h; sourceTree = "<group>"; };
 		B56BBD5414859AA100FF84CB /* fbtests.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = fbtests.c; sourceTree = "<group>"; };
+		B56BFC67156B43C500DC7BAD /* blanka_comp.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = blanka_comp.c; sourceTree = "<group>"; };
+		B56BFC6F156B444F00DC7BAD /* blanka_human.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = blanka_human.c; sourceTree = "<group>"; };
+		B56BFC8E156B48F600DC7BAD /* ryuken_human.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = ryuken_human.c; sourceTree = "<group>"; };
+		B56BFC91156B48FD00DC7BAD /* ryuken_comp.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = ryuken_comp.c; sourceTree = "<group>"; };
 		B56E0DC913B95EB600FC837B /* actions_198a_data.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = actions_198a_data.h; path = FistBlue/gfxdata/actions_198a_data.h; sourceTree = SOURCE_ROOT; };
 		B5869A8313B561F1001844D9 /* graphics.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = graphics.h; sourceTree = "<group>"; };
 		B5869A8413B561F1001844D9 /* graphics.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = graphics.c; sourceTree = "<group>"; };
@@ -573,6 +581,10 @@
 				B5F335361562FFA4005A4637 /* zangeif.h */,
 				B5F335371562FFA4005A4637 /* zangeif.c */,
 				B5D8C90315673D0400629A7E /* zangeifdata.h */,
+				B56BFC67156B43C500DC7BAD /* blanka_comp.c */,
+				B56BFC6F156B444F00DC7BAD /* blanka_human.c */,
+				B56BFC8E156B48F600DC7BAD /* ryuken_human.c */,
+				B56BFC91156B48FD00DC7BAD /* ryuken_comp.c */,
 			);
 			path = avatars;
 			sourceTree = "<group>";
@@ -754,6 +766,10 @@
 				B5F335381562FFA4005A4637 /* zangeif.c in Sources */,
 				B5E21389156894FA00D96161 /* sagat.c in Sources */,
 				B5E2138C1568950900D96161 /* balrog.c in Sources */,
+				B56BFC68156B43C500DC7BAD /* blanka_comp.c in Sources */,
+				B56BFC70156B444F00DC7BAD /* blanka_human.c in Sources */,
+				B56BFC8F156B48F600DC7BAD /* ryuken_human.c in Sources */,
+				B56BFC92156B48FD00DC7BAD /* ryuken_comp.c in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

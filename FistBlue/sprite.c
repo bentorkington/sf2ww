@@ -916,6 +916,9 @@ void drawsprite(Object *obj) {         /* 7edaa */
     sprite_coords(obj, coordpair);	/* set coords in d0 and d1 to follow scroll X */
 	
     image = obj->ActionScript->Image;
+	if (image == NULL) {
+		return;
+	}
 	tiles_in_image = image->TileCount;
     if(image->TileCount == 0) { return; }
     if(tiles_in_image & IMAGE_ATTR) {

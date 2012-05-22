@@ -406,7 +406,7 @@ static void sub_2fc80(Player *ply) {
 					ply->EnemyDirection = ply->Flip;
 					CASetAnim2(ply, 0x52, ply->Move);
 					CATrajectory((Object *)ply);
-					if (ply->VelY.full < 0 && check_ground_collision((Object *)ply)) {
+					if (ply->VelY.full < 0 && PLAYERGROUND) {
 						ply->mode2 = 6;
 						CASetAnim1(ply, 0x54);
 					}
@@ -417,14 +417,14 @@ static void sub_2fc80(Player *ply) {
 						NEXT(ply->mode2);
 						set_throw_trajectory(ply, 8, ply->Flip, 15);
 						CATrajectory((Object *)ply);
-						if (ply->VelY.full < 0 && check_ground_collision((Object *)ply)) {
+						if (ply->VelY.full < 0 && PLAYERGROUND) {
 							ply->mode2 = 6;
 							CASetAnim1(ply, 0x54);
 						}	
 					}
 					break;
 				case 4:
-					if (ply->VelY.full < 0 && check_ground_collision((Object *)ply)) {
+					if (ply->VelY.full < 0 && PLAYERGROUND) {
 						_GuileExitJump(ply);
 					} else {
 						CATrajectory((Object *)ply);
@@ -459,7 +459,7 @@ static void sub_2fc80(Player *ply) {
 				case 2:
 					PLAYERTICK;
 					CATrajectory((Object *)ply);
-					if (check_ground_collision((Object *)ply)) {
+					if (PLAYERGROUND) {
 						NEXT(ply->mode2);
 						CASetAnim1(ply, 0x56);
 					}
@@ -541,18 +541,18 @@ void PSCBPowerGuile(Player *ply) {		/* 2fe26 PLSTAT_POWERMOVE callback */
 							}
 							NEXT(ply->mode2);
 						}
-						actiontick((Object *)ply);
+						PLAYERTICK;
 						break;
 					case 2:
 						if (AF1) {
 							NEXT(ply->mode2);
 							ply->LocalTimer = 15;
 						}
-						actiontick((Object *)ply);
+						PLAYERTICK;
 						break;
 					case 4:
 						if (--ply->LocalTimer >= 0) {
-							actiontick((Object *)ply);
+							PLAYERTICK;
 						} else {
 							_GuileExitStand(ply);
 						}
@@ -583,7 +583,7 @@ void PSCBPowerGuile(Player *ply) {		/* 2fe26 PLSTAT_POWERMOVE callback */
 							PLAYERTICK;
 						} else {
 							CATrajectory((Object *)ply);
-							if (ply->VelY.full >= 0 || check_ground_collision((Object *)ply) == 0) {
+							if (ply->VelY.full >= 0 || PLAYERGROUND == 0) {
 								PLAYERTICK;
 							} else {
 								ply->Airborne = AIR_ONGROUND;
@@ -986,7 +986,7 @@ static void guile_comp_jump_punch(Player *ply) {		//341ea, bad name
 			CASetAnim2(ply, 0x52, ply->Move);
 			CATrajectory((Object *)ply);
 			if (ply->VelY.full < 0) {
-				if (check_ground_collision((Object *)ply)) {
+				if (PLAYERGROUND) {
 					ply->mode2 = 6;
 					CASetAnim2(ply, 0x54, ply->Move);
 				}
@@ -1000,7 +1000,7 @@ static void guile_comp_jump_punch(Player *ply) {		//341ea, bad name
 			}
 				CATrajectory((Object *)ply);
 				if (ply->VelY.full < 0) {
-					if (check_ground_collision((Object *)ply)) {
+					if (PLAYERGROUND) {
 						ply->mode2 = 6;
 						CASetAnim2(ply, 0x54, ply->Move);
 					}
@@ -1010,7 +1010,7 @@ static void guile_comp_jump_punch(Player *ply) {		//341ea, bad name
 		case 4:		// 3428c
 			if (ply->VelY.full > 0  ) {
 				CATrajectory((Object *)ply);
-			} else if (check_ground_collision((Object *)ply) == 0) {
+			} else if (PLAYERGROUND == 0) {
 				CATrajectory((Object *)ply);
 			} 
 			ply->CompDoJump = FALSE;
@@ -1045,7 +1045,7 @@ static void sub_342c6(Player *ply) {
 		case 2:
 			PLAYERTICK;
 			CATrajectory((Object *)ply);
-			if(check_ground_collision((Object *)ply)) {
+			if(PLAYERGROUND) {
 				NEXT(ply->mode2);
 				CASetAnim1(ply, 0x56);
 			}
@@ -1131,7 +1131,7 @@ static void sub_3444e(Player *ply) {
 			} else {
 				CATrajectory((Object *)ply);
 				if (ply->VelY.full < 0) {
-					if (check_ground_collision((Object *)ply)) {
+					if (PLAYERGROUND) {
 						ply->Airborne = AIR_ONGROUND;
 						sub_33b3e(ply);
 					}

@@ -124,8 +124,8 @@ static int check_compDoBlockStun(Player *ply) {
 
 void comp_recovery_complete(Player *ply) { /* 2b700 */
 	ply->AIAllowAggressive	= FALSE;		
-	ply->AITimer271			= 0;
-	ply->AITimer272			= 0;
+	ply->AIAggTimer0			= 0;
+	ply->AIAggTimer1			= 0;
 	ply->AISigAttack		= FALSE;	/* x0147 */
 	ply->CompDoJump			= FALSE;
 	ply->AICanJumpAttack	= FALSE;
@@ -190,7 +190,7 @@ void computer_per_frame(Player *ply) {		/* 2ac70 */
 			} else {
 				/* 2acf2 */
 				if (g.PreRoundAnim) {
-					actiontick((Object *)ply);
+					PLAYERTICK;
 					return;
 				}
 				if (ply->MultiHoldoff) { ply->MultiHoldoff--; }
@@ -233,10 +233,10 @@ static void comp_jump_physics(Player *ply) {		/* 2c854 */
 	CATrajectory((Object *)ply);
 	if(ply->VelY.full >= 0) {
 		/* 2c8d6 */
-		actiontick((Object *)ply);
+		PLAYERTICK;
 		return;
 	}
-	if(check_ground_collision((Object *)ply)){
+	if(PLAYERGROUND){
 		/* 2c8da */
 		ply->Attacking		= FALSE;
 		ply->IsJumpThreat	= FALSE;
@@ -245,7 +245,7 @@ static void comp_jump_physics(Player *ply) {		/* 2c854 */
 		ply->Airborne		= AIR_ONGROUND;
 		ply->CompDoJump		= FALSE;
 		queuesound(SOUND_IMPACT8);
-		CASetAnim1(ply, 0x4c);
+		CASetAnim1(ply, 0xa);
 		return;
 	}
 	
@@ -263,17 +263,17 @@ static void comp_jump_physics(Player *ply) {		/* 2c854 */
 						_comp_bounce_off_wall(ply, ply->BoundCheck-1);
 						return;
 					}
-					actiontick((Object *)ply);
+					PLAYERTICK;
 				}
 			}
 		}
 	}
-	actiontick((Object *)ply);
+	PLAYERTICK;
 }
 
 static void _AICalcTrajTick(Player *ply) {   /* 2c820 computer jump tracjectory */
 	CATrajectory((Object *)ply);
-	actiontick((Object *)ply);
+	PLAYERTICK;
 }
 
 static void comp_jump_dhalsimcheck(Player *ply) {		/* 2c828 */
@@ -380,7 +380,7 @@ void comp_plstat_normal(Player *ply) {  /* 2c2a4 */
 				ply->StepSave = ply->Step;
 				CASetAnimWithStep(ply, STATUS_STAND);
 			}
-			actiontick((Object *)ply);
+			PLAYERTICK;
 			update_obj_path(ply);
 			
 			break;
@@ -391,7 +391,7 @@ static void comp_plstat_crouch (Player *ply) {		/* 2c682 was comp_disposition_1*
 	short temp;
 	switch (ply->mode2) {
 		case 0:
-			actiontick((Object *)ply);
+			PLAYERTICK;
 			if (check_round_result()) {
 				PSStateRoundOver(ply);
 			} else if (check_my_direction(ply)) {
@@ -458,7 +458,7 @@ static void comp_plstat_jump(Player *ply) { /* 2c788 was comp_desire_jump */
 	int d0;
 	switch (ply->mode2) {
 		case 0:
-			actiontick((Object *)ply);		/* tick through the initial jump anim */
+			PLAYERTICK;		/* tick through the initial jump anim */
 			if ((AF2) == 0) {
 				NEXT(ply->mode2);			/* have 'lifted off' */
 				ply->Airborne    = AIR_JUMPING;
@@ -564,7 +564,7 @@ static void comp_plstat_turnaround(Player *ply) {	/* 2c9fe */
 	short temp;
 	switch (ply->mode2) {
 		case 0:
-			actiontick((Object *)ply);
+			PLAYERTICK;
 			if(check_round_result()) {PSStateRoundOver(ply); return;}
 			if(comp_check_block(ply)) {
 				/* 2ca54(ply); */
@@ -593,7 +593,7 @@ static void comp_plstat_turnaround(Player *ply) {	/* 2c9fe */
 			break;
 		case 2:
 			/* 2ca8e */
-			actiontick((Object *)ply);
+			PLAYERTICK;
 			if(check_round_result()) {PSStateRoundOver(ply); return;}
 			if(comp_check_block(ply)) {				
 				/* 2cac2 */
@@ -646,7 +646,7 @@ static void comp_plstat_block(Player *ply) {		// 2cb04
 			break;
 		case 4:
 			/* 2cc0c */
-			actiontick((Object *)ply);
+			PLAYERTICK;
 			if(AF1){exit_comp_normal(ply);return;}
 			COMP_CHK_TACTICS
 			COMP_CHK_BLOCKSTUN {comp_set_block2(ply); return;}
@@ -655,7 +655,7 @@ static void comp_plstat_block(Player *ply) {		// 2cb04
 			break;
 		case 6:
 			/* 2cc2a */
-			actiontick((Object *)ply);
+			PLAYERTICK;
 			if(AF1){exit_to_compdisp1(ply);return;}
 			COMP_CHK_TACTICS
 			COMP_CHK_BLOCKSTUN {comp_set_block6(ply); return;}
@@ -892,7 +892,7 @@ static void comp_changetactics(Player *ply, short d0) {	/* 2c1b4 */
 		ply->AIForceDefensive = TRUE;
 	}
 	AIInitDefensive(ply);
-	ply->AIAllowAggressive = ply->AITimer271 = ply->AITimer272 = ply->AISigAttack = ply->CompDoJump =
+	ply->AIAllowAggressive = ply->AIAggTimer0 = ply->AIAggTimer1 = ply->AISigAttack = ply->CompDoJump =
 	ply->AICanJumpAttack = ply->AIMode1 = ply->AIMode2 = ply->CompDoBlockStun = ply->x0236 = 0;
 	
 	ply->AIWalkDirection |= STEP_STILL;

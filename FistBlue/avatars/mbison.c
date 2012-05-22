@@ -262,7 +262,7 @@ static void sub_36682(Player *ply) {			// power move
 					CATrajectory((Object *)ply);
 					break;
 				case 8:
-					if (check_ground_collision(ply)) {
+					if (PLAYERGROUND) {
 						sub_36674(ply);
 					} else {
 						CATrajectory((Object *)ply);
@@ -338,7 +338,7 @@ static void sub_3645e(Player *ply) {
 					break;
 				case 4:
 					if (ply->VelY.full < 0) {
-						if (check_ground_collision(ply)) {
+						if (PLAYERGROUND) {
 							sub_36674(ply);
 							return;
 						}

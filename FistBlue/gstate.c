@@ -1228,7 +1228,7 @@ void GSSetupScr2(GState *gs) {			// 83c3c
     cp.x = gs->XPI -  0x90;
     cp.y = ~(gs->YPI + 0x180);
 	
-	for (i=0x29; i >= 0; --i) {		
+	for (i=0x29; i >= 0; --i) {			// 768 pixels
 		_GSDrawScroll2A(gs, _GSCoordsScroll2(cp), _GSLookupScroll2(gs, cp), cp);
 		cp.x += 16;
 	}
@@ -1243,7 +1243,7 @@ void GSSetupScr3(GState *gs) {			// 83cd2 was setup_scroll3
     cp.x = gs->XPI -  0xa0;
     cp.y = ~(gs->YPI + 0x180);
 	
-	for (i=0x15; i >= 0; --i) {			// 0x15
+	for (i=0x15; i >= 0; --i) {			// 0x16 x 32 = 704 pixels
 		_GSDrawScroll3A(gs, _GSCoordsScroll3(cp), _GSLookupScroll3(gs, cp), cp);
 		cp.x += 32;
 	}

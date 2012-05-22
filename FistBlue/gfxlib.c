@@ -556,9 +556,6 @@ void setactiondraw(Object *obj, const CASimpleFrame **act, int step) {	//41b6
     draw_simple(obj);
 }
 
-
-
-
 static void _fill_with_tile1() {		// 604c
 	gfxrepeat(BMAP_SCROLL2, 0x3ff, GFXROM_SCROLL2 + 1, 0);
 }

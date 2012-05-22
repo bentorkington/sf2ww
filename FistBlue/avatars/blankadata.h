@@ -927,7 +927,7 @@ const CAFrame **data_43b90[]={
 	data_43bee,
 	data_43bf0,
 	data_43bfa,
-	data_43c04,
+	data_43c04,		//10
 	data_43c06,
 	data_43c0a,
 	data_43c0e,
@@ -935,7 +935,7 @@ const CAFrame **data_43b90[]={
 	data_43c16,
 	data_43c1c,
 	data_43c22,
-	data_43c28,
+	data_43c28,		//20
 	data_43c2e,
 	data_43c34,
 	data_43c38,
@@ -943,15 +943,17 @@ const CAFrame **data_43b90[]={
 	data_43c42,
 	data_43c44,
 	data_43c04,
-	data_43c46,
+	data_43c46,		// 30
 	data_43c4e,
 	data_43c56,
 	data_43c5e,
 	data_43c66,
 	data_43c68,
 	data_43c6a,
-	data_43c6c,
+	data_43c6c,		//3e
 	
+	
+			
 };
 const Image image_482d4 = {
     24, 0x0003, 0x5, 4, -39,
@@ -1697,13 +1699,13 @@ const CAFrame actlist_43f48[] = {
 const CAFrame *data_46df4[]={
 	actlist_44cec, 	actlist_44ea0, 	actlist_44f04, 	actlist_44fb0, 	
 	actlist_4505c, 	actlist_450f0, 	actlist_4541c, 	actlist_45574, 	
-	actlist_45620, 	actlist_456cc, 	actlist_457d8, 	actlist_458e4, 	
+	actlist_45620, 	actlist_456cc, 	actlist_457d8, 	actlist_458e4, 	//10
 	actlist_454c8, 	actlist_453a0, 	actlist_46300, 	actlist_46394, 	
-	actlist_46428, 	actlist_464bc, 	actlist_45e50, 	actlist_45ee4, 	
+	actlist_46428, 	actlist_464bc, 	actlist_45e50, 	actlist_45ee4, 	//20
 	actlist_4519c, 	actlist_45248, 	actlist_4530c, 	actlist_461cc, 	
-	actlist_46550, 	actlist_465cc, 	actlist_46648, 	actlist_466c4, 	
+	actlist_46550, 	actlist_465cc, 	actlist_46648, 	actlist_466c4, 	//30
 	actlist_44b18, 	actlist_44b94, 	actlist_44c10, 	actlist_45a9c, 	
-	actlist_45bd8, 	actlist_45d14, 	actlist_46010, 	actlist_46b78, 	
+	actlist_45bd8, 	actlist_45d14, 	actlist_46010, 	actlist_46b78, 	//40
 	actlist_46c54, 	actlist_46d30, 	actlist_43f48, 	actlist_43f64, 	
 	actlist_43fc8, 	actlist_44014, 	actlist_43f48, 
 };

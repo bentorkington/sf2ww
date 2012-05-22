@@ -320,7 +320,7 @@ void human_per_frame(Player *ply) {		/* 285f4 */
         check_powermove_input(ply);
         
         if(g.PreRoundAnim) {
-            actiontick((Object *)ply);
+            PLAYERTICK;
         } else {
             if(ply->TCollDis)  {ply->TCollDis--;}
             if(ply->NoThrow_t) {ply->NoThrow_t--;}
@@ -435,7 +435,7 @@ static void _PSDizzyState(Player *ply) {	/* 29f34 diziness */
 				set_falling_from_platform(ply);
 			} else if (--ply->DizzySpell) {
 				/* 29fb4 */ 
-				actiontick((Object *)ply);
+				PLAYERTICK;
 				_PSDizzyStruggle(ply);
 				if (ply->DizzyStruggle >= 3) {
 					ply->DizzyStruggle = 0;
@@ -445,13 +445,13 @@ static void _PSDizzyState(Player *ply) {	/* 29f34 diziness */
 						ply->DizzyStun = FALSE;
 						ply->mode3     = 0;
 					}
-					actiontick((Object *)ply);
+					PLAYERTICK;
 				}
 			} else {
 				/* 29fa8 */
 				ply->DizzyStun = FALSE;
 				ply->mode3     = 0;
-				actiontick((Object *)ply);			
+				PLAYERTICK;			
 			}
 			break;
 		FATALDEFAULT;
@@ -563,10 +563,10 @@ void proc_plstat_normal(Player *ply) {          /* 286cc */
 					} else if (ply->Step ^ ply->StepSave ) {
 						ply->StepSave = ply->Step;
 						CASetAnimWithStep(ply, STATUS_WALKING);
-						actiontick((Object *)ply);
+						PLAYERTICK;
 						update_obj_path((Object *)ply);					
 					} else {
-						actiontick((Object *)ply);
+						PLAYERTICK;
 						update_obj_path((Object *)ply);					
 					}
 					
@@ -582,7 +582,7 @@ void proc_plstat_crouch(Player *ply) {		// 28940
 	
     switch (ply->mode2){
 		case 0:
-			actiontick((Object *)ply);
+			PLAYERTICK;
 			if(check_platform_end(ply)) { set_falling_from_platform(ply); return; } 
 			if(PSGetRoundResult())      { react_to_result(ply);           return; }
 			if (is_facing_enemy(ply))   { turn_around(ply);               return; } 
@@ -703,87 +703,84 @@ void proc_plstat_powermove(Player *ply) {
 void proc_plstat_jumping(Player *ply) {         /* 28a46 */
     int temp;
 	switch(ply->mode2) {
-    case 0:			// Init Jump
-        actiontick((Object *)ply);
-        if((ply->AnimFlags & 0xff) == 0) {
-            NEXT(ply->mode2);
-            ply->Airborne			= AIR_JUMPING;
-            ply->IsJumpThreat       = TRUE;
-            ply->OnPlatform2		= FALSE;
-        }
-        break;
-    case 2:			// During jump, can attack
-        temp = ply_cb_jumpmove(ply);
-        if(temp) {
-            if(temp<0) {
-                /* 28b42 */
-                ply->Attacking	  = TRUE;
-                ply->IsJumpThreat = TRUE;
-                ply->mode2 = 0;
-                ply->mode3 = 0;
-                if(ply->Timer2) {
-                    ply->Timer2--;
-                } else {
-					CATrajectory((Object *)ply);
-					actiontick((Object *)ply);
-                }
-            } else {
-                ply->mode2 = 6;
-                ply->Attacking    = TRUE;
-                ply->IsJumpThreat = TRUE;
-				/* %% */
-                if(ply->Timer2) {
-                    ply->Timer2--;
-                } else {
-					jump_physics(ply);
+		case 0:			// Init Jump
+			PLAYERTICK;
+			if((ply->AnimFlags & 0xff) == 0) {
+				NEXT(ply->mode2);
+				ply->Airborne			= AIR_JUMPING;
+				ply->IsJumpThreat       = TRUE;
+				ply->OnPlatform2		= FALSE;
+			}
+			break;
+		case 2:			// During jump, can attack
+			temp = ply_cb_jumpmove(ply);
+			if(temp) {
+				if(temp<0) {
+					/* 28b42 */
+					ply->Attacking	  = TRUE;
+					ply->IsJumpThreat = TRUE;
+					ply->mode2 = 0;
+					ply->mode3 = 0;
+					if(ply->Timer2) {
+						ply->Timer2--;
+					} else {
+						CATrajectory((Object *)ply);
+						PLAYERTICK;
+					}
+				} else {
+					ply->mode2 = 6;
+					ply->Attacking    = TRUE;
+					ply->IsJumpThreat = TRUE;
+					/* %% */
+					if(ply->Timer2) {
+						ply->Timer2--;
+					} else {
+						jump_physics(ply);
+					}
 				}
-            }
-        } else {
-			jump_physics(ply);
-		}
-        break;
-    case 4:  
+			} else {
+				jump_physics(ply);
+			}
+			break;
+		case 4:  
 			/* normal end to jump, never attacked in the jump */
-        if(PSGetRoundResult())          { react_to_result(ply); return; }
-        if(is_facing_enemy(ply))        { turn_around(ply);     return; }
-        if(is_holding_down(ply)) {
-            ply->LocalTimer = 0;                 /* 28ba6 */
-            temp=ply_cb_crouchmove(ply);
-            if(temp<1)                  { return; }
-            if(temp)                    { set_attacking(ply);     return; }
-            if(retreat_or_block(ply))   { standblock_crouch(ply); return; }
-            crouch(ply);
-            return;
-        }
-        temp=ply_cb_standmove(ply);
-        if(temp<0) {return;}
-        if(temp)                        { set_attacking(ply); return; }
-        if(is_pushing_up(ply))          { set_jumping(ply);   return; }
-        if(retreat_or_block(ply))       { set_standblock(ply);return; }
-        ply->LocalTimer--;
-        ply_exit_stand(ply);
-        break;
-    case 6:		/* 28a98 inlined, did an attack in the jump */
-        if(ply->Timer2) {
-            ply->Timer2--;
-            return;
-        }
-        jump_physics(ply);
-        break;
-    case 8:		// bounced off a wall, only for ChunLi, (maybe Vega?)
-        if(--ply->TmrWallBounce2) {return;}
-        ply->mode2 = 2;
-        ply->VelX.full   = 0x0400;
-        ply->AclX.full   = 0x0005;
-        ply->VelY.full   = 0x0600;
-        ply->AclY.full   = 0x0048;
-        ply->TmrWallBounce = 9;
-        if(ply->Flip ^= 1 == 0) {
-            ply->VelX.full = -ply->VelX.full;
-            ply->AclX.full = -ply->AclX.full;
-        }
-        CASetAnim1(ply, 0x4e);
-        break;
+			if(PSGetRoundResult())          { react_to_result(ply); return; }
+			if(is_facing_enemy(ply))        { turn_around(ply);     return; }
+			if(is_holding_down(ply)) {
+				ply->LocalTimer = 0;                 /* 28ba6 */
+				temp=ply_cb_crouchmove(ply);
+				if(temp<1)                  { return; }
+				if(temp)                    { set_attacking(ply);     return; }
+				if(retreat_or_block(ply))   { standblock_crouch(ply); return; }
+				crouch(ply);
+				return;
+			}
+			temp=ply_cb_standmove(ply);
+			if(temp<0) {return;}
+			if(temp)                        { set_attacking(ply); return; }
+			if(is_pushing_up(ply))          { set_jumping(ply);   return; }
+			if(retreat_or_block(ply))       { set_standblock(ply);return; }
+			ply->LocalTimer--;
+			ply_exit_stand(ply);
+			break;
+		case 6:		/* 28a98 inlined, did an attack in the jump */
+			if(ply->Timer2) {
+				ply->Timer2--;
+				return;
+			}
+			jump_physics(ply);
+			break;
+		case 8:		// bounced off a wall, only for ChunLi, (maybe Vega?)
+			if(--ply->TmrWallBounce2) {return;}
+			ply->mode2 = 2;
+			PLY_TRAJ0(0x0400, 0x0600, 0x0005, 0x0048);
+			ply->TmrWallBounce = 9;
+			if(ply->Flip ^= 1 == 0) {
+				ply->VelX.full = -ply->VelX.full;
+				ply->AclX.full = -ply->AclX.full;
+			}
+			CASetAnim1(ply, 0x4e);
+			break;
     }
 }
 void proc_plstat_standingup (Player *ply) {		/* 28c06 */
@@ -791,7 +788,7 @@ void proc_plstat_standingup (Player *ply) {		/* 28c06 */
 	
     switch(ply->mode2) {
 		case 0:
-			actiontick((Object *)ply);
+			PLAYERTICK;
 			if(PSGetRoundResult())      { react_to_result(ply); return; }
 			if(is_holding_down(ply)) {        
 				NEXT(ply->mode2);            /* 28c5a back down again */
@@ -814,7 +811,7 @@ void proc_plstat_standingup (Player *ply) {		/* 28c06 */
 			if(AF1)							{ ply_exit_stand(ply); return; }
 			break;
 		case 2:		/* 28c90 */
-			actiontick((Object *)ply);
+			PLAYERTICK;
 			if(PSGetRoundResult()) {
 				react_to_result(ply);
 				return;
@@ -846,27 +843,27 @@ void proc_plstat_blockstun(Player *ply) {       /* 28cfe */
 			if(PSGetRoundResult())              { react_to_result(ply); return; }
 			if (is_facing_enemy(ply))           { turn_around(ply);     return; } 
 			
-			actiontick((Object *)ply);
+			PLAYERTICK;
 			
 			if (retreat_or_block(ply))          { sub_28d78(ply); return; }
 			if (is_holding_down(ply))           { PSJumpFromCrouch(ply); return; }
 			standattack_or_jump(ply);
 			break;
 		case 2:            /* later after standattack_or_jump 28de0 */
-			actiontick((Object *)ply);
+			PLAYERTICK;
 			if(ply->AnimFlags & 0x8000)          { ply_exit_stand(ply);  return; }
 			if(retreat_or_block(ply))           { sub_28d36(ply);       return; }
 			if(is_holding_down(ply))            { PSTurnAroundCrouch(ply);       return; }
 			standattack_or_jump(ply);
 			break;
 		case 4:  
-			actiontick((Object *)ply);
+			PLAYERTICK;
 			if(retreat_or_block(ply))           { sub_28d78(ply);       return; }
 			if(is_holding_down(ply))            { _PSStandBlockToCrouchBlock(ply);       return; }
 			crouchmove_or_jump(ply);
 			break;                   
 		case 6:
-			actiontick((Object *)ply);
+			PLAYERTICK;
 			if(ply->AnimFlags & 0x8000)          { ply_exit_crouch(ply);     return; }
 			if(retreat_or_block(ply))           { sub_28d36(ply);           return; }
 			if(is_holding_down(ply))            { _PSStandBlockToCrouchBlock(ply);           return; }  
@@ -983,7 +980,7 @@ void proc_plstat_victory(Player *ply) {		//296f2
 					}
 					break;
 				case 8:
-					actiontick((Object *)ply);
+					PLAYERTICK;
 					break;
 					FATALDEFAULT;
 			}
@@ -1029,7 +1026,7 @@ void jump_physics(Player *ply) {       /* 0x28aa4 do jump physics, player to gro
     
 	CATrajectory((Object *)ply);
     if(ply->VelY.full < 0) {    /* on the way back down? */
-        if(check_ground_collision((Object *)ply)) {
+        if(PLAYERGROUND) {
             /* we landed */
             ply->Attacking		= FALSE;
             ply->IsJumpThreat   = FALSE;
@@ -1045,7 +1042,7 @@ void jump_physics(Player *ply) {       /* 0x28aa4 do jump physics, player to gro
         if(g.GPHitBoxCoords[1][0] == 0) {
             if(ply->TmrWallBounce) {
                 ply->TmrWallBounce--;
-                actiontick((Object *)ply);
+                PLAYERTICK;
                 return;
             }
             if(ply->YPI >= 0x68                             /* high enough */
@@ -1063,7 +1060,7 @@ void jump_physics(Player *ply) {       /* 0x28aa4 do jump physics, player to gro
             }
         }
     }
-    actiontick((Object *)ply);
+    PLAYERTICK;
 }                 
     
 
@@ -1320,7 +1317,7 @@ void SMTumble(Player *ply) {		//2a052 was downandout()
 			if(ply->ReactTimer) {
 				ply->GroundSoundDisa = TRUE;
 				if(--ply->ReactTimer) {
-					actiontick((Object *)ply);
+					PLAYERTICK;
 					return;
 				}
 			}
@@ -1332,11 +1329,11 @@ void SMTumble(Player *ply) {		//2a052 was downandout()
 				if(ply->VelY.full >  0) { ply->VelY.full = 0; }
 			}
 			if(ply->VelY.full >= 0) { 
-				actiontick((Object *)ply);
+				PLAYERTICK;
 				return; 
 			}
-			if(!check_ground_collision((Object *)ply)) {
-				actiontick((Object *)ply);
+			if(!PLAYERGROUND) {
+				PLAYERTICK;
 				return;
 			}
 			NEXT(ply->mode3);
@@ -1348,7 +1345,7 @@ void SMTumble(Player *ply) {		//2a052 was downandout()
 			break;
 		case 6:
 			if(--ply->LocalTimer) { 
-				actiontick((Object *)ply);
+				PLAYERTICK;
 				return;
 			}
 			NEXT(ply->mode3);
@@ -1367,7 +1364,7 @@ void SMTumble(Player *ply) {		//2a052 was downandout()
 			if (ply->PlatformFallDir || ply->BoundCheck) {
 				ply->VelX.full = 0;
 			}
-			if(check_ground_collision((Object *)ply)) {
+			if(PLAYERGROUND) {
 				NEXT(ply->mode3);
 				ply->VelX.full    = ply->Next3VelX.full;
 				ply->AclX.full  = ply->Next3AclX.full;
@@ -1380,19 +1377,19 @@ void SMTumble(Player *ply) {		//2a052 was downandout()
 				}
 				CASetAnim2(ply, ply->TumbleStatus, 3);
 			} else {
-				actiontick((Object *)ply);
+				PLAYERTICK;
 			}
 			break;
 		case 10:
 			if(find_apex(ply)) {         /* returns true at vertex of trajectory */
 				if(ply->PlatformFallDir == 0 && ply->BoundCheck == 0) {
-					actiontick((Object *)ply);
+					PLAYERTICK;
 					return;
 				}
 			}
 			ply->mode3 = 0;
 			ply->Tumble = FALSE;
-			actiontick((Object *)ply);
+			PLAYERTICK;
 			break;
 		FATALDEFAULT;
     }
@@ -1759,7 +1756,7 @@ void _RMRecoverTumble(Player *ply) {
 	};
 	
 	
-    actiontick((Object *)ply);
+    PLAYERTICK;
     if((ply->AnimFlags & 0xff) == 0) { 
 		return; 
 	}

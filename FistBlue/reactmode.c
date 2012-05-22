@@ -143,7 +143,7 @@ void RM_SM_knockedout(Player *ply) {			// 29c4c
 					tumble_until_still(ply);		/* sub declaration here */
 					break;
 				case 4:
-					actiontick((Object *)ply);
+					PLAYERTICK;
 					break;
 				FATALDEFAULT;
 			}
@@ -156,7 +156,7 @@ void RM_SM_knockedout(Player *ply) {			// 29c4c
 					ply->PSFinishedParticipating = TRUE;
 					/* FALLTHRU */
 				case 2:
-					actiontick((Object *)ply);
+					PLAYERTICK;
 					break;
 				FATALDEFAULT;
 			}
@@ -172,7 +172,7 @@ void RM_SM_knockedout(Player *ply) {			// 29c4c
 					break;
 				case 2:			/* 29d62 */
 					if (--ply->LocalTimer) {
-						actiontick((Object *)ply);
+						PLAYERTICK;
 					} else {
 						NEXT(ply->mode2);
 						ply->mode3 = 0;
@@ -197,7 +197,7 @@ void RM_SM_knockedout(Player *ply) {			// 29c4c
 					tumble_until_still(ply);
 					break;
 				case 8:
-					actiontick((Object *)ply);
+					PLAYERTICK;
 					/* 29d14 inlined */
 					break;
 				FATALDEFAULT;
@@ -219,7 +219,7 @@ void RM_SM_knockedout(Player *ply) {			// 29c4c
 					tumble_until_still(ply);
 					break;
 				case 4:
-					actiontick((Object *)ply);
+					PLAYERTICK;
 					break;
 				FATALDEFAULT;
 			}
@@ -240,7 +240,7 @@ void RM_SM_knockedout(Player *ply) {			// 29c4c
 					tumble_until_still(ply);
 					break;
 				case 4:
-					actiontick((Object *)ply);
+					PLAYERTICK;
 					break;
 				FATALDEFAULT;
 			}
@@ -310,7 +310,7 @@ void react_to_attack(Player *ply) {							/* 0x28ed8 */
 						set_falling_from_platform(ply);
 					} else {
 						choose_blockstun(ply);
-						actiontick((Object *)ply);
+						PLAYERTICK;
 					}
 					return;
 				}
@@ -318,7 +318,7 @@ void react_to_attack(Player *ply) {							/* 0x28ed8 */
 					ply->Opponent->X.part.integer -= a;
 					choose_blockstun(ply);
 				}
-				actiontick((Object *)ply);
+				PLAYERTICK;
 			} else {
 				/* 0x2903e */
 				ply->Invincible = FALSE;
@@ -391,7 +391,7 @@ void RMFootSwept(Player *ply) {		/* 29178 */
 				ply->VelX.full  = 0;
 				if(ply->VelY.full >  0) { ply->VelY.full = 0; }
 			}
-			if(check_ground_collision((Object *)ply)) { sub_29280(ply); return; }
+			if(PLAYERGROUND) { sub_29280(ply); return; }
 			
 			
 			temp = ply->PSPushBacks[0];
@@ -410,7 +410,7 @@ void RMFootSwept(Player *ply) {		/* 29178 */
 					ply->Opponent->XPI += temp;
 				}
 			}
-			actiontick((Object *)ply);
+			PLAYERTICK;
 			break;
 		case 0x6: _RMGetBackUp(ply);        break;
 		case 0x8: _RMRecoverTumble(ply);	break;
@@ -474,7 +474,7 @@ void RMHitInAir(Player *ply) {			// for RM_HITINAIR
 				ply->VelX.full  = 0;
 				/* some madness from the dump omitted here, take a look */
 			}
-			if(check_ground_collision((Object *)ply)) { 
+			if(PLAYERGROUND) { 
 				sub_29426(ply, ply->PlatformFallDir);			/* handle pushback */
 				return; 
 			}
@@ -496,7 +496,7 @@ void RMElectrocuted(Player *ply) {
         CASetAnim1(ply, STATUS_ELECTROCUTED);
         break;
     case 2:
-        if(--ply->LocalTimer) {actiontick((Object *)ply); return; }
+        if(--ply->LocalTimer) {PLAYERTICK; return; }
         NEXT(ply->mode2);
         
         ply->PSPushBacks = data_29150;
@@ -824,8 +824,8 @@ static void _RMTumbleSM3(Player *ply) {		/* 2a21a tumble sm */
 				}
 			}
 			/* 2a2f2 */
-			if (ply->VelY.full >= 0 || check_ground_collision((Object *)ply)) {
-				actiontick((Object *)ply);
+			if (ply->VelY.full >= 0 || PLAYERGROUND) {
+				PLAYERTICK;
 			} else {
 				if (ply->UndealtDamage) {
 					ply->Energy     -= ply->UndealtDamage;
@@ -848,7 +848,7 @@ static void _RMTumbleSM3(Player *ply) {		/* 2a21a tumble sm */
 		case 6:
 			/* 2a358 */
 			if(--ply->LocalTimer) {
-				actiontick((Object *)ply);
+				PLAYERTICK;
 			} else {
 				NEXT(ply->mode3);
 				PLY_TRAJ_NEXT_2
@@ -865,7 +865,7 @@ static void _RMTumbleSM3(Player *ply) {		/* 2a21a tumble sm */
 			if(ply->PlatformFallDir || ply->BoundCheck) {
 				ply->VelX.full = 0;
 			}
-			if(check_ground_collision((Object *)ply)) {
+			if(PLAYERGROUND) {
 				NEXT(ply->mode3);
 				PLY_TRAJ_NEXT_3;
 				ply->Airborne = FALSE;
@@ -875,7 +875,7 @@ static void _RMTumbleSM3(Player *ply) {		/* 2a21a tumble sm */
 				}
 				CASetAnim2(ply, ply->TumbleStatus, 3);
 			} else {
-				actiontick((Object *)ply);
+				PLAYERTICK;
 			}
 			break;
 		case 10:
@@ -884,7 +884,7 @@ static void _RMTumbleSM3(Player *ply) {		/* 2a21a tumble sm */
 				ply->mode3 = 0;
 				ply->Tumble = FALSE;
 			}
-			actiontick((Object *)ply);
+			PLAYERTICK;
 			break;
 		FATALDEFAULT;
 	}

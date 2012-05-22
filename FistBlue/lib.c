@@ -717,23 +717,17 @@ static void _set_AI_urgency(Player *ply) {		// 30da
 			}
 			d1 = data_95660[d0];
 		}
-		if (g.TimeRemainBCD < 0x10) {
-			d2 = 0;
-		} else if (g.TimeRemainBCD < 0x30) {
-			d2 = 1;
-		} else if (g.TimeRemainBCD < 0x40) {
-			d2 = 2;
-		} else if (g.TimeRemainBCD < 0x50) {
-			d2 = 3;
-		} else if (g.TimeRemainBCD < 0x60) {
-			d2 = 4;
-		} else if (g.TimeRemainBCD < 0x70) {
-			d2 = 5;
-		} else if (g.TimeRemainBCD < 0x80) {
-			d2 = 6;
-		} else {
-			d2 = 7;
+		
+		if        (g.TimeRemainBCD < 0x10) { d2 = 0;
+		} else if (g.TimeRemainBCD < 0x30) { d2 = 1;
+		} else if (g.TimeRemainBCD < 0x40) { d2 = 2;
+		} else if (g.TimeRemainBCD < 0x50) { d2 = 3;
+		} else if (g.TimeRemainBCD < 0x60) { d2 = 4;
+		} else if (g.TimeRemainBCD < 0x70) { d2 = 5;
+		} else if (g.TimeRemainBCD < 0x80) { d2 = 6;
+		} else {							 d2 = 7;
 		}
+		
 		if (d2 < d1) {
 			d1 = d2;
 		}
@@ -752,16 +746,11 @@ static void _set_AI_timers(Player *ply) {		// 307e
 		}
 	}
 }
-
 void LBUpdateAITimers(Player *ply) {	/* 3074 Updates needed by AI */
 	_set_AI_urgency(ply);		
 	_set_AI_timers(ply);		
 }
-
-
-	
-
-inline static void _init_energy(void) {			/* 2e6e */
+static void _init_energy(void) {			/* 2e6e */
 	g.Player1.Energy		= 
 	g.Player1.EnergyDash	=
 	g.Player2.Energy		= 
@@ -769,7 +758,7 @@ inline static void _init_energy(void) {			/* 2e6e */
 	g.Player1.EnergyCursor	=
 	g.Player2.EnergyCursor	=	ENERGY_START;
 }
-inline static void _init_difficulty(void) { 
+static void _init_difficulty(void) { 
 	Player *ply;
 
 	const static char data_2e4e[32]={
@@ -797,13 +786,11 @@ inline static void _init_difficulty(void) {
 			}
 		}
 	} else {
-		/* 2d36 */
 		if (g.Player1.Human) {
-			ply = PLAYER2;
+			g.Player2.Difficulty = 16;
 		} else {
-			ply = PLAYER1;
+			g.Player1.Difficulty = 16;
 		}
-		ply->Difficulty = 16;		/* was data, but always 0x10 @2d6e */
 	}
 }
 
@@ -830,10 +817,7 @@ void ClearEffectQueue(void) {		/* 21c2 was resetcq */
 
 short start_effect(short d0, short d1) {		/* 158c was libcall()*/
 	if (Exec.FreeTasks == 0) {
-		//XXX fix this, we actally can sleep now
-		printf("start_effect() can't sleep()! %x %x\n", d0 >>8, d0 & 0xff);
-		printtasktable();
-		panic(0);
+		sf2sleep(1);
 	} else {
 		if (g.mode0 == 2 && g.mode1 == 4 && g.mode2 == 10 && (d0 & 0xff00) == 0) {
 			return g.libsplatter;
@@ -882,10 +866,8 @@ void player_hitstuni(Player *ply, u8 trajectory, u8 direction,u8 damage, u8 subs
         act->exists = TRUE;
         act->Sel    = SF2ACT_HITSTUN;
         act->SubSel = subsel;
-        act->XPI    = ply -> XPI;
-        act->YPI    = ply -> YPI;
-        act->XPI   += xoff;
-        act->YPI   += yoff;
+        act->XPI    = ply->XPI + xoff;
+        act->YPI    = ply->YPI + yoff;
         act->Owner  = ply;
         act->Flip   = ply -> Flip;
     }
@@ -1075,7 +1057,7 @@ void decode_buttons(Player *ply, short d0) {		/* 3296 */
 /* only valid if a button is actually pressed, otherwise will always
  result in Big Kick */
 	
-	ply->PunchKick = 0;
+	ply->PunchKick = PLY_PUNCHING;
 	if (d0 & BUTTON_A) {
 		ply->ButtonStrength = STRENGTH_LOW;
 		return;
@@ -1308,7 +1290,6 @@ void startgame(int players_online) {	/* 6d4e */
 		g.Player1.Human = TRUE;
 	}
 #endif //GUSTY_LOBSTER
-	//XXX can't do this in the main thread
 	fadenwait1();
 	
 	
@@ -1881,7 +1862,7 @@ void actionlibrary(void) {
 	static const struct actionhdr data_83178[]={
 		
 	};
-	const struct actionhdr *data_actions[]={ 
+	static const struct actionhdr *data_actions[]={ 
 		data_82d7c, 
 		data_82e02, 
 		data_82f0c, 
@@ -1932,10 +1913,10 @@ void _bumplevel(void) {		/* 2bf2 */
 		++g.LevelCursor;
 	}
 	if(g.LevelScript[g.LevelCursor+1] == 0x10) {g.OnFinalStage = TRUE;}
-	sub_2c1a();
+	boss_level_check();
 }
 
-void sub_2c1a (void) {
+void boss_level_check (void) {			//2c1a
 	if(g.LevelCursor >= 7) {
 		g.UpToBosses = TRUE;
 		if(g.LevelCursor == 8) {

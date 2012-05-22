@@ -27,10 +27,10 @@ void PLCBCompAttackMBison(Player *ply);
 int PLCBCompJumpMBison(Player *ply);
 
 struct UserData_MBison {
-	u8	x0080;			//far move
-	u8	x0081;			//closemove
-	short	x0082;		//distance
-	u8	x0084;		
+	u8		x0080;			//far move
+	u8		x0081;			//closemove
+	short	x0082;			//distance
+	u8		x0084;		
 	char	x0085;
 	short	x0086;
 	short	x0088;
