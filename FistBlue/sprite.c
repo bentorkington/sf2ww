@@ -848,7 +848,7 @@ static void _draw_sprite(Object *obj, const u16 *tilep, const short *offsets,
 static void sprite_coords(Object *obj, short *coordpair) {		// 7f160
 	if(obj->Scroll < 0) {
 		coordpair[0]=obj->XPI + 64;
-		coordpair[1]=(obj->YPI ^= 0x00ff) + 1;
+		coordpair[1]=(obj->YPI ^ 0x00ff) + 1;
 	} else {
 		switch (obj->Scroll) {
 			case SCROLL_2:
