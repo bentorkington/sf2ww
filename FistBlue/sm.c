@@ -509,7 +509,7 @@ static void draw_world_map(void) {		//856c mode 2,4,2
 				case 0:
 					NEXT(g.mode4);
 					es.FadeBusy = TRUE;
-					QueueEffect(SL1C | CHALLENGER_2, 0x3);
+					QueueEffect(0xc1c, 0x3);
 					break;
 				case 2:
 					if (es.FadeBusy == FALSE) {
