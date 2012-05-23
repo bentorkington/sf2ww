@@ -53,6 +53,8 @@ void PSCBPowerDhalsim(Player *ply);
 void PSCBVictoryDhalsim(Player *ply);
 void PSCBAttackZangeif(Player *ply);
 void PSCBPowerZangeif(Player *ply);
+
+void PSCBVictoryEHonda(Player *ply);
 void PSCBVictoryZangeif(Player *ply);
 
 // reco as 12 * 4 * struct Vect8
@@ -914,7 +916,7 @@ void proc_plstat_taking_hit (Player *ply) {     /* 28ea4 */
 void proc_plstat_victory(Player *ply) {		//296f2
 	void (*data_2976a[])(Player *ply)={		// 2976a
 		PSCBVictoryRyu,
-		NULL,		// 2e1fe
+		PSCBVictoryEHonda,		// 2e1fe XXX
 		PSCBVictoryBlanka,		// 2ecba
 		sub_2ff6e,
 		PSCBVictoryRyu,

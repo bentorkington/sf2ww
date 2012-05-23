@@ -110,7 +110,7 @@ static void sub_315a4(Player *ply) {
 			if (AF1) {
 				sub_3163e(ply);
 			} else if (ud->x0088.part.p1 == 0 || AF2 == 0 ||
-					   (~ply->JoyDecodeDash.full & ply->JoyDecode.full & ud->volley_joymask) == 0) {
+					   (PLY_NEWBUTTONS & ud->volley_joymask) == 0) {
 				PLAYERTICK;
 			} else if (PSSetNextAction(ply)) {
 				plstat_do_nextaction(ply);
@@ -132,7 +132,7 @@ static void sub_315a4(Player *ply) {
 
 #pragma mark Standing moves
 static int sub_30f9e(Player *ply) {
-	int buttons = ~ply->JoyDecodeDash.full & ply->JoyDecode.full & BUTTON_MASK;
+	int buttons = PLY_NEWBUTTONS & BUTTON_MASK;
 	if (buttons) {
 		g_zangeif_d5 = buttons;
 		if (buttons & 0x10) {
@@ -512,7 +512,7 @@ int PLCBPowerZangeif(Player *ply) {			// 31c40
 	};
 	switch (ud->mode_power) {
 		case 0:
-			if (ply->JoyDecode.full & 0xf == 0) {
+			if (ply->JoyDecode.full & JOY_MOVEMASK == 0) {
 				ud->mode_power = 0;
 				return 0;
 			} else {
@@ -533,11 +533,11 @@ int PLCBPowerZangeif(Player *ply) {			// 31c40
 				return 0;
 			}
 			if (ply->JoyDecode.full & 0xf) {
-				if ((ply->JoyDecode.full & 0xf) == data_31cd0[ud->power_sel]) {
+				if ((ply->JoyDecode.full & JOY_MOVEMASK) == data_31cd0[ud->power_sel]) {
 					NEXT(ud->mode_power);
 					ud->power_sel = 0;
 					sub_31f18(ply);
-				} else if ((ply->JoyDecode.full & 0xf) == data_31cd0[ud->power_sel+1]) {
+				} else if ((ply->JoyDecode.full & JOY_MOVEMASK) == data_31cd0[ud->power_sel+1]) {
 					NEXT(ud->mode_power);
 					ud->power_sel = 1;
 					sub_31f18(ply);
@@ -549,8 +549,8 @@ int PLCBPowerZangeif(Player *ply) {			// 31c40
 				ud ->mode_power = 0;
 				return 0;
 			}
-			if (ply->JoyDecode.full & 0xf) {
-				if ((ply->JoyDecode.full & 0xf) == data_31cfc[ud->power_sel]) {
+			if (ply->JoyDecode.full & JOY_MOVEMASK) {
+				if ((ply->JoyDecode.full & JOY_MOVEMASK) == data_31cfc[ud->power_sel]) {
 					NEXT(ud->mode_power);
 				}
 			}
@@ -560,17 +560,17 @@ int PLCBPowerZangeif(Player *ply) {			// 31c40
 				ud ->mode_power = 0;
 				return 0;
 			}
-			if (ply->JoyDecode.full & 0xf) {
-				if ((ply->JoyDecode.full & 0xf) == data_31d2e[ud->power_sel]) {
+			if (ply->JoyDecode.full & JOY_MOVEMASK) {
+				if ((ply->JoyDecode.full & JOY_MOVEMASK) == data_31d2e[ud->power_sel]) {
 					NEXT(ud->mode_power);
 				}
 			}
 			break;
 		case 8:
-			if (~ply->JoyDecodeDash.full & ply->JoyDecode.full & 0x70) {
-				return sub_31d56(ply, ~ply->JoyDecodeDash.full & ply->JoyDecode.full & 0x70);
-			} else if (~ply->JoyDecode.full & ply->JoyDecodeDash.full & 0x70) {
-				return sub_31d56(ply, ~ply->JoyDecodeDash.full & ply->JoyDecode.full & 0x70);
+			if (PLY_NEWBUTTONS & BUTTON_PUNCHES) {
+				return sub_31d56(ply, PLY_NEWBUTTONS & BUTTON_PUNCHES);
+			} else if (~ply->JoyDecode.full & ply->JoyDecodeDash.full & BUTTON_PUNCHES) {
+				return sub_31d56(ply, PLY_NEWBUTTONS & BUTTON_PUNCHES);
 			} else {
 				++ud->power_potential; 
 				if (ud->power_potential >= 0xe) {

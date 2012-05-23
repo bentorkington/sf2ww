@@ -1931,10 +1931,10 @@ void boss_level_check (void) {			//2c1a
 // these are here mainly to keep things tidy and avoid modules needing to #include and extern globals
 short get_scr1x() { return gstate_Scroll1.XPI; }
 short get_scr1y() { return gstate_Scroll1.YPI; }
-short get_scr2x() { return gstate_Scroll1.XPI; }
-short get_scr2y() { return gstate_Scroll1.YPI; }
-short get_scr3x() { return gstate_Scroll1.XPI; }
-short get_scr3y() { return gstate_Scroll1.YPI; }
+short get_scr2x() { return gstate_Scroll2.XPI; }
+short get_scr2y() { return gstate_Scroll2.YPI; }
+short get_scr3x() { return gstate_Scroll3.XPI; }
+short get_scr3y() { return gstate_Scroll3.YPI; }
 
 
 

@@ -1775,6 +1775,7 @@ static void action_1f(Object *obj) {		//18e7e
 
 #pragma mark ACTION 0x20 hitstun splashes
 static void action_20(Object *obj) {
+	// 0-2 = blue splashes, 3 = big red splash, 4-5=fireballsplash
 	static const POINT16 data_1de94[4] = {{ -2, 0}, {2, -2}, {0, 0}, {-2, 2}};
 	short temp;
 	if (obj->mode3 == 5) {

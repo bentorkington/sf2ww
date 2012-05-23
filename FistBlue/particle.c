@@ -65,10 +65,10 @@ void check_rect_queue_draw(Object *obj) {   /* 0x2540 */
         gc = get_graphics_context(obj);
         point.x = obj->XPI - gc->XPI;  /*world to camera */
         point.x += VISIBLE_MARGIN;                                
-        if ((unsigned short)point.x > (SCREEN_WIDTH + 2 * VISIBLE_MARGIN)) { return; }
+        if ((unsigned short)point.x > (SCREEN_WIDTH + (2 * VISIBLE_MARGIN))) { return; }
         point.y = obj->YPI - gc->YPI;
         point.y += VISIBLE_MARGIN;
-        if ((unsigned short)point.y > (SCREEN_HEIGHT + 2 * VISIBLE_MARGIN)) { return; }
+        if ((unsigned short)point.y > (SCREEN_HEIGHT + (2 * VISIBLE_MARGIN))) { return; }
         obj->flag1=TRUE;
         enqueue_and_layer(obj);
     }

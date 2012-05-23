@@ -96,7 +96,7 @@ inline static int chunli_pressing_up(Player *ply) {		//302f8
 
 
 u16 sub_301bc(Player *ply, u16 mask) {
-	return (~ply->JoyDecodeDash.full & ply->JoyDecode.full & mask);
+	return (PLY_NEWBUTTONS & mask);
 }
 u16 sub_301ca(Player *ply, u16 mask) {
 	return (~ply->JoyDecode.full & ply->JoyDecodeDash.full & mask);

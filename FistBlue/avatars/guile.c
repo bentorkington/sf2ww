@@ -33,7 +33,6 @@ quirkysound(MOVE_ID);			\
 
 
 
-#define NEWBUTTONS (~ply->JoyDecodeDash.full & ply->JoyDecode.full)
 
 #define STDANIM(ARG_A,EXITROUTINE)					\
 switch (ply->mode2) {				\
@@ -149,7 +148,7 @@ static void sub_2f850(Player *ply) {		/* 2f850 Guile stand punch */
 						_GuileExitStand(ply);
 					} else if (AF2 == 0) {
 						PLAYERTICK;
-					} else if (~ply->JoyDecodeDash.full & ply->JoyDecode.full & BUTTON_A) {
+					} else if (PLY_NEWBUTTONS & BUTTON_A) {
 						if(PSSetNextAction(ply)) {
 							plstat_do_nextaction(ply);
 						} else {
@@ -263,7 +262,7 @@ static void sub_2fa2c(Player *ply) {
 					if (AF1) {
 						_GuileExitStand(ply);
 					} else if (AF2 
-					           && (~ply->JoyDecodeDash.full & ply->JoyDecode.full & BUTTON_D) ) {
+					           && (PLY_NEWBUTTONS & BUTTON_D) ) {
 						if (PSSetNextAction(ply)) {
 							plstat_do_nextaction(ply);
 						} else {
@@ -305,7 +304,7 @@ static void sub_2faf8(Player *ply) {
 				case 2:
 					if (AF1) {
 						_GuileExitCrouch(ply);
-					} else if (AF2 && (NEWBUTTONS & BUTTON_A)) {
+					} else if (AF2 && (PLY_NEWBUTTONS & BUTTON_A)) {
 						if(PSSetNextAction(ply)) {
 							plstat_do_nextaction(ply);
 						} else {
@@ -341,7 +340,7 @@ static void sub_2fbac(Player *ply) {
 				case 2:
 					if (AF1) {
 						_GuileExitCrouch(ply);
-					} else if (AF2 && (NEWBUTTONS & BUTTON_D)) {
+					} else if (AF2 && (PLY_NEWBUTTONS & BUTTON_D)) {
 						if(PSSetNextAction(ply)) {
 							plstat_do_nextaction(ply);
 						} else {
@@ -502,7 +501,7 @@ void PSCBAttackGuile(Player *ply) {		/* PLSTAT_ATTACKING callback */
 			case PLY_CROUCH:
 				STDPUNCHKICK(sub_2faf8, sub_2fbac)
 				break;
-			case PLY_THROW:
+			case 4:
 				sub_2fc80(ply);
 				break;
 			FATALDEFAULT;
@@ -641,7 +640,7 @@ void sub_2ff6e(Player *ply) {
 
 #pragma mark Private Functions
 static short GuileNewButtonsDown(Player *ply, short mask ) {		/* 2f396 */
-	return (~ply->JoyDecodeDash.full & ply->JoyDecode.full & mask);
+	return (PLY_NEWBUTTONS & mask);
 }
 static short GuileNewButtonsUp(Player *ply, short mask ) {		/* 2f396 */
 	return (~ply->JoyDecode.full & ply->JoyDecodeDash.full & mask);

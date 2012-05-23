@@ -273,7 +273,7 @@ static int sub_4014(Player *ply) {		//4014 ply %a4
 }
 
 static int sub_4004(Player *ply) {		// 4004 ply %a4
-	static u16 data_98e42[32]={
+	static const u16 data_98e42[32]={
 		0x0000, 0x0000, 0x0000, 0x0000, 0x0002, 0x0000, 0x0000, 0x0800, 
 		0x0200, 0x0000, 0x0020, 0x0020, 0x0800, 0x2000, 0x0020, 0x0020, 
 		0x1000, 0x8004, 0x0040, 0x0801, 0x8004, 0x0010, 0x0800, 0x9002, 
@@ -291,7 +291,7 @@ static int sub_4004(Player *ply) {		// 4004 ply %a4
 }
 
 static int sub_400e(Player *ply, Player *opp) {
-	static u16 data_98ec2[32]={
+	static const u16 data_98ec2[32]={
 		0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x8000, 0x0010, 0x0000, 
 		0x0000, 0x0200, 0x2000, 0x0040, 0x0002, 0x0800, 0x8000, 0x0001, 
 		0x0003, 0x8000, 0x1004, 0x0100, 0x0080, 0x4010, 0x0820, 0x0408, 
@@ -492,7 +492,7 @@ void give_100_points(short side) {		//53d6, wrong, actually 1
         
 #pragma mark DIFFICULTY 
 
-static void bonus_level_setup(short stage) {						// 2be6
+static void bonus_level_setup(short stage) {	// 2be6
 	g.OnBonusStage = TRUE;
 	g.CurrentStage = stage;
 	boss_level_check();
@@ -505,46 +505,24 @@ void sub_2b7c(void) {
 		STAGE_INDIA_DHALSIM, 
 		STAGE_JAPAN_EHONDA
 	};
-	short d0,d1;
-	
 	if(g.InDemo) {
 		g.CurrentStage = SF2_DEMO_STAGES[g.DemoStageIndex];       /* 2b60 */
-		return;
 	} else if (g.x0a0f == 0) {
 		if(g.OnBonusStage == FALSE) {
-			g.LastFightStage = g.CurrentStage;	/* u16 */
+			g.LastFightStage = g.CurrentStage;
 		} 
-		g.OnBonusStage = 0;
-		if(g.BonusDone == 0) {	/*2ba4 */
-			d0 = g.x0a10;	/* u16 not found set*/
-			d0 = 0xc;
-			d1 = 3;
-			if(g.NotUsed) { d1 = 2; }
-			if(g.x09f9 == d1) {
-				bonus_level_setup(d0);
-				return;
-			}
+		g.OnBonusStage = FALSE;
+		if(g.BonusDone == 0 && g.x09f9 == (g.NotUsed ? 2 : 3)) {
+			bonus_level_setup(STAGE_BONUS_CAR);
+		} else if  (g.BonusDone == 1 && g.x09f9 == (g.NotUsed ? 4 : 6)) {
+			bonus_level_setup(STAGE_BONUS_BARRELS);
+		} else  if (g.BonusDone == 2  && g.NoLoser) {
+			bonus_level_setup(STAGE_BONUS_DRUMS);
+		} else {
+			_bumplevel();
 		}
-		/* 2bb8 */
-		if (g.BonusDone == 1) {
-			d0 = 0xd;	/* barrels */
-			d1 = g.NotUsed ? 4 : 6;
-			if(g.x09f9 == d1) {
-				bonus_level_setup(d0);
-				return;
-			}
-		}
-		if (g.BonusDone == 2) {
-			d0 = 0xe;		/* drums */
-			if (g.NoLoser) {
-				bonus_level_setup(d0);
-				return;
-			}
-		}
-		_bumplevel();
 	} else {
-		d0 = g.x0a0c;
-		bonus_level_setup(d0);		
+		bonus_level_setup(g.x0a10);		
 	}
 }
 

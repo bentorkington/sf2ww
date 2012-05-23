@@ -188,7 +188,7 @@ typedef struct game {
 	u8		x09f6;			// found set, not used
     u8		BattleWinSide;  /* 0x09f7 */
     u8		PlyLostToPly;
-    u8		x09f9;					// not found set
+    u8		x09f9;			
     u8		BonusDone;
     u8		UpToBosses;						// 9fb
 	u8		ContinueBits;				/* 0x09fc */

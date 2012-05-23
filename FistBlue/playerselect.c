@@ -80,27 +80,26 @@ static void timer_tick(void) {		//8498
 }
 static void update_player_display(Player *ply) {		// 8352
 	print_libtextgfx(ply->Side ? 0x18 : 0x17);
+	
 	PrintPlayerPic(ply, ply->Side, ply->FighterID);
 }
 static int _update_cursor_vert(u16 d6) {		// 8554
-	int d2 = 0;
-	if (d6 & 8) {
-		d2 = -4;
+	if (d6 & JOY_UP) {
+		return -4;
+	} else if (d6 & JOY_DOWN) {
+		return 4;
+	} else {
+		return 0;
 	}
-	if (d6 & 4) {
-		d2 = 4;
-	}
-	return d2;
 }
 static int _update_cursor_horiz(u16 d6){		// 853c
-	int d1 = 0;
-	if (d6 & 1) {
-		d1 = 1;
+	if (d6 & JOY_RIGHT) {
+		return  1;
+	} else if (d6 & JOY_LEFT) {
+		return -1;
+	} else {
+		return  0;
 	}
-	if (d6 & 2) {
-		d1 = -1;
-	}
-	return d1;
 }
 static u16 _update_ply_cursor(Player *ply, Player *plb) {		// 84c6 ply in %a4, plb in %a3
 	u16 d6 = (~ply->JoyDecodeDash.full) & ply->JoyDecode.full;
@@ -224,11 +223,6 @@ void SM_player_select(void) {		//7fc4
 					soundsting(SOUND_PLAYERSELECTSCR);
 					QueueEffect(SL1C | 0x16, 0);
 					actionlibrary();    // 82d0e
-					/* CPS does a short busy-sleep here */
-					/* 0x8094 maybe palette comparison here */
-					if (0) {
-						QueueEffect(0x2878, 0);		//suicide
-					}
 					break;
 				case 2:				//80de
 					NEXT(g.PLSL.mode1);

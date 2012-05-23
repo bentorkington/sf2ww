@@ -407,7 +407,7 @@ void PSCBAttackRyu(Player *ply) {		//2d168
 KRBtns sub_2d0d8(Player *ply) {
 	KRBtns retval;
 	retval.d6 = ply->JoyDecode.full;
-	retval.d0 = ~ply->JoyDecodeDash.full & ply->JoyDecode.full & BUTTON_MASK;
+	retval.d0 = PLY_NEWBUTTONS & BUTTON_MASK;
 	return retval;
 }
 static short sub_2d142(Player *ply, char *a2) {

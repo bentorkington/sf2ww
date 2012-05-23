@@ -159,7 +159,7 @@ struct player_t {
     char		BlockStun;
     char		SufferHB5;
 	char		NextReactMode;			/* 4b */
-	char		NextReactMode2;		/* 4c */
+	char		NextReactMode2;		/* 4c  vomit / blood etc select for act20 */
 	char		OnPlatform, OnPlatform2;	// 4d , 4e
 	u8			HitBoxUnused[3];    /* for hitboxes 1,2,3 */
 	short		DSOffsetX;
@@ -475,6 +475,7 @@ ply->VelY.full = arg1;							\
 ply->AclX.full = arg2;						\
 ply->AclY.full = arg3;						\
 
+#define PLY_NEWBUTTONS (~ply->JoyDecodeDash.full & ply->JoyDecode.full)
 
 
 

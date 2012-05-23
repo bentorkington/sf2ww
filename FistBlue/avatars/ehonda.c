@@ -1216,3 +1216,22 @@ void PLCBCompAttackEHonda(Player *ply) {		//33016
 		FATALDEFAULT;
 	}
 }
+
+void PSCBVictoryEHonda(Player *ply) {		// 2e1fe
+	switch (ply->mode3) {
+		case 0:
+			NEXT(ply->mode3);
+			// still todo, this will do for now
+			sub_2e3ac(ply, ((sf2rand() & 1) ? 0x6c : 0x88));
+			break;
+		case 2:
+			ply->PSFinishedParticipating = TRUE;
+			if (AF2) {
+				soundsting(AF2);
+			}
+			PLAYERTICK;
+			break;
+		FATALDEFAULT;
+	}
+}
+

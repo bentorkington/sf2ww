@@ -54,12 +54,15 @@
 #define JOY_DOWN      0x4
 #define JOY_LEFT      0x2
 #define JOY_RIGHT     0x1
+#define JOY_MOVEMASK	(JOY_UP | JOY_DOWN | JOY_LEFT | JOY_RIGHT)
 #define BUTTON_A	 0x10
 #define BUTTON_B	 0x20
 #define BUTTON_C	 0x40
 #define BUTTON_D	0x100
 #define BUTTON_E	0x200
 #define BUTTON_F	0x400
+#define BUTTON_PUNCHES (BUTTON_A | BUTTON_B | BUTTON_C)
+#define BUTTON_KICKS   (BUTTON_D | BUTTON_E | BUTTON_F)
 #ifndef BUTTON_MASK
 #define BUTTON_MASK	( BUTTON_A | BUTTON_B | BUTTON_C | BUTTON_D | BUTTON_E | BUTTON_F )
 #endif

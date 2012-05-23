@@ -282,7 +282,7 @@ void sub_7d74e(Player *ply, Player *opp, const HitBoxAct *a3) {
         obj->Sel    = SF2ACT_HITSTUN;     /* hitstuns */
         obj->XPI    = g.GPCollX;
         obj->YPI    = g.GPCollY;
-        obj->Owner = ply;
+        obj->Owner  = ply;
         obj->Flip   = ply->Flip;
         obj->SubSel = opp->NextReactMode2;
         if(g.GPHitBlocked == 0 && opp->BlockStun) {

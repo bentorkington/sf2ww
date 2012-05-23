@@ -136,7 +136,7 @@ int sub_32386(Player *ply) {
 
 static int sub_3257a(Player *ply) {
 	g_dhalsim_d6 = ply->JoyDecode.full;
-	return (~ply->JoyDecodeDash.full & ply->JoyDecode.full & BUTTON_MASK);
+	return (PLY_NEWBUTTONS & BUTTON_MASK);
 }
 static void sub_32480(Player *ply, int move) {
 	ply->Move = move;

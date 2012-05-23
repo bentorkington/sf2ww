@@ -132,7 +132,11 @@ static void _GSInitDimensions(void) {
 	g.GroundPlaneY = data_839e0[g.CurrentStage];
 }
 static void _GSInitDispEna(void) {
-
+	static const u16 data_83ac0[20]={		// DISPENAs
+		0x0b40, 0x06c0, 0x0e40, 0x0e40, 0x0e40, 0x0b40, 0x12c0, 0x0780, 0x0780, 0x3240,
+		0x0e40, 0x0780, 0x06c0, 0x06c0, 0x0e40, 0x0e40, 0x302e, 0x0006, 0x0440, 0x00c0,
+	};
+	
     short temp = g.CPS.DispEna & 0x1b;
     g.CPS.DispEna = temp | data_83ac0[g.CurrentStage];
 }
@@ -182,7 +186,7 @@ static CP _GSCoordOffsetScr3 (GState *gs, short offset) {
 	
     CP cp;
     offset &= 0x000f;
-    cp.x = gs->XPI + data_83ddc[offset/4][0];
+    cp.x =   gs->XPI + data_83ddc[offset/4][0];
     cp.y = ~(gs->YPI + data_83ddc[offset/4][1]);
     
     return cp;
@@ -300,7 +304,7 @@ static void sub_832f2(GState *gstate, int d1) {
 	}
 	gstate->x0024 = 4;
 }
-static void sub_83334(GState *gstate, int d0) {
+static void sub_83334(GState *gstate, int d0) {		// d0 is negative
 	int d3;
 	/* missing GPCollDetect redundant */
 	if (d0 < -6) {
@@ -321,7 +325,7 @@ static void sub_83334(GState *gstate, int d0) {
 static void _GSMaintScroll3X(GState *gs) {		// 83658
 	gs->x0024 = gstate_Scroll2.x0024;
 	switch (gs->XUpdateMethod) {
-		case 0:
+		case 0:		// scroll 2 + Zdepth
 			gs->XPI = gstate_Scroll2.XPI + (gstate_RowScroll.OffMask - 192);
 			break;
 		case 2:
@@ -361,51 +365,40 @@ static void _GSMaintScroll3Y(GState *gs) {		// 8368c
 
 }
 static void update_scroll2_X (GState *gstate) {     /* 0x83270 */
-	short p1x, p2x, plx, prx;
-	short d0, d1;
+	short plx, prx;
+	short d0;
 	Player *left, *right;
 	switch (gstate->XUpdateMethod) {
 		case 0:
-			p1x = g.Player1.XPI;
-			p2x = g.Player2.XPI;
-			if (p1x < p2x) {
-				plx = p1x; prx = p2x;
-				left = PLAYER1; right=PLAYER2;
+			if (g.Player1.XPI <= g.Player2.XPI) {
+				plx   = g.Player1.XPI; 
+				prx   = g.Player2.XPI;
+				left  = PLAYER1;
+				right = PLAYER2;
 			} else {
-				plx = p2x; prx = p1x;
-				left = PLAYER2; right=PLAYER1;
+				plx   = g.Player2.XPI; 
+				prx   = g.Player1.XPI;
+				left  = PLAYER2; 
+				right = PLAYER1;
 			}
 			plx -= left->Size;
 			prx += right->Size;
-			d0 = plx;
-			d1 = prx - d0;
-			if (d1 < 0x100) {
-				d0=plx;
-				d1=prx - gstate->XPI - 0x140;
-				if (d1 >= 0) {
-					sub_832f2(gstate,d1);
-					return;
+
+			if ((prx - plx) < 256) {
+				if (prx - gstate->XPI - 320 >= 0) {
+					sub_832f2(gstate,prx - gstate->XPI - 320);
+				} else if (plx - gstate->XPI - 64<0) {
+					sub_83334(gstate,plx - gstate->XPI - 64);
 				}
-				d0 -= gstate->XPI;
-				d0 -= 0x40;
-				if (d0<0) {
-					sub_83334(gstate,d0);
-				}
-				return;				
-			} else {
-				/* 832cc */
-				if (d1 > 0x180) {
-					return;
-				}
+			} else if ((prx - plx) < 384) {
 				d0=(left->XPI - left->Size + right->XPI + right->Size)/2;
 				d0-=gstate->XPI;
-				d0-=0xc0;
+				d0-=192;
 				if (d0<0) {
 					sub_83334(gstate, d0);
-					return;
+				} else {
+					sub_832f2(gstate, d0);					
 				}
-				d1=d0;
-				sub_832f2(gstate, d1);
 			}
 			break;
 		case 2:
@@ -1144,9 +1137,9 @@ static void _GSUpdateRowScroll(ScrollState *gs, short *a0, u16 *a1) { /* 84592 *
 			for (i=0; i<0x10; i++) {
 				AccumOffset.full += Offset;
 			}
-			gs->OffMask = AccumOffset.full + (Offset << 16);			/* XXX u32 */
+			gs->OffMask = AccumOffset.full + (Offset << 16);	/* XXX u32 */
 			*a3 = gs->OffMask + (Offset << 3);
-			gs->x0014 = *a3 + (Offset << 3);							/* u32 */
+			gs->x0014 = *a3 + (Offset << 3);					/* u32 */
 			for (i=0; i<208; i++) {
 				*--a2 = AccumOffset.part.integer;
 			}

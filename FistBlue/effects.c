@@ -594,7 +594,7 @@ SYSLIB18ERASE:
 		if (task->params.Param2) {
 			SETSLEEP(task->params.Param2);
 		} else {
-			goto SYSLIB18ERASE;		// YES!!!
+			goto SYSLIB18ERASE;
 		}
 	} else {
 		data = data_8dbc4[task->params.Param0 & 0xff];
@@ -620,7 +620,7 @@ SYSLIB18LOOP:
 				OBJECT_DRAW((gfx_p), (cp >> 16), (cp & 0xffff), (data[0] + 0x8080), palette); 	
 				OBJ_CURSOR_BUMP(gfx_p);
 			}
-			cp += 0xc000;
+			cp += 0xc0000;
 		}
 		data++;
 		if (task->params.Param2) {

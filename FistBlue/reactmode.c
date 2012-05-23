@@ -75,9 +75,9 @@ static void _RMKOSound(Player *ply) {		/* 29c66 */
 static void tumble_until_still(Player *ply) {		// 29cfe
 	/* inlined 29cfe */
 	SMTumble(ply);
-	if (ply->Tumble==0) {
+	if (ply->Tumble == 0) {
 		NEXT(ply->mode2);
-		ply->PSFinishedParticipating = 1;
+		ply->PSFinishedParticipating = TRUE;
 	}
 }
 static void choose_blockstun(Player *ply) {		// 29060
@@ -457,7 +457,7 @@ void RMHitInAir(Player *ply) {			// for RM_HITINAIR
 			ply->VelX.full    = 0x0200;
 			ply->AclX.full    = 0x0000;
 			ply->VelY.full    = 0x05c0;
-			ply->AclX.full    = 0x0048;
+			ply->AclY.full    = 0x0048;
 			if (ply->Flip) {ply->VelX.full = -ply->VelX.full; }
 			ply->x012a = ply->VelX.full;
 			ply->PSPushBacks = data_29150;
@@ -539,35 +539,23 @@ void RMElectrocuted(Player *ply) {
 }
 void RMFireball(Player *ply) { /* 29460 */
     switch (ply->mode2) {
-    case 0:
-        NEXT(ply->mode2);
-        ply->mode3 = 0;
-        ply->PSPushBacks = data_29150;   /* footsweepoffsets */ 
-
-        ply->NextVelX.full  = 0x0200;
-        ply->NextAclX.full  = 0x0000;
-        ply->NextVelY.full  = 0x0500;
-        ply->NextAclY.full  = 0x0048;  /* standard gravity */
-        
-        ply->Next2VelX.full  = 0x0280;
-        ply->Next2AclX.full  = 0x0000;
-        ply->Next2VelY.full  = 0x0280;
-        ply->Next2AclY.full  = 0x0048;  /* standard gravity */
-
-        ply->Next3VelX.full  = 0x0100;
-        ply->Next3AclX.full  = 0x0014;
-        ply->Next3VelY.full  = 0x0000;
-        ply->Next3AclY.full  = 0x0000;
-        
-        ply->TumbleStatus = STATUS_KNOCKDOWN;
-        if(ply->ReactMode == RM_YOGAFIREHIT) {
-            ply->ProjHit = PROJHIT_FIERY;   
-        } else if (ply->ReactMode == RM_FIREBALLHIT) {
-            ply->ProjHit = PROJHIT_ICY;  
-        }
-        /* FALLTHRU */
-	M_TUMBLE_POST
-	FATALDEFAULT;
+		case 0:
+			NEXT(ply->mode2);
+			ply->mode3 = 0;
+			ply->PSPushBacks = data_29150;   /* footsweepoffsets */ 
+			PLY_SETTRAJ(ply, 0x200,  0x0, 0x500, 0x48, 
+						     0x280,  0x0, 0x280, 0x48, 
+						     0x100, 0x14,   0x0,  0x0);
+			
+			ply->TumbleStatus = STATUS_KNOCKDOWN;
+			if(ply->ReactMode == RM_YOGAFIREHIT) {
+				ply->ProjHit = PROJHIT_FIERY;   
+			} else if (ply->ReactMode == RM_FIREBALLHIT) {
+				ply->ProjHit = PROJHIT_ICY;  
+			}
+			/* FALLTHRU */
+			M_TUMBLE_POST
+			FATALDEFAULT;
     }
 }    
 void RMTumble32(Player *ply)  {		/* 295fa */
