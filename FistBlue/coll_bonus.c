@@ -94,6 +94,10 @@ static void mac_stunhim_from76(Object *obj1, Player *vict) {		//7d908
         obj2->Owner = vict;
         obj2->Flip   = obj1->Flip;      
         obj2->SubSel = vict->NextReactMode2;
+		if (obj2->SubSel > 5) {
+			panic(0);
+		}
+		
     }
 }
 
@@ -253,6 +257,9 @@ static void mac_stunme2(Player *ply, Player *opp) {		//7d824
             }    
 			
         }
+		if (obj->SubSel > 5) {
+			panic(0);
+		}
 		
     }
 }

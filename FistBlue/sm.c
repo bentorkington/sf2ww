@@ -1175,12 +1175,15 @@ void task_initmachine (void) {		// 639e
 				g.InDemo = TRUE;
 				g.x02b8  = 0x100;
 				palette_scr1_19();
+				palette_macro(0x10);		// XXX only testing
+
 				check_coin_lockout();
 				break;
 			case 4:
 				g.mode0  +=2;
 				g.timer0 = 180;
 				QueueEffect(LC0_LIGHT_ALL_ENABLE, 5);
+				g.TextEffectBusy = TRUE;
 				QueueEffect(data_645e[g.Version],0x0100); 
 				printf("version\n");
 				break;
@@ -1206,6 +1209,7 @@ void task_initmachine (void) {		// 639e
 				g.mode0 +=2;
 				g.timer0 = 60;
 				QueueEffect(LC0_LIGHT_ALL_ENABLE,5);
+				g.TextEffectBusy = TRUE;
 				QueueEffect((short []){
 					SL04 | COPYRIGHT_JAP,
 					SL04 | COPYRIGHT_USA,

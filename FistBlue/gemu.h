@@ -33,20 +33,28 @@
 #define SCR3_DRAW_TILE_NOATTR SCR1_DRAW_TILE_NOATTR
 
 #define SCR1_CURSOR_CPS(gfx_p, abs)  \
-(gfx_p) = gemu.Tilemap_Scroll1[(abs - 0x90c000)/2];
+(gfx_p) = gemu.Tilemap_Scroll1[(abs - 0x90c000)/4];
+
+//			d	 6    7    0   
+//    00 y000 0000 0yyy yyAA
+//        xxx xxxx x000 00AA
 
 #define SCR1_CURSOR_SET(gfx_p, x, y) \
-(gfx_p) = gemu.Tilemap_Scroll1[ (((y) & 0x100) << 3) + (((y) & 0xe0) >> 3) + (((x) << 2) & 0x0780) ];
+(gfx_p) = gemu.Tilemap_Scroll1[ (x << 5) + ((y/4) & 0x1f) ];
+
 #define SCR2_CURSOR_SET(gfx_p, x, y) \
 gfx_p = gemu.Tilemap_Scroll2[((y & 0x30)<<6)+(x*16+(y & 0xf)) ];
 #define SCR3_CURSOR_SET(gfx_p, x, y) \
 gfx_p = gemu.Tilemap_Scroll3[ ((y & 0x38)<<6) + ((x & 0x3f) << 3) + (y & 7) ];
 
 #define SCR1_CURSOR_BUMP(gfx_p, x, y) \
-(gfx_p) += (((y) & 0x100) << 3) + (((y) & 0xe0) >> 3) + (((x) << 2) & 0x0780);
+gfx_p += y * 2;						  \
+gfx_p += x * 32 * 2;                  \
+
 #define SCR2_CURSOR_BUMP(gfx_p, x, y)	\
 gfx_p += y * 2;						\
 gfx_p += x * 16 * 2;					
+
 #define SCR3_CURSOR_BUMP(gfx_p, x, y) \
 gfx_p += ((y) * 2);               \
 gfx_p += x * 8 * 2;				  

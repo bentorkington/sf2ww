@@ -2245,7 +2245,7 @@ static void skyskraperanim_02(Object *obj) {		// 1d250
 			NEXT(obj->mode0);
 			obj->Pool = 4;
 			ud->OldY = obj->YPI;
-			setaction_list(obj, actlist_1d4f0, 1);
+			setaction_list(obj, actlist_1d4f0, 1);		// black guy
 			sub_25f8(obj);
 			break;
 		case 2:
@@ -2266,7 +2266,7 @@ static void skyskraperanim_02(Object *obj) {		// 1d250
 						obj->YPI = 0x610;
 						obj->Pool = 4;
 						obj->LocalTimer = 6;
-						setaction_list(obj, actlist_1d4f0, 4);
+						setaction_list(obj, actlist_1d4f0, 4);	// black guy reeling backwards
 						sub_25f8(obj);
 					}
 					break;
@@ -2295,7 +2295,7 @@ static void skyskraperanim_04(Object *obj) {		// 1d308
 		case 0:
 			NEXT(obj->mode0);
 			obj->Pool = 4;
-			setaction_list(obj, actlist_1d4f0, 5);
+			setaction_list(obj, actlist_1d4f0, 5);		// punched head
 			break;
 		case 2:
 			switch (obj->mode1) {
@@ -2339,7 +2339,7 @@ static void skyskraperanim_06(Object *obj) {		// 1d394
 		case 0:
 			NEXT(obj->mode0);
 			obj->Pool = 6;
-			setaction_list(obj, actlist_1d4f0, 6);
+			setaction_list(obj, actlist_1d4f0, 6);		// bang
 			break;
 		case 2:
 			switch (obj->mode1) {
@@ -2375,7 +2375,7 @@ static void skyskraperanim_06(Object *obj) {		// 1d394
 		FATALDEFAULT;
 	}
 }
-static void skyskraperanim_08(Object *obj) {		// 1d41a
+static void skyskraperanim_08(Object *obj) {		// 1d41a teeth
 	UD2F *ud = (UD2F *)obj->UserData;
 
 	static const u32 data_1d4ac[] = {0x0002c000, 0x00030000, 0x00034000, 0x00028000};
@@ -2387,7 +2387,7 @@ static void skyskraperanim_08(Object *obj) {		// 1d41a
 			obj->Pool = 4;
 			ud->VelY.full    = 0x00000000;
 			ud->Gravity.full = 0xffffc000;
-			setaction_list(obj, actlist_1d4f0, 7);
+			setaction_list(obj, actlist_1d4f0, 7);		// Teeth
 			break;
 		case 2:
 			switch (obj->mode1) {
@@ -2433,7 +2433,7 @@ void action_2f(Object *obj) {		// 1d160
 		case 2:			skyskraperanim_02(obj);		break;
 		case 4:			skyskraperanim_04(obj);		break;
 		case 6:			skyskraperanim_06(obj);		break;
-		case 8:			skyskraperanim_08(obj);		break;
+		case 8:			skyskraperanim_08(obj);		break;	// teeth
 			break;
 		FATALDEFAULT;
 	}

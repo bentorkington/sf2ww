@@ -138,15 +138,15 @@ void sub_1742(int palette) {
 void gfxrepeat(u16 *gfxram, int count, u16 character, u16 attribute) {		// 56fe
     unsigned int i;
     for(i=0; i<count; i++) {
-        gfxram[i*2+0] = character;
-        gfxram[i*2+1] = attribute;
+        gfxram[(i*2)+0] = character;
+        gfxram[(i*2)+1] = attribute;
     }
 }
 
 void clear_scrolls_123(Task *task) {           /* 0x4c3c */
-    gfxrepeat((u16 *)BMAP_SCROLL1, 0xfff, GFXROM_SCROLL1 + 0x20, 0);  /* a whitespace */
-    gfxrepeat((u16 *)BMAP_SCROLL2, 0xfff, GFXROM_SCROLL2       , 0);  /* first tile is blank */
-    gfxrepeat((u16 *)BMAP_SCROLL3, 0xfff, GFXROM_SCROLL3       , 0);    
+    gfxrepeat((u16 *)BMAP_SCROLL1, 0x1000, GFXROM_SCROLL1 + 0x20, 0);  /* a whitespace */
+    gfxrepeat((u16 *)BMAP_SCROLL2, 0x1000, GFXROM_SCROLL2       , 0);  /* first tile is blank */
+    gfxrepeat((u16 *)BMAP_SCROLL3, 0x1000, GFXROM_SCROLL3       , 0);    
     DIEFREE;
 }
 

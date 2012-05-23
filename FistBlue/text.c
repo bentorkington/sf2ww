@@ -108,7 +108,6 @@ void showtextbank4(u8 d0)  {		//58c0 showtextbank4
 
 void sub_5982(Task *task) {		// 5982 in scroll1
 	u8			ch;	
-	u32			cp;		//XXX
 	u16			*gfx_p;
 	const u8	*data;
 	short		palette;
@@ -125,8 +124,6 @@ void sub_5982(Task *task) {		// 5982 in scroll1
 		data += 2;		// skip the object offset
 		
 		SCR1_CURSOR_SET(gfx_p, data[0], data[1]);
-		cp = data[0] * 128;
-		cp += data[1];
 		palette = data[2];
 		data += 3;
 		while (TRUE) {		/* we return out */
@@ -141,16 +138,13 @@ void sub_5982(Task *task) {		// 5982 in scroll1
 				}
 				return;
 			} else if (ch == 0x2f) {
-				// zero regs
-				cp = data[0] * 128;
-				cp += data[1];
+				++data;
+				SCR1_CURSOR_SET(gfx_p, data[0], data[1]);
 				palette = data[2];
 				data += 3;
 			} else {
-				//SCR1_DRAW_TILE(gemu.Tilemap_Scroll1[cp], GFXROM_SCROLL1 + 0x20, palette);
 				SCR1_DRAW_TILE(gfx_p, GFXROM_SCROLL1 + 0x20, palette);
-				SCR1_CURSOR_BUMP(cp, 0, 1);
-				SCR1_CURSOR_BUMP(gfx_p, 0, 1);
+				SCR1_CURSOR_BUMP(gfx_p, 1, 0);
 				
 				data++;
 				
@@ -165,9 +159,6 @@ void sub_5982(Task *task) {		// 5982 in scroll1
 		data += 2;
 		
 		SCR1_CURSOR_SET(gfx_p, data[0], data[1]);
-		
-		cp = data[0] * 128;
-		cp += data[1];
 		palette = data[2];
 		data += 3;
 		while (TRUE) {		/* we return out */
@@ -178,25 +169,20 @@ void sub_5982(Task *task) {		// 5982 in scroll1
 				}
 				if (task->params.x0014 == 0) {
 					DIEFREE;
-					return;
 				}
 				return;
 			} else if (ch == 0x2f) {
-				// zero regs
-				cp = data[0] * 128;
-				cp += data[1];
+				++data;
+				SCR1_CURSOR_SET(gfx_p, data[0], data[1]);
 				palette = data[2];
 				data += 3;
 			} else {
-				//SCR1_DRAW_TILE(gemu.Tilemap_Scroll1[cp], GFXROM_SCROLL1 + ch, palette);
 				SCR1_DRAW_TILE(gfx_p, GFXROM_SCROLL1 + ch, palette);
-				SCR1_CURSOR_BUMP(cp, 0, 1);
-				SCR1_CURSOR_BUMP(gfx_p, 0, 1);
+				SCR1_CURSOR_BUMP(gfx_p, 1, 0);
 				
 				data++;
 				if (task->params.Param2) {
 					SETSLEEP(task->params.Param2);
-					return;
 				}
 			}
 		}
@@ -212,7 +198,7 @@ void showtextbank0(char sel) {		// 5602 Scroll1
 	cy = *data++;
 	SCR1_CURSOR_SET(gfx_p, cx, cy);
 	
-	u8 *string = data;
+	const u8 *string = data;
 	char ch;
 	short x,y,attr;
 	
@@ -241,11 +227,12 @@ void showtextbank0(char sel) {		// 5602 Scroll1
 			} else if (ch == SF2_TEXTLIB_EOL) {
 				x = ((*string++) * 8) + 0x40;
 				y = (*string++) * 2;
+				SCR1_CURSOR_SET(gfx_p, x, y);
 				attr = *string++;
 			} else {
 				if (ch != ' ') {	/* whitespace */
 					SCR1_DRAW_TILE(gfx_p, ch + SF2_TILE_SC1_ASCII, attr);
-					SCR1_CURSOR_BUMP(gfx_p, 0, 1);
+					SCR1_CURSOR_BUMP(gfx_p, 1, 0);
 				}
 				x+=8;
 			}

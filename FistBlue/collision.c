@@ -289,6 +289,9 @@ void sub_7d74e(Player *ply, Player *opp, const HitBoxAct *a3) {
             obj->SubSel = 3;
             return;
         }
+		if (obj->SubSel > 5) {
+			panic(0);
+		}
     } else {
         return;
     }
@@ -322,6 +325,9 @@ static void mac_stun_from76(Player *ply, Player *opp) {			//7d884
             obj->Owner = ply;
             obj->SubSel = opp->NextReactMode2;
         }
+		if (obj->SubSel > 5) {
+			panic(0);
+		}
 		
     }
 }
@@ -931,6 +937,9 @@ static void _CDCheckPlayer(Player *ply, Player *vict) {     /* 7cf38 */
         vict->SufferHB5 = 1;
     }
     vict->NextReactMode2 = active->ReactMode2;
+	if (vict->NextReactMode2 > 5) {
+		panic(0);
+	}
     ply->Timer2  = 14;
     vict->Timer2 = 14;
     _CDSpecialReactMode(ply, vict, active);

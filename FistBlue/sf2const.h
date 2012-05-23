@@ -123,8 +123,8 @@
 
 
 #define VERSION_JAP 0
-#define VERISON_ETC 1
-#define VERSION_USA 2
+#define VERISON_ETC 2
+#define VERSION_USA 1
 
 #define SCROLL_NONE	-1
 #define SCROLL_2	0

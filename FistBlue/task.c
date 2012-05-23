@@ -205,7 +205,6 @@ void task_kill(unsigned short id) {
 void die_top8(void) {
 	int i;
 	printf("die_top8()\n");
-	printtasktable();
 
 	for (i=8; i<16; i++) {
 		if (Exec.Tasks[i].status != TASK_EMPTY) {

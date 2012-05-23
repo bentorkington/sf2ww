@@ -202,15 +202,14 @@ void gemu_clear_cache(void) {
 	
 
 void gemu_cache_scroll1(u16 tile, short palette) {
-	static GLuint tempmap[8][8][4];
+	static GLubyte tempmap[8][8][4];
 	if (TC.text_scr1[tile][0] && TC.text_scr1[tile][1] != palette) {
 		glDeleteTextures(1, &TC.text_scr1[tile][0]);
 		TC.text_scr1[tile][0] = 0;
 	}	
-	
 	if (TC.text_scr1[tile][0] == 0) {
 		gemu_readtile_scroll1(tile);
-		gemu_colortile_scroll1(palette, tempmap);
+		gemu_colortile_scroll1(palette, tempmap[0][0]);
 		glGenTextures(1, &TC.text_scr1[tile][0]);
 		if (&TC.text_scr1[tile][0]==0) {
 			panic(999);
@@ -586,7 +585,6 @@ static void draw_scroll1(void) {
 			
         }   
     }  
-	
 	glBindTexture(GL_TEXTURE_2D, 0);
 	glPopMatrix();
 }
@@ -881,7 +879,7 @@ void gfx_glut_drawgame(void) {
 
 	glScalef(0.3, -0.3, 0.3);
 	
-	glClearColor (0.0f, 0.0f, 0.0f, 1.0f);	// clear the surface
+	glClearColor (0.0f, 0.2f, 0.0f, 1.0f);	// clear the surface
 	glClear (GL_COLOR_BUFFER_BIT);
 	
 	

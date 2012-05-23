@@ -131,8 +131,8 @@ static void whiteadder(GPAL *palbase, int *fadebase, int count, short arg) {			/
 	
 
 void _clear_scr23_wait_die(Task *task) {		// 4bd6
-	gfxrepeat((u16 *)CPS_VIDEO_SCROLL2, 0xfff, GFXROM_SCROLL2      , 0);  /* first tile is blank */
-    gfxrepeat((u16 *)CPS_VIDEO_SCROLL3, 0xfff, GFXROM_SCROLL3      , 0);        
+	gfxrepeat((u16 *)CPS_VIDEO_SCROLL2, 0x1000, GFXROM_SCROLL2      , 0);  /* first tile is blank */
+    gfxrepeat((u16 *)CPS_VIDEO_SCROLL3, 0x1000, GFXROM_SCROLL3      , 0);        
     g.x02b8 = 0;
     g.x02ba = 0;
     clear_object();
@@ -402,9 +402,9 @@ void syslib_0c (void) {
 			QueueEffect(LC0_DARK_DUNNO, task->params.Param2);
 			SETSLEEP(1);
 			SIG_WAIT(!Exec.FadeOutComplete);
-			gfxrepeat(CPS_VIDEO_SCROLL1, 0xfff, GFXROM_SCROLL1 + ' ', 0);  /* a whitespace */
-			gfxrepeat(CPS_VIDEO_SCROLL2, 0xfff, GFXROM_SCROLL2      , 0);  /* first tile is blank */
-			gfxrepeat(CPS_VIDEO_SCROLL3, 0xfff, GFXROM_SCROLL3      , 0);
+			gfxrepeat(CPS_VIDEO_SCROLL1, 0x1000, GFXROM_SCROLL1 + ' ', 0);  /* a whitespace */
+			gfxrepeat(CPS_VIDEO_SCROLL2, 0x1000, GFXROM_SCROLL2      , 0);  /* first tile is blank */
+			gfxrepeat(CPS_VIDEO_SCROLL3, 0x1000, GFXROM_SCROLL3      , 0);
 			g.x02b8 = 0;
 			g.x02ba = 0;
 			sub_4cb2();	/* also do other buffer */
@@ -418,7 +418,7 @@ void syslib_0c (void) {
 			QueueEffect(LC0_DARK_ALL_DISABLE, task->params.Param2);
 			SETSLEEP(1);
 			SIG_WAIT(!Exec.FadeOutComplete);
-			gfxrepeat(CPS_VIDEO_SCROLL1, 0xfff, GFXROM_SCROLL1 + ' ', 0);  /* a whitespace */
+			gfxrepeat(CPS_VIDEO_SCROLL1, 0x1000, GFXROM_SCROLL1 + ' ', 0);  /* a whitespace */
 			_clear_scr23_wait_die(task);     /* dies */ 
 			break;          
 		case 2:
@@ -429,17 +429,17 @@ void syslib_0c (void) {
 			DIEFREE;
 			break; 
 		case 4:
-			gfxrepeat(CPS_VIDEO_SCROLL1, 0xfff, GFXROM_SCROLL1 + ' ', 0);  /* a whitespace */
+			gfxrepeat(CPS_VIDEO_SCROLL1, 0x1000, GFXROM_SCROLL1 + ' ', 0);  /* a whitespace */
 			DIEFREE;        
 			break;
 		case 6:
-			gfxrepeat(CPS_VIDEO_SCROLL2, 0xfff, GFXROM_SCROLL2      , 0);  
+			gfxrepeat(CPS_VIDEO_SCROLL2, 0x1000, GFXROM_SCROLL2      , 0);  
 			sf2sleep(1);
 			clear_rowscroll();
 			diefree();        
 			break;
 		case 8:
-			gfxrepeat(CPS_VIDEO_SCROLL3, 0xfff, GFXROM_SCROLL3      , 0); 
+			gfxrepeat(CPS_VIDEO_SCROLL3, 0x1000, GFXROM_SCROLL3      , 0); 
 			diefree();        
 			break;  
 		case 0xa:
@@ -471,19 +471,19 @@ void syslib_0c (void) {
 		case 0x14:
 			QueueEffect(LC0_DARK_SCROLL1, task->params.Param2);    
 			do {sf2sleep(1);} while (es.FadeScroll1 != 0xffffffff);    
-			gfxrepeat(CPS_VIDEO_SCROLL1, 0xfff, GFXROM_SCROLL1 + ' ', 0);
+			gfxrepeat(CPS_VIDEO_SCROLL1, 0x1000, GFXROM_SCROLL1 + ' ', 0);
 			es.FadeBusy = FALSE;
 			DIEBREAK;
 		case 0x16:
 			QueueEffect(LC0_DARK_123, task->params.Param2);    
 			do {sf2sleep(1);} while (es.FadeScroll2 != 0xffffffff);    
-			gfxrepeat(CPS_VIDEO_SCROLL2, 0xfff, GFXROM_SCROLL2 , 0);
+			gfxrepeat(CPS_VIDEO_SCROLL2, 0x1000, GFXROM_SCROLL2 , 0);
 			es.FadeBusy = FALSE;
 			DIEBREAK; 
 		case 0x18:
 			QueueEffect(LC0_DARK_SCROLL3, task->params.Param2);    
 			do {sf2sleep(1);} while (es.FadeScroll3 != 0xffffffff);    
-			gfxrepeat(CPS_VIDEO_SCROLL3, 0xfff, GFXROM_SCROLL3 , 0);
+			gfxrepeat(CPS_VIDEO_SCROLL3, 0x1000, GFXROM_SCROLL3 , 0);
 			es.FadeBusy = FALSE;
 			DIEBREAK;
 		case 0x1a:
@@ -516,7 +516,7 @@ static void sub_507a(u16 **gfx_p, u8 d0, short *d2, u16 d3) {		//507a
 			*d2 = 1;
 		} else {
 			SCR1_DRAW_TILE(*gfx_p, GFXROM_SCROLL1 + 0x20, d3);
-			SCR1_CURSOR_BUMP(*gfx_p, 0, 1);
+			SCR1_CURSOR_BUMP(*gfx_p, 1, 0);
 			return;
 		}
 	}
@@ -549,7 +549,7 @@ static void syslib_10(void) {		// 4f9e
 			task->params.Param0 &= 0xff00;
 			task->params.Param0 |= g.ContinueCoin ? 8 : 7;
 			sub_5982(task);
-			SCR1_CURSOR_SET(cur, 59, 64);
+			SCR1_CURSOR_CPS(cur, 0x90d670);
 			sub_5072(&cur, g.NumberCredits, 0, 0);
 			DIEFREE;
 			break;

@@ -31,6 +31,7 @@ extern u16 data_c0000[20][32][16];
 
 #ifndef CPS
 void gemu_clear_object(void) {			// 5fbc CPS actually takes u16* param
+	printf("*** Objects cleared ***");
 	int i;
 	for(i=0; i<256; i++) {
 		OBJECT_DRAW_ID(i, 0, 0, 0, 0);
