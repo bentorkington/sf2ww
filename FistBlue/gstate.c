@@ -102,7 +102,7 @@ static void _GSInitDimensions(void) {
 	
 	static const u16 data_83960[16][4] = {		// Max dimensions of stages
 		// MinX   MaxX     MinY   MaxY
-		{ 0x0100, 0x0280, 0x0000, 0x0010,  },
+		{ 0x0100, 0x0280, 0x0000, 0x0010,  },	// 384 pixel difference, 2 screenwidths
 		{ 0x0100, 0x0280, 0x0000, 0x0010,  },
 		{ 0x0100, 0x0280, 0x0000, 0x0010,  },
 		{ 0x0100, 0x0280, 0x0000, 0x0010,  },
@@ -385,15 +385,15 @@ static void update_scroll2_X (GState *gstate) {     /* 0x83270 */
 			prx += right->Size;
 
 			if ((prx - plx) < 256) {
-				if (prx - gstate->XPI - 320 >= 0) {
-					sub_832f2(gstate,prx - gstate->XPI - 320);
-				} else if (plx - gstate->XPI - 64<0) {
+				if (prx - gstate->XPI  >= (SCREEN_WIDTH - 64)) {
+					sub_832f2(gstate,prx - gstate->XPI - (SCREEN_WIDTH - 64));
+				} else if (plx - gstate->XPI < 64) {
 					sub_83334(gstate,plx - gstate->XPI - 64);
 				}
-			} else if ((prx - plx) < 384) {
+			} else if ((prx - plx) < SCREEN_WIDTH) {
 				d0=(left->XPI - left->Size + right->XPI + right->Size)/2;
 				d0-=gstate->XPI;
-				d0-=192;
+				d0-= SCREEN_WIDTH / 2;
 				if (d0<0) {
 					sub_83334(gstate, d0);
 				} else {
@@ -427,14 +427,14 @@ static void _GSMaintScroll1X(GState *gs) {	// 834d0
 	
     gs->x0024 = gstate_Scroll2.x0024;
     switch (gs->XUpdateMethod) {
-		case 0x0:
+		case 0:
 			temp = gs->X.part.integer;
 			gs->XPI = gstate_Scroll2.XPI
 					+ gstate_RowScroll.XPI
-					- 0xc0;
+					- 192;
 			g.x8b14 = gs->XPI - temp;
 			break;
-		case 0x2:
+		case 2:
 			gs->X.full += 0x4000;		/* plus 0.25 */ 
 			if(gs->mode1 == 0 && gs->XPI >= 0x200) {
 				gs->mode1 += 2;				
@@ -443,12 +443,12 @@ static void _GSMaintScroll1X(GState *gs) {	// 834d0
 			gs->x0024 = 4;
 			gs->XPI -= g.x8c02;
 			break;
-		case 0x4:
+		case 4:
 			gs->X.full += 0x4000;
 			gs->x0024 = 4;
 			gs->XPI -= g.x8c02;
 			break;
-		case 0x6:           /* does nothing */
+		case 6:           /* does nothing */
 			break;
 		FATALDEFAULT;
     }
@@ -458,12 +458,12 @@ static void _GSMaintScroll1Y(GState *gstate) {    /* 83558 */
     
     gstate->x0025 = gstate_Scroll2.x0025;
     switch (gstate->YUpdateMethod) {
-		case 0x2:
+		case 2:
 			gstate->YPI = gstate_Scroll2.YPI;
 			break;
-		case 0x0:
+		case 0:
 			break;
-		case 0x4:
+		case 4:
 			gstate->Y.full += gstate_Scroll2.YOff * 128;   /* XXX all need <<4 */
 			break;
 		case 6:
@@ -713,7 +713,7 @@ static void _GSFillScroll2(GState *gs) {  /* 0x83ae0 fill scroll2 from tilemap *
     int i,j;
     COORD gfx_p;
 	
-    g.CPS.Scroll2X = gs->XPI - 192;
+    g.CPS.Scroll2X = gs->XPI - (SCREEN_WIDTH / 2);
     g.CPS.Scroll2Y = gs->YPI;
     SCR2_CURSOR_SET(gfx_p, 0, 32);         /* starting at tile 0x800:   
                               0x906000 = 0x904000 + (0x800 * 4) */
@@ -1218,8 +1218,8 @@ void GSSetupScr2(GState *gs) {			// 83c3c
 	g.CPS.Scroll2X = gs->XPI;
 	g.CPS.Scroll2Y = gs->YPI;
 	
-    cp.x = gs->XPI -  0x90;
-    cp.y = ~(gs->YPI + 0x180);
+    cp.x = gs->XPI -  144;
+    cp.y = ~(gs->YPI + 384);
 	
 	for (i=0x29; i >= 0; --i) {			// 768 pixels
 		_GSDrawScroll2A(gs, _GSCoordsScroll2(cp), _GSLookupScroll2(gs, cp), cp);
@@ -1233,8 +1233,8 @@ void GSSetupScr3(GState *gs) {			// 83cd2 was setup_scroll3
 	g.CPS.Scroll3X = gs->XPI;
 	g.CPS.Scroll3Y = gs->YPI;
 	
-    cp.x = gs->XPI -  0xa0;
-    cp.y = ~(gs->YPI + 0x180);
+    cp.x = gs->XPI -  160;
+    cp.y = ~(gs->YPI + 384);
 	
 	for (i=0x15; i >= 0; --i) {			// 0x16 x 32 = 704 pixels
 		_GSDrawScroll3A(gs, _GSCoordsScroll3(cp), _GSLookupScroll3(gs, cp), cp);

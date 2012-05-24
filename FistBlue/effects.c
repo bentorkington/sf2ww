@@ -70,7 +70,7 @@ void *data_155c[] = {
 
 void clear_object(void) {      /* clear_object() actually 256 * 2 * longwords = 2048 */
 	int i;
-	for(i=0; i<512; i++) {
+	for(i=0; i<256; i++) {
 		gemu.Tilemap_Object[i][0]=0;
 		gemu.Tilemap_Object[i][1]=0;
 		gemu.Tilemap_Object[i][2]=0;

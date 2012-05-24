@@ -77,10 +77,12 @@ int texture_mode=1;
 int enable_lighting=1;
 int showTextures=1;
 
-#define XFACT 0.2
-#define YFACT 0.2
-#define XFACT_SCR3 0.4
-#define YFACT_SCR3 0.4
+#define XFACT_SCR1 0.2
+#define YFACT_SCR1 0.2
+#define XFACT 0.4
+#define YFACT 0.4
+#define XFACT_SCR3 0.8
+#define YFACT_SCR3 0.8
 #define DTOR 0.0174532925
 
 recCamera gCamera;
@@ -551,12 +553,12 @@ static void draw_scroll1(void) {
 	
 	modtransx = g.CPS.Scroll1X & 0x7;
 	glPushMatrix();
-	glTranslatef((-modtransx * XFACT * 1 / 8) - 4, 0, 0);
+	glTranslatef((-modtransx * XFACT_SCR1 * 1 / 8), 0, -0.1f);
 	GLfloat master = (gemu.PalScroll1[0][0] & 0xf000) / 61140.0;
 	glColor3f(master, master, master);
 	
 	for(y=0;y<32;y++) {
-        for(x=0;x<64;x++) {
+        for(x=0;x<48;x++) {
 			gx = x + ((g.CPS.Scroll1X >> 3 ) & 0x1f);
 			
 			element = ((y & 0x20) << 8) + (gx << 5) + (y & 0x1f);
@@ -570,17 +572,18 @@ static void draw_scroll1(void) {
 			
 			flip = 0;
             
-			sx = x-1.0; sy=y-12;
+			sx = x-24.0; 
+			sy=  y-16.0;
 			
             glBegin(GL_POLYGON);
-            glTexCoord2f(flips[flip][0][0],flips[flip][0][1]);
-			glVertex3f((sx * XFACT)+XFACT/2.0f, (sy * YFACT) + YFACT / 2.0f, -4.1f);
+			glTexCoord2f(flips[flip][0][0],flips[flip][0][1]);
+            glVertex3f(((sx+1) * XFACT_SCR1), ((sy+1) * YFACT_SCR1), 0.0f);
 			glTexCoord2f(flips[flip][1][0],flips[flip][1][1]);
-            glVertex3f((sx * XFACT)-XFACT/2.0f, (sy * YFACT) + YFACT / 2.0f, -4.1f);        
+            glVertex3f((( sx ) * XFACT_SCR1), ((sy+1) * YFACT_SCR1), 0.0f);
 			glTexCoord2f(flips[flip][2][0],flips[flip][2][1]);
-            glVertex3f((sx * XFACT)-XFACT/2.0f, (sy * YFACT) - YFACT / 2.0f, -4.1f);
-            glTexCoord2f(flips[flip][3][0],flips[flip][3][1]);
-            glVertex3f((sx * XFACT)+XFACT/2.0f, (sy * YFACT) - YFACT / 2.0f, -4.1f);
+            glVertex3f((( sx ) * XFACT_SCR1), (( sy ) * YFACT_SCR1), 0.0f);
+			glTexCoord2f(flips[flip][3][0],flips[flip][3][1]);
+            glVertex3f(((sx+1) * XFACT_SCR1), (( sy ) * YFACT_SCR1), 0.0f);
             glEnd();
 			
         }   
@@ -593,17 +596,17 @@ static void draw_scroll1(void) {
 
 static void draw_object(void) {
 
-#define DRAWTILE(TILE,PAL,FLIP,SX,SY)										\
+#define DRAWTILE(TILE,PAL,FLIP,sx,sy)										\
 gemu_cache_object(TILE, gemu.Tilemap_Object[i][3] & 0x1f);					\
 glBegin(GL_POLYGON);														\
-glTexCoord2f(flips[FLIP][0][0],flips[FLIP][0][1]);							\
-glVertex3f((SX * XFACT)+XFACT/2.0f, (SY * YFACT) + YFACT / 2.0f, -0.01f);	\
-glTexCoord2f(flips[FLIP][1][0],flips[FLIP][1][1]);							\
-glVertex3f((SX * XFACT)-XFACT/2.0f, (SY * YFACT) + YFACT / 2.0f, -0.01f);	\
-glTexCoord2f(flips[FLIP][2][0],flips[FLIP][2][1]);							\
-glVertex3f((SX * XFACT)-XFACT/2.0f, (SY * YFACT) - YFACT / 2.0f, -0.01f);	\
-glTexCoord2f(flips[FLIP][3][0],flips[FLIP][3][1]);							\
-glVertex3f((SX * XFACT)+XFACT/2.0f, (SY * YFACT) - YFACT / 2.0f, -0.01f);	\
+glTexCoord2f(flips[flip][0][0],flips[flip][0][1]);							\
+glVertex3f(((sx+1) * XFACT), ((sy+1) * YFACT), 0.0f);						\
+glTexCoord2f(flips[flip][1][0],flips[flip][1][1]);							\
+glVertex3f((( sx ) * XFACT), ((sy+1) * YFACT), 0.0f);						\
+glTexCoord2f(flips[flip][2][0],flips[flip][2][1]);							\
+glVertex3f((( sx ) * XFACT), (( sy ) * YFACT), 0.0f);						\
+glTexCoord2f(flips[flip][3][0],flips[flip][3][1]);							\
+glVertex3f(((sx+1) * XFACT), (( sy ) * YFACT), 0.0f);						\
 glEnd();
 	
 	if (!gemu_scroll_enable[0]) {
@@ -629,8 +632,8 @@ glEnd();
 			flip   = (gemu.Tilemap_Object[i][3] &   0x60) >>  5;
 			x      = ((short)gemu.Tilemap_Object[i][0] &  0x1ff) / 16.0;
 			y      = ((short)gemu.Tilemap_Object[i][1] &  0x1ff) / 16.0;			
-			x     -= 20.0;
-			y	  -=  7.0;
+			x     -= 16.0;
+			y	  -=  8.0;
 
 			if (gemu.Tilemap_Object[i][3] & 0xff00) {
 				// handle blocking
@@ -741,20 +744,20 @@ static void draw_scroll2(void) {
 			flip = gemu.Tilemap_Scroll2[((ty & 0x30) << 6) + (tx * 16) + (ty & 0x0f)][1] & 0x60;
 			flip = flip >> 5;
 			
-			sx = x-16.0; 
-			sy = y-5.5;
+			sx = x-12.0;		// - 20 + 4
+			sy = y-8.0;
 
 			//glColor4f(1.0, 0.0, 0.0, 0.25);
             glBegin(GL_POLYGON);
             //glTexCoord2f(1.0, 1.0);
-            glTexCoord2f(flips[flip][0][0],flips[flip][0][1]);
-			glVertex3f((sx * XFACT)+XFACT/2.0f, (sy * YFACT) + YFACT / 2.0f, -0.1f);
+			glTexCoord2f(flips[flip][0][0],flips[flip][0][1]);
+            glVertex3f(((sx+1) * XFACT), ((sy+1) * YFACT), 0.0f);
 			glTexCoord2f(flips[flip][1][0],flips[flip][1][1]);
-            glVertex3f((sx * XFACT)-XFACT/2.0f, (sy * YFACT) + YFACT / 2.0f, -0.1f);        
+            glVertex3f((( sx ) * XFACT), ((sy+1) * YFACT), 0.0f);
 			glTexCoord2f(flips[flip][2][0],flips[flip][2][1]);
-            glVertex3f((sx * XFACT)-XFACT/2.0f, (sy * YFACT) - YFACT / 2.0f, -0.1f);
-            glTexCoord2f(flips[flip][3][0],flips[flip][3][1]);
-            glVertex3f((sx * XFACT)+XFACT/2.0f, (sy * YFACT) - YFACT / 2.0f, -0.1f);
+            glVertex3f((( sx ) * XFACT), (( sy ) * YFACT), 0.0f);
+			glTexCoord2f(flips[flip][3][0],flips[flip][3][1]);
+            glVertex3f(((sx+1) * XFACT), (( sy ) * YFACT), 0.0f);
             glEnd();
         }   
     }  
@@ -771,8 +774,7 @@ static void draw_scroll3(void) {
 		return;
 	}
 	glPushMatrix();
-	glTranslatef(-(g.CPS.Scroll3X & 0x1f) / 128.0, ((g.CPS.Scroll3Y & 0x1f) / 128.0)  , 0);
-//	glTranslatef(-g.CPS.Scroll3X / 128.0, ((g.CPS.Scroll3Y & 0x7ff) / 128.0) - 22.5, 0);
+	glTranslatef(-(g.CPS.Scroll3X & 0x1f) / 128.0, ((g.CPS.Scroll3Y & 0x1f) / 128.0), 0);
 	tilety = g.CPS.Scroll3Y / 32;
 	tiletx = g.CPS.Scroll3X / 32;
 	GLfloat master = (gemu.PalScroll3[0][0] & 0xf000) / 61140.0;
@@ -794,21 +796,21 @@ static void draw_scroll3(void) {
 							   gemu.Tilemap_Scroll3[record][1] & 0x1f);
 			
 			
-            sx = (float)x-8.0; 
-			sy = (float)y-3.5;
+            sx = (float)x-6.0;		//(-20 + 12)
+			sy = (float)y-4.0;
 			flip = gemu.Tilemap_Scroll3[record][1] & 0x60;
 			flip = flip >>5;
 			
 			// glColor4f(1.0, 0.0, 0.0, 0.25);
             glBegin(GL_POLYGON);
 			glTexCoord2f(flips[flip][0][0],flips[flip][0][1]);
-            glVertex3f((sx * XFACT_SCR3)+XFACT_SCR3/2.0f, (sy * YFACT_SCR3) + YFACT_SCR3 / 2.0f, -0.35f);
+            glVertex3f(((sx+1) * XFACT_SCR3), ((sy+1) * YFACT_SCR3), 0.0f);
 			glTexCoord2f(flips[flip][1][0],flips[flip][1][1]);
-            glVertex3f((sx * XFACT_SCR3)-XFACT_SCR3/2.0f, (sy * YFACT_SCR3) + YFACT_SCR3 / 2.0f, -0.35f);        
+            glVertex3f((( sx ) * XFACT_SCR3), ((sy+1) * YFACT_SCR3), 0.0f);
 			glTexCoord2f(flips[flip][2][0],flips[flip][2][1]);
-            glVertex3f((sx * XFACT_SCR3)-XFACT_SCR3/2.0f, (sy * YFACT_SCR3) - YFACT_SCR3 / 2.0f, -0.35f);
+            glVertex3f((( sx ) * XFACT_SCR3), (( sy ) * YFACT_SCR3), 0.0f);
 			glTexCoord2f(flips[flip][3][0],flips[flip][3][1]);
-            glVertex3f((sx * XFACT_SCR3)+XFACT_SCR3/2.0f, (sy * YFACT_SCR3) - YFACT_SCR3 / 2.0f, -0.35f);
+            glVertex3f(((sx+1) * XFACT_SCR3), (( sy ) * YFACT_SCR3), 0.0f);
             glEnd();
         }   
     }    
@@ -922,7 +924,7 @@ void gfx_glut_drawgame(void) {
 	
 	glDisable(GL_SCISSOR_TEST);
 	glDisable(GL_TEXTURE_2D);
-	drawGLText(gCamera);
+	//drawGLText(gCamera);
 }
 
 void gCameraReset(void) {

@@ -461,10 +461,6 @@ void print_libtextgfx(u8 sel) {	/* sub_5816 */
 
 #pragma mark ---- Display Clearers ----
 
-
-
-
-
 void clear_scrolls(void) {		/* 0x5f10 */
 	short i;
 	/* clear Scroll1, Scroll2, Scroll3 & Object */

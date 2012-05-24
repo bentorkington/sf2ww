@@ -952,14 +952,14 @@ static void action_12(Object *obj) {		// "Street Fighter" logo
 	Object *nobj;
 	
 	switch (obj->SubSel) {
-		case 0:
+		case 0:				// static image
 			switch (obj->mode0) {
 				case 0:
 					NEXT(obj->mode0);
 					obj->Scroll = SCROLL_NONE;
 					obj->Pool	= 6;
-					obj->XPI	= 0xc0;
-					obj->YPI	= 0x98;
+					obj->XPI	= 192;
+					obj->YPI	= 152;
 					setaction_list(obj, actlist_11602, 1);
 					/* FALLTHRU */
 				case 2:
@@ -985,10 +985,11 @@ static void action_12(Object *obj) {		// "Street Fighter" logo
 						case 0:
 							if (g.Pause_9e1 < 0) {
 								NEXT(obj->mode1);
-								ud->h0080c = 1;
-								obj->Step = 1;
-								obj->LocalTimer = 0x10;
-								obj->Draw1 = -1;
+								ud->h0080c      = 1;
+								obj->Step       = 0;
+								obj->LocalTimer = 16;
+								obj->Draw2.full = 0;
+								obj->Draw1      = -1;		// tilespin effect
 							}
 							break;
 						case 2:
@@ -997,7 +998,7 @@ static void action_12(Object *obj) {		// "Street Fighter" logo
 								NEXT(obj->mode1);
 								if (nobj=AllocActor()) {
 									nobj->exists = TRUE;
-									nobj->Sel = 0x29;
+									nobj->Sel    = 0x29;
 								}
 								setaction_list(obj, actlist_11602, 1);
 							}
@@ -2213,10 +2214,10 @@ static void skyskraperanim_00(Object *obj) {		// 1d176
 				case 2:
 					if (--g.x8a75 == 0) {
 						NEXT(obj->mode1);
-						g.x8a74 = -1;
-						g.x8a75 = 60;
-						obj->XPI = 0xb0;
-						obj->YPI = 0x610;
+						g.x8a74   = -1;
+						g.x8a75   = 60;
+						obj->XPI  = 0xb0;
+						obj->YPI  = 0x610;
 						obj->Pool = 4;
 						setaction_list(obj, actlist_1d4f0, 3);
 					}

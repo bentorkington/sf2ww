@@ -117,7 +117,7 @@ static void proc_yogafire(Object *obj, short d7) {  /* 0x23426 */
 			obj->MoreBoxes	= data_24976;
 			obj->XPI		+= obj->Flip ? -0x38 : 0x38;
 			obj->YPI		+= 0x28;
-			obj->Path = data_2349a[obj->SubSel];
+			obj->Path = data_2349a[obj->SubSel/2];
 			setaction_list(obj, data_23612, obj->SubSel >> 1);
 			break;
 		case 2:

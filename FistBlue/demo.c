@@ -139,7 +139,7 @@ void SMdemo_fade_and_clear(void) {		// 6618
         }
     }
 }
-static void sub_6704(void) {
+static void sub_6704(void) {		// SF2 logo, spinning and scaling
 	Object *obj;
 	if (obj=AllocActor()) {
 		obj->exists = TRUE;

@@ -937,9 +937,6 @@ static void _CDCheckPlayer(Player *ply, Player *vict) {     /* 7cf38 */
         vict->SufferHB5 = 1;
     }
     vict->NextReactMode2 = active->ReactMode2;
-	if (vict->NextReactMode2 > 5) {
-		panic(0);
-	}
     ply->Timer2  = 14;
     vict->Timer2 = 14;
     _CDSpecialReactMode(ply, vict, active);
