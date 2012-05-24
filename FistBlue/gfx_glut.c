@@ -553,7 +553,7 @@ static void draw_scroll1(void) {
 	
 	modtransx = g.CPS.Scroll1X & 0x7;
 	glPushMatrix();
-	glTranslatef((-modtransx * XFACT_SCR1 * 1 / 8), 0, -0.1f);
+	glTranslatef((-modtransx * XFACT_SCR1 / 8), 0, -0.1f);
 	GLfloat master = (gemu.PalScroll1[0][0] & 0xf000) / 61140.0;
 	glColor3f(master, master, master);
 	
@@ -716,7 +716,7 @@ static void draw_scroll2(void) {
 	}
 	/* Draw Scroll2 */
 	glPushMatrix();
-	glTranslatef(-(g.CPS.Scroll2X & 0xf) / 128.0, ((g.CPS.Scroll2Y & 0xf) / 128.0)  , 0);
+	glTranslatef(-(g.CPS.Scroll2X & 0xf) / 16.0 * XFACT, ((g.CPS.Scroll2Y & 0xf) / 16.0 * XFACT)  , 0);
 	//glTranslatef(-g.CPS.Scroll2X / 128.0, g.CPS.Scroll2Y / 128.0, 0);
 
 	tilety = g.CPS.Scroll2Y / 16;
@@ -774,7 +774,7 @@ static void draw_scroll3(void) {
 		return;
 	}
 	glPushMatrix();
-	glTranslatef(-(g.CPS.Scroll3X & 0x1f) / 128.0, ((g.CPS.Scroll3Y & 0x1f) / 128.0), 0);
+	glTranslatef(-(g.CPS.Scroll3X & 0x1f) / 32.0 * XFACT_SCR3, (g.CPS.Scroll3Y & 0x1f) / 32.0 * XFACT_SCR3, 0);
 	tilety = g.CPS.Scroll3Y / 32;
 	tiletx = g.CPS.Scroll3X / 32;
 	GLfloat master = (gemu.PalScroll3[0][0] & 0xf000) / 61140.0;

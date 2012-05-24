@@ -176,9 +176,8 @@ void CDCheckDecor (Object *a6) {		/* 7e340 check if collision with player */
 						}
 					}
 				}
-				
-			default:
 				break;
+			FATALDEFAULT;
 		}
 	}
 }
@@ -355,7 +354,7 @@ static void sub_7dccc(Player *ply, Object *a2) {	// 7dccc a6 a2
 		u16 b;
 		u16 x0084;
 	};
-	struct ud_s *ud = (struct ud_s *)a2->UserData;
+	struct ud_s *ud = (struct ud_s *)&a2->UserData;
 	if(g.GPWasProjectile) {		// projectile? 
 		x = (ply->Owner->Side);
 	}

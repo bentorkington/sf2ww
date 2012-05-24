@@ -733,7 +733,7 @@ static void _GSFillScroll3(GState *gs) {        /* 0x83b2a fill scroll3 from til
     g.CPS.Scroll3X = gs->XPI;
     g.CPS.Scroll3Y = gs->YPI;
     
-	SCR3_CURSOR_SET(gfx_p, 0, 24);			// XXX check these, wrong I reckon
+	SCR3_CURSOR_SET(gfx_p, 0, 24);	
 	
 	for(i=0;i<4; i++) {
         for(j=0; j<64; j++) {
@@ -820,7 +820,7 @@ static const u16 *skyscraper_realign(GState *gs, u16 **gfx_p) {			// 84384
 	*gfx_p -= 0x20;
 	offset = (*gfx_p - BMAP_SCROLL2) * sizeof(u16); 
 	d0 = offset & 0xfffff000;
-	d1 = (offset + 0x20) & 0xfff;
+	d1 = (offset + 0x40) & 0xfff;
 	d0 |= d1;
 	*gfx_p = (u16 *)BMAP_SCROLL2 + (d0 / sizeof(u16));
 	
@@ -944,15 +944,15 @@ static void _GSDrawScroll2A(GState *gs, u16 *gfx_p, const u16 *tilep, CP cp) {  
 }
 inline static void draw_n_rows(u16 *gfx_p, const u16 *tile_p, short n_cols) {			// 84374
 	int i;
-    for(i=0; i<n_cols; i++) {
+    for(i=0; i<=n_cols; i++) {
         SCR2_DRAW_TILE(gfx_p, *tile_p, *tile_p+1);
         SCR2_CURSOR_BUMP(gfx_p,  1, 0);
         SCR2_CURSOR_BUMP(tile_p, 1, 0);
     }
 }
-static void _GSDrawScroll2C(GState *gs, u16 *gfx_p, const u16 *tile_p, CP cp) {				// 84336
+static void _GSDrawScroll2C(GState *gs, u16 *gfx_p, const u16 *tile_p, CP cp) {		// 84336
     short d2, d0;
-    d2 = ((!cp.x) & 0xf0) >> 4;
+    d2 = ((~cp.x) & 0xf0) >> 4;
     
     draw_n_rows(gfx_p, tile_p, d2);
     
@@ -998,7 +998,7 @@ static void _GSDrawScroll3A(GState *gs, u16 *gfx_p, const u16 *tilep, CP cp) {  
 	}
 }
 static void _GSDrawScroll3B(GState *gs, u16 *gfx_p, const u16 *tilep, CP cp) {  /* 843dc was funky3_draw*/
-	short d0 = (cp.x  & 0xe0) >> 5;	// blocks of 32
+	short d0 = (cp.y & 0xe0) >> 5;	// blocks of 32
 	short d2 = d0;
 	for (; d0 >= 0; --d0) {			
 		gfx_p[0] = tilep[0];
@@ -1081,7 +1081,7 @@ static void gstate_update_scroll2 (GState *gs) {
     cp = _GSCoordOffsetScr2(gs, gs->x0024);
     _GSDrawScroll2C(gs, _GSCoordsScroll2(cp), _GSCoordsScroll2(cp), cp);     /* seems to only be used on attract building */
 }
-static void gstate_update_scroll3 (GState *gs) {
+static void gstate_update_scroll3 (GState *gs) {		//83d06
     short temp;
     CP cp;
 
@@ -1092,21 +1092,18 @@ static void gstate_update_scroll3 (GState *gs) {
     temp ^= gs->x001e;
     if(temp == 0) {
         gs->x001e ^= 0x20;
-        
+		cp = _GSCoordOffsetScr3(gs, gs->x0024);
+		_GSDrawScroll3A(gs, _GSCoordsScroll3(cp), _GSLookupScroll3(gs, cp), cp);
     }
     	
-    cp = _GSCoordOffsetScr3(gs, gs->x0024);
-    _GSDrawScroll3A(gs, _GSCoordsScroll3(cp), _GSLookupScroll3(gs, cp), cp);
     
     temp  = gs->YPI & 0x20;
     temp ^= gs->x001f;
     if(temp == 0) {
         gs->x001f ^= 0x20;
-        
+		cp = _GSCoordOffsetScr3(gs, gs->x0024);
+		// XXX _GSDrawScroll3B(gs, _GSCoordsScroll3(cp), _GSLookupScroll3(gs, cp),cp);
     }
-    
-    cp = _GSCoordOffsetScr3(gs, gs->x0024);
-    _GSDrawScroll3B(gs, _GSCoordsScroll3(cp), _GSLookupScroll3(gs, cp),cp);
 }
 
 
