@@ -75,29 +75,22 @@ int find_apex(Player *ply) {       /* 320e */
 }
 
 void check_ply_x_bounds (Player *ply) {	/* 3232 verified */
-    short reg_d0;		
-    short reg_d1;
-	
     ply->BoundCheck = 0;
 	
-    reg_d0 = (get_scr2x() + ply->Size);
-    if(ply->XPI <= reg_d0) {
+    if(ply->XPI <= (get_scr2x() + ply->Size)) {
         ply->BoundCheck = 1;                    /* against leftedge */
-        reg_d1 = reg_d0 - ply->XPI;
-        ply->XPI = reg_d0;
         if(ply->ThrowStat) {
-            ply->Opponent->XPI += reg_d1;
+            ply->Opponent->XPI += (get_scr2x() + ply->Size) - ply->XPI;
         }
+		
+        ply->XPI = (get_scr2x() + ply->Size);
     }
-    reg_d1 = SCREEN_WIDTH - ply->Size;
-    reg_d0 = get_scr2x() + reg_d1;
-    if(ply->X.part.integer >= reg_d0) {
+    if(ply->X.part.integer >= (get_scr2x() + (SCREEN_WIDTH - ply->Size))) {
         ply->BoundCheck = 2;                /* against rightedge */
-        reg_d1 = reg_d0 - ply->XPI;
-        ply->XPI = reg_d0;
         if(ply->ThrowStat) {
-            ply->Opponent->XPI += reg_d1;
+            ply->Opponent->XPI += (get_scr2x() + (SCREEN_WIDTH - ply->Size)) - ply->XPI;
         }
+        ply->XPI = (get_scr2x() + (SCREEN_WIDTH - ply->Size));
     }
 }        
 

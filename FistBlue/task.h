@@ -46,7 +46,7 @@ struct task_params {
 	unsigned char	x0014;
 	unsigned char	x0015;
 	unsigned char	x0016;
-    u8				x001f;
+    u8				x001f;		// can be sped up by impatience 
 };
 typedef struct task_params TaskParam;
 

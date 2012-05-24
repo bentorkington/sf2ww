@@ -395,11 +395,12 @@ void LBGetInputs(void) {		//2224
 
 static void _any_buttons(short d0, short d1) {		//23ae
 	if ((d0 | d1) & BUTTON_MASK ) {
+		printf("Setting WAITMODE\n");
 		g.WaitMode = TRUE;
 	}
 }
 
-void startup_impatience(void) {		//startup_impatience
+void startup_impatience(void) {		
 	_any_buttons(g.ContrP1.full, g.ContrP2DB.full);
 }
 	
@@ -593,7 +594,7 @@ void startup (void) {
 	
     Exec.FreeTasks    = 8;
 	Exec.NextFreeTask = &Exec.FreeTaskStack[0];
-    g.NotUsed      = FALSE;
+    g.NotUsed         = FALSE;
 	
 	TASK_CREATE(task_initmachine, 0, 0, 0, 0);		/* init vars, copyright notices etc */
     TASK_CREATE(task_scheduler  , 6, 0, 0, 0);      /* the CQ processor */
@@ -843,8 +844,10 @@ int QueueEffect(u16 arg1, u16 arg2) {		/* 21e2 was cqsave */
 void player_check_dizzy(Player *ply) {	/* 377c test player dizzying */
 	if (ply->DizzyFall == FALSE) {
 		ply->DizzyCount += 10 + (char []) {			// data chars @ 0x37ba
-			1, -1,  2,  0,  1,  0,  0, -2,  0,  1, -1, -2,  0,  0,  2,  0,
-			3, -3, -1,  0,  0,  1,  0,  1, -1,  0, -2,  2, -2,  2,  0, -1,
+			1, -1,  2,  0,  1,  0,  0, -2,  
+			0,  1, -1, -2,  0,  0,  2,  0,
+			3, -3, -1,  0,  0,  1,  0,  1, 
+		   -1,  0, -2,  2, -2,  2,  0, -1,
 		}[RAND32];
 		ply->DizzyClearCnt += 0x64;
 		if(ply->DizzyCount <= 0x1e) { return; }

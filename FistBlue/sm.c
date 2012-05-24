@@ -1185,11 +1185,9 @@ void task_initmachine (void) {		// 639e
 				QueueEffect(LC0_LIGHT_ALL_ENABLE, 5);
 				g.TextEffectBusy = TRUE;
 				QueueEffect(data_645e[g.Version],0x0100); 
-				printf("version\n");
 				break;
 			case 6:
 				if(g.TextEffectBusy == 0) {
-					printf("next\n");
 					g.mode0 += 2;
 				}
 				break;
@@ -1198,9 +1196,7 @@ void task_initmachine (void) {		// 639e
 				if(--g.timer0 == 0) {
 					g.mode0   += 2;
 					g.WaitMode = 0;
-					printf("fading out...\n");
 					fadenwait1();
-					printf("next\n");
 				} else {
 					startup_impatience();
 				}
@@ -1215,8 +1211,6 @@ void task_initmachine (void) {		// 639e
 					SL04 | COPYRIGHT_USA,
 					SL04 | COPYRIGHT_ETC,
 				}[g.Version], 0x101);
-				printf("copyright\n");
-
 				break;
 			case 0xc:
 				if(g.TextEffectBusy == 0) {

@@ -892,6 +892,7 @@ void task_scheduler(void) {		//14f2
 	while (TRUE) {
 		g.x8a30 = FALSE;
 		if (g.WaitMode || (g.Debug && (g.JPParam & JP_DBGWAITMODE))) {
+			printf("WaitMode: extra tick\n");
 			g.x8a30 = TRUE;
 			for (i=0; i<16; i++) {
 				if (Exec.Tasks[i].params.x001f == 0 && Exec.Tasks[i].status == TASK_SLEEP) {
