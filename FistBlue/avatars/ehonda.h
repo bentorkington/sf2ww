@@ -20,6 +20,9 @@ short PLCBStandEHonda(Player *ply);
 short PLCBCrouchEHonda(Player *ply);
 short PLCBJumpEHonda(Player *ply);
 
+void sub_2e3ac(Player *ply, u16 d0);
+
+
 struct ehondathrow {
 	short d2;
 	short success;
@@ -53,12 +56,8 @@ struct UserData_EHonda {
 	u8	x0095;
 	u32 x0096;	// XXX hmmm
 	EHondaMove pm1;	/// 97
-	u8	x0098;		// XXX
 	EHondaMove pm2;	// 99
-	u8	x009a;
 	EHondaMove pm3;	//9b
-	u8	x009c;
 	
 } __attribute__((packed));
-
 

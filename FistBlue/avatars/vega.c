@@ -317,7 +317,7 @@ static void sub_37a2a(Player *ply) {
 			break;
 		case 8:
 			ply->VelX.full   = 0;
-			ply->AclX.full = 0;
+			ply->AclX.full   = 0;
 			ply->VelY.full   = 0;
 			if (AF2) {
 				NEXT(ply->mode3);

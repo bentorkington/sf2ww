@@ -206,7 +206,7 @@ static void sub_36318(Player *ply) {
 static void sub_36682(Player *ply) {			// power move
 	UD *ud=(UD *)&ply->UserData;
 	if (ply->PunchKick) {
-		// 36796
+		// 36796 todo
 	} else {
 		//3668a
 		if (ply->Timer2) {

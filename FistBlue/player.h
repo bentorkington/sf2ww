@@ -478,6 +478,37 @@ ply->AclY.full = arg3;						\
 #define PLY_NEWBUTTONS (~ply->JoyDecodeDash.full & ply->JoyDecode.full)
 
 
+#define QUICKMOVE(MOVE_ID)      \
+ply->Move = MOVE_ID;			\
+quirkysound(MOVE_ID);			\
+
+#define STDANIM(ARG_A,EXITROUTINE)	\
+switch (ply->mode2) {				\
+case 0:							\
+NEXT(ply->mode2);			\
+CASetAnim2(ply, ARG_A, ply->Move);	\
+break;						\
+case 2:							\
+if (AF1) {					\
+EXITROUTINE(ply);		\
+} else {					\
+PLAYERTICK;				\
+}							\
+break;						\
+default:						\
+break;						\
+}
+
+#define STDPUNCHKICK(A,B)			\
+switch (ply->PunchKick) {			\
+case PLY_PUNCHING:				\
+A(ply);						\
+break;						\
+case PLY_KICKING:				\
+B(ply);						\
+break;						\
+}
+
 
 
 #endif /* INC_PLAYER */

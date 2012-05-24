@@ -55,8 +55,6 @@ void pl_cb_setstatus1_ken(Player *ply, short status) {
 	pl_cb_setstatus2_ken(ply, status, 0);
 }
 
-
-#pragma mark Victory Calback
 void PSCBVictoryRyu(Player *ply) {		//2d3bc
 	UD *ud=(UD *)&ply->UserData;
 
@@ -134,12 +132,8 @@ void PSCBVictoryRyu(Player *ply) {		//2d3bc
 	}
 }
 
-
-
 #pragma mark Hadouken
 
-
-// start hadouken action
 void RyuKenStartHadouken(Player *ply) {			//2d766
 	NEXT(ply->mode2);
 	CASetAnim2(ply, STATUS_HADOUKEN, ply->ButtonStrength/2);

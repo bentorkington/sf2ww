@@ -113,13 +113,6 @@ void sub_5982(Task *task) {		// 5982 in scroll1
 	short		palette;
 	
 	if (task->params.Param0 & 0x80) {
-		//59f4
-		// word objoffset
-		// byte x
-		// byte y
-		// byte palette
-		
-		
 		data = data_8d2ac[(task->params.Param0 & 0x7f)];
 		data += 2;		// skip the object offset
 		
@@ -145,7 +138,6 @@ void sub_5982(Task *task) {		// 5982 in scroll1
 			} else {
 				SCR1_DRAW_TILE(gfx_p, GFXROM_SCROLL1 + 0x20, palette);
 				SCR1_CURSOR_BUMP(gfx_p, 1, 0);
-				
 				data++;
 				
 				if (task->params.Param2) {
@@ -153,7 +145,6 @@ void sub_5982(Task *task) {		// 5982 in scroll1
 				}
 			}
 		}
-		
 	} else {
 		data = data_8d2ac[(task->params.Param0 & 0xff)];
 		data += 2;
@@ -217,16 +208,12 @@ void showtextbank0(char sel) {		// 5602 Scroll1
 			}
 		}
 	} else {  // 5606
-		x = ((*string++) * 8) + 0x40;
-		y = (*string++) * 2;		// XXX never read
 		attr = *string++;
 		while(1) {	// 56c0
 			ch = *string++;
 			if (ch == 0) {
 				return;
 			} else if (ch == SF2_TEXTLIB_EOL) {
-				x = ((*string++) * 8) + 0x40;
-				y = (*string++) * 2;
 				SCR1_CURSOR_SET(gfx_p, x, y);
 				attr = *string++;
 			} else {
@@ -234,7 +221,6 @@ void showtextbank0(char sel) {		// 5602 Scroll1
 					SCR1_DRAW_TILE(gfx_p, ch + SF2_TILE_SC1_ASCII, attr);
 					SCR1_CURSOR_BUMP(gfx_p, 1, 0);
 				}
-				x+=8;
 			}
 		}
 	}

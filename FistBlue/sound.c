@@ -48,8 +48,8 @@ void quirkysound(short data) {		// 6300
 	queuesound(data + 0x25);
 	/* was full of tamper protection - removed */
 }
-void queuesound(int data) {
-	/* unimplemented */
+void queuesound(int data) {			// 62f2
+	/* todo unimplemented */
 }
 void setstagemusic(void) {
 	sound_cq_1( (u16 []){1,2,3,5,4,6,7,8,12,11,9,10,13,13,13}[g.CurrentStage] );

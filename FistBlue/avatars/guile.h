@@ -24,6 +24,10 @@ void PSCBPowerGuile(Player *ply);		/* PLSTAT_POWERMOVE callback */
 void PLCBCompAttackGuile(Player *ply);		//33b4c
 int  PLCBCompJumpGuile(Player *ply);
 
+void _GuileExitStand(Player *ply);		/* 2f08c */
+void _GuileExitCrouch(Player *ply);		/* 2f096 */
+void _GuileExitJump(Player *ply);		/* 2f0a0 */
+
 
 struct UserData_Guile {
 	u8	SonicStep;

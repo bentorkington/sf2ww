@@ -819,7 +819,7 @@ static void _RMTumbleSM3(Player *ply) {		/* 2a21a tumble sm */
 					ply->Energy     -= ply->UndealtDamage;
 					ply->EnergyDash -= ply->UndealtDamage;
 					ply->UndealtDamage = 0;
-					QueueEffect( ply->RewardID, ply->Side ^ 1);
+					QueueEffect(ply->RewardID, ply->Side ^ 1);
 				}
 				/* 2a322 */
 				NEXT(ply->mode3);

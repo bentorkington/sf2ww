@@ -857,51 +857,6 @@ void player_check_dizzy(Player *ply) {	/* 377c test player dizzying */
 	ply->DizzyClearCnt = 0;
 }
 
-void player_hitstuni(Player *ply, u8 trajectory, u8 direction,u8 damage, u8 subsel, short xoff, short yoff, u8 sound) {
-    /* at 0x36d6 */
-    Object *act;
-	char dizzy;
-	DR dr;
-    
-    ply->Opponent->ThrowTrajectory = trajectory;         
-    ply->Opponent->Direction	   = direction;
-    if (act = AllocActor()) {
-        act->exists = TRUE;
-        act->Sel    = SF2ACT_HITSTUN;
-        act->SubSel = subsel;
-        act->XPI    = ply->XPI + xoff;
-        act->YPI    = ply->YPI + yoff;
-        act->Owner  = ply;
-        act->Flip   = ply -> Flip;
-    }
-    hitsound(sound);
-    if (!g.FastEndingFight && !g.OnBonusStage) {
-        LBGetDamage(ply, ply->Opponent, damage);	
-		QueueEffect(dr.d5, ply->Side);				// add score to player
-		
-		ply->Opponent->Energy	  -= dr.damage;
-		ply->Opponent->EnergyDash -= dr.damage;
-		
-		if (ply->Opponent->EnergyDash < 0) {
-			LBStartTimeWarp();
-			return;
-		}
-	}
-	ply->Opponent->mode1 = PLSTAT_TUMBLE;
-	ply->Opponent->mode2 = 0;
-	ply->Opponent->mode3 = 0;
-	
-	dizzy = ply->Opponent->ThrownFromDizzy;
-	ply->Opponent->ThrownFromDizzy = FALSE;
-	
-	if(dizzy) { player_check_dizzy(ply->Opponent); }
-	
-	g.ThrowEndHoldoff = 28;		
-	g.PlayersThrowing = 0;
-	ply->ThrowStat			 = 0;
-	ply->Opponent->ThrowStat = 0;
-	ply->Opponent->Attacking = FALSE;
-}
 
 u16 *objcoords_scroll1(Object *obj) {
 	return coords_scroll1(obj->XPI, obj->YPI);

@@ -29,6 +29,10 @@
 		B56BFC8F156B48F600DC7BAD /* ryuken_human.c in Sources */ = {isa = PBXBuildFile; fileRef = B56BFC8E156B48F600DC7BAD /* ryuken_human.c */; };
 		B56BFC92156B48FD00DC7BAD /* ryuken_comp.c in Sources */ = {isa = PBXBuildFile; fileRef = B56BFC91156B48FD00DC7BAD /* ryuken_comp.c */; };
 		B5871ED71408E4F4004A45F5 /* pthreads.c in Sources */ = {isa = PBXBuildFile; fileRef = B5871ED61408E4F4004A45F5 /* pthreads.c */; };
+		B5948A26156EDE260029278E /* ehonda_comp.c in Sources */ = {isa = PBXBuildFile; fileRef = B5948A25156EDE260029278E /* ehonda_comp.c */; };
+		B5948A28156EDE3C0029278E /* ehonda_human.c in Sources */ = {isa = PBXBuildFile; fileRef = B5948A27156EDE3C0029278E /* ehonda_human.c */; };
+		B5948A4B156EE0F50029278E /* guile_human.c in Sources */ = {isa = PBXBuildFile; fileRef = B5948A4A156EE0F50029278E /* guile_human.c */; };
+		B5948A4D156EE0FF0029278E /* guile_comp.c in Sources */ = {isa = PBXBuildFile; fileRef = B5948A4C156EE0FF0029278E /* guile_comp.c */; };
 		B59774EA156DE0DC00DE8F3D /* sf2gfx.bin in Resources */ = {isa = PBXBuildFile; fileRef = B59774E9156DE0DC00DE8F3D /* sf2gfx.bin */; };
 		B5AC69E71550AC9C00C9339E /* aitests.c in Sources */ = {isa = PBXBuildFile; fileRef = B527F61415508A0800BC70D8 /* aitests.c */; };
 		B5AC6A611550BDBB00C9339E /* testlib.c in Sources */ = {isa = PBXBuildFile; fileRef = B5AC6A601550BDBB00C9339E /* testlib.c */; };
@@ -136,6 +140,10 @@
 		B5869A8413B561F1001844D9 /* graphics.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = graphics.c; sourceTree = "<group>"; };
 		B5871ED51408E4F4004A45F5 /* pthreads.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = pthreads.h; sourceTree = "<group>"; };
 		B5871ED61408E4F4004A45F5 /* pthreads.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = pthreads.c; sourceTree = "<group>"; };
+		B5948A25156EDE260029278E /* ehonda_comp.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = ehonda_comp.c; sourceTree = "<group>"; };
+		B5948A27156EDE3C0029278E /* ehonda_human.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = ehonda_human.c; sourceTree = "<group>"; };
+		B5948A4A156EE0F50029278E /* guile_human.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = guile_human.c; sourceTree = "<group>"; };
+		B5948A4C156EE0FF0029278E /* guile_comp.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = guile_comp.c; sourceTree = "<group>"; };
 		B59774E9156DE0DC00DE8F3D /* sf2gfx.bin */ = {isa = PBXFileReference; lastKnownFileType = archive.macbinary; path = sf2gfx.bin; sourceTree = "<group>"; };
 		B5AC6A5F1550BDBB00C9339E /* testlib.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = testlib.h; sourceTree = "<group>"; };
 		B5AC6A601550BDBB00C9339E /* testlib.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = testlib.c; sourceTree = "<group>"; };
@@ -555,6 +563,8 @@
 				B5E2138A1568950900D96161 /* balrog.h */,
 				B5ADB7FD13B2B57D00905DFE /* blanka.c */,
 				B5ADB7FE13B2B57D00905DFE /* blanka.h */,
+				B56BFC67156B43C500DC7BAD /* blanka_comp.c */,
+				B56BFC6F156B444F00DC7BAD /* blanka_human.c */,
 				B5ADB7FF13B2B57D00905DFE /* blankadata.h */,
 				B5ADB80013B2B57D00905DFE /* chunli.c */,
 				B5ADB80113B2B57D00905DFE /* chunli.h */,
@@ -564,9 +574,13 @@
 				B5ADB80513B2B57D00905DFE /* dhalsimdata.h */,
 				B5ADB80613B2B57D00905DFE /* ehonda.c */,
 				B5ADB80713B2B57D00905DFE /* ehonda.h */,
+				B5948A25156EDE260029278E /* ehonda_comp.c */,
+				B5948A27156EDE3C0029278E /* ehonda_human.c */,
 				B5ADB80813B2B57D00905DFE /* ehondadata.h */,
 				B5ADB80913B2B57D00905DFE /* guile.c */,
 				B5ADB80A13B2B57D00905DFE /* guile.h */,
+				B5948A4A156EE0F50029278E /* guile_human.c */,
+				B5948A4C156EE0FF0029278E /* guile_comp.c */,
 				B5ADB80B13B2B57D00905DFE /* guiledata.h */,
 				B5ADB80C13B2B57D00905DFE /* kendata.h */,
 				B5ADB80D13B2B57D00905DFE /* mbison.c */,
@@ -575,6 +589,8 @@
 				B5ADB81013B2B57D00905DFE /* playerdata.h */,
 				B5ADB81113B2B57D00905DFE /* ryu.c */,
 				B5ADB81213B2B57D00905DFE /* ryu.h */,
+				B56BFC8E156B48F600DC7BAD /* ryuken_human.c */,
+				B56BFC91156B48FD00DC7BAD /* ryuken_comp.c */,
 				B5ADB81313B2B57D00905DFE /* ryudata.h */,
 				B5E21387156894FA00D96161 /* sagat.h */,
 				B5E21388156894FA00D96161 /* sagat.c */,
@@ -584,10 +600,6 @@
 				B5F335361562FFA4005A4637 /* zangeif.h */,
 				B5F335371562FFA4005A4637 /* zangeif.c */,
 				B5D8C90315673D0400629A7E /* zangeifdata.h */,
-				B56BFC67156B43C500DC7BAD /* blanka_comp.c */,
-				B56BFC6F156B444F00DC7BAD /* blanka_human.c */,
-				B56BFC8E156B48F600DC7BAD /* ryuken_human.c */,
-				B56BFC91156B48FD00DC7BAD /* ryuken_comp.c */,
 			);
 			path = avatars;
 			sourceTree = "<group>";
@@ -774,6 +786,10 @@
 				B56BFC70156B444F00DC7BAD /* blanka_human.c in Sources */,
 				B56BFC8F156B48F600DC7BAD /* ryuken_human.c in Sources */,
 				B56BFC92156B48FD00DC7BAD /* ryuken_comp.c in Sources */,
+				B5948A26156EDE260029278E /* ehonda_comp.c in Sources */,
+				B5948A28156EDE3C0029278E /* ehonda_human.c in Sources */,
+				B5948A4B156EE0F50029278E /* guile_human.c in Sources */,
+				B5948A4D156EE0FF0029278E /* guile_comp.c in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
