@@ -29,6 +29,7 @@
 		B56BFC8F156B48F600DC7BAD /* ryuken_human.c in Sources */ = {isa = PBXBuildFile; fileRef = B56BFC8E156B48F600DC7BAD /* ryuken_human.c */; };
 		B56BFC92156B48FD00DC7BAD /* ryuken_comp.c in Sources */ = {isa = PBXBuildFile; fileRef = B56BFC91156B48FD00DC7BAD /* ryuken_comp.c */; };
 		B5871ED71408E4F4004A45F5 /* pthreads.c in Sources */ = {isa = PBXBuildFile; fileRef = B5871ED61408E4F4004A45F5 /* pthreads.c */; };
+		B59774EA156DE0DC00DE8F3D /* sf2gfx.bin in Resources */ = {isa = PBXBuildFile; fileRef = B59774E9156DE0DC00DE8F3D /* sf2gfx.bin */; };
 		B5AC69E71550AC9C00C9339E /* aitests.c in Sources */ = {isa = PBXBuildFile; fileRef = B527F61415508A0800BC70D8 /* aitests.c */; };
 		B5AC6A611550BDBB00C9339E /* testlib.c in Sources */ = {isa = PBXBuildFile; fileRef = B5AC6A601550BDBB00C9339E /* testlib.c */; };
 		B5ADB7A913B2B2EA00905DFE /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = B5ADB7A813B2B2EA00905DFE /* MainMenu.xib */; };
@@ -135,6 +136,7 @@
 		B5869A8413B561F1001844D9 /* graphics.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = graphics.c; sourceTree = "<group>"; };
 		B5871ED51408E4F4004A45F5 /* pthreads.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = pthreads.h; sourceTree = "<group>"; };
 		B5871ED61408E4F4004A45F5 /* pthreads.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = pthreads.c; sourceTree = "<group>"; };
+		B59774E9156DE0DC00DE8F3D /* sf2gfx.bin */ = {isa = PBXFileReference; lastKnownFileType = archive.macbinary; path = sf2gfx.bin; sourceTree = "<group>"; };
 		B5AC6A5F1550BDBB00C9339E /* testlib.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = testlib.h; sourceTree = "<group>"; };
 		B5AC6A601550BDBB00C9339E /* testlib.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = testlib.c; sourceTree = "<group>"; };
 		B5ADB7A813B2B2EA00905DFE /* MainMenu.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MainMenu.xib; sourceTree = "<group>"; };
@@ -359,6 +361,7 @@
 		29B97317FDCFA39411CA2CEA /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				B59774E9156DE0DC00DE8F3D /* sf2gfx.bin */,
 				B5ADB7A813B2B2EA00905DFE /* MainMenu.xib */,
 				8D1107310486CEB800E47090 /* MT2-Info.plist */,
 				089C165CFE840E0CC02AAC07 /* InfoPlist.strings */,
@@ -692,6 +695,7 @@
 				8D11072B0486CEB800E47090 /* InfoPlist.strings in Resources */,
 				B5ADB7A913B2B2EA00905DFE /* MainMenu.xib in Resources */,
 				B5E9056513B2D61900833C5A /* ParamController.xib in Resources */,
+				B59774EA156DE0DC00DE8F3D /* sf2gfx.bin in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

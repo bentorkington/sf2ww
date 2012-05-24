@@ -392,7 +392,7 @@ void gemu_colortile_scroll1(short palette, GLubyte *img) {
 void gfx_glut_init(void) {
 	int i;
 	
-    gfxrom=fopen( "sf2gfx.bin", "r" );
+    gfxrom=fopen( "./sf2gfx.bin", "r" );
     if(gfxrom == NULL) {
         printf("fatal: couldn't open graphics ROM in ");
 		system("/bin/pwd");
