@@ -9,6 +9,7 @@
 #include <stdio.h>
 #include <memory.h>
 #include <assert.h>
+#include <math.h>
 
 #include "sf2types.h"
 #include "sf2const.h"
@@ -28,6 +29,7 @@ extern GState gstate_Scroll3;
 
 
 void fistblue_run_tests(void) {
+	int x,y;
 	memclear(&g, sizeof(struct game));	
 	
 	printf("fistblue_run_tests:\n");
@@ -158,6 +160,29 @@ void fistblue_run_tests(void) {
 	assert((u16)obj->VelY.full == 0xfee0);
 	assert((u16)obj->AclX.full == 0x0180);
 	assert((u16)obj->AclY.full == 0x0048);
+	
+
+	
+	
+	obj->X.full = 0;	obj->Y.full = 0;
+	obj->XPI = 0x12c;		obj->YPI = 0x8c;
+	assert(calc_flightpath(obj, 0x117, 0xac) == 0xeb);
+
+	
+	obj->X.full = 0;	obj->Y.full = 0;
+	obj->XPI = 200;		obj->YPI = 200;
+	//assert(calc_flightpath(obj, 100, 200) == 0x00);
+	for (float f=0; f < (M_PI * 2) ; f += (M_PI * 2 / 32)) {
+		x = (sin(f) * 100.0) + 200;
+		y = (cos(f) * 100.0) + 200;
+		printf("flightpath %02x (%02x) %d %d %1.2f\n",
+			   calc_flightpath(obj, x, y),
+			   (int)((f * 256.0 / (M_PI * 2))+0.5),
+			   x, y,
+			   f / (M_PI * 2));
+		
+	}
+	
 	
 	
 	free(obj);

@@ -116,7 +116,7 @@ static void apply_throw_damage(Player *ply, Player *opp_a3, short index) {		///0
         if(opp_a3->Energy - dr.damage >= 0) { return; }
         
         /* player is knocked out */
-        if(ply->FighterID == FID_CHUN_LI) {
+        if(opp_a3->FighterID == FID_CHUN_LI) {
             queuesound(SOUND_KO_FEMALE);
         } else {
             queuesound(SOUND_KO_MALE);

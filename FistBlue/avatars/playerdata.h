@@ -123,7 +123,7 @@ char data_292d4[32]={
       3,  11,   4,  19,  13,   1,   5,   9,   7,   2,  15,   9,   4,  19,  13,   4, 
 };
 
-u16 data_2aa30[12][4][4] = {        /* jump vectors used in set_jumping() */
+const short data_2aa30[12][4][4] = {        /* jump vectors used in set_jumping() */
 									/* todo: need rereading with signed values 
 									  and remove cast from comp_set_jump{ */
 	

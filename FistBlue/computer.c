@@ -232,7 +232,6 @@ static void comp_jump_physics(Player *ply) {		/* 2c854 */
 	}
 	CATrajectory((Object *)ply);
 	if(ply->VelY.full >= 0) {
-		/* 2c8d6 */
 		PLAYERTICK;
 		return;
 	}
@@ -245,7 +244,7 @@ static void comp_jump_physics(Player *ply) {		/* 2c854 */
 		ply->Airborne		= AIR_ONGROUND;
 		ply->CompDoJump		= FALSE;
 		queuesound(SOUND_IMPACT8);
-		CASetAnim1(ply, 0xa);
+		CASetAnim1(ply, STATUS_LANDING);
 		return;
 	}
 	
@@ -310,28 +309,7 @@ static short comp_jump_plycallback(Player *ply) { /* 2c9be */
 		PLCBCompJumpBalrog,
 		PLCBCompJumpVega,
 	};
-	if (data_2c9cc[ply->FighterID] != NULL) {
-		return data_2c9cc[ply->FighterID](ply);
-	} else {
-		return 0;
-	}
-
-	
-	/* per fighter JT */
-	/*
-	 0002C9CC   0003 2d7e   ;ryu                   ;all twleve here
-	 0002C9D0   0003 3012   ;honda                    
-	 0002C9D4   0003 35bc   ;blanka                  
-	 0002C9D8   0003 404a   ;guile                    
-	 0002C9DC   0003 2d7e   ;ken                   
-	 0002C9E0   0003 4596   ;chun li                 
-	 0002C9E4   0003 500e    ;zangief                  
-	 0002C9E8   0003 5f46    ;dhalsidm                       
-	 0002C9EC   0003 62ba  ;bison               
-	 0002C9F0   0003 6cd6  ;sagat                        
-	 0002C9F4   0003 71c2  ;balrog                    
-	 0002C9F8   0003 7486  ;vega  
-	 */
+	return data_2c9cc[ply->FighterID](ply);
 }
 
 static void comp_footsweep_or_jump(Player *ply) {		/* 2cbc4 */
@@ -381,7 +359,7 @@ void comp_plstat_normal(Player *ply) {  /* 2c2a4 */
 				CASetAnimWithStep(ply, STATUS_STAND);
 			}
 			PLAYERTICK;
-			update_obj_path(ply);
+			update_obj_path((Object *)ply);
 			
 			break;
 		FATALDEFAULT;
@@ -781,23 +759,6 @@ static void comp_attack_plycallback (Player *ply) { /* 2cc58 */
 		PLCBCompAttackVega,
 	};
 	data_2cc66[ply->FighterID](ply);	
-	
-	/*
-	 
-	 0002CC66   0003 2c56                        OR.B      #0x2c56,D3    ;ryu
-	 0002CC6A   0003 3016                        OR.B      #0x3016,D3    ;e.honda
-	 0002CC6E   0003 35c0                        OR.B      #0x35c0,D3    ;blanka
-	 0002CC72   0003 3b4c                        OR.B      #0x3b4c,D3    ;guile
-	 0002CC76   0003 2c56                        OR.B      #0x2c56,D3    ;ken same as Ryu
-	 0002CC7A   0003 46be                        OR.B      #0x46be,D3    ;chunli
-	 0002CC7E   0003 50f8                        OR.B      #0x50f8,D3    ;zangeif
-	 0002CC82   0003 5d14                        OR.B      #0x5d14,D3    ;dhalsim
-	 0002CC86   0003 62dc                        OR.B      #0x62dc,D3    ;m.bison
-	 0002CC8A   0003 6c24                        OR.B      #0x6c24,D3    ;saga
-	 0002CC8E   0003 6f3a                        OR.B      #0x6f3a,D3    ;balrog
-	 0002CC92   0003 7498                        OR.B      #0x7498,D3    ;vega
-
-	 */
 }
 
 #pragma mark ---- Comp NextAction ----
@@ -932,12 +893,12 @@ static void sub_2c4fa(Player *ply) {
 
 void comp_exit_land(Player *ply) {		/* 2c57a was comp_exit_plstat_jump */
 	set_ply_directions(ply);
-	ply->Attacking	= FALSE;
-	ply->IsJumpThreat = FALSE;
-	ply->mode1		= PLSTAT_JUMPING;
-	ply->mode2		= 4;
-	ply->LocalTimer = 7;
-	ply->Airborne	= AIR_ONGROUND;
+	ply->Attacking		= FALSE;
+	ply->IsJumpThreat	= FALSE;
+	ply->mode1			= PLSTAT_JUMPING;
+	ply->mode2			= 4;
+	ply->LocalTimer		= 7;
+	ply->Airborne		= AIR_ONGROUND;
 	queuesound(SOUND_IMPACT8);
 	CASetAnim1(ply, STATUS_LANDING);
 	slib_ply_overlap();
@@ -945,21 +906,22 @@ void comp_exit_land(Player *ply) {		/* 2c57a was comp_exit_plstat_jump */
 }
 void exit_to_compdisp1(Player *ply) { /* 2c464 */
 	set_ply_directions(ply);
-	ply->mode1 = PLSTAT_CROUCH;
-	ply->Attacking = 0;
-	ply->IsJumpThreat = 0;
-	ply->mode2 = ply->mode3 = 0;
+	ply->mode1			= PLSTAT_CROUCH;
+	ply->Attacking		= 0;
+	ply->IsJumpThreat	= 0;
+	ply->mode2			= 0;
+	ply->mode3			= 0;
 	CASetAnim2(ply, STATUS_CROUCH, 2);
 	slib_ply_overlap();
 	comp_plstat_crouch(ply);
 }
 static void comp_exit_stand_from_crouch(Player *ply) {	/* 2c4c8 */
 	set_ply_directions(ply);
-	ply->mode1 = PLSTAT_CROUCH;
-	ply->mode2 = 2;				/* standing up */
-	ply->Attacking = FALSE;
-	ply->IsJumpThreat = FALSE;
-	ply->mode3 = 0;
+	ply->mode1			= PLSTAT_CROUCH;
+	ply->mode2			= 2;				/* standing up */
+	ply->Attacking		= FALSE;
+	ply->IsJumpThreat	= FALSE;
+	ply->mode3			= 0;
 	CASetAnim1(ply, STATUS_STAND_UP);
 	slib_ply_overlap();
 	comp_plstat_crouch(ply);
@@ -973,12 +935,12 @@ void sub_2c516(Player *ply){			// 2c516 checked one external caller
 
 void comp_setjumping_main(Player *ply) {	/* 2c534 */
 	set_ply_directions(ply);
-	ply->Attacking = ply->IsJumpThreat = 0;
-	ply->mode1 = PLSTAT_JUMPING;
-	ply->mode2 = 4;
-	ply->mode3 = 0;
-	ply->LocalTimer = 7;
-	ply->Airborne = AIR_ONGROUND;
+	ply->Attacking		= ply->IsJumpThreat = 0;
+	ply->mode1			= PLSTAT_JUMPING;
+	ply->mode2			= 4;
+	ply->mode3			= 0;
+	ply->LocalTimer		= 7;
+	ply->Airborne		= AIR_ONGROUND;
 	queuesound(SOUND_IMPACT8);
 	CASetAnim1(ply, STATUS_LANDING);
 	slib_ply_overlap();
@@ -1068,7 +1030,7 @@ void comp_set_jump(Player *ply) {		/* 2ceda was comp_jumps */
 	jumpindex ^= ply->Flip;
 	
 	// todo: cast need removing when data is fixed, reread as signed shorts.
-	traj = (short *)data_2aa30[ply->FighterID][jumpindex];
+	traj = data_2aa30[ply->FighterID][jumpindex];
 	
 	ply->VelX.full = traj[0];
 	ply->AclX.full = traj[1];

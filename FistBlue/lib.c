@@ -222,71 +222,66 @@ static void intmaths(void) {
 	
 }
 
-static int sub_252a(u32 coord, u32 greatercoord) {
-	int d0 = 0;
-	int i;
-	for (i=31; i >= 0; --i) {
-		if (coord & 0x80000000) 
-			++d0;
-		coord <<= 1;
-		d0    <<= 1;
-		if (d0 >= greatercoord) {
-			d0 -= greatercoord;
-			++coord;
-		}
-	}
-	return coord;
+// divide 
+static int sub_252a(u32 d2, u32 d3) {
+	return d3 / d2;
+	
+//	int d0 = 0;
+//	int i;
+//	for (i=31; i >= 0; --i) {
+//		if (coord & 0x80000000) 
+//			++d0;
+//		coord <<= 1;
+//		d0    <<= 1;
+//		if (d0 >= greatercoord) {
+//			d0 -= greatercoord;
+//			++coord;
+//		}
+//	}
+//	return coord;
 }
 
 // calculate the angle from the object to a given point.
-
+// returns angle out of 0xff
 u8 calc_flightpath(Object *obj, int x, int y) {		// 24d2 flightpath
 	u8 direction = 0;
 	int d3;
 	
-	if (y - obj->YPI < 5) {
-		if (obj->XPI < 0) {
-			return 0x40;
-		} else {
+	if (y - obj->YPI == 0) {
+		if (x - obj->XPI < 0) {
 			return 0xc0;
+		} else {
+			return 0x40;
 		}
 	} else if (y - obj->YPI < 0) {
 		direction = 0x80;
-		return 0x80;
-	} else {			// XXX
-		return 0x00;	// XXX
-	}					// XXX
-		// can't get here
-
+	} else {			
+		direction = 0x00;
+	}			
 	if (x - obj->XPI == 0) {
 		return direction;
 	}
-	direction >> 1;
+	direction >>= 1;
 	if (x - obj->XPI < 0) {
 		direction |= 0x80;
 	}
-	if ((ABS(y-obj->YPI) - ABS(x-obj->XPI)) == 0) {		// multiple of 45 degrees
+	if (ABS(y-obj->YPI) == ABS(x-obj->XPI)) {		// multiple of 45 degrees
 		return	(u8 []){0x20, 0x60, 0xe0, 0xa0}[direction >> 6];	
-	} else if ((ABS(y-obj->YPI) - ABS(x-obj->XPI)) < 0) {
+	} else if (ABS(y-obj->YPI) > ABS(x-obj->XPI)) {
 		direction  >>= 1;
-		d3 = sub_252a(ABS(y-obj->YPI) << 8, ABS(x-obj->XPI)) >> 3;
-		direction = (u8 []){0x00, 0x81, 0x01, 0x80, 0x41, 0x40, 0xc0, 0xc1}[direction >> 5];
-		if (direction & 0x01) {
-			return d3 - (direction & 0xfe);
-		} else {
-			return d3+direction;
-		}
+		d3 = (sub_252a(ABS(y-obj->YPI),ABS(x-obj->XPI) << 8) >> 3) & 0x1f;
 	} else {
 		direction  >>= 1;
-		d3 = sub_252a(ABS(x-obj->XPI) << 8, ABS(y-obj->YPI)) >> 3;
-		direction = (u8 []){0x00, 0x81, 0x01, 0x80, 0x41, 0x40, 0xc0, 0xc1}[direction >> 5];
-		if (direction & 0x01) {
-			return d3 - (direction & 0xfe);
-		} else {
-			return d3+direction;
-		}
-		
+		direction |= 0x80;
+		d3 = sub_252a(ABS(x-obj->XPI), ABS(y-obj->YPI) << 8) >> 3;
 	}
+					//  0		          180         90    270
+	direction = (u8 []){0x00, 0x81, 0x01, 0x80, 0x41, 0x40, 0xc0, 0xc1}[(direction >> 5)];
+	if (direction & 0x01) {
+		return (direction & 0xfe)-d3;
+	} else {
+		return d3+direction;
+	}	
 }
 	
 

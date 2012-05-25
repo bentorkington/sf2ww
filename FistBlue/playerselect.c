@@ -217,12 +217,12 @@ void SM_player_select(void) {		//7fc4
 					g.CPS.Scroll1X				= 0;
 					g.CPS.Scroll1Y				= 0x100;
 					g.PLSL.TimerCourse			= 32;
-					g.PLSL.TimerFine			= 60;		// XXX maybe split 2x char
+					g.PLSL.TimerFine			= 60;		
 					g.ActionLibSel				= 1;
 					gemu_setpalette(PALETTE_0C, data_80be);
 					soundsting(SOUND_PLAYERSELECTSCR);
 					QueueEffect(SL1C | 0x16, 0);
-					actionlibrary();    // 82d0e
+					actionlibrary();    
 					break;
 				case 2:				//80de
 					NEXT(g.PLSL.mode1);
@@ -382,13 +382,13 @@ void SM_player_select(void) {		//7fc4
 			break;
 		case 6:
 			g.PlayerSelectDone = TRUE;
-			if (g.InDemo == 0) {
+			if (g.InDemo == FALSE) {
 				// todo some funkyfeatures here @0x8408
 				g.Player1.x02ae = g.Player1.Human;
 				/* some redundant code removed */
 				g.Player2.x02ae = g.Player2.Human;
-				fadenwait2();
-			}
+				fadenwait3();
+			} 
 			break;
 		FATALDEFAULT;
 	}

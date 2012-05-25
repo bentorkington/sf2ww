@@ -176,11 +176,11 @@ void action_2e(Object *obj) {		// 18f92
 					obj->Path = data_cfe74;
 					
 					/// XXX too buggy, bail out and unpause
-					g.PlaneLandedInCity[ud->city_to] = TRUE;
-					g.Pause_9e1 = -1;
-					obj->mode0 = 6;
-					obj->mode1 = 0;
-					return;
+					//g.PlaneLandedInCity[ud->city_to] = TRUE;
+					//g.Pause_9e1 = -1;
+					//obj->mode0 = 6;
+					//obj->mode1 = 0;
+					//return;
 					// XXX
 					
 					
