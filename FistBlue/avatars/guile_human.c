@@ -53,15 +53,14 @@ static short _GuileBigPunch(Player *ply) {   /* 2f47a */
 }
 
 static short GuileStandMove(Player *ply) {		/* 2f3b2*/
-	g.HumanMoveCnt++;
-	ply->StandSquat = 0;
+	++g.HumanMoveCnt;
+	ply->StandSquat = PLY_STAND;
 	
 	switch (ply->PunchKick) {
 		case PLY_PUNCHING:
-			/* 2fc33 */
 			switch (ply->ButtonStrength) {
 				case 0:
-					if (ply->OppXDist >= 0x14) {
+					if (ply->OppXDist >= 20) {
 						ply->Move = 1;
 					} else {
 						ply->Move = 0;
@@ -73,7 +72,6 @@ static short GuileStandMove(Player *ply) {		/* 2f3b2*/
 					if ((ply->JoyDecode.full & 0x000b) == 0) {
 						return _GuileMidPunch(ply);
 					} else {
-						/* 2f404 */
 						PLY_THROW_SET(0xffe8, 0x0035, 0x0018, 0x0010);
 						if (throwvalid(ply)) {
 							/* Twist-throw, or Invisible Throw bug */
@@ -88,7 +86,6 @@ static short GuileStandMove(Player *ply) {		/* 2f3b2*/
 					if ((ply->JoyDecode.full & 0x000b) == 0) {
 						return _GuileBigPunch(ply);
 					} else {
-						/* 2f452 */
 						PLY_THROW_SET(0xffe8, 0x0035, 0x0018, 0x0010);
 						if (throwvalid(ply)) {
 							/* Backbreaker throw */
@@ -103,7 +100,6 @@ static short GuileStandMove(Player *ply) {		/* 2f3b2*/
 			}
 			break;
 		case PLY_KICKING:
-			/* 2f49a */
 			switch (ply->ButtonStrength) {
 				case 0:
 					ply->Move = 0;
@@ -112,7 +108,6 @@ static short GuileStandMove(Player *ply) {		/* 2f3b2*/
 					break;
 				case 2:
 					if (ply->JoyDecode.full == 0 || ply->OppXDist >= 0x33) {
-						/* 2f4de */
 						if (ply->OppXDist >= 0x26) {
 							ply->Move = 2;
 						} else {
@@ -128,8 +123,7 @@ static short GuileStandMove(Player *ply) {		/* 2f3b2*/
 					break;
 				case 4:
 					if (ply->JoyDecode.full == 0 || ply->OppXDist >= 0x47) {
-						/* 2f4de */
-						if (ply->OppXDist >= 0x28) {
+						if (ply->OppXDist >= 40) {
 							ply->Move = 4;
 						} else {
 							ply->Move = 3;
@@ -151,23 +145,22 @@ static short GuileStandMove(Player *ply) {		/* 2f3b2*/
 }
 static short GuileCrouchMove(Player *ply) {		/* 2f53e */
 	g.HumanMoveCnt++;
-	ply->StandSquat = 2;
+	ply->StandSquat = PLY_CROUCH;
 	
 	QUICKMOVE(ply->ButtonStrength / 2); return TRUE; 
 }
-// Check if air-throw is valid
-static short sub_2f6fa(Player *ply) {
+static short guile_check_air_throw_allowed(Player *ply) {		// 2f6fa
 	if (ply->VelY.full < 0) {
 		if (ply->YPI < 40 || ply->YPI >= 88) {
-			return 0;
+			return FALSE;
 		} else {
-			return 1;
+			return TRUE;
 		}
 	} else {
 		if (ply->YPI < 40 || ply->YPI >= 71) {
-			return 0;
+			return FALSE;
 		} else {
-			return 1;
+			return TRUE;
 		}
 	}
 }
@@ -186,22 +179,22 @@ static short GuileJumpMove(Player *ply) {		// 2f5e2
 					quirkysound(0);
 					break;
 				case 2:
-					if (sub_2f6fa(ply) && (ply->JoyDecode.full & 0x7)) {
+					if (guile_check_air_throw_allowed(ply) && (ply->JoyDecode.full & 0x7)) {
 						PLY_THROW_SET(-30, 56, 37, 36);
 						if (airthrowvalid(ply)) {
 							ply->Move = 0;
 							ud->AirThrow = TRUE;
 						} else {
-							ply->Move = ply->VelX.full == 0 ? 4 : 1;							quirkysound(1);
+							ply->Move = (ply->VelX.full == 0 ? 4 : 1);							quirkysound(1);
 						}
 					} else {
-						ply->Move = ply->VelX.full == 0 ? 4 : 1;
+						ply->Move = (ply->VelX.full == 0 ? 4 : 1);
 						quirkysound(1);
 					}
 					break;
 				case 4:
 					// 2f6a8
-					if (sub_2f6fa(ply) && (ply->JoyDecode.full & 7)) {
+					if (guile_check_air_throw_allowed(ply) && (ply->JoyDecode.full & 7)) {
 						PLY_THROW_SET(-30, 56, 37, 36);
 						if (airthrowvalid(ply)) {
 							ply->Move = 0;
@@ -234,10 +227,10 @@ static short GuileJumpMove(Player *ply) {		// 2f5e2
 					quirkysound(0);
 					break;
 				case 2:
-					if (sub_2f6fa(ply) && (ply->JoyDecode.full & 7)) {
+					if (guile_check_air_throw_allowed(ply) && (ply->JoyDecode.full & 7)) {
 						PLY_THROW_SET(-30, 56, 37, 36);
 						if (airthrowvalid(ply)) {
-							ply->Move = 1;
+							ply->Move     = 1;
 							ud->AirThrow2 = TRUE;
 						} else {
 							ply->Move = ply->VelX.full == 0 ? 1 : 3;	
@@ -249,7 +242,7 @@ static short GuileJumpMove(Player *ply) {		// 2f5e2
 					}
 					break;
 				case 4:
-					if (sub_2f6fa(ply) && (ply->JoyDecode.full & 7)) {
+					if (guile_check_air_throw_allowed(ply) && (ply->JoyDecode.full & 7)) {
 						PLY_THROW_SET(-30, 56, 37, 36);
 						if (airthrowvalid(ply)) {
 							ply->Move = 1;
@@ -278,7 +271,7 @@ static short GuileJumpMove(Player *ply) {		// 2f5e2
 	}
 	return 0;
 }
-static short _GuileStartSonic(Player *ply) {		/* 2f1ea */
+static void _GuileStartSonic(Player *ply) {		/* 2f1ea */
 	UD *ud=(UD *)&ply->UserData;
 	
 	ply->mode1 = PLSTAT_IN_POWERMOVE;
@@ -288,11 +281,10 @@ static short _GuileStartSonic(Player *ply) {		/* 2f1ea */
 	ud->SonicStrength = ply->ButtonStrength / 2;
 	BumpDiff_PowerMove();
 	g.HumanMoveCnt++;
-	return -1;
 }
 
 
-static short _GuileStartBlade(Player *ply) {		/* 2f362 */
+static void _GuileStartBlade(Player *ply) {		/* 2f362 */
 	UD *ud=(UD *)&ply->UserData;
 	
 	ply->mode1 = PLSTAT_IN_POWERMOVE;
@@ -303,23 +295,22 @@ static short _GuileStartBlade(Player *ply) {		/* 2f362 */
 	ud->x008c = ply->ButtonStrength / 2;
 	BumpDiff_PowerMove();
 	g.HumanMoveCnt++;
-	return -1;
 }
-static short sub_2f042(Player *ply) {	/* check if Guile can do Sonic boom */
+inline static short guile_check_free_sonic(Player *ply) {	/* 2f042 check if Guile can do Sonic boom */
 	UD *ud=(UD *)&ply->UserData;
 	
 	if(check_special_ability(ply) || ply->Projectile != 0 || AF2 == 0x42 || ud->x008d > 5) {
-		return 0;
+		return FALSE;
 	}
-	return 1;
+	return TRUE;
 }
-static short sub_2f066(Player *ply) {	/* check if Guile can do Sonic boom */
+inline static short guile_check_free_blade(Player *ply) {	/* 2f066 */
 	UD *ud=(UD *)&ply->UserData;
 	
 	if(check_special_ability(ply) || AF2==0x42 || AF2 == 0x24 || ud->x008d > 5) {
-		return 0;
+		return FALSE;
 	}
-	return 1;
+	return TRUE;
 }
 
 static short GuileButtons(Player *ply) {
@@ -334,17 +325,18 @@ static short GuileButtons(Player *ply) {
 	if (LBRareChance()) {
 		switch (ply->PunchKick) {
 			case PLY_PUNCHING:
-				if (sub_2f042(ply)) {
-					return _GuileStartSonic(ply);		/* free sonic boom */
+				if (guile_check_free_sonic(ply)) {
+					_GuileStartSonic(ply);		/* free sonic boom */
 				}
 				break;
 			case PLY_KICKING:
-				if (sub_2f066(ply)) {
-					return _GuileStartBlade(ply);		/* free bladekick */
+				if (guile_check_free_blade(ply)) {
+					_GuileStartBlade(ply);		/* free bladekick */
 				}
 				break;
 				FATALDEFAULT;
 		}
+		return -1;
 		
 	} 
 	return 1;
@@ -368,7 +360,7 @@ short PLCBJumpGuile(Player *ply) {	/* 2eff0 jump callback */
 	}
 	return 0;
 }
-static void sub_2f1d0(Player *ply) {
+static void guile_reset_sonic_sm(Player *ply) {			//2f1d0
 	UD *ud=(UD *)&ply->UserData;	
 	if (--ud->x0083 == 0) {
 		ud->x0084 -= 2;
@@ -383,7 +375,7 @@ static void sub_2f1b0(Player *ply) {
 	UD *ud=(UD *)&ply->UserData;
 	
 	if(check_special_ability(ply) || AF2==0x42 || AF2 == 0x24 || ud->x008d > 5) {
-		sub_2f1d0(ply);
+		guile_reset_sonic_sm(ply);
 	} else {
 		_GuileStartSonic(ply);
 	}
@@ -398,7 +390,7 @@ static void sub_2f19a(Player *ply, short d0) {
 		return;
 	}
 	if ((ply->ButtonStrength + 2) > ud->x0084 ) {
-		sub_2f1d0(ply);
+		guile_reset_sonic_sm(ply);
 	} else {
 		sub_2f1b0(ply);
 	}	
@@ -427,7 +419,7 @@ static void _GuileSMSonic(Player *ply) {		//2f0aa
 			ud->x0084 = 0;
 			break;
 		case 2:
-			if (ply->JoyCorrect2 & 1) {
+			if (ply->JoyCorrect2 & JOYCO_AWAY) {
 				if(--ud->SonicTimer == 0) {
 					NEXT(ud->SonicStep);
 				}
@@ -436,7 +428,7 @@ static void _GuileSMSonic(Player *ply) {		//2f0aa
 			}
 			break;
 		case 4:
-			if ((ply->JoyCorrect2 & 1) == 0) {
+			if ((ply->JoyCorrect2 & JOYCO_AWAY) == 0) {
 				NEXT(ud->SonicStep);
 				ud->SonicTimer2 = data_2f12c[RAND32];
 			}
@@ -444,10 +436,10 @@ static void _GuileSMSonic(Player *ply) {		//2f0aa
 		case 6:
 			if (--ud->SonicTimer2 == 0) {
 				ud->SonicStep = 0;
-			} else if (ply->JoyCorrect2 == 2) {
-				if(GuileNewButtonsDown(ply, 0x70)) {
+			} else if (ply->JoyCorrect2 == JOYCO_TOWARD) {
+				if(GuileNewButtonsDown(ply, BUTTON_PUNCHES)) {
 					sub_2f1b0(ply);
-				} else if (GuileNewButtonsUp(ply, 0x70)) {
+				} else if (GuileNewButtonsUp(ply, BUTTON_PUNCHES)) {
 					sub_2f1b0(ply);
 				} else {
 					ud->x0083 = 8;
@@ -457,22 +449,22 @@ static void _GuileSMSonic(Player *ply) {		//2f0aa
 			}
 			break;
 		case 8:
-			d0 = GuileNewButtonsDown(ply, 0x70); 
+			d0 = GuileNewButtonsDown(ply, BUTTON_PUNCHES); 
 			if (d0) {
 				sub_2f19a(ply, d0);
 			} else {
-				d0 = GuileNewButtonsUp(ply, 0x70);
+				d0 = GuileNewButtonsUp(ply, BUTTON_PUNCHES);
 				if (d0) {
 					sub_2f19a(ply, d0);
 				} else {
-					sub_2f1d0(ply);
+					guile_reset_sonic_sm(ply);
 				}
 			}
 			break;
 			FATALDEFAULT;
 	}
 }
-static void sub_2f326(Player *ply) {
+static void sub_2f326(Player *ply) {		// 2f326
 	UD *ud=(UD *)&ply->UserData;	
 	
 	if (check_special_ability(ply) ||
@@ -503,7 +495,7 @@ static void _GuileSMBlade(Player *ply) {		// 2f216
 			ud->BladeMaxStr = 0;
 			break;
 		case 2:
-			if (ply->JoyCorrect2 & 0x4) {
+			if (ply->JoyCorrect2 & JOYCO_DOWN) {
 				if (--ud->BladeTimer == 0) {
 					NEXT(ud->BladeStep);
 				}
@@ -512,7 +504,7 @@ static void _GuileSMBlade(Player *ply) {		// 2f216
 			}
 			break;
 		case 4:
-			if ((ply->JoyCorrect2 & 0x4) == 0) {
+			if ((ply->JoyCorrect2 & JOYCO_DOWN) == 0) {
 				NEXT(ud->BladeStep);
 				ud->BladeTimer2 = data_2f29a[RAND32];
 			}
@@ -521,11 +513,11 @@ static void _GuileSMBlade(Player *ply) {		// 2f216
 			if (--ud->BladeTimer2 == 0) {
 				ud->BladeStep = 0;
 			} else {
-				if (ply->JoyCorrect2 & 0x8) {
-					if(d0 = GuileNewButtonsDown(ply, 0x700)) {
+				if (ply->JoyCorrect2 & JOYCO_UP) {
+					if(d0 = GuileNewButtonsDown(ply, BUTTON_KICKS)) {
 						decode_buttons(ply, d0);
 						sub_2f326(ply);
-					} else if (d0 = GuileNewButtonsUp(ply, 0x700)) {
+					} else if (d0 = GuileNewButtonsUp(ply, BUTTON_KICKS)) {
 						decode_buttons(ply, d0);
 						sub_2f326(ply);
 					} else {
@@ -538,9 +530,9 @@ static void _GuileSMBlade(Player *ply) {		// 2f216
 			}
 			break;
 		case 8:
-			if(d0 = GuileNewButtonsDown(ply, 0x700)) {
+			if(d0 = GuileNewButtonsDown(ply, BUTTON_KICKS)) {
 				decode_buttons(ply, d0);
-			} else if (d0 = GuileNewButtonsUp(ply, 0x700)) {
+			} else if (d0 = GuileNewButtonsUp(ply, BUTTON_KICKS)) {
 				decode_buttons(ply, d0);
 			} else {
 				if(--ud->x0089 == 0) {
@@ -561,9 +553,7 @@ static void _GuileSMBlade(Player *ply) {		// 2f216
 				sub_2f326(ply);
 			}
 			break;
-			
-			break;
-			FATALDEFAULT;
+		FATALDEFAULT;
 	}
 }
 
@@ -572,9 +562,7 @@ void PLCBPowerGuile(Player *ply) {	//2effa
 	_GuileSMBlade(ply);
 	
 }
-void PSCBPowerGuile(Player *ply) {		/* 2fe26 PLSTAT_POWERMOVE callback */
-	static short data_2ff3e[] = {0x800, 0x900, 0xa00};
-	
+void PSCBPowerGuile(Player *ply) {		/* 2fe26 */
 	UD *ud=(UD *)&ply->UserData;	
 	Object *obj;
 	
@@ -592,13 +580,13 @@ void PSCBPowerGuile(Player *ply) {		/* 2fe26 PLSTAT_POWERMOVE callback */
 						}
 						if (((ply->AnimFlags & 0xff00) >> 8) == 1) {
 							if(obj=AllocProjectile()){
-								obj->exists = TRUE;
-								obj->Sel = SF2_PROJ_SONICBOOM;
-								obj->XPI = ply->XPI;
-								obj->YPI = ply->YPI;
-								obj->Flip = ply->Flip;
-								obj->SubSel = ply->ButtonStrength;
-								obj->Owner = ply;
+								obj->exists		= TRUE;
+								obj->Sel		= SF2_PROJ_SONICBOOM;
+								obj->XPI		= ply->XPI;
+								obj->YPI		= ply->YPI;
+								obj->Flip		= ply->Flip;
+								obj->SubSel		= ply->ButtonStrength;
+								obj->Owner      = ply;
 								ply->Projectile = obj;
 							}
 							NEXT(ply->mode2);
@@ -633,10 +621,10 @@ void PSCBPowerGuile(Player *ply) {		/* 2fe26 PLSTAT_POWERMOVE callback */
 						if (ply->Flip) {
 							ply->VelX.full = -ply->VelX.full;
 						}
-						ply->VelY.full = data_2ff3e[ply->UserData[0xc]];
+						ply->VelY.full = (short[]){0x800, 0x900, 0xa00}[ud->x008c];
 						ply->AclY.full = 0x60;	// redundant table
-						ply->Airborne = AIR_JUMPING;
-						CASetAnim2(ply, 0x4e, ply->UserData[0xc]);
+						ply->Airborne  = AIR_JUMPING;
+						CASetAnim2(ply, 0x4e, ud->x008c);
 						quirkysound(2);
 						PLAYERTICK;
 						break;
@@ -725,8 +713,8 @@ static void sub_2f850(Player *ply) {		/* 2f850 Guile stand punch */
 					break;
 				case 2:
 					if (AF2) {
-						NEXT(ply->mode2);	// release the victim from the grip
-						set_throw_trajectory(ply, 0, ply->Flip, 0xd);
+						NEXT(ply->mode2);	
+						set_throw_trajectory(ply, 0, ply->Flip, 13);
 					} else {
 						PLAYERTICK;
 					}
@@ -752,11 +740,11 @@ static void sub_2f850(Player *ply) {		/* 2f850 Guile stand punch */
 					break;
 				case 2:
 					if (AF2) {
-						ply->Timer2 = 12;
+						ply->Timer2           = 12;
 						ply->Opponent->Timer2 = 12;
 						NEXT(ply->mode2);
 						sub_36d6(ply, 
-								 ply->Flip ? 128 : -128,
+								 (ply->Flip ? 128 : -128),
 								 0, 2, ply->Flip, 13, 46, 2);			
 						ActStartScreenWobble();		// Screen wobble
 					} else {
@@ -774,7 +762,7 @@ static void sub_2f850(Player *ply) {		/* 2f850 Guile stand punch */
 					FATALDEFAULT;
 			}
 			break;
-			FATALDEFAULT;
+		FATALDEFAULT;
 	}
 }
 // Guile Standing Kicks
@@ -794,7 +782,6 @@ static void sub_2fa2c(Player *ply) {
 						if (PSSetNextAction(ply)) {
 							plstat_do_nextaction(ply);
 						} else {
-							// 2fa92
 							g.HumanMoveCnt++;
 							ply->Opponent->SufferHB5 = 0;
 							CASetAnim2(ply, STATUS_KICK, 0);
@@ -804,7 +791,7 @@ static void sub_2fa2c(Player *ply) {
 						PLAYERTICK;
 					}
 					break;
-					FATALDEFAULT;
+				FATALDEFAULT;
 			}
 			break;
 		case 1:
@@ -813,10 +800,9 @@ static void sub_2fa2c(Player *ply) {
 		case 4:
 		case 5:
 		case 6:
-			// All other standing kicks  2faba
-			STDANIM(0x42, _GuileExitStand);
+			STDANIM(STATUS_KICK, _GuileExitStand);
 			break;
-			FATALDEFAULT;
+		FATALDEFAULT;
 	}
 	
 }
@@ -845,19 +831,18 @@ static void sub_2faf8(Player *ply) {
 						PLAYERTICK;
 					}
 					break;
-					FATALDEFAULT;
+				FATALDEFAULT;
 			}
 			break;
 		case 1:
 		case 2:
-			// 2fb7e
-			STDANIM(0x44, _GuileExitCrouch);
+			STDANIM(STATUS_CROUCH_PUNCH, _GuileExitCrouch);
 			break;
-			FATALDEFAULT;
+		FATALDEFAULT;
 	}
 }
 //Guile Crouching Kicks 
-static void sub_2fbac(Player *ply) {
+static void sub_2fbac(Player *ply) {		// 2fbac
 	switch (ply->Move) {
 		case 0:
 			switch (ply->mode2) {
@@ -881,12 +866,11 @@ static void sub_2fbac(Player *ply) {
 						PLAYERTICK;
 					}
 					break;
-					FATALDEFAULT;
+				FATALDEFAULT;
 			}
 			break;
 		case 1:
 		case 2:
-			// 2fb7e
 			switch (ply->mode2) {		
 				case 0:
 					NEXT(ply->mode2);
@@ -913,20 +897,20 @@ static void sub_2fbac(Player *ply) {
 						}
 					}
 					break;
-					FATALDEFAULT;
+				FATALDEFAULT;
 			}
 			break;
-			FATALDEFAULT;
+		FATALDEFAULT;
 	}
 }
 
-static void sub_2fc80(Player *ply) {
+static void guile_attack_jump(Player *ply) {		// 2fc80
 	switch (ply->Move) {
 		case 0:
 			switch (ply->mode2) {
 				case 0:
 					NEXT(ply->mode2);
-					if ((ply->JoyCorrect & 0xb) || (ply->JoyCorrect & 2) == 0) {
+					if ((ply->JoyCorrect & 0xb) || (ply->JoyCorrect & JOYCO_TOWARD) == 0) {
 						ply->Flip ^= 1;
 					}
 					ply->Timer2 = 12;
@@ -964,14 +948,14 @@ static void sub_2fc80(Player *ply) {
 						_GuileExitJump(ply);
 					}
 					break;
-					FATALDEFAULT;
+				FATALDEFAULT;
 			}
 			break;
 		case 1:
 			switch (ply->mode2) {
 				case 0:
 					NEXT(ply->mode2);
-					if ((ply->JoyCorrect & 0xb) || (ply->JoyCorrect & 2) == 0) {
+					if ((ply->JoyCorrect & 0xb) || (ply->JoyCorrect & JOYCO_TOWARD) == 0) {
 						ply->Flip ^= 1;
 					}
 					ply->Timer2 = 12;
@@ -1005,16 +989,14 @@ static void sub_2fc80(Player *ply) {
 						_GuileExitStand(ply);
 					}
 					break;
-					FATALDEFAULT;
+				FATALDEFAULT;
 			}
 			break;
-			FATALDEFAULT;
+		FATALDEFAULT;
 	}
 }
 
-// Publics
-// Attack callback
-void PSCBAttackGuile(Player *ply) {		/* PLSTAT_ATTACKING callback */
+void PSCBAttackGuile(Player *ply) {		
 	UD *ud=(UD *)&ply->UserData;	
 	
 	if (ply->Timer2) {
@@ -1029,10 +1011,10 @@ void PSCBAttackGuile(Player *ply) {		/* PLSTAT_ATTACKING callback */
 			case PLY_CROUCH:
 				STDPUNCHKICK(sub_2faf8, sub_2fbac)
 				break;
-			case 4:
-				sub_2fc80(ply);
+			case PLY_JUMP:
+				guile_attack_jump(ply);
 				break;
-				FATALDEFAULT;
+			FATALDEFAULT;
 		}
 	}
 }

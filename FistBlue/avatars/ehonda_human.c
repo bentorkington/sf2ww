@@ -32,11 +32,11 @@ typedef struct UserData_EHonda UD;
 
 static short _ButtonMask(Player *ply, short d1) {		// 2e392
 	UD *ud=(UD *)&ply->UserData;
-	if (ud->x0086) {
-		ud->x0086 = 0;
-		return d1 & ud->x0084;
+	if (ud->volley) {
+		ud->volley = 0;
+		return d1 & ud->throwbuttons;
 	} else {
-		return d1 & ud->x0082;
+		return d1 & ud->newbuttons;
 	}
 }
 static u16 _AnyButtons(Player *ply) {		// 2e38e
@@ -48,10 +48,10 @@ static u16 _IDFromButton(Player *ply) {		//2e3fc
 	static const char data_2e422[] = {
 		0,1,2,1,3,1,2,1
 	};
-	if (ud->x0082 & 0x70) {
-		return data_2e422[(ud->x0082 >> 4) & 7];
+	if (ud->newbuttons & 0x70) {
+		return data_2e422[(ud->newbuttons >> 4) & 7];
 	} else {
-		return 3 + data_2e422[(ud->x0082 >> 8) & 7];
+		return 3 + data_2e422[(ud->newbuttons >> 8) & 7];
 	}
 }
 static short _EHondaCheckFreeOink(Player *ply) {	/* 2e062 check free oink */
@@ -62,7 +62,7 @@ static short _EHondaCheckFreeOink(Player *ply) {	/* 2e062 check free oink */
 		return 0;
 	}
 	decode_buttons(ply, temp);
-	if ((ply->ButtonStrength + 2 <= ud->x0093 || ud->x0088 == 0x00ff)
+	if ((ply->ButtonStrength + 2 <= ud->oink_potential || ud->x0088 == 0x00ff)
 		&& check_special_ability(ply)) {
 		return 1;	
 	} else {
@@ -92,20 +92,20 @@ static struct ehondares sub_2e0c2(Player *ply) {
 	UD *ud=(UD *)&ply->UserData;
 	struct ehondares EH;
 	
-	if (ud->x0082 & BUTTON_A) {
+	if (ud->newbuttons & BUTTON_A) {
 		if (ud->pm1.b >= 8)     {EH.d0 = 2; EH.d1=1; return EH;}
 		if (ud->x0088 == 0x1ff) {EH.d0 = 2; EH.d1= 1; return EH;}
 	}
-	if (ud->x0082 & BUTTON_B) {
+	if (ud->newbuttons & BUTTON_B) {
 		if (ud->pm2.b >= 8)     {EH.d0 = 4; EH.d1=1; return EH; }
 		if (ud->x0088 == 0x1ff) {EH.d0 = 4; EH.d1 = 1; return EH;}
 	}
-	if (ud->x0082 & BUTTON_C) {
+	if (ud->newbuttons & BUTTON_C) {
 		if (ud->pm3.b >= 8)     {EH.d0 = 6; EH.d1 = 1; return EH; }
 		if (ud->x0088 == 0x1ff) {EH.d0 = 6; EH.d1 = 1; return EH;}
 	}
 	EH.d0 = 0;
-	EH.d1 = ud->x0082;
+	EH.d1 = ud->newbuttons;
 	return EH;
 }
 static int sub_2e116(Player *ply, short d0) {
@@ -149,7 +149,7 @@ static struct ehondathrow sub_2e14c(Player *ply) {		//2e14c
 	retval.success = FALSE;
 	
 	if ((ply->JoyDecode.full & 4)==0) { return retval; }
-	if ((ud->x0082 & 0x660) == 0)	  { return retval; }
+	if ((ud->newbuttons & 0x660) == 0)	  { return retval; }
 	d0 = _IDFromButton(ply);
 	if (d0 == 0)					  { return retval; }
 	data = data_2e1ce[d0-1];
@@ -217,16 +217,16 @@ static void _EHondaCheckMoves(Player *ply, u16 d0, short initial_d2) {		//2e2be
 	};
 	/* next address 0002e38e */
 	
-	ud->x0084 = d0;
-	if (d0 & 0x10) {
+	ud->throwbuttons = d0;
+	if (d0 & BUTTON_A) {
 		d2 = 0;
-	} else if (d0 & 0x20) {
+	} else if (d0 & BUTTON_B) {
 		d2 = 4;
-	} else if (d0 & 0x40) {
+	} else if (d0 & BUTTON_C) {
 		d2 = 8;
-	} else if (d0 & 0x100) {
+	} else if (d0 & BUTTON_D) {
 		d2 = 0xc;
-	} else if (d0 & 0x200) {
+	} else if (d0 & BUTTON_E) {
 		d2 = 0x10;
 	} else {
 		d2 = 0x14;
@@ -255,7 +255,7 @@ short PLCBStandEHonda(Player *ply) {
 	
 	ply->StandSquat = 0;
 	ud->x0095 = 0;
-	decode_buttons(ply, ud->x0082);
+	decode_buttons(ply, ud->newbuttons);
 	if (_EHondaCheckFreeOink(ply)) {
 		_EHondaStartOink(ply); 
 		return TRUE; 
@@ -318,7 +318,7 @@ static void sub_2ddac(Player *ply) {
 	switch (ply->mode2) {
 		case 0:
 			NEXT(ply->mode2);
-			if ((ply->JoyCorrect & 1) == 0) {
+			if ((ply->JoyCorrect & JOYCO_AWAY) == 0) {
 				ply->EnemyDirection ^= 1;
 				ply->Flip ^= 1;
 			}
@@ -390,7 +390,7 @@ static void sub_2daf6(Player *ply) {
 	UD *ud=(UD *)&ply->UserData;
 	
 	ud->x008a = 0;
-	ud->x0086 = 0;
+	ud->volley = 0;
 	switch (ply->StandSquat) {
 		case 0:	ply_exit_stand(ply);	break;
 		case 2: ply_exit_crouch(ply);	break;
@@ -419,8 +419,8 @@ static void sub_2daae(Player *ply) {
 	UD *ud=(UD *)&ply->UserData;
 	if (AF2) {
 		if (PSSetNextAction(ply)) {
-			if (_ButtonMask(ply, ud->x0084 & BUTTON_MASK)) {
-				ud->x0086 = 1;
+			if (_ButtonMask(ply, ud->throwbuttons & BUTTON_MASK)) {
+				ud->volley = 1;
 				plstat_do_nextaction(ply);
 				return;
 			}
@@ -524,24 +524,24 @@ void _EHondaSMOink(Player *ply) {	//2db28
 			} else {
 				NEXT(ply->mode2);
 				BumpDiff_PowerMove();
-				ud->x0091=0;
-				ud->x0092=0x2d;
-				ud->x0094=0xa;
+				ud->oink_mode  = 0;
+				ud->oink_timer      = 45;
+				ud->oink_timer2      = 10;
 				ply->VelY.full = 0;
-				ply->UserData[0xa] = 0;
-				ply->Airborne = AIR_JUMPING;
+				ud->x008a      = 0;
+				ply->Airborne  = AIR_JUMPING;
 				soundsting(SOUND_OINK);
 				PLAYERTICK;
 			}
 			break;
 		case 2:
-			if (ply->UserData[0xa]) {
+			if (ud->x008a) {
 				NEXT(ply->mode2);
 				return;
-			} else if (--ply->UserData[0x14] == 0) {
+			} else if (--ud->oink_timer2 == 0) {
 				NEXT(ply->mode2);
-				ply->UserData[0x14]=0x28;
-				ply->UserData[0xa] = 0;
+				ud->oink_timer2 = 40;
+				ud->x008a       = 0;
 			}
 			CAApplyVelocity((Object *)ply);
 			break;
@@ -554,7 +554,7 @@ void _EHondaSMOink(Player *ply) {	//2db28
 						_OinkBounce(ply);
 						return;
 					}
-					if(--ud->x0094) {
+					if(--ud->oink_timer2) {
 						CAApplyVelocity((Object *)ply);
 						return;
 					}
@@ -591,7 +591,7 @@ void PSCBAttackEHonda(Player *ply) {		/* 2da12 attack callback */
 	struct ehondares EH;
 	
 	if (ply->Timer2) {
-		ply->Timer2--;
+		--ply->Timer2;
 		ud->x008a = 1;
 		return;
 	}
@@ -605,10 +605,10 @@ void PSCBAttackEHonda(Player *ply) {		/* 2da12 attack callback */
 				sub_2dad8(ply);
 			} else if (PSSetNextAction(ply)==0) {
 				sub_2dad8(ply);
-			} else if (_ButtonMask(ply, ud->x0084 & BUTTON_MASK)) {
+			} else if (_ButtonMask(ply, ud->throwbuttons & BUTTON_MASK)) {
 				sub_2dad8(ply);
 			} else {
-				ud->x0086 = 1;
+				ud->volley = TRUE;
 				plstat_do_nextaction(ply);
 			}
 			break;
@@ -645,3 +645,83 @@ void PSCBAttackEHonda(Player *ply) {		/* 2da12 attack callback */
 			FATALDEFAULT;
 	}
 }
+
+
+static void _CheckCharge(Player *ply, EHondaMove *bm, short buttons_d0, short d1) { //2e040
+	UD *ud=(UD *)&ply->UserData;
+	if (ud->newbuttons & buttons_d0) {
+		if(--bm->a == 0) {
+			bm->b = 0;
+			bm->a = d1;
+		} 
+	} else {
+		bm->b++;
+		bm->a = d1;
+	}
+}
+static void _EHondaSMCheckOink(Player *ply) {		// 2df74
+	static const u8 data_2dfa6[]={0x3c, 0x23, 0x0c, 0x1};
+	static const u8 data_2dfd4[]={ 8, 9, 8,10, 8,11, 8, 12, 8, 9, 8,10, 8,11, 8,13,
+		8, 9, 8,10, 8,11, 8,14, 8, 9, 8,10, 8,12, 8,15,
+	};
+	UD *ud=(UD *)&ply->UserData;
+	
+	
+	switch (ud->oink_mode) {
+		case 0:
+			ud->oink_potential = 0;
+			if(ply->JoyCorrect & JOYCO_AWAY) {
+				if(--ud->oink_timer == 0){
+					NEXT(ud->oink_mode);
+				}
+			} else {
+				ud->oink_timer = data_2dfa6[g.x0320];
+			}
+			break;
+		case 2:
+			if((ply->JoyCorrect & JOYCO_AWAY)==0) {
+				NEXT(ud->oink_mode);
+				ud->oink_timer = data_2dfd4[RAND32];
+			}
+			break;
+		case 4:
+			if (ply->JoyCorrect & JOYCO_TOWARD) {
+				NEXT(ud->oink_mode);
+				ud->oink_timer = 8;
+				ud->oink_potential = 6;
+			} else {
+				if (--ud->oink_timer == 0) {
+					ud->oink_mode = 0;
+					ud->oink_timer = 60;
+				}
+			}
+			break;
+		case 6:
+			if (--ud->oink_timer == 0) {
+				ud->oink_timer = 4;
+				if (--ud->oink_potential == 0) {
+					ud->oink_mode = 0;
+					ud->oink_timer = 60;
+				}
+			}
+			break;
+			FATALDEFAULT;
+	}
+	
+}
+void PLCBPowerEHonda(Player *ply) {	    //2de90
+	UD *ud=(UD *)&ply->UserData;
+	
+	ud->newbuttons = (~ply->JoyCorrectDash & ply->JoyCorrect);
+	
+	_EHondaSMCheckOink(ply);
+	_CheckCharge(ply, &ud->pm1, BUTTON_A, 0xf);
+	_CheckCharge(ply, &ud->pm2, BUTTON_B, 0xa);
+	_CheckCharge(ply, &ud->pm3, BUTTON_C, 0x5);
+	if (ud->newbuttons & BUTTON_PUNCHES) {
+		ud->x0088 = (sf2rand() & 1) << 16 + sf2rand();
+	} else {
+		return;
+	}
+}
+

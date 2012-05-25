@@ -49,3 +49,5 @@ struct UserData_Guile {
 	u8	SonicStrength;	//0090  0,1,2
 } __attribute__((packed));
 
+#define GUILE_STATUS_VICTORY	0x50
+

@@ -18,7 +18,7 @@
 #include "playerstate.h"
 #include "computer.h"
 #include "sound.h"
-
+#include "projectiles.h"
 #include "lib.h"
 #include "gfxlib.h"
 
@@ -95,14 +95,14 @@ static void sub_36d20(Player *ply) {
 			if (AF1) {
 				NEXT(ply->mode2);
 				if (obj = AllocProjectile()) {
-					obj->exists = TRUE;
-					obj->Sel = 4;			// tiger
-					obj->XPI = ply->XPI;
-					obj->YPI = ply->YPI;
-					ply->Flip = ply->Flip;
-					ply->SubSel = ply->ButtonStrength;
-					obj->UserByte = ply->PunchKick;
-					obj->Owner = ply;
+					obj->exists     = TRUE;
+					obj->Sel        = SF2_PROJ_TIGER;
+					obj->XPI        = ply->XPI;
+					obj->YPI        = ply->YPI;
+					ply->Flip       = ply->Flip;
+					ply->SubSel     = ply->ButtonStrength;
+					obj->UserByte   = ply->PunchKick;
+					obj->Owner      = ply;
 					ply->Projectile = obj;
 					soundsting(SOUND_TIGER);
 				}

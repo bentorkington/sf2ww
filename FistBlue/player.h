@@ -27,6 +27,12 @@
 #define AIR_REEL1	   -1
 #define AIR_REEL2	   -2
 
+//JoyCorrect
+#define JOYCO_UP		8
+#define JOYCO_DOWN		4
+#define JOYCO_AWAY		1
+#define JOYCO_TOWARD	2
+
 
 /* FighterID */
 enum fighter_id_t {

@@ -141,7 +141,7 @@ static void _BlankaCheckCannonBall(Player *ply) {		// 2ea3a
 	switch (ud->mode_cannonball) {
 		case 0:
 			ud->timer_cannonball1 = 0;
-			if(ply->JoyCorrect & 1) {
+			if(ply->JoyCorrect & JOYCO_AWAY) {
 				if(--ud->timer_cannonball0 == 0){
 					NEXT(ud->mode_cannonball);
 				}
@@ -150,13 +150,13 @@ static void _BlankaCheckCannonBall(Player *ply) {		// 2ea3a
 			}
 			break;
 		case 2:
-			if((ply->JoyCorrect & 1)==0) {
+			if((ply->JoyCorrect & JOYCO_AWAY)==0) {
 				NEXT(ud->mode_cannonball);
 				ud->timer_cannonball0 = data_2ea9a[RAND32];
 			}
 			break;
 		case 4:
-			if (ply->JoyCorrect & 2) {
+			if (ply->JoyCorrect & JOYCO_TOWARD) {
 				NEXT(ud->mode_cannonball);
 				ud->timer_cannonball0 = 8;
 				ud->timer_cannonball1 = 6;
@@ -182,8 +182,8 @@ static void _BlankaCheckCannonBall(Player *ply) {		// 2ea3a
 }
 static u16  _BlankaCheckCannonStart(Player *ply) {		//2eb28
 	UD *ud=(UD *)&ply->UserData;
-	if((ply->JoyDecode.full ^ ply->JoyDecodeDash.full) & 0x70) {
-		decode_buttons(ply, (ply->JoyDecode.full ^ ply->JoyDecodeDash.full) & 0x70);
+	if((ply->JoyDecode.full ^ ply->JoyDecodeDash.full) & BUTTON_PUNCHES) {
+		decode_buttons(ply, (ply->JoyDecode.full ^ ply->JoyDecodeDash.full) & BUTTON_PUNCHES);
 		if (ply->ButtonStrength + 2 > ud->timer_cannonball1) {
 			if (ud->x0088 != 0xff) {
 				return 0;
@@ -196,12 +196,14 @@ static u16  _BlankaCheckCannonStart(Player *ply) {		//2eb28
 	}
 	return FALSE;
 }
+#define BLANKA_STATUS_CANNONBALL 0x46
+
 static void _BlankaStartCannon(Player *ply) {		// 2eb5e
 	ply->VelX.full = (short []){0x600, 0x800, 0xa00}[ply->ButtonStrength/2];
 	if (ply->Flip == FACING_LEFT) {
 		ply->VelX.full = -ply->VelX.full;
 	}
-	_BlankaStartMoveAnim(ply, 0x46 + ply->ButtonStrength);
+	_BlankaStartMoveAnim(ply, BLANKA_STATUS_CANNONBALL + ply->ButtonStrength);
 }
 static void _BlankaExit(Player *ply) {	// 2e550
 	UD *ud=(UD *)&ply->UserData;
@@ -260,9 +262,9 @@ void PLCBPowerBlanka(Player *ply) {
 	Object *obj;	// only used for suicide
 	UD *ud=(UD *)&ply->UserData;
 	if (ud->x0080 == 0) {
-		ud->timer_cannonball0 = 0x3c;
-		ud->mode_cannonball = 0;
-		ud->cannon_counter = 0;
+		ud->timer_cannonball0 = 60;
+		ud->mode_cannonball   = 0;
+		ud->cannon_counter    = 0;
 		ud->x0086 = 0;
 		ud->x0088 = 0;
 		ud->x008c = 0;
@@ -278,7 +280,7 @@ void PLCBPowerBlanka(Player *ply) {
 	_BlankaChargeCheck(ply, &ud->pm1, BUTTON_A, 0xf);
 	_BlankaChargeCheck(ply, &ud->pm2, BUTTON_B, 0xa);
 	_BlankaChargeCheck(ply, &ud->pm3, BUTTON_C, 0x5);
-	if (ud->x0082 & 0x70) {
+	if (ud->x0082 & BUTTON_PUNCHES) {
 		ud->x0088 = (sf2rand() & 1) << 16 + sf2rand();
 	} else {
 		return;
@@ -462,11 +464,10 @@ short PLCBJumpBlanka(Player *ply) {
 	UD *ud=(UD *)&ply->UserData;
 	
 	short d0;
-	ply->StandSquat = 4;
-	ud->cannon_counter = 0;
+	ply->StandSquat		= PLY_JUMP;
+	ud->cannon_counter	= 0;
 	d0 = _AnyButtons(ply);
 	if (d0) {
-		//sub_2ee4e
 		if (ply->VelX.full == 0) {
 			_BlankaCheckMoves(ply, d0, 8);
 		} else {
@@ -513,7 +514,7 @@ static void sub_2e6da(Player *ply) {		// 2e6da
 	
 	soundsting(SOUND_IMPACT8);
 	ply->VelX.full = 0;
-	ud->x008a = 0;
+	ud->x008a      = 0;
 	ply_exit_air(ply);
 }
 static void _BlankaSMCannonBall(Player *ply) {		// 2e5b2
@@ -525,7 +526,7 @@ static void _BlankaSMCannonBall(Player *ply) {		// 2e5b2
 			BumpDiff_PowerMove();
 			/* FALLTHRU */
 		case 2:
-			ud->mode_cannonball = 0;
+			ud->mode_cannonball   = 0;
 			ud->timer_cannonball0 = 60;
 			ply->Jumping = 1;
 			if (ud->x008a) {
@@ -704,7 +705,7 @@ static void _BlankaSMCatch(Player *ply) {		// 2e7d2
 		case 0:
 			NEXT(ply->mode2);
 			random_damage_adjust_2(ply, 35);
-			random_damage_adjust_1(ply, 0xc, 7);
+			random_damage_adjust_1(ply, 12, 7);
 			ply->LocalTimer = 0x82;
 			_BlankaCatchLU(ply);
 			_BlankaCatchSet(ply);
@@ -739,8 +740,7 @@ static void _BlankaSMCatch(Player *ply) {		// 2e7d2
 				PLAYERTICK;
 			}
 			break;
-			
-			FATALDEFAULT;
+		FATALDEFAULT;
 	}
 }
 

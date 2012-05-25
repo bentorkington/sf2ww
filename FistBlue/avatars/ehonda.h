@@ -43,21 +43,20 @@ typedef struct ehondamove EHondaMove;
 
 
 struct UserData_EHonda {
-	u16	x0082;
-	u16	x0084;
-	u8	x0086;
-	u16	x0088;
-	u8	x008a;
-	u8	x0090;		// current move?
-	u8	x0091;		// Oink SM
-	u8	x0092;		// timer
-	u8	x0093;
-	u8	x0094;		// Oink distance timer
-	u8	x0095;
-	u32 x0096;	// XXX hmmm
-	EHondaMove pm1;	/// 97
-	EHondaMove pm2;	// 99
-	EHondaMove pm3;	//9b
+	u16			newbuttons;			// 0082
+	u16			throwbuttons;
+	char		volley;				//0086 
+	u16			x0088;
+	char		x008a;
+	char		oink_mode;		// 0091 Oink SM
+	char		oink_timer;		// timer
+	char		oink_potential;
+	char		oink_timer2;		// 0094 Oink distance timer
+	char		x0095;
+	char		x0096;
+	EHondaMove	pm1;	// 97
+	EHondaMove	pm2;	// 99
+	EHondaMove	pm3;	// 9b
 	
-} __attribute__((packed));
+};
 

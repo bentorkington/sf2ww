@@ -8,3 +8,5 @@
  */
 
 short sub_35fe6(Player *ply);
+
+#define DHALSIM_STATUS_VICTORY	0x4e

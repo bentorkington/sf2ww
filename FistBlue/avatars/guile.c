@@ -89,9 +89,9 @@ void sub_2ff6e(Player *ply) {			// 2ff6e
 					d1 = 0xeeef;
 				}
 				if (d1 & (1 << (RAND16))) {
-					CASetAnim2(ply, 0x50, 0);
+					CASetAnim2(ply, GUILE_STATUS_VICTORY, 0);
 				} else {
-					CASetAnim2(ply, 0x50, 1);
+					CASetAnim2(ply, GUILE_STATUS_VICTORY, 1);
 				}
 			}
 			break;
@@ -127,7 +127,7 @@ static void guile_attack_bison(Player *ply) {
 				break;
 			case 2:
 				update_motion((Object *)ply);
-				if (ABS(ply->XPI - ply->Opponent->XPI) < 0x20) {
+				if (ABS(ply->XPI - ply->Opponent->XPI) < 32) {
 					NEXT(ply->UserData[5]);
 					if(obj = AllocActor()) {
 						INITOBJC(obj, 0x25, 0xd, PLAYERX, PLAYERY);

@@ -33,6 +33,8 @@ void PSCBAttackChunLi(Player *ply);
 void PLCBCompAttackChunLi(Player *ply);
 void PSCBVictoryChunLi(Player *ply);
 
+#define CHUNLI_STATUS_VICTORY 0x50
+
 struct UserData_ChunLi {
 	u8		mode_birdkick;		//0x0080
 	u8		timer_birdkick0;
