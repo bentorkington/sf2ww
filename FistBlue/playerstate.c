@@ -939,7 +939,7 @@ void proc_plstat_victory(Player *ply) {		//296f2
 				case 4:
 					if (g.FlagTimeWarp==0) {
 						NEXT(ply->mode2);
-						ply->LocalTimer = 0x28;
+						ply->LocalTimer = 40;
 					}
 					_PSPlatformCheck(ply);
 					break;
@@ -1002,7 +1002,7 @@ void proc_plstat_victory(Player *ply) {		//296f2
 				case 4:
 					if (g.FlagTimeWarp==0) {
 						NEXT(ply->mode2);
-						ply->LocalTimer = 0x28;
+						ply->LocalTimer = 40;
 					}
 					_PSPlatformCheck(ply);
 					break;

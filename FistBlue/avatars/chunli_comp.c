@@ -30,6 +30,11 @@ typedef struct UserDataComp_ChunLi UDCOMP;
 extern Game g;
 
 
+static void sub_34df8(Player *ply) {
+	ply->AISigAttack = FALSE;
+	ply->AIVolley    = FALSE;
+	comp_setjumping_main(ply);
+}
 
 static void sub_34d9a(Player *ply) {		// 34d9a
 	CASetAnim2(ply, 
@@ -454,6 +459,102 @@ static void _ChunLiCrouchComp(Player *ply) {		//34a6c gone, synthesised
 	}
 }
 
+
+static void sub_34ca8(Player *ply) {
+	switch (ply->mode2) {
+		case 0:
+			NEXT(ply->mode2);
+			ply->Timer2 = 12;
+			ply->Flip   = ply->IsWithinBounds;
+			CASetAnim2(ply, 0x48, 6);
+			soundsting(0x48);
+			break;
+		case 2:
+			CATrajectory((Object *)ply);
+			if (ply->VelY.full < 0) {
+				if (PLAYERGROUND) {
+					NEXT(ply->mode2);
+					CASetAnim2(ply, 0x48, 8);
+					ply->EnemyDirection = ply->Flip;
+					set_throw_trajectory(ply, 8, ply->Flip, 12);
+					return;
+				}
+			}
+			if (AF2 < 0) {
+				ply->mode1 = 4;
+				ply->mode2 = 8;
+				ply->mode3 = 0;
+				ply->Attacking = FALSE;
+				ply->AISigAttack = FALSE;
+				ply->AICanJumpAttack = FALSE;
+				ply->EnemyDirection = ply->Flip;
+				set_throw_trajectory(ply, 8, ply->Flip, 14);
+			} else {
+				PLAYERTICK;
+			}
+			break;
+		case 4:
+			if (AF1) {
+				ply->AICanJumpAttack = FALSE;
+				ply->CompDoJump      = FALSE;
+				sub_34df8(ply);
+			}
+			break;
+		FATALDEFAULT;
+	}
+}
+static int sub_34c80(Player *ply) {
+	if (ply->XPI < get_scr2x() + 96) {
+		return TRUE;
+	} else if (ply->XPI > get_scr2x() + 288) {
+		ply->VelX.full = -ply->VelX.full;
+		ply->AclX.full = -ply->AclX.full;
+		return TRUE;
+	} else {
+		return FALSE;
+	}
+}
+static void sub_34be4(Player *ply) {		// 34be4
+	UDCOMP *ud=(UDCOMP *)&ply->UserData;
+	short temp;
+	if (ply->CompDoThrow) {
+		sub_34ca8(ply);
+	} else if (g.GPHitBoxCoords[1][0] || ud->x0092 == 0) {
+		CATrajectory((Object *)ply);
+		if (ply->VelY.full < 0) {
+			if (PLAYERGROUND) {
+				ply->CompDoJump = FALSE;
+				sub_34df8(ply);
+				return;
+			}
+		}
+		if (!AF1) {
+			PLAYERTICK;
+		}
+	} else {
+		ply->mode1 = 4;
+		ply->mode2 = 2;
+		ply->mode3 = 0;
+		ply->CompDoAirThrow = 0x23;
+		ply->AICanJumpAttack = FALSE;
+		ply->Attacking = FALSE;
+		ply->Timer = 1;
+		temp = ply->VelX.full;
+		PLY_TRAJ0(0x0400, 0x0600, 0x0005, 0x0048);
+		if(sub_34c80(ply) == 0) {
+			if (temp == 0) {
+				if (ply->Flip == 0) {
+					ply->VelX.full = -ply->VelX.full;
+					ply->AclX.full = -ply->AclX.full;
+				}
+			} else if (temp < 0) {
+				ply->VelX.full = -ply->VelX.full;
+				ply->AclX.full = -ply->AclX.full;
+			}
+		}
+	}
+}
+
 void PLCBCompAttackChunLi(Player *ply) {		//346be
 	UDCOMP *ud=(UDCOMP *)&ply->UserData;
 	
@@ -493,10 +594,8 @@ void PLCBCompAttackChunLi(Player *ply) {		//346be
 			switch (ply->StandSquat) {
 				case 0:	_ChunLiStandComp(ply);			break;
 				case 2:	_ChunLiCrouchComp(ply);			break;
-				case 4:
-					//XXX sub_34be4(ply); todo
-					break;
-					FATALDEFAULT;
+				case 4: sub_34be4(ply);					break;
+				FATALDEFAULT;
 			}
 		}
 	}

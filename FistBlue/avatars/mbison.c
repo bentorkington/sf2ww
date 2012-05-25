@@ -75,11 +75,9 @@ static void sub_36658(Player *ply) {
 static void sub_365da(Player *ply) {
 	UD *ud=(UD *)&ply->UserData;
 	if (AF1) {
-		
 		if (ply->ActionScript->Crouch) {
-			// 36666
 			ply->AISigAttack = FALSE;
-			ply->AIVolley = FALSE;
+			ply->AIVolley    = FALSE;
 			exit_to_compdisp1(ply);
 		} else {
 			sub_36658(ply);
@@ -203,10 +201,172 @@ static void sub_36318(Player *ply) {
 		FATALDEFAULT;
 	}
 }
+static int sub_369e6(Player *ply) {
+	if (ply->XPI > get_scr2x() + 96) {
+		return 0;
+	} else if (ply->XPI < get_scr2x() + 288) {
+		return 1;
+	} else {
+		return -1;
+	}
+}
+static void sub_369a6(Player *ply) {
+	UD *ud=(UD *)&ply->UserData;
+	int temp = sub_369e6(ply);
+	if (temp >= 0) {
+		ply->Flip = temp ^ 1;
+	}
+	ud->x008c = 0;
+	PLY_TRAJ0((ply->Flip ? 0x0380 : -0x380), 0x0500, 0x0005, 0x0048);
+	CASetAnim2(ply, 0x56, 1);
+}
+static void sub_368fa(Player *ply) {
+	UD *ud=(UD *)&ply->UserData;
+	ud->x008c = 2;
+	if (ply->YPI > 0x70) {
+		PLY_TRAJ0(0x0700, 0x0800, 0x0050, 0x0080);
+	} else {
+		PLY_TRAJ0(0x0500, 0x0800, 0x0050, 0x0080);
+	}
+	if (ply->Flip) {
+		ply->VelX.full = -ply->VelX.full;
+		ply->VelY.full = -ply->VelY.full;
+	}
+	CASetAnim2(ply, 0x56, 2);
+}
+static void sub_36950(Player *ply) {
+	UD *ud=(UD *)&ply->UserData;
+	ud->x008c = 4;
+	if (ply->YPI > 0x70) {
+		PLY_TRAJ0(0x0700, 0x0800, 0x002c, 0x0080);
+	} else {
+		PLY_TRAJ0(0x0500, 0x0800, 0x002c, 0x0080);
+	}
+	if (ply->Flip) {
+		ply->VelX.full = -ply->VelX.full;
+		ply->VelY.full = -ply->VelY.full;
+	}
+	CASetAnim2(ply, 0x56, 3);
+}
+static void sub_36b12(Player *ply) {
+	UD *ud=(UD *)&ply->UserData;
+	ply->X.full += ply->VelX.full << 8;
+	ply->Y.full += ply->VelY.full << 8;
+	if (ud->x008b == 0) {
+		ply->Y.full += ply->AclY.full << 8;
+		ply->AclY.full -= 0x40;
+		if (ply->AclY.full < 0) {
+			ply->AclY.full == 0;
+			++ud->x008b;
+		}
+	} else {
+		ply->Y.full += ply->AclY.full << 8;
+		ply->AclY.full += 0x40;
+	}
+}
+static void sub_36796(Player *ply) {
+	UD *ud=(UD *)&ply->UserData;
+	const static short data_36818[3][8] = {
+		{0x51, 0x4c, 0x47, 0x52, 0x51, 0x5a, 0x61, 0x55},
+		{0x3c, 0x36, 0x30, 0x35, 0x3c, 0x39, 0x3a, 0x38},
+		{0x35, 0x40, 0x41, 0x42, 0x35, 0x49, 0x57, 0x46},
+	};
+	int temp;
+	switch (ply->mode2) {
+		case 0:
+			NEXT(ply->mode2);
+			ply->VelX.full = (ply->Opponent->XPI - ply->XPI) / 8;
+			if (ply->Opponent->Airborne) {
+				temp = 2;
+			} else if (ply->Opponent->ActionScript->Crouch) {
+				temp = 1;
+			} else {
+				temp = 0;
+			}
+			ply->VelY.full = (ply->Opponent->YPI + data_36818[temp][ply->Opponent->FighterID] - ply->YPI)/8;
+			ply->AclY.full = 0x0400;
+			ud->x0090 = 0;
+			ud->x008b = 0;
+			ud->x008c = 0;
+			CASetAnim2(ply, 0x56, 0);
+			break;
+		case 2:
+			if (AF2) {
+				NEXT(ply->mode2);
+				ply->Airborne = 1;
+			}
+			PLAYERTICK;
+			break;
+		case 4:
+			sub_36b12(ply);
+			if (PLAYERGROUND) {
+				sub_36674(ply);
+			} else {
+				if (ply->BoundCheck) {
+					ply->VelX.full = 0;
+				}
+				if (AF2) {
+					NEXT(ply->mode2);
+				} else {
+					PLAYERTICK;
+				}
+			}
+			break;
+		case 6:
+			sub_36b12(ply);
+			if (PLAYERGROUND) {
+				sub_36674(ply);
+			} else {
+				if (ply->BoundCheck) {
+					ply->VelX.full = 0;
+				}
+				if (ud->x0090) {
+					NEXT(ply->mode2);
+					ply->Timer = 1;
+					ply->Timer2 = 0;
+					PLAYERTICK;
+				}
+			}
+			break;
+		case 8:
+			if (AF1) {
+				NEXT(ply->mode2);
+				ply->mode3 = 0;
+				if (ud->x0090 < 0 || ply->XPI < 64 || ply->Opponent->DizzyFall) {
+					sub_369a6(ply);
+				} else {
+					temp = sub_369e6(ply);
+					if (temp < 0) {
+						if (0xaaaa & (1<<RAND16)) {
+							sub_36950(ply);
+						} else {
+							sub_368fa(ply);
+						}
+					} else {
+						if (ply->Flip == temp) {
+							sub_368fa(ply);
+						} else {
+							sub_36950(ply);
+						}
+					}
+				}
+			} else {
+				PLAYERTICK;
+			}
+			break;
+		case 10:
+
+			//todo
+			break;
+		default:
+			break;
+	}
+	
+}
 static void sub_36682(Player *ply) {			// power move
 	UD *ud=(UD *)&ply->UserData;
 	if (ply->PunchKick) {
-		// 36796 todo
+		sub_36796(ply);
 	} else {
 		//3668a
 		if (ply->Timer2) {

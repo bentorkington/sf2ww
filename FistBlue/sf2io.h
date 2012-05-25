@@ -54,6 +54,8 @@
 #define JOY_DOWN      0x4
 #define JOY_LEFT      0x2
 #define JOY_RIGHT     0x1
+#define JOY_LRD			(         JOY_DOWN | JOY_LEFT | JOY_RIGHT)
+#define JOY_LRU			(JOY_UP |            JOY_LEFT | JOY_RIGHT)
 #define JOY_MOVEMASK	(JOY_UP | JOY_DOWN | JOY_LEFT | JOY_RIGHT)
 #define BUTTON_A	 0x10
 #define BUTTON_B	 0x20

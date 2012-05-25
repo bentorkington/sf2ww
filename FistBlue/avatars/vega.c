@@ -165,8 +165,8 @@ static void sub_375a8(Player *ply) {
 			NEXT(ply->mode3);
 			ply->VelY.full = 0;
 			ply->AclY.full = 0;
-			ply->VelX.full = (short []){0xf600, 0x600}[ply->Flip];
-			ply->AclX.full = (short []){0xff80, 0x80}[ply->Flip];
+			ply->VelX.full = (short []){0xf600, 0x0600}[ply->Flip];
+			ply->AclX.full = (short []){0xff80, 0x0080}[ply->Flip];
 			PLAYERTICK;
 			break;
 		case 2:
@@ -361,13 +361,13 @@ static void sub_37d98(Player *ply, short arg_d2, short arg_d0) {
 }
 static void sub_37cc6(Player *ply) {
 	switch (ply->StandSquat) {
-		case 0:
+		case PLY_STAND:
 			sub_37554(ply);
 			break;
-		case 2:
+		case PLY_CROUCH:
 			sub_37566(ply);
 			break;
-		case 4:
+		case PLY_JUMP:
 			sub_3759c(ply);
 			break;
 		FATALDEFAULT;
@@ -693,7 +693,7 @@ void PLCBCompAttackVega(Player *ply) {
 }
 
 static int sub_37624(Player *ply) {
-	short y = ply->YPI - 0x28;
+	short y = ply->YPI - 40;
 	
 	if (y < 0 || y >= 0x40) {
 		return TRUE;

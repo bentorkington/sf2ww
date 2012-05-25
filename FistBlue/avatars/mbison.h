@@ -38,7 +38,7 @@ struct UserData_MBison {
 	char	x008b;
 	short	x008c;
 	short	x008e;
-	u8	x0090;
+	char	x0090;
 	u8	x0092;
 } __attribute__((packed));
 

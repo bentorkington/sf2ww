@@ -30,7 +30,7 @@ typedef struct UserData_ChunLi UD;
 extern Game g;
 
 
-static void sub_301a6(Player *ply) {
+inline static void chunli_exit(Player *ply) {	//301a6
 	if (ply->ActionScript->Crouch) {
 		ply_exit_crouch(ply);
 	} else {
@@ -42,43 +42,43 @@ static void sub_301a6(Player *ply) {
 static int _ChunLiButtons(Player *ply) {				// 3015c
 	u16 buttons = (~ply->JoyDecodeDash.full) & ply->JoyDecode.full & BUTTON_MASK;
 	if(buttons) {
-		if (buttons & 0x10) {
+		if (buttons & BUTTON_A) {
 			ply->ButtonStrength = STRENGTH_LOW;
 			ply->PunchKick		= PLY_PUNCHING;
-		} else if (buttons & 0x20) {
+		} else if (buttons & BUTTON_B) {
 			ply->ButtonStrength = STRENGTH_MED;
 			ply->PunchKick		= PLY_PUNCHING;			
-		} else if (buttons & 0x40) {
+		} else if (buttons & BUTTON_C) {
 			ply->ButtonStrength = STRENGTH_HIGH;
 			ply->PunchKick		= PLY_PUNCHING;			
-		} else if (buttons & 0x100) {
+		} else if (buttons & BUTTON_D) {
 			ply->ButtonStrength = STRENGTH_LOW;
 			ply->PunchKick		= PLY_KICKING;			
-		} else if (buttons & 0x200) {
+		} else if (buttons & BUTTON_E) {
 			ply->ButtonStrength = STRENGTH_MED;
 			ply->PunchKick		= PLY_KICKING;			
-		} else if (buttons & 0x400) {
+		} else if (buttons & BUTTON_F) {
 			ply->ButtonStrength = STRENGTH_HIGH;
 			ply->PunchKick		= PLY_KICKING;			
 		}
-		return 1;
+		return TRUE;
 	} else {
-		return 0;
+		return FALSE;
 	}
 }
 
 inline static int chunli_holding_down(Player *ply) {		//30302
-	if (ply->JoyDecode.full & 4) {
-		return 1;
+	if (ply->JoyDecode.full & JOY_DOWN) {
+		return TRUE;
 	} else {
-		return 0;
+		return FALSE;
 	}
 }
 inline static int chunli_pressing_up(Player *ply) {		//302f8
-	if (ply->JoyDecode.full & 8) {
-		return 1;
+	if (ply->JoyDecode.full & JOY_UP) {
+		return TRUE;
 	} else {
-		return 0;
+		return FALSE;
 	}
 }
 
@@ -164,7 +164,7 @@ static int sub_3039a(Player *ply) {
 	return 0;
 }	
 
-int sub_301d8(Player *ply) {			// 301d8 chunli bird kick checker
+int chunli_check_birdkick(Player *ply) {			// 301d8 chunli bird kick checker
 	UD *ud=(UD *)&ply->UserData;
 	
 	static const char data_3023a[] = {
@@ -264,17 +264,17 @@ static int sub_304a8(Player *ply, u16 joys) {
 	UD *ud=(UD *)&ply->UserData;
 	switch (ply->ButtonStrength) {
 		case 0:
-			ply->Move = ply->OppXDist >= 0x15 ? 1 : 0;
-			ud->x009f = 1;
+			ply->Move        = (ply->OppXDist >= 0x15 ? 1 : 0);
+			ud->x009f        = 1;
 			ud->movedistance = 0x15;
-			ud->closemove = 0;
-			ud->farmove = 1;
-			ud->x00a4 = 0;
-			ud->x00a5 = 0x10;
+			ud->closemove    = 0;
+			ud->farmove      = 1;
+			ud->x00a4        = 0;
+			ud->x00a5        = 0x10;
 			quirkysound(0);			
 			break;
 		case 2:
-			if ((joys & 0xb) && ply->OppXDist < 0x23) {
+			if ((joys & JOY_LRU) && ply->OppXDist < 0x23) {
 				PLY_THROW_SET(0xffe0, 0x0035, 0x0020, 0x0010);
 				if (throwvalid(ply)) {
 					ply->Move = 6;
@@ -286,7 +286,7 @@ static int sub_304a8(Player *ply, u16 joys) {
 			return 0;
 			break;
 		case 4:
-			if ((joys & 0xb) && ply->OppXDist < 0x23) {
+			if ((joys & JOY_LRU) && ply->OppXDist < 35) {
 				PLY_THROW_SET(0xffe0, 0x0035, 0x0020, 0x0010);
 				if (throwvalid(ply)) {
 					ply->Move = 7;
@@ -307,13 +307,13 @@ static int sub_30592(Player *ply, u16 joys) {
 	
 	switch (ply->ButtonStrength) {
 		case 0:
-			ply->Move = ply->OppXDist >= 0x24 ? 1 : 0;
-			ud->x009f = 1;
-			ud->movedistance = 0x24;
-			ud->closemove = 0;
-			ud->farmove = 1;
-			ud->x00a4 = 0x01;
-			ud->x00a5 = 0x00;
+			ply->Move			= ply->OppXDist >= 0x24 ? 1 : 0;
+			ud->x009f			= 1;
+			ud->movedistance	= 0x24;
+			ud->closemove		= 0;
+			ud->farmove			= 1;
+			ud->x00a4			= 0x01;
+			ud->x00a5			= 0x00;
 			quirkysound(0);			
 			break;
 		case 2:
@@ -340,7 +340,7 @@ static int sub_3042c(Player *ply) {
 			return 0;
 		} else {
 			ud->x00a5 = TRUE;
-			sub_3039a(ply);
+			return sub_3039a(ply);
 		}
 	} else {
 		if (rand & 0x40) {	// can't happen?! BTST #10
@@ -348,7 +348,7 @@ static int sub_3042c(Player *ply) {
 		} else if (rand & 0x20) {		// again, can't happen?
 			sub_302b4(ply, 1); 
 		} else {
-			sub_302b4(ply, 0);
+			return sub_302b4(ply, 0);
 		}
 	}
 }	
@@ -364,7 +364,7 @@ static int sub_30830(Player *ply) {
 
 static void sub_306ee(Player *ply) {
 	UD *ud=(UD *)&ply->UserData;
-	if (sub_30830(ply) && (ply->JoyDecode.full & 7)) {
+	if (sub_30830(ply) && (ply->JoyDecode.full & JOY_LRD)) {
 		PLY_THROW_SET(0xffe2, 0x0038, 0x0035, 0x002e);
 		if (airthrowvalid(ply)) {
 			ud->didairthrow = TRUE;
@@ -377,7 +377,7 @@ static void sub_306ee(Player *ply) {
 }	
 static void sub_3073e(Player *ply) {
 	UD *ud=(UD *)&ply->UserData;
-	if (sub_30830(ply) && (ply->JoyDecode.full & 7)) {
+	if (sub_30830(ply) && (ply->JoyDecode.full & JOY_LRD)) {
 		PLY_THROW_SET(0xffe2, 0x0038, 0x0025, 0x0024);
 		if (airthrowvalid(ply)) {
 			ud->didairthrow = TRUE;
@@ -390,12 +390,11 @@ static void sub_3073e(Player *ply) {
 }	
 static int sub_30476(Player *ply, u16 buttons_d5) {
 	UD *ud=(UD *)&ply->UserData;
-	buttons_d5 &= 0x700;
+	buttons_d5 &= BUTTON_KICKS;
 	
 	if(buttons_d5 && LBRareChance()) {
 		return sub_3042c(ply);
 	} else {
-		// 30482
 		ud->x009f       = FALSE;
 		ply->StandSquat = PLY_STAND;
 		switch (ply->PunchKick) {
@@ -413,7 +412,7 @@ static int sub_30476(Player *ply, u16 buttons_d5) {
 }
 static int sub_30614(Player *ply, u16 buttons_d5) {
 	UD *ud=(UD *)&ply->UserData;
-	buttons_d5 &= 0x700;
+	buttons_d5 &= BUTTON_KICKS;
 	
 	if(buttons_d5 && LBRareChance()) {
 		return sub_3042c(ply);
@@ -421,10 +420,10 @@ static int sub_30614(Player *ply, u16 buttons_d5) {
 		ply->StandSquat = 2;
 		ply->Move = ply->ButtonStrength / 2;
 		if (ply->Move) {
-			ud->x009f = TRUE;
-			ud->movedistance = 0x33;
-			ud->closemove = 0;
-			ud->farmove = 0;
+			ud->x009f			= TRUE;
+			ud->movedistance	= 0x33;
+			ud->closemove		= 0;
+			ud->farmove			= 0;
 			if (ply->PunchKick) {
 				ud->x00a4 = 0x10;
 				ud->x00a5 = 0;
@@ -537,7 +536,7 @@ int PLCBJumpChunLi(Player *ply) {		// 30142
 }
 
 int PLCBPowerChunLi(Player *ply) {			// 30154 chunli powermove
-	sub_301d8(ply);
+	chunli_check_birdkick(ply);
 	return sub_30312(ply);
 }
 static void chunli_attack_crouch(Player *ply) {		// 308b2 
@@ -551,7 +550,7 @@ static void chunli_attack_crouch(Player *ply) {		// 308b2
 			break;
 		case 2:
 			if (AF1) {
-				sub_301a6(ply);
+				chunli_exit(ply);
 			} else if (ud->x009f != 0 && AF2 != 0 ) {		// look at code for possible bugs here
 				if (PSSetNextAction(ply)) {
 					plstat_do_nextaction(ply);
@@ -563,9 +562,13 @@ static void chunli_attack_crouch(Player *ply) {		// 308b2
 					} else {
 						ply->Move = ud->farmove;
 					}
-					CASetAnim2(ply, (short []){STATUS_PUNCH,STATUS_KICK,0x44,0x46}
-							   [ply->StandSquat + (ply->PunchKick/2)],
-							   ply->Move);
+					CASetAnim2(ply, (short []){
+						STATUS_PUNCH, STATUS_KICK,
+						STATUS_CROUCH_PUNCH, STATUS_CROUCH_KICK,
+					}
+						[ply->StandSquat + (ply->PunchKick/2)],
+						ply->Move
+					);
 					
 				}
 			} else {
@@ -659,7 +662,7 @@ static void sub_30a6a(Player *ply) {
 			} else {
 				PLAYERTICK;
 			}
-			FATALDEFAULT;
+		FATALDEFAULT;
 	}
 }
 static void sub_30884(Player *ply) {
@@ -687,12 +690,11 @@ static void sub_30884(Player *ply) {
 					break;
 				case 6:
 					sub_30a6a(ply);
-					FATALDEFAULT;
+				FATALDEFAULT;
 			}
 			break;
-			FATALDEFAULT;
+		FATALDEFAULT;
 	}
-	
 }
 
 static int sub_30c46(Player *ply) {
@@ -752,7 +754,7 @@ static void chunli_attack_jump(Player *ply) {			// 30afe
 						PLAYERTICK;
 					}
 					break;
-					FATALDEFAULT;
+				FATALDEFAULT;
 			}
 			break;
 		case PLY_KICKING:
@@ -792,7 +794,7 @@ static void chunli_attack_jump(Player *ply) {			// 30afe
 				PLAYERTICK;
 			}
 			break;
-			FATALDEFAULT;
+		FATALDEFAULT;
 	}
 	
 }
@@ -816,7 +818,7 @@ void PSCBAttackChunLi(Player *ply) {
 				case PLY_JUMP:
 					chunli_attack_jump(ply);
 					break;
-					FATALDEFAULT;
+				FATALDEFAULT;
 			}
 		}
 	}
