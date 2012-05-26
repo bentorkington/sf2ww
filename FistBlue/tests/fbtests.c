@@ -169,21 +169,6 @@ void fistblue_run_tests(void) {
 	assert(calc_flightpath(obj, 0x117, 0xac) == 0xeb);
 
 	
-	obj->X.full = 0;	obj->Y.full = 0;
-	obj->XPI = 200;		obj->YPI = 200;
-	//assert(calc_flightpath(obj, 100, 200) == 0x00);
-	for (float f=0; f < (M_PI * 2) ; f += (M_PI * 2 / 32)) {
-		x = (sin(f) * 100.0) + 200;
-		y = (cos(f) * 100.0) + 200;
-		printf("flightpath %02x (%02x) %d %d %1.2f\n",
-			   calc_flightpath(obj, x, y),
-			   (int)((f * 256.0 / (M_PI * 2))+0.5),
-			   x, y,
-			   f / (M_PI * 2));
-		
-	}
-	
-	
 	
 	free(obj);
 		

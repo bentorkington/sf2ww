@@ -787,7 +787,7 @@ static void syslib_1c(void) {		//5c12
 				}
 				return;
 			} else if (tile == 0xffff) {
-				X = (data[1] + 0x40);
+				X = (data[1] + 64);
 				Y = -data[2];
 				palette = data[3];
 				data += 4;
