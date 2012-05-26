@@ -52,6 +52,11 @@ void task_timer(void){
     sf2_interrupt();
 	gtimercount++;
 	despatch_tasks();
+	if (g.x8a30) {
+		despatch_tasks();		// to do speedup
+		despatch_tasks();		// to do speedup
+		despatch_tasks();		// to do speedup
+	}
 }
 
 void printtasktable(void) {
@@ -226,8 +231,6 @@ void die_top8(void) {
 			Exec.FreeTasks++;
 		}
 	}
-	printtasktable();
-
 }
 
 void create_task(void *task, short taskid, u16 param, u8 param1, u8 param2) {
@@ -260,7 +263,7 @@ static void despatch_tasks (void)
 		Exec.x820e = 0;
 DESPATCH_STARTAGAIN:
 #endif	
-    for (i=0; i<MAX_TASKS; i++) {
+    for (i=MAX_TASKS-1; i>=0; --i) {
 #ifdef CPS
 		__asm__ volatile {
 			move	0x2600, %sr

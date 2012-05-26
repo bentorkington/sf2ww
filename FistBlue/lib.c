@@ -390,7 +390,6 @@ void LBGetInputs(void) {		//2224
 
 static void _any_buttons(short d0, short d1) {		//23ae
 	if ((d0 | d1) & BUTTON_MASK ) {
-		printf("Setting WAITMODE\n");
 		g.WaitMode = TRUE;
 	}
 }
