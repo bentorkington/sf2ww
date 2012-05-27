@@ -183,8 +183,8 @@ typedef struct {
 	/* that's 0x1000 or 4096d entries per playfield */
 	
 	// RowScroll 0x92 0000, 0x92 1000, 
-	u16		RowScroll1[2048];
-	u16		RowScroll2[2048];
+	short	RowScroll1[2048];
+	short	RowScroll2[2048];
 	
     /* here on is non-CPS, only memory we use for emulating the tile to bitmap conversion */
     /* the tile to texture memory, emulating the CPS tile lookup */

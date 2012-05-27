@@ -895,7 +895,6 @@ void task_scheduler(void) {		//14f2
 			g.x8a30 = TRUE;
 			for (i=0; i<16; i++) {
 				if (Exec.Tasks[i].params.x001f == 0 && Exec.Tasks[i].status == TASK_SLEEP) {
-					printf("gave extra tick to task %d\n", i);
 					if (--Exec.Tasks[i].timer == 0) {
 						Exec.Tasks[i].status = TASK_READY;
 					}

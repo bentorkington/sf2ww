@@ -104,8 +104,6 @@ void showtextbank4(u8 d0)  {		//58c0 showtextbank4
 	
 }
 
-
-
 void sub_5982(Task *task) {		// 5982 in scroll1
 	u8			ch;	
 	u16			*gfx_p;

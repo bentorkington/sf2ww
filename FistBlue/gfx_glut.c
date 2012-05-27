@@ -708,25 +708,29 @@ glEnd();
 }
 static void draw_scroll2(void) {
 	int x,y, yloop, flip, tx, ty, tiletx, tilety;
+	int scr2x;
 	float sx, sy;
 	int record;
+	float scrollbot, scrolltop;
 
 	if (!gemu_scroll_enable[2]) {
 		return;
 	}
 	/* Draw Scroll2 */
 	glPushMatrix();
-	glTranslatef(-(g.CPS.Scroll2X & 0xf) / 16.0 * XFACT, ((g.CPS.Scroll2Y & 0xf) / 16.0 * XFACT)  , 0);
-	//glTranslatef(-g.CPS.Scroll2X / 128.0, g.CPS.Scroll2Y / 128.0, 0);
+	scr2x = g.CPS.Scroll2X;;	// kludge
+	glTranslatef(-(scr2x & 0xf) / 16.0 * XFACT, ((g.CPS.Scroll2Y & 0xf) / 16.0 * XFACT)  , 0);
 
 	tilety = g.CPS.Scroll2Y / 16;
-	tiletx = g.CPS.Scroll2X / 16;
+	tiletx = scr2x          / 16;
 
 	GLfloat master = (gemu.PalScroll2[0][0] & 0xf000) / 61140.0;
 	glColor3f(master, master, master);
 	
 	for(yloop=-1;yloop<16;yloop++) {				//32
 		y = yloop;
+		scrolltop = gemu.RowScroll2[ (yloop + 48) * 16 ] / 16.0;
+		scrollbot = gemu.RowScroll2[ (yloop + 47) * 16 ] / 16.0;
         for(x=-1;x<32;x++) {
 			ty = (y + (48 - tilety)) & 0x3f;
 			tx = (x + tiletx) & 0x3f;
@@ -751,13 +755,13 @@ static void draw_scroll2(void) {
             glBegin(GL_POLYGON);
             //glTexCoord2f(1.0, 1.0);
 			glTexCoord2f(flips[flip][0][0],flips[flip][0][1]);
-            glVertex3f(((sx+1) * XFACT), ((sy+1) * YFACT), 0.0f);
+            glVertex3f(((sx+1-scrolltop) * XFACT), ((sy+1) * YFACT), 0.0f);
 			glTexCoord2f(flips[flip][1][0],flips[flip][1][1]);
-            glVertex3f((( sx ) * XFACT), ((sy+1) * YFACT), 0.0f);
+            glVertex3f((( sx-scrolltop ) * XFACT), ((sy+1) * YFACT), 0.0f);
 			glTexCoord2f(flips[flip][2][0],flips[flip][2][1]);
-            glVertex3f((( sx ) * XFACT), (( sy ) * YFACT), 0.0f);
+            glVertex3f((( sx-scrollbot ) * XFACT), (( sy ) * YFACT), 0.0f);
 			glTexCoord2f(flips[flip][3][0],flips[flip][3][1]);
-            glVertex3f(((sx+1) * XFACT), (( sy ) * YFACT), 0.0f);
+            glVertex3f(((sx+1-scrollbot) * XFACT), (( sy ) * YFACT), 0.0f);
             glEnd();
         }   
     }  
@@ -924,7 +928,7 @@ void gfx_glut_drawgame(void) {
 	
 	glDisable(GL_SCISSOR_TEST);
 	glDisable(GL_TEXTURE_2D);
-	//drawGLText(gCamera);
+	drawGLText(gCamera);
 }
 
 void gCameraReset(void) {
@@ -1093,17 +1097,19 @@ void drawGLText(recCamera cam) {
 						 gemu.PalScroll2[0][0] & 0xf000
 						 );
 				drawGLString(10, (lineSpacing * line++) + startOffest, outString);
-				sprintf	(outString, "SCR3: X:%04x Y:%04x (%04x/%04x) 1E:%04x 20:%04x FADE %x",
-						 g.CPS.Scroll3X,
-						 g.CPS.Scroll3Y,
-						 gstate_Scroll3.Offset,
-						 gstate_Scroll3.OffMask,
-						 gstate_Scroll3.x001e,
-						 gstate_Scroll3.Index,
-						 gemu.PalScroll3[0][0] & 0xf000
-						 );
-				drawGLString(10, (lineSpacing * line++) + startOffest, outString);
-				sprintf (outString, "FadeOutComplete %d FadeBusy %d",
+		sprintf	(outString, "SCR3: X:%04x Y:%04x (%04x/%04x) 1E:%04x 20:%04x FADE %x",
+				 g.CPS.Scroll3X,
+				 g.CPS.Scroll3Y,
+				 gstate_Scroll3.Offset,
+				 gstate_Scroll3.OffMask,
+				 gstate_Scroll3.x001e,
+				 gstate_Scroll3.Index,
+				 gemu.PalScroll3[0][0] & 0xf000
+				 );
+		drawGLString(10, (lineSpacing * line++) + startOffest, outString);
+		sprintf	(outString, "SCRL: X:%04x",gemu.RowScroll2[0]);
+		drawGLString(10, (lineSpacing * line++) + startOffest, outString);
+		sprintf (outString, "FadeOutComplete %d FadeBusy %d",
 						 Exec.FadeOutComplete,
 						 es.FadeBusy
 						 );

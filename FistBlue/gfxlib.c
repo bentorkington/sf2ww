@@ -427,6 +427,10 @@ void clear_scrolls(void) {		/* 0x5f10 */
 }
 
 void clear_rowscroll(void) {	/* 6080 clear rowscroll*/
+	// kludge
+	for (int i=0; i<2048; ++i) {
+		gemu.RowScroll2[i] = 0;
+	}
 	/* XXX rowscroll todo */
 	
 }

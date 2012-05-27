@@ -138,7 +138,7 @@ static void sub_7c50(void) {
 	NEXT(g.mode1);
 	g.mode2 = 0;
 	g.mode3 = 0;
-	if(sub_7e86()==0) {
+	if(sub_7e86() == FALSE) {
 		g.x02eb = TRUE;
 		start_effect(LC0_LIGHT_ALL_ENABLE, 3);
 		soundsting(SOUND_CONTINUE);
@@ -237,7 +237,7 @@ static void game_mode_28(void) {	// 7af0
 					sub_7c50();
 				}
 			}
-		case 0xa:
+		case 10:
 			if (g.ContinueBits & 1 << g.PlyLostToComp ) {
 				NEXT(g.mode2)
 				g.WaitMode = FALSE;
@@ -256,7 +256,7 @@ static void game_mode_28(void) {	// 7af0
 				DSDrawAll_Hira();		// a drawsprites
 				soundsting(SOUND_CONTINUE);				
 			}
-		case 0xc:
+		case 12:
 			if (g.timer2-- == 0) {
 				NEXT(g.mode2);
 				g.NewChallengerWait = 0;
@@ -265,7 +265,7 @@ static void game_mode_28(void) {	// 7af0
 				DSDrawAll_Hira();
 			}
 			break;
-		case 0xe:
+		case 14:
 			if (g.PlyLostToComp) {
 				ply = PLAYER2;		// XXX never read
 			} else {
@@ -423,10 +423,10 @@ void SM_game (void) {			/* 76e0 */
         case 8:
             game_mode_28();   /* wait for continue */
             break;
-        case 0xa:
+        case 10:
             sub_7dca();
             break;
-        case 0xc:
+        case 12:
             sub_7eb4();
             break;
         }
@@ -1010,7 +1010,7 @@ void gamemode_postfightanim (void) {
     }
 }
 
-static short sub_7e86(void) {
+static short sub_7e86(void) {		// 7e86
 	if (g.NewPlayers) {
 		g.mode1=0xc;
 		g.mode2=0x6;
@@ -1019,9 +1019,9 @@ static short sub_7e86(void) {
 		g.mode5=0;
 		g.WaitMode=FALSE;
 		soundsting(SOUND_CHALLENGER);	/* new challenger */
-		return 1;
+		return TRUE;
 	}
-	return 0;
+	return FALSE;
 }
 
 /* 7916 */
@@ -1130,14 +1130,14 @@ void gamemode_24I (void) {		// 7970
 				DSDrawAllMain();
 			}
 			break;
-		case 0xa:
+		case 10:
 			set_waitmode();
 			if(es.FadeBusy == 0) {
 				g.mode3 += 2;
 				g.timer3 = 0xb4;
 			}
 			break;
-		case 0xc:
+		case 12:
 			g.timer3--;
 			if(g.timer3 == 0) {
 				g.mode2=0;       /* go to mode 2,4,0. */

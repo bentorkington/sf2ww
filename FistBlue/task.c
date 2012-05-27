@@ -52,7 +52,7 @@ void task_timer(void){
     sf2_interrupt();
 	gtimercount++;
 	despatch_tasks();
-	if (g.x8a30) {
+	if (g.x8a30) {				// naaasty
 		despatch_tasks();		// to do speedup
 		despatch_tasks();		// to do speedup
 		despatch_tasks();		// to do speedup
@@ -263,7 +263,7 @@ static void despatch_tasks (void)
 		Exec.x820e = 0;
 DESPATCH_STARTAGAIN:
 #endif	
-    for (i=MAX_TASKS-1; i>=0; --i) {
+    for (i=0-1; i<MAX_TASKS; ++i) {
 #ifdef CPS
 		__asm__ volatile {
 			move	0x2600, %sr

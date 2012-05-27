@@ -21,7 +21,7 @@ struct HiScore {
 };
 
 typedef struct {
-    u16 ObjBase;
+    u16 ObjBase;			//2a
     u16 Scroll1Base, Scroll2Base, Scroll3Base, RowScrollBase;
     u16 PaletteBase;
     u16 Scroll1X, Scroll1Y;
@@ -30,6 +30,7 @@ typedef struct {
     u16 Star1X, Star1Y;
     u16 Star2X, Star2Y;
     u16 RowScrollOffset;
+	u16 VidControl;
     /* missing */
     u16 DispEna;
     /*  so on ... */

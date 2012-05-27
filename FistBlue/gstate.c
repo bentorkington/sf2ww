@@ -63,7 +63,7 @@ static void _GSInitScroll1(GState *gstate);		/* init scroll1 */
 static void gstate_update_scroll1(GState *gs);
 static void gstate_update_scroll2(GState *gs);
 static void gstate_update_scroll3(GState *gs);
-static void _GSUpdateRowScroll(ScrollState *gs, short *a0, u16 *a1);
+static void _GSUpdateRowScroll(ScrollState *gs, short *a0, short *a1);
 
 static void _GSDrawScroll3A(GState *gs, u16 *gfx_p, const u16 *tilep, CP cp);
 
@@ -326,7 +326,7 @@ static void _GSMaintScroll3X(GState *gs) {		// 83658
 	gs->x0024 = gstate_Scroll2.x0024;
 	switch (gs->XUpdateMethod) {
 		case 0:		// scroll 2 + Zdepth
-			gs->XPI = gstate_Scroll2.XPI + (gstate_RowScroll.OffMask - 192);
+			gs->XPI = gstate_Scroll2.XPI + (gstate_RowScroll.x0018.part.integer - 192);
 			break;
 		case 2:
 			// do nothing
@@ -557,7 +557,7 @@ static void _GSMaintScroll2(GState *gstate){      /* 831ca was nextlevel_dosetup
 			if(g.OnBonusStage) {
 				g.CPS.Scroll2X = gstate->XPI;
 			} else {
-				g.CPS.Scroll2X = gstate->XPI - 192;  /* why? */
+				g.CPS.Scroll2X = gstate->XPI - 192;  
 			}
 			g.CPS.Scroll2Y = gstate->YPI;
     }
@@ -594,35 +594,47 @@ static void _GSMaintScroll1(GState *gs) {		// 8343a
 		FATALDEFAULT;
     }
 }
+#define BUMP_2BE(increase)											\
+	{																\
+		int offset = (g.x02be - gemu.RowScroll2) * sizeof(short);	\
+		offset += (increase);										\
+		offset &= 0xffff3000;										\
+		g.x02be = gemu.RowScroll2 + (offset / sizeof(short));		\
+	}																\
+
+
 static void _GSMaintRowScroll(ScrollState *gs) {	/* 84480 */
-	u16 *a1;
+	short *a1;
 	
 	switch (gs->mode0) {
 		case 0:
 			/* 84496 */
 			NEXT(gs->mode0);
-			gs->ZDepth = 0x1c0;	
-			gs->x0010 = 0x276;
-			gs->x0012 = 0x7b0;
+			gs->ZDepth = 448;	
+			gs->x0010  = 630;
+			gs->x0012  = 0x7b0;
 			g.CPS.RowScrollBase = 0x9200;
+#ifdef CPS
 			g.x02be = (short *)0x921000;				/* XXX CPS-specific */
+#else 
+			g.x02be = gemu.RowScroll2;
+#endif
 			gs->x0024 = 0;
 			/* returns BTST #0, %d1 why???  */
 			break;
 		case 2:
 			/* 84546 */
-			g.CPS.RowScrollBase = (g.CPS.RowScrollBase + 0x10) & 0xffff0030;
-			g.x02be = (short *)(((int)g.x02be + 0x1000) & 0xffff3000);	/* yuck yuck YUCK */
+			g.CPS.RowScrollBase = (g.CPS.RowScrollBase + 0x10) & 0xfff30;
+			BUMP_2BE(0x1000);
+			
 			a1 = &gs->x001c[gs->x0024 / 4];
 			gs->x0024 = (gs->x0024 + 4) & 0xc;		
 			gs->YPI = gstate_Scroll2.YPI;
 			g.CPS.RowScrollOffset = gs->YPI;
-			if (*a1 == gstate_Scroll2.XPI) {
-				return;
+			if (a1[0] != gstate_Scroll2.XPI) {
+				a1[0] = gstate_Scroll2.XPI;
+				_GSUpdateRowScroll(gs, g.x02be, a1);
 			}
-			*a1 = gstate_Scroll2.XPI;
-			_GSUpdateRowScroll(gs, g.x02be, a1);
-			/* XXX */
 			break;
 		FATALDEFAULT;
 	}
@@ -876,15 +888,12 @@ static void _GSDrawScroll1A(const u16 **tilep_a1, u16 **gfx_p_a0, int numrows_d0
     u16 *target;
 	
     const u8 *cursor;
-	//printf("Drawing Row 0x%02x on count %d\n", *tilep_a1[0], numrows_d0);
     for(youter=0;youter<=numrows_d0; youter++) {
 		cursor = data_d0000[ (*tilep_a1)[youter]];	
 		for (x=0; x<4; x++) {
 			for(y=0;y<4; y++) {        /* unrolled */
 				target = *gfx_p_a0 + (y * 2) + (x * 64);	
 				SCR1_DRAW_TILE(target, (cursor[0] << 8) + cursor[1], cursor[2] );
-				//SCR1_DRAW_TILE(target, 0x4000 + y + (x * 4), 0); 
-				//SCR1_DRAW_TILE(target, 0x4000 + ((cursor[0] >> (y * 4)) & 0xf), 0); 
 				cursor += 3;
 			}
 		}
@@ -897,7 +906,6 @@ static void _GSDrawScroll1B(GState *gs, u16 *gfx_p, const u16 *a1, CP cp) {  /* 
 	
     d0 = ((~cp.y) & 0xe0) >> 5;
     d3 = d0;
-	//printf("_GSDrawScroll1B: count1 = %d\n", d0);
     _GSDrawScroll1A(&a1, &gfx_p, d0);
 	
     a1 = _GSRealignScr1a(gs, &gfx_p);
@@ -1107,69 +1115,259 @@ static void gstate_update_scroll3 (GState *gs) {		//83d06
 }
 
 
-static void _GSUpdateRowScroll(ScrollState *gs, short *a0, u16 *a1) { /* 84592 */
+static void _GSUpdateRowScroll(ScrollState *gs, short *a0, short *a1) { /* 84592 */
 	int Offset;					// %d0
 	int i;
 	FIXED16_16 AccumOffset;		// %d1
 	short *a2, *a3;
+	int d3;
+	// kludge:
+	//gemu.RowScroll2[0] = 192;
+	//return;
+	
+#define LINESCROLL_SET_DEC(count)				\
+for (i=0; i<(count); ++i) {						\
+	*a2++ = AccumOffset.part.integer;			\
+	AccumOffset.full -= Offset;					\
+}												\
+
+#define LINESCROLL_SET_INC_BACK(count)			\
+for (i=0; i<(count); ++i) {						\
+	AccumOffset.full += Offset;					\
+	*--a2 = AccumOffset.part.integer;			\
+}												\
+
+#define LINESCROLL_SET_DEC_BACK(count)			\
+for (i=0; i<(count); ++i) {						\
+	AccumOffset.full -= Offset;					\
+	*--a2 = AccumOffset.part.integer;			\
+}												\
+
+#define LINESCROLL_SET(count)					\
+for (i=0; i<(count); ++i) {						\
+	*a2++ = AccumOffset.part.integer;			\
+}												\
+
+#define LINESCROLL_SET_BACK(count)				\
+for (i=0; i<(count); ++i) {						\
+	*--a2 = AccumOffset.part.integer;			\
+}												\
+
+#define LINESCROLL_SET_BACK_CONST(count,const)	\
+for (i=0; i<(count); ++i) {						\
+	*--a2 = const;								\
+}												\
+
+#define LINESCROLL_INC(count);					\
+for	(i=0; i<(count); ++i) {						\
+	AccumOffset.full += Offset;					\
+}												\
+	
 	switch (g.CurrentStage) {
 		case STAGE_JAPAN_RYU:
-			Offset = gs->x0010 * (gs->ZDepth - *a1);
-			a2 = a0 + ((u32)gs->x0012 / 2);			/* not really tilemap * on RowScroll */
-			AccumOffset.full = 0x00c00000;						/* 192.0 */
-			for (i=0; i<12; i++) {
-				*a2++ = AccumOffset.part.integer;
-				AccumOffset.full -= Offset;
-			}
-			for (i=0; i<12; i++) {
-				*a2++ = AccumOffset.part.integer;
-			}
+			Offset = gs->x0010 * (gs->ZDepth - a1[0]);
+			a2 = a0 + ((u32)gs->x0012 / 2);			
+			AccumOffset.full = 192 * 0x10000;
+			LINESCROLL_SET_DEC(12);
+			LINESCROLL_SET(12);
+
 			a3 = a2;
 			a2 = a0 + ((u32)gs->x0012 / 2);
-			AccumOffset.full = 0x00c00000;
-			for (i=0; i<0x18; i++) {
-				AccumOffset.full += Offset;
-				*--a2 = AccumOffset.part.integer;
-			}
-			for (i=0; i<0x10; i++) {
-				AccumOffset.full += Offset;
-			}
-			gs->OffMask = AccumOffset.full + (Offset << 16);	/* XXX u32 */
-			*a3 = gs->OffMask + (Offset << 3);
-			gs->x0014 = *a3 + (Offset << 3);					/* u32 */
-			for (i=0; i<208; i++) {
-				*--a2 = AccumOffset.part.integer;
-			}
+			AccumOffset.full = 192 * 0x10000;
+
+			LINESCROLL_SET_INC_BACK(24);
+			LINESCROLL_INC(16);
+
+			gs->x0018.full = AccumOffset.full + (Offset << 16);
+			*a3 = gs->x0018.full + (Offset << 3);
+			gs->x0014.full = *a3 + (Offset << 3);
+
+			LINESCROLL_SET_BACK(208);
 			break;
 		case STAGE_JAPAN_EHONDA:
-			Offset = gs->x0010 * (gs->ZDepth - *a1);
-			a2 = a0 + ((u32)gs->x0012 / 2);			/* not really tilemap * on RowScroll */
-			AccumOffset.full = 0x00c00000;						/* 192.0 */
-			for (i=0; i<24; i++) {
-				*a2++ = AccumOffset.part.integer;
-				AccumOffset.full -= Offset;
-			}
+			Offset = gs->x0010 * (gs->ZDepth - a1[0]);
+			a2 = a0 + ((u32)gs->x0012 / 2);		
+			AccumOffset.full = 192 * 0x10000;
+			LINESCROLL_SET_DEC(24);
 			a2 = a0 + ((u32)gs->x0012 / 2);
-			AccumOffset.full = 0x00c00000;						/* 192.0 */
-			for (i=0; i<24; i++) {
-				AccumOffset.full += Offset;
-				*--a2 = AccumOffset.part.integer;
-			}
-			gs->x0014 = AccumOffset.full;
-			for (i=0; i<16; i++) {
-				AccumOffset.full += Offset;
-				*--a2 = AccumOffset.part.integer;
-			}
-			
+			AccumOffset.full = 192 * 0x10000;
+			LINESCROLL_SET_INC_BACK(24);
+			gs->x0014.part.integer = AccumOffset.part.integer;
+			LINESCROLL_SET_INC_BACK(16);
+			LINESCROLL_SET_BACK(16);
+			LINESCROLL_SET_BACK_CONST(5, gs->x0014.part.integer);
+			gs->x0018.full = AccumOffset.full;
+			AccumOffset.full = gs->x0014.full;
+			LINESCROLL_SET_INC_BACK(15);
+			AccumOffset.full = gs->x0018.full;
+			LINESCROLL_SET_BACK(92);
+			LINESCROLL_SET_INC_BACK(64);
 			break;
-
-			/* XXX more to do */
-			
-		default:
-			
+		case 2:
+			Offset = gs->x0010 * (gs->ZDepth - a1[0]);
+			a2 = a0 + ((u32)gs->x0012 / 2);			
+			AccumOffset.full = 192 * 0x10000;
+			LINESCROLL_SET_DEC(24);
+			a2 = a0 + ((u32)gs->x0012 / 2);			
+			AccumOffset.full = 192 * 0x10000;
+			LINESCROLL_SET_INC_BACK(24);
+			gs->x0018.full = AccumOffset.full;
+			LINESCROLL_INC(16);
+			gs->x0014.full = AccumOffset.full;
+			LINESCROLL_SET_BACK(208);
 			break;
+		case 3:
+			Offset = gs->x0010 * (gs->ZDepth - a1[0]);
+			a2 = a0 + ((u32)gs->x0012 / 2);			
+			AccumOffset.full = 192 * 0x10000;
+			LINESCROLL_SET_DEC(24);
+			a2 = a0 + ((u32)gs->x0012 / 2);			
+			AccumOffset.full = 192 * 0x10000;
+			LINESCROLL_SET_INC_BACK(8);
+			gs->x0018.full = AccumOffset.full;
+			LINESCROLL_SET_INC_BACK(18);
+			d3 = AccumOffset.full;
+			for (i=0; i<16; ++i) {
+				d3 += Offset;
+			}
+			gs->x0014.full = d3;
+			LINESCROLL_SET_BACK(0x7e);
+			LINESCROLL_SET_DEC_BACK(0x50);
+			break;
+		case 4:
+			Offset = gs->x0010 * (gs->ZDepth - a1[0]);
+			a2 = a0 + ((u32)gs->x0012 / 2);			
+			AccumOffset.full = 192 * 0x10000;
+			LINESCROLL_SET_DEC(16);
+			gs->x0014.full = AccumOffset.full;
+			LINESCROLL_SET(8);
+			
+			a2 = a0 + ((u32)gs->x0012 / 2);			
+			AccumOffset.full = 192 * 0x10000;
+			LINESCROLL_SET_INC_BACK(0x28);
+			gs->x0018.full = AccumOffset.full;
+			LINESCROLL_INC(16);
+			LINESCROLL_SET_BACK(192);
+			break;
+		case 5:
+			Offset = gs->x0010 * (gs->ZDepth - a1[0]);
+			a2 = a0 + ((u32)gs->x0012 / 2);			
+			AccumOffset.full = 192 * 0x10000;
+			LINESCROLL_SET_DEC(24);
+			gs->x0014.full = AccumOffset.full;
+			a2 = a0 + ((u32)gs->x0012 / 2);			
+			AccumOffset.full = 192 * 0x10000;
+			LINESCROLL_SET_INC_BACK(0x28);
+			gs->x0018.full = AccumOffset.full;
+			LINESCROLL_SET_BACK(192);
+			break;
+		case 6:
+			Offset = gs->x0010 * (gs->ZDepth - a1[0]);
+			a2 = a0 + ((u32)gs->x0012 / 2);			
+			AccumOffset.full = 192 * 0x10000;
+			LINESCROLL_SET_DEC(24);
+			gs->x0014.full = AccumOffset.full;
+			a2 = a0 + ((u32)gs->x0012 / 2);			
+			AccumOffset.full = 192 * 0x10000;
+			LINESCROLL_SET_INC_BACK(0x22);
+			d3 = AccumOffset.full;
+			for (i=0; i<16; ++i) {
+				d3 += Offset;
+			}
+			gs->x0018.full = d3;
+			LINESCROLL_SET_BACK(192);
+			break;
+		case 7:
+			Offset = gs->x0010 * (gs->ZDepth - a1[0]);
+			a2 = a0 + ((u32)gs->x0012 / 2);			
+			AccumOffset.full = 192 * 0x10000;
+			LINESCROLL_SET_DEC(24);
+			a2 = a0 + ((u32)gs->x0012 / 2);			
+			AccumOffset.full = 192 * 0x10000;
+			LINESCROLL_SET_INC_BACK(24);
+			gs->x0018.full = AccumOffset.full;
+			LINESCROLL_SET_INC_BACK(16);
+			LINESCROLL_SET_BACK(192);
+			break;
+		case 8:
+			Offset = gs->x0010 * (gs->ZDepth - a1[0]);
+			a2 = a0 + ((u32)gs->x0012 / 2);			
+			AccumOffset.full = 192 * 0x10000;
+			LINESCROLL_SET_DEC(24);
+			a2 = a0 + ((u32)gs->x0012 / 2);			
+			AccumOffset.full = 192 * 0x10000;
+			LINESCROLL_SET_INC_BACK(8);
+			gs->x0014.full = AccumOffset.full;
+			LINESCROLL_SET_INC_BACK(16);
+			gs->x0018.full = AccumOffset.full;
+			LINESCROLL_SET_INC_BACK(16);
+			d3 = AccumOffset.full;
+			for (i=0; i<32; ++i) {
+				d3 += Offset;
+			}
+			LINESCROLL_SET_BACK(128);
+			AccumOffset.full = d3;
+			LINESCROLL_SET_DEC_BACK(64);
+			break;
+		case 9:
+			Offset = gs->x0010 * (gs->ZDepth - a1[0]);
+			a2 = a0 + ((u32)gs->x0012 / 2);			
+			AccumOffset.full = 192 * 0x10000;
+			LINESCROLL_SET_DEC(24);
+			gs->x0018.full = AccumOffset.full;
+			a2 = a0 + ((u32)gs->x0012 / 2);			
+			AccumOffset.full = 192 * 0x10000;
+			LINESCROLL_SET_INC_BACK(24);
+			d3 = AccumOffset.full;
+			for (i=0; i<16; ++i) {
+				d3 += Offset;
+			}
+			gs->x0014.full = d3;
+			LINESCROLL_SET_BACK(0xd0);
+			break;
+		case 10:
+			Offset = gs->x0010 * (gs->ZDepth - a1[0]);
+			a2 = a0 + ((u32)gs->x0012 / 2);			
+			AccumOffset.full = 192 * 0x10000;
+			LINESCROLL_SET_DEC(24);
+			a2 = a0 + ((u32)gs->x0012 / 2);			
+			AccumOffset.full = 192 * 0x10000;
+			LINESCROLL_SET_INC_BACK(13);
+			LINESCROLL_SET_BACK(11);
+			LINESCROLL_INC(20);
+			gs->x0018.full = AccumOffset.full;
+			LINESCROLL_INC(20);
+			d3 = AccumOffset.full;
+			for (i=0; i<0x24; ++i) {
+				d3 += Offset;
+			}
+			gs->x0014.full = d3;
+			LINESCROLL_SET_BACK(192);
+			break;
+		case 11:
+			Offset = gs->x0010 * (gs->ZDepth - a1[0]);
+			a2 = a0 + ((u32)gs->x0012 / 2);			
+			AccumOffset.full = 192 * 0x10000;
+			LINESCROLL_SET_DEC(24);
+			a2 = a0 + ((u32)gs->x0012 / 2);			
+			AccumOffset.full = 192 * 0x10000;
+			LINESCROLL_SET_INC_BACK(4);
+			gs->x0014.full = AccumOffset.full;
+			LINESCROLL_SET_INC_BACK(12);
+			LINESCROLL_SET_BACK(0x3b);
+			LINESCROLL_INC(16);
+			gs->x0018.full = AccumOffset.full
+			LINESCROLL_INC(16);
+			LINESCROLL_SET_BACK(0x95);
+			break;
+		case 12:
+		case 13:
+		case 14:
+		case 15:
+			/* do nothing */
+			break;
+		FATALDEFAULT;
 	}
-	
 }
 
     
@@ -1184,7 +1382,7 @@ void GSMain (void) {		/* 8318a */
     } else {
 		/* 83196 */
         _GSMaintScroll2(&gstate_Scroll2);
-        //_GSMaintRowScroll(&g.gstate_RowScroll);  todo
+        _GSMaintRowScroll(&gstate_RowScroll);  
         _GSMaintScroll1(&gstate_Scroll1);
         _GSMaintScroll3(&gstate_Scroll3);
     }

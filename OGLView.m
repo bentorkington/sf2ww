@@ -176,7 +176,6 @@ void renderDummy(void) {
 
 - (void)drawGame:(NSRect)dirtyRect {
 	gfx_glut_drawgame();
-	//drawGLText (gCamera.screenWidth, gCamera.screenHeight, gCamera);
 	//glFinish();
 	//glutSwapBuffers();
 	
@@ -296,6 +295,17 @@ void renderDummy(void) {
 				break;
 			case 'K':
 				g.Player2.Energy = -1;
+				break;
+			case 'L':
+				for (int i = 0; i<2048; ++i) {
+					if (i%16 == 0) {
+						printf("%04x: ", i);
+					}
+					printf("%04x ", gemu.RowScroll2[i]);
+					if (i % 16 == 15) {
+						printf("\n");
+					}
+				}
 				break;
 			case 'W':
 				gGameInWindow = 1-gGameInWindow;

@@ -277,7 +277,7 @@ static void sub_6a78(void) {
 	CDCheckPlayers();
 	sub_7e4dc();
 }
-static void sub_6964(void) {
+static void sub_6964(void) {			// 6964 demo fight sm
 	switch (g.mode3) {
 		case 0:
 			NEXT(g.mode3);

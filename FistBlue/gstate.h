@@ -49,9 +49,9 @@ typedef struct {
     u16 ZDepth;          /* either 0 or 2, 2 for bonus stage? */  
     u16 x0010;          
     u16 x0012;
-	u32 x0014;
-    u16 Offset;      /* offset */
-    u16 OffMask;      /* bitmask */
+	FIXED16_16 x0014;
+    FIXED16_16 x0018;	// plane Scroll3 follows
+	//u16 OffMask;		/* 0018 bitmask */
     u16 x001a;
     short x001c[4];	// ff8cee
 
