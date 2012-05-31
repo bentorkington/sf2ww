@@ -26,7 +26,6 @@ extern GState gstate_Scroll1;
 extern GState gstate_Scroll2;
 extern GState gstate_Scroll3;
 
-extern int gdrawallcnt;
 static void sprite_coords(Object *obj, short *coordpair);
 
 
@@ -645,7 +644,6 @@ void sub_7e544(void) {
 void DSDrawAllMain(void) {		/* 7e57c library, main draw all sprite routine */
 	/* was: draw_all_sprites() */
 	
-	gdrawallcnt++;
 	debughook(5);
 //	if(g.DisableDblBuf == 0 && g.CPS.ObjBase & 0x80) {
 //		OBJ_CURSOR_SET( DSObjCur_g, 0x1090 ); 

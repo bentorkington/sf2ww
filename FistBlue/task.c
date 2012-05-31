@@ -32,7 +32,6 @@
 #endif
 
 extern Game g;
-extern int gtimercount;
 
 struct executive_t Exec;
 
@@ -50,7 +49,6 @@ static void despatch_tasks(void);
 
 void task_timer(void){
     sf2_interrupt();
-	gtimercount++;
 	despatch_tasks();
 	if (g.x8a30) {				// naaasty
 		despatch_tasks();		// to do speedup

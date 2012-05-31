@@ -27,7 +27,7 @@ short sub_2d7d2(Player *ply);
 
 int RyuAtApex(Player *ply);
 
-short PLCBCompJumpRyuKen (Player *ply);	/* callback from 2c9be */
+int PLCBCompJumpRyuKen (Player *ply);	/* callback from 2c9be */
 void PLCBCompAttackRyuKen(Player *ply);
 short PLCBStandRyu(Player *ply);
 short PLCBCrouchRyu(Player *ply);

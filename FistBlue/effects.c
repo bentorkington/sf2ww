@@ -26,7 +26,6 @@ extern struct executive_t Exec;
 
 extern CPSGFXEMU gemu;
 extern Game g;
-extern int gsupertaskcnt;
 
 struct effectstate es;
 
@@ -1259,9 +1258,6 @@ void task_blinkers(void) {		// 6e64
 
 void task_game(void) {			// 7672 Game Supertask
 	fadenwait4(1);
-#ifdef GUSTY_LOBSTER
-	gsupertaskcnt++;
-#endif
 	while (TRUE) {
 		g.NoInterrupt = MINUS_ONE;
 		if (g.FreezeMachine == FALSE) {

@@ -26,28 +26,34 @@
 #include "ai.h"
 
 
-#include "ryu.h"		/* this is also Ken for the most part */
-#include "ehonda.h"
-#include "blanka.h"
-#include "guile.h"
-#include "chunli.h"
-#include "dhalsim.h"
-#include "mbison.h"
-#include "vega.h"
 
 
 extern Game g;
 
-void PLCBCompAttackDhalsim(Player *ply);
+int PLCBCompJumpRyuKen(Player *ply);
+int PLCBCompJumpEHonda(Player *ply);
+int PLCBCompJumpGuile(Player *ply);
+int PLCBCompJumpChunLi(Player *ply);
+int PLCBCompJumpBlanka(Player *ply);
+int PLCBCompJumpMBison(Player *ply);
+int PLCBCompJumpVega(Player *ply);
 int	PLCBCompJumpDhalsim(Player *ply);
 int PLCBCompJumpChunLi(Player *ply);
-void PLCBCompAttackZangeif(Player *ply);
 int PLCBCompJumpZangeif(Player *ply);
 int PLCBCompJumpVega(Player *ply);
 int PLCBCompJumpBalrog(Player *ply);
 int PLCBCompJumpSagat(Player *ply);
-int PLCBCompAttackBalrog(Player *ply);
-int PLCBCompAttackSagat(Player *ply);
+void PLCBCompAttackDhalsim(Player *ply);
+void PLCBCompAttackZangeif(Player *ply);
+void PLCBCompAttackBalrog(Player *ply);
+void PLCBCompAttackSagat(Player *ply);
+void PLCBCompAttackRyuKen(Player *ply);
+void PLCBCompAttackEHonda(Player *ply);
+void PLCBCompAttackBlanka(Player *ply);
+void PLCBCompAttackGuile(Player *ply);
+void PLCBCompAttackChunLi(Player *ply);
+void PLCBCompAttackMBison(Player *ply);
+void PLCBCompAttackVega(Player *ply);
 
 
 extern short data_2aa30[12][4][4];
