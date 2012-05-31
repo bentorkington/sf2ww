@@ -17,10 +17,17 @@
 
 #include <sys/types.h>
 
+#ifdef __APPLE__
+#include <GLUT/glut.h>
+#include <OpenGL/glext.h>
+#include <OpenGL/gl.h>
+#include <OpenGL/glu.h>
+#else
 #include <GL/glut.h>
 #include <GL/glext.h>
 #include <GL/gl.h>
 #include <GL/glu.h>
+#endif
 
 #include "trackball.h"
 
@@ -35,9 +42,9 @@
 #include "player.h"
 #include "sm.h"
 #include "gfx_glut.h"
-//#include "stagegfx.h"
 #include "lib.h"
 
+#include "sf2io.h"
 #include "gemu.h"
 #include "workarounds.h"
 
@@ -48,7 +55,7 @@ extern u16 *DSObjCur_g;
 extern void *actlist_383ac;
 extern void *actlist_4b03e;
 
-struct inputs gInputs;
+extern struct inputs gInputs;
 
 #define DEBUG
 
@@ -235,7 +242,6 @@ void maindisplay(void) {
 	start = clock() ;
 
     gfx_glut_drawgame();
-    //glFinish();
 	glutSwapBuffers();
 }
 
@@ -243,33 +249,6 @@ void maindisplay(void) {
 void mouse (int button, int state, int x, int y) {
     gfx_glut_mousedown(x, y);
 }
-/*
-void special(int key, int px, int py) {
-	gLastKey = key;
-	switch (key) {
-		case GLUT_KEY_UP: // arrow forward, close in on world
-			gCamera.focalLength -= 0.5f;
-			if (gCamera.focalLength < 0.0f)
-				gCamera.focalLength = 0.0f;
-			glutPostRedisplay();
-			break;
-		case GLUT_KEY_DOWN: // arrow back, back away from world
-			gCamera.focalLength += 0.5f;
-			glutPostRedisplay();
-			break;
-		case GLUT_KEY_LEFT: // arrow left, smaller aperture
-			gCamera.aperture -= 0.5f;
-			if (gCamera.aperture < 0.0f)
-				gCamera.aperture = 0.0f;
-			glutPostRedisplay();
-			break;
-		case GLUT_KEY_RIGHT: // arrow right, larger aperture
-			gCamera.aperture += 0.5f;
-			glutPostRedisplay();
-			break;
-	}
-}
-*/
 void special(int key, int px, int py) {
 	switch (key) {
 		case GLUT_KEY_UP:
@@ -307,8 +286,6 @@ void specialup(int key, int px, int py) {
 	}
 }
 
-
-
 void keyup(unsigned char inkey, int px, int py) {
 	gLastKey = inkey;
 	switch (inkey) {
@@ -318,6 +295,15 @@ void keyup(unsigned char inkey, int px, int py) {
 		case 'a':		gInputs.p11 &= 0xfe;   break;
 		case 's':		gInputs.p11 &= 0xfd;   break;
 		case 'd':		gInputs.p11 &= 0xfb;   break;
+		case '1':
+			gInputs.in0 &= ~IPT_START1;	break;
+		case '2':
+			gInputs.in0 &= ~IPT_START2;	break;
+		case '5':
+			gInputs.in0 &= ~IPT_COIN1;	break;
+		case '6':
+			gInputs.in0 &= ~IPT_COIN2;	break;
+			
 	}
 }
 	
@@ -333,56 +319,14 @@ void key(unsigned char inkey, int px, int py){
 		case 'a':		gInputs.p11 |= 0x1;   break;
 		case 's':		gInputs.p11 |= 0x2;   break;
 		case 'd':		gInputs.p11 |= 0x4;   break;
-		
-		case ';': // arrow forward, close in on world
-			gCamera.focalLength -= 0.5f;
-			if (gCamera.focalLength < 0.0f)
-				gCamera.focalLength = 0.0f;
-			glutPostRedisplay();
-			break;
-		case ',': // arrow back, back away from world
-			gCamera.focalLength += 0.5f;
-			glutPostRedisplay();
-			break;
-		case '.': // arrow left, smaller aperture
-			gCamera.aperture -= 0.5f;
-			if (gCamera.aperture < 0.0f)
-				gCamera.aperture = 0.0f;
-			glutPostRedisplay();
-			break;
-		case '/': // arrow right, larger aperture
-			gCamera.aperture += 0.5f;
-			glutPostRedisplay();
-			break;
-			
-		
-		case 'y': // toggle wire
-		case 'Y':
-			gLines = 1 - gLines;
-			gPolygons = 1 - gPolygons;
-			glutPostRedisplay();
-			break;
-		case 'R':
-			if (g.CurrentStage == 0) {
-				g.CurrentStage = 19;
-			} else {
-				g.CurrentStage--;
-			}
-			ResetScrolls();
-			break;
-		case 'r':
-			g.CurrentStage++;
-			if (g.CurrentStage == 20) {
-				g.CurrentStage = 0;
-			}
-			ResetScrolls();
-			break;
-		case 'o':
-			time_wait = 250;
-			break;
-		case 'O':
-			time_wait = 5;
-			break;
+		case '1':
+			gInputs.in0 |= IPT_START1;	break;
+		case '2':
+			gInputs.in0 |= IPT_START2;	break;
+		case '5':
+			gInputs.in0 |= IPT_COIN1;	break;
+		case '6':
+			gInputs.in0 |= IPT_COIN2;	break;
 			
 	}
 }
@@ -442,9 +386,6 @@ void timerFunc(int value) {
     glutTimerFunc(time_wait, timerFunc, 0);
 }
 
-void idlefunc (void) {
-    task_timer();
-}
 
 #pragma mark ---- main ----
 
@@ -468,11 +409,9 @@ int main (int argc, const char * argv[])
 	glutSpecialFunc (special);
 	glutSpecialUpFunc (specialup);
 	glutMouseFunc (mouse);
-	//glutIdleFunc(idlefunc);
-	glutTimerFunc(1000, timerFunc, 0);
+	glutTimerFunc(40, timerFunc, 0);
 	glutSpaceballMotionFunc(spaceballmotion);
 	glutSpaceballRotateFunc(spaceballrotate);
-    printf ("going to glutMainLoop()\n");	
     glutMainLoop();
     return 0;
 }

@@ -52,7 +52,7 @@ void renderDummy(void);
 int gtimercount	= 0;
 int gsupertaskcnt = 0;
 int gdrawallcnt = 0;
-struct inputs gInputs;
+extern struct inputs gInputs;
 
 GLfloat gShapeSize = 11.0f;
 

@@ -23,6 +23,7 @@ extern Game g;
 
 int gemu_scroll_enable[4];
 
+struct inputs gInputs;
 
 extern u16 data_8a8ac[32][16];
 extern u16 data_c5000[20][32][16];
@@ -96,6 +97,7 @@ void scroll3_base_1k(short stage) {
 }
 
 
+
 inline void gemuObjectDraw(u16 *slot, u16 x, u16 y, u16 tile, u16 attr) {
 	*(slot+0)=x;                   
 	*(slot+1)=y;                   
@@ -144,4 +146,3 @@ inline void gemuWriteEndTag(u16 *slot) {
 inline u16 *gemuObjCursorSet(short id){
 	return gemu.Tilemap_Object[id];
 }
-
