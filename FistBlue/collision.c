@@ -484,6 +484,9 @@ const HitBox *CDGetPushBox (Object *obj) {
     }
 }
 const HitBoxAct *get_active_hitbox(Object *obj) {      /* 7dff2 */
+	if (obj->ActionScript == NULL) { return NULL; } //added to prevet crashes, CPS
+											   //dereferences NULL here!
+	
     if(obj->ActionScript->HB_Active) {
         return (HitBoxAct *)obj->HitBoxes->active + obj->ActionScript->HB_Active;	
     } else {
@@ -892,11 +895,13 @@ void CDCheckPushBoxes () {			/* 7e136 check pushboxes, take action */
     if(g.Player1.exists == FALSE) { return; }
 	
     if(a3=CDGetPushBox((Object *)PLAYER1)) {
-        if(a4=CDGetPushBox((Object*)PLAYER2)) {
-            if(slib_check_overlap((Object *)PLAYER1, PLAYER2,a3,a4)) {
-                sub_7e16e(hitresult[4]);
-            }
-        }
+		if (g.Player2.exists) {
+			if(a4=CDGetPushBox((Object*)PLAYER2)) {
+				if(slib_check_overlap((Object *)PLAYER1, PLAYER2,a3,a4)) {
+					sub_7e16e(hitresult[4]);
+				}
+			}			
+		}
     }
 }
 void slib_ply_overlap() {		// 7e12a

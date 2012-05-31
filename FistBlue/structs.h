@@ -119,9 +119,10 @@ typedef struct game {
     u16		Difficulty;			/* 02c6 */
     /* 0x02c8 - 0x02cd unused */
     u8		AllowContinue;  /* 02ce */
-    u8		SpecialCostJumper, DemoSound, FlipDisplay, FreePlay, ContinueCoin;
+    u8		SpecialCostJumper, DemoSound, FlipDisplay, FreePlay, TwoCreditsToStart;
     u8		FreezeMachine;  /* 02d6 */
-    u8		Debug, InTestMode, ActiveHumans, x02db, x02dc, InDemo, NumberCredits, NumberCreditsDash;
+    u8		Debug, InTestMode, ActiveHumans; 
+	u8		CoinStatus, DemoStarted, InDemo, NumberCredits, NumberCreditsDash;	//2db...
  
     char	x02e0, WaitMode, NoInterrupt, DebugNoCollide;
     u8		PlayersOnline;
@@ -142,8 +143,8 @@ typedef struct game {
 	short	DemoFightTimer;
 	char	x0302;
     char	TimeWarpSlowdown, TimeWarpSlowdown2;	/* 0x303-4 */
-    char	x0305; /* Bison cape signal */
-    char	x0306; /* Bison cape done */
+    char	x0305;			/* Bison cape signal */
+    char	x0306;			/* Bison cape done */
     char    NotUsed;    /* some debug signal */
 	short	UsageCount[8];		// 308-318
 
@@ -256,7 +257,7 @@ typedef struct game {
 	u8		Diff_WeakBoxCnt;		/* incremented when hitbox4 hit */
 	
 	char	ScreenWobbleStarted;	// 0adb
-    char    ScreenWobble;			/* 0adc */
+    char    ScreenWobbleMagnitude;			/* 0adc */
     u8      PlayersThrowing;
     u8		x0ade;					// not found set
 	char	LastDrawOrder;			/* last draw order */
@@ -268,9 +269,10 @@ typedef struct game {
 	u16		HumanMoveCnt;			
 	u16		x0ae4;
 	char	BonusComplete;			/* ae6 */
-	char    x0ae7;    
-	u8		x0ae8;					/* mode for low time remainining blinker */
-	u8		x0ae9;					/* Timer for flash */
+	char    x0ae7;				// not read yet
+
+//	u8		x0ae8;					/* mode for low time remainining blinker */
+//	u8		x0ae9;					/* Timer for flash */
     u8		FlagTimeWarp;			/* 0aeb time slows down */
 	
 	/* End 0x80 bytes cleared at 2cba  and 0x180 bytes at 2af2 */
@@ -372,9 +374,9 @@ typedef struct game {
 	u32		x8ab4;
 	u8		CanSpeedUpScoreCount;		// x8ab5
 	
-	Object		*x8ab6;	/* XXX Barrels something */
+	Object		*x8ab6;			/* XXX Barrels something */
 	signed char x8ab8;
-	u8			x8ab9;		/* some other remain counter */
+	u8			x8ab9;			/* some other remain counter */
 
 	u8			x8abe;					// car
 	

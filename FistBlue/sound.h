@@ -16,7 +16,7 @@ void sound_cq_f0f7(void);
 void queuesound(int data);
 void setstagemusic(void);
 void coinsound(void);
-
+void sound_cq_f7_ff(void);
 
 #define SOUND_PLAYERSELECTSCR	0x0e
 #define SOUND_VS_SCREEN         0x0f

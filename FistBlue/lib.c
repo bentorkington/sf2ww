@@ -504,7 +504,7 @@ void sf2_interrupt (void) {
     debughook(0);	/* not correct value */
     soundhook();
     sub_1ed0();   /* coin accounting */
-    sub_1fe2();   /* play coin sounds, update credit display */
+    int_cb_coinage();   /* play coin sounds, update credit display */
     _refresh_jumpers();   /* reread some jumpers, some debug stuff */
 	
     g.tick++;

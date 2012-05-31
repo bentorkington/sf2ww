@@ -100,7 +100,7 @@ static void SMDemo(void) {
 		case 0x10: SMdemo_fade_and_clear(); break;
 		case 0x12: 	
 			g.mode0 = g.mode1 = g.mode2 = g.mode3 = g.mode4 = 0;
-			g.x02dc = TRUE;
+			g.DemoStarted = TRUE;
 			die_top8();
 			break;
 		FATALDEFAULT;
@@ -175,7 +175,7 @@ void SMdemo_titlefightanim(void) {	// 0x6650 mode is 2,0
 			gstate_Scroll3.YPI =  0x600;
 			GSSetupScr3(&gstate_Scroll3);
 			
-			g.x02dc = TRUE;
+			g.DemoStarted = TRUE;
 			if(g.FreePlay) {
 				QueueEffect(SL08 | INSERT_COIN, 0x101);
 			} else {

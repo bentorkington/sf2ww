@@ -91,6 +91,8 @@ const CAFrame actlist_2289e[] = {
 };
 
 const CAFrame *actlist_2278c[]={
-	actlist_227a2, 	actlist_227be, 	actlist_227da, 	actlist_227f6, 	actlist_22812, 	actlist_2282e, 	actlist_2284a, 	actlist_22866, 	actlist_22882, 	actlist_2289e, 
+	actlist_227a2, 	actlist_227be, 	actlist_227da, 	actlist_227f6, 	
+	actlist_22812, 	actlist_2282e, 	actlist_2284a, 	actlist_22866, 	
+	actlist_22882, 	actlist_2289e, 
 };
 

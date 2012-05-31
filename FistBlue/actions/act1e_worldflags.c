@@ -668,10 +668,10 @@ void action_1e(Object *obj) {		//18c1c
 						return;
 					} else if (obj->SubSel == 1) {
 						if (g.x0a02) {
-							obj->mode3 = 0x10;
+							obj->mode1 = 16;
 							sub_18e52(obj);
 						} else {
-							obj->mode3 = 0xa;
+							obj->mode1 = 10;
 						}
 					}
 					break;
@@ -737,7 +737,7 @@ void action_1e(Object *obj) {		//18c1c
 							obj->mode1 = 0;
 							if (obj->UserByte == STAGE_THAILAND_SAGAT) {
 								g.Pause_9e1 = 1;
-								g.x0a02     = 1;
+								g.x0a02     = TRUE;
 							}
 							goto FLAGAGAIN;			// suck it, bitches
 							break;

@@ -547,7 +547,7 @@ static void syslib_10(void) {		// 4f9e
 			task->params.Param1 = 0;
 			task->params.Param2 = 0;
 			task->params.Param0 &= 0xff00;
-			task->params.Param0 |= g.ContinueCoin ? 8 : 7;
+			task->params.Param0 |= g.TwoCreditsToStart ? 8 : 7;
 			sub_5982(task);
 			SCR1_CURSOR_CPS(cur, 0x90d670);
 			sub_5072(&cur, g.NumberCredits, 0, 0);
@@ -938,7 +938,7 @@ static void setplayerblinker(Player *ply, unsigned char selector){		//6e8e
 static void sub_703a(Player *ply, unsigned char erase) {
 	if (g.FreePlay) {
 		setplayerblinker(ply, erase + FREE_PLAY_P1 + ply->Side);
-	} else if (g.ContinueCoin) {
+	} else if (g.TwoCreditsToStart) {
 		if (g.NumberCredits < 2) {
 			setplayerblinker(ply, erase + ADD_COIN_P1 + ply->Side);
 		} else {
@@ -1132,10 +1132,10 @@ static void SMPlayerBlinker(Task *task, Player *ply) {		// 6ea4
 										g.x02f0 += 1;
 										bumpdifficulty_4576();
 										if (g.FreePlay == 0) {
-											if (g.NumberCredits < (1 + g.ContinueCoin)) {
+											if (g.NumberCredits < (1 + g.TwoCreditsToStart)) {
 												return;
 											} 
-											g.NumberCredits -= (1 + g.ContinueCoin);
+											g.NumberCredits -= (1 + g.TwoCreditsToStart);
 											
 										}
 										if (g.NewChallengerWait) {

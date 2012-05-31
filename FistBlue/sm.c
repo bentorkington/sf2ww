@@ -59,16 +59,16 @@ void SMFreePlay(void){		// 6cc8
 				return;
 			} else {
 				if (g.JapanJumper) {
-					if ((g.ContinueCoin * 2) + 1 <= g.NumberCredits) {
+					if ((g.TwoCreditsToStart * 2) + 1 <= g.NumberCredits) {
 						g.x031e = TRUE;
-						g.NumberCredits -= (g.ContinueCoin * 2) + 1;
+						g.NumberCredits -= (g.TwoCreditsToStart * 2) + 1;
 						startgame(BOTH_HUMAN);
 						return;
 					}
 				} else {
-					if ((g.ContinueCoin * 2) + 2 <= g.NumberCredits) {
+					if ((g.TwoCreditsToStart * 2) + 2 <= g.NumberCredits) {
 						g.x031e = TRUE;
-						g.NumberCredits -= (g.ContinueCoin * 2) + 2;
+						g.NumberCredits -= (g.TwoCreditsToStart * 2) + 2;
 						startgame(BOTH_HUMAN);
 						return;
 					}
@@ -80,9 +80,9 @@ void SMFreePlay(void){		// 6cc8
 				g.x031e = 0;
 				startgame(ONLY_P1);
 			} else {
-				if (g.ContinueCoin + 1 <= g.NumberCredits) {
+				if (g.TwoCreditsToStart + 1 <= g.NumberCredits) {
 					g.x031e = FALSE;
-					g.NumberCredits -= g.ContinueCoin + 1;
+					g.NumberCredits -= g.TwoCreditsToStart + 1;
 					startgame(ONLY_P1);
 				}
 			}
@@ -684,8 +684,8 @@ void gamemode_prefightanim (void){
             g.mode3  +=2;
             setstagemusic();
             g.PreRoundAnim = TRUE;
-            g.x0305        = 1;  /* flags for mbison cape */
-            g.x0306        = 1;  /* cape thrown */
+            g.x0305        = TRUE;  /* flags for mbison cape */
+            g.x0306        = TRUE;	/* cape thrown */
             
             start_effect(LC0_LIGHT_ALL_ENABLE, 3);
         }

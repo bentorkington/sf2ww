@@ -46,12 +46,11 @@ typedef struct {
 	
     FIXED16_16  X;      /* Fixed precision world->display offsets */
     FIXED16_16  Y;      /* 0xa-d */
-    u16 ZDepth;          /* either 0 or 2, 2 for bonus stage? */  
+    u16 ParallaxZero;          /* Parallax */  
     u16 x0010;          
-    u16 x0012;
+    u16 GroundRow;
 	FIXED16_16 x0014;
     FIXED16_16 x0018;	// plane Scroll3 follows
-	//u16 OffMask;		/* 0018 bitmask */
     u16 x001a;
     short x001c[4];	// ff8cee
 

@@ -98,6 +98,8 @@ const CAFrame actlist_1a078[] = {
 const CAFrame *actlist_19fa2[]={
 	actlist_19fb4, 	actlist_19fd0, 	actlist_19fec, 	actlist_1a008, 	actlist_1a024, 	actlist_1a040, 	actlist_1a05c, 	actlist_1a078, 
 };
+
+// sin and cos for 64 angles, with an aspect ratio of 1.143:1
 const VECT16 data_cfe74[64] = {
 	// 0 degrees
 	{ 0x0000, 0x02a0, }, { 0x004b, 0x029c, }, { 0x0095, 0x0292, }, { 0x00de, 0x0282, },
@@ -167,23 +169,12 @@ void action_2e(Object *obj) {		// 18f92
 	switch (obj->mode0) {
 		case 0:
 			switch (obj->mode1) {
-				case 0:
-					printf("plane trip from city %d to %d\n", ud->city_from, ud->city_to);
-					
+				case 0:					
 					NEXT(obj->mode1);
 					obj->LocalTimer = 0x32;
 					obj->Pool = 2;
 					obj->Path = data_cfe74;
-					
-					/// XXX too buggy, bail out and unpause
-					//g.PlaneLandedInCity[ud->city_to] = TRUE;
-					//g.Pause_9e1 = -1;
-					//obj->mode0 = 6;
-					//obj->mode1 = 0;
-					//return;
-					// XXX
-					
-					
+										
 					if (ud->city_from == ud->city_to) {				// 1901e
 						g.PlaneLandedInCity[ud->city_to] = TRUE;
 						obj->mode0 = 6;						// die
@@ -196,9 +187,8 @@ void action_2e(Object *obj) {		// 18f92
 						ud->destination.x = city_coords[ud->city_to].x;
 						ud->destination.y = city_coords[ud->city_to].y;
 						d6 = calc_flightpath(obj, ud->destination.x, ud->destination.y);
-						printf("start at %d,%d finish %d,%d path 0x%x", obj->XPI, obj->YPI, ud->destination.x, ud->destination.y, d6);
 						
-						obj->Step = (d6)>>2;
+						obj->Step = (d6 + 2) / 4;
 						setaction_list(obj, actlist_19fa2, (obj->Step+1) >> 3);
 					}
 					break;
@@ -216,17 +206,14 @@ void action_2e(Object *obj) {		// 18f92
 			//190a0
 			if (obj->mode1 == 0) {
 				d6 = calc_flightpath(obj, ud->destination.x, ud->destination.y);
-				//printf("flightpath 0x%02x\n", d6);
-				obj->Step = (d6) >> 2;
+				obj->Step = (d6 + 2) / 4;
 				
-				//XXX too buggy				
-				if ((ABS(obj->XPI - ud->destination.x) > 20)   ||	//XXX should be 3
-					(ABS(obj->YPI - ud->destination.y) > 20)) {
+				if ((ABS(obj->XPI - ud->destination.x) > 3)   ||	
+					(ABS(obj->YPI - ud->destination.y) > 3)) {
 					update_motion(obj);
 					enqueue_and_layer(obj);
 				} else {
 					NEXT(obj->mode1);	// flight over
-					printf("plane flight finished");
 					g.Pause_9e1 = -1;
 					g.PlaneLandedInCity[ud->city_to] = TRUE;
 					ud->sound = (short []) {

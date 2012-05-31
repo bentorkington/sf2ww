@@ -12,6 +12,8 @@
 #include "structs.h"
 
 #include "lib.h"
+#include "sm.h"
+#include "sound.h"
 #include "coinage.h"
 #include "actions.h"
 #include "sound.h"
@@ -19,15 +21,20 @@
 #include "effects.h"
 #include "gfxlib.h"
 #include "sf2io.h"
+#include "sprite.h"
 
 extern Game g;
 extern struct executive_t Exec;
 
+
+#define COIN_STATUS_1	0x1
+#define COIN_STATUS_2	0x2
+#define COIN_LOCK_1		0x4
+#define COIN_LOCK_2		0x8
+
 static void sub_dee(void) {
-	g.x02db = g.x02db & 0xfff3;
+	g.CoinStatus = g.CoinStatus & ~(COIN_STATUS_1 | COIN_STATUS_2);
 }
-
-
 void decode_start_service(void) {	// 1e7a was swirlything
 	g.StartServiceButtons =
 		((g.RawButtons0Dash		& IPT_SERVICE) >> 2 ) |
@@ -56,34 +63,34 @@ void decode_coincosts(void) {			// 1d9a
 	g.coinslot1.nCredits = data_1de0[g.JPCost & JP_COSTMASK1][1];
 	g.coinslot2.nCoins   = data_1de0[(g.JPCost & JP_COSTMASK2)>>3][0];
 	g.coinslot2.nCredits = data_1de0[(g.JPCost & JP_COSTMASK2)>>3][1];
-	g.ContinueCoin = (g.JPCost & JP_CONTINUECOIN) >> 6;
+	g.TwoCreditsToStart = (g.JPCost & JP_CONTINUECOIN) >> 6;
 	g.DemoSound    = (g.JPCost & 0x80) >> 7;
 }
-static void sub_1f9e(Coinslot *cs, const char *a0) {
-	if (cs->x0003) {
-		if(--cs->x0003 != 15) {return;}
-		g.x02db &= a0[0];
+static void sub_1f9e(Coinslot *cs, const u8 *a0) {
+	if (cs->debounce_timer) {
+		if(--cs->debounce_timer != 15) {return;}
+		g.CoinStatus &= a0[0];
 	} else {
-		if (cs->x0001) {
-			--cs->x0001;
-			g.x02db |= a0[1];
-			cs->x0003 = 30;
+		if (cs->count_minor) {
+			--cs->count_minor;
+			g.CoinStatus |= a0[1];
+			cs->debounce_timer = 30;
 		}
 	}
 }
 
-static void sub_1f5a(Coinslot *cs) {
-	++cs->x0001;
-	++cs->x0002;
-	if (!g.ContinueCoin) {
-		if (cs->x0002 < cs->nCoins) {
+static void coin_accepted(Coinslot *cs) {		// 1f5a
+	++cs->count_minor;
+	++cs->count_major;
+	if (!g.TwoCreditsToStart) {
+		if (cs->count_major < cs->nCoins) {
 			return;
 		}
 	}
-	g.NumberCredits += cs->nCredits;	// XXX should be BCD
-	if (g.NumberCredits > 9)
+	g.NumberCredits += cs->nCredits;	// should be BCD, but doesn't matter
+	if (g.NumberCredits > 9)			// as NumberCredits is limited to 9
 		g.NumberCredits = 9;
-	cs->x0002 = 0;
+	cs->count_major = 0;
 }
 static void sub_1f1c(Coinslot *cs) {
 	if (cs->x0000 == 0) {
@@ -93,10 +100,10 @@ static void sub_1f1c(Coinslot *cs) {
 		++cs->x0000;
 		cs->x0006 = 120;	// 2 seconds
 	}
-	if (cs->x0007 == 0xc) {
+	if (cs->x0007 == 12) {
 		++g.CoinsTaken;
 		++g.SoundOutstanding;
-		sub_1f5a(cs);
+		coin_accepted(cs);
 		cs->x0000 = 0;
 	} else {
 		if (--cs->x0006 == 0) {
@@ -104,8 +111,11 @@ static void sub_1f1c(Coinslot *cs) {
 		}
 	}
 }
-void sub_1ed0(void) {
-	static const char data_1e76[]={0xfe, 0x01, 0xfd, 0x02};
+void sub_1ed0(void) {			// 1ed0
+	static const u8 data_1e76[]={
+		~COIN_STATUS_1, COIN_STATUS_1,
+		~COIN_STATUS_2, COIN_STATUS_2,
+	};
 	if (!g.InTestMode) {
 		decode_start_service();
 		sub_1f9e(&g.coinslot1, &data_1e76[0]);
@@ -125,7 +135,7 @@ void sub_1ed0(void) {
 	}
 }
 
-void sub_1fe2(void) {
+void int_cb_coinage(void) {			// 1fe2
 	if (g.SoundOutstanding) {
 		--g.SoundOutstanding;
 		coinsound();
@@ -166,7 +176,7 @@ static void sub_6c38(void) {
 }
 
 static void sub_6c24(void) {
-	if(g.ContinueCoin) {
+	if(g.TwoCreditsToStart) {
 		// 6c58 Two credits required to start, one to continue
 		if (g.NumberCredits != g.NumberCreditsDash) {
 			g.NumberCreditsDash = g.NumberCredits;
@@ -182,9 +192,9 @@ static void sub_6c24(void) {
 }
 void check_coin_lockout(void) {		//dfc move to coinage.c
 	if (g.NumberCredits >= 9) {
-		g.x02db &= 0xf3;
+		g.CoinStatus &= 0xf3;
 	} else {
-		g.x02db |= 0xc;
+		g.CoinStatus |= (COIN_LOCK_1 | COIN_LOCK_2);
 	}
 }
 
@@ -225,7 +235,7 @@ void task_creditscreen(void) {          /* 6b52 */
 				case 0:
 					g.mode0 +=2;
 					g.NumberCreditsDash = g.NumberCredits;
-					if (g.ContinueCoin) {
+					if (g.TwoCreditsToStart) {
 						sub_6c68();			/* print 2 to start, 1 to cont */
 					} else {
 						sub_6c38();

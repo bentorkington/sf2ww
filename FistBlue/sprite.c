@@ -846,44 +846,38 @@ static void _draw_sprite(Object *obj, const u16 *tilep, const short *offsets,
 }
 
 static void sprite_coords(Object *obj, short *coordpair) {		// 7f160
+	int temp;
 	if(obj->Scroll < 0) {
 		coordpair[0]=obj->XPI + 64;
 		coordpair[1]=(obj->YPI ^ 0x00ff) + 1;
 	} else {
 		switch (obj->Scroll) {
 			case SCROLL_2:
-#ifdef SF2_ROWSCROLL
 				if(obj->ZDepth == 0) {
-#endif
 					coordpair[0]=obj->XPI - gstate_Scroll2.XPI + 64;
 					coordpair[1]=obj->YPI - gstate_Scroll2.YPI;
 					if(obj->OnGround) {	/* move with screen wobble */
-						coordpair[1] += g.ScreenWobble;
+						coordpair[1] += g.ScreenWobbleMagnitude;
 					}
 					coordpair[1] ^= 0xff;
 					coordpair[1]++;
-#ifdef SF2_ROWSCROLL
 				} else {
-					// XXX mistakes here, checkme
-					temp = 2048 - ((obj->ZDepth + 1) * 2);
-					temp = g.x02be[temp];
+					temp = g.x02be[1024 - (obj->ZDepth + 1)];
 					
-					// XXX Rowscroll temp = g.x02be[temp]-192;
-					coordpair[0]=obj->XPI - temp - gstate_Scroll2.XPI + 64;
+					coordpair[0]=obj->XPI - (temp-192) - gstate_Scroll2.XPI + 64;
 					coordpair[1]=obj->YPI - gstate_Scroll2.YPI;
 					if(obj->OnGround) {	/* move with screen wobble */
-						coordpair[1] += g.ScreenWobble;
+						coordpair[1] += g.ScreenWobbleMagnitude;
 					}
 					coordpair[1] ^= 0xff;
 					coordpair[1]++;
 				}
-#endif
 				break;
 			case SCROLL_1:
 				coordpair[0]=obj->XPI - gstate_Scroll1.XPI + 64;
 				coordpair[1]=obj->YPI - gstate_Scroll1.YPI;
 				if(obj->OnGround) {	/* move with screen wobble */
-					coordpair[1] += g.ScreenWobble;
+					coordpair[1] += g.ScreenWobbleMagnitude;
 				}
 				coordpair[1] ^= 0xff;
 				coordpair[1]++;
@@ -892,7 +886,7 @@ static void sprite_coords(Object *obj, short *coordpair) {		// 7f160
 				coordpair[0]=obj->XPI - gstate_Scroll3.XPI + 64;
 				coordpair[1]=obj->YPI - gstate_Scroll3.YPI;
 				if(obj->OnGround) {	/* move with screen wobble */
-					coordpair[1] += g.ScreenWobble;
+					coordpair[1] += g.ScreenWobbleMagnitude;
 				}
 				coordpair[1] ^= 0xff;
 				coordpair[1]++;

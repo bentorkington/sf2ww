@@ -731,7 +731,7 @@ static void draw_scroll2(void) {
 		y = yloop;
 		scrolltop = gemu.RowScroll2[ (yloop + 48) * 16 ] / 16.0;
 		scrollbot = gemu.RowScroll2[ (yloop + 47) * 16 ] / 16.0;
-        for(x=-1;x<32;x++) {
+        for(x=-6;x<39;x++) {
 			ty = (y + (48 - tilety)) & 0x3f;
 			tx = (x + tiletx) & 0x3f;
 

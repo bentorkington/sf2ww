@@ -12,14 +12,14 @@
 void task_creditscreen(void);
 void check_coin_lockout(void);
 void decode_coincosts(void);
-void sub_1fe2(void);
+void int_cb_coinage(void);
 void sub_1ed0(void);
 
 struct coinslot {
 	char x0000;
-	char x0001;
-	char x0002;
-	char x0003;
+	char count_minor;
+	char count_major;
+	char debounce_timer;
 	char nCoins;
 	char nCredits;
 	char x0006;

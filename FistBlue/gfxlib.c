@@ -443,22 +443,23 @@ static void sub_911c(u16 arg) {		// set attributes for 2 object tiles
 	/* also other buffer */
 }
 void sub_90c8(void) {	/* low time remaining, flash the time display */
-	switch (g.x0ae8) {
+	static char state, timer;		// were in Game struct at 0x0ae8-9
+	switch (state) {
 		case 0:
-			NEXT(g.x0ae8);
-			g.x0ae9 = 4;
+			NEXT(state);
+			timer = 4;
 			sub_911c(0xd);
 			break;
 		case 2:
-			if(--g.x0ae9) { return; }
-			g.x0ae8 += 2;
-			g.x0ae9 = 2;
+			if(--timer) { return; }
+			NEXT(state);
+			timer = 2;
 			sub_911c(0xe);
 			break;
 		case 4:
-			if(--g.x0ae9) { return; }
-			g.x0ae8 = 2;
-			g.x0ae9 = 4;
+			if(--timer) { return; }
+			NEXT(state);
+			timer = 4;
 			sub_911c(0xd);
 			break;
 		FATALDEFAULT;

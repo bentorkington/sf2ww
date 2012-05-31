@@ -2572,7 +2572,7 @@ void ActStartScreenWobble(void){			// 1fd9e
 static void sub_1fe36(Object *obj) {
 	UD36 *ud = (UD36 *)obj->UserData;
 
-	g.ScreenWobble = 0;
+	g.ScreenWobbleMagnitude = 0;
 	gstate_Scroll1.YPI = ud->Save_Scroll1Y;
 	gstate_Scroll2.YPI = ud->Save_Scroll2Y;
 	gstate_Scroll3.YPI = ud->Save_Scroll3Y;
@@ -2643,7 +2643,7 @@ void action_36(Object *obj) {		/* 1fdc4 */
 			if ((obj->x001f & 1)==0) {
 				sub_1fe36(obj);
 			} else {
-				g.ScreenWobble = 3;
+				g.ScreenWobbleMagnitude = 3;
 				ud->Save_Scroll1Y = gstate_Scroll1.YPI;
 				ud->Save_Scroll2Y = gstate_Scroll2.YPI;
 				ud->Save_Scroll3Y = gstate_Scroll3.YPI;
@@ -2860,9 +2860,9 @@ static void action_3b(Object *obj) {	//203ba
 	
 	//coordinates of score counters
 	static const short data_20412[][2] = {
-		{0x00d8, 0x00b0},
-		{0x00d8, 0x00a0},
-		{0x00d8, 0x0088}, 
+		{216, 176},
+		{216, 160},
+		{216, 136}, 
 	};
 	
 	/* perfect energy score per player */
@@ -3000,7 +3000,7 @@ static void action_3b(Object *obj) {	//203ba
 
 
 
-#pragma mark Act48 Speak You Win/Lose
+#pragma mark Act48 Speak You Win/Lose + Graphic
 
 static void sub_22746(Object *obj) {
 	UD48 *ud = (UD48 *)obj->UserData;

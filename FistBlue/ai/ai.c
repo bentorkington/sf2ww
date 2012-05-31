@@ -540,7 +540,7 @@ static void sub_2adee(Player *ply) {		/* 2adee not ForceDefensive */
 static void _AIBeginAgain(Player *ply) {	
 	debug_ai_recurse++;
 
-	if (debug_ai_recurse > 20) {
+	if (debug_ai_recurse > 6) {
 		printf("AI Recursed too deep!\n");
 		panic(0);
 	}

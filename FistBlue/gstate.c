@@ -27,8 +27,6 @@ GState gstate_Scroll2;		/* bd2 - c51 */
 GState gstate_Scroll3;		/* c52 - cd1 */
 ScrollState gstate_RowScroll;	/* cd2 - d51 */
 
-
-
 /* Ortersk costly */
 
 static void _GSInitUpdateMethods(void);
@@ -335,7 +333,7 @@ static void _GSMaintScroll3X(GState *gs) {		// 83658
 	}
 }
 static void _GSMaintScroll3Y(GState *gs) {		// 8368c
-	if (g.ScreenWobble) {
+	if (g.ScreenWobbleMagnitude) {
 		return;
 	}
     gs->x0025 = gstate_Scroll2.x0025;
@@ -410,7 +408,7 @@ static void update_scroll2_X (GState *gstate) {     /* 0x83270 */
 static void update_scroll2_Y (GState *gstate) { /* 0x3=83376 */
 	switch (gstate->YUpdateMethod) {
 		case 0:
-			if (g.x0ade || g.ScreenWobble) { return; }
+			if (g.x0ade || g.ScreenWobbleMagnitude) { return; }
 			
 			/* XXX not done */
 			
@@ -429,9 +427,7 @@ static void _GSMaintScroll1X(GState *gs) {	// 834d0
     switch (gs->XUpdateMethod) {
 		case 0:
 			temp = gs->X.part.integer;
-			gs->XPI = gstate_Scroll2.XPI
-					+ gstate_RowScroll.XPI
-					- 192;
+			gs->XPI = gstate_Scroll2.XPI + gstate_RowScroll.XPI - 192;
 			g.x8b14 = gs->XPI - temp;
 			break;
 		case 2:
@@ -441,11 +437,11 @@ static void _GSMaintScroll1X(GState *gs) {	// 834d0
 				gs->YPI += 0x100;
 			}
 			gs->x0024 = 4;
-			gs->XPI -= g.x8c02;
+			gs->XPI  -= g.x8c02;
 			break;
 		case 4:
 			gs->X.full += 0x4000;
-			gs->x0024 = 4;
+			gs->x0024   = 4;
 			gs->XPI -= g.x8c02;
 			break;
 		case 6:           /* does nothing */
@@ -454,7 +450,7 @@ static void _GSMaintScroll1X(GState *gs) {	// 834d0
     }
 }
 static void _GSMaintScroll1Y(GState *gstate) {    /* 83558 */
-    if(g.ScreenWobble != 0)  {return;}
+    if(g.ScreenWobbleMagnitude != 0)  {return;}
     
     gstate->x0025 = gstate_Scroll2.x0025;
     switch (gstate->YUpdateMethod) {
@@ -610,9 +606,9 @@ static void _GSMaintRowScroll(ScrollState *gs) {	/* 84480 */
 		case 0:
 			/* 84496 */
 			NEXT(gs->mode0);
-			gs->ZDepth = 448;	
+			gs->ParallaxZero = 448;	// not actually zdepth, but Scr2X where parallax is zero
 			gs->x0010  = 630;
-			gs->x0012  = 0x7b0;
+			gs->GroundRow  = 0x7b0;
 			g.CPS.RowScrollBase = 0x9200;
 #ifdef CPS
 			g.x02be = (short *)0x921000;				/* XXX CPS-specific */
@@ -1121,9 +1117,6 @@ static void _GSUpdateRowScroll(ScrollState *gs, short *a0, short *a1) { /* 84592
 	FIXED16_16 AccumOffset;		// %d1
 	short *a2, *a3;
 	int d3;
-	// kludge:
-	//gemu.RowScroll2[0] = 192;
-	//return;
 	
 #define LINESCROLL_SET_DEC(count)				\
 for (i=0; i<(count); ++i) {						\
@@ -1165,31 +1158,39 @@ for	(i=0; i<(count); ++i) {						\
 	
 	switch (g.CurrentStage) {
 		case STAGE_JAPAN_RYU:
-			Offset = gs->x0010 * (gs->ZDepth - a1[0]);
-			a2 = a0 + ((u32)gs->x0012 / 2);			
+			Offset = gs->x0010 * (gs->ParallaxZero - a1[0]);
+			a2 = a0 + ((u32)gs->GroundRow / 2);			
 			AccumOffset.full = 192 * 0x10000;
 			LINESCROLL_SET_DEC(12);
 			LINESCROLL_SET(12);
 
 			a3 = a2;
-			a2 = a0 + ((u32)gs->x0012 / 2);
+			a2 = a0 + ((u32)gs->GroundRow / 2);
 			AccumOffset.full = 192 * 0x10000;
 
 			LINESCROLL_SET_INC_BACK(24);
 			LINESCROLL_INC(16);
-
-			gs->x0018.full = AccumOffset.full + (Offset << 16);
-			*a3 = gs->x0018.full + (Offset << 3);
-			gs->x0014.full = *a3 + (Offset << 3);
-
+			d3 = AccumOffset.full;
+			for (i=0; i<16; ++i) {
+				d3 += Offset;
+			}
+			gs->x0018.full = d3;
+			for (i=0; i<8; ++i) {
+				d3 += Offset;
+			}
+			//*a3 = d3;
+			for (i=0; i<8; ++i) {
+				d3 += Offset;
+			}
+			gs->x0014.full = d3;
 			LINESCROLL_SET_BACK(208);
 			break;
 		case STAGE_JAPAN_EHONDA:
-			Offset = gs->x0010 * (gs->ZDepth - a1[0]);
-			a2 = a0 + ((u32)gs->x0012 / 2);		
+			Offset = gs->x0010 * (gs->ParallaxZero - a1[0]);
+			a2 = a0 + ((u32)gs->GroundRow / 2);		
 			AccumOffset.full = 192 * 0x10000;
 			LINESCROLL_SET_DEC(24);
-			a2 = a0 + ((u32)gs->x0012 / 2);
+			a2 = a0 + ((u32)gs->GroundRow / 2);
 			AccumOffset.full = 192 * 0x10000;
 			LINESCROLL_SET_INC_BACK(24);
 			gs->x0014.part.integer = AccumOffset.part.integer;
@@ -1204,11 +1205,11 @@ for	(i=0; i<(count); ++i) {						\
 			LINESCROLL_SET_INC_BACK(64);
 			break;
 		case 2:
-			Offset = gs->x0010 * (gs->ZDepth - a1[0]);
-			a2 = a0 + ((u32)gs->x0012 / 2);			
+			Offset = gs->x0010 * (gs->ParallaxZero - a1[0]);
+			a2 = a0 + ((u32)gs->GroundRow / 2);			
 			AccumOffset.full = 192 * 0x10000;
 			LINESCROLL_SET_DEC(24);
-			a2 = a0 + ((u32)gs->x0012 / 2);			
+			a2 = a0 + ((u32)gs->GroundRow / 2);			
 			AccumOffset.full = 192 * 0x10000;
 			LINESCROLL_SET_INC_BACK(24);
 			gs->x0018.full = AccumOffset.full;
@@ -1217,11 +1218,11 @@ for	(i=0; i<(count); ++i) {						\
 			LINESCROLL_SET_BACK(208);
 			break;
 		case 3:
-			Offset = gs->x0010 * (gs->ZDepth - a1[0]);
-			a2 = a0 + ((u32)gs->x0012 / 2);			
+			Offset = gs->x0010 * (gs->ParallaxZero - a1[0]);
+			a2 = a0 + ((u32)gs->GroundRow / 2);			
 			AccumOffset.full = 192 * 0x10000;
 			LINESCROLL_SET_DEC(24);
-			a2 = a0 + ((u32)gs->x0012 / 2);			
+			a2 = a0 + ((u32)gs->GroundRow / 2);			
 			AccumOffset.full = 192 * 0x10000;
 			LINESCROLL_SET_INC_BACK(8);
 			gs->x0018.full = AccumOffset.full;
@@ -1235,14 +1236,14 @@ for	(i=0; i<(count); ++i) {						\
 			LINESCROLL_SET_DEC_BACK(0x50);
 			break;
 		case 4:
-			Offset = gs->x0010 * (gs->ZDepth - a1[0]);
-			a2 = a0 + ((u32)gs->x0012 / 2);			
+			Offset = gs->x0010 * (gs->ParallaxZero - a1[0]);
+			a2 = a0 + ((u32)gs->GroundRow / 2);			
 			AccumOffset.full = 192 * 0x10000;
 			LINESCROLL_SET_DEC(16);
 			gs->x0014.full = AccumOffset.full;
 			LINESCROLL_SET(8);
 			
-			a2 = a0 + ((u32)gs->x0012 / 2);			
+			a2 = a0 + ((u32)gs->GroundRow / 2);			
 			AccumOffset.full = 192 * 0x10000;
 			LINESCROLL_SET_INC_BACK(0x28);
 			gs->x0018.full = AccumOffset.full;
@@ -1250,24 +1251,24 @@ for	(i=0; i<(count); ++i) {						\
 			LINESCROLL_SET_BACK(192);
 			break;
 		case 5:
-			Offset = gs->x0010 * (gs->ZDepth - a1[0]);
-			a2 = a0 + ((u32)gs->x0012 / 2);			
+			Offset = gs->x0010 * (gs->ParallaxZero - a1[0]);
+			a2 = a0 + ((u32)gs->GroundRow / 2);			
 			AccumOffset.full = 192 * 0x10000;
 			LINESCROLL_SET_DEC(24);
 			gs->x0014.full = AccumOffset.full;
-			a2 = a0 + ((u32)gs->x0012 / 2);			
+			a2 = a0 + ((u32)gs->GroundRow / 2);			
 			AccumOffset.full = 192 * 0x10000;
 			LINESCROLL_SET_INC_BACK(0x28);
 			gs->x0018.full = AccumOffset.full;
 			LINESCROLL_SET_BACK(192);
 			break;
 		case 6:
-			Offset = gs->x0010 * (gs->ZDepth - a1[0]);
-			a2 = a0 + ((u32)gs->x0012 / 2);			
+			Offset = gs->x0010 * (gs->ParallaxZero - a1[0]);
+			a2 = a0 + ((u32)gs->GroundRow / 2);			
 			AccumOffset.full = 192 * 0x10000;
 			LINESCROLL_SET_DEC(24);
 			gs->x0014.full = AccumOffset.full;
-			a2 = a0 + ((u32)gs->x0012 / 2);			
+			a2 = a0 + ((u32)gs->GroundRow / 2);			
 			AccumOffset.full = 192 * 0x10000;
 			LINESCROLL_SET_INC_BACK(0x22);
 			d3 = AccumOffset.full;
@@ -1278,11 +1279,11 @@ for	(i=0; i<(count); ++i) {						\
 			LINESCROLL_SET_BACK(192);
 			break;
 		case 7:
-			Offset = gs->x0010 * (gs->ZDepth - a1[0]);
-			a2 = a0 + ((u32)gs->x0012 / 2);			
+			Offset = gs->x0010 * (gs->ParallaxZero - a1[0]);
+			a2 = a0 + ((u32)gs->GroundRow / 2);			
 			AccumOffset.full = 192 * 0x10000;
 			LINESCROLL_SET_DEC(24);
-			a2 = a0 + ((u32)gs->x0012 / 2);			
+			a2 = a0 + ((u32)gs->GroundRow / 2);			
 			AccumOffset.full = 192 * 0x10000;
 			LINESCROLL_SET_INC_BACK(24);
 			gs->x0018.full = AccumOffset.full;
@@ -1290,11 +1291,11 @@ for	(i=0; i<(count); ++i) {						\
 			LINESCROLL_SET_BACK(192);
 			break;
 		case 8:
-			Offset = gs->x0010 * (gs->ZDepth - a1[0]);
-			a2 = a0 + ((u32)gs->x0012 / 2);			
+			Offset = gs->x0010 * (gs->ParallaxZero - a1[0]);
+			a2 = a0 + ((u32)gs->GroundRow / 2);			
 			AccumOffset.full = 192 * 0x10000;
 			LINESCROLL_SET_DEC(24);
-			a2 = a0 + ((u32)gs->x0012 / 2);			
+			a2 = a0 + ((u32)gs->GroundRow / 2);			
 			AccumOffset.full = 192 * 0x10000;
 			LINESCROLL_SET_INC_BACK(8);
 			gs->x0014.full = AccumOffset.full;
@@ -1310,12 +1311,12 @@ for	(i=0; i<(count); ++i) {						\
 			LINESCROLL_SET_DEC_BACK(64);
 			break;
 		case 9:
-			Offset = gs->x0010 * (gs->ZDepth - a1[0]);
-			a2 = a0 + ((u32)gs->x0012 / 2);			
+			Offset = gs->x0010 * (gs->ParallaxZero - a1[0]);
+			a2 = a0 + ((u32)gs->GroundRow / 2);			
 			AccumOffset.full = 192 * 0x10000;
 			LINESCROLL_SET_DEC(24);
 			gs->x0018.full = AccumOffset.full;
-			a2 = a0 + ((u32)gs->x0012 / 2);			
+			a2 = a0 + ((u32)gs->GroundRow / 2);			
 			AccumOffset.full = 192 * 0x10000;
 			LINESCROLL_SET_INC_BACK(24);
 			d3 = AccumOffset.full;
@@ -1326,11 +1327,11 @@ for	(i=0; i<(count); ++i) {						\
 			LINESCROLL_SET_BACK(0xd0);
 			break;
 		case 10:
-			Offset = gs->x0010 * (gs->ZDepth - a1[0]);
-			a2 = a0 + ((u32)gs->x0012 / 2);			
+			Offset = gs->x0010 * (gs->ParallaxZero - a1[0]);
+			a2 = a0 + ((u32)gs->GroundRow / 2);			
 			AccumOffset.full = 192 * 0x10000;
 			LINESCROLL_SET_DEC(24);
-			a2 = a0 + ((u32)gs->x0012 / 2);			
+			a2 = a0 + ((u32)gs->GroundRow / 2);			
 			AccumOffset.full = 192 * 0x10000;
 			LINESCROLL_SET_INC_BACK(13);
 			LINESCROLL_SET_BACK(11);
@@ -1345,11 +1346,11 @@ for	(i=0; i<(count); ++i) {						\
 			LINESCROLL_SET_BACK(192);
 			break;
 		case 11:
-			Offset = gs->x0010 * (gs->ZDepth - a1[0]);
-			a2 = a0 + ((u32)gs->x0012 / 2);			
+			Offset = gs->x0010 * (gs->ParallaxZero - a1[0]);
+			a2 = a0 + ((u32)gs->GroundRow / 2);			
 			AccumOffset.full = 192 * 0x10000;
 			LINESCROLL_SET_DEC(24);
-			a2 = a0 + ((u32)gs->x0012 / 2);			
+			a2 = a0 + ((u32)gs->GroundRow / 2);			
 			AccumOffset.full = 192 * 0x10000;
 			LINESCROLL_SET_INC_BACK(4);
 			gs->x0014.full = AccumOffset.full;

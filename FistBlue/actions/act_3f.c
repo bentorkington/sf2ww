@@ -56,19 +56,19 @@ void action_3f(Object *obj) {
 						NEXT(obj->mode1);
 						obj->LocalTimer = 6;
 						if (obj->SubSel) {
-							ud->XDest = 0x138;
+							ud->XDest = 312;
 						} else {
-							ud->XDest = 0x4a;
+							ud->XDest =  74;
 						}
-						ud->YDest = 0xe0;
+						ud->YDest = 224;
 						obj->Step = (calc_flightpath(obj, ud->XDest, ud->YDest)+2)/4;
 					}
 					break;
 				case 4:
-					if (obj->YPI >= 0xd0) {
+					if (obj->YPI >= 208) {
 						NEXT(obj->mode0);
 						g.Pause_9e1 = 1;
-						g.x0ae7 = 1;
+						g.x0ae7     = TRUE;
 						LBAddPoints(0x16, obj->SubSel);
 					} else {
 						obj->Step = (calc_flightpath(obj, ud->XDest, ud->YDest)+2)/4;
