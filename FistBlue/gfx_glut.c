@@ -838,8 +838,8 @@ void gfx_glut_drawgame(void) {
 		gemu_clear_cache();
 	}
 	
-	glClearColor(0.2, 0.4, 0.1, 0.0);
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	//glClearColor(0.2, 0.4, 0.1, 0.0);
+	//glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
@@ -885,7 +885,7 @@ void gfx_glut_drawgame(void) {
 
 	glScalef(0.3, -0.3, 0.3);
 	
-	glClearColor (0.0f, 0.2f, 0.0f, 1.0f);	// clear the surface
+	glClearColor (0.2f, 0.1f, 0.0f, 1.0f);	// clear the surface
 	glClear (GL_COLOR_BUFFER_BIT);
 	
 	
@@ -928,7 +928,7 @@ void gfx_glut_drawgame(void) {
 	
 	glDisable(GL_SCISSOR_TEST);
 	glDisable(GL_TEXTURE_2D);
-	drawGLText(gCamera);
+	//drawGLText(gCamera);
 }
 
 void gCameraReset(void) {
