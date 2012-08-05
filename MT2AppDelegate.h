@@ -8,7 +8,7 @@
 
 #import <Cocoa/Cocoa.h>
 
-@interface MT2AppDelegate : NSObject <NSApplicationDelegate> {
+@interface MT2AppDelegate : NSObject  {
     NSWindow *window;
 }
 
