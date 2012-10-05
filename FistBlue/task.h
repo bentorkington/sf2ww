@@ -14,8 +14,6 @@
 
 #include "sf2types.h"
 
-
-
 void task_timer(void);
 void sf2sleep(int duration);
 void exit_ready(void);
@@ -41,8 +39,8 @@ void diefree();
 
 struct task_params {
 	u16				Param0;		// x0010
-    u8				Param1;		// x0011
-    u8				Param2;		// x0012
+    u8				Param1;		// x0012
+    u8				Param2;		// x0013
 	unsigned char	x0014;
 	unsigned char	x0015;
 	unsigned char	x0016;
@@ -117,8 +115,6 @@ struct executive_t {
 	while(varname) { sf2sleep(1); }											\
 
 #define CURRENT_TASK &Exec.Tasks[Exec.CurrentTask]
-
-
 
 #define DIEFREE					\
 	task->status = TASK_EMPTY;  \

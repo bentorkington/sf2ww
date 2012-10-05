@@ -26,7 +26,7 @@
 #include "glwimp.h"
 #include "workarounds.h"
 #include "pthreads.h"
-#include "sf2io.h"				// XXX
+#include "sf2io.h"	
 
 #include "game.h"
 
@@ -177,11 +177,8 @@ void renderDummy(void) {
 - (void)drawGame:(NSRect)dirtyRect {
 	gfx_glut_drawgame();
 	//glFinish();
-	//glutSwapBuffers();
-	
+	//glutSwapBuffers();	
 }
-
-
 - (void)drawRect:(NSRect)r {
 	[self drawGame:r];
 	
@@ -197,68 +194,55 @@ void renderDummy(void) {
 	q.x = p.x;
 	return q;
 }
-
 - (void)mouseDown:(NSEvent *)event
 {
 	NSPoint p = [event locationInWindow];
 	NSPoint q = [self convertToOpenGL:p];
 	gfx_glut_mousedown(q.x, q.y);
 }
-
 - (void)rightMouseDown:(NSEvent *)event
 {
 	NSPoint p = [self convertToOpenGL:[event locationInWindow]];
 	gfx_glut_rightmousedown(p.x, p.y);
 }
-
 - (void)rightMouseDragged:(NSEvent *)event
 {
 	NSPoint p = [self convertToOpenGL:[event locationInWindow]];
 	gfx_glut_rightmousedragged(p.x, p.y);
 	[self setNeedsDisplay:YES];
 }
-
 - (void)mouseDragged:(NSEvent *)event
 {
 	NSPoint p = [self convertToOpenGL:[event locationInWindow]];
 	gfx_glut_mousedragged(p.x, p.y);
 	[self setNeedsDisplay:YES];
 }
-
 - (void)mouseUp:(NSEvent *)event
 {
 	NSPoint p = [self convertToOpenGL:[event locationInWindow]];
 	gfx_glut_mouseup(p.x, p.y);
 
 }
-
 - (void)rightMouseUp:(NSEvent *)event
 {
 	NSPoint p = [self convertToOpenGL: [event locationInWindow]];
 	gfx_glut_rightmouseup(p.x, p.y);
 }
-
 - (BOOL)acceptsFirstResponder
 {
 	return YES;		// YES, yes I do.
 }
-
 - (BOOL)resignFirstResponder
 {
 	[self setNeedsDisplay:YES];
 	return YES;
 }
-
-
 - (BOOL)becomeFirstResponder
 {
 	NSLog(@"SF2View accepts firstResponder status");
 	[self setNeedsDisplay:YES];
 	return YES;
 }
-
-
-
 - (void)keyDown:(NSEvent *)theEvent
 {
 	unichar keypress;

@@ -37,6 +37,7 @@ const CAFrame actlist_20f76[] = {
 
 void action_29(Object *obj) {
 	UD ud = (UD)&obj->UserData;
+	Object *nobj;
 	
 	switch (obj->mode0) {
 		case 0:
@@ -58,11 +59,11 @@ void action_29(Object *obj) {
 				case 0:
 					obj->XPI = ud->XSave;
 					ud->funky -= 0x25000;
-					if (obj->VelX.full < 0) {
+					if (ud->funky < 0) {
 						NEXT(obj->mode1);
-						if (obj=AllocActor()) {
-							obj->exists = TRUE;
-							obj->Sel    = 0x3e;
+						if (nobj=AllocActor()) {
+							nobj->exists = TRUE;
+							nobj->Sel    = 0x3e;
 						}
 					} else {
 						++obj->LocalTimer;

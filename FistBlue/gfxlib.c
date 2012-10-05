@@ -293,7 +293,7 @@ void print_bonusremaining(void) {		// 5248
 	printzeroes = TRUE;
 	
 	coords = MakePointObj(176, 208);
-	OBJ_CURSOR_SET(cur, 28);			/* 0x910070 */
+	OBJ_CURSOR_SET(cur, 14);			/* 0x910070 */
 	
 	printnibble(&cur, &coords, PALETTE_0D, g.x8ab9 >> 4, &printzeroes);	/* number of barrels remaining */
 	printnibble(&cur, &coords, PALETTE_0D, g.x8ab9     , &printzeroes);
@@ -306,7 +306,7 @@ void print_timeremaining(void) {		//5260
 	printzeroes = TRUE;
 	
 	coords = MakePointObj(176, 208);
-	OBJ_CURSOR_SET(cur, 28);			/* 0x910070 */
+	OBJ_CURSOR_SET(cur, 14);			/* 0x910070 */
 	printnibble(&cur, &coords, PALETTE_0D, g.TimeRemainBCD >> 4, &printzeroes);
 	printnibble(&cur, &coords, PALETTE_0D, g.TimeRemainBCD     , &printzeroes);
 }
@@ -437,7 +437,7 @@ void clear_rowscroll(void) {	/* 6080 clear rowscroll*/
 
 static void sub_911c(u16 arg) {		// set attributes for 2 object tiles
 	u16 *cur;
-	OBJ_CURSOR_SET(cur, 28);
+	OBJ_CURSOR_SET(cur, 14);
 	cur[3] = arg;
 	cur[7] = arg;
 	/* also other buffer */
@@ -458,7 +458,7 @@ void sub_90c8(void) {	/* low time remaining, flash the time display */
 			break;
 		case 4:
 			if(--timer) { return; }
-			NEXT(state);
+			state = 0;
 			timer = 4;
 			sub_911c(0xd);
 			break;
@@ -671,8 +671,8 @@ static void drawsimple_scroll2noattr_check(Object *obj, const u16 *tiles, int wi
 }
 static void drawsimple_scroll2noattr(Object *obj, const u16 *tiles, int width, int height) {	/* 0x42c8 */
 	int x,y;
-    COORD coord=objcoords_scroll2(obj);
-    COORD coord2;
+    CPSCOORD coord=objcoords_scroll2(obj);
+    CPSCOORD coord2;
     for(x=0; x<width; x++) {
         coord2=coord;
         for(y=0; y<height; y++) {
@@ -687,8 +687,8 @@ static void drawsimple_scroll2noattr(Object *obj, const u16 *tiles, int width, i
 }
 static void drawsimple_scroll2attr(Object *obj, const u16 *tiles, int width, int height) { /* 0x42f6 */
 	int x,y;
-    COORD coord=objcoords_scroll2(obj);
-    COORD coord2;
+    CPSCOORD coord=objcoords_scroll2(obj);
+    CPSCOORD coord2;
 	for(x=0; x<width; x++) {
         coord2=coord;
         for(y=0; y<height; y++) {
@@ -708,8 +708,8 @@ static void drawsimple_scroll2attr_check(Object *obj, const u16 *tiles, int widt
 }
 static void drawsimple_scroll3noattr(Object *obj, const u16 *tiles, int width, int height) {  /* 0x432a */
 	int x,y;
-    COORD coord=objcoords_scroll3(obj);
-    COORD coord2;
+    CPSCOORD coord=objcoords_scroll3(obj);
+    CPSCOORD coord2;
     for(x=0; x<width; x++) {
         coord2=coord;
         for(y=0; y<height; y++) {
@@ -822,8 +822,6 @@ void sub_1a0c(void) {			//1a0c
 	gemu_setpalette(19, data_1a42[3]);
 	gemu_setpalette(20, data_1a42[4]);
 
-	
-	/* XXX starting at 920000, copy these */
 	setpalette_scroll1(0x13);
 	setpalette_scroll2(g.Palette1);
 	setpalette_scroll3(g.Palette1);

@@ -40,7 +40,7 @@ enum fighter_id_t {
 	FID_KEN,		FID_CHUN_LI,	FID_ZANGEIF,	FID_DHALSIM,
 	FID_M_BISON,	FID_SAGAT,		FID_BALROG,		FID_VEGA,
 };
-
+typedef enum fighter_id_t FBFighterID;
 
 /* PLMODE / Object mode1 goes in Player->mode0 */
 
@@ -148,10 +148,10 @@ enum fighter_id_t {
 #define STATUS_JUMP_PUNCH		0x48
 #define STATUS_JUMP_KICK		0x4a	
 
+// get these out
 #define STATUS_BOUNCE_WALL      0x4c  /* chun li */
+
 #define STATUS_HADOUKEN			0x4c
-
-
 #define STATUS_RYUKEN_THROW		0x54
 
 struct player_t {
@@ -278,10 +278,10 @@ struct player_t {
     u8			EnemyDirection;		/* 0x01be */
     char		Invincible;
     short		Size;				/* x01c2 The average width of my sprite */
-    FIXED16_16	DeltaX;				/* x01c4 fix u16 refs to use .part.integer */
+    FIXED16_16	DeltaX;				/* x01c4 */
 	FIXED16_16  DeltaY;
-	FIXED16_16  OldX;				/* x01cc old X */
-    FIXED16_16  OldY;				/*       old Y */
+	FIXED16_16  OldX;				/* x01cc  */
+    FIXED16_16  OldY;				
 	Object		*Projectile;		/* 0x01d4 LimitNextShot cheat */
 	short		RoughTimeRemain;	/* 0x01d6  rough time remaining */
 	u8			AITimers[8];		// 01d8
@@ -291,7 +291,6 @@ struct player_t {
 	u8	AIAgressive;		/* 0x200 AI */
 	u8	AIMode1;
 	u8	AIMode2;
-	
 	u8	x0203;			/* used in AI Test Screen */
 	unsigned char		AIStrategy, AIParam1;
 	signed char			AIParam2, AIParam3, AIParam4;

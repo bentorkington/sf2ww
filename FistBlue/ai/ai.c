@@ -493,7 +493,7 @@ static void _AIStrat14(Player *ply) {
 			} else {
 				ply->x0236 = FALSE;
 			}
-			ply->AIBlockStunTimer = 60;		// array all same.
+			ply->AIBlockStunTimer = 1 * TICKS_PER_SECOND;		// array all same.
 			break;
 		case 2:
 			// 2b69a
@@ -917,7 +917,7 @@ static short _AISetWalkTarget(Player *ply) {		/* 2b25c */
 	if(ply->Opponent->EnemyDirection != FACING_LEFT) {
 		ply->AIWalkTarget = ply->AIJumpSel + ply->Opponent->Size + ply->Opponent->XPI;
 	} else {
-		ply->AIWalkTarget - ply->AIJumpSel - ply->Opponent->Size + ply->Opponent->XPI;
+		ply->AIWalkTarget = ply->AIJumpSel - ply->Opponent->Size + ply->Opponent->XPI;
 	}
 	
 	if (ply->XPI < ply->AIWalkTarget) {
@@ -959,7 +959,7 @@ static void _AIStratLongWalk(Player *ply) { // 2b19a AIStrategy approach / retre
 					temp = -temp;
 				}
 			}
-			ply->AIJumpSel = temp;			//2b210 
+			ply->AIJumpSel       = temp;			//2b210 
 			ply->AIWalkDirection = _AISetWalkTarget(ply);
 			/* FALLTHRU */
 		case 2:
@@ -1006,13 +1006,13 @@ static void _AIStratSetBlock(Player *ply) {
 }
 
 //STRAT_JUMP	0x2b3b4
-static void _AIStratJump(Player *ply) {		// AI Strategy jump
+static void _AIStratJump(Player *ply) {
 	short temp5;
 	
 	switch (ply->AIMode2) {
 		case 0:
 			NEXT(ply->AIMode2);
-			ply->CompDoJump = TRUE;
+			ply->CompDoJump  = TRUE;
 			ply->CompDoBlock = FALSE;
 			ply->AISigSpecial = ply->CompDoAirThrow = ply->CompDoThrow = ply->AICanJumpAttack = 0;
 			ply->AIJumpSel = ply->AIParam1;
@@ -1038,8 +1038,9 @@ static void _AIStratJump(Player *ply) {		// AI Strategy jump
 				ply->CompDoThrow = TRUE;
 			}
 			ply->AICanJumpAttack = TRUE;
-			ply->StandSquat = 4;
-			ply->ButtonStrength = ply->x022a & 0xf;
+			ply->StandSquat		 = PLY_JUMP;
+			ply->ButtonStrength  = ply->x022a & 0xf;
+			
 			if (ply->AIParam1 & AIB_THROW) {
 				ply->CompDoAirThrow = TRUE;
 			}
@@ -1066,30 +1067,14 @@ static void _AIStratJump(Player *ply) {		// AI Strategy jump
 
 static void _AIBeginStrategy(Player *ply) {		// 2ae32 was _AISwitch204
 	switch (ply->AIStrategy) {
-		case STRAT_STANDSTILL:				// stand still
-			_AIStratStandStill(ply);
-			break;
-		case STRAT_SHORTWALK:			// short walk forward/backward
-			_AIStratShortWalk(ply);
-			break;
-		case STRAT_LONGWALK:			// approach / retreat
-			_AIStratLongWalk(ply);
-			break;
-		case STRAT_SETBLOCK:
-			_AIStratSetBlock(ply);
-			break;
-		case STRAT_JUMP:			// jump
-			_AIStratJump(ply);
-			break;
-		case STRAT_ATTACK:		// attack
-			_AIStratAttack(ply);
-			break;
-		case STRAT_KICK:		// kick
-			_AIStratKick(ply);
-			break;
-		case 14:
-			_AIStrat14(ply);
-			break;
+		case STRAT_STANDSTILL:			_AIStratStandStill(ply);			break;
+		case STRAT_SHORTWALK:			_AIStratShortWalk(ply);				break;
+		case STRAT_LONGWALK:			_AIStratLongWalk(ply);				break;
+		case STRAT_SETBLOCK:			_AIStratSetBlock(ply);				break;
+		case STRAT_JUMP:				_AIStratJump(ply);					break;
+		case STRAT_ATTACK:				_AIStratAttack(ply);				break;
+		case STRAT_KICK:				_AIStratKick(ply);					break;
+		case 14:						_AIStrat14(ply);					break;
 		FATALDEFAULT;
 	}
 }
@@ -1159,7 +1144,6 @@ void AIInitDefensive(Player *ply) {				// 2b82a
 
 /* fetch the next character from the script, not only strategy IDs but also 
  parameters */
-// XXX check pre/post increment!
 static char _AIReadByte(Player *ply) {		// 2bf02
 
 	if(ply->AIForceDefensive) {

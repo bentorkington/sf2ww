@@ -638,7 +638,7 @@ void action_1e(Object *obj) {		//18c1c
 			switch (obj->mode0) {
 				case 0:
 					NEXT(obj->mode0);
-					obj->LocalTimer = 60;
+					obj->LocalTimer = 1 * TICKS_PER_SECOND;
 					ud->x0084 = 0;
 					g.PlaneLandedInCity[obj->UserByte] = FALSE;
 					ud->x0080 = actlist_1912a;
@@ -702,7 +702,7 @@ void action_1e(Object *obj) {		//18c1c
 							break;
 						case 4:
 							NEXT(obj->mode1);
-							obj->LocalTimer = 0xb4;
+							obj->LocalTimer = 3 * TICKS_PER_SECOND;
 							setaction_list(obj, actlist_1a200, obj->UserByte);
 							break;
 						case 6:

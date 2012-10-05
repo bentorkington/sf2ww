@@ -163,7 +163,7 @@ static void _BlankaCheckCannonBall(Player *ply) {		// 2ea3a
 			} else {
 				if (--ud->timer_cannonball0 == 0) {
 					ud->mode_cannonball = 0;
-					ud->timer_cannonball0 = 60;
+					ud->timer_cannonball0 = 1 * TICKS_PER_SECOND;
 				}
 			}
 			break;
@@ -172,7 +172,7 @@ static void _BlankaCheckCannonBall(Player *ply) {		// 2ea3a
 				ud->timer_cannonball0 = 4;
 				if (--ud->timer_cannonball1 == 0) {
 					ud->mode_cannonball = 0;
-					ud->timer_cannonball0 = 60;
+					ud->timer_cannonball0 = 1 * TICKS_PER_SECOND;
 				}
 			}
 			break;
@@ -262,7 +262,7 @@ void PLCBPowerBlanka(Player *ply) {
 	Object *obj;	// only used for suicide
 	UD *ud=(UD *)&ply->UserData;
 	if (ud->x0080 == 0) {
-		ud->timer_cannonball0 = 60;
+		ud->timer_cannonball0 = 1 * TICKS_PER_SECOND;
 		ud->mode_cannonball   = 0;
 		ud->cannon_counter    = 0;
 		ud->x0086 = 0;
@@ -527,7 +527,7 @@ static void _BlankaSMCannonBall(Player *ply) {		// 2e5b2
 			/* FALLTHRU */
 		case 2:
 			ud->mode_cannonball   = 0;
-			ud->timer_cannonball0 = 60;
+			ud->timer_cannonball0 = 1 * TICKS_PER_SECOND;
 			ply->Jumping = 1;
 			if (ud->x008a) {
 				_CannonBounce(ply);
@@ -716,7 +716,7 @@ static void _BlankaSMCatch(Player *ply) {		// 2e7d2
 				NEXT(ply->mode2);
 				sub_33ada(ply, 0x7a);
 			} else {
-				if (sub_3fee(ply)) {
+				if (ply_opp_has_struggled_2(ply)) {
 					ply->Timer = 1;
 				}
 				if (AF2) {

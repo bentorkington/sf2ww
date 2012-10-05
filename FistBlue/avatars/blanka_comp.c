@@ -197,7 +197,7 @@ static void sub_33704(Player *ply) {
 			if (ud->x008a) {		//337be
 				sub_337be(ply);
 			} else {
-				ud->x0092		= 0x28;
+				ud->x0092		= 40;
 				ply->VelY.full	= 0;
 				if (AF2 && (ply->Timer == 1)) {
 					quirkysound(1);
@@ -272,7 +272,7 @@ static void sub_33854(Player *ply) {
 				return;
 			} else {
 				if(ply_opp_has_struggled_free(ply)) { sub_338d8(ply); return; }
-				if (sub_3fee(ply)) { ply->Timer = 1;}
+				if (ply_opp_has_struggled_2(ply)) { ply->Timer = 1;}
 				if (AF2 == 0) {
 					PLAYERTICK;
 					_BlankaCatchSet(ply);

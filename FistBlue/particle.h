@@ -121,10 +121,10 @@ struct actionhdr {
 
 struct hitbox_active {		/* Attack hitbox is 0xc long */
     signed char X, Y, width, height;
-    u8 Damage;      /* 0x4 */
-    char Shove;       /* 0x5 future victim 0x4a */
-    u8 Sound;
-    u8 Attack;	/* 0x7 ATck EX 0=standard normal
+    u8		Damage;      /* 0x4 */
+    char	Shove;       /* 0x5 future victim 0x4a */
+    u8		Sound;
+    u8		Attack;	/* 0x7 ATck EX 0=standard normal
 				 1=normal sweep
 				 2=jumping normal
 				 3=special

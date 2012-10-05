@@ -586,7 +586,7 @@ int PLCBPowerZangeif(Player *ply) {			// 31c40
 static void sub_31654(Player *ply) {		// lariat punch
 	if (ply->mode2 == 0) {
 		NEXT(ply->mode2);
-		ply->LocalTimer = 60;
+		ply->LocalTimer = 1 * TICKS_PER_SECOND;
 		CASetAnim2(ply, STATUS_PUNCH, ply->Move);
 		BumpDiff_PowerMove();
 	} else {
@@ -625,7 +625,7 @@ static void sub_31696(Player *ply) {
 				ply_grip_release(ply, ply->Flip);
 				sub_3163e(ply);				
 			} else {
-				if (sub_3fee(ply)) {
+				if (ply_opp_has_struggled_2(ply)) {
 					ply->Timer = 1;
 				}
 				if (AF2 == 0) {
@@ -1209,7 +1209,7 @@ static void sub_35b22(Player *ply) {
 	if (ply->PunchKick == PLY_PUNCHING) {
 		if (ply->mode2 == 0) {
 			NEXT(ply->mode2);
-			ply->LocalTimer = 60;
+			ply->LocalTimer = 1 * TICKS_PER_SECOND;
 			ply->Move = 8;
 			CASetAnim2(ply, STATUS_PUNCH, ply->Move);
 			BumpDiff_PowerMove();
@@ -1355,7 +1355,7 @@ static void sub_3529a(Player *ply) {
 		if (ply_opp_has_struggled_free(ply)) {
 			ply_grip_release(ply, ply->Flip);
 		} else {
-			if (sub_3fee(ply)) {
+			if (ply_opp_has_struggled_2(ply)) {
 				ply->Timer = 1;
 			}
 			if (AF2) {

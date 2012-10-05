@@ -719,7 +719,7 @@ static void gstate_nextlevel_scroll3 (void) {
 #pragma mark ---- Tilemap Fillers ----
 static void _GSFillScroll2(GState *gs) {  /* 0x83ae0 fill scroll2 from tilemap */
     int i,j;
-    COORD gfx_p;
+    CPSCOORD gfx_p;
 	
     g.CPS.Scroll2X = gs->XPI - (SCREEN_WIDTH / 2);
     g.CPS.Scroll2Y = gs->YPI;
@@ -736,7 +736,7 @@ static void _GSFillScroll2(GState *gs) {  /* 0x83ae0 fill scroll2 from tilemap *
 
 static void _GSFillScroll3(GState *gs) {        /* 0x83b2a fill scroll3 from tilemap */
     int i,j;
-    COORD gfx_p;
+    CPSCOORD gfx_p;
     
     g.CPS.Scroll3X = gs->XPI;
     g.CPS.Scroll3Y = gs->YPI;

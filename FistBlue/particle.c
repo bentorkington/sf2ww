@@ -108,16 +108,12 @@ GState *get_graphics_context(Object *obj) {		/* 2628 */
 		obj->x0044 = obj->XPI;
         return scrolls[(unsigned char)obj->Scroll / 2];		/* cheeky */
     }
-#ifdef SF2_ROWSCROLL
 	if (obj->ZDepth) {
-#endif
-		// XXX Rowscroll obj->x0044 = obj->XPI - (g.x02be[0x800 - ((obj->ZDepth +1) * 2)]-0xc0);
-		obj->x0044 = obj->XPI;
-#ifdef SF2_ROWSCROLL
+		obj->x0044 = obj->XPI - (g.x02be[0x800 - ((obj->ZDepth +1) * 2)]-0xc0);
+		//obj->x0044 = obj->XPI;
 	} else {
 		obj->x0044 = obj->XPI;
 	}
-#endif
     return scrolls[0];
 }
 

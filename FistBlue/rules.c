@@ -32,7 +32,7 @@ static void game_over_for_only_player(void);
 static void sub_89d4(short);
 static void kill_ply1(void);
 static void kill_ply2(void);
-static int sub_4004(Player *ply);
+static int get_struggle_1(Player *ply);
 
 
 
@@ -213,7 +213,7 @@ void copy_level_table(short d0) {		// 2ecc
 }
 
 int ply_opp_has_struggled_free(Player *ply) {			// 3fd8
-	ply->Opponent->Damage1 -= sub_4004(ply->Opponent);
+	ply->Opponent->Damage1 -= get_struggle_1(ply->Opponent);
 	if (ply->Opponent->Damage1 > 0) {
 		return FALSE;
 	}
@@ -257,13 +257,13 @@ short ply_opp_apply_grip_damage(Player *ply,
 }
 
 
-static int sub_4014(Player *ply) {		//4014 ply %a4
+static int get_human_struggle(Player *ply) {		//4014 ply %a4
 	short d1 = 0;
 	short d3 = 0;
-	if (ply->JoyDecodeDash.full & 0xf == 0) {
+	if (ply->JoyDecodeDash.full & JOY_MOVEMASK) {
 		d1 = 1;
 	}
-	if (d1 && ((~ply->JoyDecodeDash.full) & ply->JoyDecode.full & 0xf)) {
+	if (d1 && ((~ply->JoyDecodeDash.full) & ply->JoyDecode.full & JOY_MOVEMASK)) {
 		d3 = 3;
 	}
 	if (((~ply->JoyDecodeDash.full) & ply->JoyDecode.full & BUTTON_MASK)) {
@@ -272,7 +272,7 @@ static int sub_4014(Player *ply) {		//4014 ply %a4
 	return d3;
 }
 
-static int sub_4004(Player *ply) {		// 4004 ply %a4
+static int get_struggle_1(Player *ply) {		// 4004 ply %a4
 	static const u16 data_98e42[32]={
 		0x0000, 0x0000, 0x0000, 0x0000, 0x0002, 0x0000, 0x0000, 0x0800, 
 		0x0200, 0x0000, 0x0020, 0x0020, 0x0800, 0x2000, 0x0020, 0x0020, 
@@ -281,7 +281,7 @@ static int sub_4004(Player *ply) {		// 4004 ply %a4
 	};
 	
 	if (ply->Human) {
-		return sub_4014(ply);
+		return get_human_struggle(ply);
 	} else {
 		if (data_98e42[ply->Difficulty] & (1 << RAND32)) {
 			return (char []){4,4,2,4,4,2,7,3,8,4,3,2}[ply->FighterID];
@@ -290,7 +290,7 @@ static int sub_4004(Player *ply) {		// 4004 ply %a4
 	}
 }
 
-static int sub_400e(Player *ply, Player *opp) {
+static int get_struggle_2(Player *ply, Player *opp) {			// 400e
 	static const u16 data_98ec2[32]={
 		0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x8000, 0x0010, 0x0000, 
 		0x0000, 0x0200, 0x2000, 0x0040, 0x0002, 0x0800, 0x8000, 0x0001, 
@@ -299,19 +299,18 @@ static int sub_400e(Player *ply, Player *opp) {
 	};
 	
 	if (ply->Human) {
-		return sub_4014(opp);
+		return get_human_struggle(opp);
 	} else {
-		if (data_98ec2[ply->Difficulty] & (1 << RAND32)) {
-			return (char []){4,6,8,4,4,2,6,10,8,4,3,2}[ply->FighterID];
+		if (data_98ec2[opp->Difficulty] & (1 << RAND32)) {
+			return (char []){4,6,8,4,4,2,6,10,8,4,3,2}[opp->FighterID];
 		}
 		return 0;
 	}
 }
 
 
-int sub_3fee(Player *ply) {
-	sub_400e(ply, ply);
-	ply->Damage1 -= 3;
+int ply_opp_has_struggled_2(Player *ply) {				// 3fee
+	ply->Damage1 -= get_struggle_2(ply, ply);
 	if (ply->Damage1 >= 0) {
 		return 0;
 	} else {
@@ -436,6 +435,7 @@ int _check_throw(int airthrow, Player *ply) {		/* 0x3338 */
     opp->Attacking = 0;
     ply->x01b0++;
     opp->ThrownFromDizzy = opp->DizzyStun;
+	opp->DizzyStun       = 0;
     g.PlayersThrowing |= 1 << ply->Side;
     
     bumpdifficulty_10(); /* difficulty */
@@ -467,7 +467,8 @@ void set_initial_positions(void) {          /* 0x37da */
     g.Player1.OldY.part.integer = g.Player1.YPI;
 	g.Player1.OldX.part.integer = g.Player2.XPI;
 	g.Player1.OldY.part.integer = g.Player2.YPI;
-    /* player2 copy never gets made in original, strange, not fixed here yet */
+    /* player2 copy never gets made in original, strange, not fixed here yet
+	bug still exists in sf2ce */
 
     if(g.CurrentStage == STAGE_BONUS_CAR || g.CurrentStage == STAGE_BONUS_DRUMS) {
         g.Player1.Size = PLYWIDTHS_SMALLER[g.Player1.FighterID];
@@ -834,9 +835,9 @@ void bumpdifficulty_04(void) { /* 47aa */
 			d0 = 0;
 		} else if (d1 <= 60) {
 			d0 = 0;
-		} else if (d1 <= 0x50) {
+		} else if (d1 <= 80) {
 			d0 = 1;
-		} else if (d1 <= 0x5a ) {
+		} else if (d1 <= 90 ) {
 			d0 = 2;
 		} else {
 			d0 = 3;

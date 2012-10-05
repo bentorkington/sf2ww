@@ -104,13 +104,7 @@ struct UserData_Act36 {		/* ScreenWobble */
 };
 
 struct UserData_Act3b {
-	union tag_3b_0080 {
-		struct tag_3b_0080_split {
-			u8	msb;		// XXX ENDIAN
-			u8	lsb;
-		} split;
-		u16 full;
-	} x0080;
+	DUAL x0080;
 	u16 x0082;
 	
 };

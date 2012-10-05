@@ -10,8 +10,8 @@
 #define IMAGE_ATTR	0x8000		/* images are in tile,attr pairs */
 
 // where did we get this from?
-#define TICKS_PER_SECOND  40		/* 40 decimal */
-
+#define TICKS_PER_SECOND  60
+#define SF2_GAME_TICKS	  40
 
 #define SCREEN_WIDTH   384
 #define SCREEN_HEIGHT  256        /* only 224, 0xe0 according to MAME */
@@ -32,11 +32,12 @@
 #define ENERGY_START	0x90 
 #define VS_SCREEN_DELAY 180 /* ticks */
 
-
-#define STRENGTH_LOW		0
-#define STRENGTH_MED		2
-#define STRENGTH_HIGH		4
-
+typedef enum {
+	STRENGTH_LOW		= 0,
+	STRENGTH_MED		= 2,
+	STRENGTH_HIGH		= 4,
+} FBStrength;
+	
 // XXX these are toward and away
 #define STEP_RIGHT		1		
 #define STEP_LEFT		0
@@ -80,10 +81,6 @@
 //// Action library ids
 ///////////////////////////////////
 
-#pragma mark Projectile Library
-#define SF2PROJ_HADOUKEN		 0x0
-#define SF2PROJ_SONICBOOM		 0x3
-
 
 #pragma mark Actor Library
 #define SF2ACT_0X02				 0x2	// China deco bicycle people
@@ -120,11 +117,15 @@
 #define SF2ACT_0X40				0x40
 #define SF2ACT_SPEAK_WINLOSE    0x48
 
+typedef enum {
+	VERSION_JAP,
+	VERSION_USA,
+	VERSION_ETC,
+} FBVersion;
 
-
-#define VERSION_JAP 0
-#define VERISON_ETC 2
-#define VERSION_USA 1
+//#define VERSION_JAP 0
+//#define VERISON_ETC 2
+//#define VERSION_USA 1
 
 #define SCROLL_NONE	-1
 #define SCROLL_2	0
@@ -167,5 +168,5 @@ enum sf2stages {
 	STAGE_UNKNOWN2,
 	STAGE_UNKNOWN3,
 };
-
+typedef enum sf2stages FBStageID;
 #endif /* INC_SF2CONST */

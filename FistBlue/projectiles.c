@@ -48,15 +48,15 @@ void process_projectiles(void) {			/* 22aca */
 	for(i=0; i<8; i++) {
 		if(g.Objects1[i].exists == 0) {continue;}
 		switch (g.Objects1[i].Sel) {
-			case 0: projsm_fireball(&g.Objects1[i], d7); break; /* Hadouken */
-			case 1: proc_yogafire(&g.Objects1[i], d7);   break;	/* Yoga Fire */
-			case 2: sub_23508(&g.Objects1[i],d7);        break; /* Yoga Flame */
-			case 3:	projsm_fireball(&g.Objects1[i], d7); break;	/* Sonic Boom */
-			case 4: projsm_fireball(&g.Objects1[i], d7); break;	/* Tiger */
-			case 5: action_207f0(&g.Objects1[i], d7);    break;		
+			case SF2_PROJ_HADOUKEN:  projsm_fireball(&g.Objects1[i], d7); break; 
+			case SF2_PROJ_YOGAFIRE:  proc_yogafire(&g.Objects1[i], d7);   break;
+			case SF2_PROJ_YOGAFLAME: sub_23508(&g.Objects1[i],d7);        break;
+			case SF2_PROJ_SONICBOOM: projsm_fireball(&g.Objects1[i], d7); break;
+			case SF2_PROJ_TIGER:	 projsm_fireball(&g.Objects1[i], d7); break;
+			case SF2_PROJ_X05:		 action_207f0(&g.Objects1[i], d7);    break;		
 			FATALDEFAULT;
 		}
-		d7--;
+		--d7;
 	}
 }
 
@@ -115,8 +115,8 @@ static void proc_yogafire(Object *obj, short d7) {  /* 0x23426 */
 			obj->Energy		= 0x100;
 			obj->HitBoxes	= &data_24932;
 			obj->MoreBoxes	= data_24976;
-			obj->XPI		+= obj->Flip ? -0x38 : 0x38;
-			obj->YPI		+= 0x28;
+			obj->XPI		+= obj->Flip ? 0x38 : -0x38;
+			obj->YPI		+= 40;
 			obj->Path = data_2349a[obj->SubSel/2];
 			setaction_list(obj, data_23612, obj->SubSel >> 1);
 			break;
@@ -224,16 +224,16 @@ static void sub_23508(Object *obj, short d7) {	/* Yoga Flame */
 	switch (obj->mode0) {
 		case 0:
 			NEXT(obj->mode0) 
-			obj->flag1 = TRUE;
-			obj->Step = obj->Flip;
-			obj->Step ^= 1;
-			obj->x0024 = TRUE;				/* Is a threat */
-			obj->Energy = 0x100;
-			obj->HitBoxes = &data_24996;
-			obj->MoreBoxes = data_249da;
-			obj->XPI += obj->Flip ? -0x48 : 0x48 ;
-			obj->YPI += 0x1e;
-			setaction_list(obj, data_23b6e, obj->SubSel << 1);
+			obj->flag1		= TRUE;
+			obj->Step		= obj->Flip;
+			obj->Step	   ^= 1;
+			obj->x0024		= TRUE;				/* Is a threat */
+			obj->Energy		= 0x100;
+			obj->HitBoxes	= &data_24996;
+			obj->MoreBoxes	= data_249da;
+			obj->XPI	   += obj->Flip ? -0x48 : 0x48 ;
+			obj->YPI	   += 0x1e;
+			setaction_list(obj, data_23b6e, obj->SubSel >> 1);
 			break;
 		case 2:
 			CDCheckProjectile(obj, d7);

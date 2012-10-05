@@ -849,7 +849,6 @@ static void syslib_20(void) {		//5410 increase player score
 
 
 static void aTextRoutine(Task *task) {		// 4f78
-
 	const static void (*textRoutines[])(int param) = {		// 4f8a
 		showtextbank0,			// 5602
 		showtextbank1,			// 568c
@@ -858,13 +857,14 @@ static void aTextRoutine(Task *task) {		// 4f78
 		showtextbank4,			// 58c0
 	};
 	
-    textRoutines[task->params.x0015] (task->params.Param1);
+    textRoutines[task->params.x0015] (task->params.Param0 & 0xff);
 }
 static void syslib_08 (void) {	// 4f3a Text Blinker, insert coin etc.
 	Task *task = &Exec.Tasks[Exec.CurrentTask];
 
 	task->params.x0014 = TRUE;					//byte
 	task->params.x0016 = task->params.Param1;	//byte
+	task->params.x0015 = task->params.Param2;
 	task->params.Param0 ^= 0x80;			
 	
 	while (TRUE) {
@@ -971,7 +971,7 @@ static void sub_716a(Player *ply) {
 			index = 0x30;
 			cp = MakePointObj(104, 240);
 		}
-		OBJECT_DRAW_ID(index / 4, CP_X, CP_Y, TILE_BIGDIGIT + ply->ContinueSecs, 0x0);
+		OBJECT_DRAW_ID(index / 8, CP_X, CP_Y, TILE_BIGDIGIT + ply->ContinueSecs, 0x0);
 		/* both buffers */
 	}
 }

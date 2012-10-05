@@ -120,7 +120,7 @@ void init_fight_vars(void) {			/* 0x2b0c */
 	g.Player2.Continuing = FALSE;
 	g.ActiveHumans = (g.Player1.Human | g.Player1.x02ae) + ((g.Player2.Human | g.Player2.x02ae) * 2);
 	if(!g.OnBonusStage) {
-		sub_2c38();		/* disabled, stops identical fighters */
+		sub_2c38();
 	}
 	g.Player2.OpponentID = g.Player1.FighterID;
 	g.Player1.OpponentID = g.Player2.FighterID;
@@ -1118,10 +1118,10 @@ static void sub_52bc(u16 *gp, short x, short y, char c) {
 }
 static void _LBPrintTicker(u32 *coords, u8 a) {		//52ac print time remaining
 	u16 *gp;
-	OBJ_CURSOR_SET(gp, 28);
+	OBJ_CURSOR_SET(gp, 14);
 	sub_52bc(gp, *coords >> 16, *coords & 0xffff,a >> 4);
 	INC_GFX_CURSOR(coords, 16, 0);
-	OBJ_CURSOR_SET(gp, 29);
+	OBJ_CURSOR_SET(gp, 15);
 	sub_52bc(gp, *coords >> 16, *coords & 0xffff,a );
 }
 void sub_528a() {		/* print number of barrels remaining */
@@ -1339,7 +1339,7 @@ static void proc_round_timer(void) {	/* 905c process round timers */
 	if(g.Debug && (g.JPCost & JP_DBGNOTICK)) { return; }
 	if(--g.TimeRemainTicks) {return;}
 	
-	g.TimeRemainTicks = TICKS_PER_SECOND;
+	g.TimeRemainTicks = SF2_GAME_TICKS;		// not real seconds, two thirds of a second.
 	if (g.TimeRemainBCD > 0) {				/* buggered slightly from original code */
 		sub_bcd_8(1, &g.TimeRemainBCD);
 		sub_529c();							/* update time remaining display */

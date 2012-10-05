@@ -43,7 +43,7 @@ struct UserData_Dhalsim {
 	signed char x0082;
 	DM			yogafire;		//0090
 	DM			yogaflame;		//0098
-	signed char move_is_flame;			//00c0 
+	signed char move_is_flame;	//00c0 
 	signed char timer;			// 00c2
 	short		x00d0;
 	int			x00f0;
@@ -101,7 +101,7 @@ static void sub_32328(Player *ply) {		// 32328 stand
 	}
 	ply->StandSquat = PLY_STAND;
 }	
-static int sub_32512(Player *ply) {		// 32512
+static int dhalsim_luckymove(Player *ply) {		// 32512
 	UD *ud = (UD *)&ply->UserData;
 
 	if (ply->Projectile == NULL && ply->PunchKick == PLY_PUNCHING) {
@@ -380,7 +380,7 @@ void PSCBAttackDhalsim(Player *ply) {			// 3258e
 					if (ply->mode2 == 0) {
 						random_damage_adjust_2(ply, 0x25);
 						random_damage_adjust_2(ply, 0xc);	
-						ply->LocalTimer = 0xb4;
+						ply->LocalTimer = 3 * TICKS_PER_SECOND;
 						setstatus4(ply, 0x50);
 					} else {
 						if (--ply->LocalTimer == 0) {
@@ -391,7 +391,7 @@ void PSCBAttackDhalsim(Player *ply) {			// 3258e
 								ply_grip_release(ply, ply->Flip);
 								sub_3262c(ply);
 							} else {
-								if (sub_3fee(ply)) {
+								if (ply_opp_has_struggled_2(ply)) {
 									ply->Timer = 1;
 								}
 								if (AF2) {
@@ -468,7 +468,7 @@ static int dhalsim_comp_check_finish_yogafire(Player *ply) {		//32bba
 static void dhalsim_comp_start_proj_yogaflame(Player *ply) {		// 32be4
 	Object *obj;
 
-	if (AF1 == 1) {
+	if (AF2 == 1) {
 		NEXT(ply->mode2);
 		if (obj=AllocProjectile()) {
 			obj->exists = TRUE;
@@ -534,7 +534,7 @@ int PLCBStandDhalsim(Player *ply) {		// 32302
 		++g.HumanMoveCnt;
 		decode_buttons(ply, buttons);
 		if (LBRareChance()) {
-			return sub_32512(ply);
+			return dhalsim_luckymove(ply);
 		} else if (sub_32386(ply)) {
 			ply->StandSquat = PLY_THROW;
 			ud->timer = 0;
@@ -555,7 +555,7 @@ int PLCBCrouchDhalsim(Player *ply) {
 		decode_buttons(ply, buttons);
 		ply->StandSquat = PLY_CROUCH;
 		if (LBRareChance()) {
-			return sub_32512(ply);
+			return dhalsim_luckymove(ply);
 		} else {
 			sub_32414(ply);
 			return 1;
@@ -661,7 +661,7 @@ void PSCBVictoryDhalsim(Player *ply) {		//328a8
 		if (ply->x02e6 == 0) {
 			if (ud->x0082 == 0) {
 				ud->x0082 += 2;
-				ply->LocalTimer = 60;
+				ply->LocalTimer = 1 * TICKS_PER_SECOND;
 			} else {
 				if (--ply->LocalTimer == 0) {
 					NEXT(ply->mode3);
@@ -754,7 +754,10 @@ static void dhalsim_comp_animate_exit_crouch(Player *ply) {			// 35e28
 		ply->AISigAttack = FALSE;
 		ply->AIVolley    = FALSE;
 		exit_to_compdisp1(ply);
-	}	
+	} else {
+		PLAYERTICK;
+	}
+
 }
 static void dhalsim_comp_attack_crouch(Player *ply) {			//35de0
 	UD *ud = (UD *)ply->UserData;
@@ -823,11 +826,7 @@ static void dhalsim_comp_attack_crouch(Player *ply) {			//35de0
 							}
 							break;
 						case 6:
-							if (AF1) {
-								ply->AISigAttack = FALSE;
-								ply->AIVolley    = FALSE;
-								exit_to_compdisp1(ply);
-							}
+							dhalsim_comp_animate_exit_crouch(ply);
 							break;
 						FATALDEFAULT;
 					}
@@ -840,8 +839,8 @@ static void dhalsim_comp_attack_crouch(Player *ply) {			//35de0
 }
 static void dhalsim_comp_trajectory(Player *ply) {		//36020
 	UD *ud = (UD *)ply->UserData;
-	ply->X.full += ply->Path[ud->x0080].x.full;
-	ply->Y.full += ply->Path[ud->x0080].y.full;
+	ply->X.full += (ply->Path[ud->x0080].x.full << 8);
+	ply->Y.full += (ply->Path[ud->x0080].y.full << 8);
 }
 static void dhalsim_comp_attack_jump(Player *ply) {		// 35ffa
 	ply->mode2 = 2;
@@ -886,7 +885,7 @@ static void dhalsim_comp_attack_throw(Player *ply) {			// 36078
 		if (ply->mode2 == 0) {
 			random_damage_adjust_2(ply, 0x25);
 			random_damage_adjust_1(ply, 12, 9);
-			ply->LocalTimer = 0xb4;
+			ply->LocalTimer = 3 * TICKS_PER_SECOND;
 			setstatus4(ply, 0x50);
 		} else {
 			if (--ply->LocalTimer == 0) {
@@ -897,7 +896,7 @@ static void dhalsim_comp_attack_throw(Player *ply) {			// 36078
 					ply_grip_release(ply, ply->Flip);
 					dhalsim_comp_exit_stand(ply);
 				} else  {
-					if (sub_3fee(ply)) {
+					if (ply_opp_has_struggled_2(ply)) {
 						ply->Timer = 1;
 					}
 					if (AF2) {
@@ -1007,7 +1006,7 @@ static short dhalsim_attack_spearhead(Player *ply, int move) {		// 35f7e
 	return MINUS_ONE;
 }
 short sub_35fe6(Player *ply) {
-	if(ply->VelY.full + 0x100 < 0x200) {
+	if(ply->VelY.full > -0x100 && ply->VelY.full <= 0x100) {
 		return dhalsim_attack_spearhead(ply, 5);
 	}
 	return 0;

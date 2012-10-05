@@ -139,6 +139,7 @@ static void PSMakeDizzy(Player *ply) {			/* 2a652 make dizzy */
 			break;
 		default:
 			ply->ReactMode = RM_FIREBALLDOWN;
+			break;
 	}
 }
 static void PSDizzyRandomise(Player *ply) {	        	/* 2a638 4 callers */
@@ -218,8 +219,8 @@ static void PSPlayerDamage(Player *ply, short energy){		//2a460
 	ply->Invincible   = FALSE;
 	ply->BlockStun    = FALSE;
 	
-	if(ply->DizzyFall == FALSE && ply->ReactMode == RM_HURRICANE 
-						|| ply->ReactMode == RM_MULTIHIT) {
+	if(ply->DizzyFall == FALSE && (ply->ReactMode == RM_HURRICANE 
+						        || ply->ReactMode == RM_MULTIHIT)) {
 		ply->Invincible = TRUE;
 	}
 	if(ply->VegaHasClaw) {
@@ -968,7 +969,7 @@ void proc_plstat_victory(Player *ply) {		//296f2
 				case 4:
 					if (g.FlagTimeWarp == 0) {
 						NEXT(ply->mode2);
-						ply->LocalTimer = 0x28;
+						ply->LocalTimer = 40;
 					}
 					_PSPlatformCheck(ply);
 					break;
@@ -1324,7 +1325,7 @@ void SMTumble(Player *ply) {		//2a052 was downandout()
 				}
 			}
 			CATrajectory((Object *)ply);
-			if((ply->PlatformFallDir != 0 || ply->BoundCheck != 0) && ply->GroundSoundDisa == 0 ) {
+			if((ply->PlatformFallDir != 0 || ply->BoundCheck != 0) && ply->GroundSoundDisa == FALSE ) {
 				queuesound(SOUND_GROUND_THUMP);
 				ply->ReactTimer = 12;              
 				ply->VelX.full  = 0;

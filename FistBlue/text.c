@@ -182,6 +182,7 @@ void showtextbank0(char sel) {		// 5602 Scroll1
 	const u8 *data = data_8d2ac[sel & 0x7f];
 	u16 *gfx_p;
 	u8 cx,cy;
+	data += 2;
 	
 	cx = *data++;
 	cy = *data++;
@@ -227,7 +228,9 @@ void showtextbank1(char sel) {		// 568c draw text in OBJECT
 	const u8 *data = data_8d2ac[sel & 0x7f];
 	
 	u16 *gfx_p;
-	OBJ_CURSOR_SET(gfx_p, *data++);
+	
+	OBJ_CURSOR_SET(gfx_p, ((data[0] << 8) + data[1]) / 8);
+	data += 2;
 	u8 *string = (u8 *)data;
 	char ch;
 	short x,y,attr;

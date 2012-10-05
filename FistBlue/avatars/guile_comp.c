@@ -74,7 +74,7 @@ static void guile_comp_punch(Player *ply) {	// 33b86
 							return;
 						}
 					}
-					ply->Move = ply->OppXDist >= 0x28 ? 3 : 2;
+					ply->Move = ply->OppXDist >= 40 ? 3 : 2;
 					quirkysound(1);
 					break;
 				case 4:
@@ -209,7 +209,7 @@ static void guile_comp_kick(Player *ply) {		//33db8
 					if (ply->CompDoThrow && ply->OppXDist <= 0x47) {	// XXX check logic
 						ply->Move = 6;
 					} else {
-						ply->Move = ply->OppXDist >= 0x28 ? 4 : 3;
+						ply->Move = ply->OppXDist >= 40 ? 4 : 3;
 					}
 					quirkysound(2);
 					break;

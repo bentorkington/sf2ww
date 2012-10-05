@@ -311,7 +311,7 @@ static void sub_dac2(Player *ply) {
 	ply->x01ad = ply->x01ae ? TRUE : FALSE;		/* dade inlined */
 	if (ply->x0142) {
 		ply->OnPlatform = TRUE;
-		ply->x0142 = FALSE;
+		ply->x0142      = FALSE;
 	} else {
 		ply->OnPlatform = FALSE;
 	}
@@ -1691,8 +1691,8 @@ static void action_1d(Object *obj) {
 
 void action_1ab8a() {		/* 1ab8a */
 	int i;
-	for (i=0; i<16; i++) {
-		OBJECT_DRAW_ID(128 + i, 0, 0, 0, 0);
+	for (i=0; i<8; i++) {
+		OBJECT_DRAW_ID(64 + i, 0, 0, 0, 0);
 	}
 }
 
@@ -2215,7 +2215,7 @@ static void skyskraperanim_00(Object *obj) {		// 1d176
 					if (--g.x8a75 == 0) {
 						NEXT(obj->mode1);
 						g.x8a74   = -1;
-						g.x8a75   = 60;
+						g.x8a75   = 1 * TICKS_PER_SECOND;
 						obj->XPI  = 0xb0;
 						obj->YPI  = 0x610;
 						obj->Pool = 4;
@@ -2705,7 +2705,7 @@ static void action_38(Object *obj) {		// 1fd50
 				g.TimeWarpSlowdown  = 3;		/* slowdown factor */
 				g.TimeWarpSlowdown2 = 3;		/* reloaded from here */
 			} else {
-				g.TimeWarpTimer     = 60;
+				g.TimeWarpTimer     = 1 * TICKS_PER_SECOND;
 				g.TimeWarpSlowdown  = 2;
 				g.TimeWarpSlowdown2 = 2;
 			}
@@ -2766,7 +2766,7 @@ static void action_3a(Object *obj) {		// 201a0
 				}
 				obj->VelX.full = 0x0100;
 			} else {
-				obj->XPI -= 0x28;
+				obj->XPI -= 40;
 				if (obj->Owner->Flip) {
 					obj->XPI += 0x10;
 				}
@@ -2782,9 +2782,9 @@ static void action_3a(Object *obj) {		// 201a0
 			switch (obj->mode1) {
 				case 0:
 					CATrajectory(obj);
-					if (obj->YPI <= 0x28) {
+					if (obj->YPI <= 40) {
 						NEXT(obj->mode1);
-						obj->YPI = 0x28;
+						obj->YPI = 40;
 					}
 					if (obj->AnimFlags & 0xff) {
 						actiontick(obj);
@@ -2953,7 +2953,7 @@ static void action_3b(Object *obj) {	//203ba
 					break;
 				case 2:
 					if (g.CanSpeedUpScoreCount) {
-						if (ud->x0080.split.msb) {
+						if (ud->x0080.part.p0) {
 							sub_bcd_16(1, &ud->x0080.full);	// XXX
 							ud->x0080.full &= 0xffff0000;
 							ud->x0080.full |= 0x00000001;

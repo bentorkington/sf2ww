@@ -30,26 +30,24 @@
 extern Game g;
 typedef struct UserData_Guile UD;
 
-static short _GuileMidPunch(Player *ply) {   /* 2f42c */
+static void _GuileMidPunch(Player *ply) {   /* 2f42c */
 	/* 2f42c */
 	ply->Move = 3;
-	if (ply->OppXDist >= 0x28) {
+	if (ply->OppXDist >= 40) {
 		ply->Move = 3;
 	} else {
 		ply->Move = 2;
 	}
 	quirkysound(1);
-	return 1;	
 }
-static short _GuileBigPunch(Player *ply) {   /* 2f47a */
+static void _GuileBigPunch(Player *ply) {   /* 2f47a */
 	ply->Move = 3;
-	if (ply->OppXDist >= 0x3c) {
+	if (ply->OppXDist >= 60) {
 		ply->Move = 5;
 	} else {
 		ply->Move = 4;
 	}
 	quirkysound(2);
-	return 1;	
 }
 
 static short GuileStandMove(Player *ply) {		/* 2f3b2*/
@@ -59,40 +57,37 @@ static short GuileStandMove(Player *ply) {		/* 2f3b2*/
 	switch (ply->PunchKick) {
 		case PLY_PUNCHING:
 			switch (ply->ButtonStrength) {
-				case 0:
+				case STRENGTH_LOW:
 					if (ply->OppXDist >= 20) {
 						ply->Move = 1;
 					} else {
 						ply->Move = 0;
 					}
 					quirkysound(0);
-					return 1;
 					break;
-				case 2:
+				case STRENGTH_MED:
 					if ((ply->JoyDecode.full & 0x000b) == 0) {
-						return _GuileMidPunch(ply);
+						_GuileMidPunch(ply);
 					} else {
 						PLY_THROW_SET(0xffe8, 0x0035, 0x0018, 0x0010);
 						if (throwvalid(ply)) {
 							/* Twist-throw, or Invisible Throw bug */
 							ply->Move = 6;
-							return 1;
 						} else {
-							return _GuileMidPunch(ply);
+							_GuileMidPunch(ply);
 						}
 					}
 					break;
-				case 4:
+				case STRENGTH_HIGH:
 					if ((ply->JoyDecode.full & 0x000b) == 0) {
-						return _GuileBigPunch(ply);
+						_GuileBigPunch(ply);
 					} else {
 						PLY_THROW_SET(0xffe8, 0x0035, 0x0018, 0x0010);
 						if (throwvalid(ply)) {
 							/* Backbreaker throw */
 							ply->Move = 7;
-							return 1;
 						} else {
-							return _GuileBigPunch(ply);
+							_GuileBigPunch(ply);
 						}
 					}
 					break;
@@ -101,12 +96,11 @@ static short GuileStandMove(Player *ply) {		/* 2f3b2*/
 			break;
 		case PLY_KICKING:
 			switch (ply->ButtonStrength) {
-				case 0:
+				case STRENGTH_LOW:
 					ply->Move = 0;
 					quirkysound(0);
-					return 1;
 					break;
-				case 2:
+				case STRENGTH_MED:
 					if (ply->JoyDecode.full == 0 || ply->OppXDist >= 0x33) {
 						if (ply->OppXDist >= 0x26) {
 							ply->Move = 2;
@@ -114,14 +108,12 @@ static short GuileStandMove(Player *ply) {		/* 2f3b2*/
 							ply->Move = 1;
 						}
 						quirkysound(1);
-						return 1;
 					} else {
 						ply->Move = 5;
 						quirkysound(1);
-						return 1;
 					}
 					break;
-				case 4:
+				case STRENGTH_HIGH:
 					if (ply->JoyDecode.full == 0 || ply->OppXDist >= 0x47) {
 						if (ply->OppXDist >= 40) {
 							ply->Move = 4;
@@ -129,11 +121,9 @@ static short GuileStandMove(Player *ply) {		/* 2f3b2*/
 							ply->Move = 3;
 						}
 						quirkysound(2);
-						return 1;
 					} else {
 						ply->Move = 6;
 						quirkysound(2);
-						return 1;
 					}
 					break;
 					FATALDEFAULT;
@@ -141,7 +131,7 @@ static short GuileStandMove(Player *ply) {		/* 2f3b2*/
 			break;
 			FATALDEFAULT;
 	}
-	return 0;
+	return 1;
 }
 static short GuileCrouchMove(Player *ply) {		/* 2f53e */
 	g.HumanMoveCnt++;

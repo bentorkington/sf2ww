@@ -186,7 +186,7 @@ static void sub_33186(Player *ply) {
 				return;
 			} else if (AF2) {
 				NEXT(ply->mode3);
-				ud->x0092 = 0x28;		/* byte */
+				ud->x0092 = 40;		/* byte */
 				ply->VelY.full = 0;
 				ud->x008a = 0;
 				ply->Airborne = AIR_JUMPING;
@@ -276,7 +276,7 @@ static void sub_33272(Player *ply) {
 				return;
 			} else {
 				if(ply_opp_has_struggled_free(ply)) { sub_3330a(ply); return; }
-				if (sub_3fee(ply)) { ply->Timer = 1;}
+				if (ply_opp_has_struggled_2(ply)) { ply->Timer = 1;}
 				if (AF2 == 0) {
 					PLAYERTICK;
 					return;

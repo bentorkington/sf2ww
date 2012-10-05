@@ -313,7 +313,7 @@ short PLCBJumpEHonda(Player *ply) {		//2de7c
 	}
 	return 0;
 }
-static void sub_2ddac(Player *ply) {
+static void ehonda_sm_throw(Player *ply) {		// 2ddac
 	UD *ud=(UD *)&ply->UserData;
 	switch (ply->mode2) {
 		case 0:
@@ -350,7 +350,7 @@ static void sub_2dda2(Player *ply) {
 	ud->x008a = 0;
 	ply_exit_stand(ply);
 }
-static void sub_2dd08(Player *ply) {	//2dd08
+static void ehonda_sm_grips(Player *ply) {	//2dd08
 	switch (ply->mode2) {
 		case 0:
 			NEXT(ply->mode2);
@@ -364,7 +364,7 @@ static void sub_2dd08(Player *ply) {	//2dd08
 				ply_grip_release(ply, ply->Flip);
 				sub_2dda2(ply);
 			} else {
-				if (sub_3fee(ply)) {
+				if (ply_opp_has_struggled_2(ply)) {
 					ply->Timer = 1;
 				}
 				if (AF2==2) {
@@ -386,7 +386,7 @@ static void sub_2dd08(Player *ply) {	//2dd08
 			FATALDEFAULT;
 	}
 }
-static void sub_2daf6(Player *ply) {
+static void ehonda_exit(Player *ply) {		// 2daf6
 	UD *ud=(UD *)&ply->UserData;
 	
 	ud->x008a = 0;
@@ -398,24 +398,24 @@ static void sub_2daf6(Player *ply) {
 	}
 }	
 
-static void sub_2dad8(Player *ply) {
+static void ehonda_anim_check_free_oink(Player *ply) {			// 2dad8
 	UD *ud=(UD *)&ply->UserData;
 	
 	if(ud->x0095 != 5) {
 		ud->x0095++;
-		if (_EHondaCheckFreeOink(ply)) {	/* check for a free oink */
-			_EHondaStartOink(ply);		/* oink ? */
+		if (_EHondaCheckFreeOink(ply)) {	
+			_EHondaStartOink(ply);		
 			return;
 		}
 	}
 	if (AF1) {
-		sub_2daf6(ply);
+		ehonda_exit(ply);
 	} else {
 		PLAYERTICK;
 	}
 }	
 
-static void sub_2daae(Player *ply) {
+static void ehonda_volley(Player *ply) {		// 2daae
 	UD *ud=(UD *)&ply->UserData;
 	if (AF2) {
 		if (PSSetNextAction(ply)) {
@@ -426,14 +426,14 @@ static void sub_2daae(Player *ply) {
 			}
 		}
 	} 
-	sub_2dad8(ply);
+	ehonda_anim_check_free_oink(ply);
 }
 static void sub_2dcea(Player *ply) {
 	if (AF1) {
 		if ((ply->JoyDecode.full & 4) == 0) {
 			ply->StandSquat = 0;
 		}
-		sub_2daf6(ply);
+		ehonda_exit(ply);
 	} else {
 		PLAYERTICK;
 	}
@@ -463,7 +463,7 @@ static void _EHondaSMHandslap(Player *ply) {		// 2dc3a
 				sub_2dcea(ply);
 				return;
 			} else if (AF2 == 0x60 && ply->Timer == 1) {
-				soundsting(SOUND_HUA);		/* Hua */
+				soundsting(SOUND_HUA);
 			}
 			if (g.RoundResult) {
 				NEXT(ply->mode2);
@@ -602,11 +602,11 @@ void PSCBAttackEHonda(Player *ply) {		/* 2da12 attack callback */
 			if (EH.d1) {
 				sub_2e116(ply, EH.d0);
 			} else if (AF2 == 0) {
-				sub_2dad8(ply);
+				ehonda_anim_check_free_oink(ply);
 			} else if (PSSetNextAction(ply)==0) {
-				sub_2dad8(ply);
+				ehonda_anim_check_free_oink(ply);
 			} else if (_ButtonMask(ply, ud->throwbuttons & BUTTON_MASK)) {
-				sub_2dad8(ply);
+				ehonda_anim_check_free_oink(ply);
 			} else {
 				ud->volley = TRUE;
 				plstat_do_nextaction(ply);
@@ -614,23 +614,21 @@ void PSCBAttackEHonda(Player *ply) {		/* 2da12 attack callback */
 			break;
 		case 4:	case 6: case 8: case 0xa: case 0xc:
 		case 0x10: case 0x12: case 0x14: case 0x16:
-		case 0x18: case 0x1a:
-			sub_2dad8(ply);
+		case 0x18: case 0x1a: case 0x20:
+			ehonda_anim_check_free_oink(ply);
 			break;
 		case 0xe:	case 0x40:
-			sub_2dd08(ply);
+			ehonda_sm_grips(ply);
 			break;
 		case 0x1c:	case 0x1e:
-			sub_2daae(ply);
-			break;
-		case 0x20:
-			sub_2dad8(ply);
+			ehonda_volley(ply);
 			break;
 		case 0x22: case 0x24: case 0x26: case 0x28:
 		case 0x2a: case 0x2c: case 0x2e: case 0x30:
+			/* do nothing */
 			break;
 		case 0x32:
-			sub_2ddac(ply);
+			ehonda_sm_throw(ply);
 			break;
 		case 0x34:	case 0x36:	case 0x38:
 			_EHondaSMHandslap(ply);
@@ -692,7 +690,7 @@ static void _EHondaSMCheckOink(Player *ply) {		// 2df74
 			} else {
 				if (--ud->oink_timer == 0) {
 					ud->oink_mode = 0;
-					ud->oink_timer = 60;
+					ud->oink_timer = 1 * TICKS_PER_SECOND;
 				}
 			}
 			break;
@@ -701,7 +699,7 @@ static void _EHondaSMCheckOink(Player *ply) {		// 2df74
 				ud->oink_timer = 4;
 				if (--ud->oink_potential == 0) {
 					ud->oink_mode = 0;
-					ud->oink_timer = 60;
+					ud->oink_timer = 1 * TICKS_PER_SECOND;
 				}
 			}
 			break;

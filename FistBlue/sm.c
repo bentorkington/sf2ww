@@ -52,7 +52,7 @@ void SMFreePlay(void){		// 6cc8
 		if (g.x0302) {
 			g.x0302 = FALSE;
 		}
-		if (buttons & 0x20) {
+		if (buttons & IPT_START2) {
 			if (g.FreePlay) {
 				g.x031e = 1;
 				startgame(BOTH_HUMAN);
@@ -75,7 +75,7 @@ void SMFreePlay(void){		// 6cc8
 				}
 			}
 		} 
-		if (buttons & 0x10) {
+		if (buttons & IPT_START1) {
 			if (g.FreePlay) {
 				g.x031e = 0;
 				startgame(ONLY_P1);
@@ -116,8 +116,8 @@ static void game_mode_26(void) {	// 7aea
 	/* XXX */
 }
 static void sub_7db6() {
-	g.mode1 = 0xc;
-	g.mode2 = 0x4;
+	g.mode1 = 12;
+	g.mode2 = 4;
 	g.mode3 = 0;
 }
 static void sub_7d5c(void) {
@@ -191,7 +191,7 @@ static void game_mode_28(void) {	// 7af0
 		case 4:
 			if (g.x02e0==0) {
 				NEXT(g.mode2)
-				g.timer3 = 0xb4;
+				g.timer3 = 3 * TICKS_PER_SECOND;
 			}
 			break;
 		case 6:
@@ -324,7 +324,7 @@ static void sub_7dca(void) {		// 7dca game mode 2,A
 		case 4:
 			if (g.x09fe != 2) {
 				NEXT(g.mode2);
-				g.timer3 = 150;
+				g.timer3 = 3.75 * TICKS_PER_SECOND;
 				print_libtextgfx(GAME_OVER);
 				soundsting(SOUND_GAME_OVER);
 			}
@@ -441,7 +441,7 @@ static void draw_world_map(void) {		//856c mode 2,4,2
 		case 0:
 			NEXT(g.mode3);
 			DEBUG_SM("world map");
-			g.timer4			= 60;
+			g.timer4			= 1 * TICKS_PER_SECOND;
 			g.Pause_9e1			= 0;
 			g.NewChallengerWait = FALSE;
 			g.CPS.DispEna		= 0x12da;
@@ -488,7 +488,7 @@ static void draw_world_map(void) {		//856c mode 2,4,2
 				case 2:
 					if (g.Pause_9e1 < 0) {
 						NEXT(g.mode4);	
-						g.timer3 = 60;
+						g.timer3 = 1 * TICKS_PER_SECOND;
 					}
 					check_if_new_player();
 					break;
@@ -645,7 +645,7 @@ static void gamemode_init_round (void) {
 		case 4:
 			NEXT(g.mode3);
 			g.TimeRemainBCD   = 0x99;   
-			g.TimeRemainTicks = 0x28;
+			g.TimeRemainTicks = 40;
 			
 			if(g.OnBonusStage) {
 				g.TimeRemainBCD   = data_BonusTimes[g.CurrentStage - 0xc][0];
@@ -721,7 +721,7 @@ static void SM_game_postanim_8(void) {
 			g.CanSpeedUpScoreCount = FALSE;		/* u8 */
 			g.x8ab2 = 0;			/* u16 */
 			if(g.HumanWinner == 0) {
-				g.timer4 = 0xb4;
+				g.timer4 = 3 * TICKS_PER_SECOND;
 			}
 			break;
 		case 2:
@@ -782,7 +782,7 @@ void gamemode_postfightanim (void) {
                 if(g.CurrentStage != 0xd && g.TimeOut ) {  /* barrels */
                     g.mode3 += 2;
                     g.x0ae7  = TRUE;
-                    g.timer3 = 0xb4;
+                    g.timer3 = 3 * TICKS_PER_SECOND;
                     print_libtextgfx(TIME_OVER);
                 } else {
                     g.mode3  = 4;
@@ -872,7 +872,7 @@ void gamemode_postfightanim (void) {
 									obj->SubSel = g.Player2.FighterID;
 								}
 								NEXT(g.mode4);
-								g.timer3 = 0x3c;
+								g.timer3 = 1 * TICKS_PER_SECOND;
 								g.KillAct48 = FALSE;
 							}
 						} else {
@@ -907,7 +907,7 @@ void gamemode_postfightanim (void) {
 						/* 8c56 */
 						if (g.Pause_9e1) {
 							NEXT(g.mode4);
-							g.timer4 = 0x3c;
+							g.timer4 = 1 * TICKS_PER_SECOND;
 						}
 						break;
 					case 10:
@@ -949,7 +949,7 @@ void gamemode_postfightanim (void) {
 				/* 88a8 */
 				if(g.RoundResult < 0) {
 					g.mode3 += 2;
-					g.timer3 = 0xb4;
+					g.timer3 = 3 * TICKS_PER_SECOND;
 					if(g.TimeResult<0) {
 						print_libtextgfx(DOUBLE_KO);	
 					} else {
@@ -958,7 +958,7 @@ void gamemode_postfightanim (void) {
 				} else {
 					/* 0x88ca */
 					g.mode3		+= 2;
-					g.timer3	= 60;
+					g.timer3	= 1 * TICKS_PER_SECOND;
 					g.KillAct48 = FALSE;
 					if(obj=AllocActor()) {
 						obj->exists = TRUE;
@@ -1134,7 +1134,7 @@ void gamemode_24I (void) {		// 7970
 			set_waitmode();
 			if(es.FadeBusy == 0) {
 				g.mode3 += 2;
-				g.timer3 = 0xb4;
+				g.timer3 = 3 * TICKS_PER_SECOND;
 			}
 			break;
 		case 12:
@@ -1175,8 +1175,6 @@ void task_initmachine (void) {		// 639e
 				g.InDemo = TRUE;
 				g.x02b8  = 0x100;
 				palette_scr1_19();
-				palette_macro(0x10);		// XXX only testing
-
 				check_coin_lockout();
 				break;
 			case 4:
@@ -1203,7 +1201,7 @@ void task_initmachine (void) {		// 639e
 				break;
 			case 0xa:
 				g.mode0 +=2;
-				g.timer0 = 60;
+				g.timer0 = 1 * TICKS_PER_SECOND;
 				QueueEffect(LC0_LIGHT_ALL_ENABLE,5);
 				g.TextEffectBusy = TRUE;
 				QueueEffect((short []){

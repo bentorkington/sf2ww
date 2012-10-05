@@ -62,14 +62,14 @@ static void check_for_new_players(void) {		// 843e
 		a4->Human           = TRUE;
 		g.NewPlayers        = 0;
 		g.PLSL.TimerCourse  = 0x20;	// 20 seconds BCD
-		g.PLSL.TimerFine	= 60;
+		g.PLSL.TimerFine	= 1 * TICKS_PER_SECOND;
 		queuesound(SOUND_CHALLENGER);
 	}
 }
 static void timer_tick(void) {		//8498
 	if (!g.PLSL.TimeExpired) {	
 		if (--g.PLSL.TimerFine == 0) {
-			g.PLSL.TimerFine = 60;
+			g.PLSL.TimerFine = 1 * TICKS_PER_SECOND;
 			if (g.PLSL.TimerCourse == 0) {
 				g.PLSL.TimeExpired = TRUE;
 			} else {
@@ -217,7 +217,7 @@ void SM_player_select(void) {		//7fc4
 					g.CPS.Scroll1X				= 0;
 					g.CPS.Scroll1Y				= 0x100;
 					g.PLSL.TimerCourse			= 32;
-					g.PLSL.TimerFine			= 60;		
+					g.PLSL.TimerFine			= 1 * TICKS_PER_SECOND;		
 					g.ActionLibSel				= 1;
 					gemu_setpalette(PALETTE_0C, data_80be);
 					soundsting(SOUND_PLAYERSELECTSCR);
@@ -363,7 +363,7 @@ void SM_player_select(void) {		//7fc4
 				case 2:
 					if (g.Pause_9e1 < 0) {
 						NEXT(g.PLSL.mode1);
-						g.PLSL.ExitDelay = 60;		//short
+						g.PLSL.ExitDelay = 1 * TICKS_PER_SECOND;		//short
 					}
 					proc_actions();
 					DSDrawAll_176();

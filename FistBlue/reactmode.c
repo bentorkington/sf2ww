@@ -166,7 +166,7 @@ void RM_SM_knockedout(Player *ply) {			// 29c4c
 			switch (ply->mode2) {
 				case 0:			/* 29d4c */
 					NEXT(ply->mode2);
-					ply->LocalTimer = 60;
+					ply->LocalTimer = 1 * TICKS_PER_SECOND;
 					CASetAnim1(ply, STATUS_ELECTROCUTED);	
 					_RMKOSound(ply);
 					break;
@@ -280,10 +280,12 @@ void react_to_attack(Player *ply) {							/* 0x28ed8 */
 			}
 			action_start_35(ply);
 			
-			if(ply->ReactMode == RM_VOMIT1) {
-				ActStartVomit(ply);         
-			} else if (ply->ReactMode == RM_VOMIT2) {
-				action_1e336(ply);     /* vomit / blood etc */
+			if (ply->ReactMode2 == 2) {
+				if(ply->ReactMode == RM_VOMIT1) {
+					ActStartVomit(ply);         
+				} else if (ply->ReactMode == RM_VOMIT2) {
+					action_1e336(ply);     /* vomit / blood etc */
+				}				
 			}
 			break;
 		case 2:
@@ -384,7 +386,7 @@ void RMFootSwept(Player *ply) {		/* 29178 */
 				if(--ply->ReactTimer) { return; }
 			}
 			CATrajectory((Object *)ply); 
-			if((ply->PlatformFallDir != 0 || ply->BoundCheck != 0) && ply->GroundSoundDisa == 0 ) {  
+			if((ply->PlatformFallDir != 0 || ply->BoundCheck != 0) && ply->GroundSoundDisa == FALSE ) {  
 				// we've hit a wall
 				queuesound(SOUND_GROUND_THUMP);
 				ply->ReactTimer = 12;               
@@ -440,16 +442,16 @@ static void sub_29426(Player *ply, short d6) {
 	}
 	PLAYERTICK;
 }
-void RMHitInAir(Player *ply) {			// for RM_HITINAIR
+void RMHitInAir(Player *ply) {			// 2933e 
     switch(ply->mode2) {
 		case 0:
 			NEXT(ply->mode2);
-			ply->Flip = ply->Direction;
-			ply->Flip ^= 1;
+			ply->mode3 = 0;
+			ply->Flip = ply->Direction ^ 1;
 			CASetAnim2(ply, STATUS_HIT_AIR, 0);
 			break;
 		case 2:
-			if(ply->Timer2) {ply->Timer2--; return; }
+			if(ply->Timer2) {--ply->Timer2; return; }
 			NEXT(ply->mode2);
 			ply->GroundSoundDisa = FALSE;
 			ply->ReactTimer   = 0;
@@ -469,21 +471,22 @@ void RMHitInAir(Player *ply) {			// for RM_HITINAIR
 				if(--ply->ReactTimer) { return; }
 			}
 			CATrajectory((Object *)ply);
-			if((ply->PlatformFallDir != 0 || ply->BoundCheck != 0) && ply->GroundSoundDisa == 0 ) { 
+			if((ply->PlatformFallDir || ply->BoundCheck) && ply->GroundSoundDisa == FALSE ) { 
 				ply->ReactTimer = 12;
 				ply->VelX.full  = 0;
-				/* some madness from the dump omitted here, take a look */
+				if (ply->VelY.full >= 0) {
+					ply->VelY.full = 0;
+				}
 			}
 			if(PLAYERGROUND) { 
+				ply->NoThrow_t       = data_292d4[RAND32];
+				ply->TimerInvincible = 120;
+				ply->Invincible      = FALSE;
+				
+				ply_exit_air(ply);				
+			} else {
 				sub_29426(ply, ply->PlatformFallDir);			/* handle pushback */
-				return; 
 			}
-			ply->NoThrow_t       = data_292d4[RAND32];
-			ply->TimerInvincible = 120;
-			ply->Invincible      = FALSE;
-			
-			ply_exit_air(ply);
-			
 			break;
 		FATALDEFAULT;
     }
@@ -492,7 +495,7 @@ void RMElectrocuted(Player *ply) {
     switch(ply->mode2) {    
     case 0:
         NEXT(ply->mode2);
-        ply->LocalTimer = 60;
+        ply->LocalTimer = 1 * TICKS_PER_SECOND;
         CASetAnim1(ply, STATUS_ELECTROCUTED);
         break;
     case 2:
@@ -797,7 +800,7 @@ static void _RMTumbleSM3(Player *ply) {		/* 2a21a tumble sm */
 				return;
 			} 
 			CATrajectory((Object *)ply);
-			if((ply->PlatformFallDir || ply->BoundCheck) && ply->GroundSoundDisa == 0) {
+			if((ply->PlatformFallDir || ply->BoundCheck) && ply->GroundSoundDisa == FALSE) {
 				queuesound(SOUND_GROUND_THUMP);
 				ply->ReactTimer = 12;
 				ply->VelX.full = 0;
@@ -882,7 +885,7 @@ static void _RMTumbleSM3(Player *ply) {		/* 2a21a tumble sm */
 static void _RMGetBackUp(Player *ply) {		//292ba
 	if(--ply->LocalTimer == 0) {
 		NEXT(ply->mode2);
-		ply->TimerInvincible = 60;
+		ply->TimerInvincible = 1 * TICKS_PER_SECOND;
 		CASetAnim1(ply,STATUS_BACK_UP);
 	}
 }

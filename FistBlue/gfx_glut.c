@@ -451,7 +451,6 @@ void gemu_readtile_scroll1(u16 tileid) {
     unsigned char pixbit[8] = { 128, 64, 32, 16, 8, 4, 2, 1 };
     int u, v;
     unsigned char buf[4];
-	//if(tileid == 0x2800) {tileid = 0x2804;}
 	
     int tileaddr = (tileid * 0x40) + 0x400000;           /* xx use OBJECT_TILE_SIZE */
 	    
@@ -473,7 +472,6 @@ void gemu_readtile_scroll2(u16 tileid) {
     unsigned char pixbit[8] = { 128, 64, 32, 16, 8, 4, 2, 1 };
     int u, v;
     unsigned char buf[4];
-	//if(tileid == 0x2800) {tileid = 0x2804;}
 	
     int tileaddr = (tileid * 0x80) + 0x400000;           /* xx use OBJECT_TILE_SIZE */
 
@@ -718,7 +716,7 @@ static void draw_scroll2(void) {
 	}
 	/* Draw Scroll2 */
 	glPushMatrix();
-	scr2x = g.CPS.Scroll2X;;	// kludge
+	scr2x = g.CPS.Scroll2X;;	
 	glTranslatef(-(scr2x & 0xf) / 16.0 * XFACT, ((g.CPS.Scroll2Y & 0xf) / 16.0 * XFACT)  , 0);
 
 	tilety = g.CPS.Scroll2Y / 16;
@@ -727,7 +725,7 @@ static void draw_scroll2(void) {
 	GLfloat master = (gemu.PalScroll2[0][0] & 0xf000) / 61140.0;
 	glColor3f(master, master, master);
 	
-	for(yloop=-1;yloop<16;yloop++) {				//32
+	for(yloop=-1;yloop<16;yloop++) {	
 		y = yloop;
 		scrolltop = gemu.RowScroll2[ (yloop + 48) * 16 ] / 16.0;
 		scrollbot = gemu.RowScroll2[ (yloop + 47) * 16 ] / 16.0;
@@ -738,7 +736,6 @@ static void draw_scroll2(void) {
 			record = ((ty & 0x30) << 6) + (tx * 16) + (ty & 0x0f);
 			if (gemu.Tilemap_Scroll2[((ty & 0x30) << 6) + (tx * 16) + (ty & 0x0f)][0] == 0x2800) {
 				continue;
-				//gemu.Tilemap_Scroll2[record][0] = 0x2804;
 			}
 				
 			if(ty == 0) {continue;}

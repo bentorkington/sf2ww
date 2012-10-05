@@ -58,13 +58,12 @@ void decode_coincosts(void) {			// 1d9a
 		{1,1}, {1,2}, {1,3}, {1,4}, {1,6}, {2, 1}, {3, 1}, {4, 1},
 	};
 	
-	
 	g.coinslot1.nCoins   = data_1de0[g.JPCost & JP_COSTMASK1][0];
 	g.coinslot1.nCredits = data_1de0[g.JPCost & JP_COSTMASK1][1];
 	g.coinslot2.nCoins   = data_1de0[(g.JPCost & JP_COSTMASK2)>>3][0];
 	g.coinslot2.nCredits = data_1de0[(g.JPCost & JP_COSTMASK2)>>3][1];
-	g.TwoCreditsToStart = (g.JPCost & JP_CONTINUECOIN) >> 6;
-	g.DemoSound    = (g.JPCost & 0x80) >> 7;
+	g.TwoCreditsToStart  = (g.JPCost & JP_CONTINUECOIN) >> 6;
+	g.DemoSound          = (g.JPCost & 0x80) >> 7;
 }
 static void sub_1f9e(Coinslot *cs, const u8 *a0) {
 	if (cs->debounce_timer) {
@@ -190,7 +189,7 @@ static void sub_6c24(void) {
 		}
 	}
 }
-void check_coin_lockout(void) {		//dfc move to coinage.c
+void check_coin_lockout(void) {		//dfc 
 	if (g.NumberCredits >= 9) {
 		g.CoinStatus &= 0xf3;
 	} else {
@@ -254,7 +253,7 @@ void task_creditscreen(void) {          /* 6b52 */
             check_coin_lockout();
             sub_6c24();             /* update the "press 1P start" display */
         }
-        debughook(0);		/* XXX not correct value */
+        debughook(0);		/* not correct value */
         sf2sleep(1);
     }
 }

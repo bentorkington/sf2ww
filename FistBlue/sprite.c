@@ -601,9 +601,9 @@ void sub_7e4dc(void) {
 //	if(g.DisableDblBuf == 0 && g.CPS.ObjBase & 0x80) {
 //		OBJ_CURSOR_SET( DSObjCur_g, 0x20c0 ); /* 0x918300 */
 //	} else {
-		OBJ_CURSOR_SET( DSObjCur_g, 0x00c0 ); /* 0x910300 */
+		OBJ_CURSOR_SET( DSObjCur_g, 0x0060 ); /* 0x910300 */
 //	}
-	g_tilecount=160;
+	g_tilecount=160;	// first 96 reserved
 	g.ObjTileBudget=g_tilecount;
 	spritelib_drawall();
 	WRITE_END_TAG;
@@ -616,7 +616,7 @@ void DSDrawAll_176(void) {
 //	if(g.DisableDblBuf == 0 && g.CPS.ObjBase & 0x80) {
 //		OBJ_CURSOR_SET( DSObjCur_g, 0x1050 ); /* 0x918280 */
 //	} else {
-		OBJ_CURSOR_SET( DSObjCur_g, 0x00a0 ); /* 0x910280 */
+		OBJ_CURSOR_SET( DSObjCur_g, 0x0050 ); /* 0x910280 */
 //	}
 	g_tilecount=176;
 	g.ObjTileBudget=g_tilecount;
@@ -631,7 +631,7 @@ void sub_7e544(void) {
 //	if(g.DisableDblBuf == 0 && g.CPS.ObjBase & 0x80) {
 //		OBJ_CURSOR_SET( DSObjCur_g, 0x101a ); /* 0x9180d0 */
 //	} else {
-		OBJ_CURSOR_SET( DSObjCur_g, 0x0034 ); /* 0x9100d0 */
+		OBJ_CURSOR_SET( DSObjCur_g, 0x001a ); /* 0x9100d0 */
 //	}
 	g_tilecount=230;
 	g.ObjTileBudget=g_tilecount;
@@ -648,7 +648,7 @@ void DSDrawAllMain(void) {		/* 7e57c library, main draw all sprite routine */
 //	if(g.DisableDblBuf == 0 && g.CPS.ObjBase & 0x80) {
 //		OBJ_CURSOR_SET( DSObjCur_g, 0x1090 ); 
 //	} else {
-		OBJ_CURSOR_SET( DSObjCur_g, 0x0090 );
+		OBJ_CURSOR_SET( DSObjCur_g, 0x48 );		//0x910240
 //	}
 	g_tilecount=184;
 	g.ObjTileBudget=g_tilecount;
@@ -663,9 +663,9 @@ void DSDrawAll_Hira(void) {		/* library */
 //	if(g.DisableDblBuf == 0 && g.CPS.ObjBase & 0x80) {
 //		OBJ_CURSOR_SET( DSObjCur_g, 0x1090 ); /* 0x918240 */
 //	} else {
-		OBJ_CURSOR_SET( DSObjCur_g, 0x0090 ); /* 0x910240 */
+		OBJ_CURSOR_SET( DSObjCur_g, 0x48 ); /* 0x910240 */
 //	}
-	g_tilecount=184;
+	g_tilecount=184;		// first 72 reserved
 	g.ObjTileBudget=g_tilecount;
 	sub_7e6b8();
     WRITE_END_TAG;

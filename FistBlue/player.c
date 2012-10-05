@@ -266,8 +266,12 @@ void ply_thrown(Player *ply) {        /* 3948 data at 93440 */
 	signed char *data;
     Player *opp = ply->Opponent;
 	
-    data = data_93440[opp->FighterID][ply->FighterID][opp->ActionScript->Catch];    
-    
+    // XXX data not all done!
+	//data = data_93440[opp->FighterID][ply->FighterID][opp->ActionScript->Catch];    
+	
+	data = data_93440[0][0][opp->ActionScript->Catch];    
+
+	
     ply->XPI = opp->XPI + (opp->Flip ? -data[0] : data[0]) ;
     ply->YPI = opp->YPI + data[1];
     

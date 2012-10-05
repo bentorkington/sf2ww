@@ -53,7 +53,7 @@
 #define SF2_CPU_I386
 #endif
 
-typedef  u16 * COORD;
+typedef  u16 * CPSCOORD;
 
 	
 #ifndef NULL

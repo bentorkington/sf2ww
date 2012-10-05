@@ -81,8 +81,6 @@ void set_hitstun_effect_for_projectile(Object *projectile, Object *obj2) {		// 7
     }
 }        
 
-
-
 /* d6 = sub_7d378 (Player *a6, Player *a2)  calculate damage of hit to victim 
  and score reward                    */
 
@@ -224,11 +222,11 @@ int sub_7d4fa(Player *vict, const HitBoxAct *a3) {		// 7d4fa
 	
 	short temp;
     if (vict->Human && vict->Airborne==AIR_ONGROUND &&
-        vict->mode2 != 0x14                  &&
-        vict->mode2 != PLSTAT_TUMBLE &&
-        vict->BlockStun == FALSE             &&
-        vict->Energy >= 0                    &&
-        vict->Energy == vict->EnergyDash     &&
+        vict->mode2 != PLSTAT_REEL                  &&
+        vict->mode2 != PLSTAT_TUMBLE				&&
+        vict->BlockStun == FALSE					&&
+        vict->Energy >= 0							&&
+        vict->Energy == vict->EnergyDash			&&
         vict->DizzyStun == FALSE
 		) {
         if(LBRareChance()) {                
@@ -289,8 +287,11 @@ void sub_7d74e(Player *ply, Player *opp, const HitBoxAct *a3) {
             obj->SubSel = 3;
             return;
         }
-		if (obj->SubSel > 5) {
-			panic(0);
+		/* patch for chun li problems */
+		if (obj->SubSel > 5) {				
+			// XXX
+			obj->SubSel = 3;
+			printf("Bad ChunLi NextReactMode2");
 		}
     } else {
         return;

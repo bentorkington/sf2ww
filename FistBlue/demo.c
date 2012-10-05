@@ -56,7 +56,7 @@ static void SMdemo_show_high_scores(void) {		//6aaa
 	switch (g.mode1) {
 		case 0:
 			NEXT(g.mode1);
-			g.timer1    = 0xb4;
+			g.timer1    = 3 * TICKS_PER_SECOND;
 			g.Palette1  = 0x10;
 			palette_macro(0x10);
 			GSInitForStage();
@@ -192,7 +192,7 @@ void SMdemo_titlefightanim(void) {	// 0x6650 mode is 2,0
 			if (gstate_Scroll3.YPI > 0x700) {
 				g.mode1 +=2;
 				gstate_Scroll3.YPI = 0x700;
-				g.timer3 = 180;      /* 180 (decimal) ticks */
+				g.timer2 = 180;      /* 180 (decimal) ticks */
 				start_effect(0x0c1e, 3);
 			}
 			break;
@@ -221,7 +221,7 @@ void SMdemo_winnersusedrugs (void) {
 	switch (g.mode1) {
 		case 0:
 			NEXT(g.mode1);
-			g.timer2 = 0xb4;
+			g.timer2 = 3 * TICKS_PER_SECOND;
 			LBResetState();
 			actionlibrary();
 			palette_macro(0x10);
@@ -297,7 +297,7 @@ static void sub_6964(void) {			// 6964 demo fight sm
 				case 4:
 					NEXT(g.mode4);
 					g.TimeRemainBCD = 0x99;
-					g.TimeRemainTicks = 60;
+					g.TimeRemainTicks = 1 * TICKS_PER_SECOND;
 					init_fightgfx();
 					print_timeremaining();
 					action_start_22();
@@ -469,7 +469,7 @@ void SMdemo_fight(void) {			// 6826
 			// 6938
 			LBGetInputs();
 			LBDecodeInputs();
-			++g.libsplatter;		// x001d
+			++g.libsplatter;
 			switch (g.mode2) {
 				case 0:
 					SM_player_select();

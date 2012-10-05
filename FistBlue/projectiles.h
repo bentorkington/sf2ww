@@ -16,3 +16,4 @@ enum en_projectiles {
 	SF2_PROJ_TIGER,
 	SF2_PROJ_X05,
 };
+typedef enum en_projectiles FBProjectileID;
