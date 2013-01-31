@@ -310,7 +310,7 @@ void sub_7d74e(Player *ply, Player *opp, const HitBoxAct *a3) {
     }
 }
 
-static void mac_stun_from76(Player *ply, Player *opp) {			//7d884
+void mac_stun_from76(Player *ply, Player *opp) {			//7d884
     Object *obj;
     if(obj = AllocActor()) {
         center_collision_coords();

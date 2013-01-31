@@ -7,7 +7,11 @@
  *
  */
 
-void actionXX(Object *obj);
+void action17(Object *obj);
 
-//struct UserData_XX {
-//};
+struct UserData_17 {
+	short	h0080w;
+	char	h0082c;
+	
+	char	h0085c;
+};

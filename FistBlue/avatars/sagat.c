@@ -99,14 +99,14 @@ static void sub_36d20(Player *ply) {
 					obj->Sel        = SF2_PROJ_TIGER;
 					obj->XPI        = ply->XPI;
 					obj->YPI        = ply->YPI;
-					ply->Flip       = ply->Flip;
-					ply->SubSel     = ply->ButtonStrength;
+					obj->Flip       = ply->Flip;
+					obj->SubSel     = ply->ButtonStrength;
 					obj->UserByte   = ply->PunchKick;
 					obj->Owner      = ply;
 					ply->Projectile = obj;
 					soundsting(SOUND_TIGER);
 				}
-				obj->LocalTimer = 0x19;
+				ply->LocalTimer = 0x19;
 			} 
 			PLAYERTICK;
 			break;

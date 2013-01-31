@@ -462,7 +462,18 @@ const CAFrame actlist_7c1ec[] = {
 	{16, 0x80, 0x2d, &image_7c8e8, 0, 0, 0, 0, 0, 0, 0, 0x00, 0, 0, 0, 0, 0, 0, 0, 0},
 	{0,0,0,(struct image *)&actlist_7c1ec[0], 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 }
 };
-const CAFrame **actlist_7bc66[]={
-	actlist_7bcc8, 	actlist_7bce4, 	actlist_7bd00, 	actlist_7bd1c, 	actlist_7bd38, 	actlist_7bd54, 	actlist_7bd70, 	actlist_7bd8c, 	actlist_7bda8, 	actlist_7bdc4, 	actlist_7bde0, 	actlist_7bdfc, 	actlist_7be18, 	actlist_7be34, 	actlist_7be50, 	actlist_7be6c, 	actlist_7be88, 	actlist_7bea4, 	actlist_7bec0, 	actlist_7bedc, 	actlist_7bef8, 	actlist_7bf14, 	actlist_7bf30, 	actlist_7bf4c, 	actlist_7bf68, 	actlist_7bf84, 	actlist_7bfa0, 	actlist_7bfbc, 	actlist_7bfd8, 	actlist_7bff4, 	actlist_7c010, 	actlist_7c02c, 	actlist_7c048, 	actlist_7c064, 	actlist_7c080, 	actlist_7c09c, 	actlist_7c0b8, 	actlist_7c0d4, 	actlist_7c0f0, 	actlist_7c10c, 	actlist_7c128, 	actlist_7c144, 	actlist_7c160, 	actlist_7c17c, 	actlist_7c198, 	actlist_7c1b4, 	actlist_7c1d0, 	actlist_7c1ec, 
+const CAFrame *actlist_7bc66[]={
+	actlist_7bcc8, 	actlist_7bce4, 	actlist_7bd00, 	actlist_7bd1c, 	
+	actlist_7bd38, 	actlist_7bd54, 	actlist_7bd70, 	actlist_7bd8c, 	
+	actlist_7bda8, 	actlist_7bdc4, 	actlist_7bde0, 	actlist_7bdfc, 	
+	actlist_7be18, 	actlist_7be34, 	actlist_7be50, 	actlist_7be6c, 	
+	actlist_7be88, 	actlist_7bea4, 	actlist_7bec0, 	actlist_7bedc, 	
+	actlist_7bef8, 	actlist_7bf14, 	actlist_7bf30, 	actlist_7bf4c, 	
+	actlist_7bf68, 	actlist_7bf84, 	actlist_7bfa0, 	actlist_7bfbc, 	
+	actlist_7bfd8, 	actlist_7bff4, 	actlist_7c010, 	actlist_7c02c, 	
+	actlist_7c048, 	actlist_7c064, 	actlist_7c080, 	actlist_7c09c, 	
+	actlist_7c0b8, 	actlist_7c0d4, 	actlist_7c0f0, 	actlist_7c10c, 	
+	actlist_7c128, 	actlist_7c144, 	actlist_7c160, 	actlist_7c17c, 	
+	actlist_7c198, 	actlist_7c1b4, 	actlist_7c1d0, 	actlist_7c1ec, 
 };
 

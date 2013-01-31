@@ -483,6 +483,73 @@ static void sub_7d284(Object_G2 *obj) {
 		_CDCheckObjBonus2(obj, PLAYER2);
 	}
 }
+static void sub_7de06(Object_G2 *a2) {
+	if (g.TimeOut == FALSE) {
+		if (a2->Energy < 0 && (a2->AnimFlags & 0xff) == 0) {
+			//sub_221ea();		//Action44 todo
+		} else {
+			//sub_221bc();
+		}
+	}
+}
+static void sub_7de26(Player *a6, Object_G2 *a2) {
+	int side;
+	if (g.TimeOut == FALSE) {
+		if (g.GPWasProjectile) {
+			side = a6->Owner->Side;
+		} else {
+			side = a6->Side;
+		}
+		if (a2->Energy < 0) {
+			LBAddPoints(8, side);
+		} else {
+			LBAddPoints(2, side);
+		}
+	}
+}
+static void sub_7dd7c(Player *a6, Object_G2 *a2, char *a1) {
+	const HitBoxAct *a3 = get_active_hitbox((Object *)a6);
+	if (a3) {
+		int d4 = a3->Shove;
+		if (d4 < 0) {
+			d4 = 1;
+		}
+		if (a1[0] == d4) {
+			return;
+		}
+		HitBox *a4 = CDGetHitBoxHead(a2);
+		if (check_hitbox_overlap(a6, a2, a3, a4)) {
+			a1[0]=a3->Shove;
+			if (a1[0]<0) {
+				a1[0]=1;
+			}
+			a2->NextReactMode2 = a3->ReactMode2;
+			a6->Timer2 = 14;
+			a2->Timer2 = 14;
+			a2->Direction = a6->Flip;
+			a2->BlockStun = 0;
+			int d0 = a2->Energy - (a3->ReactMode2 + 1);
+			if (d0 >= 0) {
+				a2->Energy = d0;
+			} else {
+				a2->Energy = -1;
+			}
+			if (g.GPWasProjectile) {
+				a6->Energy = -2;
+			}
+			make_collision_sound(a6, a3);
+			mac_stun_from76(a6, a2);
+			sub_7de06(a2);
+			sub_7de26(a6, a2);
+		} else {
+			a1[0]=0;
+			return;
+		}
+	} else {
+		a1[0]=0;
+	}
+
+}
 static void _CDCheckBonus2(Player *a6, Object_G2 *a2) {		// 7dd38
 	char *a1;
 	/* XXX access userdata in A2 */
@@ -492,7 +559,7 @@ static void _CDCheckBonus2(Player *a6, Object_G2 *a2) {		// 7dd38
 		a1 = &a2->UD.UDbonus2.h008cc;
 	}
 	g.GPWasProjectile = FALSE;
-	//todo sub_7dd7c(a6, a2, a1);
+	sub_7dd7c(a6, a2, a1);
 	if (a6->Side) {
 		a1 = &a2->UD.UDbonus2.h008fc;
 	} else {

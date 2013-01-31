@@ -27,6 +27,26 @@ extern Game g;
 extern GState gstate_Scroll1;
 extern GState gstate_Scroll2;
 extern GState gstate_Scroll3;
+extern CPSGFXEMU gemu;
+
+/*
+static void action_NN(Object *obj) {
+	UDXX *ud = (UDXX *)obj->UserData;
+	switch (obj->mode0) {
+		case 0:
+			
+			break;
+		case 2:
+			
+			break;
+		case 4:
+		case 6:
+			FreeActor(obj);
+			break;
+		FATALDEFAULT;
+	}
+}
+*/
 
 
 static void _draw_portrait_scr2(const SimpleImage *a1, short d1, u16 **gfx_p);
@@ -59,19 +79,20 @@ static void action_13(Object *obj);
 static void action_14(Object *obj);
 static void action_15(Object *obj);
 static void action_16(Object *obj);
-
+static void action_17(Object *obj);
+static void action_18(Object *obj);
 static void action_19(Object *obj);
 static void action_1a(Object *obj);
 static void action_1b(Object *obj);
 static void action_1c(Object *obj);
-
+static void action_1d(Object *obj);
 extern void action_1e(Object *obj);
 static void action_1f(Object *obj);
 static void action_20(Object *obj);
 static void action_21(Object *obj);
 static void action_22(Object *obj);
-
-void action_1e420(Object *obj);
+void action_1e420(Object *obj);			// action_23
+static void action_24(Object *obj);
 
 extern void action_29(Object *obj);
 
@@ -96,6 +117,7 @@ static void action_3b(Object *obj);
 extern void action_3e(Object *obj);
 extern void action_3f(Object *obj);
 
+static void action_44(Object *obj);
 static void action_48(Object *obj);
 short g_d7;
 
@@ -108,11 +130,13 @@ typedef struct UserData_Act0B UD0B;
 typedef struct UserData_Act0E UD0E;
 typedef struct UserData_Act11 UD11;
 typedef struct UserData_Act12 UD12;
+typedef struct UserData_Act1d UD1D;
 typedef struct UserData_Act2f UD2F;
 
 typedef struct UserData_Act35 UD35;
 typedef struct UserData_Act36 UD36;
 typedef struct UserData_Act3b UD3B;
+typedef struct UserData_Act44 UD44;
 typedef struct UserData_Act48 UD48;
 
 
@@ -154,18 +178,20 @@ void proc_actions(void) {			/* c7da */
 				ACT117C(0x14, action_14)
 				ACT117C(0x15, action_15)
 				ACT117C(0x16, action_16)
-				
+				//ACT117C(0x17, action_17)
+				ACT117C(0x18, action_18)				
 				ACT117C(0x19, action_19)
 				ACT117C(0x1a, action_1a)
 				ACT117C(0x1b, action_1b)
 				ACT117C(0x1c, action_1c)
-				
+				ACT117C(0x1d, action_1d)
 				ACT117C(0x1e, action_1e)
 				ACT117C(0x1f, action_1f)
 				ACT117C(0x20, action_20)
 				ACT117C(0x21, action_21)
 				ACT117C(0x22, action_22)
-				ACT117C(0x23, action_1e420)
+				ACT117C(0x23, action_1e420)	
+				//ACT117C(0x24, action_24)
 				
 				ACT117C(0x29, action_29)
 				ACT117C(0x2c, action_2c)
@@ -187,6 +213,7 @@ void proc_actions(void) {			/* c7da */
 				ACT117C(0x3e, action_3e)
 				ACT117C(0x3f, action_3f)
 				
+				ACT117C(0x44, action_44)
 				ACT117C(0x48, action_48)
 			default:
 				printf("action 258a id %02x not implemented\n", g.Objects3[i].Sel);
@@ -220,8 +247,8 @@ static void action_1(Object *obj) {	/* cb2a */
 	switch (obj->mode0) {
 		case 0:
 			NEXT(obj->mode0);
-			obj->Pool=data_cb60[obj->SubSel];
-			obj->OnGround=data_cb6c[obj->SubSel];
+			obj->Pool     = data_cb60[obj->SubSel];
+			obj->OnGround = data_cb6c[obj->SubSel];
 			setaction_direct(obj, actlist_cb78[obj->SubSel]);
 			break;
 		case 2:
@@ -1351,8 +1378,7 @@ static void action_15(Object *obj) {
 	}
 }
 #pragma mark Act16
-
-
+#pragma mark Act17
 #pragma mark Act18
 static int sub_12fe6(Object *obj) {
 	if (obj->SubSel) {
@@ -1682,8 +1708,46 @@ static void action_1c(Object *obj) {
 }
 
 #pragma mark Act1D
-static void action_1d(Object *obj) {
-	
+static void sub_15cf2(u16 *gfx_p_a3, int d2, int d3) {
+	// todo
+}
+
+static void action_1d(Object *obj) {		//16232
+	UD1D *ud = (UD1D *)&obj->UserData;
+	if (obj->SubSel) {
+		// 1628e
+		if (obj->mode0 == 0) {
+			NEXT(obj->mode2);
+			obj->LocalTimer = 60;
+			u16 *gfx_p = coords_scroll2(0xa0, 0xb0);
+			sub_15cf2(gfx_p, 0, ud->h0080c);
+		}
+	} else {
+		if (g.x09fe == 1) {
+			// 1627c
+			if (ud->h0084c == 0) {
+				++ud->h0084c;
+//TODO				sub_7ce12();
+			}
+		} else if (g.x09fe == 2) {
+			// 161ea
+			if((g.libsplatter & 7) == 0) {
+				//161f4 todo
+			}
+		} else {
+			switch (ud->h0080c) {
+//				case 0:	sub_7c90a(obj); break;
+//				case 1:	sub_7c97e(obj); break;
+//				case 2:	sub_7c9f8(obj); break;
+//				case 3:	sub_7caa0(obj); break;
+//				case 4:	sub_7cb38(obj); break;
+//				case 5:	sub_7cbac(obj); break;
+//				case 6:	sub_7cc54(obj); break;
+//				case 7:	sub_7ccc8(obj); break;
+				FATALDEFAULT;
+			}
+		}
+	}
 }
 
 
@@ -1719,11 +1783,11 @@ void action_1606c() {
 
 		obj->exists = TRUE;
 		obj->Sel = SF2ACT_0X1D;
-		ud->x0080 = g.BattleLoser;
+		ud->h0080c = g.BattleLoser;
 		obj->XPI = 0x10;
 		obj->YPI = 0xb0;
 		obj->SubSel = 0;
-		ud->x0084 = 0;
+		ud->h0084c = 0;
 		ud->x0088 = g.PlyLostToComp ? PLAYER1 : PLAYER2;
 	}
 }
@@ -2053,6 +2117,55 @@ static void action_22(Object *obj) {		// 1ac16
 /* Vomit, birds, stars etc */
 // gone to reels.c
 #pragma mark ----
+
+#pragma mark Act24
+/*
+static void sub_1b14e(Object *obj) {
+	obj->mode1 = 0;
+	ud->h0088w = g.CPS.Scroll3Y;
+	ud->h0080l = 0xffff6000;
+	ud->h0084l = 0x00001000;	
+}
+
+static void action_NN(Object *obj) {
+	UDXX *ud = (UDXX *)obj->UserData;
+	switch (obj->SubSel) {
+		case 0:
+			switch (obj->mode0) {
+				case 0:
+					NEXT(obj->mode0);
+					sub_1b14e(obj);
+					break;
+				case 2:
+					if (obj->mode1) {
+						if (--obj->LocalTimer == 0) {
+							sub_1b14e(obj);
+						}						
+					} else {
+						gstate_Scroll3.Y.full = ud->h0080l;
+						ud->h0080l += ud->h0084l;
+						g.CPS.Scroll3Y = gstate_Scroll3.YPI;
+//						if (g.CPS.Scroll3Y <<>> ud->h0088w) {
+//							//todo
+//						}
+					}
+					break;
+				case 4:
+				case 6:
+					FreeActor(obj);
+					break;
+				FATALDEFAULT;
+			}
+			break;
+		case 1:
+			break;
+		case 2:
+		case 3:
+		case 4:
+			break;
+	}
+}
+*/
 
 
 void action_1cd3c(Player *ply) {
@@ -2998,6 +3111,295 @@ static void action_3b(Object *obj) {	//203ba
 
 #pragma mark Projectile 207f0
 
+#pragma mark Act43
+static void action_43(Object *obj) {
+	u16 *gfx_p;
+	
+	if (obj->SubSel) {
+		//21adc todo
+		switch (obj->mode0) {
+			case 0:
+				NEXT(obj->mode0);
+				obj->Pool       = 6;
+				obj->LocalTimer = 40;
+				OBJ_CURSOR_CPS(gfx_p, 0x900300);
+
+				//todo
+//				memcpy(gfx_p, data_21b2a, 160);
+//				setaction_list(obj, data_21f26, 0);
+				break;
+			case 2:
+				if (obj->LocalTimer) {
+					--obj->LocalTimer;
+				} else {
+					if (g.mode2 == 0xc) {
+						FreeActor(obj);
+					} else {
+						actiontick(obj);
+						enqueue_and_layer(obj);
+					}
+				}
+				break;
+			case 4:
+			case 6:
+				FreeActor(obj);
+				break;
+			FATALDEFAULT;
+		}
+	} else {
+		if (g.Version != VERSION_JAP) {
+			// 21a66
+			switch (obj->mode0) {
+				case 0:
+					NEXT(obj->mode0);
+					obj->Pool  = 2;
+					obj->Draw1 = -1;
+					obj->Step  = 0;
+					obj->Draw2.full = 0xfff0;
+					obj->YPI += 0x50;
+					obj->LocalTimer = 0x80;
+					obj->x002e = 0x40;
+//					setaction_list(obj, data_21bea, 1); TODO
+					break;
+				case 2:
+					if (g.mode2 == 0xc) {
+						queuesound(SOUND_GAME_OVER);
+						print_libtextgfx(0x15);
+						FreeActor(obj);
+					} else {
+						if (obj->mode1 == 0) {
+							++obj->Draw2.full;
+							if(--obj->x002e == 0) {
+								obj->mode1 = 2;
+							}
+						}
+						enqueue_and_layer(obj);
+					}
+					break;
+				case 4:
+				case 6:
+					FreeActor(obj);
+					break;
+					FATALDEFAULT;
+			}
+		} else {
+			// Japan only
+			switch (obj->mode0) {
+				case 0:
+					NEXT(obj->mode0);
+					obj->Pool  = 2;
+					obj->Draw1 = -1;
+					obj->Step  = 0;
+					obj->Draw2.full = 0xffbd;
+					obj->YPI += 0xb7;
+					obj->LocalTimer = 0x80;
+					obj->x002e = 0x40;
+					//setaction_list(obj, data_21bea, 0); TODO
+					break;
+				case 2:
+					if (g.mode2 == 0xc) {
+						queuesound(SOUND_GAME_OVER);
+						print_libtextgfx(0x15);
+						FreeActor(obj);
+					} else {
+						if (obj->mode1 == 0) {
+							++obj->Step;
+							obj->Step &= 0x1f;
+							obj->YPI -= 2;
+							++obj->Draw2.full;
+							if(--obj->x002e == 0) {
+								obj->mode1 = 2;
+							}
+						}
+						enqueue_and_layer(obj);
+					}
+					break;
+				case 4:
+				case 6:
+					FreeActor(obj);
+					break;
+				FATALDEFAULT;
+			}
+		}
+
+	}
+
+}
+
+
+#pragma mark Act44
+static void sub_2224c(Object *obj_a4, Object *obj_a2) {
+	obj_a4->exists = TRUE;
+	obj_a4->Sel    = 0x44;
+	obj_a4->UserByte = 0;
+	obj_a4->XPI = g.GPCollX;
+	obj_a4->YPI = g.GPCollY;
+	obj_a4->Flip = obj_a2->Direction ^ 1;
+}
+void sub_221ea(Object *obj_a2) {
+	Object *obj;		// %a4
+	if (obj = AllocActor()) {
+		obj->exists   = TRUE;
+		obj->Sel      = 0x44;
+		obj->UserByte = 1;
+		obj->XPI      = obj_a2->XPI;
+		obj->YPI      = obj_a2->YPI;
+		obj->Flip	  = obj_a2->Direction ^ 1;
+	}
+	if (obj = AllocActor()) {
+		obj->exists   = TRUE;
+		obj->Sel      = 0x44;
+		obj->UserByte = 2;
+		obj->XPI      = obj_a2->XPI;
+		obj->YPI      = obj_a2->YPI;
+		obj->Flip	  = obj_a2->Direction ^ 1;
+	}
+}
+void sub_221bc(Object *obj_a2) {
+	Object *obj;		// %a2
+	if (obj = AllocActor()) {
+		sub_2224c(obj, obj_a2);
+	}
+	if (obj = AllocActor()) {
+		sub_2224c(obj, obj_a2);
+	}
+	if (obj = AllocActor()) {
+		sub_2224c(obj, obj_a2);
+	}
+	if (obj = AllocActor()) {
+		sub_2224c(obj, obj_a2);
+	}
+}
+static void action_44(Object *obj) {
+	UD44 *ud = (UD44 *)obj->UserData;
+	const short data_222cc[8]={
+		2, -1,
+		3, -2,
+		0, -3,
+		1, -2,
+	};
+	const short data_222dc[8]={
+		3, -2, 
+		4, -1,
+		0, -3,
+		1,  2,
+	};
+	const short data_2234c[8]={
+		0x0200, 0x0020, 0x0080, 0x0100, 0x0040, 0x0180, 0x0140, 0x0160,
+	};
+	const short data_2235c[8]={
+		0xc8, 0x98, 0xb4, 0x92, 0xd4, 0x9d, 0xc3, 0xb0,
+	};
+	if (obj->UserByte) {
+		//22392
+		switch (obj->mode0) {
+			case 0:
+				NEXT(obj->mode0);
+				ud->x0080       = 0;
+				obj->LocalTimer = 20;
+				obj->Pool       = 0;
+				obj->VelX.full = (short []){0x300, 0x280}[obj->UserByte - 1];
+				if (obj->Flip) {
+					obj->VelX.full = -obj->VelX.full;
+				}
+				obj->VelY.full= (short []){0x600, 0x380}[obj->UserByte - 1];
+				obj->AclX.full = 0;
+				obj->AclY.full = 0x40;
+//				setaction_list(obj, data_2246a, obj->UserByte + 1); TODO
+				break;
+			case 2:
+				switch (obj->mode1) {
+					case 0:
+						if (obj->UserByte == 1) {
+							if (--obj->LocalTimer == 0) {
+								NEXT(obj->mode1);
+								ud->x0080 = 0x19;
+							}
+						} else {
+							if (obj->VelY.full < 0) {
+								if (check_ground_collision(obj)) {
+									NEXT(obj->mode1);
+									ud->x0080 = 0x19;
+									obj->VelY.full = 0x300;
+								}
+							}
+						}
+						CATrajectory(obj);
+						break;
+					case 2:
+						if (--ud->x0080 < 0) {
+							NEXT(obj->mode0);
+							obj->mode1 = 0;
+						}
+						CATrajectory(obj);
+					default:
+						break;
+				}
+				if ((ud->x0080 & 1) == 0) {
+					check_rect_queue_draw(obj);
+				}
+				break;
+			case 4:
+			case 6:
+				FreeActor(obj);
+				break;
+			FATALDEFAULT;
+		}
+	} else {
+		switch (obj->mode0) {
+			case 0:
+				NEXT(obj->mode0);
+				ud->x0080 = 0;
+				obj->Pool = 0;
+				int d0 = RAND8WD;
+				obj->XPI += data_222cc[d0];
+				obj->YPI += data_222dc[d0];
+				obj->SubSel = sf2rand() & 1;
+				//setaction_list(obj, data_2246a, obj->SubSel); TODO
+				break;
+			case 2:
+				switch (obj->mode1) {
+					case 0:
+						NEXT(obj->mode1);
+						obj->VelX.full = data_2234c[RAND8WD];
+						obj->VelY.full = data_2235c[RAND8WD];
+						obj->AclX.full  = 0;
+						if (obj->Flip == 0) {
+							obj->VelY.full = -obj->VelY.full;
+						}
+						obj->AclY.full = 0x20;
+						obj->LocalTimer = 10;
+						break;
+					case 2:
+						if (--obj->LocalTimer == 0) {
+							NEXT(obj->mode1);
+							ud->x0080 = 0xf;
+						}
+						CATrajectory(obj);
+						break;
+					case 4:
+						if (--ud->x0080 < 0) {
+							NEXT(obj->mode0);
+							obj->mode1 = 0;
+						}
+						CATrajectory(obj);
+						break;
+					FATALDEFAULT;
+				}
+				actiontick(obj);
+				if ((ud->x0080 & 1) == 0) {
+					check_rect_queue_draw(obj);
+				}
+				break;
+			case 4:
+			case 6:
+				FreeActor(obj);
+				break;
+			FATALDEFAULT;
+		}
+	}
+
+}
 
 
 #pragma mark Act48 Speak You Win/Lose + Graphic

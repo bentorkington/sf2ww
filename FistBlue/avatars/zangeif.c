@@ -1087,9 +1087,9 @@ void PSCBVictoryZangeif(Player *ply) {		// 31f48
 							NEXT(ud->x0094);
 							if (obj = AllocActor()) {
 								obj->exists = TRUE;
-								obj->Sel = 0x25;
+								obj->Sel    = 0x25;
 								obj->SubSel = 0xf;
-								ply->Owner = obj;
+								ply->Owner = (Player *)obj;
 								if(ply->XPI - gstate_Scroll2.XPI >= 0x90) {
 									obj->XPI = ply->XPI -0x80;
 									obj->Flip = 1;
@@ -1103,7 +1103,7 @@ void PSCBVictoryZangeif(Player *ply) {		// 31f48
 						case 2:
 							if (ply->Owner->Owner->UserData[0x10]) { //XXX
 								NEXT(ud->x0094);
-								ply->Flip = obj->Owner->Owner->Flip ^ 1;
+								ply->Flip = ply->Owner->Owner->Flip ^ 1;
 								// XXX setaction_direct(ply, actlist_32074);
 							}
 							break;

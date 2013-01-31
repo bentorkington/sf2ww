@@ -78,8 +78,8 @@ struct UserData_Act0E {
 };
 
 struct UserData_Act1d {
-	char	x0080;	//BattleLoser
-	char	x0084;
+	char	h0080c;	//BattleLoser
+	char	h0084c;
 	Player *x0088;
 };
 
@@ -107,6 +107,10 @@ struct UserData_Act3b {
 	DUAL x0080;
 	u16 x0082;
 	
+};
+struct UserData_Act44 {
+	char x0080;
+	//char x0081;
 };
 
 struct UserData_Act48 {

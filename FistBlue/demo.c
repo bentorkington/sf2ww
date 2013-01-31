@@ -34,7 +34,6 @@ void SMdemo_fight(void);
 
 
 static void sub_65a2(void) {
-	Task *task = CURRENT_TASK;
 	if (g.FreePlay) {
 		SMFreePlay();		// check for start btns
 	} else if (g.NumberCredits) {
