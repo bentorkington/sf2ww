@@ -1235,13 +1235,10 @@ void startgame(int players_online) {	/* 6d4e */
 		g.Player2.BlinkerMode0 = 4;
 		g.Player2.Human = TRUE;
 	}
-#ifdef GUSTY_LOBSTER
-	if (g.PlayersOnline & 0x1) {		/* prob. bullshit */
-		g.Player1.Alive = 2;
-		g.Player1.BlinkerMode0 = 4;
-		g.Player1.Human = TRUE;
-	}
-#endif //GUSTY_LOBSTER
+	g.Player1.Alive = 2;
+	g.Player1.BlinkerMode0 = 4;
+	g.Player1.Human = TRUE;
+	
 	fadenwait1();
 	
 	

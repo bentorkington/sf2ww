@@ -1126,8 +1126,6 @@ static void SMPlayerBlinker(Task *task, Player *ply) {		// 6ea4
 									if (g.BattleOver != 0) {
 										return;;
 									} else if (LBPlayerStartDown(ply)) {
-										return;
-									} else {
 										g.x02f0 += 1;
 										bumpdifficulty_4576();
 										if (g.FreePlay == 0) {
