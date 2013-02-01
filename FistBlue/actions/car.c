@@ -288,7 +288,7 @@ void _ActSMCar(Object_G2 *obj) {			// The CarID 6, BONUS0
 			break;
 		case 2:
 			_people_on_roof(obj);
-			sub_7d99a((Object *)obj);			// collision detection			
+			CDBonusCollisionCheck((Object *)obj);			// collision detection			
 			
 			if (!obj->mode1) {
 				if (obj->mode2) {

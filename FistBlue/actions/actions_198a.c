@@ -675,7 +675,7 @@ static void sub_27862(Object_G2 *obj) {			// 27862 Act09 BONUS1
 			break;
 		case 2:
 			CDCheckDecor((Object *)obj);
-			sub_7d99a((Object *)obj);
+			CDBonusCollisionCheck((Object *)obj);
 			if (obj->Energy < 0) {
 				sub_27912(obj);
 				return;

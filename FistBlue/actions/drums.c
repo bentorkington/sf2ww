@@ -185,7 +185,7 @@ void _SMAct04(Object_G2 *obj) {		// 27ea2 ID4 BONUS3
 				obj->Direction = 1;
 			}
 			if (obj->mode1) {
-				sub_7d99a((Object *)obj);
+				CDBonusCollisionCheck((Object *)obj);
 				if (obj->mode2) {
 					if ((obj->AnimFlags & 0x8000) == 0) {
 						actiontick((Object *)obj);
@@ -381,7 +381,7 @@ void _SMAct05(Object_G2 *obj) {				// 24ff6 Act05 Bonus2
 			
 			break;
 		case 2:						// 250c4
-			sub_7d99a(obj);
+			CDBonusCollisionCheck(obj);
 			switch (obj->mode1) {
 				case 0:
 					switch (obj->mode2) {

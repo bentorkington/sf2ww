@@ -31,10 +31,22 @@ extern struct game g;
 
 /* globals */
 short hitresult[5];
+#define HITRES_D2	0
+#define HITRES_D3	1
+#define HITRES_D4	2
+#define HITRES_D5	3
+#define HITRES_D6	4
+
+
 //HitBoxAct *g_hitbox;		/* %a3 */
 //HitBoxAct *g_hitbox4;
 
 short g_d5; // XXX
+
+static FBBOOL sub_7e094(int d0, Object *a6, Player *vict, const HitBox *a3, const HitBox *a4);
+static FBBOOL slib_check_overlap(Object *obj, Player *vict, const HitBox *a3, const HitBox *a4);
+
+static void sub_7d74e(Player *ply, Player *opp, const HitBoxAct *a3);
 
 static void set_blockstun_react(Player *vict);
 
@@ -213,7 +225,7 @@ static int sub_7d594(short d0, Player *vict) {		// 7d594
 	return FALSE;
 }
 
-int sub_7d4fa(Player *vict, const HitBoxAct *a3) {		// 7d4fa
+int sub_7d4fa(Player *vict_a2, const HitBoxAct *a3) {		// 7d4fa
 	static const signed char data_7d5b0[3][16]={
 		{  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0 },
 		{  1,  1,  0,  0,  0,  0,  0,  0,  1,  1,  1,  0, -1, -1,  0,  0 },
@@ -221,17 +233,18 @@ int sub_7d4fa(Player *vict, const HitBoxAct *a3) {		// 7d4fa
 	};
 	
 	short temp;
-    if (vict->Human && vict->Airborne==AIR_ONGROUND &&
-        vict->mode2 != PLSTAT_REEL                  &&
-        vict->mode2 != PLSTAT_TUMBLE				&&
-        vict->BlockStun == FALSE					&&
-        vict->Energy >= 0							&&
-        vict->Energy == vict->EnergyDash			&&
-        vict->DizzyStun == FALSE
+    if (vict_a2->Human							&& 
+		vict_a2->Airborne == AIR_ONGROUND		&&
+        vict_a2->mode2 != PLSTAT_REEL			&&
+        vict_a2->mode2 != PLSTAT_TUMBLE			&&
+        vict_a2->BlockStun == FALSE				&&
+        vict_a2->Energy >= 0					&&
+        vict_a2->Energy == vict_a2->EnergyDash	&&
+        vict_a2->DizzyStun == FALSE
 		) {
         if(LBRareChance()) {                
-            vict->BlockStun  = TRUE;     /* 7d4da */
-            g.GPHitBlocked   = FALSE;
+            vict_a2->BlockStun  = TRUE;     /* 7d4da */
+            g.GPHitBlocked		= FALSE;
             if(a3->Attack != 3) {
                 return TRUE;
             }
@@ -241,9 +254,9 @@ int sub_7d4fa(Player *vict, const HitBoxAct *a3) {		// 7d4fa
     } 
 	/* 7d534 */
     g.GPHitBlocked = FALSE;
-    temp = vict->ActionScript->Block;
+    temp = vict_a2->ActionScript->Block;
     
-    if(    a3->Attack != 3 || a3->ReactMode != RM_0x26) {
+    if(a3->Attack != 3 || a3->ReactMode != RM_0x26) {
 		/* 7d55c */
 		
         if(a3->Attack == 4 && a3->ReactMode == RM_0x24) {
@@ -251,17 +264,17 @@ int sub_7d4fa(Player *vict, const HitBoxAct *a3) {		// 7d4fa
         }
         temp = ((temp & 0x3) << 2) + (g.GPHitBoxHit / 2);
 		
-        temp =  data_7d5b0[vict->ActionScript->Block / 2][temp];
+        temp =  data_7d5b0[vict_a2->ActionScript->Block / 2][temp];
         if (temp) {
-            return sub_7d594(temp, vict);
+            return sub_7d594(temp, vict_a2);
         } else {
             return FALSE;
         }
     } else {
         if(temp == 1) {
-            return sub_7d594(-1, vict);
+            return sub_7d594(-1, vict_a2);
         } else {
-			return sub_7d594(temp, vict);
+			return sub_7d594(temp, vict_a2);
 		}
     }
 }
@@ -272,7 +285,7 @@ void center_collision_coords(void) {		//7d974 checked
 	    + ((g.GPTopEdge  - g.VictimTopEdge ) / 2);
 }
 
-void sub_7d74e(Player *ply, Player *opp, const HitBoxAct *a3) {
+static void sub_7d74e(Player *ply, Player *opp, const HitBoxAct *a3) {
     Object *obj;
     if(obj=AllocActor()) {
         center_collision_coords();
@@ -366,52 +379,51 @@ static void mac_stun2005(Player *ply, Player *opp) {		//7d8d4
  *   R  res[]          %d3, %d4, %d5, %d6  XX may include %d2
  */
 
-short sub_7e094(int shove_x, Object *a6, Player *vict, const HitBox *a3, const HitBox *a4) {
-    short d1,d3,d4,d5,d6;
-    if(a6->Flip) { shove_x = -shove_x; }
+static FBBOOL sub_7e094(int shove_x, Object *a6, Player *vict, const HitBox *a3, const HitBox *a4) {
+    short d1,d2,d3,d4,d5,d6;
+    if(a6->Flip)
+		shove_x = -shove_x;
+	
     shove_x += a6->XPI;
     g.GPLeftEdge = shove_x;			/* x0 + w0 */
 	
 	// %d2:
-    g.VictimLeftEdge = vict->XPI + (vict->Flip ? -a4->X : a4->X) ;
+	d2 = g.VictimLeftEdge = vict->XPI + (vict->Flip ? -a4->X : a4->X) ;
 								/* d2 is x2 */
 	
 	d4 = a3->width+a4->width;		/* d4 = w1+w2  */
-	d5 = shove_x - g.VictimLeftEdge;	/* d5 = (x0+w0)-x2 */
+	d5 = shove_x - d2;				/* d5 = (x0+w0)-x2 */
 	shove_x = d5 + d4;					/* d0 = (x0+w0)-x2+w0+w2 */
 	d6 = d4;
-	//printf("sub_7e094: d4 %d d0 %d ", d4, d0);
+
 	if (shove_x > (d4 * 2) || shove_x < 0) {
-		hitresult[1]=0;
-		//printf("\n");
-		return 0;
+		hitresult[HITRES_D4]=FALSE;
+		return FALSE;
 	}
 	if (d5>=0) {
 		d6=-d6;
 	}
-	d5 += d6;
-	hitresult[4] = d5;			/* we forgot %d2, so it's hitresult[4] */
+	hitresult[HITRES_D2] = d5 + d6;
+	// 7e0e0
 	g.GPTopEdge = d1 = a3->Y + a6->YPI;
 	d3 = a4->Y + vict->YPI;
 	g.VictimTopEdge = d3;
+	// 7e0fc
 	d4 = a3->height+a4->height;
 	d1 -= d3;
-	d5 = d1;		// XXX never read
+	d5 = d1; 
 	d1 += d4;
-	d6 = d4;		// XXX never read
-	//printf("* d4 %d d1 %d ", d4, d1);
-	if (d1 > (d4*2) || d1 < 0) {
-		hitresult[1]=0;
-		//printf("\n");
-		return 0;
+	d6 = d1;
+	if (d1 > (d4 * 2) || d1 < 0) {
+		hitresult[HITRES_D4]=FALSE;
+		return FALSE;
 	}
-	if (hitresult[2] < 0) {
-		hitresult[3] = -hitresult[3];
+	if (d5 < 0) {
+		d6 = -d6;
 	}
-	hitresult[2] += hitresult[3];
-	hitresult[0] = hitresult[2];
-	hitresult[1] = 1;
-	return 1;
+	hitresult[HITRES_D3] = d5 + d6;
+	hitresult[HITRES_D4] = TRUE;
+	return TRUE;
 }
 
 /*check_hitbox_overlap()        0x7e082 
@@ -423,7 +435,7 @@ short sub_7e094(int shove_x, Object *a6, Player *vict, const HitBox *a3, const H
  */
 
 
-short check_hitbox_overlap (Object *obj, Object *vict, const HitBoxAct *active, const HitBox *a4) {       /* 0x7e082 */
+FBBOOL check_hitbox_overlap (Object *obj, Object *vict, const HitBoxAct *active, const HitBox *a4) {       /* 0x7e082 */
 	
     if (active->Shove >= 0) {
 		return slib_check_overlap(obj,(Player *) vict, (const HitBox *)active, a4);
@@ -440,8 +452,7 @@ short check_hitbox_overlap (Object *obj, Object *vict, const HitBoxAct *active, 
  *   R  res[]          %d3, %d4, %d5, %d6
  */
 
-short slib_check_overlap(Object *obj, Player *vict, const HitBox *a3, const HitBox *a4) {		/* 7e08e */
-	//printf("slib_check_overlap\n");
+static FBBOOL slib_check_overlap(Object *obj, Player *vict, const HitBox *a3, const HitBox *a4) {		/* 7e08e */
 	return sub_7e094(a3->X, obj, vict, (HitBox *)a3, a4);
 }
 
@@ -646,23 +657,6 @@ static void sub_7e218 (int d2, int d6) {
 		}
 	}
 }
-void sub_7e16e(int d2) {  /* collision resolution between p1 and p2 pushboxes */
-	int d6;
-	
-	if (d2) {
-		g.GPCollDetect = TRUE;
-	}
-	d6 = d2;
-	if (d2 < -8) {
-		d2 = -8;
-	}
-		
-	if(g.Player1.Airborne || g.Player2.Airborne) {
-		sub_7e218(d2,d6);
-    } else {
-		sub_7e19a(d6);
-    }
-}
 int check_main_hitboxes(Object *obj, Object *vict, const HitBoxAct *a3) {         /* 0x7de5a */
     const HitBox *a4;
 	
@@ -674,7 +668,7 @@ int check_main_hitboxes(Object *obj, Object *vict, const HitBoxAct *a3) {       
             g.GPReg1 |= 1;
 			g.GPHitBoxCoords[0][0]=g.VictimLeftEdge;
 			g.GPHitBoxCoords[0][1]=g.VictimTopEdge;
-            g.GPHitBoxDamage[0] = ABS(hitresult[0]);
+            g.GPHitBoxDamage[0] = ABS(hitresult[HITRES_D3]);
         }
     }
     if (a4=_CDGetHitBoxBody(vict)) {
@@ -682,7 +676,7 @@ int check_main_hitboxes(Object *obj, Object *vict, const HitBoxAct *a3) {       
             g.GPReg1 |= 2;
 			g.GPHitBoxCoords[1][0]=g.VictimLeftEdge;
 			g.GPHitBoxCoords[1][1]=g.VictimTopEdge;
-            g.GPHitBoxDamage[1] = ABS(hitresult[0]);
+            g.GPHitBoxDamage[1] = ABS(hitresult[HITRES_D3]);
         }
     }
     if (a4=_CDGetHitBoxFoot(vict)) {
@@ -690,10 +684,10 @@ int check_main_hitboxes(Object *obj, Object *vict, const HitBoxAct *a3) {       
             g.GPReg1 |= 4;
 			g.GPHitBoxCoords[2][0]=g.VictimLeftEdge;
 			g.GPHitBoxCoords[2][1]=g.VictimTopEdge;
-            g.GPHitBoxDamage[2] = ABS(hitresult[0]);
+            g.GPHitBoxDamage[2] = ABS(hitresult[HITRES_D3]);
         }
     }
-    if (g.GPReg1 == 0) { return 0; }
+    if (g.GPReg1 == 0) { return FALSE; }
     switch (g.GPReg1){
 		case 0:
 			/* can't happen, special-cased out */
@@ -784,7 +778,7 @@ int check_main_hitboxes(Object *obj, Object *vict, const HitBoxAct *a3) {       
 			g.GPHitBox4Hit = TRUE;
 		}
 	}
-	return 1;
+	return TRUE;
 }
 
 
@@ -899,7 +893,20 @@ void CDCheckPushBoxes () {			/* 7e136 check pushboxes, take action */
 		if (g.Player2.exists) {
 			if(a4=CDGetPushBox((Object*)PLAYER2)) {
 				if(slib_check_overlap((Object *)PLAYER1, PLAYER2,a3,a4)) {
-					sub_7e16e(hitresult[4]);
+					// 7e16e
+					if (hitresult[HITRES_D2]) {
+						g.GPCollDetect = TRUE;
+					}
+					int d6 = hitresult[HITRES_D2];
+					if (hitresult[HITRES_D2] < -8) {
+						hitresult[HITRES_D2] = -8;
+					}
+					
+					if(g.Player1.Airborne || g.Player2.Airborne) {
+						sub_7e218(hitresult[HITRES_D2],d6);
+					} else {
+						sub_7e19a(d6);
+					}
 				}
 			}			
 		}
@@ -1014,7 +1021,7 @@ static void _CDSpecialReactMode(Player *ply, Player *vict, const HitBoxAct *a3) 
 			   a3->ReactMode == RM_HURRICANE)		{ _CDTurnToFaceMe(ply, vict); }
 			break;
 		case FID_ZANGEIF:
-			if(a3->ReactMode == RM_0x14)				{ _CDTurnToFaceMe(ply, vict); }
+			if(a3->ReactMode == RM_0x14)			{ _CDTurnToFaceMe(ply, vict); }
 			break;
 		case FID_M_BISON:
 			if((ply->AnimFlags & 0xff) == 0x17) { vict->Direction ^= 1; }

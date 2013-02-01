@@ -584,7 +584,7 @@ static void _CDBonus2(Object_G2 *a6) {		// 7dd0c
 		_CDCheckBonus2(&g.Player2, a6);
 	}
 }
-void sub_7d99a(Object *a6) {		// 7dd9a - entry for Bonus objects
+void CDBonusCollisionCheck(Object *a6) {		// 7dd9a - entry for Bonus objects
 	// disable collision detection for most objects
 	char data_7d9ba[]={-1, -1, -1, -1, 6, 4, 0, -1, -1, 2, -1, -1, -1, -1, -1, -1};
 	

@@ -54,8 +54,8 @@
 #endif
 
 typedef  u16 * CPSCOORD;
+typedef int FBBOOL;
 
-	
 #ifndef NULL
 #define NULL 0
 #endif

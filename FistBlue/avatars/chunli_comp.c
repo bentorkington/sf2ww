@@ -418,17 +418,17 @@ static void _ChunLiStandComp(Player *ply) {		//346ec
 	switch (ply->PunchKick) {
 		case PLY_PUNCHING:
 			switch (ply->ButtonStrength) {
-				case 0:	sub_3470e(ply);	break;
-				case 2:	sub_34744(ply);	break;
-				case 4:	sub_347d4(ply);	break;
+				case STRENGTH_LOW:	sub_3470e(ply);	break;
+				case STRENGTH_MED:	sub_34744(ply);	break;
+				case STRENGTH_HIGH:	sub_347d4(ply);	break;
 					FATALDEFAULT;
 			}
 			break;
 		case PLY_KICKING:		//348be
 			switch (ply->ButtonStrength) {
-				case 0:	sub_348d0(ply);	break;
-				case 2:	sub_34906(ply);	break;
-				case 4:	sub_349c0(ply);	break;
+				case STRENGTH_LOW:	sub_348d0(ply);	break;
+				case STRENGTH_MED:	sub_34906(ply);	break;
+				case STRENGTH_HIGH:	sub_349c0(ply);	break;
 					FATALDEFAULT;
 			}
 			break;
