@@ -925,7 +925,7 @@ void gfx_glut_drawgame(void) {
 	
 	glDisable(GL_SCISSOR_TEST);
 	glDisable(GL_TEXTURE_2D);
-	//drawGLText(gCamera);
+	drawGLText(gCamera);
 }
 
 void gCameraReset(void) {
@@ -1111,7 +1111,14 @@ void drawGLText(recCamera cam) {
 						 es.FadeBusy
 						 );
 		drawGLString(10, (lineSpacing * line++) + startOffest, outString);
+		sprintf (outString, "Coin1 minor:%02d holdoff:%02d bits:0x%02x coinstat:0x%04x",
+				 g.coinslot1.count_minor,
+				 g.coinslot1.debounce_timer,
+				 g.coinslot1.shifted_bits,
+				 g.CoinStatus);
+		drawGLString(10, (lineSpacing * line++) + startOffest, outString);
 		
+				 
 		
 		
 		glTranslatef(-infoView.rect.left, -infoView.rect.top, 0.0);

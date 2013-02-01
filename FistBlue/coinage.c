@@ -41,16 +41,16 @@ void decode_start_service(void) {	// 1e7a was swirlything
 		((g.RawButtons0			& IPT_SERVICE) >> 1 ) |
 		((g.RawButtons0Dash2    & IPT_SERVICE) >> 0 ) |
 		((g.RawButtons0Dash3	& IPT_SERVICE) << 1 );
-	g.coinslot1.x0007 =
-	((g.RawButtons0Dash		& IPT_COIN1) << 3 ) |
-	((g.RawButtons0			& IPT_COIN1) << 2 ) |
-	((g.RawButtons0Dash2    & IPT_COIN1) << 1 ) |
-	((g.RawButtons0Dash3	& IPT_COIN1) >> 0 );
-	g.coinslot2.x0007 =
-	((g.RawButtons0Dash		& IPT_COIN2) << 2 ) |
-	((g.RawButtons0			& IPT_COIN2) << 1 ) |
-	((g.RawButtons0Dash2	& IPT_COIN2) << 0 ) |
-	((g.RawButtons0Dash3	& IPT_COIN2) >> 1 );
+	g.coinslot1.shifted_bits =
+		((g.RawButtons0Dash		& IPT_COIN1) >> 0 ) |
+		((g.RawButtons0			& IPT_COIN1) << 1 ) |
+		((g.RawButtons0Dash2    & IPT_COIN1) << 2 ) |
+		((g.RawButtons0Dash3	& IPT_COIN1) << 3 );
+	g.coinslot2.shifted_bits =
+		((g.RawButtons0Dash		& IPT_COIN2) >> 1 ) |
+		((g.RawButtons0			& IPT_COIN2) >> 0 ) |
+		((g.RawButtons0Dash2	& IPT_COIN2) << 1 ) |
+		((g.RawButtons0Dash3	& IPT_COIN2) << 2 );
 }
 
 void decode_coincosts(void) {			// 1d9a
@@ -67,8 +67,9 @@ void decode_coincosts(void) {			// 1d9a
 }
 static void sub_1f9e(Coinslot *cs, const u8 *a0) {
 	if (cs->debounce_timer) {
-		if(--cs->debounce_timer != 15) {return;}
-		g.CoinStatus &= a0[0];
+		if(--cs->debounce_timer == 15) {
+			g.CoinStatus &= a0[0];
+		}
 	} else {
 		if (cs->count_minor) {
 			--cs->count_minor;
@@ -79,6 +80,7 @@ static void sub_1f9e(Coinslot *cs, const u8 *a0) {
 }
 
 static void coin_accepted(Coinslot *cs) {		// 1f5a
+	printf("coin_accepted\n");
 	++cs->count_minor;
 	++cs->count_major;
 	if (!g.TwoCreditsToStart) {
@@ -93,19 +95,19 @@ static void coin_accepted(Coinslot *cs) {		// 1f5a
 }
 static void sub_1f1c(Coinslot *cs) {
 	if (cs->x0000 == 0) {
-		if (cs->x0007 != 3) {
-			return;
+		if (cs->shifted_bits == 0x3) {
+			++cs->x0000;
+			cs->holdoff_timer = 120;	// 2 seconds
 		}
-		++cs->x0000;
-		cs->x0006 = 120;	// 2 seconds
+		return;
 	}
-	if (cs->x0007 == 12) {
+	if (cs->shifted_bits == 0xc) {
 		++g.CoinsTaken;
 		++g.SoundOutstanding;
 		coin_accepted(cs);
 		cs->x0000 = 0;
 	} else {
-		if (--cs->x0006 == 0) {
+		if (--cs->holdoff_timer == 0) {
 			cs->x0000 = 0;
 		}
 	}

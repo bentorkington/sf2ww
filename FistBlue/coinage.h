@@ -22,8 +22,8 @@ struct coinslot {
 	char debounce_timer;
 	char nCoins;
 	char nCredits;
-	char x0006;
-	char x0007;
+	char holdoff_timer;
+	char shifted_bits;
 };
 
 typedef struct coinslot Coinslot;

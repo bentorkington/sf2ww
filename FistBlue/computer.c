@@ -696,11 +696,14 @@ static void turn_me_around(Player *ply) {	/* 2ce40 */
 	ply->Flip =ply->EnemyDirection;
 	if(comp_check_block(ply)) { comp_turn_crouch(ply); return; }
 	COMP_CHK_TACTICS
-	if(check_comp_should_jump(ply)) { comp_set_jump(ply); return;}
-	if(check_compDoBlockStun(ply)) { comp_standblock(ply); return;}
-	if(ply->AIWalkDirection & 0x1) {
+	if(check_comp_should_jump(ply)) { 
+		comp_set_jump(ply);
+	} else if(check_compDoBlockStun(ply)) { 
+		comp_standblock(ply);
+	} else if(ply->AIWalkDirection & 0x1) {
 		ply->mode1 = PLSTAT_TURNAROUND;
-		ply->mode2 = ply->mode3 = 0;
+		ply->mode2 = 0;
+		ply->mode3 = 0;
 		CASetAnim1(ply, STATUS_TURN_AROUND);		/* 0xc */
 	} else {
 		exit_comp_normal(ply);
