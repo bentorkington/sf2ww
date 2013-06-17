@@ -441,7 +441,7 @@ static void sub_343b4(Player *ply) {
 			queuesound(0x70);
 			break;
 		case 2:
-			if (ply->AnimFlags & 0xff00 == 0x100) {	
+			if ((ply->AnimFlags & 0xff00) == 0x100) {
 				if ((obj = AllocProjectile())) {
 					INITOBJC(obj, SF2_PROJ_SONICBOOM, ply->ButtonStrength, PLAYERX, PLAYERY);
 					obj->Flip = ply->Flip;
@@ -489,7 +489,7 @@ static void sub_3444e(Player *ply) {
 			PLAYERTICK;
 			break;
 		case 4:
-			if (ply->AnimFlags & 0xff00 == 0x100) { /* oh shiii... */
+			if ((ply->AnimFlags & 0xff00) == 0x100) { /* oh shiii... */
 				PLAYERTICK;
 			} else {
 				CATrajectory((Object *)ply);

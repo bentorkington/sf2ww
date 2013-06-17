@@ -718,7 +718,7 @@ void bumpdifficulty(void) {				// 4414
 
 void bumpdifficulty_4576(void) {
 	g.x0a0e++;
-	if (g.x0a0e & 1 == 0) {
+	if ((g.x0a0e & 1) == 0) {
 		bumpdifficulty_01();
 	}
 	

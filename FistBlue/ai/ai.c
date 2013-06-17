@@ -1026,7 +1026,7 @@ static void _AIStratJump(Player *ply) {
 			}
 			temp5 = ply->AIJumpSel;
 			ply->AIJumpSel &= 0xf;
-			if (temp5 & 0xf0 == 0) {
+			if ((temp5 & 0xf0) == 0) {
 				return;
 			}
 			if (ply->x022a & 0x10) {		/* should we attack during the jump? */
@@ -1286,7 +1286,7 @@ static void _AISearchA8IfOppXLessEqual(Player *ply) {				//2bc2e
 #ifdef DEBUG_AI
 	printf("AISearchA8IfOppXLessEqual: ");
 #endif
-	if(ply->OppXDist <= _AIReadByte(ply) & 0xff) {
+	if(ply->OppXDist <= (_AIReadByte(ply) & 0xff)) {
 		_AISearchStrategy(ply, AIB_LABEL_A8);
 	}
 #ifdef DEBUG_AI

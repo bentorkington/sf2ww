@@ -625,7 +625,7 @@ static void action_0b(Object *obj) {	// fa12 Ryu Stage Bird
 					setaction_list(obj, actlist_fb2e , obj->SubSel);
 					break;
 				case 2:
-					if (obj->AnimFlags & 0xff == 1) {
+					if ((obj->AnimFlags & 0xff) == 1) {
 						NEXT(obj->mode1);
 						obj->LocalTimer = (short []){60, 0x78, 0xb4, 0xf0, 0xf0, 0xb4, 0x78, 60}[RAND8];
 					} else {
@@ -945,7 +945,7 @@ static void action_11(Object *obj) {
 			if (--obj->LocalTimer == 0) {
 				obj->LocalTimer = 0x1e;
 				if (g.x8a5c < 3) {
-					if (sf2rand() & 3 == 0) {
+					if ((sf2rand() & 3) == 0) {
 						if ((nobj = AllocActor())) {
 							nobj->exists = TRUE;
 							nobj->Sel = 0x11;

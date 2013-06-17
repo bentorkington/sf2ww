@@ -229,7 +229,7 @@ void DrawTileLine(u16 *gfx_p, const u16 *source, int x, int y) {	//5de2
 static void _putchar(u16 **cursor, u32 *gfxcursor, u16 arg, u16 attr) { /* 521a a kind of putchar */
 	u16 x,y;
 	x = *gfxcursor >> 16;
-	y = *gfxcursor && 0xffff;
+	y = *gfxcursor & 0xffff;
 	
     OBJECT_DRAW(*cursor, x, y , arg & 0xff + SF2_TILE_OBJ_ASCII, attr);  /* main charset */ 
     INC_GFX_CURSOR(gfxcursor, 12,0);
@@ -692,7 +692,7 @@ static void drawsimple_scroll2attr(Object *obj, const u16 *tiles, int width, int
 	for(x=0; x<width; x++) {
         coord2=coord;
         for(y=0; y<height; y++) {
-			if (tiles[0] & 0x8000 == 0) {
+			if ((tiles[0] & 0x8000) == 0) {
 				SCR2_DRAW_TILE(coord2, tiles[0] + GFXROM_SCROLL2, tiles[1]); 
 			}
 			tiles+=2;
@@ -733,7 +733,7 @@ static void drawsimple_scroll3attr(Object *obj, const u16 *tiles, int width, int
     for(x=0; x<width; x++) {
         coord2=coord;
         for(y=0; y<height; y++) {
-			if (tiles[0] & 0x8000 == 0) {
+			if ((tiles[0] & 0x8000) == 0) {
 				SCR3_DRAW_TILE(coord2, tiles[0] + GFXROM_SCROLL3, tiles[1]);    
 			}
 			tiles += 2;

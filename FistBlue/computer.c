@@ -563,7 +563,7 @@ static void comp_plstat_turnaround(Player *ply) {	/* 2c9fe */
 				CASetAnim2(ply, STATUS_CROUCH_TURN, AF2);
 				return;
 			}
-			if(ply->AIWalkDirection & 0x1 == 0) {
+			if((ply->AIWalkDirection & 0x1) == 0) {
 				exit_comp_normal(ply);
 				return;
 			}

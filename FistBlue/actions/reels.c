@@ -245,7 +245,7 @@ static void sub_1e59a(Object *obj) {		// birds and stars?
 static void _act23_animate(Object *obj) {		// 1e77e
 	UD23 *ud = (UD23 *) &obj->UserData;
 	
-	if (obj->AnimFlags && 0xff) {
+	if (obj->AnimFlags & 0xff) {
 		NEXT(obj->mode0);
 	}
 	actiontick(obj);

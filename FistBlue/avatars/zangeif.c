@@ -286,7 +286,7 @@ int PLCBStandZangeif(Player *ply) {
 							return TRUE;
 						}
 					} else {
-						if (g_zangeif_d5 & 0x70 == 0x70) {
+						if ((g_zangeif_d5 & 0x70) == 0x70) {
 							sub_31044(ply);
 							return TRUE;
 						}
@@ -512,7 +512,7 @@ int PLCBPowerZangeif(Player *ply) {			// 31c40
 	};
 	switch (ud->mode_power) {
 		case 0:
-			if (ply->JoyDecode.full & JOY_MOVEMASK == 0) {
+			if ((ply->JoyDecode.full & JOY_MOVEMASK) == 0) {
 				ud->mode_power = 0;
 				return 0;
 			} else {

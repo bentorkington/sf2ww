@@ -124,7 +124,7 @@ static int dhalsim_luckymove(Player *ply) {		// 32512
 }
 int sub_32386(Player *ply) {
 	g_dhalsim_d6 &= 3;
-	if (g_dhalsim_d6 & ply->PunchKick==0 &ply->ButtonStrength != 0) {
+	if (g_dhalsim_d6 && ply->PunchKick==0 && ply->ButtonStrength != 0) {
 		PLY_THROW_SET(0xffe0, 0x0035, 0x0020, 0x0010);
 		if(throwvalid(ply)) {
 			return 1;

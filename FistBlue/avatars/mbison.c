@@ -256,7 +256,7 @@ static void sub_36b12(Player *ply) {
 		ply->Y.full += ply->AclY.full << 8;
 		ply->AclY.full -= 0x40;
 		if (ply->AclY.full < 0) {
-			ply->AclY.full == 0;
+			ply->AclY.full = 0;
 			++ud->x008b;
 		}
 	} else {
