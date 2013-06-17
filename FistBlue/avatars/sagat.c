@@ -94,7 +94,7 @@ static void sub_36d20(Player *ply) {
 		case 2:
 			if (AF1) {
 				NEXT(ply->mode2);
-				if (obj = AllocProjectile()) {
+				if ((obj = AllocProjectile())) {
 					obj->exists     = TRUE;
 					obj->Sel        = SF2_PROJ_TIGER;
 					obj->XPI        = ply->XPI;

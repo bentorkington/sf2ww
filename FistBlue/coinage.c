@@ -212,16 +212,16 @@ void task_creditscreen(void) {          /* 6b52 */
     LBResetState();
     sound_cq_f7_ff();
     palette_macro(0x10);
-    if (act = AllocActor()) {
+    if ((act = AllocActor())) {
         act->exists = TRUE;
         act->Sel    = SF2ACT_SF2LOGO;
     }
-    if (act = AllocActor()) {
+    if ((act = AllocActor())) {
         act->exists = TRUE;
         act->Sel    = SF2ACT_WWLOGO;
         act->SubSel = 1;
     }
-    if (act = AllocActor()) {
+    if ((act = AllocActor())) {
         act->exists = TRUE;
         act->Sel    = SF2ACT_CAPCOMLOGO;
     }

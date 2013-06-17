@@ -33,7 +33,7 @@ short comp_setnextaction(Player *ply);		/* 2c5de */
 void comp_do_next_action(Player *ply);		/* 2c668 */
 
 
-#define COMP_CHK_TACTICS if(temp=comp_check_newtactics(ply)){comp_changetactics(ply, temp);return;}
+#define COMP_CHK_TACTICS if((temp=comp_check_newtactics(ply))){comp_changetactics(ply, temp);return;}
 #define COMP_CHK_BLOCKSTUN if(check_compDoBlockStun(ply))
 #define COMP_CHK_27BZ if(check_ply_27b(ply)==0)
 

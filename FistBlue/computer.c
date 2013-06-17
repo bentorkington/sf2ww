@@ -350,7 +350,7 @@ void comp_plstat_normal(Player *ply) {  /* 2c2a4 */
 				turn_around(ply);	/* bright eyes */
 			} else if(comp_check_block(ply)) {
 				comp_check_set_crouch(ply);
-			} else if(temp = comp_check_newtactics(ply)) {
+			} else if((temp = comp_check_newtactics(ply))) {
 				comp_changetactics(ply,temp);
 			} else if(comp_check_standattack(ply)) {
 				CompStateGroundAttack(ply, PLY_STAND);
@@ -382,14 +382,14 @@ static void comp_plstat_crouch (Player *ply) {		/* 2c682 was comp_disposition_1*
 				turn_me_around(ply);
 			} else if(comp_check_block(ply)) {
 				/* 2c6f0 */
-				if(temp=comp_check_newtactics(ply)) {
+				if((temp=comp_check_newtactics(ply))) {
 					comp_changetactics(ply,temp);
 				} else if(comp_check_standattack(ply)){
 					CompStateGroundAttack(ply, PLY_CROUCH);
 				} else if(check_compDoBlockStun(ply)){
 					comp_standblock(ply);
 				}
-			} else if(temp=comp_check_newtactics(ply)) {
+			} else if((temp=comp_check_newtactics(ply))) {
 				comp_changetactics(ply,temp);
 			} else if(comp_check_standattack(ply)){
 				CompStateGroundAttack(ply, PLY_STAND);
@@ -409,7 +409,7 @@ static void comp_plstat_crouch (Player *ply) {		/* 2c682 was comp_disposition_1*
 			} else if (check_my_direction(ply)) {
 				turn_me_around(ply);
 			} else if (comp_check_block(ply)) {
-				if(temp=comp_check_newtactics(ply)){
+				if((temp=comp_check_newtactics(ply))){
 					comp_changetactics(ply,temp);
 				} else if(comp_check_standattack(ply)) {
 					CompStateGroundAttack(ply, PLY_CROUCH);
@@ -421,7 +421,7 @@ static void comp_plstat_crouch (Player *ply) {		/* 2c682 was comp_disposition_1*
 				}
 			} else {
 				/* 2c75e */
-				if(temp=comp_check_newtactics(ply)){
+				if((temp=comp_check_newtactics(ply))){
 					comp_changetactics(ply,temp);
 				} else if(comp_check_standattack(ply)){
 					CompStateGroundAttack(ply, PLY_CROUCH);
@@ -494,7 +494,7 @@ static void comp_plstat_jump(Player *ply) { /* 2c788 was comp_desire_jump */
 			} else if (comp_check_block(ply)) {
 				/* 2c94a ... */
 				ply->LocalTimer = 0;
-				if (d0=comp_check_newtactics(ply)) {
+				if ((d0=comp_check_newtactics(ply))) {
 					comp_changetactics(ply, d0);
 				} else if (comp_check_standattack(ply)) {
 					CompStateGroundAttack(ply, PLY_CROUCH);
@@ -504,7 +504,7 @@ static void comp_plstat_jump(Player *ply) { /* 2c788 was comp_desire_jump */
 					comp_check_set_crouch(ply);
 				}
 			} else {
-				if (d0=comp_check_newtactics(ply)) {
+				if ((d0=comp_check_newtactics(ply))) {
 					comp_changetactics(ply, d0);
 				} else if (comp_check_standattack(ply)) {
 					CompStateGroundAttack(ply, PLY_STAND);
@@ -553,7 +553,7 @@ static void comp_plstat_turnaround(Player *ply) {	/* 2c9fe */
 			if(comp_check_block(ply)) {
 				/* 2ca54(ply); */
 				NEXT(ply->mode2);
-				if(temp=comp_check_newtactics(ply)) {comp_changetactics(ply,temp);return;}
+				if((temp=comp_check_newtactics(ply))) {comp_changetactics(ply,temp);return;}
 				if(comp_check_standattack(ply)){CompStateGroundAttack(ply, PLY_CROUCH); return;}
 				if(check_compDoBlockStun(ply)){comp_standblock(ply); return;}
 				if(AF1) {
@@ -592,7 +592,7 @@ static void comp_plstat_turnaround(Player *ply) {	/* 2c9fe */
 				CASetAnim2(ply, STATUS_TURN_AROUND, AF2);
 				return;
 			}
-			if(temp=comp_check_newtactics(ply)) {comp_changetactics(ply,temp);return;}
+			if((temp=comp_check_newtactics(ply))) {comp_changetactics(ply,temp);return;}
 			if(comp_check_standattack(ply)){CompStateGroundAttack(ply, PLY_CROUCH); return;}
 			if(check_compDoBlockStun(ply)){comp_standblock(ply); return;}
 			if(AF1) {
@@ -612,7 +612,7 @@ static void comp_plstat_block(Player *ply) {		// 2cb04
 			if(check_round_result())		{PSStateRoundOver(ply); return;}
 			if(check_my_direction(ply))		{turn_me_around(ply); return;}
 			PLAYERTICK;
-			if(temp=comp_check_newtactics(ply))			{comp_changetactics(ply, temp); return;}
+			if((temp=comp_check_newtactics(ply)))			{comp_changetactics(ply, temp); return;}
 			if(check_compDoBlockStun(ply))	{comp_set_block2(ply);return;}
 			if(check_ply_27b(ply))			{comp_set_block1(ply);return;}
 			comp_standattack_or_jump(ply);
@@ -995,7 +995,7 @@ void comp_exit_plstat_crouch(Player *ply) {	/* 0x2c496  */
 static void comp_turn_crouch(Player *ply) { /* 0x2ce84 1 caller */
 	short temp;
 	ply->Flip = ply->EnemyDirection;
-	if(temp=comp_check_newtactics(ply))	{comp_changetactics(ply,temp); return;}
+	if((temp=comp_check_newtactics(ply)))	{comp_changetactics(ply,temp); return;}
 	if(check_compDoBlockStun(ply)) {comp_standblock(ply); return;}
 	ply->mode1 = PLSTAT_TURNAROUND;
 	ply->mode2 = 2;
@@ -1004,7 +1004,7 @@ static void comp_turn_crouch(Player *ply) { /* 0x2ce84 1 caller */
 }
 static void comp_check_set_crouch(Player *ply) { /* 2ceb2 3 callers */
 	short temp;
-	if(temp=comp_check_newtactics(ply)) {
+	if((temp=comp_check_newtactics(ply))) {
 		comp_changetactics(ply,temp);
 	} else if(check_compDoBlockStun(ply)) {
 		comp_standblock(ply);

@@ -98,7 +98,7 @@ void PSEntry(Player *ply) {   /* 0x28396 was: player_per_frame */
 	// Update an 'extra' sprite associated with an avatar, such as Vega's claw
     ply->ExtraSpriteEna = FALSE;
     if(ply->exists && ply->VegaHasClaw) {
-        if(offsetsel = ply->ActionScript->ExtraSprite) {
+        if((offsetsel = ply->ActionScript->ExtraSprite)) {
             ply->ExtraSpriteEna = TRUE;
             ply->Draw_OffsetX = ply->Sprite2[offsetsel].Offset.x;
             ply->Draw_OffsetY = ply->Sprite2[offsetsel].Offset.y;

@@ -427,7 +427,7 @@ static void action_06(Object *obj) {		//db5a
 							if (obj->AnimFlags != 0) {
 								NEXT(obj->mode2);
 								for (i=0; i<=9; i++) {
-									if(obj2 = AllocActor()) {
+									if((obj2 = AllocActor())) {
 										obj2->exists = TRUE;
 										obj2->Sel = SF2ACT_0X10;
 										obj2->Scroll = 4;
@@ -577,12 +577,12 @@ static void action_0a(Object *obj) {		// f91c
 		case 0:
 			if (g.FightOver) {
 				NEXT(obj->mode0);
-				if (newobj = pop_5d0c()) {
+				if ((newobj = pop_5d0c())) {
 					newobj->exists = TRUE;
 					newobj->Sel = 0;
 					newobj->SubSel = 14;
 				}
-				if (newobj = pop_5d0c()) {
+				if ((newobj = pop_5d0c())) {
 					newobj->exists = TRUE;
 					newobj->Sel = 0;
 					newobj->SubSel = 15;
@@ -946,7 +946,7 @@ static void action_11(Object *obj) {
 				obj->LocalTimer = 0x1e;
 				if (g.x8a5c < 3) {
 					if (sf2rand() & 3 == 0) {
-						if (nobj = AllocActor()) {
+						if ((nobj = AllocActor())) {
 							nobj->exists = TRUE;
 							nobj->Sel = 0x11;
 							nobj->SubSel = 0x1;
@@ -1023,7 +1023,7 @@ static void action_12(Object *obj) {		// "Street Fighter" logo
 							obj->Step = (obj->Step + 2) & 0x1f;
 							if (obj->Step == 0) {
 								NEXT(obj->mode1);
-								if (nobj=AllocActor()) {
+								if ((nobj=AllocActor())) {
 									nobj->exists = TRUE;
 									nobj->Sel    = 0x29;
 								}
@@ -1075,7 +1075,7 @@ static void action_12(Object *obj) {		// "Street Fighter" logo
 							--obj->Draw2.full;
 							if (--obj->LocalTimer == 0) {
 								NEXT(obj->mode1);
-								if (nobj=AllocActor()) {
+								if ((nobj=AllocActor())) {
 									nobj->exists = TRUE;
 									nobj->Sel = 0x29;
 								}
@@ -1210,7 +1210,7 @@ void PrintPlayerPic(Player *ply, short side, short fighterid) {
 	
 void action_start_35(Player *ply) {			// 1f9c6
 	Object *obj;
-	if (obj=AllocActor()) {
+	if ((obj=AllocActor())) {
 		obj->exists = TRUE;
 		obj->Sel = SF2ACT_GROUNDDUST;
 		obj->SubSel = 1;
@@ -1413,7 +1413,7 @@ static void action_18(Object *obj) {
 					for (int i=14; i>=0; --i) {
 						// not quite same, sf2ua bails on
 						// first fail of AllocActor
-						if (nobj = AllocActor()) {
+						if ((nobj = AllocActor())) {
 							nobj->exists = TRUE;
 							nobj->Sel = 0x17;
 							nobj->Scroll = SCROLL_1;
@@ -1468,7 +1468,7 @@ static void action_19(Object *obj) {     // 1322c
 #pragma mark Act1A
 static int action_13bf8(void) {
 	Object *nobj;
-	if (nobj = AllocActor()) {
+	if ((nobj = AllocActor())) {
 		nobj->exists = TRUE;
 		nobj->Sel = 0x1a;
 		nobj->XPI = g.GPCollX;
@@ -1778,7 +1778,7 @@ void action_1606c() {
 	u32 cp = MakePointObj(48, 96);
 	_draw_frame_corners(&gfx_p, cp);
 	
-	if (obj=AllocActor()) {
+	if ((obj=AllocActor())) {
 		struct UserData_Act1d *ud = (struct UserData_Act1d *)&obj->UserData;
 
 		obj->exists = TRUE;
@@ -1891,7 +1891,7 @@ static void action_20(Object *obj) {
 
 void action_start_21(void) {		//1152a
 	Object *obj;
-	if (obj = AllocActor()) {
+	if ((obj = AllocActor())) {
 		obj->exists = 1;
 		obj->Sel    = SF2ACT_0X21;
 	}
@@ -1968,7 +1968,7 @@ void action_start_22(void) { //  1abc6  round X .. fight!
 	};
 	
 	Object *obj;
-	if (obj=AllocActor()) {
+	if ((obj=AllocActor())) {
 		obj->exists = TRUE;
 		obj->Sel = SF2ACT_PREROUNDANIM;
 	}
@@ -2600,7 +2600,7 @@ static void action_33(Object *obj) {
 
 void ActStartGroundDust(Player *ply) {			// 1f980
 	Object *obj;
-	if (obj=AllocActor()) {
+	if ((obj=AllocActor())) {
 		obj->exists = TRUE;
 		obj->Sel = SF2ACT_GROUNDDUST;
 		if (ply->ProjHit) {
@@ -2674,7 +2674,7 @@ static void action_35(Object *obj) {			//1f9fa
 void ActStartScreenWobble(void){			// 1fd9e
 	Object *obj;
 	if (g.FastEndingFight == FALSE && g.ScreenWobbleStarted == FALSE) {
-		if (obj=AllocActor()) {
+		if ((obj=AllocActor())) {
 			obj->exists = TRUE;
 			obj->Sel = SF2ACT_SCREENWOBBLE;
 			g.ScreenWobbleStarted = TRUE;
@@ -3238,7 +3238,7 @@ static void sub_2224c(Object *obj_a4, Object *obj_a2) {
 }
 void sub_221ea(Object *obj_a2) {
 	Object *obj;		// %a4
-	if (obj = AllocActor()) {
+	if ((obj = AllocActor())) {
 		obj->exists   = TRUE;
 		obj->Sel      = 0x44;
 		obj->UserByte = 1;
@@ -3246,7 +3246,7 @@ void sub_221ea(Object *obj_a2) {
 		obj->YPI      = obj_a2->YPI;
 		obj->Flip	  = obj_a2->Direction ^ 1;
 	}
-	if (obj = AllocActor()) {
+	if ((obj = AllocActor())) {
 		obj->exists   = TRUE;
 		obj->Sel      = 0x44;
 		obj->UserByte = 2;
@@ -3257,16 +3257,16 @@ void sub_221ea(Object *obj_a2) {
 }
 void sub_221bc(Object *obj_a2) {
 	Object *obj;		// %a2
-	if (obj = AllocActor()) {
+	if ((obj = AllocActor())) {
 		sub_2224c(obj, obj_a2);
 	}
-	if (obj = AllocActor()) {
+	if ((obj = AllocActor())) {
 		sub_2224c(obj, obj_a2);
 	}
-	if (obj = AllocActor()) {
+	if ((obj = AllocActor())) {
 		sub_2224c(obj, obj_a2);
 	}
-	if (obj = AllocActor()) {
+	if ((obj = AllocActor())) {
 		sub_2224c(obj, obj_a2);
 	}
 }

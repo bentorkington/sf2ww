@@ -348,7 +348,7 @@ void SM_player_select(void) {		//7fc4
 					if (g.OnBonusStage) {
 						g.Pause_9e1 = -1;
 					} else {
-						if (obj = AllocActor()) {
+						if ((obj = AllocActor())) {
 							obj->exists      = TRUE;
 							obj->Sel         = SF2ACT_0X2E;			// Plane
 							if (g.PLSL.PLSLNewPlayers) {

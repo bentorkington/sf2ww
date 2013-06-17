@@ -36,7 +36,7 @@ extern Game g;
 
 static void _CDEffectProjColl(Object *proj) {           /* 7d7d4 */
     Object *obj;
-    if(obj = AllocActor()) {
+    if((obj = AllocActor())) {
         center_collision_coords();
         obj->exists = TRUE;
         obj->Sel    = SF2ACT_HITSTUN;     /* hitstuns */
@@ -49,7 +49,7 @@ static void _CDEffectProjColl(Object *proj) {           /* 7d7d4 */
 static void _CDStartAction38Vict(Player *vict) {      
 	/* 0x7d720  Slow down gameplay for effect */
     Object *obj;
-    if(obj=AllocActor()) {
+    if((obj=AllocActor())) {
         g.FlagTimeWarp = TRUE;
         obj->exists = TRUE;
         obj->Sel    = SF2ACT_TIMEWARP;      

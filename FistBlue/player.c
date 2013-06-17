@@ -99,7 +99,7 @@ void LBStartTimeWarp(void) {   /* 0x3534 */
     Object *obj;
     
     if(g.OnBonusStage) { return; }
-	if(obj=AllocActor()) {
+	if((obj=AllocActor())) {
         g.FlagTimeWarp = TRUE;         /* time slows down */
         obj->exists	   = TRUE;
         obj->Sel       = SF2ACT_TIMEWARP;
@@ -200,7 +200,7 @@ void sub_36d6(Player *ply, short x, short y, short throwtrajd0, char direction, 
 
     ply->Opponent->ThrowTrajectory = throwtrajd0;
     ply->Opponent->Direction       = direction;
-    if(splash=AllocActor() ) {
+    if((splash=AllocActor()) ) {
         splash->exists     = TRUE;
         splash->Sel        = SF2ACT_HITSTUN;
 		splash->SubSel	   = subsel_d3;

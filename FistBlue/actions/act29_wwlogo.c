@@ -61,7 +61,7 @@ void action_29(Object *obj) {
 					ud->funky -= 0x25000;
 					if (ud->funky < 0) {
 						NEXT(obj->mode1);
-						if (nobj=AllocActor()) {
+						if ((nobj=AllocActor())) {
 							nobj->exists = TRUE;
 							nobj->Sel    = 0x3e;
 						}

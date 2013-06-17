@@ -1085,7 +1085,7 @@ void PSCBVictoryZangeif(Player *ply) {		// 31f48
 					switch (ud->x0094) {
 						case 0:
 							NEXT(ud->x0094);
-							if (obj = AllocActor()) {
+							if ((obj = AllocActor())) {
 								obj->exists = TRUE;
 								obj->Sel    = 0x25;
 								obj->SubSel = 0xf;

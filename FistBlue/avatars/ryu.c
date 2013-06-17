@@ -91,7 +91,7 @@ void PSCBVictoryRyu(Player *ply) {		//2d3bc
 			if (ply->FighterID && ply->RoundsWon == 2 && g.OnFinalStage && g.Pause_9e1 == 2) {
 				/* 2d45e */
 				NEXT(ply->mode3);
-				if (obj=AllocActor()) {
+				if ((obj=AllocActor())) {
 					obj->exists = TRUE;
 					obj->Sel = SF2ACT_0X25;
 					obj->SubSel = 9;
@@ -144,7 +144,7 @@ void RyuSMHadouken(Player *ply) {		//2d778
 	
 	if (AF1) {
 		NEXT(ply->mode2);
-		if (obj=AllocProjectile()) {
+		if ((obj=AllocProjectile())) {
 			obj->exists = TRUE;
 			obj->Sel	= SF2_PROJ_HADOUKEN;
 			obj->XPI	= ply->XPI;

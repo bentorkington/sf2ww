@@ -31,7 +31,7 @@ void ActStartVomit(Player *ply) {			// 1e304
 	UD23 *ud;
 	
 	Object *obj;
-	if (obj = AllocActor()) {
+	if ((obj = AllocActor())) {
 		ud = (UD23 *)&obj->UserData;
 		obj->SubSel = 0;
 		obj->flag1  = TRUE;
@@ -53,7 +53,7 @@ void action_1e336(Player *ply) {
 		0,0,0,1,1,1,2,2,0,0,0,1,1,1,2,2,
 	};
 	
-	if (obj = AllocActor()) {
+	if ((obj = AllocActor())) {
 		ud =  (UD23 *)&obj->UserData;
 		obj->SubSel = 2;
 		temp = data_1e39c[RAND32];
@@ -70,7 +70,7 @@ void action_1e336(Player *ply) {
 static void _CreateDizzyObject(Player *ply, short d2) {		// 1e3c8
 	Object *obj;
 	UD23 *ud;
-	if (obj=AllocActor()) {
+	if ((obj=AllocActor())) {
 		ud = (UD23 *)&obj->UserData;
 		ud->x008c	= d2;
 		obj->exists = TRUE;
@@ -88,7 +88,7 @@ void StartDizzyAnim(Player *ply) {				// 1e3bc
 }
 void ActBlankaBiteBlood(Player *ply) {			//1e402 not just Blanka XXX
 	Object *obj;
-	if (obj=AllocActor()) {
+	if ((obj=AllocActor())) {
 		obj->exists = TRUE;
 		obj->Sel = SF2ACT_VOMIT;
 		obj->SubSel = 6;

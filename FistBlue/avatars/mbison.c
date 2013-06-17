@@ -111,7 +111,7 @@ void sub_3623e(Player *ply) {		// 3623e cape processing
 			// 36272
 			if (AF2) {
 				g.x0306 = FALSE;
-				if (obj = AllocActor()) {
+				if ((obj = AllocActor())) {
 					obj->exists = TRUE;
 					obj->Sel = SF2ACT_BISONCAPE;
 					obj->XPI = ply->XPI - 8;

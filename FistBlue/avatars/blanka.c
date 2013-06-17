@@ -150,7 +150,7 @@ void PSCBVictoryBlanka(Player *ply) {
 		case 4:
 			ply->PSFinishedParticipating = TRUE;
 			if (g.Pause_9e1 == 2) {
-				if (obj=AllocActor()) {
+				if ((obj=AllocActor())) {
 					INITOBJ(obj, 0x25, 0xa);
 					obj->Pool = 6;
 					obj->Owner = ply;

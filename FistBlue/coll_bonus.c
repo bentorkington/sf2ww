@@ -60,7 +60,7 @@ static void _CDKillDecor(Player *a2, Object *a6) {	/* 7e39e */
 
 static void mac_stun_oppopp(Player *ply, Player *opp) {		//7d93c checked
     Object *obj;
-    if(obj = AllocActor()) {
+    if((obj = AllocActor())) {
         center_collision_coords();
         obj->exists = TRUE;
         obj->Sel    = SF2ACT_HITSTUN;     /* hitstuns */
@@ -85,7 +85,7 @@ static void _CDKillDecor2(Object *a6, Player *a2) {		// 7e424 checked
 static void mac_stunhim_from76(Object *obj1, Player *vict) {		//7d908
 	/* 7d884 obj1 %a6 vict %a2 */
     Object *obj2;
-    if(obj2 = AllocActor()) {
+    if((obj2 = AllocActor())) {
         center_collision_coords();
         obj2->exists = TRUE;
         obj2->Sel    = SF2ACT_HITSTUN;		
@@ -187,7 +187,7 @@ void CDCheckDecor (Object *a6) {		/* 7e340 check if collision with player */
 
 static void _CDSplashBonus0(Object *obja2) {		// 7db9c
 	Object *nobj;
-	if (nobj = AllocActor()) {
+	if ((nobj = AllocActor())) {
 		nobj->exists = TRUE;
 		nobj->Sel = 0x32;
 		if (obja2->Direction) {
@@ -235,7 +235,7 @@ static void sub_7db12 (Object *obja6, Object_G2 *obja2) {
 static void mac_stunme2(Player *ply, Player *opp) {		//7d824
 	//todo: ply is actually a projectile
     Object *obj;
-    if(obj = AllocActor()) {
+    if((obj = AllocActor())) {
         center_collision_coords();
         obj->exists = TRUE;
         obj->Sel    = SF2ACT_HITSTUN;     /* hitstuns */
@@ -267,7 +267,7 @@ static void _CDCheckObjBonus0(Player *plya6, Object_G2 *obja2, char *a1) {		// 7
 	HitBoxAct *hba3;
 	int d4, d0;
 	
-	if(hba3 = get_active_hitbox(plya6)) {
+	if((hba3 = get_active_hitbox(plya6))) {
 		if (hba3->Shove < 0) {
 			d4 = 1;
 		} else {
@@ -386,7 +386,7 @@ void _CDCheckObjBonus1(Player *plya6, Object_G2 *obja2, char *a1) {		// 7dc2e
 		if (d4 == *a1) {
 			return;
 		}
-		if (hb2 = CDGetHitBoxHead(obja2)) {
+		if ((hb2 = CDGetHitBoxHead(obja2))) {
 			if (check_hitbox_overlap((Object *)plya6, (Object *)obja2, hb, hb2)) {
 				if (hb->Shove < 0) {
 					*a1 = 1;
@@ -452,7 +452,7 @@ static void _CDCheckObjBonus2(Object *obj, Player *ply) {			// 7d2ae
 	if (g.PlayersThrowing || g.DebugNoCollide) {
 		return;
 	}
-	if(hb=get_active_hitbox(obj)==0) { return; }
+	if((hb=get_active_hitbox(obj)==0)) { return; }
 	if (ply->TimerInvincible) {
 		return;
 	}

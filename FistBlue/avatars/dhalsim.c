@@ -177,11 +177,11 @@ static void sub_329aa(Player *ply, const short *arg1, const char *arg2, DM *dm) 
 			} else {
 				if ((ply->JoyCorrect2 & JOY_MOVEMASK) == arg1[dm->sequence / 2]) {
 					if (arg1[dm->sequence] & BUTTON_MASK) {
-						if(buttons = buttonspressed(ply, arg1[dm->sequence / 2])){
+						if((buttons = buttonspressed(ply, arg1[dm->sequence / 2]))){
 							sub_32a58(ply, dm, buttons);
 							return;
 						}
-						if (buttons = buttonsreleased(ply, arg1[dm->sequence / 2])) {
+						if ((buttons = buttonsreleased(ply, arg1[dm->sequence / 2]))) {
 							sub_32a58(ply, dm, buttons);
 							return;
 						}
@@ -198,11 +198,11 @@ static void sub_329aa(Player *ply, const short *arg1, const char *arg2, DM *dm) 
 				dm->sequence = 0;
 				dm->x0002    = 0;
 			} else {
-				if(buttons = buttonspressed(ply, arg1[dm->sequence / 2])){
+				if((buttons = buttonspressed(ply, arg1[dm->sequence / 2]))){
 					sub_32a58(ply, dm, buttons);
 					return;
 				}
-				if (buttons = buttonsreleased(ply, arg1[dm->sequence / 2])) {
+				if ((buttons = buttonsreleased(ply, arg1[dm->sequence / 2]))) {
 					sub_32a58(ply, dm, buttons);
 					return;
 				}
@@ -429,7 +429,7 @@ static void dhalsim_comp_start_proj_yogafire(Player *ply) {			// 32b64
 	Object *obj;
 	if (AF2 == 1) {
 		NEXT(ply->mode2);
-		if (obj = AllocProjectile()) {
+		if ((obj = AllocProjectile())) {
 			obj->exists = TRUE;
 			obj->Sel    = SF2_PROJ_YOGAFIRE;
 			obj->XPI    = ply->XPI;
@@ -470,7 +470,7 @@ static void dhalsim_comp_start_proj_yogaflame(Player *ply) {		// 32be4
 
 	if (AF2 == 1) {
 		NEXT(ply->mode2);
-		if (obj=AllocProjectile()) {
+		if ((obj=AllocProjectile())) {
 			obj->exists = TRUE;
 			obj->Sel    = SF2_PROJ_YOGAFLAME;
 			obj->XPI    = ply->XPI;
@@ -529,7 +529,7 @@ void PSCBPowerDhalsim(Player *ply) {		// 32b1a
 int PLCBStandDhalsim(Player *ply) {		// 32302
 	UD *ud = (UD *)ply->UserData;
 	int buttons;
-	if (buttons = dhalsim_newbuttons(ply)) {
+	if ((buttons = dhalsim_newbuttons(ply))) {
 		ply->StandSquat = 0;
 		++g.HumanMoveCnt;
 		decode_buttons(ply, buttons);
@@ -550,7 +550,7 @@ int PLCBCrouchDhalsim(Player *ply) {
 	UD *ud = (UD *)ply->UserData;
 	int buttons;
 	ud->timer = 5;
-	if (buttons = dhalsim_newbuttons(ply)) {
+	if ((buttons = dhalsim_newbuttons(ply))) {
 		++g.HumanMoveCnt;
 		decode_buttons(ply, buttons);
 		ply->StandSquat = PLY_CROUCH;
@@ -567,7 +567,7 @@ int PLCBJumpDhalsim(Player *ply) {
 	UD *ud = (UD *)ply->UserData;
 	int buttons;
 	ud->timer = 5;
-	if (buttons = dhalsim_newbuttons(ply)) {
+	if ((buttons = dhalsim_newbuttons(ply))) {
 		++g.HumanMoveCnt;
 		decode_buttons(ply, buttons);
 		if (ply->ButtonStrength >= 3) {

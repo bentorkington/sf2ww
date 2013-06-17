@@ -359,9 +359,9 @@ static void RyuCheckSequence(Player *ply, const u16 *movedata, const char *other
 			if (--user[1] == 0) {
 				user[0]=0; user[2]=0;
 			} else if ((ply->JoyCorrect2 & 0xf) == movedata[2]) {
-				if (buttons=buttonspressed(ply, movedata[3])) {		/* arg in %D1 @ 32c8 */
+				if ((buttons=buttonspressed(ply, movedata[3]))) {		/* arg in %D1 @ 32c8 */
 					_RyuPowerStrCheck(ply, user,buttons);
-				} else if (buttons=buttonsreleased(ply, movedata[3])) {
+				} else if ((buttons=buttonsreleased(ply, movedata[3]))) {
 					_RyuPowerStrCheck(ply, user,buttons);
 				} else {
 					NEXT(user[0]);
@@ -372,9 +372,9 @@ static void RyuCheckSequence(Player *ply, const u16 *movedata, const char *other
 			if (--user[1] == 0) {
 				user[0]=0; user[2]=0;
 			} else {
-				if (buttons=buttonspressed(ply, movedata[3])) {		/* arg in %D1 @ 32c8 */
+				if ((buttons=buttonspressed(ply, movedata[3]))) {		/* arg in %D1 @ 32c8 */
 					_RyuPowerStrCheck(ply, user,buttons);
-				} else if (buttons=buttonsreleased(ply, movedata[3])) {
+				} else if ((buttons=buttonsreleased(ply, movedata[3]))) {
 					_RyuPowerStrCheck(ply, user,buttons);
 				}
 			}

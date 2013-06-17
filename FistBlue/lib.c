@@ -1650,7 +1650,7 @@ void setup_stage_actions (void) { /* 822be */
 	
 	const struct actionhdr *data = data_stageactions[g.CurrentStage];
 	for (i=0; i<count; ++i) {
-		if (action = alloc_action_by_type(data[i].Type)) {
+		if ((action = alloc_action_by_type(data[i].Type))) {
 			action->exists   = TRUE;
             action->SubSel   = data[i].SubSel;
             action->Sel      = data[i].Sel;
@@ -1842,7 +1842,7 @@ void actionlibrary(void) {
 	
 	const struct actionhdr *data = data_actions[g.ActionLibSel];
 	for (i=0; i< count; i++) {
-		if (action = alloc_action_by_type(data[i].Type)) {
+		if ((action = alloc_action_by_type(data[i].Type))) {
 			action->exists = TRUE;
             action->SubSel = data[i].SubSel;
             action->Sel    = data[i].Sel;

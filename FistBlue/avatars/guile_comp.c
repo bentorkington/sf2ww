@@ -442,7 +442,7 @@ static void sub_343b4(Player *ply) {
 			break;
 		case 2:
 			if (ply->AnimFlags & 0xff00 == 0x100) {	
-				if (obj = AllocProjectile()) {
+				if ((obj = AllocProjectile())) {
 					INITOBJC(obj, SF2_PROJ_SONICBOOM, ply->ButtonStrength, PLAYERX, PLAYERY);
 					obj->Flip = ply->Flip;
 					obj->Owner = ply;

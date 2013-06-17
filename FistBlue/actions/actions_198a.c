@@ -100,7 +100,7 @@ static void _SMKenDrums(Object *obj) {				// 24a74
 					} else {
 						NEXT(obj->mode1);
 						for(i=11;i>=0;i--) {
-							if (nobj = AllocActor()) {
+							if ((nobj = AllocActor())) {
 								nobj->exists = TRUE;
 								nobj->Sel = SF2ACT_USAKEN_DRUMFRAGS;
 								nobj->SubSel = data_24c3c[RAND16];
@@ -110,7 +110,7 @@ static void _SMKenDrums(Object *obj) {				// 24a74
 								nobj->YPI = obj->YPI + 45;
 							}
 						}
-						if(nobj = AllocActor()) {
+						if((nobj = AllocActor())) {
 							nobj->exists = TRUE;
 							nobj->Sel = SF2ACT_USAKEN_DRUMFRAGS;
 							nobj->SubSel = 5;
@@ -120,7 +120,7 @@ static void _SMKenDrums(Object *obj) {				// 24a74
 							nobj->XPI = obj->XPI - 16;
 							nobj->YPI = obj->YPI + 40;
 						}
-						if(nobj = AllocActor()) {
+						if((nobj = AllocActor())) {
 							nobj->exists = TRUE;
 							nobj->Sel = SF2ACT_USAKEN_DRUMFRAGS;
 							nobj->SubSel = 6;
@@ -129,7 +129,7 @@ static void _SMKenDrums(Object *obj) {				// 24a74
 							nobj->ZDepth = obj->ZDepth;
 							nobj->XPI = obj->XPI - 16;
 						}
-						if(nobj = AllocActor()) {
+						if((nobj = AllocActor())) {
 							nobj->exists = TRUE;
 							nobj->Sel = SF2ACT_USAKEN_DRUMFRAGS;
 							nobj->SubSel = 5;
@@ -139,7 +139,7 @@ static void _SMKenDrums(Object *obj) {				// 24a74
 							nobj->XPI = obj->XPI - 0x30;
 							nobj->YPI = obj->YPI + 0x38;
 						}
-						if(nobj = AllocActor()) {
+						if((nobj = AllocActor())) {
 							nobj->exists = TRUE;
 							nobj->Sel = SF2ACT_USAKEN_DRUMFRAGS;
 							nobj->SubSel = 6;
@@ -189,7 +189,7 @@ static void _SMRyuSigns(Object *obj) {		// 24c4e
 					} else {
 						NEXT(obj->mode1);
 						for(i=3;i>=0;i--) {
-							if (nobj = AllocActor()) {
+							if ((nobj = AllocActor())) {
 								nobj->exists = TRUE;
 								nobj->Sel = SF2ACT_0X13;
 								nobj->SubSel = i;
@@ -254,7 +254,7 @@ static void _SMAct03(Object *obj) {		// 24efa
 			CDCheckDecor(obj);
 			if (obj->Energy < 0) {
 				NEXT(obj->mode0);
-				if (nobj = AllocActor()) {
+				if ((nobj = AllocActor())) {
 					nobj->exists = TRUE;
 					nobj->Sel = 0x18;
 					nobj->SubSel = obj->SubSel;
@@ -307,7 +307,7 @@ static void _SMAct07(Object *obj) {			// 272c6
 					if (--obj->Timer2 == 0) {
 						NEXT(obj->mode1);
 						for (i=0x13; i>=0; --i) {
-							if (nobj=AllocActor()) {
+							if ((nobj=AllocActor())) {
 								nobj->exists = TRUE;
 								nobj->Sel = 0x1c;
 								nobj->SubSel = data_27384[RAND16];
@@ -375,7 +375,7 @@ static void _SMAct08(Object_G2 *obj) {		// 274e4
 		case 0:
 			NEXT(obj->mode0);
 			obj->UD.UDactB08.h0080c = 0;
-			if (nobj = AllocActor()) {
+			if ((nobj = AllocActor())) {
 				nobj->exists = TRUE;
 				nobj->Sel = 6;
 				nobj->XPI = 192;
@@ -409,7 +409,7 @@ static void _SMAct08(Object_G2 *obj) {		// 274e4
 					if (obj->UD.UDactB08.h0080c) {
 						if (_Act08PlatformCheck(&g.Player1, obj)) {
 							obj->UD.UDactB08.h0080c = 1;
-							if (nobj = AllocActor()) {
+							if ((nobj = AllocActor())) {
 								nobj->exists = TRUE;
 								nobj->Sel = 0x32;
 								nobj->SubSel = 0x2;
@@ -418,7 +418,7 @@ static void _SMAct08(Object_G2 *obj) {		// 274e4
 					} else {
 						if(_Act08PlatformCheck(&g.Player1, obj) == 0) {
 							obj->UD.UDactB08.h0080c = 0;
-							if (nobj = AllocActor()) {
+							if ((nobj = AllocActor())) {
 								nobj->exists = TRUE;
 								nobj->Sel = 0x32;
 								nobj->SubSel = 0x5;
@@ -430,7 +430,7 @@ static void _SMAct08(Object_G2 *obj) {		// 274e4
 					if (obj->UD.UDactB08.h0080c) {
 						if (_Act08PlatformCheck(&g.Player2, obj)) {
 							obj->UD.UDactB08.h0080c = 2;
-							if (nobj = AllocActor()) {
+							if ((nobj = AllocActor())) {
 								nobj->exists = TRUE;
 								nobj->Sel = 0x32;
 								nobj->SubSel = 0x2;
@@ -439,7 +439,7 @@ static void _SMAct08(Object_G2 *obj) {		// 274e4
 					} else {
 						if(_Act08PlatformCheck(&g.Player2, obj) == 0) {
 							obj->UD.UDactB08.h0080c = 0;
-							if (nobj = AllocActor()) {
+							if ((nobj = AllocActor())) {
 								nobj->exists = TRUE;
 								nobj->Sel = 0x32;
 								nobj->SubSel = 0x5;
@@ -452,7 +452,7 @@ static void _SMAct08(Object_G2 *obj) {		// 274e4
 						case 0:
 							if (_Act08PlatformCheck(&g.Player1, obj)) {
 								obj->UD.UDactB08.h0080c = 1;
-								if (nobj = AllocActor()) {
+								if ((nobj = AllocActor())) {
 									nobj->exists = TRUE;
 									nobj->Sel = 0x32;
 									nobj->SubSel = 0x2;
@@ -460,7 +460,7 @@ static void _SMAct08(Object_G2 *obj) {		// 274e4
 							}
 							if (_Act08PlatformCheck(&g.Player2, obj)) {
 								obj->UD.UDactB08.h0080c = 2;
-								if (nobj = AllocActor()) {
+								if ((nobj = AllocActor())) {
 									nobj->exists = TRUE;
 									nobj->Sel = 0x32;
 									nobj->SubSel = 0x2;
@@ -470,14 +470,14 @@ static void _SMAct08(Object_G2 *obj) {		// 274e4
 						case 1:
 							if (_Act08PlatformCheck(&g.Player2, obj)) {
 								obj->UD.UDactB08.h0080c = 3;
-								if (nobj = AllocActor()) {
+								if ((nobj = AllocActor())) {
 									nobj->exists = TRUE;
 									nobj->Sel = 0x32;
 									nobj->SubSel = 0x3;
 								}								
 							} else if (_Act08PlatformCheck(&g.Player1, obj)==0) {
 								obj->UD.UDactB08.h0080c = 0;
-								if (nobj = AllocActor()) {
+								if ((nobj = AllocActor())) {
 									nobj->exists = TRUE;
 									nobj->Sel = 0x32;
 									nobj->SubSel = 0x5;
@@ -487,14 +487,14 @@ static void _SMAct08(Object_G2 *obj) {		// 274e4
 						case 2:
 							if (_Act08PlatformCheck(&g.Player1, obj)) {
 								obj->UD.UDactB08.h0080c = 3;
-								if (nobj = AllocActor()) {
+								if ((nobj = AllocActor())) {
 									nobj->exists = TRUE;
 									nobj->Sel = 0x32;
 									nobj->SubSel = 0x3;
 								}								
 							} else if (_Act08PlatformCheck(&g.Player2, obj)==0) {
 								obj->UD.UDactB08.h0080c = 0;
-								if (nobj = AllocActor()) {
+								if ((nobj = AllocActor())) {
 									nobj->exists = TRUE;
 									nobj->Sel = 0x32;
 									nobj->SubSel = 0x5;
@@ -505,21 +505,21 @@ static void _SMAct08(Object_G2 *obj) {		// 274e4
 							if (_Act08PlatformCheck(&g.Player1, obj) == 0 &&
 								_Act08PlatformCheck(&g.Player2, obj) == 0) {
 								obj->UD.UDactB08.h0080c = 0;
-								if (nobj = AllocActor()) {
+								if ((nobj = AllocActor())) {
 									nobj->exists = TRUE;
 									nobj->Sel = 0x32;
 									nobj->SubSel = 0x5;
 								}
 							} else if (_Act08PlatformCheck(&g.Player2, obj) == 0) {
 								obj->UD.UDactB08.h0080c = 1;
-								if (nobj = AllocActor()) {
+								if ((nobj = AllocActor())) {
 									nobj->exists = TRUE;
 									nobj->Sel = 0x32;
 									nobj->SubSel = 0x4;
 								}
 							} else if (_Act08PlatformCheck(&g.Player1, obj) == 0) {
 								obj->UD.UDactB08.h0080c = 2;
-								if (nobj = AllocActor()) {
+								if ((nobj = AllocActor())) {
 									nobj->exists = TRUE;
 									nobj->Sel = 0x32;
 									nobj->SubSel = 0x4;
@@ -582,7 +582,7 @@ static void sub_91c8(void) {
 static void sub_27bda(Object_G2 *obj) {
 	Object *nobj;
 	int i;
-	if (nobj = AllocActor()) {
+	if ((nobj = AllocActor())) {
 		nobj->exists = TRUE;
 		nobj->Sel = 0x3d;
 		nobj->XPI = obj->XPI;
@@ -593,7 +593,7 @@ static void sub_27bda(Object_G2 *obj) {
 		nobj->Flip = obj->Flip;
 	}
 	for(i=5; i>= 0; --i) {
-		if (nobj = AllocActor()) {
+		if ((nobj = AllocActor())) {
 			nobj->exists = TRUE;
 			nobj->Sel = 0x3d;
 			nobj->XPI = obj->XPI;
@@ -819,7 +819,7 @@ void sub_24f22(Object *obj) {
 	CDCheckDecor(obj);
 	if (obj->Energy < 0) {
 		NEXT(obj->mode0);
-		if (nobj = AllocActor()) {
+		if ((nobj = AllocActor())) {
 			nobj->exists = TRUE;
 			nobj->Sel = 0x18;
 			nobj->SubSel = obj->SubSel;

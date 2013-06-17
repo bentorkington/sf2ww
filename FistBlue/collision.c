@@ -287,7 +287,7 @@ void center_collision_coords(void) {		//7d974 checked
 
 static void sub_7d74e(Player *ply, Player *opp, const HitBoxAct *a3) {
     Object *obj;
-    if(obj=AllocActor()) {
+    if((obj=AllocActor())) {
         center_collision_coords();
         obj->exists = TRUE;
         obj->Sel    = SF2ACT_HITSTUN;     /* hitstuns */
@@ -311,7 +311,7 @@ static void sub_7d74e(Player *ply, Player *opp, const HitBoxAct *a3) {
     }
 	
     if(ply->FighterID == FID_VEGA && a3->Damage > 128) {
-		if(obj=AllocActor()) {
+		if((obj=AllocActor())) {
 			obj->exists = TRUE;				// some blood from Vega's claw
 			obj->Sel    = SF2ACT_VOMIT; 
 			obj->SubSel = 0x8;
@@ -325,7 +325,7 @@ static void sub_7d74e(Player *ply, Player *opp, const HitBoxAct *a3) {
 
 void mac_stun_from76(Player *ply, Player *opp) {			//7d884
     Object *obj;
-    if(obj = AllocActor()) {
+    if((obj = AllocActor())) {
         center_collision_coords();
         obj->exists = TRUE;
         obj->Sel    = SF2ACT_HITSTUN;     /* hitstuns */
@@ -347,7 +347,7 @@ void mac_stun_from76(Player *ply, Player *opp) {			//7d884
 }
 static void mac_stun2005(Player *ply, Player *opp) {		//7d8d4
     Object *obj;
-    if(obj = AllocActor()) {
+    if((obj = AllocActor())) {
         center_collision_coords();
         obj->exists = TRUE;
         obj->Sel    = SF2ACT_HITSTUN;     /* hitstuns */
@@ -663,7 +663,7 @@ int check_main_hitboxes(Object *obj, Object *vict, const HitBoxAct *a3) {       
     g.GPReg1  = 0;
     g.GPHitBox4Hit = 0;
 	
-    if (a4=CDGetHitBoxHead(vict)) {
+    if ((a4=CDGetHitBoxHead(vict))) {
         if(check_hitbox_overlap(obj, vict, a3, a4)) {
             g.GPReg1 |= 1;
 			g.GPHitBoxCoords[0][0]=g.VictimLeftEdge;
@@ -671,7 +671,7 @@ int check_main_hitboxes(Object *obj, Object *vict, const HitBoxAct *a3) {       
             g.GPHitBoxDamage[0] = ABS(hitresult[HITRES_D3]);
         }
     }
-    if (a4=_CDGetHitBoxBody(vict)) {
+    if ((a4=_CDGetHitBoxBody(vict))) {
         if(check_hitbox_overlap(obj, vict, a3, a4)) {
             g.GPReg1 |= 2;
 			g.GPHitBoxCoords[1][0]=g.VictimLeftEdge;
@@ -679,7 +679,7 @@ int check_main_hitboxes(Object *obj, Object *vict, const HitBoxAct *a3) {       
             g.GPHitBoxDamage[1] = ABS(hitresult[HITRES_D3]);
         }
     }
-    if (a4=_CDGetHitBoxFoot(vict)) {
+    if ((a4=_CDGetHitBoxFoot(vict))) {
         if(check_hitbox_overlap(obj, vict, a3, a4)) {
             g.GPReg1 |= 4;
 			g.GPHitBoxCoords[2][0]=g.VictimLeftEdge;
@@ -773,7 +773,7 @@ int check_main_hitboxes(Object *obj, Object *vict, const HitBoxAct *a3) {       
 			break;
 	}
 	
-	if(a4=_CDGetHitBoxWeak(vict)) {
+	if((a4=_CDGetHitBoxWeak(vict))) {
 		if(check_hitbox_overlap(obj, vict,a3,a4)) {
 			g.GPHitBox4Hit = TRUE;
 		}
@@ -889,9 +889,9 @@ void CDCheckPushBoxes () {			/* 7e136 check pushboxes, take action */
 	
     if(g.Player1.exists == FALSE) { return; }
 	
-    if(a3=CDGetPushBox((Object *)PLAYER1)) {
+    if((a3=CDGetPushBox((Object *)PLAYER1))) {
 		if (g.Player2.exists) {
-			if(a4=CDGetPushBox((Object*)PLAYER2)) {
+			if((a4=CDGetPushBox((Object*)PLAYER2))) {
 				if(slib_check_overlap((Object *)PLAYER1, PLAYER2,a3,a4)) {
 					// 7e16e
 					if (hitresult[HITRES_D2]) {
@@ -1047,7 +1047,7 @@ static void _CDTurnToFaceMe(Player *ply, Player *vict) {	/* 7d0a8 */
 
 static void start_timewarp_action (Player *vict) {	/* 7d720 */
 	Object *obj;
-	if(obj=AllocActor()) {
+	if((obj=AllocActor())) {
 		g.FlagTimeWarp = TRUE;
 		obj->exists = TRUE;
 		obj->Sel    = SF2ACT_TIMEWARP;

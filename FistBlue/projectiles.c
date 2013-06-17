@@ -76,7 +76,7 @@ void action_207f0(Object *obj, short d7) {
 			obj->LocalTimer = 1;
 			g.x8ab6 = obj;
 			for(i=0; i<=7; i++) {
-				if (obj2=AllocActor()) {
+				if ((obj2=AllocActor())) {
 					obj2->exists = 2;
 					obj2->Sel = SF2ACT_0X09;
 					obj2->SubSel = 7-i;
@@ -124,7 +124,7 @@ static void proc_yogafire(Object *obj, short d7) {  /* 0x23426 */
 			CDCheckProjectile(obj, d7);
 			if (obj->Energy < 0 || obj->flag1 == 0) {
 				if (obj->Energy = -1) {
-					if (nobj=AllocActor()) {
+					if ((nobj=AllocActor())) {
 						nobj->exists	= TRUE;
 						nobj->Sel		= SF2ACT_HITSTUN;
 						nobj->XPI		= obj->XPI;
@@ -193,7 +193,7 @@ static void projsm_fireball(Object *obj, short d7) {
 				/* 22c80 */
 				if(obj->Energy == -1) {
 					obj->mode0 += 2;
-					if(splash=AllocActor()) {
+					if((splash=AllocActor())) {
 						splash->exists  = TRUE;
 						splash->Sel     = SF2ACT_HITSTUN;
 						splash->XPI		= obj->XPI;

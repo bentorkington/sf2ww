@@ -229,7 +229,7 @@ short ply_opp_apply_grip_damage(Player *ply,
 	
 	// todo: d2 is always zero when called, remove from args
 	ply->Timer2 = 12;
-	if (obj = AllocActor()) {
+	if ((obj = AllocActor())) {
 		INITOBJC(obj, SF2ACT_HITSTUN, subsel_d3, PLAYERX, PLAYERY);
 		obj->XPI += xoff_d4;
 		obj->YPI += yoff_d5;

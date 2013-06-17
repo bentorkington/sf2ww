@@ -129,7 +129,7 @@ static void guile_attack_bison(Player *ply) {
 				update_motion((Object *)ply);
 				if (ABS(ply->XPI - ply->Opponent->XPI) < 32) {
 					NEXT(ply->UserData[5]);
-					if(obj = AllocActor()) {
+					if((obj = AllocActor())) {
 						INITOBJC(obj, 0x25, 0xd, PLAYERX, PLAYERY);
 						obj->Pool = 6;
 						obj->Owner = ply->Opponent;
@@ -138,12 +138,12 @@ static void guile_attack_bison(Player *ply) {
 							obj->UserByte = 1;
 						}
 					}
-					if (obj=AllocActor()) {
+					if ((obj=AllocActor())) {
 						INITOBJC(obj, 0x25, 0xb, 0, 0);
 						obj->Pool = 6;
 						obj->Owner = ply;
 					}
-					if (obj = AllocActor()) {
+					if ((obj = AllocActor())) {
 						INITOBJC(obj, 0x25, 0xc, 0, 0);
 						obj->Pool = 6;
 					}

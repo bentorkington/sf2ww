@@ -225,7 +225,7 @@ void action_07(Object *obj) {		//e6cc
 			case 0:
 				NEXT(obj->mode0);
 				for (i=0; i<4; i++) {
-					if (child = AllocActor()) {
+					if ((child = AllocActor())) {
 						obj->exists = TRUE;
 						obj->Sel = SF2ACT_INDIA_ELEPHANTS;
 						obj->SubSel = i+1;

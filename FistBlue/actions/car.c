@@ -116,7 +116,7 @@ static void sub_25f06(Object_G2 *obj) {		// players on top of car
 		case 0:		// no players on me
 			if (_check_platform(&g.Player1, obj)) {
 				obj->UD.UDcar.PeopleOnMe = 1;
-				if (nobj = AllocActor()) {
+				if ((nobj = AllocActor())) {
 					nobj->exists = TRUE;
 					nobj->Sel = 0x32;
 					nobj->SubSel = 0x2;
@@ -124,7 +124,7 @@ static void sub_25f06(Object_G2 *obj) {		// players on top of car
 			}
 			else if (_check_platform(&g.Player2, obj)) {
 				obj->UD.UDcar.PeopleOnMe = 2;
-				if (nobj = AllocActor()) {
+				if ((nobj = AllocActor())) {
 					nobj->exists = TRUE;
 					nobj->Sel = 0x32;
 					nobj->SubSel = 0x2;
@@ -134,14 +134,14 @@ static void sub_25f06(Object_G2 *obj) {		// players on top of car
 		case 1:		// player1 is on me
 			if (_check_platform(&g.Player2, obj)) {
 				obj->UD.UDcar.PeopleOnMe = 3;
-				if (nobj = AllocActor()) {
+				if ((nobj = AllocActor())) {
 					nobj->exists = TRUE;
 					nobj->Sel = 0x32;
 					nobj->SubSel = 0x3;
 				}
 			} else if (!_check_platform(&g.Player1, obj)) {
 				obj->UD.UDcar.PeopleOnMe = 0;
-				if (nobj = AllocActor()) {
+				if ((nobj = AllocActor())) {
 					nobj->exists = TRUE;
 					nobj->Sel = 0x32;
 					nobj->SubSel = 0x5;
@@ -151,7 +151,7 @@ static void sub_25f06(Object_G2 *obj) {		// players on top of car
 		case 2:		// player2 is on me
 			if (_check_platform(&g.Player1, obj)) {
 				obj->UD.UDcar.PeopleOnMe = 3;
-				if (nobj = AllocActor()) {
+				if ((nobj = AllocActor())) {
 					nobj->exists = TRUE;
 					nobj->Sel = 0x32;
 					nobj->SubSel = 0x3;
@@ -159,7 +159,7 @@ static void sub_25f06(Object_G2 *obj) {		// players on top of car
 			}
 			else if (!_check_platform(&g.Player2, obj)) {
 				obj->UD.UDcar.PeopleOnMe = 0;
-				if (nobj = AllocActor()) {
+				if ((nobj = AllocActor())) {
 					nobj->exists = TRUE;
 					nobj->Sel = 0x32;
 					nobj->SubSel = 0x5;
@@ -170,14 +170,14 @@ static void sub_25f06(Object_G2 *obj) {		// players on top of car
 			if (!_check_platform(&g.Player1, obj)) {
 				if (!_check_platform(&g.Player2, obj)) {
 					obj->UD.UDcar.PeopleOnMe = 0;
-					if (nobj = AllocActor()) {
+					if ((nobj = AllocActor())) {
 						nobj->exists = TRUE;
 						nobj->Sel = 0x32;
 						nobj->SubSel = 0x6;
 					}					
 				} else {
 					obj->UD.UDcar.PeopleOnMe = 2;
-					if (nobj = AllocActor()) {
+					if ((nobj = AllocActor())) {
 						nobj->exists = TRUE;
 						nobj->Sel = 0x32;
 						nobj->SubSel = 0x4;
@@ -187,7 +187,7 @@ static void sub_25f06(Object_G2 *obj) {		// players on top of car
 			} else {
 				if (!_check_platform(&g.Player2, obj)) {
 					obj->UD.UDcar.PeopleOnMe = 1;
-					if (nobj = AllocActor()) {
+					if ((nobj = AllocActor())) {
 						nobj->exists = TRUE;
 						nobj->Sel = 0x32;
 						nobj->SubSel = 0x4;
@@ -225,7 +225,7 @@ static void _people_on_roof(Object_G2 *obj) {		// 25df2
 			if (obj->UD.UDcar.PeopleOnMe) {
 				if (_check_platform(PLAYER1, obj) == FALSE) {
 					obj->UD.UDcar.PeopleOnMe = 0;
-					if (newobj = AllocActor()) {
+					if ((newobj = AllocActor())) {
 						newobj->exists = TRUE;
 						newobj->Sel    = 0x32;
 						newobj->SubSel = 5;
@@ -235,7 +235,7 @@ static void _people_on_roof(Object_G2 *obj) {		// 25df2
 			} else {
 				if (_check_platform(PLAYER1, obj) != FALSE) {
 					obj->UD.UDcar.PeopleOnMe = 1;
-					if (newobj = AllocActor()) {
+					if ((newobj = AllocActor())) {
 						newobj->exists = TRUE;
 						newobj->Sel    = 0x32;
 						newobj->SubSel = 2;
@@ -249,7 +249,7 @@ static void _people_on_roof(Object_G2 *obj) {		// 25df2
 			if (obj->UD.UDcar.PeopleOnMe) {
 				if (_check_platform(PLAYER1, obj) == FALSE) {
 					obj->UD.UDcar.PeopleOnMe = 0;
-					if (newobj = AllocActor()) {
+					if ((newobj = AllocActor())) {
 						newobj->exists = TRUE;
 						newobj->Sel    = 0x32;
 						newobj->SubSel = 5;
@@ -259,7 +259,7 @@ static void _people_on_roof(Object_G2 *obj) {		// 25df2
 			} else {
 				if (_check_platform(PLAYER1, obj) != FALSE) {
 					obj->UD.UDcar.PeopleOnMe = 2;
-					if (newobj = AllocActor()) {
+					if ((newobj = AllocActor())) {
 						newobj->exists = TRUE;
 						newobj->Sel    = 0x32;
 						newobj->SubSel = 2;

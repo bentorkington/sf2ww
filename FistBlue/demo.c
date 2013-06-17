@@ -140,7 +140,7 @@ void SMdemo_fade_and_clear(void) {		// 6618
 }
 static void sub_6704(void) {		// SF2 logo, spinning and scaling
 	Object *obj;
-	if (obj=AllocActor()) {
+	if ((obj=AllocActor())) {
 		obj->exists = TRUE;
 		obj->Sel    = 0x12;
 		obj->Scroll = SCROLL_3;

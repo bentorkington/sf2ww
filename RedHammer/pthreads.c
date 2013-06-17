@@ -122,7 +122,7 @@ void RHResume(Task *task) {
 
 void RHCreateThread(int worker) {
 	int errcode;
-	if (errcode = pthread_create(&pt_threads[worker], NULL, RHThreadWorker, &Exec.Tasks[worker])) {
+	if ((errcode = pthread_create(&pt_threads[worker], NULL, RHThreadWorker, &Exec.Tasks[worker]))) {
 		errexit(errcode, "pthread_create");
 	}
 	//printf("RHCreateThread: worker %d\n", worker);

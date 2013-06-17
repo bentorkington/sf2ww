@@ -371,7 +371,7 @@ void print_libtextgfx(u8 sel) {	/* sub_5816 */
 		gp += 3;
 		
 		
-		while (tile = *gp++) {
+		while ((tile = *gp++)) {
 			if (tile == 0xffff) {
 				gp += 3;
 			} else {
@@ -387,7 +387,7 @@ void print_libtextgfx(u8 sel) {	/* sub_5816 */
 		y = (gp[1] ^ 0xff)+1;         
 		u16 attrs = gp[2];
 		gp += 3;
-		while (tile = *gp++) {
+		while ((tile = *gp++)) {
 			if (tile == IMAGE_NEWLINE) {
 				x = gp[0] + 64;
 				y = (gp[1] ^ 0xff) + 1;

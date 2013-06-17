@@ -504,10 +504,10 @@ static void _GuileSMBlade(Player *ply) {		// 2f216
 				ud->BladeStep = 0;
 			} else {
 				if (ply->JoyCorrect2 & JOYCO_UP) {
-					if(d0 = GuileNewButtonsDown(ply, BUTTON_KICKS)) {
+					if((d0 = GuileNewButtonsDown(ply, BUTTON_KICKS))) {
 						decode_buttons(ply, d0);
 						sub_2f326(ply);
-					} else if (d0 = GuileNewButtonsUp(ply, BUTTON_KICKS)) {
+					} else if ((d0 = GuileNewButtonsUp(ply, BUTTON_KICKS))) {
 						decode_buttons(ply, d0);
 						sub_2f326(ply);
 					} else {
@@ -520,9 +520,9 @@ static void _GuileSMBlade(Player *ply) {		// 2f216
 			}
 			break;
 		case 8:
-			if(d0 = GuileNewButtonsDown(ply, BUTTON_KICKS)) {
+			if((d0 = GuileNewButtonsDown(ply, BUTTON_KICKS))) {
 				decode_buttons(ply, d0);
-			} else if (d0 = GuileNewButtonsUp(ply, BUTTON_KICKS)) {
+			} else if ((d0 = GuileNewButtonsUp(ply, BUTTON_KICKS))) {
 				decode_buttons(ply, d0);
 			} else {
 				if(--ud->x0089 == 0) {
@@ -569,7 +569,7 @@ void PSCBPowerGuile(Player *ply) {		/* 2fe26 */
 							soundsting(SOUND_SONIC_BOOM);
 						}
 						if (((ply->AnimFlags & 0xff00) >> 8) == 1) {
-							if(obj=AllocProjectile()){
+							if((obj=AllocProjectile())){
 								obj->exists		= TRUE;
 								obj->Sel		= SF2_PROJ_SONICBOOM;
 								obj->XPI		= ply->XPI;

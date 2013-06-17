@@ -294,7 +294,7 @@ void PLCBPowerBlanka(Player *ply) {
 	}
 	/* suicide, shouldn't get here */
 	panic(111);
-	if (obj = AllocActor()) {
+	if ((obj = AllocActor())) {
 		obj->Sel = sf2rand();	// !!!
 		obj->exists = TRUE;
 		obj->mode0 = sf2rand();

@@ -474,7 +474,7 @@ static void draw_world_map(void) {		//856c mode 2,4,2
 						check_if_new_player();
 					} else if (g.Pause_9e1 == 0) {
 						check_if_new_player();
-					} else if (obj = AllocActor()) {
+					} else if ((obj = AllocActor())) {
 						obj->exists = TRUE;
 						obj->Sel = SF2ACT_0X2E;
 						synth_plane_setup(obj, g.LastFightStage, g.CurrentStage);
@@ -730,7 +730,7 @@ static void SM_game_postanim_8(void) {
 			}
 			break;
 		case 4:
-			if(obj=AllocActor()) {
+			if((obj=AllocActor())) {
 				INITOBJ(obj, SF2ACT_SCORECOUNTER, 0);
 				print_libtextgfx(TIME);
 				NEXT(g.mode4);
@@ -738,7 +738,7 @@ static void SM_game_postanim_8(void) {
 			}
 			break;
 		case 8:
-			if(obj=AllocActor()) {
+			if((obj=AllocActor())) {
 				INITOBJ(obj, SF2ACT_SCORECOUNTER, 2);
 				print_libtextgfx(VITAL);
 				NEXT(g.mode4);
@@ -746,7 +746,7 @@ static void SM_game_postanim_8(void) {
 			}
 			break;
 		case 0xc:
-			if(obj=AllocActor()){
+			if((obj=AllocActor())){
 				INITOBJ(obj, SF2ACT_SCORECOUNTER, 4);
 				print_libtextgfx(BONUS);
 				NEXT(g.mode4);
@@ -810,10 +810,10 @@ void gamemode_postfightanim (void) {
 							print_libtextgfx(LIBTEXT_ERASE + PERFECT);
 							if (g.RoundResult < 0) {
 								/* 8b26 */
-								if (obj=AllocActor()) {
+								if ((obj=AllocActor())) {
 									INITOBJ(obj, 0x3f, 0);
 								}
-								if (obj=AllocActor()) {
+								if ((obj=AllocActor())) {
 									obj->exists=TRUE;
 									obj->Sel = SF2ACT_0X3F;
 									obj->SubSel = 1;
@@ -821,13 +821,13 @@ void gamemode_postfightanim (void) {
 							} else {
 								/* 8b04 */
 								if (g.RoundResult == ROUNDRESULT_P1_WINS) {
-									if (obj=AllocActor()) {
+									if ((obj=AllocActor())) {
 										obj->exists = TRUE;
 										obj->Sel = SF2ACT_0X3F;
 										obj->SubSel = 0;
 									}
 								} else {
-									if (obj=AllocActor()) {
+									if ((obj=AllocActor())) {
 										obj->exists = TRUE;
 										obj->Sel = SF2ACT_0X3F;
 										obj->SubSel = 1;
@@ -860,7 +860,7 @@ void gamemode_postfightanim (void) {
 				switch  (g.mode4) {
 					case 0:
 						if (g.ActiveHumans == 3 && g.BonusComplete && g.RoundResult >= 0) {
-							if (obj = AllocActor()) {
+							if ((obj = AllocActor())) {
 								obj->exists = TRUE;
 								obj->Sel = SF2ACT_SPEAK_WINLOSE;	/* "You Win / Lose " */
 								if (g.RoundResult & ROUNDRESULT_P1_WINS) {
@@ -887,7 +887,7 @@ void gamemode_postfightanim (void) {
 						/* 8c0c */
 						NEXT(g.mode2);
 						g.Pause_9e1 = 0;
-						if (obj=AllocActor()) {
+						if ((obj=AllocActor())) {
 							obj->exists = TRUE;
 							obj->Sel = SF2ACT_0X40;
 							obj->SubSel = 0x1;
@@ -897,7 +897,7 @@ void gamemode_postfightanim (void) {
 						if (g.Pause_9e1) {
 							NEXT(g.mode4);
 							g.Pause_9e1 = 0;
-							if (obj=AllocActor()) { INITOBJ(obj,SF2ACT_0X40,1) }
+							if ((obj=AllocActor())) { INITOBJ(obj,SF2ACT_0X40,1) }
 						}
 						break;
 					case 8:
@@ -957,7 +957,7 @@ void gamemode_postfightanim (void) {
 					g.mode3		+= 2;
 					g.timer3	= 1 * TICKS_PER_SECOND;
 					g.KillAct48 = FALSE;
-					if(obj=AllocActor()) {
+					if((obj=AllocActor())) {
 						obj->exists = TRUE;
 						obj->Sel = SF2ACT_SPEAK_WINLOSE;		/* you win / lose */
 						if(g.ActiveHumans == 3) {
