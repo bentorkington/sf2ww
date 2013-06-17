@@ -22,7 +22,7 @@
 #include	"demo.h"
 #include "gemu.h"
 #include "sf2io.h"
-
+#include "endings.h"
 #include "act2e_plane.h"
 
 #include <stdio.h>
@@ -111,9 +111,6 @@ void gamemode_fightmain (void) {
             fightstuff();
         }
     }
-}
-static void game_mode_26(void) {	// 7aea
-	/* XXX */
 }
 static void sub_7db6() {
 	g.mode1 = 12;
@@ -347,7 +344,7 @@ static void sub_7dca(void) {		// 7dca game mode 2,A
 static void sub_7eb4(void) {		// 7eb4 game mode 2,C
 	switch (g.mode2) {
 		case 0:
-			g.timer2 = 0x78;
+			g.timer2 = 2 * TICKS_PER_SECOND;
 			g.timer3 = 0x8;
 			g.timer4 = 0;
 			action_1ab8a();		/* clear top object */
@@ -823,7 +820,7 @@ void gamemode_postfightanim (void) {
 								}
 							} else {
 								/* 8b04 */
-								if (g.RoundResult == 1) {
+								if (g.RoundResult == ROUNDRESULT_P1_WINS) {
 									if (obj=AllocActor()) {
 										obj->exists = TRUE;
 										obj->Sel = SF2ACT_0X3F;
@@ -866,7 +863,7 @@ void gamemode_postfightanim (void) {
 							if (obj = AllocActor()) {
 								obj->exists = TRUE;
 								obj->Sel = SF2ACT_SPEAK_WINLOSE;	/* "You Win / Lose " */
-								if (g.RoundResult & 0x1) {
+								if (g.RoundResult & ROUNDRESULT_P1_WINS) {
 									obj->SubSel = g.Player1.FighterID;
 								} else {
 									obj->SubSel = g.Player2.FighterID;

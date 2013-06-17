@@ -56,4 +56,7 @@ void showtextbank1(char sel);
 void _putlong(u16 **cursor, short x, short y, int arg, short attr);	//51fe
 void printlonghex2(u16 **cursor, short x, short y, int arg, short attr);
 
+void sub_6126(void);
+void sub_61a0(void);
+
 #endif /* INC_GFXLIB */

@@ -16,6 +16,7 @@
 		B53EBC6E155F8C0600581C8D /* act_3f.c in Sources */ = {isa = PBXBuildFile; fileRef = B53EBC6D155F8C0600581C8D /* act_3f.c */; };
 		B53EBC80155F91F900581C8D /* act17.c in Sources */ = {isa = PBXBuildFile; fileRef = B53EBC7F155F91F900581C8D /* act17.c */; };
 		B53EBC84155F927300581C8D /* act16.c in Sources */ = {isa = PBXBuildFile; fileRef = B53EBC83155F927300581C8D /* act16.c */; };
+		B550DEA316BBA1BF00983A54 /* endings.c in Sources */ = {isa = PBXBuildFile; fileRef = B550DEA216BBA1BF00983A54 /* endings.c */; };
 		B551553514773E8A00A8BBD9 /* coinage.c in Sources */ = {isa = PBXBuildFile; fileRef = B551553414773E8A00A8BBD9 /* coinage.c */; };
 		B55891431485AB2A00BBB0BA /* coll_projectile.c in Sources */ = {isa = PBXBuildFile; fileRef = B55891421485AB2A00BBB0BA /* coll_projectile.c */; };
 		B558918F1485B04A00BBB0BA /* coll_bonus.c in Sources */ = {isa = PBXBuildFile; fileRef = B558918E1485B04A00BBB0BA /* coll_bonus.c */; };
@@ -198,6 +199,8 @@
 		B53EBC7F155F91F900581C8D /* act17.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = act17.c; sourceTree = "<group>"; };
 		B53EBC82155F927300581C8D /* act16.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = act16.h; sourceTree = "<group>"; };
 		B53EBC83155F927300581C8D /* act16.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = act16.c; sourceTree = "<group>"; };
+		B550DEA116BBA1BF00983A54 /* endings.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = endings.h; sourceTree = "<group>"; };
+		B550DEA216BBA1BF00983A54 /* endings.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = endings.c; sourceTree = "<group>"; };
 		B551553314773E8A00A8BBD9 /* coinage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = coinage.h; sourceTree = "<group>"; };
 		B551553414773E8A00A8BBD9 /* coinage.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = coinage.c; sourceTree = "<group>"; };
 		B55196BB148B0385002300A3 /* sf2io.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = sf2io.h; sourceTree = "<group>"; };
@@ -587,6 +590,8 @@
 				B5ADB84B13B2B57E00905DFE /* text.h */,
 				B529FCEC15606B0A005EE9B7 /* textdata.c */,
 				B5ADB84C13B2B57E00905DFE /* workarounds.h */,
+				B550DEA116BBA1BF00983A54 /* endings.h */,
+				B550DEA216BBA1BF00983A54 /* endings.c */,
 			);
 			path = FistBlue;
 			sourceTree = "<group>";
@@ -922,6 +927,7 @@
 				B5B39CFD1578370E00494662 /* OGLView.m in Sources */,
 				B5B39CFE1578370E00494662 /* ParamController.m in Sources */,
 				B5B39CFF1578371400494662 /* main.m in Sources */,
+				B550DEA316BBA1BF00983A54 /* endings.c in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1062,6 +1068,7 @@
 				INFOPLIST_FILE = "MT2-Info.plist";
 				INSTALL_PATH = "$(HOME)/Applications";
 				PRODUCT_NAME = MT2;
+				SDKROOT = "";
 			};
 			name = Debug;
 		};
@@ -1076,6 +1083,7 @@
 				INFOPLIST_FILE = "MT2-Info.plist";
 				INSTALL_PATH = "$(HOME)/Applications";
 				PRODUCT_NAME = MT2;
+				SDKROOT = "";
 			};
 			name = Release;
 		};

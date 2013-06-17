@@ -826,4 +826,66 @@ void sub_1a0c(void) {			//1a0c
 	setpalette_scroll2(g.Palette1);
 	setpalette_scroll3(g.Palette1);
 }
+
+#pragma mark Letterbox drawers for ending seqs
+
+static void sub_6196(u16 **gfxp, u16 tile, u16 attr, int count) {
+	int i;
+	for (i=0; i<=count; ++i) {
+		SCR1_DRAW_TILE(*gfxp, tile, attr);
+		SCR1_CURSOR_BUMP(*gfxp, 0, 1);
+	}
+}
 	
+static void sub_613c(u16 *gfxp) {
+	int i;
+	u16 *gfxp2;
+	for (i=0; i<=9; ++i) {
+		gfxp2 = gfxp;
+		sub_6196(&gfxp2, 0x4011, 0x1f, 31);
+		SCR1_CURSOR_BUMP(gfxp, 1, 0);
+	}
+}
+
+static void sub_615c(u16 *gfxp) {
+	int i;
+	u16 *gfxp2;
+	for (i=0; i<=0x1b; ++i) {
+		gfxp2 = gfxp;
+		sub_6196(&gfxp2, 0x4011, 0x9f, 7);
+		sub_6196(&gfxp2, 0x4020, 0x00, 0xd);
+		sub_6196(&gfxp2, 0x4011, 0x1f, 9);
+		SCR1_CURSOR_BUMP(gfxp, 1, 0);
+	}
+}
+static void sub_61b8(u16 *gfxp) {
+	int i;
+	u16 *gfxp2;
+	for (i=0; i<=0x1b; ++i) {
+		gfxp2 = gfxp;
+		sub_6196(&gfxp2, 0x4011, 0x1f, 7);
+		sub_6196(&gfxp2, 0x4020, 0x00, 0xd);
+		sub_6196(&gfxp2, 0x4011, 0x1f, 9);
+		SCR1_CURSOR_BUMP(gfxp, 1, 0);
+	}
+}
+
+void sub_6126(void) {
+	u16 *gfxp;
+	SCR1_CURSOR_CPS(gfxp, 0x90c000);
+	sub_613c(gfxp);
+	SCR1_CURSOR_CPS(gfxp, 0x90c500);
+	sub_615c(gfxp);
+	SCR1_CURSOR_CPS(gfxp, 0x90d300);
+	sub_613c(gfxp);
+}
+void sub_61a0(void) {
+	u16 *gfxp;
+	SCR1_CURSOR_CPS(gfxp, 0x90c000);
+	sub_613c(gfxp);
+	SCR1_CURSOR_CPS(gfxp, 0x90c500);
+	sub_61b8(gfxp);
+	SCR1_CURSOR_CPS(gfxp, 0x90d300);
+	sub_613c(gfxp);
+	
+}

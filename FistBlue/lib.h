@@ -31,6 +31,7 @@ void clear_players(void);
 void clear_gsrowscroll(void);
 void resetstate_B(void);
 void LBResetState(void);
+void _LBResetState(void);	// XXX rename me
 Object *pop_1174(void);
 void clearpush_1174(Object *obj);
 Object *AllocProjectile(void);

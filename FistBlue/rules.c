@@ -916,7 +916,7 @@ void bumpdifficulty_06(void) { /* 45ea */
 			g.Diff_0a04 += d1;
 			g.Diff_0a04 &= 0xff;
 		} else {
-			if (g.RoundResult & 1) {
+			if (g.RoundResult & ROUNDRESULT_P1_WINS) {
 				d1 = g.Player1.Energy;
 				d6 = g.Player1.Side;
 			} else {

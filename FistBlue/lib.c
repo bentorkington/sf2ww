@@ -65,7 +65,6 @@ extern u8 data_995de[12][32];
 
 static void sub_2af2(void);
 static void sub_2c38(void);
-static void _LBResetState(void);
 static void clear_playerselect(void);
 static void sub_297a(void);
 static void clear_gstates(void);
@@ -943,7 +942,7 @@ void LBResetState(void) {		// 2794
     _LBResetState();
 }
 
-static void _LBResetState(void) {
+void _LBResetState(void) {
     int i;
     
     clear_players();
@@ -993,18 +992,19 @@ static void _LBResetState(void) {
     g.Layer3Grp5Cnt = 
     g.Layer3Grp6Cnt = 0; 
 }
-
-
 static void clear_playerselect(void) {			//2968
 	memclear(&g.PLSL,sizeof(struct state_playerselect));
 }
-
 static void sub_297a(void) {
-	/* XXX reset the 5d0c stack */
+	g.FreeCount_530a = 20;
+	int i;
+	for (i=0; i<20; ++i) {
+		memclear(&g.x530a[i], 0x20);	/* todo: use sizeof() */
+		g.x530a[i].Layer = 12;
+		g.FreeStack_530a[i] = &g.x530a[i];
+	}
 }
-
 #pragma mark ---- Decoding ----
-
 void decode_buttons(Player *ply, short d0) {		/* 3296 */
 /* only valid if a button is actually pressed, otherwise will always
  result in Big Kick */
@@ -1134,7 +1134,7 @@ static void sub_529c() {
 }
 static void ply1_loses(void) {		/* 0x8f7a */
 	print_timeremaining();
-	g.RoundResult = 2;
+	g.RoundResult = ROUNDRESULT_P2_WINS;
 	g.Player2.RoundsWon++;
 	if(g.InDemo) { return; }
 	g.WinningFighter  = g.Player2.FighterID;
@@ -1163,7 +1163,7 @@ static void ply1_loses(void) {		/* 0x8f7a */
 }
 static void ply2_loses(void) {		/* 0x8ed6 */
 	print_timeremaining();
-	g.RoundResult = 1;
+	g.RoundResult = ROUNDRESULT_P1_WINS;
 	g.Player1.RoundsWon++;
 	if(g.InDemo) { return; }
 	g.WinningFighter = g.Player1.FighterID;
@@ -1326,7 +1326,7 @@ void sub_bcd_8(u8 op, u8 *bcd) {
 #endif
 
 
-// move to gfxlib.c
+// move to gfxlib.
 static void proc_round_timer(void) {	/* 905c process round timers */
 	if(g.TimeRemainBCD == 0 && g.TimeRemainTicks == 0) { return; }
 	if(g.DisableTimer || g.RoundResult) { return; }
@@ -1352,9 +1352,9 @@ static void decide_timeout_result(void) {   /* 0x901e */
 		ply1_loses();
 	} else if (g.Player1.Energy == g.Player2.Energy) {
 		/* 0x9030 */
-		g.RoundResult = -1;
-		g.TimeResult  = 1;
-		if(g.Player1.Energy < 0) { g.TimeResult = -1; }  
+		g.RoundResult = ROUNDRESULT_DRAW;
+		g.TimeResult  = TIMERESULT_DRAW;
+		if(g.Player1.Energy < 0) { g.TimeResult = TIMERESULT_DOUBLE_KO; }  
 	} else {
 		ply2_loses();
 	}
@@ -1366,7 +1366,7 @@ void LBCheckRoundResult(void) {
 		if(g.Player1.x02ae || g.Player2.x02ae) {
 			/* 0x9160 */
 			g.TimeOut = TRUE;
-			g.RoundResult = -1;
+			g.RoundResult = ROUNDRESULT_DRAW;
 			return;
 		} else {
 			if(g.CurrentStage == STAGE_BONUS_BARRELS) { /* sub_91c8(); XXX */  return; }
@@ -1384,14 +1384,14 @@ void LBCheckRoundResult(void) {
 					print_libtextgfx(PERFECT);
 				}
 				if(g.Player1.BonusScore = g.Player2.BonusScore) {
-					g.RoundResult = -1;
+					g.RoundResult = ROUNDRESULT_DRAW;
 					print_timeremaining();
 					return;
 				}
 				if(g.Player1.BonusScore < g.Player2.BonusScore) {
-					g.RoundResult = 2;
+					g.RoundResult = ROUNDRESULT_P2_WINS;
 				} else {
-					g.RoundResult = 1;
+					g.RoundResult = ROUNDRESULT_P1_WINS;
 				}
 				print_timeremaining();
 				return;
@@ -1399,7 +1399,7 @@ void LBCheckRoundResult(void) {
 			return;
 		}
 	} else {
-		if (g.RoundResult != 0) {
+		if (g.RoundResult) {
 			wait_for_ply_PSFinishedParticipating();
 			return;
 		}
@@ -1415,8 +1415,8 @@ void LBCheckRoundResult(void) {
 			ply2_loses();
 			return;
 		}
-		g.RoundResult = -1;
-		g.TimeResult = -1;
+		g.RoundResult = ROUNDRESULT_DRAW;
+		g.TimeResult = TIMERESULT_DOUBLE_KO;
 		g.NewChallengerWait = TRUE;
 		print_timeremaining();
 	}

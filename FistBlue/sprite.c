@@ -640,8 +640,8 @@ void sub_7e544(void) {
 	swap_object_buffer();
 }
 
-/* 7e57c 184 */
-void DSDrawAllMain(void) {		/* 7e57c library, main draw all sprite routine */
+/* 7e578 184 */
+void DSDrawAllMain(void) {		/* 7e578 library, main draw all sprite routine */
 	/* was: draw_all_sprites() */
 	
 	debughook(5);

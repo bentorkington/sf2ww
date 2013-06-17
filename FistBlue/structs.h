@@ -23,14 +23,14 @@ struct HiScore {
 typedef struct {
     u16 ObjBase;			//2a
     u16 Scroll1Base, Scroll2Base, Scroll3Base, RowScrollBase;
-    u16 PaletteBase;
-    u16 Scroll1X, Scroll1Y;
-    u16 Scroll2X, Scroll2Y;
-    u16 Scroll3X, Scroll3Y;
-    u16 Star1X, Star1Y;
-    u16 Star2X, Star2Y;
-    u16 RowScrollOffset;
-	u16 VidControl;
+    u16 PaletteBase;		//34
+    u16 Scroll1X, Scroll1Y;	//36
+    u16 Scroll2X, Scroll2Y;	//3a
+    u16 Scroll3X, Scroll3Y;	//3e
+    u16 Star1X, Star1Y;		//42
+    u16 Star2X, Star2Y;		//44
+    u16 RowScrollOffset;	//48
+	u16 VidControl;			//4a
     /* missing */
     u16 DispEna;
     /*  so on ... */
@@ -317,6 +317,7 @@ typedef struct game {
 	Object2 x530a[20];     /* sizeof 0x80 */
 
 	u8	FreeCount_530a;		/* 5d0a  stack is 530a */
+	//Object2 **x5d0c;
     Object2 *FreeStack_530a[20];	/* 0x5d0e */
 	
 	/* 5d36 is top of free stack for 5d0c */

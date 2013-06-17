@@ -567,11 +567,11 @@ static void sub_91c8(void) {
 			print_libtextgfx(0x1d);
 		}
 		if (g.Player1.BonusScore == g.Player2.BonusScore) {
-			g.RoundResult = -1;
+			g.RoundResult = ROUNDRESULT_DRAW;
 		} else if (g.Player1.BonusScore > g.Player2.BonusScore) {
-			g.RoundResult = 1;
+			g.RoundResult = ROUNDRESULT_P1_WINS;
 		} else {
-			g.RoundResult = 2;
+			g.RoundResult = ROUNDRESULT_P2_WINS;
 		}
 		print_bonusremaining();
 	} else if (g.x8ab9 <= 5) {

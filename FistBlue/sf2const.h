@@ -26,7 +26,7 @@
 #define FALSE 0
 
 ///////////////////////////////////
-//// FistBlue
+#pragma mark FistBlue
 ///////////////////////////////////
 /* game params */
 #define ENERGY_START	0x90 
@@ -52,15 +52,23 @@ typedef enum {
 #define ONLY_P2        2
 #define BOTH_HUMAN     3
 
+#define ROUNDRESULT_NONE	0
+#define ROUNDRESULT_P1_WINS	1
+#define ROUNDRESULT_P2_WINS	2
+#define ROUNDRESULT_DRAW	-1
+
+#define TIMERESULT_DRAW			1
+#define TIMERESULT_DOUBLE_KO	-1
 
 ///////////////////////////////////
-//// Text library constants
+#pragma mark Text library constants
 ///////////////////////////////////
 #define SF2_TEXTLIB_EOL				0x2f
 
 ///////////////////////////////////
-//// Tile constants
+#pragma mark Tile Constants
 ///////////////////////////////////
+
 
 #define SF2_TILE_SC1_ASCII			0x4000
 
@@ -78,7 +86,7 @@ typedef enum {
 
 
 ///////////////////////////////////
-//// Action library ids
+#pragma mark Action library IDs
 ///////////////////////////////////
 
 
