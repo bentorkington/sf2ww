@@ -22,8 +22,7 @@ FBBOOL check_hitbox_overlap(Object *obj, Object *vict, const HitBoxAct *a3, cons
 void CDCheckPushBoxes(void);			/* check pushboxes, take action */
 void CDCheckPlayers(void);
 void CDCheckProjectile(Object *obj, int d7);
-void CDBonusCollisionCheck(Object *a6);
-void CDCheckDecor (Object *a6);		/* 7e340 check if collision with player */
+void CDCheckDecor (Object_G2 *a6);		/* 7e340 check if collision with player */
 
 
 int check_main_hitboxes(Object *obj, Object *vict, const HitBoxAct *a3);

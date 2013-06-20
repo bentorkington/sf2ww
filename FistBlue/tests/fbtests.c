@@ -7,6 +7,7 @@
  *
  */
 #include <stdio.h>
+#include <stdlib.h>
 #include <memory.h>
 #include <assert.h>
 #include <math.h>
@@ -29,8 +30,7 @@ extern GState gstate_Scroll3;
 
 
 void fistblue_run_tests(void) {
-	int x,y;
-	memclear(&g, sizeof(struct game));	
+	memclear(&g, sizeof(struct game));
 	
 	printf("fistblue_run_tests:\n");
 	
@@ -72,11 +72,11 @@ void fistblue_run_tests(void) {
 	
 	Object *obj = calloc(sizeof(Object), 1);
 	assert(obj != NULL);
-	short _fb_test_path[][4] = {
+	static const short _fb_test_path[][4] = {
 		{0x0100, 0x0000, -0x0100, 0x0000},
 		{0x0180, 0x0280, -0x0180, 0x0280},
 	};
-	short _fb_test_longpath[][4]={
+	static const short _fb_test_longpath[][4]={
 		{0, 0, 0, 0},
 		{0, 0, 0, 0},
 		{0, 0, 0, 0},

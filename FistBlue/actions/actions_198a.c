@@ -24,6 +24,7 @@
 #include "fightgfx.h"
 #include "gfxlib.h"
 #include "collision.h"
+#include "coll_bonus.h"
 
 #include "sound.h"
 
@@ -38,33 +39,21 @@ extern GState gstate_Scroll3;
 
 short g_d7;		/* global for counter */
 
-enum actions_198a {
-	BLANKA_FISH = 0,
-	KEN_DRUMS,
-	RYU_SIGNS,
-	ACT_B03,
-	ACTB_DRUMFIRE,			// BONUS3 Collisions
-	ACTB_DRUMS,				// BONUS2 Collisions
-	ACTB_CAR,				// BONUS0 Collisions
-	ACTB_GUILE_CRATE,
-	ACT_B08,
-	ACT_B09,				// BONUS1 Collisions
-};
 
 
 static void sub_25f06(Object_G2 *obj);
 
 
 
-static void _SMAct00(Object *obj) {			// 24a50
+static void _SMAct00(Object_G2 *obj) {			// 24a50
 	/* big fish on Brazil level */
 	switch (obj->mode0) {
 		case 0:
 			NEXT(obj->mode0);
-			setaction_direct(obj, actlist_24cfe);
+			setaction_direct((Object *)obj, actlist_24cfe);
 			break;
 		case 2:
-			check_rect_queue_draw(obj);
+			check_rect_queue_draw((Object *)obj);
 			break;
 		case 4:
 			clearpush_1174(obj);
@@ -76,7 +65,7 @@ static void _SMAct00(Object *obj) {			// 24a50
 	}
 	
 }
-static void _SMKenDrums(Object *obj) {				// 24a74
+static void _SMKenDrums(Object_G2 *obj) {				// 24a74
 	
 	Object *nobj;
 	short i;
@@ -86,7 +75,7 @@ static void _SMKenDrums(Object *obj) {				// 24a74
 			NEXT(obj->mode0);
 			obj->Step = obj->Flip;
 			obj->HitBoxes = &data_24eba;
-			setaction_direct(obj, actlist_24d54);
+			setaction_direct((Object *)obj, actlist_24d54);
 			break;
 		case 2:
 			switch (obj->mode1) {
@@ -149,12 +138,12 @@ static void _SMKenDrums(Object *obj) {				// 24a74
 							nobj->XPI = obj->XPI - 0x30;
 							nobj->YPI = obj->YPI + 16;
 						}
-						setaction_direct(obj, actlist_24d70);
+						setaction_direct((Object *)obj, actlist_24d70);
 					}
 					break;
 				FATALDEFAULT;
 			}
-			check_onscreen_queue(obj);
+			check_onscreen_queue((Object *)obj);
 			break;
 		case 4:
 			clearpush_1174(obj);
@@ -166,7 +155,7 @@ static void _SMKenDrums(Object *obj) {				// 24a74
 	}
 	
 }
-static void _SMRyuSigns(Object *obj) {		// 24c4e
+static void _SMRyuSigns(Object_G2 *obj) {		// 24c4e
 	Object *nobj;
 	short i;
 	/* Ryu stage signs */
@@ -175,7 +164,7 @@ static void _SMRyuSigns(Object *obj) {		// 24c4e
 			NEXT(obj->mode0);
 			obj->Step = obj->Flip;
 			obj->HitBoxes = &hitboxes_24eda;
-			setaction_direct(obj, actlist_24e1a);
+			setaction_direct((Object *)obj, actlist_24e1a);
 			break;
 		case 2:
 			switch (obj->mode1) {
@@ -197,12 +186,12 @@ static void _SMRyuSigns(Object *obj) {		// 24c4e
 								nobj->Y = obj->Y;
 							}
 						}
-						setaction_direct(obj, actlist_24e36);
+						setaction_direct((Object *)obj, actlist_24e36);
 					}
 					break;
 				FATALDEFAULT;
 			}
-			check_rect_queue_draw(obj);
+			check_rect_queue_draw((Object *)obj);
 		case 4:
 			clearpush_1174(obj);
 			break;
@@ -242,13 +231,13 @@ const struct hitboxes hitboxes_24f76 = {
 	hitb_24f8e,
 };
 
-static void _SMAct03(Object *obj) {		// 24efa
+static void _SMAct03(Object_G2 *obj) {		// 24efa
 	Object *nobj;
 	switch (obj->mode0) {
 		case 0:
 			NEXT(obj->mode0);
 			obj->HitBoxes = &hitboxes_24f76;
-			setaction_direct(obj, &frame_24f52);
+			setaction_direct((Object *)obj, &frame_24f52);
 			break;
 		case 2:
 			CDCheckDecor(obj);
@@ -259,7 +248,7 @@ static void _SMAct03(Object *obj) {		// 24efa
 					nobj->Sel = 0x18;
 					nobj->SubSel = obj->SubSel;
 				}
-				check_rect_queue_draw(obj);
+				check_rect_queue_draw((Object *)obj);
 			}
 			break;
 		case 4:
@@ -272,14 +261,14 @@ static void _SMAct03(Object *obj) {		// 24efa
 
 
 //in drums.c
-void _SMAct04(Object *obj);
-void _SMAct05(Object *obj);
+void _SMAct04(Object_G2 *obj);
+void _SMAct05(Object_G2 *obj);
 #pragma mark 06-The Car		
 // in car.c
-void _ActSMCar(Object *obj);
+void _ActSMCar(Object_G2 *obj);
 
 #pragma mark Act07 Guiles's Crate
-static void _SMAct07(Object *obj) {			// 272c6
+static void _SMAct07(Object_G2 *obj) {			// 272c6
 	static const char data_27384[] = {
 		0, 4, 2, 3, 0, 1, 3, 2, 1, 4, 3, 2, 0, 1, 4, 2
 	};
@@ -293,7 +282,7 @@ static void _SMAct07(Object *obj) {			// 272c6
 			obj->Energy = 0;
 			obj->HitBoxes = &hitboxes_274c4;
 			obj->Pool = 0;
-			setaction_direct(obj, actlist_273a2);
+			setaction_direct((Object *)obj, actlist_273a2);
 			break;
 		case 2:
 			switch (obj->mode1) {
@@ -316,15 +305,15 @@ static void _SMAct07(Object *obj) {			// 272c6
 								nobj->YPI = obj->YPI + 0x2d;
 							}
 						}
-						setaction_direct(obj, actlist_27404);
+						setaction_direct((Object *)obj, actlist_27404);
 					}
 					break;
 				case 4:
-					actiontick(obj);
+					actiontick((Object *)obj);
 					break;
 				FATALDEFAULT;
 			}
-			check_rect_queue_draw(obj);
+			check_rect_queue_draw((Object *)obj);
 			break;
 		case 4:
 		case 6:
@@ -535,7 +524,7 @@ static void _SMAct08(Object_G2 *obj) {		// 274e4
 			break;
 		case 4:
 		case 6:
-			clearpush_1174((Object *)obj);
+			clearpush_1174(obj);
 			break;
 		FATALDEFAULT;
 	}
@@ -674,8 +663,8 @@ static void sub_27862(Object_G2 *obj) {			// 27862 Act09 BONUS1
 			obj->EnergyDash = obj->Energy;
 			break;
 		case 2:
-			CDCheckDecor((Object *)obj);
-			CDBonusCollisionCheck((Object *)obj);
+			CDCheckDecor(obj);
+			CDBonusCollisionCheck(obj);
 			if (obj->Energy < 0) {
 				sub_27912(obj);
 				return;
@@ -813,7 +802,7 @@ static void sub_27862(Object_G2 *obj) {			// 27862 Act09 BONUS1
 //	setaction_direct(obj, action_24f52);
 //}
 
-void sub_24f22(Object *obj) {
+void sub_24f22(Object_G2 *obj) {
 	Object *nobj;
 	
 	CDCheckDecor(obj);
@@ -825,7 +814,7 @@ void sub_24f22(Object *obj) {
 			nobj->SubSel = obj->SubSel;
 		}
 	}
-	check_rect_queue_draw(obj);
+	check_rect_queue_draw((Object *)obj);
 }
 
 

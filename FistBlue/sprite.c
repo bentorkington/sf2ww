@@ -954,7 +954,6 @@ static void sub_7eea2(Object *obj, const u16 *tilep, const short *offsets, short
 	/* 7eea2 obj a1, a0, tilep a2, a3, x d0, y d1, tiles d3 */
 
 	int sx,sy;
-	u16 *tile;
 	const short *transform = data_trig[obj->Step];
 	while (tiles > 0) {
 		if (*tilep != 0) {
@@ -1333,7 +1332,7 @@ static short *sub_7f60c(const HitBox *hb) {			//7f60c
 }
 
 // Six hitboxes
-static void sub_7f4f2(Player *ply, Action *act) {		// 7f4f2 Pushbox
+static void sub_7f4f2(Player *ply, const Action *act) {		// 7f4f2 Pushbox
 	short *a2;
 	// player %a1, act %a3
 	if (act->HB_Push) {
@@ -1342,7 +1341,7 @@ static void sub_7f4f2(Player *ply, Action *act) {		// 7f4f2 Pushbox
 		dbg_draw_hitbox(ply, a2);
 	}
 }
-static void sub_7f51e(Player *ply, Action *act) {		// 7f51e Active Hitbox
+static void sub_7f51e(Player *ply, const Action *act) {		// 7f51e Active Hitbox
 	short *a2;
 	// player %a1, act %a3
 	if (act->HB_Active) {
@@ -1351,7 +1350,7 @@ static void sub_7f51e(Player *ply, Action *act) {		// 7f51e Active Hitbox
 		dbg_draw_hitbox(ply, a2);
 	}
 }
-static void sub_7f550(Player *ply, Action *act) {		// Weak
+static void sub_7f550(Player *ply, const Action *act) {		// Weak
 	short *a2;
 	// player %a1, act %a3
 	if (act->HB_Weak) {
@@ -1360,7 +1359,7 @@ static void sub_7f550(Player *ply, Action *act) {		// Weak
 		dbg_draw_hitbox(ply, a2);
 	}
 }
-static void sub_7f57c(Player *ply, Action *act) {		// Foot
+static void sub_7f57c(Player *ply, const Action *act) {		// Foot
 	short *a2;
 	// player %a1, act %a3
 	if (act->HB_Foot) {
@@ -1369,7 +1368,7 @@ static void sub_7f57c(Player *ply, Action *act) {		// Foot
 		dbg_draw_hitbox(ply, a2);
 	}
 }
-static void sub_7f5a8(Player *ply, Action *act) {		// Body
+static void sub_7f5a8(Player *ply, const Action *act) {		// Body
 	short *a2;
 	// player %a1, act %a3
 	if (act->HB_Body) {
@@ -1378,7 +1377,7 @@ static void sub_7f5a8(Player *ply, Action *act) {		// Body
 		dbg_draw_hitbox(ply, a2);
 	}
 }
-static void sub_7f5d4(Player *ply, Action *act) {		// Head
+static void sub_7f5d4(Player *ply, const Action *act) {		// Head
 	short *a2;
 	// player %a1, act %a3
 
@@ -1403,7 +1402,7 @@ void debug_spr_crosshair(void) { /* 7f63a */
 }
 void dbg_draw_hitboxes(Player *ply) {		// 7f49a 
 	short coordpair[2];
-	Action *act = ply->ActionScript;
+	const Action *act = ply->ActionScript;
 	sprite_coords((Object *)ply, coordpair);
 	g.hitbox_center_x = coordpair[0];
 	g.hitbox_center_y = coordpair[1] + 512;		// XXX

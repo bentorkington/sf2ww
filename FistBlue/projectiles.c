@@ -34,7 +34,7 @@ static void action_207f0(Object *obj, short d7);
 
 static void destroy_projectile(Object *obj) {		// 235f8
 	NEXT(obj->mode0);
-	if(obj->Energy = -1) {
+	if(obj->Energy == -1) {
 		NEXT(obj->mode0);
 		obj->Owner->Projectile = 0;
 	}
@@ -123,7 +123,7 @@ static void proc_yogafire(Object *obj, short d7) {  /* 0x23426 */
 		case 2:
 			CDCheckProjectile(obj, d7);
 			if (obj->Energy < 0 || obj->flag1 == 0) {
-				if (obj->Energy = -1) {
+				if (obj->Energy == -1) {
 					if ((nobj=AllocActor())) {
 						nobj->exists	= TRUE;
 						nobj->Sel		= SF2ACT_HITSTUN;

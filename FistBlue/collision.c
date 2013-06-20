@@ -7,6 +7,8 @@
  *
  */
 
+#include <stdio.h>
+
 #include "sf2types.h"
 #include "sf2macros.h"
 #include "sf2const.h"

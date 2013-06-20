@@ -23,7 +23,7 @@ void create_task(void *task, short taskid, unsigned short param, unsigned char p
 void die_top8(void);
 void wrap_trap7(void *code, u16 p1, u16 p2);
 void justdie();
-void printtasktable(void);
+void print_task_table(void);
 void diefree();
 
 #ifndef SF2_UCONTEXT		// only for ucontext_t?

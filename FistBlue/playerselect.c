@@ -29,6 +29,8 @@
 #include "act2e_plane.h"
 #include "sf2io.h"
 
+#include "gemu.h"
+
 extern Game g;
 extern GState gstate_Scroll1;
 extern GState gstate_Scroll2;

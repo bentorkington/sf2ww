@@ -52,11 +52,15 @@ void drawsimple_scroll1attr(Object *obj,  const u16 *tiles, int width, int heigh
 
 void set_shadow_pen(void);
 
-void showtextbank1(char sel);
 void _putlong(u16 **cursor, short x, short y, int arg, short attr);	//51fe
 void printlonghex2(u16 **cursor, short x, short y, int arg, short attr);
 
 void sub_6126(void);
 void sub_61a0(void);
+void sub_516a(u16 **gfx_p, u32 *cp_p, u8 d0, short *leading_zero, u16 d3 );
+void sub_5162(u16 **gfx_p, u32 *cp, u8 d0, short *d2, u16 d3);
+
+void fight_player_names();
+
 
 #endif /* INC_GFXLIB */

@@ -69,6 +69,7 @@ void gemu_colortile_scroll2(short palette, GLubyte *img);
 void gemu_colortile_scroll1(short palette, GLubyte *img);
 void gemu_flip_scroll_enable(int scroll) ;
 
+void gemu_set_cache_clear(void);
 
 void gfx_gemu_drawgame(void);
 

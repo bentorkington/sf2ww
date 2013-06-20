@@ -493,7 +493,7 @@ static void _refresh_jumpers(void) {		//1d72
 
 #ifdef CPS
 	// todo: GCC interrupt routine specifier
-#endif CPS
+#endif //CPS
 void sf2_interrupt (void) {
     static int i;    
 	
@@ -967,7 +967,7 @@ void _LBResetState(void) {
         g.FreeStack_Layer1[ i ] = &g.Objects1[i];
     }	
     for(i=0; i<COUNT_LAYER2; i++) {
-        memclear(&g.Objects2[i], sizeof(Object));
+        memclear(&g.Objects2[i], sizeof(Object_G2));
         g.Objects2[i].Layer = GFX_LAYER2;
         g.FreeStack_Layer2[ i ] = &g.Objects2[i];
     }
@@ -1050,11 +1050,11 @@ void set_towardsaway(Player *ply) {       /* 318a */
 
 #pragma mark ---- Object Alloc/Dealloc ----
 
-Object *pop_1174(void) {				/* 0x29c2 */
+Object_G2 *pop_1174(void) {				/* 0x29c2 */
     if(g.FreeLayer2 == 0) { return NULL; }
     return g.FreeStack_Layer2[--g.FreeLayer2];
 }
-void clearpush_1174(Object *obj) {
+void clearpush_1174(Object_G2 *obj) {
 	obj->exists = obj->flag1 = obj->mode0 = obj->mode1 = obj->mode2 = obj->mode3 = 0;
 	obj->ZDepth = 0;
 	obj->Pool = obj->Step = obj->Flip = obj->Draw1 = 0;
@@ -1383,7 +1383,7 @@ void LBCheckRoundResult(void) {
 					queuesound(SOUND_PERFECT);
 					print_libtextgfx(PERFECT);
 				}
-				if(g.Player1.BonusScore = g.Player2.BonusScore) {
+				if(g.Player1.BonusScore == g.Player2.BonusScore) {
 					g.RoundResult = ROUNDRESULT_DRAW;
 					print_timeremaining();
 					return;

@@ -13,13 +13,14 @@
 #include	"actions.h"
 
 #include	"gemu.h"
+#include    "gfxlib.h"
+#include    "fightgfx.h"
 
-#include "fightgfx.h"
+#include    "lib.h"
+
 
 extern CPSGFXEMU gemu;
 extern Game g;
-
-static void fight_player_names(void);
 
 void draw_peacesigns(void) {                /* 0x9316 */
     if (g.Player1.RoundsWon > 0) {

@@ -29,6 +29,7 @@
 
 #ifndef CPS
 #include "pthreads.h"
+#include <pthread.h>
 #endif
 
 extern Game g;
@@ -54,15 +55,6 @@ void task_timer(void){
 		despatch_tasks();		// to do speedup
 		despatch_tasks();		// to do speedup
 		despatch_tasks();		// to do speedup
-	}
-}
-
-void printtasktable(void) {
-	int i;
-	
-	printf("Task Table:\n");
-	for (i=0; i<MAX_TASKS; i++) {
-		printf("Task %2d: stat %02x code %016x\n", i, Exec.Tasks[i].status, (unsigned int)Exec.Tasks[i].code);
 	}
 }
 
@@ -106,11 +98,13 @@ void wrap_trap7(void *code, u16 p1, u16 p2) {
 		RHCreateThread(task->RHThreadID);
 #endif
 	} else {
+#ifndef CPS
 		printf("trap7 Failed!\n");
-		printtasktable();
+        print_task_table();
+#endif
 	}
-
 }
+
 
 #ifndef CPS
 void print_task_table(void) {

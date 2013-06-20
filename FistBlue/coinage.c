@@ -6,6 +6,7 @@
  *  Copyright 2011 Ben Torkington. All rights reserved.
  *
  */
+#include <stdio.h>
 
 #include "sf2const.h"
 #include "sf2macros.h"

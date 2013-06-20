@@ -15,6 +15,11 @@
 #include "gfxlib.h"
 #include "lib.h"
 
+#ifndef CPS
+#include "gfx_glut.h"
+#include <stdio.h>
+#endif
+
 
 extern Game g;
 
@@ -771,7 +776,7 @@ void actiontickdraw(Object *obj) {		/* 0x41d4 */
     if(obj->ActionScript->Loop == 0) {
 		obj->ActionScript = (const Action *)temp;
 	} else {
-		obj->ActionScript = ((struct simpleaction *)obj->ActionScript)[1].Image;
+		obj->ActionScript = (const Action *)((struct simpleaction *)obj->ActionScript)[1].Image;
     }
     obj->Timer      = obj->ActionScript->Delay;
     obj->AnimFlags  = obj->ActionScript->Loop << 8 | obj->ActionScript->Next; 

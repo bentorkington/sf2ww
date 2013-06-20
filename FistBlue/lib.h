@@ -32,8 +32,8 @@ void clear_gsrowscroll(void);
 void resetstate_B(void);
 void LBResetState(void);
 void _LBResetState(void);	// XXX rename me
-Object *pop_1174(void);
-void clearpush_1174(Object *obj);
+struct object_g2 *pop_1174(void);
+void clearpush_1174(struct object_g2 *obj);
 Object *AllocProjectile(void);
 void FreeProjectile(Object *obj);
 Object *AllocActor(void);
@@ -99,7 +99,7 @@ short	get_scr2y(void);
 short	get_scr3x(void);
 short	get_scr3y(void);
 
-
+u32 MakePointObj (int x, int y);
 
 
 /* start_effect IDs */

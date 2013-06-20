@@ -7,7 +7,24 @@
  *
  */
 
+#ifndef INC_ACT198A
+#define INC_ACT198A
+
 void actions_198a(void);			/* 249fa */
+
+typedef enum actions_198a {
+	BLANKA_FISH = 0,
+	KEN_DRUMS,
+	RYU_SIGNS,
+	ACT_B03,
+	ACTB_DRUMFIRE,			// BONUS3 Collisions
+	ACTB_DRUMS,				// BONUS2 Collisions
+	ACTB_CAR,				// BONUS0 Collisions
+	ACTB_GUILE_CRATE,
+	ACT_B08,
+	ACT_B09,				// BONUS1 Collisions
+} ObjG2ID;
+
 
 typedef struct {
 	short as,bs;
@@ -70,7 +87,7 @@ typedef struct {
 	char	h0080c;
 } UDactB08;
 
-typedef struct {
+typedef struct object_g2{
 #include "std_object.h"
     FIXED8_8		AclX;
     FIXED8_8		AclY;
@@ -118,3 +135,4 @@ typedef struct {
 	} UD;
 } Object_G2;
 
+#endif // ACT_198A

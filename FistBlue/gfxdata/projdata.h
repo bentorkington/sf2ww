@@ -127,7 +127,6 @@ VECT16 data_cf07c[] = {{0x700, 0}, {-0x700, 0}, {0x780, 0}, {-0x780, 0}};
 
 VECT16 *data_22c32[]={data_cf038, data_cf048 , data_cf05c};
 
-
 Image image_22e66 = {
     6, 0x000e, 0x34, 0, 16,
     { 0x0940, 0x09f3, 0x0941, 0x09f4, 0x0942, 0x092a,  }
@@ -223,9 +222,8 @@ const CAFrame actlist_23018[] = {
 	{ 1, 0x80, 0x1, &image_23122, 0, 0, 0, 0, 3, 1, 0, 0x00, 0, 0, 0, 0, 0, 0, 0, 2},
 	{0,0,0,(struct image *)&actlist_23018[0], 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 }
 };
-const CAFrame **action_22e88[]={
-	actlist_22e90, 	actlist_22f54, 	actlist_23018, 
-	
+const CAFrame *action_22e88[]={
+	actlist_22e90, 	actlist_22f54, 	actlist_23018,
 };	
 
 #pragma mark ---- TIGER ----
@@ -272,9 +270,8 @@ const Action *action_23134[]={actlist_2313c, actlist_231a0, actlist_23204};
  * YOGA FIRE 
  */
 
-short *data_2349a[] = 	// velocity paths
+VECT16 *data_2349a[] = 	// velocity paths
 	{data_cf038, data_cf05c, data_cf07c };
-
 
 #define IMAGE_BLOCK	0x8000		// actually image_with_attrs
 

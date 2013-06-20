@@ -29,6 +29,7 @@
 #include "sf2io.h"	
 
 #include "game.h"
+#include "task.h"
 
 #define DEBUG TRUE
 extern Game g;
@@ -47,7 +48,7 @@ extern LBView rootView;
 void mouse (int button, int state, int x, int y);
 void drawGLString(GLfloat x, GLfloat y, char *string);
 void GameViewClicked(LBView *view, int button, int state, int x, int y);
-void renderDummy(void);
+void renderDummy(struct view *);
 
 int gtimercount	= 0;
 int gsupertaskcnt = 0;
@@ -125,7 +126,7 @@ GLfloat gShapeSize = 11.0f;
 	NSLog(@"todo");
 }
 
-void renderDummy(void) {
+void renderDummy(struct view *view) {
 	glPushMatrix();
 	
 	glEnable(GL_TEXTURE_2D);

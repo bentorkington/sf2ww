@@ -19,6 +19,7 @@
 #include "actions.h"
 #include "gemu.h"
 #include "sf2io.h"
+#include "text.h"
 
 #include "actiondata.h"
 
@@ -3122,7 +3123,7 @@ static void action_43(Object *obj) {
 				NEXT(obj->mode0);
 				obj->Pool       = 6;
 				obj->LocalTimer = 40;
-				OBJ_CURSOR_CPS(gfx_p, 0x900300);
+				OBJ_CURSOR_CPS(gfx_p, 0x900300);        //XXX this isn't an object tile slot
 
 				//todo
 //				memcpy(gfx_p, data_21b2a, 160);

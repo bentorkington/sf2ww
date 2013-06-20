@@ -7,6 +7,7 @@
  *
  */
 
+#include <stdio.h>
 #include "aitests.h"
 #include "sf2const.h"
 #include "sf2types.h"

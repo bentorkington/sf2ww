@@ -17,7 +17,6 @@ void AICheckThreats(Player *ply);		// 2c056 per-frame before comp_frontend
 void AIPrepareNewState(Player *ply, short a);
 void AIInitDefensive(Player *ply);
 
-// XXX these should be in ai.h
 struct data_2b7ea {
 	const char	x023e[32];
 	const unsigned char *x0134[16];	 

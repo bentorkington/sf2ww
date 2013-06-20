@@ -16,6 +16,8 @@
 #include "structs.h"
 #include "lib.h"
 
+#include "gfxlib.h"
+
 #include "act07_elephants.h"
 typedef struct UserData_Act07 UD07;
 extern Game g;

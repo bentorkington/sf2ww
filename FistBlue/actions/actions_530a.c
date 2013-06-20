@@ -73,7 +73,7 @@ static void sub_82c26(Object2 *act) {
 static void action_530a_00 (Object2 *act, short d7) {	
 	/* sub_82a82 Actions have params in place of AclX and AclY */
 
-	static signed char data_82b2e[112]={
+	const static signed char data_82b2e[112]={
 		 6,   7,  -1,  
 		16,  21,  30,  21,  -1, 
 		26,  26,  25,  26,  -1, 

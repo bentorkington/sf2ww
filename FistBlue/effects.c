@@ -21,6 +21,12 @@
 #include "effects.h"
 #include "sf2io.h"
 
+#include "text.h"
+
+#ifndef CPS
+#include "gfx_glut.h"
+#endif
+
 extern struct executive_t Exec;
 
 
@@ -48,9 +54,6 @@ static void syslib_1c (void);
 static void syslib_20 (void);
 static void syslib_26 (void);
 
-static void showtextbank0(u8 d0)  ;		//showtextbank4
-static void showtextbank2(u8 d0)  ;		//showtextbank4
-static void showtextbank4(u8 d0)  ;		//showtextbank4
 
 void *data_155c[] = {
 	syslib_00,
@@ -555,11 +558,9 @@ static void syslib_10(void) {		// 4f9e
 		case 2:
 			QueueEffect(0x180f, 0);
 			for (i=4; i>=0; --i) {
-				cur = &g.HiScoreTable[i].score;
 				printlonghex2(&cur, 0x80, 0xc0 - (i * 32), g.HiScoreTable[i].score, 0);
 			}
 			for (i=4; i>=0; --i) {
-				cur = &g.HiScoreTable[i].name;
 				_putlong(&cur, 0x100, 0xc0 - (i * 32), g.HiScoreTable[i].name, 0);
 			}
 			DIEFREE;
@@ -849,7 +850,7 @@ static void syslib_20(void) {		//5410 increase player score
 
 
 static void aTextRoutine(Task *task) {		// 4f78
-	const static void (*textRoutines[])(int param) = {		// 4f8a
+	static void (*textRoutines[])(u8 param) = {		// 4f8a
 		showtextbank0,			// 5602
 		showtextbank1,			// 568c
 		showtextbank2,			// 574a		winners
@@ -1267,7 +1268,7 @@ void task_game(void) {			// 7672 Game Supertask
 			
 			debughook(1);
 		}
-		CHECK_SERVICE_BUTTON;
+		(void)CHECK_SERVICE_BUTTON;       // XXX this is not a sub
 		if (g.Debug && (g.JPCost & JP_DBGSLEEP)) {
 			sf2sleep((g.JPDifficulty & JP_DIFFMASK) + 2);
 		} else {

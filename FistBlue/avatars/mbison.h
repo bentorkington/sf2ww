@@ -26,6 +26,8 @@ void pl_cb_setstatus1_mbison(Player *ply, short status);
 void PLCBCompAttackMBison(Player *ply);
 int PLCBCompJumpMBison(Player *ply);
 
+void sub_3623e(Player *ply);
+
 struct UserData_MBison {
 	u8		x0080;			//far move
 	u8		x0081;			//closemove

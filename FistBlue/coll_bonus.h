@@ -7,3 +7,6 @@
  *
  */
 
+#include "actions_198a.h"
+
+void CDBonusCollisionCheck(Object_G2 *a6);

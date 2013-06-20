@@ -26,7 +26,8 @@
 #include "ai.h"
 
 
-
+#include "mbison.h"     // for cape special effect
+#include "dhalsim.h"    // for Dhalsim spearhead 
 
 extern Game g;
 
@@ -338,7 +339,7 @@ void comp_plstat_normal(Player *ply) {  /* 2c2a4 */
 			ply->Airborne			= AIR_ONGROUND;
 			ply->Attacking			= FALSE;
 			ply->IsJumpThreat		= FALSE;
-			ply->Path = data_2abb0[ply->FighterID];	
+			ply->Path               = (const VECT16 *)data_2abb0[ply->FighterID];
 			CASetAnimWithStep(ply, STATUS_STAND);
 			break;
 		case 2:

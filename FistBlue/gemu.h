@@ -108,6 +108,7 @@ gfx_p += 4;
 #define ATTR_NO_FLIP     0x0
 #define ATTR_X_FLIP     0x20
 #define ATTR_Y_FLIP     0x40
+#define ATTR_XY_FLIP    (ATTR_X_FLIP | ATTR_Y_FLIP)
 
 
 #define CPS1_SCROLL_SIZE    0x4000	/* scroll1, scroll2, scroll3 */
@@ -118,8 +119,6 @@ gfx_p += 4;
 
 #ifndef CPS
 
-#define GEMU_CLEAR_OBJECT_D		gemu_clear_object			
-#define GEMU_CLEAR_OBJECT		gemu_clear_object
 #define GEMU_CLEAR_OBJECT_72	gemu_clear_object_first72
 
 #define GEMU_OBJECT_DRAW		gemuObjectDraw
@@ -154,6 +153,10 @@ void gemu_draw_scroll3(void);
 
 
 void gemu_draw_object(void);
+
+#define GEMU_CLEAR_OBJECT_D		gemu_clear_object
+#define GEMU_CLEAR_OBJECT		gemu_clear_object
+
 
 typedef u16 GPAL;
 

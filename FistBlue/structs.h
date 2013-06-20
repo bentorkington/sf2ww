@@ -6,6 +6,7 @@
 #include "particle.h"
 #include "player.h"
 #include "coinage.h"
+#include "actions_198a.h"
 
 
 struct damageresult {
@@ -285,9 +286,9 @@ typedef struct game {
 	
 #ifndef CPS	
     Object *FreeStack_118a[ 2 ];	// 0xd52 shadows unused
-    Object *FreeStack_Layer1[  8 ];	// Layer1
-    Object *FreeStack_Layer2[ 16 ];	// Layer2
-    Object *FreeStack_Layer3[ 60 ];	// Layer3
+    Object *FreeStack_Layer1[  COUNT_LAYER1 ];	// Layer1
+    Object_G2 *FreeStack_Layer2[ COUNT_LAYER2 ];	// Layer2
+    Object *FreeStack_Layer3[ COUNT_LAYER3 ];	// Layer3
             /* up to 0x0dfe on SF2ua */
 #endif
 
@@ -305,9 +306,9 @@ typedef struct game {
     /* pointers that we don't use any more omitted */
     Object Ply1Shadow;      /* 0x118a if you change the type change the param */
     Object Ply2Shadow;      /* 0x128a to memclear() in LBResetState()           */    
-    Object Objects1[8];		/* sizeof 0xc0 138a - 258a */
-    Object Objects2[16];    /* sizeof 0xc0 198a - 258a */
-    Object Objects3[60];    /* sizeof 0xc0 258a - 528a */
+    Object Objects1[COUNT_LAYER1];		/* sizeof 0xc0 138a - 258a */
+    Object_G2 Objects2[COUNT_LAYER2];    /* sizeof 0xc0 198a - 258a */
+    Object Objects3[COUNT_LAYER3];    /* sizeof 0xc0 258a - 528a */
     
 	struct HiScore HiScoreTable[6];		/* 528a - 52ba */
 	

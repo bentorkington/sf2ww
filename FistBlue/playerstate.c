@@ -540,7 +540,7 @@ void proc_plstat_normal(Player *ply) {          /* 286cc */
 			ply->Airborne     = AIR_ONGROUND;
 			ply->Attacking    = FALSE;
 			ply->IsJumpThreat = FALSE;
-			ply->Path         = data_2abb0[ply->FighterID]; 
+			ply->Path         = (const VECT16 *)data_2abb0[ply->FighterID];
 			CASetAnimWithStep(ply, STATUS_STAND);
 			/* FALLTHRU */
 		case 2:

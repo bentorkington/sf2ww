@@ -28,6 +28,9 @@ void PLCBCompAttackBlanka(Player *ply);
 
 void sub_33ada(Player *ply, short sel );
 
+void _BlankaCatchLU(Player *ply);
+void _BlankaCatchSet(Player *ply);
+void _BlankaSetAnim(Player *ply, u16 d0, u16 d1);
 
 struct blankamove {
 	u8	a;

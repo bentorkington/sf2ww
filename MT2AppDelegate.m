@@ -22,7 +22,7 @@
 
 - (IBAction) resetState:(id)sender
 {
-	[OGLView resetState];
+	
 }
 
 @end

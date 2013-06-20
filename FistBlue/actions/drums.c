@@ -214,7 +214,7 @@ void _SMAct04(Object_G2 *obj) {		// 27ea2 ID4 BONUS3
 			break;
 		case 4:
 		case 6:
-			clearpush_1174((Object *)obj);
+			clearpush_1174(obj);
 			FATALDEFAULT;
 	}
 }
@@ -244,9 +244,9 @@ static void sub_2525a(Object_G2 *obj) {
 	obj->VelY.full = 0;
 	obj->AclX.full = 0;
 	obj->AclY.full = 0;
-	sub_2581a(obj);
+	sub_2581a((Object *)obj);
 	queuesound(0x3b);
-	check_rect_queue_draw(obj);
+	check_rect_queue_draw((Object *)obj);
 }
 static void sub_25220(Object_G2 *obj) {
 	if (--obj->UD.UDbonus2.h009ac == 0) {
@@ -260,7 +260,7 @@ static void sub_25220(Object_G2 *obj) {
 	obj->mode2 = 0;
 	obj->VelY.full = 0x200;
 	queuesound(0x3b);
-	check_rect_queue_draw(obj);
+	check_rect_queue_draw((Object *)obj);
 }
 static void sub_25252(Object_G2 *obj) {
 	if (obj->VelY.full > -0x500) {
@@ -289,7 +289,7 @@ static void sub_251f4(Object_G2 *obj) {
 	obj->VelY.full = 0x0600;
 	obj->AclX.full = 0;
 	obj->AclY.full = 0x0030;
-	sub_257d8(obj);
+	sub_257d8((Object *)obj);
 	check_rect_queue_draw((Object *)obj);
 }
 
@@ -322,17 +322,17 @@ static void sub_257a0(Object_G2 *obj) {
 }
 
 static void sub_25476(Object_G2 *obj) {
-	char *p;
+	Object *p;
 	if (obj->UD.UDbonus2.H0092) {
 		p = obj->UD.UDbonus2.H0092;
-		if (p[3]) {
+		if (p->mode1) {
 			sub_2549a(p, obj);
 			return;
 		}
 	}
 	if (obj->UD.UDbonus2.H0094) {
 		p = obj->UD.UDbonus2.H0094;
-		if (p[3]) {
+		if (p->mode1) {
 			sub_2549a(p, obj);
 		}
 	}
@@ -389,7 +389,7 @@ void _SMAct05(Object_G2 *obj) {				// 24ff6 Act05 Bonus2
 							if (obj->UD.UDbonus2.h0096c) {
 								NEXT(obj->mode2);
 							}
-							actiontick(obj);
+							actiontick((Object *)obj);
 							/* FALLTHRU */
 						case 2:
 							sub_25476(obj);
@@ -398,7 +398,7 @@ void _SMAct05(Object_G2 *obj) {				// 24ff6 Act05 Bonus2
 							}
 							sub_25670(obj);
 							if (obj->SubSel < 3) {
-								check_rect_queue_draw(obj);
+								check_rect_queue_draw((Object *)obj);
 							}
 							break;
 							FATALDEFAULT;
@@ -421,18 +421,18 @@ void _SMAct05(Object_G2 *obj) {				// 24ff6 Act05 Bonus2
 									obj->VelX.full = -0x80;
 								}
 							}
-							CATrajectory(obj);
+							CATrajectory((Object *)obj);
 							//todo sub_25650(obj);
-							sub_2581a(obj);
+							sub_2581a((Object *)obj);
 							temp = sub_254da(obj);
 							if (temp & 0x08) {
 								NEXT(obj->mode2);
-							} else if(check_ground_collision(obj)){
+							} else if(check_ground_collision((Object *)obj)){
 								obj->mode2 = 2;
 								obj->YPI = g.GroundPlaneY;
 							}
 							sub_24fc2(obj);
-							check_rect_queue_draw(obj);
+							check_rect_queue_draw((Object *)obj);
 							break;
 						case 2:
 							

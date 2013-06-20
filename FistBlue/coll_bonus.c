@@ -136,7 +136,7 @@ static void sub_7d314(Object *a6, Player *a2) {
  Check for collision from a player, but only if falling or being thrown.
  Stage decorations such as Ryu's signs, Ken's drums call this detect when to break */
 
-void CDCheckDecor (Object *a6) {		/* 7e340 check if collision with player */
+void CDCheckDecor (Object_G2 *a6) {		/* 7e340 check if collision with player */
 	if(a6->exists & 0x01) {
 		switch (a6->Sel) {
 			case 1:
@@ -145,33 +145,33 @@ void CDCheckDecor (Object *a6) {		/* 7e340 check if collision with player */
 			case 7:
 				/* 7e372 see if player fell onto barrels  / signs, etc. make sound */
 				if(g.Player1.exists && g.Player1.Airborne < 0) {
-					if(CDPushOverlap(PLAYER1, a6)) {		/* check for a collision */
-						_CDKillDecor(PLAYER1, a6);		/* kill the object */
+					if(CDPushOverlap(PLAYER1, (Object *)a6)) {		/* check for a collision */
+						_CDKillDecor(PLAYER1, (Object *)a6);		/* kill the object */
 					}
 				}
 				if(g.Player2.exists && g.Player2.Airborne < 0) {
-					if(CDPushOverlap(PLAYER2, a6)) {
-						_CDKillDecor(PLAYER2, a6);
+					if(CDPushOverlap(PLAYER2, (Object *)a6)) {
+						_CDKillDecor(PLAYER2, (Object *)a6);
 					}
 				}
 				break;
 			case 9:
 				/* 7e3ea */
 				if (g.Player1.exists) {
-					sub_7d314(a6, PLAYER1);
+					sub_7d314((Object *)a6, PLAYER1);
 					if(g.Player1.Airborne == AIR_REEL2) {
-						if(CDPushOverlap(PLAYER1, a6)) {
-							_CDKillDecor2(a6, PLAYER1);
+						if(CDPushOverlap(PLAYER1, (Object *)a6)) {
+							_CDKillDecor2((Object *)a6, PLAYER1);
 							return;
 						}
 					}
 				}
 				/* 7e406 */
 				if (g.Player2.exists) {
-					sub_7d314(a6, PLAYER2);
+					sub_7d314((Object *)a6, PLAYER2);
 					if(g.Player1.Airborne == AIR_REEL2) {
-						if(CDPushOverlap(PLAYER2, a6)) {
-							_CDKillDecor2(a6, PLAYER2);
+						if(CDPushOverlap(PLAYER2, (Object *)a6)) {
+							_CDKillDecor2((Object *)a6, PLAYER2);
 							return;
 						}
 					}
@@ -185,7 +185,7 @@ void CDCheckDecor (Object *a6) {		/* 7e340 check if collision with player */
 
 #pragma mark BONUS0 - The car
 
-static void _CDSplashBonus0(Object *obja2) {		// 7db9c
+static void _CDSplashBonus0(Object_G2 *obja2) {		// 7db9c
 	Object *nobj;
 	if ((nobj = AllocActor())) {
 		nobj->exists = TRUE;
@@ -197,7 +197,7 @@ static void _CDSplashBonus0(Object *obja2) {		// 7db9c
 		}
 	}
 }
-static void _CDSoundBonus0(Object *obja2) {						// 7dafc
+static void _CDSoundBonus0(Object_G2 *obja2) {						// 7dafc
 	if (obja2->BlockStun) {
 		queuesound(0x72);
 	} else {
@@ -246,7 +246,7 @@ static void mac_stunme2(Player *ply, Player *opp) {		//7d824
             obj->Owner = ply->Owner;
             obj->SubSel = 3;
             if(opp->BlockStun) {
-                set_hitstun_effect_for_projectile(ply, obj);
+                set_hitstun_effect_for_projectile((Object *)ply, obj);
             }    
         } else {
             obj->Owner = ply;
@@ -264,10 +264,10 @@ static void mac_stunme2(Player *ply, Player *opp) {		//7d824
 }
 
 static void _CDCheckObjBonus0(Player *plya6, Object_G2 *obja2, char *a1) {		// 7da44
-	HitBoxAct *hba3;
+	const HitBoxAct *hba3;
 	int d4, d0;
 	
-	if((hba3 = get_active_hitbox(plya6))) {
+	if((hba3 = get_active_hitbox((Object *)plya6))) {
 		if (hba3->Shove < 0) {
 			d4 = 1;
 		} else {
@@ -276,7 +276,7 @@ static void _CDCheckObjBonus0(Player *plya6, Object_G2 *obja2, char *a1) {		// 7
 		if (d4 == *a1) {
 			return;
 		}
-		if (check_main_hitboxes(obja2,plya6 , hba3)) {
+		if (check_main_hitboxes((Object *)obja2, (Object *)plya6 , hba3)) {
 			*a1 = hba3->Shove;
 			if (*a1 < 0) {
 				*a1 = 1;
@@ -303,9 +303,9 @@ static void _CDCheckObjBonus0(Player *plya6, Object_G2 *obja2, char *a1) {		// 7
 				plya6->Energy = -2;
 			}
 			_CDSoundBonus0(obja2);
-			mac_stunme2(plya6, obja2);
+			mac_stunme2(plya6, /* XXX */(Player *)obja2);
 			_CDSplashBonus0(obja2);
-			sub_7db12(plya6, obja2);
+			sub_7db12((Object *)plya6, obja2);
 			return;
 		}
 	}
@@ -340,7 +340,7 @@ void _CDCheckBonus0(Player *plya6, Object_G2 *obja2) {		// 7d9f6
 
 
 #pragma mark BONUS1
-static void _CDSoundBonus1(Object *obja2, HitBoxAct *hba3) {		// 7dcba
+static void _CDSoundBonus1(Object *obja2, const HitBoxAct *hba3) {		// 7dcba
 	if (obja2->Energy < 0) {
 		queuesound(0x32);
 	} else {
@@ -386,7 +386,7 @@ void _CDCheckObjBonus1(Player *plya6, Object_G2 *obja2, char *a1) {		// 7dc2e
 		if (d4 == *a1) {
 			return;
 		}
-		if ((hb2 = CDGetHitBoxHead(obja2))) {
+		if ((hb2 = CDGetHitBoxHead((Object *)obja2))) {
 			if (check_hitbox_overlap((Object *)plya6, (Object *)obja2, hb, hb2)) {
 				if (hb->Shove < 0) {
 					*a1 = 1;
@@ -407,7 +407,7 @@ void _CDCheckObjBonus1(Player *plya6, Object_G2 *obja2, char *a1) {		// 7dc2e
 					obja2->Energy = -2;
 				}
 				_CDSoundBonus1((Object *)obja2, hb);
-				mac_stunme2(plya6, (Object *)obja2);
+				mac_stunme2(plya6, (Player *)obja2);
 				sub_7dccc(plya6, (Object *)obja2);
 				return;
 			}
@@ -447,16 +447,16 @@ void _CDBonus1(Object_G2 *a6) {		// 7dbc2
 
 
 #pragma mark BONUS2
-static void _CDCheckObjBonus2(Object *obj, Player *ply) {			// 7d2ae
+static void _CDCheckObjBonus2(Object_G2 *obj, Player *ply) {			// 7d2ae
 	HitBoxAct *hb;
 	if (g.PlayersThrowing || g.DebugNoCollide) {
 		return;
 	}
-	if((hb=get_active_hitbox(obj)==0)) { return; }
+	if((hb=get_active_hitbox((Object *)obj)==0)) { return; }
 	if (ply->TimerInvincible) {
 		return;
 	}
-	if (check_main_hitboxes(obj, ply, hb)==0) {
+	if (check_main_hitboxes((Object *)obj, (Object *)ply, hb)==0) {
 		return;
 	}
 	ply->TimerInvincible = 120;
@@ -469,7 +469,7 @@ static void _CDCheckObjBonus2(Object *obj, Player *ply) {			// 7d2ae
 	ply->ProjectilePushBack = FALSE;
 	ply->NextReactMode = RM_HITINAIR;
 	queuesound(45);
-	mac_stunhim_from76(obj, ply);
+	mac_stunhim_from76((Object *)obj, ply);
 }
 static void sub_7d284(Object_G2 *obj) {
 	// XXX userdata;
@@ -517,8 +517,8 @@ static void sub_7dd7c(Player *a6, Object_G2 *a2, char *a1) {
 		if (a1[0] == d4) {
 			return;
 		}
-		HitBox *a4 = CDGetHitBoxHead(a2);
-		if (check_hitbox_overlap(a6, a2, a3, a4)) {
+		const HitBox *a4 = CDGetHitBoxHead((Object *)a2);
+		if (check_hitbox_overlap((Object *)a6, (Object *)a2, a3, a4)) {
 			a1[0]=a3->Shove;
 			if (a1[0]<0) {
 				a1[0]=1;
@@ -538,7 +538,7 @@ static void sub_7dd7c(Player *a6, Object_G2 *a2, char *a1) {
 				a6->Energy = -2;
 			}
 			make_collision_sound(a6, a3);
-			mac_stun_from76(a6, a2);
+			mac_stun_from76(a6, (Player *)a2);
 			sub_7de06(a2);
 			sub_7de26(a6, a2);
 		} else {
@@ -584,7 +584,7 @@ static void _CDBonus2(Object_G2 *a6) {		// 7dd0c
 		_CDCheckBonus2(&g.Player2, a6);
 	}
 }
-void CDBonusCollisionCheck(Object *a6) {		// 7dd9a - entry for Bonus objects
+void CDBonusCollisionCheck(Object_G2 *a6) {		// 7dd9a - entry for Bonus objects
 	// disable collision detection for most objects
 	char data_7d9ba[]={-1, -1, -1, -1, 6, 4, 0, -1, -1, 2, -1, -1, -1, -1, -1, -1};
 	

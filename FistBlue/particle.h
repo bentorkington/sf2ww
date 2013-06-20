@@ -213,7 +213,7 @@ typedef struct {
 	
 	u8				NextReactMode2;		/* 4c */
 	char			x004d;
-	signed char		*x004e;	
+	const signed char		*x004e;
 	short			DSOffsetX;
 	char			Direction;      
 	u8				ReactMode;

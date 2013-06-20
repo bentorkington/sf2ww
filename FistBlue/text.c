@@ -178,7 +178,7 @@ void sub_5982(Task *task) {		// 5982 in scroll1
 	}
 }
 
-void showtextbank0(char sel) {		// 5602 Scroll1
+void showtextbank0(u8 sel) {		// 5602 Scroll1
 	const u8 *data = data_8d2ac[sel & 0x7f];
 	u16 *gfx_p;
 	u8 cx,cy;
@@ -224,7 +224,7 @@ void showtextbank0(char sel) {		// 5602 Scroll1
 		}
 	}
 }
-void showtextbank1(char sel) {		// 568c draw text in OBJECT
+void showtextbank1(u8 sel) {		// 568c draw text in OBJECT
 	const u8 *data = data_8d2ac[sel & 0x7f];
 	
 	u16 *gfx_p;
@@ -273,7 +273,7 @@ void showtextbank1(char sel) {		// 568c draw text in OBJECT
 	}
 }
 
-void showtextbank2(int sel) {		// 574a Winners chants
+void showtextbank2(u8 sel) {		// 574a Winners chants
 	const char *string;
 	u16 *gfx_p;
 	if (sel & 0x80) {

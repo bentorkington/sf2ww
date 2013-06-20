@@ -237,6 +237,7 @@ static const char data_2b8a4[16] = { 1,2,1,0,1,2,1,0,2,1,2,1,1,1,2,1 };
 
 #pragma mark ---- AI Init ----
 struct dualptr _AILookupStrategy(Player *ply) {		// 2b78e
+    // todo: modify this to take a pointer to a struct rather than return a struct.
 	struct dualptr retval;
 	retval.a1 = dataAIAggressive[ply->FighterID]->a1[ply->OpponentID];
 	retval.a2 = dataAIAggressive[ply->FighterID]->a2[ply->OpponentID];
@@ -255,7 +256,7 @@ static void AISetAgg0(Player *ply, const u8 **a1, const AIAggTable **a2) {	// 2b
 // in original, a2 points to u16[] of offsets to chars
 static void _AISetAgg1(Player *ply, const AIAggTable **a2) {		// 2b7ea
 	
-	struct data_2b7ea *ptr = a2[ply->RoughTimeRemain]; 
+	const struct data_2b7ea *ptr = a2[ply->RoughTimeRemain];
 	ply->x023e = ptr->x023e[RAND32];
 	
 	
