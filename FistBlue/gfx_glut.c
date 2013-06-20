@@ -6,6 +6,7 @@
 #include <string.h>
 #include <math.h>
 #include <time.h>
+#include <unistd.h>
 
 /* needs ifdef __APPLE__ since they put glut.h somewhere else */
 
@@ -78,13 +79,73 @@ int texture_mode=1;
 int enable_lighting=1;
 int showTextures=1;
 
-#define XFACT_SCR1 0.2
-#define YFACT_SCR1 0.2
-#define XFACT 0.4
-#define YFACT 0.4
-#define XFACT_SCR3 0.8
-#define YFACT_SCR3 0.8
 #define DTOR 0.0174532925
+
+#define GFXROM_READFOUR \
+buf[0]=getc(gfxrom);	\
+buf[1]=getc(gfxrom);	\
+buf[2]=getc(gfxrom);	\
+buf[3]=getc(gfxrom);
+
+#define PALETTE_MASK_BRIGHTNESS 0xf000
+#define PALETTE_MASK_COLOR_R    0x0f00
+#define PALETTE_MASK_COLOR_G    0x00f0
+#define PALETTE_MASK_COLOR_B    0x000f
+
+#define TRANSPARENT_COLOR_R     0
+#define TRANSPARENT_COLOR_G     255
+#define TRANSPARENT_COLOR_B     0
+#define PALETTE_TRANSPARENT_ID  15
+
+#define ALPHA_TRANS   0x00          /* Alpha value for fully-transparent */
+#define ALPHA_OPAQUE  0xff          /* and fully opaque                  */
+
+
+#define TILE_SIZE_SCR3  1.0f
+#define TILE_SIZE_SCR2  (TILE_SIZE_SCR3 / 2.0f)
+#define TILE_SIZE_SCR1  (TILE_SIZE_SCR3 / 4.0f)
+#define TILE_SIZE_OBJ   (TILE_SIZE_SCR3 / 2.0f)
+
+#define TILE_PIXELS_SCR1    8
+#define TILE_PIXELS_SCR2    16
+#define TILE_PIXELS_SCR3    32
+#define TILE_PIXELS_OBJ     16
+
+/* Tile ROM locations and bytesizes */
+#define TILE_OFFSET_OBJECT      0
+#define TILE_OFFSET_SCROLLS     0x400000
+#define TILE_BYTES_8x8          0x40        // not a bug, the SCR1 tiles are packed ineffieintly
+#define TILE_BYTES_16x16        0x80
+#define TILE_BYTES_32x32        0x200
+
+
+/* Tile attribute masks */
+#define TILE_MASK_FLIP          0x0060
+#define TILE_MASK_PALETTE       0x001f
+
+/* Object masks */
+#define TILE_MASK_BLOCK_X   0x0f00
+#define TILE_MASK_BLOCK_Y   0xf000
+#define TILE_MASK_BLOCK     (TILE_MASK_BLOCK_X | TILE_MASK_BLOCK_Y)
+#define TILE_MASK_OFFSET    0x01ff
+
+#define TILE_BRIGHT_TO_FLOAT    61140.0     // divide by this to normalise brightness to 1.0
+
+/* Blank tile IDs */
+#define TILE_BLANK_SCR1     0x4000
+#define TILE_BLANK_SCR2     0x2800
+#define TILE_BLANK_SCR3     0x400
+
+/* conversion from plain x,y coords to how tiles are packed in CPS RAM */
+#define SCROLL_DECODE_SCR1(tx,ty) ((((ty) & 0x20) << 8) + ((tx) << 5) + ((ty) & 0x1f))
+#define SCROLL_DECODE_SCR2(tx,ty) ((((ty) & 0x30) << 6) + ((tx) * 16) + ((ty) & 0x0f))
+#define SCROLL_DECODE_SCR3(tx,ty) ((((ty) & 0x38)<<6) + ((tx) << 3) + ((ty) & 7))
+
+#define TILE_BRIGHT_TO_FLOAT    61140.0
+#define TILE_OBJECT_END_TAG     0xff00
+
+
+#define TEXTURE_CACHE_SIZE      0x10000
 
 recCamera gCamera;
 recVec gOrigin;
@@ -122,15 +183,13 @@ void (*SCROLL[])(void) = {
 	draw_scroll3,
 };
 
-struct texture_cache_t {
-	GLuint text_scr1[0x10000][2];
-	GLuint text_scr2[0x10000][2];
-	GLuint text_scr3[0x10000][2];
-	GLuint text_obj [0x10000][2];
+static struct texture_cache_t {
+	GLuint text_scr1[TEXTURE_CACHE_SIZE][2];
+	GLuint text_scr2[TEXTURE_CACHE_SIZE][2];
+	GLuint text_scr3[TEXTURE_CACHE_SIZE][2];
+	GLuint text_obj [TEXTURE_CACHE_SIZE][2];
 } TC;
 int gemuCacheClear;
-
-extern GLubyte ubImage[];
 
 const GLfloat flips[4][4][2] = { 
 	{{1.0, 1.0},{0.0, 1.0},{0.0, 0.0},{1.0, 0.0}},
@@ -142,8 +201,6 @@ const GLfloat flips[4][4][2] = {
 void gemu_flip_scroll_enable(int scroll) {
 	gemu_scroll_enable[scroll] ^= 1;
 }
-
-
 
 void gfx_glut_reshape(int width, int height) {
 	printf("Reshaping to (%d,%d)\n", width, height);
@@ -174,25 +231,25 @@ void gemu_set_cache_clear(void) {
 
 void gemu_clear_cache(void) {
 	int i;
-	for (i=0; i<0x10000; ++i) {
+	for (i=0; i<TEXTURE_CACHE_SIZE; ++i) {
 		if (TC.text_scr1[i]) {
 			glDeleteTextures(1, TC.text_scr1[i]);
 			TC.text_scr1[i][0] = 0;
 		}
 	}
-	for (i=0; i<0x10000; ++i) {
+	for (i=0; i<TEXTURE_CACHE_SIZE; ++i) {
 		if (TC.text_scr2[i]) {
 			glDeleteTextures(1, TC.text_scr2[i]);
 			TC.text_scr2[i][0] = 0;
 		}			
 	}
-	for (i=0; i<0x10000; ++i) {
+	for (i=0; i<TEXTURE_CACHE_SIZE; ++i) {
 		if (TC.text_scr3[i]) {
 			glDeleteTextures(1, TC.text_scr3[i]);
 			TC.text_scr3[i][0] = 0;
 		}			
 	}
-	for (i=0; i<0x10000; ++i) {
+	for (i=0; i<TEXTURE_CACHE_SIZE; ++i) {
 		if (TC.text_obj[i][0]) {
 			glDeleteTextures(1, &TC.text_obj[i][0]);
 			TC.text_obj[i][0] = 0;
@@ -200,9 +257,33 @@ void gemu_clear_cache(void) {
 	}
 	gemuCacheClear = FALSE;
 }
+
+static inline void gemu_color_tile(int pixelSize, short palette, GLubyte *img, GPAL (*scrollPalette)[32][16]) {
+    int u,v, master;
 	
-	
-	
+    for(u=0; u<pixelSize; u++) {
+        for(v=0; v<pixelSize; v++) {
+            if(gemu.tile[u][v] == PALETTE_TRANSPARENT_ID) {
+                /* transparent pixel */
+                *img++ = TRANSPARENT_COLOR_R;
+                *img++ = TRANSPARENT_COLOR_G;
+                *img++ = TRANSPARENT_COLOR_B;
+                *img++ = ALPHA_TRANS; /* alpha */
+            } else {
+                /* convert 4bit RGB + brightness to 8-bit RGBA */
+                if(gemu.FadeEnable) {
+                    master = (17 * ((*scrollPalette)[palette][ gemu.tile[u][v] ])>>12) / 15;
+                } else {
+                    master = 17;    /* 4-bit to 8-bit conversion */
+                }
+                *img++ = master * (((*scrollPalette)[palette][ gemu.tile[u][v] ] & PALETTE_MASK_COLOR_R) >> 8);
+                *img++ = master * (((*scrollPalette)[palette][ gemu.tile[u][v] ] & PALETTE_MASK_COLOR_G) >> 4);
+                *img++ = master * (((*scrollPalette)[palette][ gemu.tile[u][v] ] & PALETTE_MASK_COLOR_B)     );
+                *img++ = ALPHA_OPAQUE; /* alpha */
+            }
+        }
+    }
+}
 
 void gemu_cache_scroll1(u16 tile, short palette) {
 	static GLubyte tempmap[8][8][4];
@@ -212,7 +293,7 @@ void gemu_cache_scroll1(u16 tile, short palette) {
 	}	
 	if (TC.text_scr1[tile][0] == 0) {
 		gemu_readtile_scroll1(tile);
-		gemu_colortile_scroll1(palette, (GLubyte *)tempmap);
+        gemu_color_tile(TILE_PIXELS_SCR1, palette, (GLubyte *)tempmap, &gemu.PalScroll1);
 		glGenTextures(1, &TC.text_scr1[tile][0]);
 		if (&TC.text_scr1[tile][0]==0) {
 			panic(999);
@@ -234,7 +315,7 @@ void gemu_cache_scroll2(u16 tile, short palette) {
 	}		
 	if (TC.text_scr2[tile][0] == 0) {
 		gemu_readtile_scroll2(tile);
-		gemu_colortile_scroll2(palette, (GLubyte *)tempmap);
+        gemu_color_tile(TILE_PIXELS_SCR2, palette, (GLubyte *)tempmap, &gemu.PalScroll2);
 		glGenTextures(1, &TC.text_scr2[tile][0]);
 		if (&TC.text_scr2[tile][0]==0) {
 			panic(999);
@@ -256,7 +337,7 @@ void gemu_cache_scroll3(u16 tile, short palette) {
 	}	
 	if (TC.text_scr3[tile][0] == 0) {
 		gemu_readtile_scroll3(tile);
-		gemu_colortile_scroll3(palette, (GLubyte *)tempmap);
+        gemu_color_tile(TILE_PIXELS_SCR3, palette, (GLubyte *)tempmap, &gemu.PalScroll3);
 		glGenTextures(1, &TC.text_scr3[tile][0]);
 		if (&TC.text_scr3[tile][0]==0) {
 			panic(999);
@@ -278,7 +359,7 @@ void gemu_cache_object(u16 tile, short palette) {
 	}
 	if (TC.text_obj[tile][0] == 0) {
 		gemu_readtile(tile);
-		gemu_colortile2(palette, (GLubyte *)tempmap);
+        gemu_color_tile(TILE_PIXELS_OBJ, palette, (GLubyte *)tempmap, &gemu.PalObject);
 		glGenTextures(1, &TC.text_obj[tile][0]);
 		if (&TC.text_obj[tile][0]==0) {
 			panic(999);
@@ -293,111 +374,13 @@ void gemu_cache_object(u16 tile, short palette) {
 	}
 }
 
-// Color a 16x16 tile, pack into a GLubyte array for use as a GL texture
-void gemu_colortile2(short palette, GLubyte *img) {
-    int u,v, master;
-	
-    for(u=0; u<16; u++) {
-        for(v=0; v<16; v++) {
-            if(gemu.tile[u][v] == 0xf) {
-                /* transparent pixel */
-                *img++ = 0;   /* red */
-                *img++ = 255; /* green */
-                *img++ = 0;   /* blue */
-                *img++ = ALPHA_TRANS; /* alpha */
-            } else {                
-                /* convert 4bit RGB + brightness to 8-bit RGBA */
-                if(gemu.FadeEnable) {
-                    master = (17 * (gemu.PalObject[palette][ gemu.tile[u][v] ])>>12) / 15;
-                } else {
-                    master = 17;    /* 4-bit to 8-bit conversion */
-                }
-                APPEND_RGBA(gemu.PalObject);
-            }        
-        }
-    }
-}  
-
-
-void gemu_colortile_scroll2(short palette, GLubyte *img) {
-    int u,v, master;
-	
-    for(u=0; u<16; u++) {
-        for(v=0; v<16; v++) {
-            if(gemu.tile[u][v] == 0xf) {
-                /* transparent pixel */
-                *img++ = 0;   /* red */
-                *img++ = 255; /* green */
-                *img++ = 0;   /* blue */
-                *img++ = ALPHA_TRANS; /* alpha */
-            } else {                
-                /* convert 4bit RGB + brightness to 8-bit RGBA */
-                if(gemu.FadeEnable) {
-                    master = (17 * (gemu.PalScroll2[palette][ gemu.tile[u][v] ])>>12) / 15;
-                } else {
-                    master = 17;    /* 4-bit to 8-bit conversion */
-                }
-                APPEND_RGBA(gemu.PalScroll2);
-            }        
-        }
-    }
-}
-void gemu_colortile_scroll3(short palette, GLubyte *img) {
-    int u,v, master;
-	
-    for(u=0; u<32; u++) {
-        for(v=0; v<32; v++) {
-            if(gemu.tile[u][v] == 15) {
-                /* transparent pixel */
-                *img++ = 0;   /* red */
-                *img++ = 255; /* green */
-                *img++ = 0;   /* blue */
-                *img++ = ALPHA_TRANS; /* alpha */
-            } else {                
-                /* convert 4bit RGB + brightness to 8-bit RGBA */
-                if(gemu.FadeEnable) {
-                    master = (17 * (gemu.PalObject[palette][ gemu.tile[u][v] ])>>12) / 15;
-                } else {
-                    master = 17;    /* 4-bit to 8-bit conversion */
-                }
-                APPEND_RGBA(gemu.PalScroll3);
-            }        
-        }
-    }
-}        
-void gemu_colortile_scroll1(short palette, GLubyte *img) {
-    int u,v, master;
-	
-    for(u=0; u<8; u++) {
-        for(v=0; v<8; v++) {
-            if(gemu.tile[u][v] == 0xf) {
-                /* transparent pixel */
-                *img++ = 0;   /* red */
-                *img++ = 255; /* green */
-                *img++ = 0;   /* blue */
-                *img++ = ALPHA_TRANS; /* alpha */
-            } else {                
-                /* convert 4bit RGB + brightness to 8-bit RGBA */
-                if(gemu.FadeEnable) {
-                    master = (17 * (gemu.PalScroll1[palette][ gemu.tile[u][v] ])>>12) / 15;
-                } else {
-                    master = 17;    /* 4-bit to 8-bit conversion */
-                }
-                APPEND_RGBA(gemu.PalScroll1);
-            }
-        }
-    }
-}        
-
-
 void gfx_glut_init(void) {
 	int i;
 	
     gfxrom=fopen( "./sf2gfx.bin", "r" );
     if(gfxrom == NULL) {
-        printf("fatal: couldn't open graphics ROM in ");
-		system("/bin/pwd");
-        exit(0);
+        printf("fatal: couldn't open graphics ROM in %s", getcwd(NULL, 0));
+        exit(EXIT_FAILURE);
     }
     printf("opened sf2gfx.bin\n");
     gemu.FadeEnable = FALSE;
@@ -414,7 +397,7 @@ void gfx_glut_init(void) {
 		gemu.Tilemap_Scroll2[i][1]=0x0;
 		gemu.Tilemap_Scroll3[i][1]=0x0;		
 	}
-	gWorldRotation[0] = 155.0;
+	gWorldRotation[0] = 180.0;
 	gWorldRotation[1] = 0.0;
 	gWorldRotation[2] = -1.0;
 	gWorldRotation[3] = 0.0;
@@ -422,11 +405,14 @@ void gfx_glut_init(void) {
 	start = clock();
 
 }
+
+const static unsigned char pixbit[8] = { 128, 64, 32, 16, 8, 4, 2, 1 };
+
+
 void gemu_readtile(u16 tileid) {          /* read a 16x16 tile */
-    unsigned char pixbit[8] = { 128, 64, 32, 16, 8, 4, 2, 1 };
     int u, v;
     unsigned char buf[4];
-    int tileaddr = tileid * 0x80;           /* xx use OBJECT_TILE_SIZE */
+    int tileaddr = (tileid * TILE_BYTES_16x16) + TILE_OFFSET_OBJECT;
     
     memset(&gemu.tile, 0, sizeof(gemu.tile));   /* Clear the previous tile out */
     
@@ -449,11 +435,10 @@ void gemu_readtile(u16 tileid) {          /* read a 16x16 tile */
     }
 }
 void gemu_readtile_scroll1(u16 tileid) {
-    unsigned char pixbit[8] = { 128, 64, 32, 16, 8, 4, 2, 1 };
     int u, v;
     unsigned char buf[4];
 	
-    int tileaddr = (tileid * 0x40) + 0x400000;           /* xx use OBJECT_TILE_SIZE */
+    int tileaddr = (tileid * TILE_BYTES_8x8) + TILE_OFFSET_SCROLLS; 
 	    
     memset(&gemu.tile, 0, sizeof(gemu.tile));  
     
@@ -470,13 +455,11 @@ void gemu_readtile_scroll1(u16 tileid) {
     }
 }
 void gemu_readtile_scroll2(u16 tileid) {
-    unsigned char pixbit[8] = { 128, 64, 32, 16, 8, 4, 2, 1 };
     int u, v;
     unsigned char buf[4];
 	
-    int tileaddr = (tileid * 0x80) + 0x400000;           /* xx use OBJECT_TILE_SIZE */
+    int tileaddr = (tileid * TILE_BYTES_16x16) + TILE_OFFSET_SCROLLS;
 
-    
     memset(&gemu.tile, 0, sizeof(gemu.tile));  
     
     fseek(gfxrom, tileaddr, SEEK_SET);
@@ -503,7 +486,7 @@ void gemu_readtile_scroll3(u16 tileid) {
     unsigned char buf[4];
     if(tileid == 0x400) {tileid = 0x404;}
 	
-	int tileaddr = (tileid * 0x200) + 0x400000;           /* xx use OBJECT_TILE_SIZE */
+	int tileaddr = (tileid * TILE_BYTES_32x32) + TILE_OFFSET_SCROLLS;
 	
     memset(&gemu.tile, 0, sizeof(gemu.tile));  
     
@@ -537,8 +520,20 @@ void gemu_readtile_scroll3(u16 tileid) {
             if (buf[2] & pixbit[v]) { gemu.tile[u][v+24] += 4; }
             if (buf[3] & pixbit[v]) { gemu.tile[u][v+24] += 8; }
         }
-		
     }
+}
+
+static inline void draw_gl_tile(int sx, int sy, int flip, float size) {
+    glBegin(GL_POLYGON);
+    glTexCoord2f(flips[flip][0][0],flips[flip][0][1]);
+    glVertex3f(((sx+1) * size), ((sy+1) * size), 0.0f);
+    glTexCoord2f(flips[flip][1][0],flips[flip][1][1]);
+    glVertex3f((( sx ) * size), ((sy+1) * size), 0.0f);
+    glTexCoord2f(flips[flip][2][0],flips[flip][2][1]);
+    glVertex3f((( sx ) * size), (( sy ) * size), 0.0f);
+    glTexCoord2f(flips[flip][3][0],flips[flip][3][1]);
+    glVertex3f(((sx+1) * size), (( sy ) * size), 0.0f);
+    glEnd();
 }
 
 static void draw_scroll1(void) {
@@ -546,66 +541,48 @@ static void draw_scroll1(void) {
 		return;
 	}
 	int x,y, gx, flip;
-	short sx, sy;
 	int element;
 	int modtransx;
 	
 	modtransx = g.CPS.Scroll1X & 0x7;
 	glPushMatrix();
-	glTranslatef((-modtransx * XFACT_SCR1 / 8), 0, -0.1f);
-	GLfloat master = (gemu.PalScroll1[0][0] & 0xf000) / 61140.0;
+	glTranslatef((-modtransx * TILE_SIZE_SCR1 / 8), 0, -0.1f);
+	GLfloat master = (gemu.PalScroll1[0][0] & PALETTE_MASK_BRIGHTNESS) / TILE_BRIGHT_TO_FLOAT;
 	glColor3f(master, master, master);
 	
 	for(y=0;y<32;y++) {
         for(x=0;x<48;x++) {
 			gx = x + ((g.CPS.Scroll1X >> 3 ) & 0x1f);
 			
-			element = ((y & 0x20) << 8) + (gx << 5) + (y & 0x1f);
+            element = SCROLL_DECODE_SCR1(gx, y);
 			
-			if (gemu.Tilemap_Scroll1[element][0] == 0x4000) {
+			if (gemu.Tilemap_Scroll1[element][0] == TILE_BLANK_SCR1) {
 				continue;
 			}
 			
 			gemu_cache_scroll1(gemu.Tilemap_Scroll1[element][0],
-							   gemu.Tilemap_Scroll1[element][1] & 0x1f);
+							   gemu.Tilemap_Scroll1[element][1] & TILE_MASK_PALETTE);
 			
-			flip = 0;
-            
-			sx = x-24.0; 
-			sy=  y-16.0;
-			
-            glBegin(GL_POLYGON);
-			glTexCoord2f(flips[flip][0][0],flips[flip][0][1]);
-            glVertex3f(((sx+1) * XFACT_SCR1), ((sy+1) * YFACT_SCR1), 0.0f);
-			glTexCoord2f(flips[flip][1][0],flips[flip][1][1]);
-            glVertex3f((( sx ) * XFACT_SCR1), ((sy+1) * YFACT_SCR1), 0.0f);
-			glTexCoord2f(flips[flip][2][0],flips[flip][2][1]);
-            glVertex3f((( sx ) * XFACT_SCR1), (( sy ) * YFACT_SCR1), 0.0f);
-			glTexCoord2f(flips[flip][3][0],flips[flip][3][1]);
-            glVertex3f(((sx+1) * XFACT_SCR1), (( sy ) * YFACT_SCR1), 0.0f);
-            glEnd();
-			
+			flip = 0;       // no flipping on SCR1?
+            draw_gl_tile(x-24, y-16, flip, TILE_SIZE_SCR1);
         }   
     }  
 	glBindTexture(GL_TEXTURE_2D, 0);
 	glPopMatrix();
 }
-
-
-
 static void draw_object(void) {
 
 #define DRAWTILE(TILE,PAL,FLIP,sx,sy)										\
 gemu_cache_object(TILE, gemu.Tilemap_Object[i][3] & 0x1f);					\
 glBegin(GL_POLYGON);														\
 glTexCoord2f(flips[flip][0][0],flips[flip][0][1]);							\
-glVertex3f(((sx+1) * XFACT), ((sy+1) * YFACT), 0.0f);						\
+glVertex3f(((sx+1) * TILE_SIZE_OBJ), ((sy+1) * TILE_SIZE_OBJ), 0.0f);						\
 glTexCoord2f(flips[flip][1][0],flips[flip][1][1]);							\
-glVertex3f((( sx ) * XFACT), ((sy+1) * YFACT), 0.0f);						\
+glVertex3f((( sx ) * TILE_SIZE_OBJ), ((sy+1) * TILE_SIZE_OBJ), 0.0f);						\
 glTexCoord2f(flips[flip][2][0],flips[flip][2][1]);							\
-glVertex3f((( sx ) * XFACT), (( sy ) * YFACT), 0.0f);						\
+glVertex3f((( sx ) * TILE_SIZE_OBJ), (( sy ) * TILE_SIZE_OBJ), 0.0f);						\
 glTexCoord2f(flips[flip][3][0],flips[flip][3][1]);							\
-glVertex3f(((sx+1) * XFACT), (( sy ) * YFACT), 0.0f);						\
+glVertex3f(((sx+1) * TILE_SIZE_OBJ), (( sy ) * TILE_SIZE_OBJ), 0.0f);						\
 glEnd();
 	
 	if (!gemu_scroll_enable[0]) {
@@ -614,13 +591,13 @@ glEnd();
 	int i,j, blockx, blocky, pal, bys, bxs ;
 	GLfloat x,y;
 	int tile, flip;
-	GLfloat master = (gemu.PalObject[0][0] & 0xf000) / 61140.0;
+	GLfloat master = (gemu.PalObject[0][0] & PALETTE_MASK_BRIGHTNESS) / TILE_BRIGHT_TO_FLOAT;
 	glColor3f(master, 1.0, master);
 	
 	
 	glEnable(GL_TEXTURE_2D);
 	for (j=0; j<0x100; j++) {
-		if(gemu.Tilemap_Object[j][3] == 0xff00) {	// End Tag
+		if(gemu.Tilemap_Object[j][3] == TILE_OBJECT_END_TAG) {	// End Tag
 			break;
 		}
 	}
@@ -629,15 +606,15 @@ glEnd();
 		if (tile != 0) {
 			pal    = gemu.Tilemap_Object[i][3] & 0x1f;
 			flip   = (gemu.Tilemap_Object[i][3] &   0x60) >>  5;
-			x      = ((short)gemu.Tilemap_Object[i][0] &  0x1ff) / 16.0;
-			y      = ((short)gemu.Tilemap_Object[i][1] &  0x1ff) / 16.0;			
+			x      = ((short)gemu.Tilemap_Object[i][0] &  TILE_MASK_OFFSET) / 16.0;
+			y      = ((short)gemu.Tilemap_Object[i][1] &  TILE_MASK_OFFSET) / 16.0;			
 			x     -= 16.0;
 			y	  -=  8.0;
 
-			if (gemu.Tilemap_Object[i][3] & 0xff00) {
+			if (gemu.Tilemap_Object[i][3] & TILE_MASK_BLOCK) {
 				// handle blocking
-				blockx = ((gemu.Tilemap_Object[i][3] & 0x0f00) >>  8)+1;
-				blocky = ((gemu.Tilemap_Object[i][3] & 0xf000) >> 12)+1; 
+				blockx = ((gemu.Tilemap_Object[i][3] & TILE_MASK_BLOCK_X) >>  8)+1;
+				blocky = ((gemu.Tilemap_Object[i][3] & TILE_MASK_BLOCK_Y) >> 12)+1;
 				if (flip & 2) {
 					// YFLIP
 					if (flip & 1) {
@@ -708,7 +685,6 @@ glEnd();
 static void draw_scroll2(void) {
 	int x,y, yloop, flip, tx, ty, tiletx, tilety;
 	int scr2x;
-	float sx, sy;
 	int record;
 	float scrollbot, scrolltop;
 
@@ -718,12 +694,12 @@ static void draw_scroll2(void) {
 	/* Draw Scroll2 */
 	glPushMatrix();
 	scr2x = g.CPS.Scroll2X;;	
-	glTranslatef(-(scr2x & 0xf) / 16.0 * XFACT, ((g.CPS.Scroll2Y & 0xf) / 16.0 * XFACT)  , 0);
+	glTranslatef(-(scr2x & 0xf) / 16.0 * TILE_SIZE_SCR2, ((g.CPS.Scroll2Y & 0xf) / 16.0 * TILE_SIZE_SCR2)  , 0);
 
 	tilety = g.CPS.Scroll2Y / 16;
 	tiletx = scr2x          / 16;
 
-	GLfloat master = (gemu.PalScroll2[0][0] & 0xf000) / 61140.0;
+	GLfloat master = (gemu.PalScroll2[0][0] & PALETTE_MASK_BRIGHTNESS) / TILE_BRIGHT_TO_FLOAT;
 	glColor3f(master, master, master);
 	
 	for(yloop=-1;yloop<16;yloop++) {	
@@ -733,34 +709,20 @@ static void draw_scroll2(void) {
         for(x=-6;x<39;x++) {
 			ty = (y + (48 - tilety)) & 0x3f;
 			tx = (x + tiletx) & 0x3f;
-
-			record = ((ty & 0x30) << 6) + (tx * 16) + (ty & 0x0f);
-			if (gemu.Tilemap_Scroll2[((ty & 0x30) << 6) + (tx * 16) + (ty & 0x0f)][0] == 0x2800) {
+            
+			record = SCROLL_DECODE_SCR2(tx,ty);
+			if (gemu.Tilemap_Scroll2[record][0] == TILE_BLANK_SCR2) {
+                // Blank tile in SCR2
 				continue;
 			}
 				
 			if(ty == 0) {continue;}
-			gemu_cache_scroll2(gemu.Tilemap_Scroll2[((ty & 0x30) << 6) + (tx * 16) + (ty & 0x0f)][0],
-							   gemu.Tilemap_Scroll2[((ty & 0x30) << 6) + (tx * 16) + (ty & 0x0f)][1] & 0x1f);
+			gemu_cache_scroll2(gemu.Tilemap_Scroll2[record][0],
+							   gemu.Tilemap_Scroll2[record][1] & TILE_MASK_PALETTE);
 			
-			flip = gemu.Tilemap_Scroll2[((ty & 0x30) << 6) + (tx * 16) + (ty & 0x0f)][1] & 0x60;
-			flip = flip >> 5;
+			flip = (gemu.Tilemap_Scroll2[record][1] & TILE_MASK_FLIP) >> 5;
 			
-			sx = x-12.0;		// - 20 + 4
-			sy = y-8.0;
-
-			//glColor4f(1.0, 0.0, 0.0, 0.25);
-            glBegin(GL_POLYGON);
-            //glTexCoord2f(1.0, 1.0);
-			glTexCoord2f(flips[flip][0][0],flips[flip][0][1]);
-            glVertex3f(((sx+1-scrolltop) * XFACT), ((sy+1) * YFACT), 0.0f);
-			glTexCoord2f(flips[flip][1][0],flips[flip][1][1]);
-            glVertex3f((( sx-scrolltop ) * XFACT), ((sy+1) * YFACT), 0.0f);
-			glTexCoord2f(flips[flip][2][0],flips[flip][2][1]);
-            glVertex3f((( sx-scrollbot ) * XFACT), (( sy ) * YFACT), 0.0f);
-			glTexCoord2f(flips[flip][3][0],flips[flip][3][1]);
-            glVertex3f(((sx+1-scrollbot) * XFACT), (( sy ) * YFACT), 0.0f);
-            glEnd();
+            draw_gl_tile(x-12, y-8, flip, TILE_SIZE_SCR2);
         }   
     }  
 	
@@ -776,10 +738,10 @@ static void draw_scroll3(void) {
 		return;
 	}
 	glPushMatrix();
-	glTranslatef(-(g.CPS.Scroll3X & 0x1f) / 32.0 * XFACT_SCR3, (g.CPS.Scroll3Y & 0x1f) / 32.0 * XFACT_SCR3, 0);
+	glTranslatef(-(g.CPS.Scroll3X & 0x1f) / 32.0 * TILE_SIZE_SCR3, (g.CPS.Scroll3Y & 0x1f) / 32.0 * TILE_SIZE_SCR3, 0);
 	tilety = g.CPS.Scroll3Y / 32;
 	tiletx = g.CPS.Scroll3X / 32;
-	GLfloat master = (gemu.PalScroll3[0][0] & 0xf000) / 61140.0;
+	GLfloat master = (gemu.PalScroll3[0][0] & PALETTE_MASK_BRIGHTNESS) / TILE_BRIGHT_TO_FLOAT;
 	glColor3f(master, master, master);
 	
 	for(y=-1;y<9;y++) {
@@ -789,32 +751,21 @@ static void draw_scroll3(void) {
 			if (ty == 0) {
 				continue;
 			}
-			short record = ((ty & 0x38)<<6) + (tx << 3) + (ty & 7);
-			if (gemu.Tilemap_Scroll3[record][0] == 0x400) {
+			short record = SCROLL_DECODE_SCR3(tx, ty);
+			if (gemu.Tilemap_Scroll3[record][0] == TILE_BLANK_SCR3) {
 				continue;
-				//gemu.Tilemap_Scroll3[record][0] = 0x6e8 + (y & 7);
-			} 			
+			}
 			gemu_cache_scroll3(gemu.Tilemap_Scroll3[record][0],
-							   gemu.Tilemap_Scroll3[record][1] & 0x1f);
+							   gemu.Tilemap_Scroll3[record][1] & TILE_MASK_PALETTE);
 			
 			
             sx = (float)x-6.0;		//(-20 + 12)
 			sy = (float)y-4.0;
-			flip = gemu.Tilemap_Scroll3[record][1] & 0x60;
+			flip = gemu.Tilemap_Scroll3[record][1] & TILE_MASK_FLIP;
 			flip = flip >>5;
 			
-			// glColor4f(1.0, 0.0, 0.0, 0.25);
-            glBegin(GL_POLYGON);
-			glTexCoord2f(flips[flip][0][0],flips[flip][0][1]);
-            glVertex3f(((sx+1) * XFACT_SCR3), ((sy+1) * YFACT_SCR3), 0.0f);
-			glTexCoord2f(flips[flip][1][0],flips[flip][1][1]);
-            glVertex3f((( sx ) * XFACT_SCR3), ((sy+1) * YFACT_SCR3), 0.0f);
-			glTexCoord2f(flips[flip][2][0],flips[flip][2][1]);
-            glVertex3f((( sx ) * XFACT_SCR3), (( sy ) * YFACT_SCR3), 0.0f);
-			glTexCoord2f(flips[flip][3][0],flips[flip][3][1]);
-            glVertex3f(((sx+1) * XFACT_SCR3), (( sy ) * YFACT_SCR3), 0.0f);
-            glEnd();
-        }   
+            draw_gl_tile(x-6, y-4, flip, TILE_SIZE_SCR3);
+        }
     }    
 	glBindTexture(GL_TEXTURE_2D, 0);
 	glPopMatrix();
@@ -1082,7 +1033,7 @@ void drawGLText(recCamera cam) {
 						 gstate_Scroll1.OffMask,
 						 gstate_Scroll1.x001e,
 						 gstate_Scroll1.Index,
-						 gemu.PalScroll1[0][0] & 0xf000
+						 gemu.PalScroll1[0][0] & PALETTE_MASK_BRIGHTNESS
 						 );
 				drawGLString(10, (lineSpacing * line++) + startOffest, outString);
 				sprintf	(outString, "SCR2: X:%04x Y:%04x (%04x/%04x) 1E:%04x 20:%04x FADE %x",
@@ -1092,7 +1043,7 @@ void drawGLText(recCamera cam) {
 						 gstate_Scroll2.OffMask,
 						 gstate_Scroll2.x001e,
 						 gstate_Scroll2.Index,
-						 gemu.PalScroll2[0][0] & 0xf000
+						 gemu.PalScroll2[0][0] & PALETTE_MASK_BRIGHTNESS
 						 );
 				drawGLString(10, (lineSpacing * line++) + startOffest, outString);
 		sprintf	(outString, "SCR3: X:%04x Y:%04x (%04x/%04x) 1E:%04x 20:%04x FADE %x",
@@ -1102,7 +1053,7 @@ void drawGLText(recCamera cam) {
 				 gstate_Scroll3.OffMask,
 				 gstate_Scroll3.x001e,
 				 gstate_Scroll3.Index,
-				 gemu.PalScroll3[0][0] & 0xf000
+				 gemu.PalScroll3[0][0] & PALETTE_MASK_BRIGHTNESS
 				 );
 		drawGLString(10, (lineSpacing * line++) + startOffest, outString);
 		sprintf	(outString, "SCRL: X:%04x",gemu.RowScroll2[0]);

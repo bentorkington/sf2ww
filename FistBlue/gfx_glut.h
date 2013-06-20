@@ -21,22 +21,6 @@
 #include <GL/glu.h>
 #endif
 
-#define GFXROM_READFOUR \
-buf[0]=getc(gfxrom);	\
-buf[1]=getc(gfxrom);	\
-buf[2]=getc(gfxrom);	\
-buf[3]=getc(gfxrom);
-
-#define APPEND_RGBA(gemu_pal)		\
-*img++ = master * ((gemu_pal[palette][ gemu.tile[u][v] ] & 0xf00) >> 8); /* red */	\
-*img++ = master * ((gemu_pal[palette][ gemu.tile[u][v] ] & 0x0f0) >> 4); /* green */	\
-*img++ = master * ((gemu_pal[palette][ gemu.tile[u][v] ] & 0x00f)     ); /* blue */	\
-*img++ = ALPHA_OPAQUE; /* alpha */
-
-
-#define ALPHA_TRANS   0x00          /* Alpha value for fully-transparent */
-#define ALPHA_OPAQUE  0xff          /* and fully opaque                  */
-
 void gemu_clear_cache(void);
 void gemu_cache_scroll1(u16 tile, short palette);
 void gemu_cache_scroll2(u16 tile, short palette);
@@ -63,10 +47,6 @@ void gemu_readtile_scroll3(u16 tileid);
 void gemu_readtile_scroll2(u16 tileid);
 void gemu_readtile_scroll1(u16 tileid);
 
-void gemu_colortile2(short palette, GLubyte *img);
-void gemu_colortile_scroll3(short palette, GLubyte *img);
-void gemu_colortile_scroll2(short palette, GLubyte *img);
-void gemu_colortile_scroll1(short palette, GLubyte *img);
 void gemu_flip_scroll_enable(int scroll) ;
 
 void gemu_set_cache_clear(void);
