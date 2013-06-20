@@ -87,7 +87,7 @@ void fistblue_run_tests(void) {
 		{0x0200, 0x0300, -0x0200, 0x0300},
 	};
 	
-	obj->Path = &_fb_test_path[0];
+	obj->Path = (const VECT16 *)&_fb_test_path[0];
 	obj->X.full = 0x00c00000;		// 192
 	obj->Y.full = 0x00c00000;
 	obj->Flip = obj->Step = 0;
@@ -113,7 +113,7 @@ void fistblue_run_tests(void) {
 	assert(obj->X.full = 0xffff0000);
 	assert(obj->Y.full = 0x00c00000);
 	
-	obj->Path = &_fb_test_path[1];
+	obj->Path = (const VECT16 *)&_fb_test_path[1];
 	obj->X.full = 0x00c00000;		// 192
 	obj->Y.full = 0x00c00000;
 	obj->Flip = obj->Step = 0;
@@ -128,7 +128,7 @@ void fistblue_run_tests(void) {
 	assert(obj->X.full = 0x00c18000);
 	assert(obj->Y.full = 0x00c78000);
 	
-	obj->Path = &_fb_test_longpath[0];
+	obj->Path = (const VECT16 *)&_fb_test_longpath[0];
 	obj->X.full = 0x00c00000;		// 192
 	obj->Y.full = 0x00c00000;
 	obj->Flip = obj->Step = 0;

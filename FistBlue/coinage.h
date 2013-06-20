@@ -13,7 +13,7 @@ void task_creditscreen(void);
 void check_coin_lockout(void);
 void decode_coincosts(void);
 void int_cb_coinage(void);
-void sub_1ed0(void);
+void coinage_hook(void);
 
 struct coinslot {
 	char x0000;

@@ -34,10 +34,6 @@
 #include <execinfo.h>
 #endif
 
-
-
-
-
 #ifndef CPS
 #include <stdio.h>
 #include <stdlib.h>
@@ -502,7 +498,7 @@ void sf2_interrupt (void) {
     sub_b06();
     debughook(0);	/* not correct value */
     soundhook();
-    sub_1ed0();   /* coin accounting */
+    coinage_hook();   /* coin accounting */
     int_cb_coinage();   /* play coin sounds, update credit display */
     _refresh_jumpers();   /* reread some jumpers, some debug stuff */
 	

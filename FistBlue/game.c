@@ -38,5 +38,5 @@ void manual_init(void) {
 	RHInitThreads();
 	
 	g.CPS.DispEna = 0x12c0;
-	startup();
+    startup();
 }

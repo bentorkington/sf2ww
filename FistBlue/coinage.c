@@ -113,7 +113,7 @@ static void sub_1f1c(Coinslot *cs) {
 		}
 	}
 }
-void sub_1ed0(void) {			// 1ed0
+void coinage_hook(void) {			// 1ed0
 	static const u8 data_1e76[]={
 		~COIN_STATUS_1, COIN_STATUS_1,
 		~COIN_STATUS_2, COIN_STATUS_2,
@@ -232,7 +232,7 @@ void task_creditscreen(void) {          /* 6b52 */
             //init_test_menu();
             return;
         }
-        if (0 == g.FreezeMachine) {
+        if (FALSE == g.FreezeMachine) {
             switch (g.mode0) {
 				case 0:
 					g.mode0 +=2;

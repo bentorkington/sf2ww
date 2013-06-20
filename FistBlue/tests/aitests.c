@@ -28,7 +28,7 @@ extern Game g;
 const u8 *_test_ai_A2;
 u8 _test_ai_D2;
 
-extern struct dualptr *dataAIAggressive[];
+extern const struct dualptr *dataAIAggressive[];
 extern const struct defense_strategy **dataAIDefensive[];
 
 static void _test_ai_putmsg(const char *message);
