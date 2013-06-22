@@ -44,8 +44,10 @@ typedef enum {
 #define	STEP_STILL		2
 
 // for Object.Flip and Object.EnemyDirection
-#define FACING_LEFT		0
-#define FACING_RIGHT	1
+typedef enum {
+    FACING_LEFT,
+    FACING_RIGHT,
+} FBDirection;
 
 #define BOTH_COMPUTER  0
 #define ONLY_P1        1
@@ -131,9 +133,6 @@ typedef enum {
 	VERSION_ETC,
 } FBVersion;
 
-//#define VERSION_JAP 0
-//#define VERISON_ETC 2
-//#define VERSION_USA 1
 
 #define SCROLL_NONE	-1
 #define SCROLL_2	0
@@ -154,7 +153,7 @@ typedef enum {
 #define PALETTE_0D       0xd
 #define PALETTE_OBJ_GOLDFIREBALL	15
 
-enum sf2stages {
+typedef enum sf2stages {
 	STAGE_JAPAN_RYU,
 	STAGE_JAPAN_EHONDA,
 	STAGE_BRAZIL_BLANKA,
@@ -175,6 +174,5 @@ enum sf2stages {
 	STAGE_UNKNOWN1,				// 11 skyscraper, worldmap, vs screen
 	STAGE_UNKNOWN2,
 	STAGE_UNKNOWN3,
-};
-typedef enum sf2stages FBStageID;
+} FBStageID;
 #endif /* INC_SF2CONST */

@@ -562,8 +562,14 @@ void startup (void) {
     for (i=0; i<0x80; i++) {g.soundQueue[i] =  0;}
 #endif
     
+#if defined FISTBLUE_SF2UA_JAP
+    g.Version = VERSION_JAP;
+#elif defined FISTBLUE_SF2UA_ETC
+    g.Version = VERSION_ETC;
+#else
     g.Version = VERSION_USA;
-	
+#endif
+    
     palette_base_1k();		// checkme
     palette_macro(0x10);
     read_jumpers();

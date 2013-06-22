@@ -30,8 +30,6 @@ static void projsm_fireball(Object *obj, short d7);
 static void proc_yogafire(Object *obj, short d7); /* 0x23426 */
 static void action_207f0(Object *obj, short d7);
 
-
-
 static void destroy_projectile(Object *obj) {		// 235f8
 	NEXT(obj->mode0);
 	if(obj->Energy == -1) {
@@ -189,7 +187,7 @@ static void projsm_fireball(Object *obj, short d7) {
 		case 2:
 			/* 0x22c62 */
 			CDCheckProjectile(obj, d7);
-			if(obj->Energy < 0) {
+			if(obj->Energy < 0 || obj->flag1 == 0) {
 				/* 22c80 */
 				if(obj->Energy == -1) {
 					obj->mode0 += 2;
@@ -204,11 +202,11 @@ static void projsm_fireball(Object *obj, short d7) {
 					}
 				}
 				obj->mode0 +=2;
-				return;
-			}
-			update_motion(obj);
-			actiontick(obj);
-			check_rect_queue_draw(obj);
+			} else {
+                update_motion(obj);
+                actiontick(obj);
+                check_rect_queue_draw(obj);
+            }
 			break;
 		case 4:
 			obj->mode0 += 2;

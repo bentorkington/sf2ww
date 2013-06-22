@@ -419,7 +419,7 @@ int _check_throw(int airthrow, Player *ply) {		/* 0x3338 */
     if (ply->Flip) { temp5 = -temp5; }
 	///      
     temp5 = temp5 + ply->XPI - opp->XPI + ply->Throw[2] + opp->ThrowCatchX;
-    temp4 = 2 * (ply->Throw[2] + opp->Throw[4]);
+    temp4 = 2 * (ply->Throw[2] + opp->ThrowCatchX);
     
     
     
@@ -528,7 +528,7 @@ void sub_2b7c(void) {
 }
 
 void sub_4720(void) {
-	u16 data_4754[32]={
+	static const u16 data_4754[32]={
 		0x000a, 0x0020, 0x0002, 0x0000, 0x000a, 0x0008, 0x0010, 0x0008, 
 		0x0014, 0x0008, 0x0010, 0x000a, 0x0010, 0x000a, 0x0014, 0x0010,
 		0x0002, 0x0010, 0x000a, 0x0008, 0x000a, 0x0020, 0x000a, 0x0002, 
@@ -769,7 +769,7 @@ void bumpdifficulty_08(void) {
 	if(g.ActiveHumans == 3) { return; }
 	if(g.OnBonusStage)      { return; }
 	g.x0a0a++;
-	if(g.x0a0a < 0xf0) {
+	if(g.x0a0a < 0xf0) {		// xxx checkme
 		g.x0a0a = 0;
 		g.Diff_0a04 += 3;
 		g.Diff_0a04 &= 0xff;

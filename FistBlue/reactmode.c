@@ -256,7 +256,7 @@ void react_to_attack(Player *ply) {							/* 0x28ed8 */
 	
 	static const char *data_2913e[]={data_29144, data_29150, data_29162};
 	
-    int a,b, temp;
+    int a,b;
     switch (ply->mode2) {
 		case 0:
 			NEXT(ply->mode2);

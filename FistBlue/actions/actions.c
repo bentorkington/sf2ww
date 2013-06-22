@@ -3113,9 +3113,7 @@ static void action_3b(Object *obj) {	//203ba
 #pragma mark Projectile 207f0
 
 #pragma mark Act43
-static void action_43(Object *obj) {
-	u16 *gfx_p;
-	
+static void action_43(Object *obj) {        //219ce
 	if (obj->SubSel) {
 		//21adc todo
 		switch (obj->mode0) {
@@ -3123,8 +3121,7 @@ static void action_43(Object *obj) {
 				NEXT(obj->mode0);
 				obj->Pool       = 6;
 				obj->LocalTimer = 40;
-				OBJ_CURSOR_CPS(gfx_p, 0x900300);        //XXX this isn't an object tile slot
-
+                
 				//todo
 //				memcpy(gfx_p, data_21b2a, 160);
 //				setaction_list(obj, data_21f26, 0);

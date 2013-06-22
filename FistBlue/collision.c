@@ -1005,28 +1005,28 @@ short CDPushOverlap(Player *a2, Object *a6) {
 	}
 	return d4;
 }	
-static void _CDSpecialReactMode(Player *ply, Player *vict, const HitBoxAct *a3) {	/* 0x7d02e */
-	vict->Direction = ply->Flip;
-	switch (ply->FighterID) {
+static void _CDSpecialReactMode(Player *ply_a6, Player *vict_a2, const HitBoxAct *a3) {	/* 0x7d02e */
+	vict_a2->Direction = ply_a6->Flip;
+	switch (ply_a6->FighterID) {
 		case FID_RYU:
 		case FID_KEN:
-			if(a3->ReactMode == RM_HURRICANE)		{ _CDTurnToFaceMe(ply, vict); }
+			if(a3->ReactMode == RM_HURRICANE)		{ _CDTurnToFaceMe(ply_a6, vict_a2); }
 			break;
 		case FID_E_HONDA:
-			if(a3->ReactMode == RM_MULTIHIT)		{ _CDTurnToFaceMe(ply, vict); }
+			if(a3->ReactMode == RM_MULTIHIT)		{ _CDTurnToFaceMe(ply_a6, vict_a2); }
 			break;
 		case FID_BLANKA:
-			if(a3->ReactMode == RM_ELECTROCUTED)	{_CDTurnToFaceMe(ply, vict); }
+			if(a3->ReactMode == RM_ELECTROCUTED)	{_CDTurnToFaceMe(ply_a6, vict_a2); }
 			break;
 		case FID_CHUN_LI:
 			if(a3->ReactMode == RM_MULTIHIT ||
-			   a3->ReactMode == RM_HURRICANE)		{ _CDTurnToFaceMe(ply, vict); }
+			   a3->ReactMode == RM_HURRICANE)		{ _CDTurnToFaceMe(ply_a6, vict_a2); }
 			break;
 		case FID_ZANGEIF:
-			if(a3->ReactMode == RM_0x14)			{ _CDTurnToFaceMe(ply, vict); }
+			if(a3->ReactMode == RM_0x14)			{ _CDTurnToFaceMe(ply_a6, vict_a2); }
 			break;
 		case FID_M_BISON:
-			if((ply->AnimFlags & 0xff) == 0x17) { vict->Direction ^= 1; }
+			if((ply_a6->AnimFlags & 0xff) == 0x17) { vict_a2->Direction ^= 1; }
 			break;
 	/* no special processing for these guys */
 	/*	case FID_GUILE:
@@ -1038,11 +1038,11 @@ static void _CDSpecialReactMode(Player *ply, Player *vict, const HitBoxAct *a3) 
 			break;
 	}
 }
-static void _CDTurnToFaceMe(Player *ply, Player *vict) {	/* 7d0a8 */
-	if(ply->XPI < vict->XPI) {
-		vict->Direction = FACING_LEFT;
+static void _CDTurnToFaceMe(Player *ply_a6, Player *vict_a2) {	/* 7d0a8 */
+	if(ply_a6->XPI >= vict_a2->XPI) {
+		vict_a2->Direction = FACING_LEFT;
 	} else {
-		vict->Direction = FACING_RIGHT;
+		vict_a2->Direction = FACING_RIGHT;
 	}
 }
 

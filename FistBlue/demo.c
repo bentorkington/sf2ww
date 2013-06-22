@@ -123,8 +123,6 @@ void task_attractSequence(void) {
 	}
 }
 
-
-
 void SMdemo_fade_and_clear(void) {		// 6618
     switch (g.mode1) {
     case 0:
@@ -176,9 +174,9 @@ void SMdemo_titlefightanim(void) {	// 0x6650 mode is 2,0
 			
 			g.DemoStarted = TRUE;
 			if(g.FreePlay) {
-				QueueEffect(SL08 | INSERT_COIN, 0x101);
+				QueueEffect(SL08 | FREE_PLAY, 0x101);
 			} else {
-				QueueEffect(SL08 | FREE_PLAY  , 0x101);
+				QueueEffect(SL08 | INSERT_COIN, 0x101);
 			}
 			start_effect(2,3);
 			queuesound(SOUND_DEMOMUSIC);
