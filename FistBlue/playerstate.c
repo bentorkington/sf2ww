@@ -58,7 +58,7 @@ void PSCBVictoryEHonda(Player *ply);
 void PSCBVictoryZangeif(Player *ply);
 
 // reco as 12 * 4 * struct Vect8
-short data_2abb0[12][8] = {
+const short data_2abb0[12][8] = {
 	{ -0x300, 0x0000, 0x0200, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000,  },
 	{ 0xfda0, 0x0000, 0x01a0, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000,  },
 	{ 0xfdc0, 0x0000, 0x01e0, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000,  },
@@ -108,7 +108,7 @@ void PSEntry(Player *ply) {   /* 0x28396 was: player_per_frame */
 }
 
 
-void (*playerstate_LU[11])(Player *ply) = {
+static void (* const playerstate_LU[11])(Player *ply) = {
 	proc_plstat_normal,
 	proc_plstat_crouch,
 	proc_plstat_jumping,
@@ -143,7 +143,7 @@ static void PSMakeDizzy(Player *ply) {			/* 2a652 make dizzy */
 	}
 }
 static void PSDizzyRandomise(Player *ply) {	        	/* 2a638 4 callers */
-	static char data_2a698[32] = {
+	static const char data_2a698[32] = {
 		1, -1, 2, 0, 1, 0, 0, -2, 0, 1, -1, -2, 0, 0, 2, 0, 3, -3,
 		-1, 0, 0, 1, 0, 1, -1, 0, -2, 2, -2, 2, 0, -1,
 	};
@@ -154,7 +154,7 @@ static void PSDizzyRandomise(Player *ply) {	        	/* 2a638 4 callers */
 	}
 }
 static void PSDizzyAccounting(Player *ply) {
-	static u16 data_2a5ec[3][2] = {{0x6, 0x28},{0xb, 0x37},{0xe, 0x50}};
+	static const u16 data_2a5ec[3][2] = {{0x6, 0x28},{0xb, 0x37},{0xe, 0x50}};
 	
 	if (ply->BlockStun) { return; }
 	if(ply->DizzyFall) {
@@ -238,7 +238,7 @@ static void PSPlayerDamage(Player *ply, short energy){		//2a460
 static void PSPlayerKO(Player *ply) {		/* 2a508 */
 	short x;
 	
-	char data_2a574[18] = {			// 2a574
+	static const char data_2a574[18] = {			// 2a574
 		DIESTAT_0, DIESTAT_0, DIESTAT_0, DIESTAT_0, 
 		DIESTAT_0, DIESTAT_0, DIESTAT_0, DIESTAT_0, 
 		DIESTAT_0, DIESTAT_0, DIESTAT_0, DIESTAT_0, 
@@ -650,7 +650,7 @@ void proc_plstat_crouch(Player *ply) {		// 28940
 	}
 }
 void proc_plstat_attacking(Player *ply) {
-    void (*PCB_ATTACK[8])(Player *ply) = {	
+    static void (* const PCB_ATTACK[8])(Player *ply) = {
 		PSCBAttackRyu,
 		PSCBAttackEHonda,	
 		NULL,					// todo
@@ -680,7 +680,7 @@ static void PSCBPowerNULL(Player *ply) {	// 28ea2
 }
 
 void proc_plstat_powermove(Player *ply) {
-    void (*PCB_POWERMOVE[8])(Player *ply) = {
+    static void (* const PCB_POWERMOVE[8])(Player *ply) = {
 		PSCBPowerRyu,
 		PSCBPowerNULL,	 //EHonda doesn't need one	
 		PSCBPowerNULL,	 //Blanka same as EHonda, nothing
@@ -915,7 +915,7 @@ void proc_plstat_taking_hit (Player *ply) {     /* 28ea4 */
     }
 }   
 void proc_plstat_victory(Player *ply) {		//296f2
-	void (*data_2976a[])(Player *ply)={		// 2976a
+	static void (* const data_2976a[])(Player *ply)={		// 2976a
 		PSCBVictoryRyu,
 		PSCBVictoryEHonda,		// 2e1fe XXX
 		PSCBVictoryBlanka,		// 2ecba

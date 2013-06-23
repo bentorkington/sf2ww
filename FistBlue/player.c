@@ -356,7 +356,7 @@ void proc_player_actions(void) {		/* 282a8 */
 #pragma mark Callbacks to per-Avatar code
 
 void check_powermove_input(Player *ply) { /* 2a7ea, actually void() */
-	void (*data_2a7fa[])(Player *)={
+	static void (* const data_2a7fa[])(Player *)={
 		PLCBPowerRyu,
 		PLCBPowerEHonda,		
 		PLCBPowerBlanka,
@@ -370,7 +370,7 @@ void check_powermove_input(Player *ply) { /* 2a7ea, actually void() */
 }
 
 short ply_cb_standmove(Player *ply) {	/* 2a81a */
-	short (*data_2a82a[])(Player *)={
+	static short (* const data_2a82a[])(Player *)={
 		PLCBStandRyu,
 		PLCBStandEHonda,		
 		PLCBStandBlanka,
@@ -384,7 +384,7 @@ short ply_cb_standmove(Player *ply) {	/* 2a81a */
 }
 
 short ply_cb_crouchmove(Player *ply) {	/* 2a84a */
-	short (*data_2a85a[])(Player *)={
+	static short (* const data_2a85a[])(Player *)={
 		PLCBCrouchRyu,
 		PLCBCrouchEHonda,		
 		PLCBCrouchBlanka,
@@ -399,7 +399,7 @@ short ply_cb_crouchmove(Player *ply) {	/* 2a84a */
 }
 
 short ply_cb_jumpmove(Player *ply) {	/* 2a87a */
-	short (*data_2a88a[])(Player *)={
+	static short (* const data_2a88a[])(Player *)={
 		PLCBJumpRyu,
 		PLCBJumpEHonda,		
 		PLCBJumpBlanka,
@@ -413,7 +413,7 @@ short ply_cb_jumpmove(Player *ply) {	/* 2a87a */
 }
 
 
-void (*PL_CB_SETSTATUS3[])(Player *ply, short status)={
+static void (*const PL_CB_SETSTATUS3[])(Player *ply, short status)={
 	pl_cb_setstatus3_ryu,
 	pl_cb_setstatus3_ehonda,
 	pl_cb_setstatus3_blanka,
@@ -428,7 +428,7 @@ void (*PL_CB_SETSTATUS3[])(Player *ply, short status)={
 	NULL,
 	
 }; /* XXX */
-void (*PL_CB_SETSTATUS2[])(Player *ply, short status, int argd0)={
+static void (* const PL_CB_SETSTATUS2[])(Player *ply, short status, int argd0)={
 	pl_cb_setstatus2_ryu,
 	pl_cb_setstatus2_ehonda,
 	pl_cb_setstatus2_blanka,
@@ -443,7 +443,7 @@ void (*PL_CB_SETSTATUS2[])(Player *ply, short status, int argd0)={
 	NULL,
 	
 }; /* XXX */
-void (*PL_CB_SETSTATUS1[])(Player *ply, short status)={
+static void (*const PL_CB_SETSTATUS1[])(Player *ply, short status)={
 	pl_cb_setstatus1_ryu,
 	pl_cb_setstatus1_ehonda,
 	pl_cb_setstatus1_blanka,

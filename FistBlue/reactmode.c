@@ -33,7 +33,7 @@ case 6: _RMRecoverTumble(ply);  break;		\
 case 8: PSDizzyState(ply);		break;
 
 
-u16 reactmode_to_status[20]={		/* 28f96 Stun anim selectors per reactmode */
+static const u16 reactmode_to_status[20]={		/* 28f96 Stun anim selectors per reactmode */
 	STATUS_STUN1,				STATUS_STUN2,
 	STATUS_STUN2,				STATUS_STAND_BLOCK_FREEZE,
 	STATUS_CROUCH_BLOCK_FREEZE, STATUS_CROUCH_STUN,

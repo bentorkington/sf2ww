@@ -122,7 +122,7 @@ static Object *action_null (void) {
     return NULL;
 }
 
-Object *(*actiontypes[7])() = {
+Object *(* const actiontypes[7])() = {
     &action_null,
     &action_null,
     &AllocProjectile,
