@@ -45,7 +45,7 @@ Game g;
 
 extern struct inputs gInputs;
 
-#define DEBUG
+//#define DEBUG
 
 extern CPSGFXEMU gemu;
 int time_wait=12;

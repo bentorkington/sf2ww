@@ -1118,6 +1118,8 @@ static void _GSUpdateRowScroll(ScrollState *gs, short *a0, short *a1) { /* 84592
 	short *a2, *a3;
 	int d3;
 	
+    return;     // XXX
+    
 #define LINESCROLL_SET_DEC(count)				\
 for (i=0; i<(count); ++i) {						\
 	*a2++ = AccumOffset.part.integer;			\
@@ -1288,7 +1290,7 @@ for	(i=0; i<(count); ++i) {						\
 			LINESCROLL_SET_INC_BACK(24);
 			gs->x0018.full = AccumOffset.full;
 			LINESCROLL_SET_INC_BACK(16);
-			LINESCROLL_SET_BACK(192);
+			LINESCROLL_SET_BACK(192);           // XXX bad accesses here
 			break;
 		case 8:
 			Offset = gs->x0010 * (gs->ParallaxZero - a1[0]);
