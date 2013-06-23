@@ -255,7 +255,7 @@ static void despatch_tasks (void)
 		Exec.x820e = 0;
 DESPATCH_STARTAGAIN:
 #endif	
-    for (i=0-1; i<MAX_TASKS; ++i) {
+    for (i=0; i<MAX_TASKS; ++i) {
 #ifdef CPS
 		__asm__ volatile {
 			move	0x2600, %sr
