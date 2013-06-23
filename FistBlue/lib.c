@@ -828,9 +828,10 @@ int QueueEffect(u16 arg1, u16 arg2) {		/* 21e2 was cqsave */
     if (g.mode0 == 2 && g.mode1 == 4 && g.mode2 == 0xa && (arg2 & 0xff00)) {
         return g.libsplatter;
     } else {
-        g.effectQueue[g.effectNext+0] = arg1;
-        g.effectQueue[g.effectNext+1] = arg2;
-        g.effectNext += 2;
+        g.effectQueue[(g.effectNext/2)+0] = arg1;
+        g.effectQueue[(g.effectNext/2)+1] = arg2;
+        g.effectNext += 4;
+        g.effectNext &= 0xfc;
         return g.effectNext;
     }
 }
@@ -1653,6 +1654,7 @@ void setup_stage_actions (void) { /* 822be */
 	const struct actionhdr *data = data_stageactions[g.CurrentStage];
 	for (i=0; i<count; ++i) {
 		if ((action = alloc_action_by_type(data[i].Type))) {
+            printf("Stage action type:%d sel:0x%2x subsel:0x%2x\n", data[i].Type, data[i].Sel, data[i].SubSel);
 			action->exists   = TRUE;
             action->SubSel   = data[i].SubSel;
             action->Sel      = data[i].Sel;

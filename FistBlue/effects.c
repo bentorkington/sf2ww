@@ -908,6 +908,8 @@ void task_scheduler(void) {		//14f2
 						   g.effectQueue[g.effectCurrent / 2 ] & 0xff,
 						   g.effectQueue[(g.effectCurrent / 2 ) + 1]
 						   );
+                g.effectQueue[g.effectCurrent/2]=0xffff;
+                g.effectQueue[g.effectCurrent/2+1]=0xffff;
 				g.effectCurrent += 4;
 				g.effectCurrent &= 0xfc;
 			}

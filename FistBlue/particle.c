@@ -109,7 +109,7 @@ GState *get_graphics_context(Object *obj) {		/* 2628 */
         return scrolls[(unsigned char)obj->Scroll / 2];		/* cheeky */
     }
 	if (obj->ZDepth) {
-		obj->x0044 = obj->XPI - (g.x02be[0x800 - ((obj->ZDepth +1) * 2)]-0xc0);
+		obj->x0044 = obj->XPI - (g.x02be[0x800 - ((obj->ZDepth +1))]-0xc0);
 		//obj->x0044 = obj->XPI;
 	} else {
 		obj->x0044 = obj->XPI;

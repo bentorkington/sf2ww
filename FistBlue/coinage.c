@@ -81,7 +81,9 @@ static void sub_1f9e(Coinslot *cs, const u8 *a0) {
 }
 
 static void coin_accepted(Coinslot *cs) {		// 1f5a
+#ifdef DEBUG
 	printf("coin_accepted\n");
+#endif
 	++cs->count_minor;
 	++cs->count_major;
 	if (!g.TwoCreditsToStart) {

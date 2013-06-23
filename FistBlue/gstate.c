@@ -606,9 +606,9 @@ static void _GSMaintRowScroll(ScrollState *gs) {	/* 84480 */
 		case 0:
 			/* 84496 */
 			NEXT(gs->mode0);
-			gs->ParallaxZero = 448;	// not actually zdepth, but Scr2X where parallax is zero
-			gs->x0010  = 630;
-			gs->GroundRow  = 0x7b0;
+			gs->ParallaxZero    = 448;	// not actually zdepth, but Scr2X where parallax is zero
+			gs->x0010           = 630;
+			gs->GroundRow       = 1968;
 			g.CPS.RowScrollBase = 0x9200;
 #ifdef CPS
 			g.x02be = (short *)0x921000;				/* XXX CPS-specific */
@@ -621,7 +621,9 @@ static void _GSMaintRowScroll(ScrollState *gs) {	/* 84480 */
 		case 2:
 			/* 84546 */
 			g.CPS.RowScrollBase = (g.CPS.RowScrollBase + 0x10) & 0xfff30;
-			BUMP_2BE(0x1000);
+
+            // XXX double buffer rowscroll
+            //BUMP_2BE(0x1000);
 			
 			a1 = &gs->x001c[gs->x0024 / 4];
 			gs->x0024 = (gs->x0024 + 4) & 0xc;		

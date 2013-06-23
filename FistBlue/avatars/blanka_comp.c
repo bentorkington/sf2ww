@@ -368,7 +368,7 @@ static int sub_33a10(Player *ply, short d2) {
 	struct blankathrow retval;
 	data = data_33a58[d2/4][ply->PunchKick/2][ply->ButtonStrength/2]; 
 	if (data[0] < ply->OppXDist ) {
-		retval.d0 = data[3];
+		retval.d0 = data[3];            // XXX incorrect, d0 overwritten below
 	} else {
 		retval.d0 = data[2];
 	}

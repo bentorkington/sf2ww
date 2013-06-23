@@ -98,6 +98,7 @@ typedef struct game {
 	const u16		*DemoJoyP1, *DemoJoyP2;				//0092,0096
 	short	DemoJoyP1Timer, DemoJoyP2Timer;		//009a,009c
 	
+    int safetyVariable;         /* deleteme */
 
     u16 effectQueue[EFFECT_QUEUE_LENGTH];       /*  a2 */
 #ifdef SOUND

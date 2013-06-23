@@ -877,7 +877,7 @@ void gfx_glut_drawgame(void) {
 	
 	glDisable(GL_SCISSOR_TEST);
 	glDisable(GL_TEXTURE_2D);
-	drawGLText(gCamera);
+	//drawGLText(gCamera);
 }
 
 void gCameraReset(void) {

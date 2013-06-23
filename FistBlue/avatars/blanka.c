@@ -43,6 +43,11 @@ void pl_cb_setstatus1_blanka(Player *ply, short status) {
 }
 
 void sub_33ada(Player *ply, short sel ) {
+    
+    if (sel > 42) {
+        return;                // XXX 46df4 is incomplete
+    }
+    
 	setaction_direct((Object *)ply, data_46df4[sel]);
 }
 
