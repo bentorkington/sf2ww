@@ -949,6 +949,17 @@ void drawsprite(Object *obj) {         /* 7edaa */
     _draw_sprite(obj, tiles, coordlist, coordpair[0], coordpair[1], tiles_in_image, attr);
 }            
 
+/*!
+ @abstract draw an object
+ @param obj The object to draw (%a1)
+ @param tilep Tilemap to draw into (%a0)
+ @param offsets Sprite tile position array (%a2)
+ @param x X coordinate (%d0)
+ @param y Y coordinate (%d1)
+ @param tiles number of tiles to draw (%d3)
+ @param attr attributes to draw tiles with (%??)
+ @discussion sf2ua:0x7eea2
+ */
 static void sub_7eea2(Object *obj, const u16 *tilep, const short *offsets, short x, short y, 
 					  unsigned short tiles, unsigned short attr) {     
 	/* 7eea2 obj a1, a0, tilep a2, a3, x d0, y d1, tiles d3 */

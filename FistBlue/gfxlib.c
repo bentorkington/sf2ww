@@ -525,8 +525,8 @@ void sub_6060(void) {		// 6060 dot cloth scroll2
 	gfxrepeat(BMAP_SCROLL2, 0x3ff, GFXROM_SCROLL2 + 4, 0);
 }
 
-void DrawFighterNameAt(u16 *gfx_p, u32 cp, Player *ply, const u16 **a3) {			// 968c
-	DrawTileLine(gfx_p, a3[ply->FighterID], CP_X, CP_Y);
+void DrawFighterNameAt(u16 *gfx_p, int x_d5, int y_d6, Player *ply, const u16 **a3) {			// 968c
+	DrawTileLine(gfx_p, a3[ply->FighterID], x_d5, y_d6);
 }
 
 void fight_player_names() {			// 961a
@@ -565,17 +565,17 @@ void fight_player_names() {			// 961a
 	if (g.OnBonusStage == FALSE || g.Player1.Human) {
 		OBJ_CURSOR_CPS(gfx_p, 0x9100e0);
 		if (g.Version == VERSION_JAP) {
-			DrawFighterNameAt(gfx_p, MakePointObj(32, 208), PLAYER1, player_names_japan);
+			DrawFighterNameAt(gfx_p, 32, 208, PLAYER1, player_names_japan);
 		} else {
-			DrawFighterNameAt(gfx_p, MakePointObj(32, 208), PLAYER1, player_names_other);
+			DrawFighterNameAt(gfx_p, 32, 208, PLAYER1, player_names_other);
 		}
 	}
 	if (g.OnBonusStage == FALSE || g.Player2.Human) {
 		OBJ_CURSOR_CPS(gfx_p, 0x910128);
 		if (g.Version == VERSION_JAP) {
-			DrawFighterNameAt(gfx_p, MakePointObj(data_969e[g.Player2.FighterID], 208), PLAYER2, player_names_japan);
+			DrawFighterNameAt(gfx_p, data_969e[g.Player2.FighterID], 208, PLAYER2, player_names_japan);
 		} else {
-			DrawFighterNameAt(gfx_p, MakePointObj(data_96ce[g.Player2.FighterID], 208), PLAYER2, player_names_other);
+			DrawFighterNameAt(gfx_p, data_96ce[g.Player2.FighterID], 208, PLAYER2, player_names_other);
 		}
 	}
 }

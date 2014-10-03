@@ -76,6 +76,36 @@ void object_dot_cloth(void) {
 	}
 	
 }
+#include "gemu.h"
+
+void sub_92de(u16 *gfx_p, u32 cp, const char *a1) {
+    int i;
+    for (i=2; i>=0; --i) {
+        gemuObjectDraw(gfx_p, CP_X, CP_Y, *a1 + SF2_TILE_OBJ_ASCII, 13);
+        gemuObjectDraw(gfx_p + 0x4000, CP_X, CP_Y, *a1 + SF2_TILE_OBJ_ASCII, 13);
+        gfx_p += 4;
+        ++a1;
+        gemuIncGfxCursor(&cp, 12, 0);
+    }
+}
+
+void sub_929c(void) {
+    u32 cp;
+    u16 *gfx_p;
+    static const char hi[]=" HI\xff";
+    if (g.Player1.Score > g.TopScore || g.Player2.Score > g.TopScore ) {
+        //92ac
+        OBJ_CURSOR_CPS(gfx_p, 0x910080)
+        cp = MakePointObj(120, 240);
+        
+        sub_92de(gfx_p, cp, hi);
+    } else {
+        //92c8
+        OBJ_CURSOR_CPS(gfx_p, 0x910080)
+        cp = MakePointObj(124, 240);
+        sub_92de(gfx_p, cp, g.HiScoreTable[0].name);
+    }
+}
 
 void redraw_fight_dsk(void) {			//9418
 	u32 cp;
@@ -87,19 +117,18 @@ void redraw_fight_dsk(void) {			//9418
 		
     int tiles = 8;
     int i=0;
-	//    sub_929c();  /* see if we've beaten hiscore */
+	sub_929c();  /* see if we've beaten hiscore */
     if(g.OnBonusStage) {
-		//        sub_97e8(); /* update bonus score */
+    //     todo:   sub_97e8(); /* update bonus score */
     } else {
         if(g.TimeOut) { return; }    
 		
         update_energy_cursor(PLAYER1);
 		cp = MakePointObj(160, 220);
 		
-
         if(g.Player1.EnergyCursor >= 0) {     
             if(g.Player1.EnergyCursor / 16) {
-                for(i=0; i<(g.Player1.EnergyCursor / 16); i++) {        
+                for(i=0; i<(g.Player1.EnergyCursor / 16); ++i) {
                     OBJECT_DRAW_ID(45 + i, CP_X, CP_Y, TILE_ENERGY_FULL, ATTR_NO_FLIP | PALETTE_0C);
 					INC_GFX_CURSOR(&cp, -16, 0);
                     --tiles;
@@ -123,12 +152,14 @@ void redraw_fight_dsk(void) {			//9418
 			i++; tiles--;
 		}
         
-		
+		// 92de: now for P2
+        
+        i=0;
 		tiles = 8;
         update_energy_cursor(PLAYER2);
 		cp = MakePointObj(208, 220);
 
-        if(g.Player2.EnergyCursor >= 0) {     
+        if(g.Player2.EnergyCursor >= 0) {
             if(g.Player2.EnergyCursor / 16) {
                 for(i=0; i<g.Player2.EnergyCursor / 16; ++i) {  
 					OBJECT_DRAW_ID(55 + i, CP_X, CP_Y, TILE_ENERGY_FULL, ATTR_NO_FLIP | PALETTE_0C);
@@ -142,8 +173,8 @@ void redraw_fight_dsk(void) {			//9418
 							   ATTR_NO_FLIP | PALETTE_0C
 							   );
 				INC_GFX_CURSOR(&cp, 16, 0);
-                i++;
-                tiles--;
+                ++i;
+                --tiles;
             }
 		}
 		while(tiles >= 0) {
@@ -170,9 +201,9 @@ void draw_fight_dsk_init (void) {
      } else {
 		 // round corners at edge of energy guage
 		 cp = MakePointObj(16, 220);
-         OBJECT_DRAW_ID( 88, CP_X, CP_Y, 0x81ff, ATTR_X_FLIP | PALETTE_0C);
+         OBJECT_DRAW_ID( 44, CP_X, CP_Y, 0x81ff, ATTR_X_FLIP | PALETTE_0C);
 		 cp = MakePointObj(352, 220);
-		 OBJECT_DRAW_ID(108, CP_X, CP_Y, 0x81ff, ATTR_NO_FLIP | PALETTE_0C);
+		 OBJECT_DRAW_ID(54, CP_X, CP_Y, 0x81ff, ATTR_NO_FLIP | PALETTE_0C);
          redraw_fight_dsk();
     }
 }

@@ -406,7 +406,7 @@ void SM_game (void) {			/* 76e0 */
         switch (g.mode1) {
         case 0:
             SM_player_select();
-            if(g.PlayerSelectDone) { g.mode1+=2; }
+            if(g.PlayerSelectDone) { NEXT(g.mode1); }
             break;
         case 2:
             g.mode1 += 2; 
@@ -536,7 +536,7 @@ void game_mode_24 (void) {		// 0x7786
 			// Show the world map and plane flight between battles
 			if ( g.OnBonusStage || g.FirstFight ) {
                 g.mode2 +=2;
-                g.FirstFight = 0;
+                g.FirstFight = FALSE;
             } else {
                 draw_world_map();
             }

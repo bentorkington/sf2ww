@@ -7,7 +7,7 @@
 #include "player.h"
 #include "coinage.h"
 #include "actions_198a.h"
-
+#include "sf2const.h"
 
 struct damageresult {
     int damage; /* %d4 */
@@ -15,7 +15,12 @@ struct damageresult {
 };
 typedef struct damageresult DR;
 
-
+/*!
+ @struct HiScore
+ @abstract stores a high score and corresponding initials
+ @field score The score in BCD notation
+ @field name Three printable ASCII characters, chosen by the player achieving the score
+ */
 struct HiScore {
 	u32 score;
 	char name[4];
