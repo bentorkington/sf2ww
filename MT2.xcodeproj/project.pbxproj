@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 45;
+	objectVersion = 46;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -11,6 +11,25 @@
 		8D11072F0486CEB800E47090 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */; };
 		B51533F2147EEB4F004A87B0 /* car.c in Sources */ = {isa = PBXBuildFile; fileRef = B51533F1147EEB4F004A87B0 /* car.c */; };
 		B51533F5147EEBDB004A87B0 /* drums.c in Sources */ = {isa = PBXBuildFile; fileRef = B51533F4147EEBDB004A87B0 /* drums.c */; };
+		B52124AE18D65A6D00D2F649 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B52124AD18D65A6D00D2F649 /* Foundation.framework */; };
+		B52124B018D65A6D00D2F649 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B52124AF18D65A6D00D2F649 /* CoreGraphics.framework */; };
+		B52124B218D65A6D00D2F649 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B52124B118D65A6D00D2F649 /* UIKit.framework */; };
+		B52124B418D65A6D00D2F649 /* GLKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B52124B318D65A6D00D2F649 /* GLKit.framework */; };
+		B52124B618D65A6D00D2F649 /* OpenGLES.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B52124B518D65A6D00D2F649 /* OpenGLES.framework */; };
+		B52124BC18D65A6D00D2F649 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = B52124BA18D65A6D00D2F649 /* InfoPlist.strings */; };
+		B52124BE18D65A6D00D2F649 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = B52124BD18D65A6D00D2F649 /* main.m */; };
+		B52124C218D65A6D00D2F649 /* MTIAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = B52124C118D65A6D00D2F649 /* MTIAppDelegate.m */; };
+		B52124C518D65A6D00D2F649 /* Main_iPhone.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B52124C318D65A6D00D2F649 /* Main_iPhone.storyboard */; };
+		B52124C818D65A6D00D2F649 /* Main_iPad.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B52124C618D65A6D00D2F649 /* Main_iPad.storyboard */; };
+		B52124CA18D65A6D00D2F649 /* Shader.fsh in Resources */ = {isa = PBXBuildFile; fileRef = B52124C918D65A6D00D2F649 /* Shader.fsh */; };
+		B52124CC18D65A6D00D2F649 /* Shader.vsh in Resources */ = {isa = PBXBuildFile; fileRef = B52124CB18D65A6D00D2F649 /* Shader.vsh */; };
+		B52124CF18D65A6D00D2F649 /* MTIViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B52124CE18D65A6D00D2F649 /* MTIViewController.m */; };
+		B52124D118D65A6D00D2F649 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B52124D018D65A6D00D2F649 /* Images.xcassets */; };
+		B52124D818D65A6E00D2F649 /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B52124D718D65A6E00D2F649 /* XCTest.framework */; };
+		B52124D918D65A6E00D2F649 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B52124AD18D65A6D00D2F649 /* Foundation.framework */; };
+		B52124DA18D65A6E00D2F649 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B52124B118D65A6D00D2F649 /* UIKit.framework */; };
+		B52124E218D65A6E00D2F649 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = B52124E018D65A6E00D2F649 /* InfoPlist.strings */; };
+		B52124E418D65A6E00D2F649 /* iMustardTests.m in Sources */ = {isa = PBXBuildFile; fileRef = B52124E318D65A6E00D2F649 /* iMustardTests.m */; };
 		B53EBC59155F86F400581C8D /* act29_wwlogo.c in Sources */ = {isa = PBXBuildFile; fileRef = B53EBC58155F86F400581C8D /* act29_wwlogo.c */; };
 		B53EBC62155F8A4600581C8D /* act3e_capcomlogos.c in Sources */ = {isa = PBXBuildFile; fileRef = B53EBC61155F8A4600581C8D /* act3e_capcomlogos.c */; };
 		B53EBC6E155F8C0600581C8D /* act_3f.c in Sources */ = {isa = PBXBuildFile; fileRef = B53EBC6D155F8C0600581C8D /* act_3f.c */; };
@@ -27,6 +46,8 @@
 		B56BFC70156B444F00DC7BAD /* blanka_human.c in Sources */ = {isa = PBXBuildFile; fileRef = B56BFC6F156B444F00DC7BAD /* blanka_human.c */; };
 		B56BFC8F156B48F600DC7BAD /* ryuken_human.c in Sources */ = {isa = PBXBuildFile; fileRef = B56BFC8E156B48F600DC7BAD /* ryuken_human.c */; };
 		B56BFC92156B48FD00DC7BAD /* ryuken_comp.c in Sources */ = {isa = PBXBuildFile; fileRef = B56BFC91156B48FD00DC7BAD /* ryuken_comp.c */; };
+		B57AE5DE19D7D1610065D862 /* strings.c in Sources */ = {isa = PBXBuildFile; fileRef = B57AE5DC19D7D1610065D862 /* strings.c */; };
+		B57AE5DF19D7DFEF0065D862 /* strings.c in Sources */ = {isa = PBXBuildFile; fileRef = B57AE5DC19D7D1610065D862 /* strings.c */; };
 		B5871ED71408E4F4004A45F5 /* pthreads.c in Sources */ = {isa = PBXBuildFile; fileRef = B5871ED61408E4F4004A45F5 /* pthreads.c */; };
 		B5948A26156EDE260029278E /* ehonda_comp.c in Sources */ = {isa = PBXBuildFile; fileRef = B5948A25156EDE260029278E /* ehonda_comp.c */; };
 		B5948A28156EDE3C0029278E /* ehonda_human.c in Sources */ = {isa = PBXBuildFile; fileRef = B5948A27156EDE3C0029278E /* ehonda_human.c */; };
@@ -412,6 +433,16 @@
 		B5FD9F801488260A00DDF4D9 /* demo.c in Sources */ = {isa = PBXBuildFile; fileRef = B5FD9F7E1488260A00DDF4D9 /* demo.c */; };
 /* End PBXBuildFile section */
 
+/* Begin PBXContainerItemProxy section */
+		B52124DB18D65A6E00D2F649 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 29B97313FDCFA39411CA2CEA /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = B52124AB18D65A6D00D2F649;
+			remoteInfo = iMustard;
+		};
+/* End PBXContainerItemProxy section */
+
 /* Begin PBXCopyFilesBuildPhase section */
 		B5E8FD0E1776C7D400C6060E /* CopyFiles */ = {
 			isa = PBXCopyFilesBuildPhase;
@@ -452,6 +483,30 @@
 		B51533F3147EEBDB004A87B0 /* drums.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = drums.h; sourceTree = "<group>"; };
 		B51533F4147EEBDB004A87B0 /* drums.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = drums.c; sourceTree = "<group>"; };
 		B51867D01429504F003EE3BC /* act48.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = act48.h; sourceTree = "<group>"; };
+		B52124AC18D65A6D00D2F649 /* iMustard.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = iMustard.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		B52124AD18D65A6D00D2F649 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
+		B52124AF18D65A6D00D2F649 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
+		B52124B118D65A6D00D2F649 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = Library/Frameworks/UIKit.framework; sourceTree = DEVELOPER_DIR; };
+		B52124B318D65A6D00D2F649 /* GLKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GLKit.framework; path = Library/Frameworks/GLKit.framework; sourceTree = DEVELOPER_DIR; };
+		B52124B518D65A6D00D2F649 /* OpenGLES.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGLES.framework; path = Library/Frameworks/OpenGLES.framework; sourceTree = DEVELOPER_DIR; };
+		B52124B918D65A6D00D2F649 /* iMustard-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "iMustard-Info.plist"; sourceTree = "<group>"; };
+		B52124BB18D65A6D00D2F649 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		B52124BD18D65A6D00D2F649 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		B52124BF18D65A6D00D2F649 /* iMustard-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "iMustard-Prefix.pch"; sourceTree = "<group>"; };
+		B52124C018D65A6D00D2F649 /* MTIAppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MTIAppDelegate.h; sourceTree = "<group>"; };
+		B52124C118D65A6D00D2F649 /* MTIAppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MTIAppDelegate.m; sourceTree = "<group>"; };
+		B52124C418D65A6D00D2F649 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main_iPhone.storyboard; sourceTree = "<group>"; };
+		B52124C718D65A6D00D2F649 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main_iPad.storyboard; sourceTree = "<group>"; };
+		B52124C918D65A6D00D2F649 /* Shader.fsh */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.glsl; name = Shader.fsh; path = Shaders/Shader.fsh; sourceTree = "<group>"; };
+		B52124CB18D65A6D00D2F649 /* Shader.vsh */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.glsl; name = Shader.vsh; path = Shaders/Shader.vsh; sourceTree = "<group>"; };
+		B52124CD18D65A6D00D2F649 /* MTIViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MTIViewController.h; sourceTree = "<group>"; };
+		B52124CE18D65A6D00D2F649 /* MTIViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MTIViewController.m; sourceTree = "<group>"; };
+		B52124D018D65A6D00D2F649 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
+		B52124D618D65A6D00D2F649 /* iMustardTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = iMustardTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		B52124D718D65A6E00D2F649 /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
+		B52124DF18D65A6E00D2F649 /* iMustardTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "iMustardTests-Info.plist"; sourceTree = "<group>"; };
+		B52124E118D65A6E00D2F649 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		B52124E318D65A6E00D2F649 /* iMustardTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = iMustardTests.m; sourceTree = "<group>"; };
 		B527F61315508A0800BC70D8 /* aitests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = aitests.h; sourceTree = "<group>"; };
 		B527F61415508A0800BC70D8 /* aitests.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = aitests.c; sourceTree = "<group>"; };
 		B529FCEC15606B0A005EE9B7 /* textdata.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = textdata.c; sourceTree = "<group>"; };
@@ -485,6 +540,9 @@
 		B56BFC8E156B48F600DC7BAD /* ryuken_human.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = ryuken_human.c; sourceTree = "<group>"; };
 		B56BFC91156B48FD00DC7BAD /* ryuken_comp.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = ryuken_comp.c; sourceTree = "<group>"; };
 		B56E0DC913B95EB600FC837B /* actions_198a_data.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = actions_198a_data.h; path = FistBlue/gfxdata/actions_198a_data.h; sourceTree = SOURCE_ROOT; };
+		B572140C19DE70AB00160398 /* sf2.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = sf2.h; sourceTree = "<group>"; };
+		B57AE5DC19D7D1610065D862 /* strings.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = strings.c; sourceTree = "<group>"; };
+		B57AE5DD19D7D1610065D862 /* strings.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = strings.h; sourceTree = "<group>"; };
 		B5869A8313B561F1001844D9 /* graphics.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = graphics.h; sourceTree = "<group>"; };
 		B5869A8413B561F1001844D9 /* graphics.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = graphics.c; sourceTree = "<group>"; };
 		B5871ED51408E4F4004A45F5 /* pthreads.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = pthreads.h; sourceTree = "<group>"; };
@@ -620,6 +678,7 @@
 		B5B0763C155489B5009D301D /* act02_bicycleriders.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = act02_bicycleriders.c; sourceTree = "<group>"; };
 		B5B0764415548B28009D301D /* act07_elephants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = act07_elephants.h; sourceTree = "<group>"; };
 		B5B0764515548B28009D301D /* act07_elephants.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = act07_elephants.c; sourceTree = "<group>"; };
+		B5B0B53D1777DC7800C9C0EE /* TileScrollerWindow.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TileScrollerWindow.xib; sourceTree = "<group>"; };
 		B5B39B69157832F200494662 /* sf2gfx.bin */ = {isa = PBXFileReference; lastKnownFileType = archive.macbinary; path = sf2gfx.bin; sourceTree = "<group>"; };
 		B5B39BB01578345600494662 /* glutBasics.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = glutBasics.c; sourceTree = SOURCE_ROOT; };
 		B5B39CF9157836E100494662 /* MT2-Info copy.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "MT2-Info copy.plist"; sourceTree = "<group>"; };
@@ -667,6 +726,28 @@
 				8D11072F0486CEB800E47090 /* Cocoa.framework in Frameworks */,
 				B5ADB7BA13B2B3B300905DFE /* OpenGL.framework in Frameworks */,
 				B5ADB7BE13B2B3BE00905DFE /* GLUT.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		B52124A918D65A6D00D2F649 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				B52124B618D65A6D00D2F649 /* OpenGLES.framework in Frameworks */,
+				B52124B018D65A6D00D2F649 /* CoreGraphics.framework in Frameworks */,
+				B52124B218D65A6D00D2F649 /* UIKit.framework in Frameworks */,
+				B52124B418D65A6D00D2F649 /* GLKit.framework in Frameworks */,
+				B52124AE18D65A6D00D2F649 /* Foundation.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		B52124D318D65A6D00D2F649 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				B52124D818D65A6E00D2F649 /* XCTest.framework in Frameworks */,
+				B52124DA18D65A6E00D2F649 /* UIKit.framework in Frameworks */,
+				B52124D918D65A6E00D2F649 /* Foundation.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -752,6 +833,8 @@
 				B5E0F01117754D8800F50790 /* MT2 JAP.app */,
 				B5E0F06C17754D9500F50790 /* MT2 ETC.app */,
 				B5E8FD101776C7D400C6060E /* MT2 GLUT */,
+				B52124AC18D65A6D00D2F649 /* iMustard.app */,
+				B52124D618D65A6D00D2F649 /* iMustardTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -766,6 +849,8 @@
 				29B97317FDCFA39411CA2CEA /* Resources */,
 				B5C574151772781900496283 /* MT2_tests */,
 				B5E8FD131776C7D400C6060E /* MT2 GLUT */,
+				B52124B718D65A6D00D2F649 /* iMustard */,
+				B52124DD18D65A6E00D2F649 /* iMustardTests */,
 				29B97323FDCFA39411CA2CEA /* Frameworks */,
 				19C28FACFE9D520D11CA2CBB /* Products */,
 				B5C574841772782800496283 /* MT2 JAP-Info.plist */,
@@ -799,6 +884,7 @@
 				089C165CFE840E0CC02AAC07 /* InfoPlist.strings */,
 				B5E9056413B2D61900833C5A /* ParamController.xib */,
 				B5B39CF9157836E100494662 /* MT2-Info copy.plist */,
+				B5B0B53D1777DC7800C9C0EE /* TileScrollerWindow.xib */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -809,6 +895,12 @@
 				1058C7A0FEA54F0111CA2CBB /* Linked Frameworks */,
 				B5C574131772781900496283 /* Cocoa.framework */,
 				B5E8FD111776C7D400C6060E /* CoreFoundation.framework */,
+				B52124AD18D65A6D00D2F649 /* Foundation.framework */,
+				B52124AF18D65A6D00D2F649 /* CoreGraphics.framework */,
+				B52124B118D65A6D00D2F649 /* UIKit.framework */,
+				B52124B318D65A6D00D2F649 /* GLKit.framework */,
+				B52124B518D65A6D00D2F649 /* OpenGLES.framework */,
+				B52124D718D65A6E00D2F649 /* XCTest.framework */,
 				1058C7A2FEA54F0111CA2CBB /* Other Frameworks */,
 				B5ADB7B913B2B3B300905DFE /* OpenGL.framework */,
 				B5ADB7BD13B2B3BE00905DFE /* GLUT.framework */,
@@ -825,6 +917,52 @@
 				B51533F4147EEBDB004A87B0 /* drums.c */,
 			);
 			name = actions_b;
+			sourceTree = "<group>";
+		};
+		B52124B718D65A6D00D2F649 /* iMustard */ = {
+			isa = PBXGroup;
+			children = (
+				B52124C018D65A6D00D2F649 /* MTIAppDelegate.h */,
+				B52124C118D65A6D00D2F649 /* MTIAppDelegate.m */,
+				B52124C318D65A6D00D2F649 /* Main_iPhone.storyboard */,
+				B52124C618D65A6D00D2F649 /* Main_iPad.storyboard */,
+				B52124C918D65A6D00D2F649 /* Shader.fsh */,
+				B52124CB18D65A6D00D2F649 /* Shader.vsh */,
+				B52124CD18D65A6D00D2F649 /* MTIViewController.h */,
+				B52124CE18D65A6D00D2F649 /* MTIViewController.m */,
+				B52124D018D65A6D00D2F649 /* Images.xcassets */,
+				B52124B818D65A6D00D2F649 /* Supporting Files */,
+			);
+			path = iMustard;
+			sourceTree = "<group>";
+		};
+		B52124B818D65A6D00D2F649 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				B52124B918D65A6D00D2F649 /* iMustard-Info.plist */,
+				B52124BA18D65A6D00D2F649 /* InfoPlist.strings */,
+				B52124BD18D65A6D00D2F649 /* main.m */,
+				B52124BF18D65A6D00D2F649 /* iMustard-Prefix.pch */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		B52124DD18D65A6E00D2F649 /* iMustardTests */ = {
+			isa = PBXGroup;
+			children = (
+				B52124E318D65A6E00D2F649 /* iMustardTests.m */,
+				B52124DE18D65A6E00D2F649 /* Supporting Files */,
+			);
+			path = iMustardTests;
+			sourceTree = "<group>";
+		};
+		B52124DE18D65A6E00D2F649 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				B52124DF18D65A6E00D2F649 /* iMustardTests-Info.plist */,
+				B52124E018D65A6E00D2F649 /* InfoPlist.strings */,
+			);
+			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
 		B55891401485AB1B00BBB0BA /* coll */ = {
@@ -854,6 +992,14 @@
 				B56A715D1411AA1000DF7F02 /* io.h */,
 			);
 			name = cps;
+			sourceTree = "<group>";
+		};
+		B572140D19DF32D000160398 /* GLUT App */ = {
+			isa = PBXGroup;
+			children = (
+				B5B39BB01578345600494662 /* glutBasics.c */,
+			);
+			name = "GLUT App";
 			sourceTree = "<group>";
 		};
 		B5ADB7E113B2B57D00905DFE /* FistBlue */ = {
@@ -919,6 +1065,7 @@
 				B5ADB84C13B2B57E00905DFE /* workarounds.h */,
 				B550DEA116BBA1BF00983A54 /* endings.h */,
 				B550DEA216BBA1BF00983A54 /* endings.c */,
+				B572140C19DE70AB00160398 /* sf2.h */,
 			);
 			path = FistBlue;
 			sourceTree = "<group>";
@@ -1060,13 +1207,15 @@
 		B5ADB8B913B2BB5E00905DFE /* RedHammer */ = {
 			isa = PBXGroup;
 			children = (
-				B5B39BB01578345600494662 /* glutBasics.c */,
+				B572140D19DF32D000160398 /* GLUT App */,
 				B5ADB82213B2B57D00905DFE /* gfx_glut.c */,
 				B5ADB82313B2B57D00905DFE /* gfx_glut.h */,
 				B5ADB82013B2B57D00905DFE /* gemu.c */,
 				B5ADB82113B2B57D00905DFE /* gemu.h */,
 				B5871ED51408E4F4004A45F5 /* pthreads.h */,
 				B5871ED61408E4F4004A45F5 /* pthreads.c */,
+				B57AE5DC19D7D1610065D862 /* strings.c */,
+				B57AE5DD19D7D1610065D862 /* strings.h */,
 			);
 			path = RedHammer;
 			sourceTree = "<group>";
@@ -1137,6 +1286,41 @@
 			productName = MT2;
 			productReference = 8D1107320486CEB800E47090 /* MT2.app */;
 			productType = "com.apple.product-type.application";
+		};
+		B52124AB18D65A6D00D2F649 /* iMustard */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = B52124E518D65A6E00D2F649 /* Build configuration list for PBXNativeTarget "iMustard" */;
+			buildPhases = (
+				B52124A818D65A6D00D2F649 /* Sources */,
+				B52124A918D65A6D00D2F649 /* Frameworks */,
+				B52124AA18D65A6D00D2F649 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = iMustard;
+			productName = iMustard;
+			productReference = B52124AC18D65A6D00D2F649 /* iMustard.app */;
+			productType = "com.apple.product-type.application";
+		};
+		B52124D518D65A6D00D2F649 /* iMustardTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = B52124E818D65A6E00D2F649 /* Build configuration list for PBXNativeTarget "iMustardTests" */;
+			buildPhases = (
+				B52124D218D65A6D00D2F649 /* Sources */,
+				B52124D318D65A6D00D2F649 /* Frameworks */,
+				B52124D418D65A6D00D2F649 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				B52124DC18D65A6E00D2F649 /* PBXTargetDependency */,
+			);
+			name = iMustardTests;
+			productName = iMustardTests;
+			productReference = B52124D618D65A6D00D2F649 /* iMustardTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
 		};
 		B5C5742A1772782600496283 /* MT2 tests */ = {
 			isa = PBXNativeTarget;
@@ -1215,8 +1399,16 @@
 /* Begin PBXProject section */
 		29B97313FDCFA39411CA2CEA /* Project object */ = {
 			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0600;
+				TargetAttributes = {
+					B52124D518D65A6D00D2F649 = {
+						TestTargetID = 8D1107260486CEB800E47090;
+					};
+				};
+			};
 			buildConfigurationList = C01FCF4E08A954540054247B /* Build configuration list for PBXProject "MT2" */;
-			compatibilityVersion = "Xcode 3.1";
+			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = English;
 			hasScannedForEncodings = 1;
 			knownRegions = (
@@ -1225,6 +1417,7 @@
 				French,
 				German,
 				en,
+				Base,
 			);
 			mainGroup = 29B97314FDCFA39411CA2CEA /* MT2 */;
 			projectDirPath = "";
@@ -1235,6 +1428,8 @@
 				B5E0EFB817754D8800F50790 /* MT2 JAP */,
 				B5E0F01317754D9500F50790 /* MT2 ETC */,
 				B5E8FD0F1776C7D400C6060E /* MT2 GLUT */,
+				B52124AB18D65A6D00D2F649 /* iMustard */,
+				B52124D518D65A6D00D2F649 /* iMustardTests */,
 			);
 		};
 /* End PBXProject section */
@@ -1248,6 +1443,27 @@
 				B5ADB7A913B2B2EA00905DFE /* MainMenu.xib in Resources */,
 				B5E9056513B2D61900833C5A /* ParamController.xib in Resources */,
 				B5B39B6A157832F200494662 /* sf2gfx.bin in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		B52124AA18D65A6D00D2F649 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				B52124CA18D65A6D00D2F649 /* Shader.fsh in Resources */,
+				B52124C818D65A6D00D2F649 /* Main_iPad.storyboard in Resources */,
+				B52124C518D65A6D00D2F649 /* Main_iPhone.storyboard in Resources */,
+				B52124D118D65A6D00D2F649 /* Images.xcassets in Resources */,
+				B52124BC18D65A6D00D2F649 /* InfoPlist.strings in Resources */,
+				B52124CC18D65A6D00D2F649 /* Shader.vsh in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		B52124D418D65A6D00D2F649 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				B52124E218D65A6E00D2F649 /* InfoPlist.strings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1335,6 +1551,7 @@
 				B55891431485AB2A00BBB0BA /* coll_projectile.c in Sources */,
 				B558918F1485B04A00BBB0BA /* coll_bonus.c in Sources */,
 				B5FD9F801488260A00DDF4D9 /* demo.c in Sources */,
+				B57AE5DE19D7D1610065D862 /* strings.c in Sources */,
 				B5EB38E1149816D5007100DB /* reels.c in Sources */,
 				B5AC69E71550AC9C00C9339E /* aitests.c in Sources */,
 				B5AC6A611550BDBB00C9339E /* testlib.c in Sources */,
@@ -1366,6 +1583,24 @@
 				B5B39CFE1578370E00494662 /* ParamController.m in Sources */,
 				B5B39CFF1578371400494662 /* main.m in Sources */,
 				B550DEA316BBA1BF00983A54 /* endings.c in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		B52124A818D65A6D00D2F649 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				B52124CF18D65A6D00D2F649 /* MTIViewController.m in Sources */,
+				B52124BE18D65A6D00D2F649 /* main.m in Sources */,
+				B52124C218D65A6D00D2F649 /* MTIAppDelegate.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		B52124D218D65A6D00D2F649 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				B52124E418D65A6E00D2F649 /* iMustardTests.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1656,6 +1891,7 @@
 				B5E8FD3E1776C89400C6060E /* mbison.c in Sources */,
 				B5E8FD3F1776C89400C6060E /* ryu.c in Sources */,
 				B5E8FD401776C89400C6060E /* ryuken_human.c in Sources */,
+				B57AE5DF19D7DFEF0065D862 /* strings.c in Sources */,
 				B5E8FD411776C89400C6060E /* ryuken_comp.c in Sources */,
 				B5E8FD421776C89400C6060E /* sagat.c in Sources */,
 				B5E8FD431776C89400C6060E /* vega.c in Sources */,
@@ -1694,11 +1930,51 @@
 		};
 /* End PBXSourcesBuildPhase section */
 
+/* Begin PBXTargetDependency section */
+		B52124DC18D65A6E00D2F649 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = B52124AB18D65A6D00D2F649 /* iMustard */;
+			targetProxy = B52124DB18D65A6E00D2F649 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
 /* Begin PBXVariantGroup section */
 		089C165CFE840E0CC02AAC07 /* InfoPlist.strings */ = {
 			isa = PBXVariantGroup;
 			children = (
 				089C165DFE840E0CC02AAC07 /* English */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+		B52124BA18D65A6D00D2F649 /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				B52124BB18D65A6D00D2F649 /* en */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+		B52124C318D65A6D00D2F649 /* Main_iPhone.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				B52124C418D65A6D00D2F649 /* Base */,
+			);
+			name = Main_iPhone.storyboard;
+			sourceTree = "<group>";
+		};
+		B52124C618D65A6D00D2F649 /* Main_iPad.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				B52124C718D65A6D00D2F649 /* Base */,
+			);
+			name = Main_iPad.storyboard;
+			sourceTree = "<group>";
+		};
+		B52124E018D65A6E00D2F649 /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				B52124E118D65A6E00D2F649 /* en */,
 			);
 			name = InfoPlist.strings;
 			sourceTree = "<group>";
@@ -1730,10 +2006,185 @@
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
+		B52124E618D65A6E00D2F649 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(DEVELOPER_FRAMEWORKS_DIR)",
+				);
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "iMustard/iMustard-Prefix.pch";
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				INFOPLIST_FILE = "iMustard/iMustard-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				WRAPPER_EXTENSION = app;
+			};
+			name = Debug;
+		};
+		B52124E718D65A6E00D2F649 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = YES;
+				ENABLE_NS_ASSERTIONS = NO;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(DEVELOPER_FRAMEWORKS_DIR)",
+				);
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "iMustard/iMustard-Prefix.pch";
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				INFOPLIST_FILE = "iMustard/iMustard-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+				WRAPPER_EXTENSION = app;
+			};
+			name = Release;
+		};
+		B52124E918D65A6E00D2F649 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/MT2.app/Contents/MacOS/MT2";
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(SDKROOT)/Developer/Library/Frameworks",
+					"$(inherited)",
+					"$(DEVELOPER_FRAMEWORKS_DIR)",
+				);
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "iMustard/iMustard-Prefix.pch";
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				INFOPLIST_FILE = "iMustardTests/iMustardTests-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				TEST_HOST = "$(BUNDLE_LOADER)";
+				WRAPPER_EXTENSION = xctest;
+			};
+			name = Debug;
+		};
+		B52124EA18D65A6E00D2F649 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/MT2.app/Contents/MacOS/MT2";
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = YES;
+				ENABLE_NS_ASSERTIONS = NO;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(SDKROOT)/Developer/Library/Frameworks",
+					"$(inherited)",
+					"$(DEVELOPER_FRAMEWORKS_DIR)",
+				);
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "iMustard/iMustard-Prefix.pch";
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				INFOPLIST_FILE = "iMustardTests/iMustardTests-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				TEST_HOST = "$(BUNDLE_LOADER)";
+				VALIDATE_PRODUCT = YES;
+				WRAPPER_EXTENSION = xctest;
+			};
+			name = Release;
+		};
 		B5C574811772782600496283 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				COMBINE_HIDPI_IMAGES = YES;
 				COPY_PHASE_STRIP = NO;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_ENABLE_FIX_AND_CONTINUE = YES;
@@ -1753,6 +2204,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				COMBINE_HIDPI_IMAGES = YES;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				GCC_MODEL_TUNING = G5;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
@@ -1769,6 +2221,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				COMBINE_HIDPI_IMAGES = YES;
 				COPY_PHASE_STRIP = NO;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_ENABLE_FIX_AND_CONTINUE = YES;
@@ -1788,6 +2241,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				COMBINE_HIDPI_IMAGES = YES;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				GCC_MODEL_TUNING = G5;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
@@ -1804,6 +2258,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				COMBINE_HIDPI_IMAGES = YES;
 				COPY_PHASE_STRIP = NO;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_ENABLE_FIX_AND_CONTINUE = YES;
@@ -1823,6 +2278,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				COMBINE_HIDPI_IMAGES = YES;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				GCC_MODEL_TUNING = G5;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
@@ -1839,7 +2295,6 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
@@ -1851,8 +2306,8 @@
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
 				GCC_PREPROCESSOR_DEFINITIONS = (
+					"REDHAMMER=1",
 					"DEBUG=1",
-					"$(inherited)",
 				);
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
@@ -1867,7 +2322,6 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
@@ -1878,6 +2332,7 @@
 				COPY_PHASE_STRIP = YES;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
+				GCC_PREPROCESSOR_DEFINITIONS = "REDHAMMER=1";
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				MACOSX_DEPLOYMENT_TARGET = 10.8;
@@ -1890,6 +2345,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				COMBINE_HIDPI_IMAGES = YES;
 				COPY_PHASE_STRIP = NO;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_ENABLE_FIX_AND_CONTINUE = YES;
@@ -1899,8 +2355,9 @@
 				GCC_PREFIX_HEADER = MT2_Prefix.pch;
 				INFOPLIST_FILE = "MT2-Info.plist";
 				INSTALL_PATH = "$(HOME)/Applications";
+				MACOSX_DEPLOYMENT_TARGET = 10.9;
 				PRODUCT_NAME = MT2;
-				SDKROOT = "";
+				SDKROOT = macosx;
 			};
 			name = Debug;
 		};
@@ -1908,46 +2365,64 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				COMBINE_HIDPI_IMAGES = YES;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				GCC_MODEL_TUNING = G5;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = MT2_Prefix.pch;
 				INFOPLIST_FILE = "MT2-Info.plist";
 				INSTALL_PATH = "$(HOME)/Applications";
+				MACOSX_DEPLOYMENT_TARGET = 10.9;
 				PRODUCT_NAME = MT2;
-				SDKROOT = "";
+				SDKROOT = macosx;
 			};
 			name = Release;
 		};
 		C01FCF4F08A954540054247B /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				PREBINDING = NO;
-				SDKROOT = "";
+				SDKROOT = macosx;
 			};
 			name = Debug;
 		};
 		C01FCF5008A954540054247B /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				PREBINDING = NO;
-				SDKROOT = "";
+				SDKROOT = macosx;
 			};
 			name = Release;
 		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		B52124E518D65A6E00D2F649 /* Build configuration list for PBXNativeTarget "iMustard" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				B52124E618D65A6E00D2F649 /* Debug */,
+				B52124E718D65A6E00D2F649 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		B52124E818D65A6E00D2F649 /* Build configuration list for PBXNativeTarget "iMustardTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				B52124E918D65A6E00D2F649 /* Debug */,
+				B52124EA18D65A6E00D2F649 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		B5C574801772782600496283 /* Build configuration list for PBXNativeTarget "MT2 tests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
@@ -1982,6 +2457,7 @@
 				B5E8FD191776C7D400C6060E /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		C01FCF4A08A954540054247B /* Build configuration list for PBXNativeTarget "MT2" */ = {
 			isa = XCConfigurationList;

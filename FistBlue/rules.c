@@ -1,5 +1,6 @@
 /* rules.c */
 
+#include "sf2.h"
 #include "sf2types.h"
 #include "sf2macros.h"
 #include "sf2const.h"
@@ -18,7 +19,6 @@
 #ifdef APPLICATION_TESTS
 #include	<stdio.h>
 #endif
-
 
 
 extern Game g;
@@ -71,8 +71,8 @@ void check_level_sequence(Player *ply) {		// 0x2e94 player %a3
 	int i=0;
 	
 	while (g.LevelScript[i+1] != 0x10) {
-		if (g.LevelScript[i+1] == ply->FighterID) {
-			g.LevelScript[i] = -1;
+		if (g.LevelScript[i+1] == ply->FighterID) {     // don't fight ourselves
+			g.LevelScript[i]   = -1;
 			g.LevelScript[i+1] = -1;
 			return;
 		}
@@ -198,7 +198,7 @@ void copy_level_table(short d0) {		// 2ecc
 	
 	if (g.NotUsed) {
 		d0 = data_94d60[d0][RAND16];
-		data = data_94de0[g.PlayersSelectedDash][d0];
+		data = data_94de0[g.PlayersSelectedDash][d0/2];
 	} else {
 		d0 = data_951e0[d0][RAND16];
 		data = data_95260[g.PlayersSelectedDash][d0/2];
@@ -206,7 +206,13 @@ void copy_level_table(short d0) {		// 2ecc
 
 	for (i=0; i<16; i++) {
 		g.LevelScript[i] = data[i];
-	}
+    }
+#ifdef DEBUG
+#ifdef REDHAMMER
+        redhammer_print_level_table();
+#endif
+#endif
+
 	if (g.Debug && (g.JPDifficulty & JP_JAPANJUMP)) {
 		/* 2f34 todo one day */
 	}
@@ -219,6 +225,17 @@ int ply_opp_has_struggled_free(Player *ply) {			// 3fd8
 	}
 	return TRUE;
 }
+/*!
+ @abstract Apply grip damage
+ @param ply the player to apply damage to (%??)
+ @param d2 always zero? should remove (%d2)
+ @param subsel (%d3)
+ @param xoff X offset of hits (%d4)
+ @param yoff Y offset of hits (%d5)
+ @param sound sound ID to play (%d6)
+ @return TRUE if victim was knocked out
+ @discussion sf2ua:0x3466
+ */
 short ply_opp_apply_grip_damage(Player *ply, 
 								short d2, short subsel_d3, 
 								short xoff_d4, short yoff_d5, 
@@ -256,7 +273,12 @@ short ply_opp_apply_grip_damage(Player *ply,
 	}
 }
 
-
+/*!
+ @abstract measure joystick struggle
+ @param ply the player (%a4)
+ @return a value from 0-4 indicating struggle
+ @discussion sf2ua:0x4014
+ */
 static int get_human_struggle(Player *ply) {		//4014 ply %a4
 	short d1 = 0;
 	short d3 = 0;
@@ -271,7 +293,12 @@ static int get_human_struggle(Player *ply) {		//4014 ply %a4
 	}
 	return d3;
 }
-
+/*!
+ @abstract measure struggle for human/computer
+ @param ply the player (%a4)
+ @return a value indicating struggle
+ @discussion sf2ua:0x4004
+ */
 static int get_struggle_1(Player *ply) {		// 4004 ply %a4
 	static const u16 data_98e42[32]={
 		0x0000, 0x0000, 0x0000, 0x0000, 0x0002, 0x0000, 0x0000, 0x0800, 
@@ -289,7 +316,12 @@ static int get_struggle_1(Player *ply) {		// 4004 ply %a4
 		return 0;
 	}
 }
-
+/*!
+ @abstract measure struggle for human/computer
+ @param ply the player (%a4)
+ @return a value indicating struggle
+ @discussion sf2ua:0x400e
+ */
 static int get_struggle_2(Player *ply, Player *opp) {			// 400e
 	static const u16 data_98ec2[32]={
 		0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x8000, 0x0010, 0x0000, 
@@ -388,8 +420,8 @@ int _check_throw(int airthrow, Player *ply) {		/* 0x3338 */
  	
     Player *opp = ply->Opponent;
     
-    if (ply->ThrowDisable)									{ return 0; }
-    if (ply->Human == FALSE && g.DebugNoCollide != FALSE)	{ return 0; }
+    if (ply->ThrowDisable)									{ return FALSE; }
+    if (ply->Human == FALSE && g.DebugNoCollide != FALSE)	{ return FALSE; }
     if (g.CurrentStage == STAGE_BONUS_DRUMS ||
         ply->BlockStun						||
         ply->Energy < 0						||
@@ -398,22 +430,23 @@ int _check_throw(int airthrow, Player *ply) {		/* 0x3338 */
         opp->Energy < 0						||
         opp->EnergyDash != opp->Energy		||
         opp->exists == FALSE				||
-        opp->mode1 == PLSTAT_TUMBLE ) 
-	{ return 0; }
+        opp->mode1 == PLSTAT_TUMBLE
+        )
+        return FALSE;
     
     if (opp->DizzyStun == 0 && 
-        opp->mode1 == PLSTAT_REEL)		{ return 0; }
+        opp->mode1 == PLSTAT_REEL)		{ return FALSE; }
     
     
-    if (!airthrow && opp->Airborne)		{ return 0; } 
+    if (!airthrow && opp->Airborne)		{ return FALSE; }
     
-    if (opp->NoThrow_t)					{ return 0; }
+    if (opp->NoThrow_t)					{ return FALSE; }
     if (opp->ActionScript->HB_Head == 0 &&
 		opp->ActionScript->HB_Body == 0 &&
 		opp->ActionScript->HB_Foot == 0 &&
-		opp->ActionScript->HB_Weak == 0)        { return 0; }
-    if (opp->Invincible)						{ return 0; }
-    if (opp->TCollDis)							{ return 0; }
+		opp->ActionScript->HB_Weak == 0)        { return FALSE; }
+    if (opp->Invincible)						{ return FALSE; }
+    if (opp->TCollDis)							{ return FALSE; }
     
     temp5 = ply->Throw[0];		// x offset
     if (ply->Flip) { temp5 = -temp5; }
@@ -431,8 +464,8 @@ int _check_throw(int airthrow, Player *ply) {		/* 0x3338 */
     opp->DSOffsetX = 0;
     ply->ThrowStat = 1;
     opp->ThrowStat = -1;
-    ply->Attacking = 0;
-    opp->Attacking = 0;
+    ply->Attacking = FALSE;
+    opp->Attacking = FALSE;
     ply->x01b0++;
     opp->ThrownFromDizzy = opp->DizzyStun;
 	opp->DizzyStun       = 0;

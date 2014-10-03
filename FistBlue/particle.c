@@ -92,10 +92,10 @@ void check_onscreen_queue(Object *obj) {		// 0x2578
 
 
 void die_if_offscreen(Object *obj) {	// 248c
-	if (obj->XPI - gstate_Scroll2.XPI <= 0x60 ||
-		obj->XPI - gstate_Scroll2.XPI > 0x1e0 ||	
-		obj->YPI - gstate_Scroll2.YPI <= 0x60 ||
-		obj->YPI - gstate_Scroll2.YPI > 0x160) 
+	if (obj->XPI - gstate_Scroll2.XPI <= 96   ||
+		obj->XPI - gstate_Scroll2.XPI > 480 ||
+		obj->YPI - gstate_Scroll2.YPI <= 96 ||
+		obj->YPI - gstate_Scroll2.YPI > 352)
 	{	
 		obj->mode0 = 6;		// actor dies
 	}
@@ -109,7 +109,8 @@ GState *get_graphics_context(Object *obj) {		/* 2628 */
         return scrolls[(unsigned char)obj->Scroll / 2];		/* cheeky */
     }
 	if (obj->ZDepth) {
-		obj->x0044 = obj->XPI - (g.x02be[0x800 - ((obj->ZDepth +1))]-0xc0);
+//		obj->x0044 = obj->XPI - (g.x02be[0x800 - ((obj->ZDepth +1))]-0xc0);     XXX rowscroll not working
+		obj->x0044 = obj->XPI;
 		//obj->x0044 = obj->XPI;
 	} else {
 		obj->x0044 = obj->XPI;

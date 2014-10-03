@@ -89,31 +89,31 @@ const CAFrame *actlist_d6e8[]={
 	actlist_d7a0, 	actlist_d7ca, 	actlist_d7f4, 	actlist_d6f8, 
 };
 
-Image image_d4cc = {
+const Image image_d4cc = {
     26, 0x0000, 0xb, 0, 0,
     { 0x0000, 0x0000, 0x0000, 0x84e0, 0x84f0, 0x0000, 0x84c1, 0x84d1, 0x84e1, 0x84f1, 0x0000, 0x84c2, 0x84d2, 0x84e2, 0x84f2, 0x0000, 0x84c3, 0x84d3, 0x84e3, 0x84f3, 0x84b4, 0x84c4, 0x84d4, 0x84e4, 0x84f4, 0x0000,  }
 };
-Image image_d526 = {
+const Image image_d526 = {
     26, 0x0000, 0xb, 0, 0,
     { 0x0000, 0x0000, 0x0000, 0x8409, 0x8419, 0x0000, 0x84c1, 0x84d1, 0x840a, 0x841a, 0x0000, 0x84c2, 0x8406, 0x840b, 0x841b, 0x0000, 0x84c3, 0x8407, 0x840c, 0x841c, 0x84b4, 0x84c4, 0x8408, 0x840d, 0x841d, 0x0000,  }
 };
-Image image_d580 = {
+const Image image_d580 = {
     26, 0x0000, 0xb, 0, 0,
     { 0x0000, 0x0000, 0x0000, 0x8429, 0x8439, 0x0000, 0x84c1, 0x84d1, 0x842a, 0x843a, 0x0000, 0x84c2, 0x8416, 0x842b, 0x843b, 0x0000, 0x84c3, 0x8417, 0x842c, 0x843c, 0x84b4, 0x84c4, 0x8418, 0x842d, 0x843d, 0x0000,  }
 };
-Image image_d5da = {
+const Image image_d5da = {
     26, 0x0000, 0xb, 0, 0,
     { 0x0000, 0x0000, 0x0000, 0x84e0, 0x84f0, 0x0000, 0x84c1, 0x84d1, 0x84e1, 0x84f1, 0x0000, 0x84c2, 0x8426, 0x8436, 0x84f2, 0x0000, 0x84c3, 0x8427, 0x8437, 0x8447, 0x84b4, 0x84c4, 0x8428, 0x84e4, 0x8448, 0x0000,  }
 };
-Image image_d634 = {
+const Image image_d634 = {
     26, 0x0000, 0xb, 0, 0,
     { 0x0000, 0x0000, 0x0000, 0x8409, 0x8419, 0x0000, 0x84c1, 0x84d1, 0x840a, 0x841a, 0x0000, 0x84c2, 0x8456, 0x8466, 0x8476, 0x0000, 0x84c3, 0x8457, 0x8467, 0x8477, 0x84b4, 0x84c4, 0x8458, 0x8468, 0x841d, 0x0000,  }
 };
-Image image_d68e = {
+const Image image_d68e = {
     26, 0x0000, 0xb, 0, 0,
     { 0x0000, 0x0000, 0x0000, 0x8429, 0x8439, 0x0000, 0x84c1, 0x84d1, 0x842a, 0x843a, 0x0000, 0x84c2, 0x8485, 0x8495, 0x84a5, 0x0000, 0x84c3, 0x8486, 0x8496, 0x84a6, 0x84b4, 0x84c4, 0x8487, 0x842d, 0x843d, 0x0000,  }
 };
-CAFrame actlist_d438[7] = {
+const CAFrame actlist_d438[7] = {
 	{ 8, 0x00, 0x0, &image_d4cc, 0, 0, 0, 0, 0, 0, 0, 0x00, 0, 0, 0, 0, 0, 0, 0, 0}, /* LOOP BEGIN */ 
 	{ 8, 0x00, 0x0, &image_d526, 0, 0, 0, 0, 0, 0, 0, 0x00, 0, 0, 0, 0, 0, 0, 0, 0},
 	{ 8, 0x00, 0x0, &image_d580, 0, 0, 0, 0, 0, 0, 0, 0x00, 0, 0, 0, 0, 0, 0, 0, 0},
@@ -163,7 +163,7 @@ static void _update_bicycle_shadow(Object *obj) {				// d3de
 		if (obj->Step) {
 			ud->x0082->XPI += 16;
 		}
-		ud->x0082->YPI = obj->YPI + 0x40;
+		ud->x0082->YPI = obj->YPI + 64;
 	}
 }
 
@@ -171,8 +171,11 @@ void action_2(Object *obj) {				//d240 Bicycle people
 	Object *nobj1, *nobj2;
 	struct UserData_Act2 *ud = (struct UserData_Act2 *)&obj->UserData;
 	
-	const short data_d3ae[]={-0x200, 0,  0x200, 0};
-	
+	//const short data_d3ae[]={-0x200, 0,  0x200, 0};
+    const VECT16 data_d3ae[] = {
+        {-0x200, 0}, {0x200, 0}
+    };
+	    
 	if(obj->SubSel) {
 		/* d33a */
 		switch (obj->mode0) {
@@ -183,6 +186,7 @@ void action_2(Object *obj) {				//d240 Bicycle people
 				obj->ZDepth = 64;	
 				obj->Flip   = obj->Step;
 				obj->XPI    = gstate_Scroll2.XPI;
+//				obj->XPI   += obj->Step ? 464 : -80;
 				obj->XPI   += obj->Step ? -80 : 464;
 				obj->YPI    = 64;
 				obj->Path   = (const VECT16 *)data_d3ae;
@@ -198,7 +202,9 @@ void action_2(Object *obj) {				//d240 Bicycle people
 					if(((g.libsplatter + g_d7) & 7) == 0) {
 						die_if_offscreen(obj);	/* check if still on screen */
 					}
+                    printf("bicycle %d X1:%04d ", g_d7, obj->X.part.integer);
 					update_motion(obj);
+                    printf("X2:%04d\n", obj->X.part.integer);
 					_update_bicycle_shadow(obj);
 					actiontick(obj);
 				}
@@ -206,6 +212,7 @@ void action_2(Object *obj) {				//d240 Bicycle people
 				break;
 			case 4:
 			case 6:		//object went offscreen
+                printf("bicycle %d die\n", g_d7);
 				/* d412 */
 				if (obj->SubSel >= 0) {
 					struct UserData_Act2 *udowner = (struct UserData_Act2 *)&obj->Owner->UserData;

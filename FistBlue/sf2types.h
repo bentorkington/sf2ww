@@ -55,6 +55,13 @@
 
 typedef  u16 * CPSCOORD;
 typedef int FBBOOL;
+typedef u16 TILEWORD;
+typedef u16 PALETTEWORD;
+typedef struct tile_attribute_pair {
+    u16 tileID;
+    u16 attribute;
+} TileAttributePair;
+
 
 #ifndef NULL
 #define NULL 0

@@ -85,11 +85,16 @@ static void update_player_display(Player *ply) {		// 8352
 	
 	PrintPlayerPic(ply, ply->Side, ply->FighterID);
 }
+
+#define AVATARMENU_COLS    4
+#define AVATARMENU_ROWS    2
+
+
 static int _update_cursor_vert(u16 d6) {		// 8554
 	if (d6 & JOY_UP) {
-		return -4;
+		return -AVATARMENU_COLS;
 	} else if (d6 & JOY_DOWN) {
-		return 4;
+		return AVATARMENU_COLS;
 	} else {
 		return 0;
 	}
@@ -113,10 +118,10 @@ static u16 _update_ply_cursor(Player *ply, Player *plb) {		// 84c6 ply in %a4, p
 	d1=_update_cursor_horiz(d6);
 	d2=_update_cursor_vert(d6);
 	
-	if ((ply->FighterID & 4) == ((newFighterID + d1) & 4)) {
+	if ((ply->FighterID & AVATARMENU_COLS) == ((newFighterID + d1) & AVATARMENU_COLS)) {
 		newFighterID += d1;
 	}
-	if ((newFighterID + d2 >= 0) && (newFighterID + d2) <8) {
+	if ((newFighterID + d2 >= 0) && (newFighterID + d2) < (AVATARMENU_COLS * AVATARMENU_ROWS)) {
 		newFighterID += d2;
 	}
 	if (plb->Human && plb->FighterID == newFighterID) {
@@ -148,8 +153,7 @@ static void _check_cursor_changes(Player *ply_a4, Player *ply_a3) {		// 82c6
 		if (g.ActiveHumans == 0) {
 			if (g.PLSL.ChallengerDelay) {
 				--g.PLSL.ChallengerDelay;
-				joydecode &= BUTTON_MASK;
-				if (joydecode) {
+				if (joydecode & BUTTON_MASK) {
 					_player_selected(ply_a4);
 				} else {
 					update_player_display(ply_a4);
@@ -158,8 +162,7 @@ static void _check_cursor_changes(Player *ply_a4, Player *ply_a3) {		// 82c6
 				if ((~g.RawButtons0 & g.RawButtons0Dash) & (ply_a4->Side ? IPT_START2 : IPT_START1)) {
 					_player_selected(ply_a4);
 				} else {
-					joydecode &= BUTTON_MASK;
-					if (joydecode) {
+                    if (joydecode & BUTTON_MASK) {
 						_player_selected(ply_a4);
 					} else {
 						update_player_display(ply_a4);
@@ -190,7 +193,7 @@ void SM_player_select(void) {		//7fc4
 	short d0, d1;
 	Object *obj;
 	
-	static const u16 data_80be[16]={
+	static const u16 data_80be[16]={        // a palette
 		0x0ee7, 0x0ff0, 0x0f00, 0x006d, 0x0eef, 0x00af, 0x0060, 0x0777, 
 		0x004a, 0x0fc7, 0x0fa6, 0x0f85, 0x0e64, 0x0d43, 0x0c02, 0x0000, 
 	};

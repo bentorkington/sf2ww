@@ -717,7 +717,7 @@ void PLCBPowerEHonda(Player *ply) {	    //2de90
 	_CheckCharge(ply, &ud->pm2, BUTTON_B, 0xa);
 	_CheckCharge(ply, &ud->pm3, BUTTON_C, 0x5);
 	if (ud->newbuttons & BUTTON_PUNCHES) {
-		ud->x0088 = (sf2rand() & 1) << 16 + sf2rand();
+		ud->x0088 = ((sf2rand() & 1) << 16) + sf2rand();
 	} else {
 		return;
 	}

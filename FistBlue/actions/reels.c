@@ -129,7 +129,7 @@ static void Act23SMVomit(Object *obj) {					// 1e43a
 			obj->Flip = obj->Owner->Flip;
 			ud->PlyX = obj->Owner->XPI;
 			ud->PlyY = obj->Owner->YPI;
-			obj->LocalTimer = 0x1e;
+			obj->LocalTimer = 30;
 			obj->Pool = 0;
 			sub_1e7ae(obj);
 			op = Act23RandomSmallOffset();
@@ -176,9 +176,15 @@ static void sub_1e59a(Object *obj) {		// birds and stars?
 	UD23 *ud = (UD23 *) &obj->UserData;
 	
 	Player *ply;
-	short *temp;
 	short temp2;
-	
+    
+    static const short data_1e622[][4] = {
+        {0, -0x800, -10,    0,},
+        {-39,  0x300,   8,  320,},
+        {26,  0x500,   6, -320},
+    };
+	static const short data_1e6f4[] = { 7, 0xe, 0xb, 0xe};
+
 	switch (obj->mode0) {
 		case 0:
 			switch (obj->mode1) {
@@ -196,11 +202,10 @@ static void sub_1e59a(Object *obj) {		// birds and stars?
 						ud->PlyY = ply->YPI;
 						ud->ObjX = obj->XPI;
 						ud->ObjY = obj->YPI;
-						temp = &data_1e622[ud->x008c / 2];
-						obj->XPI      += temp[0];
-						obj->VelX.full = temp[1];
-						obj->YPI      += temp[2];
-						obj->VelY.full = temp[3];
+						obj->XPI      += data_1e622[ud->x008c / 8][0];
+						obj->VelX.full = data_1e622[ud->x008c / 8][1];
+						obj->YPI      += data_1e622[ud->x008c / 8][2];
+						obj->VelY.full = data_1e622[ud->x008c / 8][3];
 					}
 					break;
 					FATALDEFAULT;
@@ -211,8 +216,8 @@ static void sub_1e59a(Object *obj) {		// birds and stars?
 			if (ply->DizzyStun == 0 || (ply->mode1 != PLSTAT_REEL && ply->mode1 != PLSTAT_TUMBLE) ) {
 				NEXT(obj->mode0);	/* no longer dizzy */
 			}
-			obj->VelX.full = obj->XPI < ud->ObjX ? 0x100 : -0x100;
-			obj->VelY.full = obj->YPI < ud->ObjY ?  0x40 : -0x40;
+			obj->VelX.full += obj->XPI < ud->ObjX ? 0x100 : -0x100;
+			obj->VelY.full += obj->YPI < ud->ObjY ?  0x40 : -0x40;
 			
 			temp2 = ply->XPI - ud->PlyX;
 			obj->XPI += temp2;

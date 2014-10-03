@@ -73,8 +73,8 @@ gfx_p = gemu.Tilemap_Object[(cpsgfx_p - 0x910000) / 8];
 #define OBJ_CURSOR_BUMP(gfx_p) \
 gfx_p += 4;
 
-#define CPS_OBJ(addr) gemuObjCursorSet((addr - 0x910000)/8);
-
+#define CPS_OBJ(addr) \
+gfx_p = gemuObjCursorSet((addr - 0x910000)/8);
 
 #define BMAP_SCROLL1 (u16 *)gemu.Tilemap_Scroll1
 #define BMAP_SCROLL2 (u16 *)gemu.Tilemap_Scroll2

@@ -135,8 +135,30 @@ static void sub_2af2(void) {
 	g.Player2.Score = 0;
 }
 
+#pragma SiennaBird glue
+
+void sf2_backtrace(int count) {
+#ifndef CPS
+	void *callstack[128];
+	int i, frames = backtrace(callstack, 128);
+	char** strs = backtrace_symbols(callstack, frames);
+    
+    if (count && frames > (count-1)) {
+        frames = count-1;
+    }
+	for (i = 0; i < frames; ++i) {
+		printf("%s\n", strs[i]);
+	}
+	free(strs);
+    
+	exit(1);
+#endif
+}
+
 void debughook(int data) {
 	/* unimp */
+
+
 }
 
 void panic(int data) {
@@ -1865,7 +1887,8 @@ void _bumplevel(void) {		/* 2bf2 */
 		/* 2b76 */
 		++g.LevelCursor;
 	}
-	if(g.LevelScript[g.LevelCursor+1] == 0x10) {g.OnFinalStage = TRUE;}
+//    g.CurrentStage = 5;     // XXX
+	if(g.LevelScript[g.LevelCursor+1] ==  0x10) {g.OnFinalStage = TRUE;}
 	boss_level_check();
 }
 

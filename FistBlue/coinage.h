@@ -15,6 +15,19 @@ void decode_coincosts(void);
 void int_cb_coinage(void);
 void coinage_hook(void);
 
+
+/*!
+ @struct coinslot
+ @abstract defines a coin acceptor
+ @field x0000 0x0000 unknown
+ @field count_minor 0x0001
+ @field count_major 0x0002
+ @field debounce_timer 0x0003
+ @field nCoins 0x0004
+ @field nCredits 0x0005
+ @field holdoff_timer 0x0006
+ @field shifted_bits 0x0007
+ */
 struct coinslot {
 	char x0000;
 	char count_minor;

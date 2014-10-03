@@ -109,6 +109,8 @@ typedef enum fighter_id_t FBFighterID;
 #define ROUNDREACT_LOSS1		2
 #define ROUNDREACT_LOSS2		4
 
+// animation bank selectors:
+
 #define STATUS_STAND             0x0		/* substat 4 */
 #define STATUS_WALKING			 0x0		/* forward 0 backward 2 */
 #define STATUS_NORMAL            0x2   /* STATUS_CROUCH is bad */
@@ -467,7 +469,6 @@ ply->AclY.full = ply->Next3AclY.full;
 
 #define PLAYER_PUSH(x) g.Player1.PushDirection = 1-x; g.Player2.PushDirection = x;
 
-
 #define PLY_THROW_SET(arg0, arg1, arg2, arg3)   \
 ply->Throw[0] = arg0;							\
 ply->Throw[1] = arg1;							\
@@ -477,11 +478,10 @@ ply->Throw[3] = arg3;							\
 #define PLY_TRAJ0(arg0, arg1, arg2, arg3)		\
 ply->VelX.full = arg0;							\
 ply->VelY.full = arg1;							\
-ply->AclX.full = arg2;						\
-ply->AclY.full = arg3;						\
+ply->AclX.full = arg2;                          \
+ply->AclY.full = arg3;                          \
 
 #define PLY_NEWBUTTONS (~ply->JoyDecodeDash.full & ply->JoyDecode.full)
-
 
 #define QUICKMOVE(MOVE_ID)      \
 ply->Move = MOVE_ID;			\
@@ -489,29 +489,29 @@ quirkysound(MOVE_ID);			\
 
 #define STDANIM(ARG_A,EXITROUTINE)	\
 switch (ply->mode2) {				\
-case 0:							\
-NEXT(ply->mode2);			\
-CASetAnim2(ply, ARG_A, ply->Move);	\
-break;						\
-case 2:							\
-if (AF1) {					\
-EXITROUTINE(ply);		\
-} else {					\
-PLAYERTICK;				\
-}							\
-break;						\
-default:						\
-break;						\
+    case 0:							\
+        NEXT(ply->mode2);			\
+        CASetAnim2(ply, ARG_A, ply->Move);	\
+        break;						\
+    case 2:							\
+        if (AF1) {					\
+            EXITROUTINE(ply);		\
+        } else {					\
+            PLAYERTICK;				\
+        }							\
+        break;						\
+    default:						\
+        break;						\
 }
 
 #define STDPUNCHKICK(A,B)			\
 switch (ply->PunchKick) {			\
-case PLY_PUNCHING:				\
-A(ply);						\
-break;						\
-case PLY_KICKING:				\
-B(ply);						\
-break;						\
+    case PLY_PUNCHING:				\
+        A(ply);						\
+        break;						\
+    case PLY_KICKING:				\
+        B(ply);						\
+        break;						\
 }
 
 

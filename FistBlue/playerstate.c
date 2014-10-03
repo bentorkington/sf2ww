@@ -265,7 +265,12 @@ static void PSPlayerKO(Player *ply) {		/* 2a508 */
 		}
 	}
 }
-
+/*!
+ @abstract postamble common to both computer and human players
+ @param the player (%a6)
+ @discussion sf2ua:0x2a410
+    Called after comp_proc_stat and human_per_frame
+ */
 void player_postamble(Player *ply) {	// 2a410 called after comp_proc_stat and human_per_frame
 	int temp;
 	if(ply->BlockStun) {
@@ -298,7 +303,11 @@ void player_postamble(Player *ply) {	// 2a410 called after comp_proc_stat and hu
 	}
 	
 }
-       
+/*!
+ @abstract main entry to human player state machine
+ @param the player (%a6)
+ @discussion sf2ua:0x285f4
+ */
 void human_per_frame(Player *ply) {		/* 285f4 */
     switch (ply->mode0) {
     case 0:
@@ -1163,6 +1172,11 @@ void PSDizzyState(Player *ply) {		/* 29324 */
     }
 }
 
+/*!
+ @abstract Returns TRUE of player Flip equals EnemyDirection
+ @param the player (%a6)
+ @discussion sf2ua:0x2a710
+ */
 int is_facing_enemy(Player *ply) {		//2a720 badly named
 	if (ply->Flip == ply->EnemyDirection) {
 		return FALSE;
@@ -1170,7 +1184,11 @@ int is_facing_enemy(Player *ply) {		//2a720 badly named
 		return TRUE;
 	}
 }
-
+/*!
+ @abstract Returns TRUE if player has walked off a platform
+ @param the player (%a6)
+ @discussion sf2ua:0x2a73e
+ */
 short check_platform_end(Player *ply) {			/* 0x2a73e */
 	if(ply->OnPlatform2) {
 		if(ply->OnPlatform) {
@@ -1206,13 +1224,18 @@ void turn_around(Player *ply) {	/* bright eyes 0x2a92a */
 		/* 2a972 */ 
 		ply->Flip = ply->EnemyDirection;
 		temp = ply_cb_crouchmove(ply);
-		if(temp<0) {return;}
-		if(temp)		{set_attacking(ply);	return;}
-		if(retreat_or_block(ply))		{standblock_crouch(ply);	return;}
-		ply->mode1 = PLSTAT_TURNAROUND;
-		ply->mode2 = 2;
-		ply->mode3 = 0;
-		CASetAnim1(ply, STATUS_TURN_AROUND);
+        if (temp >= 0) {
+            if (temp) {
+                set_attacking(ply);
+            } else if (retreat_or_block(ply)) {
+                standblock_crouch(ply);
+            } else {
+                ply->mode1 = PLSTAT_TURNAROUND;
+                ply->mode2 = 2;
+                ply->mode3 = 0;
+                CASetAnim1(ply, STATUS_TURN_AROUND);
+            }
+        }
 	} else {
 		temp = ply_cb_standmove(ply);
 		if(temp<0) {return;}

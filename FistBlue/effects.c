@@ -617,7 +617,7 @@ SYSLIB18LOOP:
 			data += 6;
 		} else {
 			if (*(data) != 0x20) {
-				OBJECT_DRAW((gfx_p), (cp >> 16), (cp & 0xffff), (data[0] + 0x8080), palette); 	
+				OBJECT_DRAW((gfx_p), (cp >> 16), (cp & 0xffff), (data[0] + SF2_TILE_OBJ_ASCII), palette);
 				OBJ_CURSOR_BUMP(gfx_p);
 			}
 			cp += 0xc0000;

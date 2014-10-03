@@ -205,6 +205,13 @@ void keyup(unsigned char inkey, int px, int py) {
 			gInputs.in0 &= ~IPT_COIN1;	break;
 		case '6':
 			gInputs.in0 &= ~IPT_COIN2;	break;
+        
+#ifdef REDHAMMER
+        case 'k':
+            g.Player2.Energy = -1;      break;
+        case 'K':
+            g.Player1.Energy = -1;      break;
+#endif
 			
 	}
 }

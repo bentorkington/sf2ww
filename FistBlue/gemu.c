@@ -25,10 +25,10 @@ int gemu_scroll_enable[4];
 
 struct inputs gInputs;
 
-extern u16 data_8a8ac[32][16];
-extern u16 data_c5000[20][32][16];
-extern u16 data_ca000[20][32][16];
-extern u16 data_c0000[20][32][16];
+extern PALETTEWORD data_8a8ac[32][16];
+extern PALETTEWORD data_c5000[20][32][16];
+extern PALETTEWORD data_ca000[20][32][16];
+extern PALETTEWORD data_c0000[20][32][16];
 
 #ifndef CPS
 void gemu_clear_object(void) {			// 5fbc CPS actually takes u16* param
@@ -95,8 +95,6 @@ void scroll3_base_1k(short stage) {
         }
     }
 }
-
-
 
 inline void gemuObjectDraw(u16 *slot, u16 x, u16 y, u16 tile, u16 attr) {
 	*(slot+0)=x;                   

@@ -57,7 +57,7 @@ void drawObj1String(GLint x, GLint y, GLint height, char *string){
 	glRasterPos2f(x, y);
 	len = (int) strlen(string);
 	for (i = 0; i < len; i++) {
-		DrawTileObj(string[i] + 0x8080, 0, x + (i * (height - 2)), y, height, height);
+		DrawTileObj(string[i] + SF2_TILE_OBJ_ASCII, 0, x + (i * (height - 2)), y, height, height);
 	}
 }
 

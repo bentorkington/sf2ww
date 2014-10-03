@@ -33,7 +33,16 @@ void resetstate_B(void);
 void LBResetState(void);
 void _LBResetState(void);	// XXX rename me
 struct object_g2 *pop_1174(void);
+/*!
+ @abstract deallocate a Group-2 object
+ @param obj the Group-2 object to deallocate
+ @discussion sf2ua address: 0x29c2
+ */
 void clearpush_1174(struct object_g2 *obj);
+/*!
+ @abstract Allocate a projectile object
+ @return a projectile object
+ */
 Object *AllocProjectile(void);
 void FreeProjectile(Object *obj);
 Object *AllocActor(void);
