@@ -659,7 +659,7 @@ static void sub_27862(Object_G2 *obj) {			// 27862 Act09 BONUS1
 			obj->HitBoxes = &hitboxes_27e6a;
 			obj->Pool = 0;
 			obj->Flip = 0;
-			obj->Energy = data_278c2[RAND16W/2];
+			obj->Energy = data_278c2[RAND16WD];
 			obj->EnergyDash = obj->Energy;
 			break;
 		case 2:

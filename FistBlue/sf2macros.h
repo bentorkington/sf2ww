@@ -29,10 +29,11 @@
 #define RAND64 (sf2rand() & 0x3f)
 #define RAND32 (sf2rand() & 0x1f)
 #define RAND16W (sf2rand() & 0x1e)
+#define RAND16WD (RAND16W >> 1)
 #define RAND16 (sf2rand() & 0xf)
 #define RAND8  (sf2rand() & 7)
 #define RAND8W (sf2rand() & 0xe)
-#define RAND8WD ((sf2rand() & 0xe)/2)
+#define RAND8WD (RAND8W >> 1)
 #define RAND4  (sf2rand() & 3)
 
 #define RESET_MODES g.mode0 = g.mode1 = g.mode2 = g.mode3 = g.mode4 = g.mode5 = 0

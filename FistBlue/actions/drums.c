@@ -199,7 +199,7 @@ void _SMAct04(Object_G2 *obj) {		// 27ea2 ID4 BONUS3
 				if (data_27f3e[obj->UD.UDbonus3.h00b0s] < 0) {
 					obj->mode1 = 0;
 					obj->mode2 = 0;
-					setaction_list((Object *)obj, actlist_27fa6, data_27f72[RAND16W/2]);
+					setaction_list((Object *)obj, actlist_27fa6, data_27f72[RAND16WD]);
 				} else {
 					obj->LocalTimer = data_27f3e[obj->UD.UDbonus3.h00b0s];
 					setaction_list((Object *)obj, actlist_27fa6, 0);

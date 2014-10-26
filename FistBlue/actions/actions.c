@@ -821,7 +821,7 @@ static void action_0f(Object *obj) {		// 10b44 Another Bird
 					NEXT(obj->mode1);
 					obj->VelY.full = (short []){
 						0x100, 0x110, 0xa0, 0xc0, 0x130, 0x100, 0x200, 0x100
-					}[RAND8W/2];
+					}[RAND8WD];
 					obj->VelX.full = (short[]){0xffd0, 0x0,   0x40}[obj->Step];
 					obj->AclX.full = (short[]){   0x8, 0x0, 0xfff8}[obj->Step];
 					break;
@@ -878,21 +878,17 @@ static void action_10(Object *obj) {
 			switch (obj->mode1) {
 				case 0:
 					NEXT(obj->mode1);
-					obj->LocalTimer = (char []) {
-						0x3c, 0x28, 0x5a, 0x28, 0x28, 0x3c, 0x14, 0x46,
-					} [RAND8];
-					obj->VelX.full = (short []) {
-						0xff00, 0xfee0, 0xffb0, 0xfe80, 0xff60, 0xff40, 0xfe00, 0xfde0,
-					} [RAND8W];
+					obj->LocalTimer = (char []) {0x3c, 0x28, 0x5a, 0x28, 0x28, 0x3c, 0x14, 0x46,} [RAND8];
+					obj->VelX.full = (short []) {0xff00, 0xfee0, 0xffb0, 0xfe80, 0xff60, 0xff40, 0xfe00, 0xfde0,} [RAND8WD];
 					obj->VelY.full = (short []) {
 						0x0040, 0x0063, 0x0028, 0x0080, 0x0060, 0x0023, 0x0088, 0x0058,
-					} [RAND8W];
+					} [RAND8WD];
 					obj->AclX.full = (short []){
 						0xfffe, 0xfffc, 0x0008, 0x0004, 0xfffc, 0x0002, 0xfffc, 0xfff8,
-					}[RAND8W];
+					}[RAND8WD];
 					obj->AclY.full = (short[]) {
 						0x0005, 0x0006, 0x0007, 0x0008, 0x000a, 0x0010, 0x0011, 0x0012,
-					}[RAND8W];
+					}[RAND8WD];
 					break;
 				case 2:
 					CATrajectory(obj);
@@ -1263,9 +1259,9 @@ void action_print_chant() {			/* 15a2a */
 	const short *data = data_15a24[g.Version];
 	
 	if (g.Version == VERSION_JAP) {
-		start_effect(0x2400 + *(data + 8*g.BattleWinner + (RAND8W/2)), 0x0102);
+		start_effect(0x2400 + *(data + 8*g.BattleWinner + (RAND8WD)), 0x0102);
 	} else {	
-		start_effect(0x1800 + *(data + 8*g.BattleWinner + (RAND8W/2)), 0x0102);
+		start_effect(0x1800 + *(data + 8*g.BattleWinner + (RAND8WD)), 0x0102);
 	}
 }
 
@@ -1543,8 +1539,8 @@ static void action_1a(Object *obj) {		// 13a3a
 			NEXT(obj->mode0);
 			obj->LocalTimer = data_13ac6[(sf2rand() & 0x3e)  ];
 			obj->x001f      = data_13ac6[(sf2rand() & 0x3e)+1];
-			obj-> XPI      += data_13ae6[RAND16W];
-			obj-> YPI      += data_13ae6[RAND16W];
+			obj-> XPI      += data_13ae6[RAND16WD];
+			obj-> YPI      += data_13ae6[RAND16WD];
 			
 			temp = RAND8;
 			obj->VelX.full = data_13b06[obj->UserData[2]][temp][0];
@@ -1671,12 +1667,12 @@ static void action_1c(Object *obj) {
 							}
 						}
 					} else {
-						obj->VelX.full = data_1585a[RAND8W];
-						obj->VelY.full = data_1586a[RAND8W];
-						obj->XPI += data_1587a[RAND8W];
-						obj->YPI += data_1588a[RAND8W];
+						obj->VelX.full = data_1585a[RAND8WD];
+						obj->VelY.full = data_1586a[RAND8WD];
+						obj->XPI += data_1587a[RAND8WD];
+						obj->YPI += data_1588a[RAND8WD];
 					}
-					obj->UserData[2] = data_1589a[RAND8W] + 0x28;
+					obj->UserData[2] = data_1589a[RAND8WD] + 0x28;
 					if (obj->Step == 0) {
 						obj->VelX.full = -obj->VelX.full;
 						obj->Flip ^= 1;
