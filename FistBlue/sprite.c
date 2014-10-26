@@ -781,6 +781,7 @@ inline static void draw_playersprite(Player *ply) {
 		ply->OnGround = ply->Airborne;
 		drawsprite((Object *)ply);
 	}
+    
 }
 static void _DSDrawShadows(void) {
 	/* 7e726 player shadows */
@@ -846,52 +847,40 @@ static void _draw_sprite(Object *obj, const u16 *tilep, const short *offsets,
 static void sprite_coords(Object *obj, short *coordpair) {		// 7f160
 	int temp;
 	if(obj->Scroll < 0) {
-		coordpair[0]=obj->XPI + 64;
-		coordpair[1]=(obj->YPI ^ 0x00ff) + 1;
+		coordpair[0]=obj->XPI;
+		coordpair[1]=obj->YPI;
 	} else {
 		switch (obj->Scroll) {
 			case SCROLL_2:
 				if(obj->ZDepth == 0) {
-					coordpair[0]=obj->XPI - gstate_Scroll2.XPI + 64;
+					coordpair[0]=obj->XPI - gstate_Scroll2.XPI;
 					coordpair[1]=obj->YPI - gstate_Scroll2.YPI;
 					if(obj->OnGround) {	/* move with screen wobble */
 						coordpair[1] += g.ScreenWobbleMagnitude;
 					}
-					coordpair[1] ^= 0xff;
-					coordpair[1]++;
 				} else {
 					temp = g.x02be[1024 - (obj->ZDepth + 1)];
-					
-					coordpair[0]=obj->XPI - (temp-192) - gstate_Scroll2.XPI + 64;
+					coordpair[0]=obj->XPI - (temp-192) - gstate_Scroll2.XPI;
 					coordpair[1]=obj->YPI - gstate_Scroll2.YPI;
-					if(obj->OnGround) {	/* move with screen wobble */
-						coordpair[1] += g.ScreenWobbleMagnitude;
-					}
-					coordpair[1] ^= 0xff;
-					coordpair[1]++;
 				}
 				break;
 			case SCROLL_1:
-				coordpair[0]=obj->XPI - gstate_Scroll1.XPI + 64;
+				coordpair[0]=obj->XPI - gstate_Scroll1.XPI;
 				coordpair[1]=obj->YPI - gstate_Scroll1.YPI;
-				if(obj->OnGround) {	/* move with screen wobble */
-					coordpair[1] += g.ScreenWobbleMagnitude;
-				}
-				coordpair[1] ^= 0xff;
-				coordpair[1]++;
 				break;
 			case SCROLL_3:
-				coordpair[0]=obj->XPI - gstate_Scroll3.XPI + 64;
+				coordpair[0]=obj->XPI - gstate_Scroll3.XPI;
 				coordpair[1]=obj->YPI - gstate_Scroll3.YPI;
-				if(obj->OnGround) {	/* move with screen wobble */
-					coordpair[1] += g.ScreenWobbleMagnitude;
-				}
-				coordpair[1] ^= 0xff;
-				coordpair[1]++;
 				break;
 			FATALDEFAULT;
 		}
+        if(obj->OnGround) {	/* move with screen wobble */
+            coordpair[1] += g.ScreenWobbleMagnitude;
+        }
 	}
+    coordpair[0] += 64;
+    coordpair[1] ^= 0xff;
+    coordpair[1] += 1;
 }
 void drawsprite(Object *obj) {         /* 7edaa */
     const struct image *image;
@@ -1255,12 +1244,12 @@ static void sub_7ef86(Object *obj, const u16 *tilep, const short *offsets,
 
 /* 7efd8 object with X and Y Flip */
 static void sub_7efd8(Object *obj, const u16 *tilep, const short *offsets, 
-					  short x, short y, u16 tiles, u16 attr) {     
+					  short x, short y, u16 tiles, u16 attr) {
 
 	short sx, sy;
 	u16 tile;
-	int d6 = (attr & 0xf000) >> 8 + 0x10;
-	int d5 = (attr & 0xf00) >> 4 + 0x10;
+	int d6 = ((attr & 0xf000) >> 8) + 0x10;
+	int d5 = ((attr & 0xf00) >> 4) + 0x10;
 
 	int count = 0;
 	

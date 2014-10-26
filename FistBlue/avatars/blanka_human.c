@@ -281,7 +281,7 @@ void PLCBPowerBlanka(Player *ply) {
 	_BlankaChargeCheck(ply, &ud->pm2, BUTTON_B, 0xa);
 	_BlankaChargeCheck(ply, &ud->pm3, BUTTON_C, 0x5);
 	if (ud->x0082 & BUTTON_PUNCHES) {
-		ud->x0088 = (sf2rand() & 1) << 16 + sf2rand();
+		ud->x0088 = ((sf2rand() & 1) << 16) + sf2rand();
 	} else {
 		return;
 	}
@@ -293,6 +293,7 @@ void PLCBPowerBlanka(Player *ply) {
 		return;
 	}
 	/* suicide, shouldn't get here */
+    return; /* XXX */
 	panic(111);
 	if ((obj = AllocActor())) {
 		obj->Sel = sf2rand();	// !!!

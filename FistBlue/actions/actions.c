@@ -2745,7 +2745,7 @@ void action_36(Object *obj) {		/* 1fdc4 */
 			ud->Save_Scroll3Y = gstate_Scroll3.YPI;
 			break;
 		case 2:
-			if (--obj->x001f == 0) {
+			if (--obj->x001f < 0) {
 				if(--obj->LocalTimer == 0) {
 					NEXT(obj->mode0);
 					sub_1fe36(obj);
@@ -2754,14 +2754,14 @@ void action_36(Object *obj) {		/* 1fdc4 */
 					obj->x001f = 7;
 				}
 			}
-			if ((obj->x001f & 1)==0) {
-				sub_1fe36(obj);
-			} else {
-				g.ScreenWobbleMagnitude = 3;
-				ud->Save_Scroll1Y = gstate_Scroll1.YPI;
-				ud->Save_Scroll2Y = gstate_Scroll2.YPI;
-				ud->Save_Scroll3Y = gstate_Scroll3.YPI;
-				sub_1fe4e(obj, 3);
+			if (obj->x001f & 1) {
+                g.ScreenWobbleMagnitude = 3;
+                ud->Save_Scroll1Y = gstate_Scroll1.YPI;
+                ud->Save_Scroll2Y = gstate_Scroll2.YPI;
+                ud->Save_Scroll3Y = gstate_Scroll3.YPI;
+                sub_1fe4e(obj, 3);
+            } else {
+                sub_1fe36(obj);
 			}
 			break;
 		case 4:

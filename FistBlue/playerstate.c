@@ -658,11 +658,14 @@ void proc_plstat_crouch(Player *ply) {		// 28940
 			FATALDEFAULT;
 	}
 }
+void PSCBAttackBlankaStub (Player *ply) {
+    /* XXX stub */
+}
 void proc_plstat_attacking(Player *ply) {
     static void (* const PCB_ATTACK[8])(Player *ply) = {
 		PSCBAttackRyu,
 		PSCBAttackEHonda,	
-		NULL,					// todo
+		PSCBAttackBlankaStub,				// todo
 		PSCBAttackGuile,	
 		PSCBAttackRyu,		//Ken is the same
 		PSCBAttackChunLi,

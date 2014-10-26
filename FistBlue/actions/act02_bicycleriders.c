@@ -137,7 +137,7 @@ static void _create_bycycle(Object *obj, Object *nobj1, Object *nobj2) {		// d2b
 	nobj1->Sel    = SF2ACT_0X02;
 	nobj1->SubSel = 1;
 	nobj1->Owner  = (Player *)obj;
-	udn1->x0082   = nobj2;		/* u16 to pointer */
+	udn1->x0082   = nobj2;		/* compat: short pointer on CPS to pointer */
 	
 	nobj2->exists = TRUE;
 	nobj2->Sel    = SF2ACT_0X02;
@@ -202,9 +202,7 @@ void action_2(Object *obj) {				//d240 Bicycle people
 					if(((g.libsplatter + g_d7) & 7) == 0) {
 						die_if_offscreen(obj);	/* check if still on screen */
 					}
-                    printf("bicycle %d X1:%04d ", g_d7, obj->X.part.integer);
 					update_motion(obj);
-                    printf("X2:%04d\n", obj->X.part.integer);
 					_update_bicycle_shadow(obj);
 					actiontick(obj);
 				}
@@ -212,7 +210,6 @@ void action_2(Object *obj) {				//d240 Bicycle people
 				break;
 			case 4:
 			case 6:		//object went offscreen
-                printf("bicycle %d die\n", g_d7);
 				/* d412 */
 				if (obj->SubSel >= 0) {
 					struct UserData_Act2 *udowner = (struct UserData_Act2 *)&obj->Owner->UserData;

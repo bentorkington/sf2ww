@@ -30,9 +30,8 @@ extern PALETTEWORD data_c5000[20][32][16];
 extern PALETTEWORD data_ca000[20][32][16];
 extern PALETTEWORD data_c0000[20][32][16];
 
-#ifndef CPS
+//#ifndef CPS
 void gemu_clear_object(void) {			// 5fbc CPS actually takes u16* param
-	printf("*** Objects cleared ***");
 	int i;
 	for(i=0; i<256; i++) {
 		OBJECT_DRAW_ID(i, 0, 0, 0, 0);
@@ -47,7 +46,7 @@ void gemu_clear_object_first72(void) {		// 5f84
 		// second buffer
 	}
 }
-#endif /* ifdef CPS */
+//#endif /* ifdef CPS */
 
 
 void gemu_setpalette(short major, const u16 *palette) {

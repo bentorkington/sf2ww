@@ -74,12 +74,12 @@ static void SMdemo_show_high_scores(void) {		//6aaa
 		case 2:
 			if (--g.timer1 == 0) {
 				NEXT(g.mode0);
+                g.mode1 = 0;
 			}
 			break;
 		FATALDEFAULT;
 			
 	}
-	
 }
 
 static void SMDemo(void) {

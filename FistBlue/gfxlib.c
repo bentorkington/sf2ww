@@ -264,7 +264,7 @@ void sub_516a(u16 **gfx_p, u32 *cp_p, u8 d0, short *leading_zero, u16 d3 ) {		//
 	cp = *cp_p;
 	OBJECT_DRAW(*gfx_p, CP_X, CP_Y, 0x80b0 + (d0 & 0xf),d3);
 	OBJ_CURSOR_BUMP(*gfx_p);
-	/* and other buffer */
+	/* todo: and other buffer */
 	INC_GFX_CURSOR(cp_p, 12, 0);	
 }
 
@@ -425,7 +425,8 @@ void clear_scrolls(void) {		/* 0x5f10 */
 	g.x02b8 = 0;
 	g.x02ba = 0;	
 	
-	GEMU_CLEAR_OBJECT_D;
+    gemu_clear_object();
+    
 #ifndef CPS
 	gemu_set_cache_clear();
 #endif

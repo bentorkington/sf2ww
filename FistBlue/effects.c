@@ -539,9 +539,13 @@ static void syslib_04(void) {		// SL04	 597a version string
 	sub_5982(task);
 }
 
-
+/*!
+ High score table / number of credits
+ SF2UA: 0x4f9e
+ */
 static void syslib_10(void) {		// 4f9e
-	u16 *cur; int i;
+	u16 *gfx_p;
+    int i;
 	Task *task = &Exec.Tasks[Exec.CurrentTask];
 	switch (task->params.Param0) {
 		case 0:
@@ -551,17 +555,19 @@ static void syslib_10(void) {		// 4f9e
 			task->params.Param0 &= 0xff00;
 			task->params.Param0 |= g.TwoCreditsToStart ? 8 : 7;
 			sub_5982(task);
-			SCR1_CURSOR_CPS(cur, 0x90d670);
-			sub_5072(&cur, g.NumberCredits, 0, 0);
+			SCR1_CURSOR_CPS(gfx_p, 0x90d670);
+			sub_5072(&gfx_p, g.NumberCredits, 0, 0);
 			DIEFREE;
 			break;
 		case 2:
 			QueueEffect(0x180f, 0);
+            OBJ_CURSOR_CPS(gfx_p, 0x910120);
 			for (i=4; i>=0; --i) {
-				printlonghex2(&cur, 0x80, 0xc0 - (i * 32), g.HiScoreTable[i].score, 0);
+                printf("printing %d\n", i);
+				printlonghex2(&gfx_p, 0x80, 0xc0 - (i * 32), g.HiScoreTable[i].score, 0);
 			}
 			for (i=4; i>=0; --i) {
-				_putlong(&cur, 0x100, 0xc0 - (i * 32), g.HiScoreTable[i].name, 0);
+				_putlong(&gfx_p, 0x100, 0xc0 - (i * 32), g.HiScoreTable[i].name, 0);
 			}
 			DIEFREE;
 			break;

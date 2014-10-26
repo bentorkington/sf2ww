@@ -154,8 +154,8 @@ void gemu_draw_scroll3(void);
 
 void gemu_draw_object(void);
 
-#define GEMU_CLEAR_OBJECT_D		gemu_clear_object
-#define GEMU_CLEAR_OBJECT		gemu_clear_object
+#define GEMU_CLEAR_OBJECT_D		gemu_clear_object()
+#define GEMU_CLEAR_OBJECT		gemu_clear_object()
 
 
 typedef u16 GPAL;
