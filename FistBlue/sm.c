@@ -77,7 +77,7 @@ void SMFreePlay(void){		// 6cc8
 		} 
 		if (buttons & IPT_START1) {
 			if (g.FreePlay) {
-				g.x031e = 0;
+				g.x031e = FALSE;
 				startgame(ONLY_P1);
 			} else {
 				if (g.TwoCreditsToStart + 1 <= g.NumberCredits) {
@@ -677,7 +677,7 @@ static void gamemode_init_round (void) {
 void gamemode_prefightanim (void){     
     switch(g.mode3) {
         case 0: {
-			DEBUG_SM("SM: PreFightAnim");
+			DEBUG_SM("PreFightAnim");
             g.mode3  +=2;
             setstagemusic();
             g.PreRoundAnim = TRUE;
@@ -702,7 +702,7 @@ void gamemode_prefightanim (void){
 }
 
 static void SM_setnextfight() {	/* 0x8a38 next fight */
-	DEBUG_SM("SM: SetNextFight");
+	DEBUG_SM("SetNextFight");
 	NEXT(g.mode2);
 	g.mode3 = g.mode4 = 0;
 	g.WaitMode = FALSE;
@@ -774,7 +774,7 @@ void gamemode_postfightanim (void) {
     if(g.OnBonusStage) {       /* 0x8a4a */
         switch(g.mode3) {
             case 0:
-				DEBUG_SM("SM: PostFightAnim");
+				DEBUG_SM("PostFightAnim");
                 queuesound(0x30f9); /* fade out */
                 if(g.CurrentStage != 0xd && g.TimeOut ) {  /* barrels */
                     g.mode3 += 2;
@@ -925,7 +925,7 @@ void gamemode_postfightanim (void) {
 		
 		switch (g.mode3) {
 			case 0:
-				DEBUG_SM("SM: PostFightAnim");
+				DEBUG_SM("PostFightAnim");
 				if(g.TimeOut) {
 					g.mode3 += 2;
 					g.timer3 = 0xf0;
