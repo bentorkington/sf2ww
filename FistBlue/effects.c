@@ -620,7 +620,7 @@ SYSLIB18LOOP:
 		} else if (data[0] == 0x2f) {
 			cp = MakePointObj((data[1] << 8)+ data[2] , (data[3] << 8)+ data[4] );
 			palette = data[5] & 0x1f;
-			data += 6;
+			data += 5;
 		} else {
 			if (*(data) != 0x20) {
 				OBJECT_DRAW((gfx_p), (cp >> 16), (cp & 0xffff), (data[0] + SF2_TILE_OBJ_ASCII), palette);
