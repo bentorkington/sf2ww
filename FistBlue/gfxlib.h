@@ -3,6 +3,41 @@
 
 #include	"task.h"
 /* gfxlib.c */
+
+#define LIBTEXT_ERASE		0x80
+enum libtextgfx_sel {
+    INSERT_COIN_P1,
+    INSERT_COIN_P2,
+    FREE_PLAY_P1,
+    FREE_PLAY_P2,
+    PUSH_START_P1,		//4
+    PUSH_START_P2,
+    ADD_COIN_P1,
+    ADD_COIN_P2,
+    GAME_OVER_P1,		//8
+    GAME_OVER_P2,
+    DRAW_GAME,			/* 0x0a */
+    DOUBLE_KO,
+    CONTINUE_P1,		//c
+    CONTINUE_P2,
+    TIME,				//e
+    VITAL,
+    BONUS,				//0x10
+    ZEROZERO,
+    TIME_OVER,
+    BLANK_BAR_P1,
+    BLANK_BAR_P2,		// 0x014
+    GAME_OVER,
+    PLAYER_SELECT,
+    PLAYER_1,
+    PLAYER_2,			//0x018
+    HERE_COMES,
+    CHALLENGER,
+    HERE_COMES_2,
+    CHALLENGER_2,		// 0x1c
+    PERFECT,			/* 29 */
+};
+
 void palette_base_scroll1(void);
 void gfxrepeat(unsigned short *gfxram, int count, unsigned short character, unsigned short attribute);
 void setpalette_objtop(short palette);
@@ -31,7 +66,7 @@ void sub_6040(void);
 void sub_6060(void);
 void sub_1742(int palette);
 
-void print_libtextgfx(u8 sel);	/* sub_5816 */
+void print_libtextgfx(enum libtextgfx_sel sel);	/* sub_5816 */
 
 void DrawTileLine(u16 *gfx_p, const u16 *source, int x, int y);
 int test_offset_scroll1(Player *ply);
@@ -42,7 +77,6 @@ void sub_41c2(Object *obj, const struct simpleaction *act);		//41c2
 void actiontickdraw(Object *obj);
 void draw_simple(Object *obj);
 void print_timeremaining(void);
-void print_libtextgfx(u8 sel);
 void sub_90c8(void);	/* start the timeremain flashing */
 void sub_4386(short d1, short d3, short d4, const 
 			  u16 *a1, u16 **gfx_p);

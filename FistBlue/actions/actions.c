@@ -2918,11 +2918,20 @@ static void action_3a(Object *obj) {		// 201a0
 
 #pragma mark Act3B Score Counters
 
+
+/*!
+ @abstract draw BCD encoded score to tile RAM
+ @param bid-endian BCD encoded score (%d0)
+ @param pointer to tile RAM (%a1)
+ @discussion sf2ua:0x205f6
+ */
+
 static void sub_205f6(u32 d0, short d2, u16 *a1) {
+    printf("print counter %08x\n", d0);
 	d2 -= 3;
 	while (d2 >= 0) {
-		a1[0] = (d0 & 0xf) + 0x8100;
-		a1--;
+        --a1;
+		*a1 = (d0 & 0xf) + 0x8100;
 		d2--;
 		d0 >>= 4;
 	}
@@ -2935,16 +2944,16 @@ static void _init_counter_image(Object *obj) {		//20610
 	/* all same anyway               tiles pal   */
 	const static u16 data_20640[] = {0x1, 0xd, 0x2d, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x8100};
 	const static u16 data_20654[] = {0x1, 0xd, 0x2d, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x8100};
-	const static u16 data_20668[] = {0x1, 0xd, 0x2d, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x8100};
+	const static u16 data_20668[] = {0x1, 0xe, 0x2d, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x8100}; // todo: put palette back to 0xd
 
 	
 	switch (obj->SubSel) {
 		case 0:
-			source = data_20640; dest = g.x8a76; break;
+			source = data_20640; dest = g.TimeBonusSprite; break;
 		case 2:
-			source = data_20654; dest = g.x8a8a; break;
+			source = data_20654; dest = g.VitalBonusSprite; break;
 		case 4: 
-			source = data_20668; dest = g.x8a9e; break;
+			source = data_20668; dest = g.TotalBonusSprite; break;
 		FATALDEFAULT;
 	}
 	for (i=0; i<10; i++) {
@@ -2954,9 +2963,7 @@ static void _init_counter_image(Object *obj) {		//20610
 
 static void sub_205d8(Object *obj) {
 	UD3B *ud = (UD3B *)&obj->UserData;
-	add_bcd_32(ud->x0080.full, &g.x8aac);
-	
-	add_bcd_32(/* XXX */ 200  , &g.x8ab0);
+	add_bcd_32(ud->x0080, &g.x8ab0);
 	start_effect(0x2002, g.RoundWinnerSide);
 }
 
@@ -2983,11 +2990,11 @@ static void action_3b(Object *obj) {	//203ba
 	};
 	
 	static const Action action_2067c = 
-	{8, 0, 0, (Image *)&g.x8a76, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+        {8, 0, 0, (Image *)&g.TimeBonusSprite, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
 	static const Action action_20694 = 
-	{8, 0, 0, (Image *)&g.x8a8a, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+        {8, 0, 0, (Image *)&g.VitalBonusSprite, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
 	static const Action action_206ac = 
-	{8, 0, 0, (Image *)&g.x8a9e, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+        {8, 0, 0, (Image *)&g.TotalBonusSprite, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
 	
 	
 	switch (obj->mode0) {
@@ -2995,20 +3002,20 @@ static void action_3b(Object *obj) {	//203ba
 			NEXT(obj->mode0);
 			obj->Scroll    = SCROLL_NONE;
 			obj->Pool      = 2;
-			ud->x0080.full = 0;	
+			ud->x0080      = 0;
 			
 			_init_counter_image(obj);
 			
-			obj->XPI = data_20412[obj->SubSel][0];
-			obj->YPI = data_20412[obj->SubSel][1];
+			obj->XPI = data_20412[obj->SubSel/2][0];
+			obj->YPI = data_20412[obj->SubSel/2][1];
 			switch (obj->SubSel) {
 				case 0:												// TIME
-					ud->x0080.full = (g.TimeRemainBCD << 12);
+					ud->x0080 = (g.TimeRemainBCD << 12);
 					if (g.TimeRemainBCD != 0) {
-						d2 = (g.TimeRemainBCD & 0xf0) ? 4 : 3;		// number of bcd digits
-						g.x8a76[0] = d2;
-						g.x8a76[8] = 0x8100;
-						sub_205f6(g.TimeRemainBCD, d2, &g.x8a76[8]);
+						d2 = (g.TimeRemainBCD & 0xf0) ? 4 : 3;		// number of tiles
+						g.TimeBonusSprite[0] = d2;
+						g.TimeBonusSprite[8] = 0x8100;
+						sub_205f6(g.TimeRemainBCD, d2, &g.TimeBonusSprite[7]);
 					}
 					g.x8ab4 |= 1;
 					anim = &action_2067c;  
@@ -3024,7 +3031,7 @@ static void action_3b(Object *obj) {	//203ba
 							queuesound(SOUND_PERFECT);
 							d0 = data_204d8[ply->Opponent->FighterID];
 						}
-						ud->x0080.full = d0 << 16;
+						ud->x0080 = d0 << 16;
 						if (d0 < 0x10) {
 							d2 = 3;
 						} else if (d0 < 0x100) {
@@ -3032,15 +3039,15 @@ static void action_3b(Object *obj) {	//203ba
 						} else {
 							d2 = 5;
 						}
-						g.x8a8a[0] = d2;
-						g.x8a8a[8] = 0x8100;
-						sub_205f6(d0, d2, &g.x8a8a[8]);
+						g.VitalBonusSprite[0] = d2;
+						g.VitalBonusSprite[8] = 0x8100;
+						sub_205f6(d0, d2, &g.VitalBonusSprite[7]);
 					}
 					g.x8ab4 |= 2;
 					anim = &action_20694;
 					break;
 				case 4:											// TOTAL
-					ud->x0080.full = g.x8ab2 << 16;
+					ud->x0080 = g.x8ab2 << 16;
 					anim = &action_206ac;
 					break;
 				FATALDEFAULT;
@@ -3051,10 +3058,10 @@ static void action_3b(Object *obj) {	//203ba
 			switch (obj->SubSel) {
 				case 0:
 					if (g.CanSpeedUpScoreCount) {
-						if (ud->x0080.full & 0xff000000) {
-							sub_bcd_8(1, &ud->x0080.full);
-							ud->x0080.full &= 0xffff0000;
-							ud->x0080.full |= 0x00000001;
+						if (ud->x0080 & 0xff000000) {
+							sub_bcd_32(1, &ud->x0080);
+							ud->x0080 &= 0xff000000;
+							ud->x0080 |= 0x00000001;
 							sub_205d8(obj);
 						} else {
 							g.x8ab4 &= 0xfffffffe;
@@ -3063,11 +3070,10 @@ static void action_3b(Object *obj) {	//203ba
 					break;
 				case 2:
 					if (g.CanSpeedUpScoreCount) {
-						if (ud->x0080.part.p0) {
-							sub_bcd_16(1, &ud->x0080.full);	// XXX
-							ud->x0080.full &= 0xffff0000;
-							ud->x0080.full |= 0x00000001;
-							
+						if (ud->x0080 & 0xffff0000) {
+							sub_bcd_32(1, &ud->x0080);	// XXX
+							ud->x0080 &= 0xff000000;
+							ud->x0080 |= 0x00000001;
 							sub_205d8(obj);
 						} else {
 							g.x8ab4 &= 0xfffffffd;
@@ -3084,8 +3090,8 @@ static void action_3b(Object *obj) {	//203ba
 						} else {
 							d2 = 5;
 						}
-						sub_205f6(g.x8ab2, d2, &g.x8a9e[6]);
-						if ((g.libsplatter & 3)==0 && g.x8ab2 != ud->x0080.full) {
+						sub_205f6(g.x8ab2, d2, &g.TotalBonusSprite[6]);
+						if ((g.libsplatter & 3)==0 && g.x8ab2 != ud->x0080) {
 							queuesound(SOUND_UNK_DING);	/* Ding! */
 						}
 					}
@@ -3103,7 +3109,6 @@ static void action_3b(Object *obj) {	//203ba
 			break;
 		FATALDEFAULT;
 	}
-	
 }
 
 #pragma mark Projectile 207f0
@@ -3207,7 +3212,7 @@ static void action_43(Object *obj) {        //219ce
 						}
 						enqueue_and_layer(obj);
 					}
-					break;
+					break; 
 				case 4:
 				case 6:
 					FreeActor(obj);

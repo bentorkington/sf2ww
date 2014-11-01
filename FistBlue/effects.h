@@ -31,39 +31,6 @@ struct effectstate {
 	u8		FadeBusy;       // 0x5d59   
 };	
 
-#define LIBTEXT_ERASE		0x80
-enum libtextgfx_sel {
-	INSERT_COIN_P1,
-	INSERT_COIN_P2,
-	FREE_PLAY_P1,
-	FREE_PLAY_P2,
-	PUSH_START_P1,		//4
-	PUSH_START_P2,
-	ADD_COIN_P1,
-	ADD_COIN_P2,
-	GAME_OVER_P1,		//8
-	GAME_OVER_P2,
-	DRAW_GAME,			/* 0x0a */
-	DOUBLE_KO,
-	CONTINUE_P1,		//c
-	CONTINUE_P2,
-	TIME,				//e
-	VITAL,
-	BONUS,				//0x10
-	ZEROZERO,			
-	TIME_OVER,			
-	BLANK_BAR_P1,
-	BLANK_BAR_P2,		// 0x014
-	GAME_OVER,
-	PLAYER_SELECT,
-	PLAYER_1,
-	PLAYER_2,			//0x018
-	HERE_COMES,
-	CHALLENGER,
-	HERE_COMES_2,
-	CHALLENGER_2,		// 0x1c
-	PERFECT,			/* 29 */
-};
 
 enum syslib04sel {
 	COPYRIGHT_JAP,

@@ -829,7 +829,6 @@ static void syslib_20(void) {		//5410 increase player score
 		ply = task->params.Param2 ? PLAYER2 : PLAYER1;
 				
 		add_bcd_32(data, &ply->Score);
-		printf("inc_score param0: %04x %08x %08x\n", task->params.Param0, data, ply->Score);
 		if (ply->Score > 0x9999999) {
 			ply->Score = 0x9999999;
 		}

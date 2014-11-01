@@ -21,7 +21,7 @@
 #include "player.h"
 #include "sm.h"
 #include "gfx_glut.h"
-#include "lib.h"
+//#include "lib.h"
 #include "gemu.h"
 #include "glwimp.h"
 #include "workarounds.h"

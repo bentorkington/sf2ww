@@ -208,7 +208,7 @@ void copy_level_table(short d0) {		// 2ecc
 		g.LevelScript[i] = data[i];
     }
 #ifdef DEBUG
-#ifdef REDHAMMER
+#if REDHAMMER_DEBUG_GEN >= 4
         redhammer_print_level_table();
 #endif
 #endif

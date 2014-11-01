@@ -63,7 +63,7 @@ static void check_for_new_players(void) {		// 843e
 		a4->FighterID       = new_fighter_id;
 		a4->Human           = TRUE;
 		g.NewPlayers        = 0;
-		g.PLSL.TimerCourse  = 0x20;	// 20 seconds BCD
+		g.PLSL.TimerCoarse  = 0x20;	// 20 seconds BCD
 		g.PLSL.TimerFine	= 1 * TICKS_PER_SECOND;
 		queuesound(SOUND_CHALLENGER);
 	}
@@ -72,10 +72,10 @@ static void timer_tick(void) {		//8498
 	if (!g.PLSL.TimeExpired) {	
 		if (--g.PLSL.TimerFine == 0) {
 			g.PLSL.TimerFine = 1 * TICKS_PER_SECOND;
-			if (g.PLSL.TimerCourse == 0) {
+			if (g.PLSL.TimerCoarse == 0) {
 				g.PLSL.TimeExpired = TRUE;
 			} else {
-				sub_bcd_8(1, &g.PLSL.TimerCourse);
+				sub_bcd_8(1, &g.PLSL.TimerCoarse);
 			}
 		}
 	}
@@ -221,7 +221,7 @@ void SM_player_select(void) {		//7fc4
 					GSSetupScr3(&gstate_Scroll3);
 					g.CPS.Scroll1X				= 0;
 					g.CPS.Scroll1Y				= 0x100;
-					g.PLSL.TimerCourse			= 32;
+					g.PLSL.TimerCoarse			= 32;
 					g.PLSL.TimerFine			= 1 * TICKS_PER_SECOND;		
 					g.ActionLibSel				= 1;
 					gemu_setpalette(PALETTE_0C, data_80be);

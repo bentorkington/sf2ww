@@ -499,7 +499,7 @@ const HitBox *CDGetPushBox (Object *obj) {
 }
 const HitBoxAct *get_active_hitbox(Object *obj) {      /* 7dff2 */
 	if (obj->ActionScript == NULL) { return NULL; } //added to prevet crashes, CPS
-											   //dereferences NULL here!
+                                                    //dereferences NULL here!
 	
     if(obj->ActionScript->HB_Active) {
         return (HitBoxAct *)obj->HitBoxes->active + obj->ActionScript->HB_Active;	
@@ -515,7 +515,7 @@ static void sub_7e2a0(int d1, int d2, int d6) {
 	} else {
 		d2 = ABS(d2);
 	}
-	//sub_7e2f8(d2);
+	// this is sub_7e2f8(d2), inlined;
 	g.Player2.XPI += d2;
 	PLAYER_PUSH(d2 >= 0);
 	// 7e31c 
@@ -525,7 +525,7 @@ static void sub_7e2a0(int d1, int d2, int d6) {
 }
 
 
-// sub_7e2cc is the same with a different reg, %d0
+// sub_7e2cc is the same as 7e2a0, but with a different reg, %d0
 static void sub_7e2b6(int d1, int d2, int d6) {
 	if (d1==1) {
 		d2 = ABS(d2);

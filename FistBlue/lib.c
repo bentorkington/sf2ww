@@ -1307,6 +1307,7 @@ short sub_2fe6(Player *ply, Object *obj, short yoke) {
 
 #ifdef GUSTY_LOBSTER
 void add_bcd_32(int op, u32 *bcd) {			/* not SF2 code */
+//    printf("add_bcd_32 0x%08x + 0x%08x = ", *bcd, op);
 	int t1, t2, t3, t4, t5, t6;
 	t1 = op + 0x06666666;
 	t2 = t1 + *bcd;
@@ -1315,6 +1316,7 @@ void add_bcd_32(int op, u32 *bcd) {			/* not SF2 code */
 	t5 = ~t4 & 0x11111110;
 	t6 = (t5 >> 2) | (t5 >> 3);
 	*bcd = t2 - t6;
+//    printf("0x%08x\n", *bcd);
 }
 void sub_bcd_32(int op, u32 *bcd) {
 	int t1,t2,t3,t4,t5,t6;

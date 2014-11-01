@@ -169,10 +169,28 @@ void fistblue_run_tests(void) {
 	assert(calc_flightpath(obj, 0x117, 0xac) == 0xeb);
 
 	
+    
+    u32 bcdtest = 0x00049999;
+    printf("bcd_add_32 before 0x%08x\n", bcdtest);
+    add_bcd_32(1, &bcdtest);
+    assert(bcdtest = 0x50000);
+    printf("bcd_add_32 after 0x%08x\n", bcdtest);
+    
+    bcdtest = 0x0004999;
+    printf("bcd_add_16 before 0x%08x\n", bcdtest);
+    add_bcd_16(1, &bcdtest);
+    assert(bcdtest = 0x50000);
+    printf("bcd_add_16 after 0x%08x\n", bcdtest);
+    
+    bcdtest = 0x0004999;
+    printf("bcd_add_8 before 0x%08x\n", bcdtest);
+    add_bcd_8(1, &bcdtest);
+    assert(bcdtest = 0x50000);
+    printf("bcd_add_8 after 0x%08x\n", bcdtest);
 	
 	free(obj);
 		
-	//exit(0);
+	exit(0);
 }
 
 void fistblue_test_gfx(void) {

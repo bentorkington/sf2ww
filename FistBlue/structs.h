@@ -53,7 +53,7 @@ struct state_playerselect{
 	char	mode0;				// 5dbe
 	char	mode1;				// 5dbf
 	
-	u8		TimerCourse;		//5dc2
+	u8		TimerCoarse;		//5dc2q
 	u8		TimerFine;
 	char	TimeExpired;
 	char	PLSLNewPlayers;
@@ -372,15 +372,24 @@ typedef struct game {
 	char	PlaneLandedInCity[12];	// 8a68 
 	char  	x8a74;				// skyscraper anim flags
 	unsigned char x8a75;		// skyscraper anim timer
-	u16		x8a76[10];		/* end round scoring */
-	u16		x8a8a[10];
-	u16		x8a9e[10];
+    
+
+
+ //     End-of-round Score counter
+	u16		TimeBonusSprite[10];		// time remaining score bonus sf2ua: 0x8a76
+	u16		VitalBonusSprite[10];      // vital score bonus sf2ua: 0x8a8a
+	u16		TotalBonusSprite[10];      // total of both sf2ua: 0x8a9e
+ 
+    
+    
+    
 	// u32 x8aa8;
 	u32		x8aac;
 	u16		x8ab0;		
 	u16		x8ab2;
 	u32		x8ab4;
-	u8		CanSpeedUpScoreCount;		// x8ab5
+    
+	u8		CanSpeedUpScoreCount;		// sf2ua: x8ab5
 	
 	Object		*x8ab6;			/* XXX Barrels something */
 	signed char x8ab8;
@@ -433,7 +442,7 @@ typedef struct game {
 	short	x8b0e;				/*temp X for sin,cos */
 	short	x8b10;
     short   GPCollDetect;		/* 8b12 boolean to indicate collision detected */
-    short	x8b14;	/* gstate scroll1x minus temp in maint_scroll1x */
+    short	x8b14;              /* gstate scroll1x minus temp in maint_scroll1x */
 	short	x8b16;
 	
 	/************************/

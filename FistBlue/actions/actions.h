@@ -104,9 +104,7 @@ struct UserData_Act36 {		/* ScreenWobble */
 };
 
 struct UserData_Act3b {
-	DUAL x0080;
-	u16 x0082;
-	
+    u32 x0080;
 };
 struct UserData_Act44 {
 	char x0080;

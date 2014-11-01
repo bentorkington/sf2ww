@@ -885,12 +885,15 @@ static void sprite_coords(Object *obj, short *coordpair) {		// 7f160
 void drawsprite(Object *obj) {         /* 7edaa */
     const struct image *image;
     u16 tiles_in_image;
-    const void *tiles;		// VOID *?
     int attr;
     const short *coordlist;
 	short coordpair[2];
 	
-	
+    if (obj->Sel == 2 && obj->SubSel != 90) {
+        printf("drawprite: Sel 0x%x SubSel 0x%x\n", obj->Sel, obj->SubSel);
+        printf("ende\n");
+    }
+    
     //if(g.Debug && g.JPCost & JP_DBGSLEEP) {
 	//	dbg_draw_hitboxes((Player *)obj);
     //}
@@ -930,12 +933,10 @@ void drawsprite(Object *obj) {         /* 7edaa */
         attr ^= ((obj->ActionScript->FlipBits & 0x3) << 5);      /* apply flips */
         g.DSOffsetY += obj->ActionScript->YOffset;
     }
-    tiles = image->Tiles;
     g.DSOffsetX -= obj->DSOffsetX;   /* ply->x0052 */
-    
-	
+    	
 	//printf("drawsprite dim 0x%x tiles %d \n", image->Dimensions, tiles_in_image);
-    _draw_sprite(obj, tiles, coordlist, coordpair[0], coordpair[1], tiles_in_image, attr);
+    _draw_sprite(obj, image->Tiles, coordlist, coordpair[0], coordpair[1], tiles_in_image, attr);
 }            
 
 /*!
