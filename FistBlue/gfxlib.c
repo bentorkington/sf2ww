@@ -198,18 +198,18 @@ void printbyte (u16 **cursor, u32 *gfxcursor, u16 attr, u8 arg, u8 *printzeroes)
     printnibble(cursor, gfxcursor, attr, arg   , printzeroes);
     printnibble(cursor, gfxcursor, attr, arg>>4, printzeroes);
 }
-void printnibble (u16 **cursor, u32 *gfxcursor, u16 attr, u8 arg, u8 *printzeroes) {   /* 0x51ba */
+void printnibble (u16 **gfx_p, u32 *gfxcursor, u16 attr, u8 arg, u8 *printzeroes) {   /* 0x51ba */
 	u16 x, y;
     if(*printzeroes == 0 && (arg & 0xf) == 0) {
-        INC_GFX_CURSOR(gfxcursor, 16, 0);
+        COORDS_OFFSET(gfxcursor, 16, 0);
         return;
     }
     *printzeroes=TRUE;
 	x = *gfxcursor >> 16;
 	y = *gfxcursor & 0xffff;
-    OBJECT_DRAW(*cursor, x, y, (arg & 0xf) + SF2_TILE_OBJ_HEXCHARS, attr);
-    INC_GFX_CURSOR(gfxcursor, 16, 0);
-    OBJ_CURSOR_BUMP(*cursor);
+    OBJECT_DRAW(*gfx_p, x, y, (arg & 0xf) + SF2_TILE_OBJ_HEXCHARS, attr);
+    COORDS_OFFSET(gfxcursor, 16, 0);
+    OBJ_CURSOR_BUMP(*gfx_p);
 }
 
 
@@ -226,7 +226,7 @@ void DrawTileLine(u16 *gfx_p, const u16 *source, int x, int y) {	//5de2
     while(source[i]) {
         OBJECT_DRAW(gfx_p, CP_X , CP_Y, source[i], attr);
 		OBJ_CURSOR_BUMP(gfx_p);
-		INC_GFX_CURSOR(&cp, 16, 0);
+		COORDS_OFFSET(&cp, 16, 0);
         i++;
     }
 }           
@@ -236,8 +236,8 @@ static void _putchar(u16 **cursor, u32 *gfxcursor, u16 arg, u16 attr) { /* 521a 
 	x = *gfxcursor >> 16;
 	y = *gfxcursor & 0xffff;
 	
-    OBJECT_DRAW(*cursor, x, y , arg & 0xff + SF2_TILE_OBJ_ASCII, attr);  /* main charset */ 
-    INC_GFX_CURSOR(gfxcursor, 12,0);
+    OBJECT_DRAW(*cursor, x, y , arg & 0xff + SF2_TILE_OBJ_ASCII_12X12, attr);  /* main charset */ 
+    COORDS_OFFSET(gfxcursor, 12,0);
     OBJ_CURSOR_BUMP(cursor);
 }
 static void _putword(u16 **cursor, u32 *gfxcursor, u16 arg, u16 attr){		//5208
@@ -249,6 +249,9 @@ void _putlong(u16 **cursor, short x, short y, int arg, short attr) {	//51fe
     _putword(cursor, &gfxcursor, arg >> 16   , attr);
     _putword(cursor, &gfxcursor, arg & 0xffff, attr);
 }
+/*!
+ Print number in 12-pixel wide digits
+ */
 void sub_516a(u16 **gfx_p, u32 *cp_p, u8 d0, short *leading_zero, u16 d3 ) {		// 516a
 	u32 cp;
 	if (*leading_zero == 0) {
@@ -256,16 +259,16 @@ void sub_516a(u16 **gfx_p, u32 *cp_p, u8 d0, short *leading_zero, u16 d3 ) {		//
 			*leading_zero = 1;
 		} else {
 			*leading_zero = 0;
-			INC_GFX_CURSOR(cp_p, 12, 0);
+			COORDS_OFFSET(cp_p, 12, 0);
 			return;
 		}
 	}
 	
 	cp = *cp_p;
-	OBJECT_DRAW(*gfx_p, CP_X, CP_Y, 0x80b0 + (d0 & 0xf),d3);
+	OBJECT_DRAW(*gfx_p, CP_X, CP_Y, SF2_TILE_OBJ_ASCII_12X12 + '0' + (d0 & 0xf),d3);
 	OBJ_CURSOR_BUMP(*gfx_p);
 	/* todo: and other buffer */
-	INC_GFX_CURSOR(cp_p, 12, 0);	
+	COORDS_OFFSET(cp_p, 12, 0);	
 }
 
 static void sub_5152(u16 **cursor, u32 *gfxcursor, u16 arg, u16 attr) {
@@ -292,28 +295,28 @@ void sub_5162(u16 **gfx_p, u32 *cp, u8 d0, short *d2, u16 d3) {
 
 void print_bonusremaining(void) {		// 5248
 	u32 coords;
-	u16 *cur;
+	u16 *gfx_p;
 	u8 printzeroes;
 	
 	printzeroes = TRUE;
 	
 	coords = MakePointObj(176, 208);
-	OBJ_CURSOR_SET(cur, 14);			/* 0x910070 */
+	OBJ_CURSOR_SET(gfx_p, 14);			/* 0x910070 */
 	
-	printnibble(&cur, &coords, PALETTE_0D, g.x8ab9 >> 4, &printzeroes);	/* number of barrels remaining */
-	printnibble(&cur, &coords, PALETTE_0D, g.x8ab9     , &printzeroes);
+	printnibble(&gfx_p, &coords, PALETTE_0D, g.x8ab9 >> 4, &printzeroes);	/* number of barrels remaining */
+	printnibble(&gfx_p, &coords, PALETTE_0D, g.x8ab9     , &printzeroes);
 }
 void print_timeremaining(void) {		//5260
 	u32 coords;
-	u16 *cur;
+	u16 *gfx_p;
 	u8 printzeroes;
 	
 	printzeroes = TRUE;
 	
 	coords = MakePointObj(176, 208);
-	OBJ_CURSOR_SET(cur, 14);			/* 0x910070 */
-	printnibble(&cur, &coords, PALETTE_0D, g.TimeRemainBCD >> 4, &printzeroes);
-	printnibble(&cur, &coords, PALETTE_0D, g.TimeRemainBCD     , &printzeroes);
+	OBJ_CURSOR_SET(gfx_p, 14);			/* 0x910070 */
+	printnibble(&gfx_p, &coords, PALETTE_0D, g.TimeRemainBCD >> 4, &printzeroes);
+	printnibble(&gfx_p, &coords, PALETTE_0D, g.TimeRemainBCD     , &printzeroes);
 }
 	
 
@@ -563,7 +566,7 @@ void fight_player_names() {			// 961a
 	u16 *gfx_p;
 	
 	if (g.OnBonusStage == FALSE || g.Player1.Human) {
-		OBJ_CURSOR_CPS(gfx_p, 0x9100e0);
+		OBJ_CURSOR_SET(gfx_p, 28);
 		if (g.Version == VERSION_JAP) {
 			DrawFighterNameAt(gfx_p, 32, 208, PLAYER1, player_names_japan);
 		} else {
@@ -571,7 +574,7 @@ void fight_player_names() {			// 961a
 		}
 	}
 	if (g.OnBonusStage == FALSE || g.Player2.Human) {
-		OBJ_CURSOR_CPS(gfx_p, 0x910128);
+		OBJ_CURSOR_SET(gfx_p, 37);
 		if (g.Version == VERSION_JAP) {
 			DrawFighterNameAt(gfx_p, data_969e[g.Player2.FighterID], 208, PLAYER2, player_names_japan);
 		} else {

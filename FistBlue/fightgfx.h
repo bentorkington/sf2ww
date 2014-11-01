@@ -8,7 +8,7 @@
  */
 
 /* fightgfx.c */
-void draw_peacesigns(void);
+void draw_victorysigns(void);
 void check_newtopscore(void);
 void init_fightgfx(void);
 void bonus_init_player(Player *ply);

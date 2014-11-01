@@ -74,10 +74,38 @@ typedef enum {
 
 #define SF2_TILE_SC1_ASCII			0x4000
 
-#define SF2_TILE_OBJ_2ASCII			0x8000
-#define SF2_TILE_OBJ_ASCII			0x8080
+/* SF2 Tiles 0x8000 - 810f
+ 8000-807f ASCII table of 8x8 chars, with
+            00-0f "0" to "F"
+            10-13 four 8x8 blocks in various colours
+            14    bold 16x16 square
+            15    mouse-like pointer
+            16    thin 16x16 square
+            17    thin 8x8 square
+            18    bold 16x16 square with bold dot in center
+            19    upper-left frame corner
+            1a    lower-left frame corner
+            1b    upper-right frame corner
+            1c    lower-right frame corner
+            1d    center-cross
+            1e    unusual 8x8 char
+            1f    unusual 8x8 char
+            20-7f normal ASCII table, square brackets are instiguishable from parentheses
+                  underscore is indistinguishable from hyphen
+  8080-80ff Another ASCII table, similar to above except 12x12 chars, and:
+             10-14 five different colours this time
+             15-1d nothing
+ 
+  8100-810f large "0" to "F"
+ 
+ */
+ 
+
+#define SF2_TILE_OBJ_ASCII_8X8        0x8000
+#define SF2_TILE_OBJ_ASCII_12X12      0x8080
+
 #define SF2_TILE_OBJ_HEXCHARS		0x8100
-#define SF2_TILE_OBJ_PEACE			0x815f
+#define SF2_TILE_OBJ_VICTORY		0x815f
 #define SF2_TILE_OBJ_DOTCLOTH	   0x4
 
 #define TILE_FRAMECORNER2	0x7fd4

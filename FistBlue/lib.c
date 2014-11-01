@@ -894,13 +894,13 @@ u16  *coords_scroll1(short x, short y){	/* 40bc: defines SCR1_CURSOR_SET */
 	y = ~y;
 	return gemu.Tilemap_Scroll1[ ((y & 0x100)<<3) | ((y & 0xf8)>>3) | ((x & 0x1f8)<<2) ];
 }
-u16 *coords_scroll2(short x, short y){	/* 40e8 */
+u16 *coords_scroll2(short x, short y){	/* 40e8 defines SCR2_CURSOR_SET*/
 	// u16       yyxx xxxx yyyy[2]    4y * 64x * 16y * 2words * u16  tiles 16x16
 	// void 00yy xxxx xxyy yy00		  rowmask 0x0fc0
 	y = ~y;
 	return gemu.Tilemap_Scroll2[((y & 0x300 )<< 2) + (x & 0x3f0) + ((y & 0xf0) >> 4)];
 }
-u16 *coords_scroll3(short x, short y){	/* 4114 */
+u16 *coords_scroll3(short x, short y){	/* 4114 defines SCR3_CURSOR_SET*/
 	// u16       yyyx xxxx xyyy[2]    8y * 64x * 8y * 2words * u16  tiles 32x32
 	// void 00yy yxxx xxxy yy00       rowmask 0x03e0
 	y = ~y;
@@ -1145,7 +1145,7 @@ static void _LBPrintTicker(u32 *coords, u8 a) {		//52ac print time remaining
 	u16 *gp;
 	OBJ_CURSOR_SET(gp, 14);
 	sub_52bc(gp, *coords >> 16, *coords & 0xffff,a >> 4);
-	INC_GFX_CURSOR(coords, 16, 0);
+	COORDS_OFFSET(coords, 16, 0);
 	OBJ_CURSOR_SET(gp, 15);
 	sub_52bc(gp, *coords >> 16, *coords & 0xffff,a );
 }

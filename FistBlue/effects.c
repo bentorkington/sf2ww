@@ -384,15 +384,14 @@ void syslib_00 (void) {					// e12
 static void sub_4cb2() {
 	u16 *gfx_p;
 	if (g.Player1.Alive) {
-		OBJ_CURSOR_CPS(gfx_p, 0x910000);
+        OBJ_CURSOR_SET(gfx_p, 0);
 		gfxrepeat(gfx_p, 48, 0, 0);
 	}
 	if (g.Player2.Alive) {
-		OBJ_CURSOR_CPS(gfx_p, 0x910038);
-
+		OBJ_CURSOR_SET(gfx_p, 7);
 		gfxrepeat(gfx_p, 48, 0, 0);
 	}
-	OBJ_CURSOR_CPS(gfx_p, 0x910070);
+	OBJ_CURSOR_SET(gfx_p, 14);
 	gfxrepeat(gfx_p, 1928, 0, 0);
 }
 
@@ -409,7 +408,7 @@ void syslib_0c (void) {
 			gfxrepeat(CPS_VIDEO_SCROLL3, 0x1000, GFXROM_SCROLL3      , 0);
 			g.x02b8 = 0;
 			g.x02ba = 0;
-			sub_4cb2();	/* also do other buffer */
+			sub_4cb2();	/* todo: also do other buffer? */
 			SETSLEEP(1);
 			clear_rowscroll();
 			SETSLEEP(4 + task->params.Param2);
@@ -509,13 +508,15 @@ void syslib_0c (void) {
 			
 			do { sf2sleep(1); } while (es.FadeScroll3 != 0xffffffff);
 			_clear_scr23_wait_die(task);
+            break;
+        FATALDEFAULT;
     }
 }
 
-static void sub_507a(u16 **gfx_p, u8 d0, short *d2, u16 d3) {		//507a
-	if (*d2 == 0) {
+static void _draw_bcd_char_scr1(u16 **gfx_p, u8 d0, short *drawZeroes, u16 d3) {		//507a
+	if (*drawZeroes == FALSE) {
 		if (d0 & 0xf) {
-			*d2 = 1;
+			*drawZeroes = TRUE;
 		} else {
 			SCR1_DRAW_TILE(*gfx_p, GFXROM_SCROLL1 + 0x20, d3);
 			SCR1_CURSOR_BUMP(*gfx_p, 1, 0);
@@ -526,9 +527,15 @@ static void sub_507a(u16 **gfx_p, u8 d0, short *d2, u16 d3) {		//507a
 	SCR1_DRAW_TILE(*gfx_p, GFXROM_SCROLL1 + (d0 & 0xf),d3);
 	SCR1_CURSOR_BUMP(*gfx_p, 0, 1);
 }
-static void sub_5072(u16 **gfx_p, short d0, short d2, u16 d3) {		//5072
-	sub_507a(gfx_p, d0 >> 4, &d2, d3);
-	sub_507a(gfx_p, d0,      &d2, d3);
+/*!
+ Draw a pair of BCD digits to SCR1
+ SF2UA: 0x5072
+ attr (%d3) the palette and attribute
+ leadingZeroes (%d2) BOOL incdicating if a leading zero should be printed
+ */
+static void sub_5072(u16 **gfx_p, short d0, short leadingZeroes, u16 attr) {		//5072
+	_draw_bcd_char_scr1(gfx_p, d0 >> 4, &leadingZeroes, attr);
+	_draw_bcd_char_scr1(gfx_p, d0,      &leadingZeroes, attr);
 }
 
 
@@ -543,7 +550,7 @@ static void syslib_04(void) {		// SL04	 597a version string
  High score table / number of credits
  SF2UA: 0x4f9e
  */
-static void syslib_10(void) {		// 4f9e
+static void syslib_10(void) {
 	u16 *gfx_p;
     int i;
 	Task *task = &Exec.Tasks[Exec.CurrentTask];
@@ -555,15 +562,14 @@ static void syslib_10(void) {		// 4f9e
 			task->params.Param0 &= 0xff00;
 			task->params.Param0 |= g.TwoCreditsToStart ? 8 : 7;
 			sub_5982(task);
-			SCR1_CURSOR_CPS(gfx_p, 0x90d670);
+			SCR1_CURSOR_CPS(gfx_p, 0x90d670);  // y=19 x=5
 			sub_5072(&gfx_p, g.NumberCredits, 0, 0);
 			DIEFREE;
 			break;
 		case 2:
 			QueueEffect(0x180f, 0);
-            OBJ_CURSOR_CPS(gfx_p, 0x910120);
+            OBJ_CURSOR_SET(gfx_p, 36);
 			for (i=4; i>=0; --i) {
-                printf("printing %d\n", i);
 				printlonghex2(&gfx_p, 0x80, 0xc0 - (i * 32), g.HiScoreTable[i].score, 0);
 			}
 			for (i=4; i>=0; --i) {
@@ -623,7 +629,7 @@ SYSLIB18LOOP:
 			data += 5;
 		} else {
 			if (*(data) != 0x20) {
-				OBJECT_DRAW((gfx_p), (cp >> 16), (cp & 0xffff), (data[0] + SF2_TILE_OBJ_ASCII), palette);
+				OBJECT_DRAW((gfx_p), (cp >> 16), (cp & 0xffff), (data[0] + SF2_TILE_OBJ_ASCII_12X12), palette);
 				OBJ_CURSOR_BUMP(gfx_p);
 			}
 			cp += 0xc0000;
@@ -834,16 +840,16 @@ static void syslib_20(void) {		//5410 increase player score
 		}
 		//if (task->params.Param1 == 0) {
 			if (ply->Side == 0) {
-				OBJ_CURSOR_CPS(gfx_p, 0x910000);
+				OBJ_CURSOR_SET(gfx_p, 0);
 				sub_54bc(&gfx_p, 32, 240, (u8 *)&ply->Score);
 			} else {
-				OBJ_CURSOR_CPS(gfx_p, 0x910038);
+				OBJ_CURSOR_SET(gfx_p, 7);
 				sub_54bc(&gfx_p, 296, 240, (u8 *)&ply->Score);
 			}
 		//}
 		if (g.TopScore < ply->Score) {
 			g.TopScore = ply->Score;
-			OBJ_CURSOR_CPS(gfx_p, 0x910098);
+			OBJ_CURSOR_SET(gfx_p, 19);
 			sub_54bc(&gfx_p, 164, 240, (u8 *)&g.TopScore);
 		}
 	}

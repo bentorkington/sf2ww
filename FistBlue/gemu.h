@@ -15,7 +15,8 @@
 #define OBJECT_PDRAW		gemuObjectDrawPoint			
 #define OBJECT_DRAW_ID		gemuObjectDrawID
 #define OBJECT_DRAW_COORDS	gemuObjectDrawIDCoords 
-#define INC_GFX_CURSOR		gemuIncGfxCursor
+#define COORDS_OFFSET		gemuIncGfxCursor        // XXX deprecated
+#define COORDS_OFFSET		gemuCoordOffset
 #define OBJECT_DRAW_SINGLE	gemuObjectDraw
 #define WRITE_END_TAG		gemuWriteEndTag(DSObjCur_g);
 
@@ -63,12 +64,27 @@ gfx_p += x * 8 * 2;
 #pragma mark Object
 // OBJECT, sprites are in X, Y, tile, attr format, each u16
 
-#define OBJ_CURSOR_SET(gfx_p, id) \
-gfx_p = gemuObjCursorSet(id); 
 
+//#define OBJ_CURSOR_SET(gfx_p, id) \
+//gfx_p = gemuObjCursorSet(id);
+
+
+#ifdef CPS
+#define OBJ_CURSOR_SET(gfx_p, slot)                    \
+    gfx_p = (void *)(0x910000 + (slot) * 8);
+#else
+#define OBJ_CURSOR_SET(gfx_p, id)                       \
+    gfx_p = gemuObjCursorSet(id);
+#endif
+
+
+#ifdef CPS
+#define OBJ_CURSOR_CPS(gfx_p, cpsgfx_p) \
+gfx_p = cpsgfx_p;
+#else
 #define OBJ_CURSOR_CPS(gfx_p, cpsgfx_p) \
 gfx_p = gemu.Tilemap_Object[(cpsgfx_p - 0x910000) / 8];
-
+#endif
 
 #define OBJ_CURSOR_BUMP(gfx_p) \
 gfx_p += 4;
@@ -133,6 +149,7 @@ void gemuObjectDrawID(short slow, u16 x, u16 y, u16 tile, u16 attr);
 void gemuObjectDrawIDCoords(short id, u16 x, u16 y, u16 tile, u16 attr);
 
 void gemuIncGfxCursor(u32 *gfxcursor, short x, short y);
+void gemuCoordOffset(u32 *gfxcursor, short x, short y);
 void gemuWriteEndTag(u16 *slot);
 u16 *gemuObjCursorSet(short id);
 

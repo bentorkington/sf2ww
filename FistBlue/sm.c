@@ -113,7 +113,7 @@ void gamemode_fightmain (void) {
         if(g.RoundComplete) {
             g.mode2    += 2;
             g.RoundCnt++;
-            draw_peacesigns();
+            draw_victorysigns();
             all_actions_sprites();
         } else {
             redraw_fight_dsk();

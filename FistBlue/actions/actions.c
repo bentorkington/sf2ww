@@ -1108,10 +1108,10 @@ static void action_12(Object *obj) {		// "Street Fighter" logo
 
 static void sub_15dae(u16 **gfx_p, u32 cp){
 	OBJECT_DRAW(*gfx_p, CP_X, CP_Y, TILE_FRAMECORNER2, 0x1f | ATTR_X_FLIP);
-	INC_GFX_CURSOR(&cp, 0x50, 0);
+	COORDS_OFFSET(&cp, 0x50, 0);
 	OBJ_CURSOR_BUMP(*gfx_p);
 	OBJECT_DRAW(*gfx_p, CP_X, CP_Y, TILE_FRAMECORNER2, 0x1f | ATTR_NO_FLIP);
-	INC_GFX_CURSOR(&cp, 0x50, 0);
+	COORDS_OFFSET(&cp, 0x50, 0);
 }
 static void PlayerNameFirst8(u16 **gfx_p, short fighterid, int x, int y) {		// 15e3e
 	static const u16 data_15e50[8][8] = {
@@ -2208,7 +2208,7 @@ void action_1286e(Object *obj, short d0) {
 
 static void _draw_frame_corners(u16 **gfx_p, u32 cp ){	/* 15df6 */
 	OBJECT_DRAW(*gfx_p, CP_X, CP_Y, TILE_FRAMECORNER, 0x1f | ATTR_X_FLIP);
-	INC_GFX_CURSOR(&cp, 112, 0);
+	COORDS_OFFSET(&cp, 112, 0);
 	OBJECT_DRAW(*gfx_p, CP_X, CP_Y, TILE_FRAMECORNER, 0x1f | ATTR_NO_FLIP);
 }
 

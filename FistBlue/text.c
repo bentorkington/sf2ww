@@ -38,7 +38,7 @@ void sub_54bc(u16 **gfx_p, short x, short y, u8 *string) {		// 54bc
 	u32 cp = MakePointObj(x, y);
 	short leadingzero = FALSE;
 	if (*((u32 *)string) == 0) {
-		INC_GFX_CURSOR(&cp, 0x48, 0);
+		COORDS_OFFSET(&cp, 0x48, 0);
 		leadingzero = TRUE;
 		sub_516a(gfx_p, &cp, 0, &leadingzero, 13);	/* XXX really not sure where d3 (13) comes from */
 	} else {
@@ -263,7 +263,7 @@ void showtextbank1(u8 sel) {		// 568c draw text in OBJECT
 				attr = *string++;
 			} else {
 				if (ch != ' ') {	/* whitespace */
-					OBJECT_DRAW(gfx_p, x, y, ch + SF2_TILE_OBJ_2ASCII, attr);
+					OBJECT_DRAW(gfx_p, x, y, ch + SF2_TILE_OBJ_ASCII_8X8, attr);
 					/* draw in two buffers */
 					OBJ_CURSOR_BUMP(gfx_p);
 				}

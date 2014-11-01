@@ -57,7 +57,7 @@ void drawObj1String(GLint x, GLint y, GLint height, char *string){
 	glRasterPos2f(x, y);
 	len = (int) strlen(string);
 	for (i = 0; i < len; i++) {
-		DrawTileObj(string[i] + SF2_TILE_OBJ_ASCII, 0, x + (i * (height - 2)), y, height, height);
+		DrawTileObj(string[i] + SF2_TILE_OBJ_ASCII_12X12, 0, x + (i * (height - 2)), y, height, height);
 	}
 }
 
@@ -204,7 +204,7 @@ void DrawTitleBar(LBView *view) {
 	drawObj1String (0, 1, WIN_TITLE_HEIGHT - 2, outString);
 }	
 void DrawWindowButton(LBView *view) {
-	DrawTileObj(SF2_TILE_OBJ_PEACE, 0, 0, 0, view->rect.width, view->rect.height);	
+	DrawTileObj(SF2_TILE_OBJ_VICTORY, 0, 0, 0, view->rect.width, view->rect.height);
 }
 void DrawNull(LBView *view) {
 }
