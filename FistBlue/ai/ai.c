@@ -8,9 +8,10 @@
  */
 
 
-//#define DEBUG_AI TRUE
 
 #include <stdio.h>
+
+#include "sf2.h"
 
 #include "sf2const.h"
 
@@ -39,6 +40,16 @@
 
 #include "ai.h"
 #include "aidata.h"
+
+
+#define debug_print(level, fmt, ...) \
+do { if (FISTBLUE_DEBUG_AI >= level) fprintf(stderr, "%s:%d:%s(): " fmt, "AI", \
+__LINE__, __func__, __VA_ARGS__); } while (0)
+
+#define DEBUG_AI_STR(level, string) \
+do { if (FISTBLUE_DEBUG_AI >= level) fprintf(stderr, "%s:%d:%s():%s ", "AI", \
+__LINE__, __func__, string); } while (0)
+
 
 int debug_ai_recurse;		// used for debugging how deep the AI recurse loop goes
 extern struct game g;
@@ -265,14 +276,14 @@ static void _AISetAgg1(Player *ply, const AIAggTable **a2) {		// 2b7ea
 	
 	ply->AITypeAgg1 = *ply->AIStratAgg1;
 	ply->AIStratIndexAgg1 = 1;	
-#ifdef DEBUG_AI
+#if FISTBLUE_DEBUG_AI >= 2
 	int i;
 	
-	printf("AISetAgg1 side %d @ 0x%08x 0x%02x ply->AITypeAgg1 = 0x%x\n",ply->Side,ply->AIStratAgg1, ply->x023e,ply->AITypeAgg1);
+	debug_print(2, "side %d @ 0x%08x 0x%02x ply->AITypeAgg1 = 0x%x\n",ply->Side,ply->AIStratAgg1, ply->x023e,ply->AITypeAgg1);
 	for (i=0; i<32; i++) {
 		printf("%02x ", ply->AIStratAgg1[i]);
 	}
-	printf("\n");
+	DEBUG_AI_STR(2, "\n");
 #endif
 }
 
@@ -280,14 +291,14 @@ void AIInitPlayer(Player *ply) {		//2b780
 	struct dualptr DP;
 	ply->AIStartAgain=ply->RoughTimeRemain;
 	DP=_AILookupStrategy(ply);
-#ifdef DEBUG_AI
+#if FISTBLUE_DEBUG_AI >= 2
 	int i;
 
-	printf("AIInitPlayer a1: 0x%08x  a2: 0x%08x\n\tDUMP A1> ", DP.a1, DP.a2);
+	debug_print(2, "a1: 0x%08x  a2: 0x%08x\n\tDUMP A1> ", DP.a1, DP.a2);
 	for (i=0; i<32; i++) {
 		printf("%02x ", DP.a1[i]);
 	}
-	printf("\n");
+	DEBUG_AI_STR(2, "\n");
 #endif
 	
 	AISetAgg0(ply, DP.a1, DP.a2);
@@ -399,10 +410,8 @@ inline static void _AIResetState(Player *ply) {
 
 /* 2b740 AIPrepareNewState checked  */
 void AIPrepareNewState(Player *ply, short Type) {
-#ifdef DEBUG_AI	
-	printf("AIPrepareNewState side %d type %d\n",ply->Side, Type);
-#endif	
-	switch (Type) {	/* a is first char of AI Script, [0,2,4] */
+	debug_print(2, "side %d type %d\n",ply->Side, Type);
+    switch (Type) {	/* a is first char of AI Script, [0,2,4] */
 		case 0:
 			if(ply->AIForceDefensive || ply->AIStartAgain == ply->RoughTimeRemain) {
 				ply->AIMode2 = 0;
@@ -441,9 +450,7 @@ static short _AIShouldGoAggressive(Player *ply) {
 	) {
 		return FALSE;
 	} else {
-#ifdef DEBUG_AI
-		printf("AIShouldGoAggressive side %d TRUE\n", ply->Side);
-#endif
+		debug_print(1, "side %d TRUE\n", ply->Side);
 		return TRUE;
 	}
 }
@@ -524,9 +531,7 @@ static short _AIHasReachedWalkTarget(Player *ply) {
 		ply->XPI - ply->AIWalkTarget < -4) {		
 		return 0;
 	} else {
-#ifdef DEBUG_AI
-		printf("AIHasReachedWalkTarget: TRUE side %d\n", ply->Side);
-#endif
+		debug_print(3, "TRUE side %d\n", ply->Side);
 		return 1;
 	}
 }
@@ -608,9 +613,7 @@ void AIBeginDef(Player *ply) {
 		ply->AIMode1 += 2;
 		_AICheckUpdate(ply);
 		if (ply->AISaveState < 0) {
-#ifdef DEBUG_AI 
-			printf("_AIBeginDef: Restoring saved state\n");
-#endif
+			DEBUG_AI_STR(2, "_AIBeginDef: Restoring saved state\n");
 			/* 2ad82 - restore params instead */
 			ply->AIStrategy = ply->x0209;
 			ply->AIParam1 = ply->x020a;
@@ -639,8 +642,8 @@ static void _AIFinish(Player *ply) {		// 2b6c6 was _AINew201
 }
 
 static void _AINewGoAggressive(Player *ply) {		// 2bf90
-#ifdef DEBUG_AI
-	printf("_AINewGoAggressive side %d\n",ply->Side);
+#ifdef FISTBLUE_DEBUG_AI
+	debug_print(3, "side %d\n",ply->Side);
 #endif
 	ply->AIAgressive = 2;
 	ply->AIAllowAggressive = ply->AIAggTimer0 = ply->AIAggTimer1 = 0;
@@ -709,7 +712,7 @@ static void _AIStratStandStill(Player *ply) {		/* 2ae50 standing still*/
 	switch (ply->AIMode2) {
 		case 0:
 			/* 2ae68 */
-			printf("standstill: %02x %02x\n", ply->AIParam1, ply->AIParam2);
+			debug_print(4, "%02x %02x\n", ply->AIParam1, ply->AIParam2);
 			NEXT(ply->AIMode2);
 			ply->CompDoJump       = 
 			ply->AISigAttack      = 
@@ -933,7 +936,7 @@ static void _AIStratLongWalk(Player *ply) { // 2b19a AIStrategy approach / retre
 	int temp,temp2;
 	switch (ply->AIMode2) {
 		case 0:
-			printf("longwalk: %02x %02x\n", ply->AIParam1, ply->AIParam2);
+			debug_print(4, "%02x %02x\n", ply->AIParam1, ply->AIParam2);
 
 			NEXT(ply->AIMode2);
 			ply->CompDoJump  = FALSE;
@@ -1087,9 +1090,7 @@ static void _AINextStrategyDef(Player *ply) {		/* checked */
 	
 	Strategies = ply->AIStratDef;
 	Index = ply->AIStratIndexDef++;
-#ifdef DEBUG_AI
-	printf("AINextStrategyDef side %d Index %d\n", ply->Side,Index);
-#endif
+	debug_print(4, "side %d Index %d\n", ply->Side, Index);
 	if(Strategies[Index] & 0x80) {
 		if (Strategies[Index] == 0x80) {
 			ply->AISaveState = -1;			/* cause AIBeginDef to restore the state */
@@ -1157,9 +1158,7 @@ static char _AIReadByte(Player *ply) {		// 2bf02
 }
 
 static void _AILoadStrategyParams(Player *ply, unsigned char arg_d0) {	// 2b93e
-#ifdef DEBUG_AI
-	printf("_AILoadStrategyParams side %d arg %d (", ply->Side, arg_d0);
-#endif
+	debug_print(4, "side %d arg %d\n", ply->Side, arg_d0);
 	
 	if(arg_d0 == STRAT_STANDSTILL) {
 		/* 2b95a */
@@ -1200,13 +1199,10 @@ static void _AILoadStrategyParams(Player *ply, unsigned char arg_d0) {	// 2b93e
 				panic(0);
 		}
 	}
-#ifdef DEBUG_AI
-	printf(")\n");
-#endif
 }
 
 static void _AISetStrategy(Player *ply, char arg_d0) {		// 2b93a
-#ifdef DEBUG_AI
+#if FISTBLUE_DEBUG_AI >= 2
 	static const char *strats[]={
 		"STANDSTILL",
 		"SHORTWALK",
@@ -1218,7 +1214,7 @@ static void _AISetStrategy(Player *ply, char arg_d0) {		// 2b93a
 		"STUN",
 	};
 	
-	printf ("AISetStrategy side %d ST 0x%x %s\n",ply->Side, arg_d0, strats[arg_d0/2]);
+	debug_print (2, "side %d ST 0x%x %s\n",ply->Side, arg_d0, strats[arg_d0/2]);
 #endif	
 	
 	if (ply->AIMode2 != 0) {
@@ -1248,10 +1244,8 @@ static void _AIGotoNextStrategy(Player *ply) {		/* 2b8da was comp_main_exit */
 		if (Strategies[Index] & 0x80) {
 			_AIDoStrategy(ply, Strategies[Index]);
 		} else {
-#ifdef DEBUG_AI
-			printf("AIGotoNextStrategy side %d @0x%08x[%d]\n",ply->Side,
+			debug_print(3, "side %d @0x%08x[%d]\n",ply->Side,
 				   (unsigned int)Strategies, Index);
-#endif
 			_AISetStrategy(ply, Strategies[Index]);
 		}
 	}
@@ -1284,23 +1278,14 @@ static void _AISetScriptEnd(Player *ply) {			/* 2b932 */
 	ply->AISaveState = -1;
 }
 static void _AISearchA8IfOppXLessEqual(Player *ply) {				//2bc2e
-#ifdef DEBUG_AI
-	printf("AISearchA8IfOppXLessEqual: ");
-#endif
+	DEBUG_AI_STR(4, "AISearchA8IfOppXLessEqual: ");
 	if(ply->OppXDist <= (_AIReadByte(ply) & 0xff)) {
 		_AISearchStrategy(ply, AIB_LABEL_A8);
 	}
-#ifdef DEBUG_AI
-	printf("\n");
-#endif
-}	
+}
 // 2bc4e
 static void _AISearchACIfOppJump(Player *ply) {
 	short temp;
-#ifdef DEBUG_AI
-	printf("AISearchACIfOppJump: ");
-#endif
-
 	temp = _AIReadByte(ply);
 	if (ply->Opponent->Airborne && ply->Opponent->YPI <= ply->Opponent->OldOldY.part.integer) {
 		if (ply->OppYDist > ply->Opponent->OldOldY.part.integer) {
@@ -1309,20 +1294,13 @@ static void _AISearchACIfOppJump(Player *ply) {
 		}
 	}
 	_AISearchStrategy(ply, AIB_LABEL_AC);
-#ifdef DEBUG_AI
-	printf("\n");
-#endif
-
-
-}	
+}
 // 2bc8a
 static void _AIB_WITHIN(Player *ply) {
 	int found,distance,selector;
 	selector = _AIReadByte(ply);
 	distance = _AIReadByte(ply);
-#ifdef DEBUG_AI
-	printf("_AIB_WITHIN: %d, %d ", selector, distance);
-#endif
+	debug_print(4, "_AIB_WITHIN: %d, %d\n", selector, distance);
 	
 	switch (selector) {
 		case 0:
@@ -1363,27 +1341,18 @@ static void _AIB_WITHIN(Player *ply) {
 	if (found == FALSE) {
 		_AISearchStrategy(ply, AIB_BB2);
 	}
-#ifdef DEBUG_AI
-	printf("\n");
-#endif
-
-}	
+}
 
 /* 2ba20 process strategy with high bit set, one caller */
 static void _AIDefHigh(Player *ply, short d0){
 	int temp;
-#ifdef DEBUG_AI
-	printf("AIDefHigh: ");
-#endif
 	switch (d0 & 0x7f) {
 		case 0:		case 2:		case 4:		case 6:				/* 80,82,84,86 */
 		case 0xa:	case 0xc:	case 0xe:	
 		case 0x18:	case 0x1a:			/* 8a,8c,96,98 */
 		case 0x1c:												/* 9a */
 			_AISetScriptEnd(ply);		// not actually script end, just tags, set AISaveState=-1
-#ifdef DEBUG_AI
-			printf("LABEL %x\n", d0);
-#endif
+			debug_print(4, "LABEL %x\n", d0);
 			break;
 		case 8:			// 2baf4, 0x88	Disable Collisions
 			ply->TCollDis = 1;
@@ -1450,7 +1419,6 @@ static void _AIDefHigh(Player *ply, short d0){
 			break;
 		FATALDEFAULT;
 	}
-	printf("\n");
 }
 
 // ForceDefensive High-Bit
@@ -1482,7 +1450,7 @@ static void _AIExit3(Player *ply) {		/* 2ba7c */
 	if (ply->AIAgressive != 0) {
 		_AIExit1(ply);				/* re-init */
 	} else {
-	printf("AIExit3 side %d going aggressive\n",ply->Side);
+	debug_print(2, "side %d going aggressive\n",ply->Side);
 
 	ply->AIAggTimer0 = ply->AIAllowAggressive = ply->AIAggTimer1 = 0;
 	ply->AIAgressive      = 2;
@@ -1505,10 +1473,9 @@ static void _AIExit4(Player *ply) {	/* 2baae */
 	}
 }	
 static void _AIExit5(Player *ply) {	/* 2bb14 */
-	printf("AIExit5: ");
 	ply->AITimerThreatCheck = 0;
 	ply->x0276 = _AIReadByte(ply);		// unused
-	printf("0x%02x\n",ply->x0276);
+	debug_print(2, "0x%02x\n",ply->x0276);
 }
 
 #pragma mark ========
@@ -1635,7 +1602,7 @@ static void _AISearch94NotDizzy(Player *ply) {
 // 2bbd8 checked 
 static void _AISearchA0DistLessOrEqual(Player *ply) {
 	short dist = _AIReadByte(ply);
-	printf("AISearchA0DistLessOrEqual: side %d distance 0x%x \n", ply->Side, dist);
+	debug_print(2, "side %d distance 0x%x \n", ply->Side, dist);
 	if (ply->OppXDist >= dist) {
 		_AISearchStrategy(ply, 0xa0);
 	}
@@ -1699,9 +1666,7 @@ static void _AIGoToAgg1(Player *ply) {			//2bb84
 
 // 2bbfa
 static void _AISearchA4IfOppJump(Player *ply) {
-	printf("AISEarchA4IfOppJump: ");
-	
-	short temp;
+    short temp;
 	temp = _AIReadByte(ply) & 0xff;
 	if(ply->Opponent->Airborne && ply->Opponent->YPI >= ply->Opponent->OldOldY.part.integer) {
 		if (ply->OppYDist > temp) {		/* u16 */
@@ -1709,7 +1674,6 @@ static void _AISearchA4IfOppJump(Player *ply) {
 		}
 	}
 	_AISearchStrategy(ply, 0xa4);
-	printf("\n");
 
 }	
 

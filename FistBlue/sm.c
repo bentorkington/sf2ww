@@ -1,5 +1,7 @@
 /* sf2 sm.c  State Managers */
 
+#include "sf2.h"
+
 #include	"sf2types.h"
 #include    "sf2macros.h"
 #include    "sf2const.h"
@@ -26,12 +28,19 @@
 #include "act2e_plane.h"
 
 #include <stdio.h>
-#define DEBUG_SM(string)        \
-		printf ("SM:");			\
-		puts(string);			\
-		
 
 
+//#ifdef FISTBLUE_DEBUG_SM
+//#define DEBUG_SM(string)        \
+//        printf ("SM%02x/%02x/%02x/%02x/%02x/%02x/:", g.mode0, g.mode1, g.mode2, g.mode3, g.mode4, g.mode5 );			\
+//		puts(string);
+//#else
+//#define DEBUG_SM(string)
+//#endif
+
+#define DEBUG_SM(string) \
+do { if (FISTBLUE_DEBUG_SM) fprintf(stderr, "%s:%d:%s():%s\n","SM", \
+__LINE__, __func__, string); } while (0)
 
 extern Game g;
 extern struct effectstate es;
@@ -1165,7 +1174,11 @@ void task_initmachine (void) {		// 639e
 				g.WaitMode	= 0;
 				break;
 			case 2:
+#ifdef REDHAMMER
+                g.mode0 = 0x10;
+#else
 				g.mode0 +=2;
+#endif
 				decode_coincosts();
 				decode_difficulty();
 				decode_params();
