@@ -1,8 +1,6 @@
 /* sf2 lib.c */
 
-#include "sf2types.h"
-#include "sf2macros.h"
-#include "sf2const.h"
+#include "sf2.h"
 
 #include "gstate.h"
 #include "structs.h"
@@ -29,6 +27,9 @@
 #include "effects.h"
 #include "sm.h"
 
+#ifdef REDHAMMER
+#import "demo.h"
+#endif
 
 #ifdef __APPLE__
 #include <execinfo.h>
@@ -1912,6 +1913,65 @@ void boss_level_check (void) {			//2c1a
 	}
 }
 
+void task_playground(void) {
+    g.InDemo = TRUE;
+    g.CPS.DispEna = 0x12da;
+    fadenwait1();
+    sound_cq_f0f7();
+    Object *obj;
+    while (TRUE) {
+        if (g.RawButtons0Dash & 0x40 || (g.Debug & (!g.JPCost & 0x80))) {
+            //todo initTestMenu(); //207c
+        } else if (!g.FreezeMachine) {
+            switch (g.mode0) {
+                case 0:
+                    NEXT(g.mode0);
+                    g.CurrentStage = 3;
+                    g.Pause_9e1		= 0;
+                    g.Palette1		= 3;
+                    g.ActionLibSel	= 0;
+                    LBResetState();
+                    //actionlibrary();
+                    palette_macro(0x01);
+                    GSInitForStage();
+                    g.CPS.DispEna = 0x079a;
+                    
+                    //                    gstate_Scroll2.XPI =    0x0;
+                    //                    gstate_Scroll2.YPI =  0x500;
+                    //                    GSSetupScr2(&gstate_Scroll2);
+                    
+                    //                    gstate_Scroll3.XPI =    0x0;
+                    //                    gstate_Scroll3.YPI =  0x600;
+                    //                    GSSetupScr3(&gstate_Scroll3);
+                    
+                    QueueEffect(SL08 | TXTLIBA_FREE_PLAY, 0x100 | SL08_OBJ_8X8_ASCII);
+                    
+                    start_effect(0x2, 3);
+                    
+                    //                    g.CPS.Scroll1X = 0; g.CPS.Scroll1Y = 0x100;
+                    LBResetState();
+                    break;
+                case 2:
+                    obj = AllocActor();
+                    INITOBJ(obj, 6, 0);
+                    NEXT(g.mode0);
+                    proc_actions();
+                    GSMain();
+                    DSDrawAllMain();
+                    break;
+                case 4:
+                    g.CPS.Scroll2X = 320;
+                    proc_actions();
+                    GSMain();
+                    DSDrawAllMain();
+                default:
+                    break;
+            }
+            
+        }
+        sleep2();
+    }
+}
 
 
 #pragma mark Synthetics

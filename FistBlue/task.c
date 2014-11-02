@@ -11,15 +11,14 @@
 //#define SF2_UCONTEXT 1
 #endif
 
-#define DEBUG TRUE;
-
 #include <stdio.h>
-//#include <stdlib.h>
-//#include <ucontext.h>
 
-#include "sf2types.h"
-#include "sf2macros.h"
-#include "sf2const.h"
+#ifdef SF2_UCONTEXT
+#include <stdlib.h>
+#include <ucontext.h>
+#endif
+
+#include "sf2.h"
 
 #include "structs.h"
 #include "player.h"
@@ -33,11 +32,7 @@
 #endif
 
 extern Game g;
-
 struct executive_t Exec;
-
-
-
 
 #define handle_error(msg) \
 do { perror(msg); exit(EXIT_FAILURE); } while (0)
@@ -75,8 +70,12 @@ void diefree() {
 	--Exec.NextFreeTask;
 	Exec.NextFreeTask[0] = task;
 	++Exec.FreeTasks;
+#ifdef REDHAMMER
 	RHKill(task);
+#endif
+#ifdef CPS
 	/* would swapstacks() here on 68k */
+#endif
 }
 
 	
@@ -92,13 +91,13 @@ void wrap_trap7(void *code, u16 p1, u16 p2) {
 		task->params.Param0 = p1;
 		task->params.Param1 = p2 >> 8;
 		task->params.Param2 = p2 & 0xff;
-#ifndef CPS
+#ifdef REDHAMMER
 		task->name = "Effect";
 		task->signal = "-----";
 		RHCreateThread(task->RHThreadID);
 #endif
 	} else {
-#ifndef CPS
+#ifdef REDHAMMER
 		printf("trap7 Failed!\n");
         print_task_table();
 #endif
@@ -106,7 +105,7 @@ void wrap_trap7(void *code, u16 p1, u16 p2) {
 }
 
 
-#ifndef CPS
+#ifdef REDHAMMER
 void print_task_table(void) {
 	for (int i=0; i<MAX_TASKS; ++i) {
 		if (Exec.Tasks[i].status != TASK_EMPTY) {
@@ -153,7 +152,7 @@ void sf2sleep (int duration) {		// see asm wrap_n_trap3
 		movem	(%sp)+,xxx
 	}
 #endif
-#ifndef CPS
+#ifdef REDHAMMER
 	RHWait(&Exec.Tasks[Exec.CurrentTask]);
 #endif
 }
@@ -172,10 +171,13 @@ void exit_ready (void) {
         handle_error("swapcontext");
     }
 #endif
-#ifndef CPS
+#ifdef REDHAMMER
 	RHWait(&Exec.Tasks[Exec.CurrentTask]);
-#endif	//CPS
-}    
+#endif
+#ifdef CPS
+    // todo
+#endif
+}
 
 
 void task_die(void) {
@@ -186,7 +188,7 @@ void task_die(void) {
 		handle_error("swapcontext");
 	}
 #endif
-#ifndef CPS
+#ifdef REDHAMMER
 	RHExit(&Exec.Tasks[Exec.CurrentTask]);
 #endif
 }
@@ -194,7 +196,7 @@ void task_die(void) {
 void task_kill(unsigned short id) {
 	printf("Task_kill %d\n", id);
 	Exec.Tasks[id].status = TASK_EMPTY;
-#ifndef CPS
+#ifdef REDHAMMER
 	RHKill(&Exec.Tasks[id]);
 #endif
 }
@@ -206,7 +208,7 @@ void die_top8(void) {
 	for (i=8; i<16; i++) {
 		if (Exec.Tasks[i].status != TASK_EMPTY) {
 			
-#ifndef CPS
+#ifdef REDHAMMER
 			RHKill(&Exec.Tasks[i]);
 #endif
 			
@@ -240,7 +242,7 @@ void create_task(void *task, short taskid, u16 param, u8 param1, u8 param2) {
     Exec.Tasks[taskid].params.Param0  = param;
     Exec.Tasks[taskid].params.Param1 = param1;
     Exec.Tasks[taskid].params.Param2 = param2;	
-#ifndef CPS
+#ifdef REDHAMMER
 	RHCreateThread(taskid);
 #endif
 }

@@ -3,6 +3,8 @@
 
 /* lib.c */
 
+void task_playground(void);
+
 void sleep2(void);
 void init_fight_vars(void);
 void newgame(void);

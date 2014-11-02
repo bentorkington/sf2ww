@@ -28,7 +28,7 @@
     short			EnergyDash;				// 2c
     char			x002e;
 	char			x002f;
-    const VECT16	*Path;					/* 0030 XXX special type for path */
+    const VECT16	*Path;					/* 0030 */
     const struct hitboxes *HitBoxes;		/* 0034 */
     signed char		*MoreBoxes;				/* 0038 bullshit */
     FIXED8_8		VelX;					// 3c

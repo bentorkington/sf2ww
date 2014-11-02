@@ -2,10 +2,6 @@
 
 #include "sf2.h"
 
-#include	"sf2types.h"
-#include    "sf2macros.h"
-#include    "sf2const.h"
-
 #include	"gstate.h"
 #include    "structs.h"
 #include	"player.h"
@@ -1157,7 +1153,7 @@ void gamemode_24I (void) {		// 7970
     }
 }
 
- 
+
 void task_initmachine (void) {		// 639e
 	static const u16 data_645e[3]={ 
 		SL04 | TXTLIBA_VERSION_JAP,
@@ -1174,7 +1170,7 @@ void task_initmachine (void) {		// 639e
 				g.WaitMode	= 0;
 				break;
 			case 2:
-#ifdef REDHAMMER
+#ifdef FISTBLUE_SKIP_COPYRIGHT
                 g.mode0 = 0x10;
 #else
 				g.mode0 +=2;
@@ -1235,8 +1231,11 @@ void task_initmachine (void) {		// 639e
 				//} 
 				/* not included: copy protection with CPS1B */
 				
-				create_task(task_attractSequence, 1, 0,0,0);
-				
+#ifdef REDHAMMER_PLAYGROUND
+                create_task(task_playground, 1, 0, 0, 0);
+#else
+                create_task(task_attractSequence, 1, 0,0,0);
+#endif
 				task_die();
 				break;
 				FATALDEFAULT;
