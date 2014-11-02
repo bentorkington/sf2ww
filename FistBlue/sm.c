@@ -331,7 +331,7 @@ static void sub_7dca(void) {		// 7dca game mode 2,A
 			if (g.x09fe != 2) {
 				NEXT(g.mode2);
 				g.timer3 = 3.75 * TICKS_PER_SECOND;
-				print_libtextgfx(GAME_OVER);
+				DrawTileText(TILETEXT_GAME_OVER);
 				soundsting(SOUND_GAME_OVER);
 			}
 			break;
@@ -357,8 +357,8 @@ static void sub_7eb4(void) {		// 7eb4 game mode 2,C
 			g.timer3 = 0x8;
 			g.timer4 = 0;
 			action_1ab8a();		/* clear top object */
-			QueueEffect(SL1C | HERE_COMES, 0);
-			QueueEffect(SL1C | CHALLENGER, 0);
+			QueueEffect(SL1C | TILETEXT_HERE_COMES, 0);
+			QueueEffect(SL1C | TILETEXT_CHALLENGER, 0);
 			soundsting(SOUND_CHALLENGER);
 			break;
 		case 2:
@@ -373,11 +373,11 @@ static void sub_7eb4(void) {		// 7eb4 game mode 2,C
 					g.timer3 = 8;
 					g.timer4 ^= 1;
 					if(g.timer4) {
-						QueueEffect(SL1C | HERE_COMES_2, 0);
-						QueueEffect(SL1C | CHALLENGER, 0);
+						QueueEffect(SL1C | TILETEXT_HERE_COMES_2, 0);
+						QueueEffect(SL1C | TILETEXT_CHALLENGER, 0);
 					} else {
-						QueueEffect(SL1C | HERE_COMES, 0);
-						QueueEffect(SL1C | CHALLENGER, 0);
+						QueueEffect(SL1C | TILETEXT_HERE_COMES, 0);
+						QueueEffect(SL1C | TILETEXT_CHALLENGER, 0);
 					}
 				}
 			}
@@ -741,7 +741,7 @@ static void SM_game_postanim_8(void) {
 		case 4:
 			if((obj=AllocActor())) {
 				INITOBJ(obj, SF2ACT_SCORECOUNTER, 0);
-				print_libtextgfx(TIME);
+				DrawTileText(TILETEXT_TIME);
 				NEXT(g.mode4);
 				g.timer4  = 30;
 			}
@@ -749,7 +749,7 @@ static void SM_game_postanim_8(void) {
 		case 8:
 			if((obj=AllocActor())) {
 				INITOBJ(obj, SF2ACT_SCORECOUNTER, 2);
-				print_libtextgfx(VITAL);
+				DrawTileText(TILETEXT_VITAL);
 				NEXT(g.mode4);
 				g.timer4 = 0x32;
 			}
@@ -757,7 +757,7 @@ static void SM_game_postanim_8(void) {
 		case 0xc:
 			if((obj=AllocActor())){
 				INITOBJ(obj, SF2ACT_SCORECOUNTER, 4);
-				print_libtextgfx(BONUS);
+				DrawTileText(TILETEXT_BONUS);
 				NEXT(g.mode4);
 			}
 			break;
@@ -789,7 +789,7 @@ void gamemode_postfightanim (void) {
                     g.mode3 += 2;
                     g.x0ae7  = TRUE;
                     g.timer3 = 3 * TICKS_PER_SECOND;
-                    print_libtextgfx(TIME_OVER);
+                    DrawTileText(TILETEXT_TIME_OVER);
                 } else {
                     g.mode3  = 4;
                     if(!g.BonusComplete) {		
@@ -801,7 +801,7 @@ void gamemode_postfightanim (void) {
             case 2: 
                 if(--g.timer3==0){
                     g.mode3=6;
-                    print_libtextgfx(LIBTEXT_ERASE | TIME_OVER);
+                    DrawTileText(LIBTEXT_ERASE | TILETEXT_TIME_OVER);
                 }
 				break;
             case 4: 	/* 8ac6 */
@@ -816,7 +816,7 @@ void gamemode_postfightanim (void) {
 						if(g.timer4-- == 0) {
 							NEXT(g.mode4);
 							g.Pause_9e1 = 0;
-							print_libtextgfx(LIBTEXT_ERASE + PERFECT);
+							DrawTileText(LIBTEXT_ERASE + TILETEXT_PERFECT);
 							if (g.RoundResult < 0) {
 								/* 8b26 */
 								if ((obj=AllocActor())) {
@@ -938,7 +938,7 @@ void gamemode_postfightanim (void) {
 				if(g.TimeOut) {
 					g.mode3 += 2;
 					g.timer3 = 0xf0;
-					print_libtextgfx(TIME_OVER);
+					DrawTileText(TILETEXT_TIME_OVER);
 				} else {
 					g.mode3 = 4;
 					g.WaitMode = FALSE;
@@ -948,7 +948,7 @@ void gamemode_postfightanim (void) {
 				if(g.timer3-- == 0) {
 					g.mode3 += 2;
 					g.WaitMode = FALSE;
-					print_libtextgfx(LIBTEXT_ERASE | TIME_OVER) ;
+					DrawTileText(LIBTEXT_ERASE | TILETEXT_TIME_OVER) ;
 				}
 				break;
 			case 4:
@@ -957,9 +957,9 @@ void gamemode_postfightanim (void) {
 					g.mode3 += 2;
 					g.timer3 = 3 * TICKS_PER_SECOND;
 					if(g.TimeResult<0) {
-						print_libtextgfx(DOUBLE_KO);	
+						DrawTileText(TILETEXT_DOUBLE_KO);
 					} else {
-						print_libtextgfx(DRAW_GAME);
+						DrawTileText(TILETEXT_DRAW_GAME);
 					}
 				} else {
 					/* 0x88ca */
@@ -987,9 +987,9 @@ void gamemode_postfightanim (void) {
 				} else {
 					if(g.RoundResult < 0) {
 						if(g.TimeResult < 0 ) {
-							print_libtextgfx(LIBTEXT_ERASE | DOUBLE_KO);
+							DrawTileText(LIBTEXT_ERASE | TILETEXT_DOUBLE_KO);
 						} else {
-							print_libtextgfx(LIBTEXT_ERASE | DRAW_GAME);
+							DrawTileText(LIBTEXT_ERASE | TILETEXT_DRAW_GAME);
 						}
 						g.mode2   += 2;
 						g.mode3    = 0;
@@ -1160,9 +1160,9 @@ void gamemode_24I (void) {		// 7970
  
 void task_initmachine (void) {		// 639e
 	static const u16 data_645e[3]={ 
-		SL04 | SL4_VERSION_JAP,
-		SL04 | SL4_VERSION_USA,
-		SL04 | SL4_VERSION_ETC,
+		SL04 | TXTLIBA_VERSION_JAP,
+		SL04 | TXTLIBA_VERSION_USA,
+		SL04 | TXTLIBA_VERSION_ETC,
 	};
 	fadenwait1();
 	while (TRUE) {
@@ -1195,9 +1195,8 @@ void task_initmachine (void) {		// 639e
 				QueueEffect(data_645e[g.Version],0x0100); 
 				break;
 			case 6:
-				if(g.TextEffectBusy == 0) {
-					g.mode0 += 2;
-				}
+				if(g.TextEffectBusy == FALSE)
+                    NEXT(g.mode0);
 				break;
 			case 8:
 			case 0xe:
@@ -1215,9 +1214,9 @@ void task_initmachine (void) {		// 639e
 				QueueEffect(LC0_LIGHT_ALL_ENABLE,5);
 				g.TextEffectBusy = TRUE;
 				QueueEffect((short []){
-					SL04 | COPYRIGHT_JAP,
-					SL04 | COPYRIGHT_USA,
-					SL04 | COPYRIGHT_ETC,
+					SL04 | TXTLIBA_COPYRIGHT_JAP,
+					SL04 | TXTLIBA_COPYRIGHT_USA,
+					SL04 | TXTLIBA_COPYRIGHT_ETC,
 				}[g.Version], 0x101);
 				break;
 			case 0xc:

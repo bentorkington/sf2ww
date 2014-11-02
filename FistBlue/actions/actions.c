@@ -2926,12 +2926,12 @@ static void action_3a(Object *obj) {		// 201a0
  @discussion sf2ua:0x205f6
  */
 
-static void sub_205f6(u32 d0, short d2, u16 *a1) {
+static void _act3b_print_counter(u32 d0, short d2, u16 *a1) {
     printf("print counter %08x\n", d0);
 	d2 -= 3;
 	while (d2 >= 0) {
         --a1;
-		*a1 = (d0 & 0xf) + 0x8100;
+		*a1 = (d0 & 0xf) + SF2_TILE_LARGE_HEX;
 		d2--;
 		d0 >>= 4;
 	}
@@ -2942,9 +2942,9 @@ static void _init_counter_image(Object *obj) {		//20610
 	int i;
 
 	/* all same anyway               tiles pal   */
-	const static u16 data_20640[] = {0x1, 0xd, 0x2d, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x8100};
-	const static u16 data_20654[] = {0x1, 0xd, 0x2d, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x8100};
-	const static u16 data_20668[] = {0x1, 0xe, 0x2d, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x8100}; // todo: put palette back to 0xd
+	const static u16 data_20640[] = {0x1, 0xd, 0x2d, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, SF2_TILE_LARGE_HEX_ZERO};
+	const static u16 data_20654[] = {0x1, 0xd, 0x2d, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, SF2_TILE_LARGE_HEX_ZERO};
+	const static u16 data_20668[] = {0x1, 0xe, 0x2d, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, SF2_TILE_LARGE_HEX_ZERO}; // todo: put palette back to 0xd
 
 	
 	switch (obj->SubSel) {
@@ -3014,8 +3014,8 @@ static void action_3b(Object *obj) {	//203ba
 					if (g.TimeRemainBCD != 0) {
 						d2 = (g.TimeRemainBCD & 0xf0) ? 4 : 3;		// number of tiles
 						g.TimeBonusSprite[0] = d2;
-						g.TimeBonusSprite[8] = 0x8100;
-						sub_205f6(g.TimeRemainBCD, d2, &g.TimeBonusSprite[7]);
+						g.TimeBonusSprite[8] = SF2_TILE_LARGE_HEX_ZERO;
+						_act3b_print_counter(g.TimeRemainBCD, d2, &g.TimeBonusSprite[7]);
 					}
 					g.x8ab4 |= 1;
 					anim = &action_2067c;  
@@ -3040,8 +3040,8 @@ static void action_3b(Object *obj) {	//203ba
 							d2 = 5;
 						}
 						g.VitalBonusSprite[0] = d2;
-						g.VitalBonusSprite[8] = 0x8100;
-						sub_205f6(d0, d2, &g.VitalBonusSprite[7]);
+						g.VitalBonusSprite[8] = SF2_TILE_LARGE_HEX_ZERO;
+						_act3b_print_counter(d0, d2, &g.VitalBonusSprite[7]);
 					}
 					g.x8ab4 |= 2;
 					anim = &action_20694;
@@ -3090,7 +3090,7 @@ static void action_3b(Object *obj) {	//203ba
 						} else {
 							d2 = 5;
 						}
-						sub_205f6(g.x8ab2, d2, &g.TotalBonusSprite[6]);
+						_act3b_print_counter(g.x8ab2, d2, &g.TotalBonusSprite[6]);
 						if ((g.libsplatter & 3)==0 && g.x8ab2 != ud->x0080) {
 							queuesound(SOUND_UNK_DING);	/* Ding! */
 						}
@@ -3163,7 +3163,7 @@ static void action_43(Object *obj) {        //219ce
 				case 2:
 					if (g.mode2 == 0xc) {
 						queuesound(SOUND_GAME_OVER);
-						print_libtextgfx(0x15);
+						DrawTileText(TILETEXT_GAME_OVER);
 						FreeActor(obj);
 					} else {
 						if (obj->mode1 == 0) {
@@ -3198,7 +3198,7 @@ static void action_43(Object *obj) {        //219ce
 				case 2:
 					if (g.mode2 == 0xc) {
 						queuesound(SOUND_GAME_OVER);
-						print_libtextgfx(0x15);
+						DrawTileText(TILETEXT_GAME_OVER);
 						FreeActor(obj);
 					} else {
 						if (obj->mode1 == 0) {

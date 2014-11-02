@@ -27,7 +27,7 @@ typedef struct UserData_3f * UD;
 
 const Image image_21066 = {		//"30000"
     5, 0x000d, 0x2d, 0, 0,
-    { 0x8103, 0x8100, 0x8100, 0x8100, 0x8100,  }
+    { 3 + SF2_TILE_LARGE_HEX, SF2_TILE_LARGE_HEX_ZERO, SF2_TILE_LARGE_HEX_ZERO, SF2_TILE_LARGE_HEX_ZERO, SF2_TILE_LARGE_HEX_ZERO,  }
 };
 const CAFrame actlist_2104a[] = {
 	{ 4, 0x80, 0x0, &image_21066, 0, 0, 0, 0, 0, 0, 0, 0x00, 0, 0, 0, 0, 0, 0, 0, 0},

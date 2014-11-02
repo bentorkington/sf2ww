@@ -45,8 +45,8 @@ static void _CDDecorSoundPts(Object *a6){		// 7e3b0
 		0, 0, 0,
 		SOUND_BARRELS_BREAK,
 		0, 0}[a6->Sel]);
-	QueueEffect(0x8200, 0);		// Both players get points
-	QueueEffect(0x8200, 1);		// XXX check the id!
+	QueueEffect(0x2008, 0);		// Both players get points
+	QueueEffect(0x2008, 1);
 }
 
 static void _CDKillDecor(Player *a2, Object *a6) {	/* 7e39e */

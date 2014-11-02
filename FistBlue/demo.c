@@ -67,7 +67,7 @@ static void SMdemo_show_high_scores(void) {		//6aaa
 			gstate_Scroll3.YPI = 0x700;
 			GSSetupScr3(&gstate_Scroll3);
 			
-			QueueEffect(SL10 | 0x2, 0);
+			QueueEffect(SL10 | SL10_HIGH_SCORE_TABLE, 0);
 			QueueEffect(0x02, 3);
 			queuesound(0x14);
 			break;
@@ -174,9 +174,9 @@ void SMdemo_titlefightanim(void) {	// 0x6650 mode is 2,0
 			
 			g.DemoStarted = TRUE;
 			if(g.FreePlay) {
-				QueueEffect(SL08 | FREE_PLAY, 0x101);
+				QueueEffect(SL08 | TXTLIBA_FREE_PLAY, 0x100 | SL08_OBJ_8X8_ASCII);
 			} else {
-				QueueEffect(SL08 | INSERT_COIN, 0x101);
+				QueueEffect(SL08 | TXTLIBA_INSERT_COIN, 0x100 | SL08_OBJ_8X8_ASCII);
 			}
 			start_effect(2,3);
 			queuesound(SOUND_DEMOMUSIC);

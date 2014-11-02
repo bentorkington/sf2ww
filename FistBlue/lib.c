@@ -846,8 +846,17 @@ short start_effect(short d0, short d1) {		/* 158c was libcall()*/
 	return 0;
 }
 
-int QueueEffect(u16 arg1, u16 arg2) {		/* 21e2 was cqsave */
-    if (g.mode0 == 2 && g.mode1 == 4 && g.mode2 == 0xa && (arg2 & 0xff00)) {
+/*!
+ Queue a macro effect
+ arg1 (%d0)
+ arg2 (%d1)
+ sf2ua: 0x21e2
+ */
+int QueueEffect(u16 arg1, u16 arg2) {
+    if (g.mode0    == 2
+        && g.mode1 == 4
+        && g.mode2 == 10
+        && (arg2 & 0xff00)) {
         return g.libsplatter;
     } else {
         g.effectQueue[(g.effectNext/2)+0] = arg1;
@@ -1408,7 +1417,7 @@ void LBCheckRoundResult(void) {
 				if(g.TimeOut == 0) {
 					if(g.CarWasted == FALSE) { return; }
 					queuesound(SOUND_PERFECT);
-					print_libtextgfx(PERFECT);
+					DrawTileText(TILETEXT_PERFECT);
 				}
 				if(g.Player1.BonusScore == g.Player2.BonusScore) {
 					g.RoundResult = ROUNDRESULT_DRAW;

@@ -81,7 +81,7 @@ static void timer_tick(void) {		//8498
 	}
 }
 static void update_player_display(Player *ply) {		// 8352
-	print_libtextgfx(ply->Side ? 0x18 : 0x17);
+	DrawTileText(ply->Side ? TILETEXT_PLAYER_2 : TILETEXT_PLAYER_1);
 	
 	PrintPlayerPic(ply, ply->Side, ply->FighterID);
 }

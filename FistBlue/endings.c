@@ -87,7 +87,7 @@ static void sub_aefe(void) {
 			if (g.PlayersOnline == 0) {
 				NEXT(g.mode2);
 				g.timer2 = 150;
-				print_libtextgfx(0x15);
+				DrawTileText(TILETEXT_GAME_OVER);
 				queuesound(0x13);
 			}
 			break;

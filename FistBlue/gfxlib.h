@@ -5,37 +5,38 @@
 /* gfxlib.c */
 
 #define LIBTEXT_ERASE		0x80
+
 enum libtextgfx_sel {
-    INSERT_COIN_P1,
-    INSERT_COIN_P2,
-    FREE_PLAY_P1,
-    FREE_PLAY_P2,
-    PUSH_START_P1,		//4
-    PUSH_START_P2,
-    ADD_COIN_P1,
-    ADD_COIN_P2,
-    GAME_OVER_P1,		//8
-    GAME_OVER_P2,
-    DRAW_GAME,			/* 0x0a */
-    DOUBLE_KO,
-    CONTINUE_P1,		//c
-    CONTINUE_P2,
-    TIME,				//e
-    VITAL,
-    BONUS,				//0x10
-    ZEROZERO,
-    TIME_OVER,
-    BLANK_BAR_P1,
-    BLANK_BAR_P2,		// 0x014
-    GAME_OVER,
-    PLAYER_SELECT,
-    PLAYER_1,
-    PLAYER_2,			//0x018
-    HERE_COMES,
-    CHALLENGER,
-    HERE_COMES_2,
-    CHALLENGER_2,		// 0x1c
-    PERFECT,			/* 29 */
+    TILETEXT_INSERT_COIN_P1,
+    TILETEXT_INSERT_COIN_P2,
+    TILETEXT_FREE_PLAY_P1,
+    TILETEXT_FREE_PLAY_P2,
+    TILETEXT_PUSH_START_P1,		//4
+    TILETEXT_PUSH_START_P2,
+    TILETEXT_ADD_COIN_P1,
+    TILETEXT_ADD_COIN_P2,
+    TILETEXT_GAME_OVER_P1,		//8
+    TILETEXT_GAME_OVER_P2,
+    TILETEXT_DRAW_GAME,			/* 0x0a */
+    TILETEXT_DOUBLE_KO,
+    TILETEXT_CONTINUE_P1,		//c
+    TILETEXT_CONTINUE_P2,
+    TILETEXT_TIME,				//e
+    TILETEXT_VITAL,
+    TILETEXT_BONUS,				//0x10
+    TILETEXT_ZEROZERO,
+    TILETEXT_TIME_OVER,
+    TILETEXT_BLANK_BAR_P1,
+    TILETEXT_BLANK_BAR_P2,		// 0x014
+    TILETEXT_GAME_OVER,
+    TILETEXT_PLAYER_SELECT,
+    TILETEXT_PLAYER_1,
+    TILETEXT_PLAYER_2,			//0x018
+    TILETEXT_HERE_COMES,
+    TILETEXT_CHALLENGER,
+    TILETEXT_HERE_COMES_2,
+    TILETEXT_CHALLENGER_2,		// 0x1c
+    TILETEXT_PERFECT,			/* 29 */
 };
 
 void palette_base_scroll1(void);
@@ -66,7 +67,7 @@ void sub_6040(void);
 void sub_6060(void);
 void sub_1742(int palette);
 
-void print_libtextgfx(enum libtextgfx_sel sel);	/* sub_5816 */
+void DrawTileText(enum libtextgfx_sel sel);	/* sub_5816 */
 
 void DrawTileLine(u16 *gfx_p, const u16 *source, int x, int y);
 int test_offset_scroll1(Player *ply);

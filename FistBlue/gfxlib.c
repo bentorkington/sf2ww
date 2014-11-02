@@ -25,8 +25,6 @@ extern Game g;
 
 extern CPSGFXEMU gemu;
 
-extern u8 *data_8d2ac[];
-
 extern u16 data_86676[32][16];
 extern u16 data_8a8ac[32][16];
 extern u16 data_8aaac[20][16][16];
@@ -322,7 +320,7 @@ void print_timeremaining(void) {		//5260
 
 /* libtextgfx */
 
-void print_libtextgfx(enum libtextgfx_sel sel) {	/* sub_5816 */
+void DrawTileText(enum libtextgfx_sel sel) {	/* sub_5816 */
 	static const short data_8df6c[]={
 		0x003C, 0x0054, 0x006C, 0x0084, 0x009C, 0x00B4, 0x00CC, 0x00E4, 
 		0x00FC, 0x0114, 0x012C, 0x014E, 0x0170, 0x0186, 0x019C, 0x01AA, 

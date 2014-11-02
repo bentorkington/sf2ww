@@ -144,7 +144,7 @@ void int_cb_coinage(void) {			// 1fe2
 		--g.SoundOutstanding;
 		coinsound();
 		if (g.InDemo && g.FreePlay == 0 && g.NumberCredits) {
-			QueueEffect(SL10 | 0x0, 0);
+			QueueEffect(SL10 | SL10_CREDITS, 0);
 		}
 	}
 }
@@ -152,29 +152,29 @@ static void sub_6c68(void) {				// 6c68
 	if (g.NumberCredits < 4) {
 		if (g.JapanJumper) {
 			QueueEffect((u16 []){
-				SL04 | PUSH_1P_START, 
-				SL04 | INSERT_ADDITIONAL,
-				SL04 | PUSH_1POR2P_START,
-				SL04 | PUSH_1POR2P_START,
+				SL04 | TXTLIBA_PUSH_1P_START,
+				SL04 | TXTLIBA_INSERT_ADDITIONAL,
+				SL04 | TXTLIBA_PUSH_1POR2P_START,
+				SL04 | TXTLIBA_PUSH_1POR2P_START,
 			}[g.NumberCredits],0);
 		} else {
 			QueueEffect((u16 []){
-			 	SL04 | PUSH_1P_START,
-				SL04 | INSERT_ADDITIONAL,
-				SL04 | PUSH_1P_START,
-				SL04 | START1PORADD2P,
+			 	SL04 | TXTLIBA_PUSH_1P_START,
+				SL04 | TXTLIBA_INSERT_ADDITIONAL,
+				SL04 | TXTLIBA_PUSH_1P_START,
+				SL04 | TXTLIBA_START1PORADD2P,
 			}[g.NumberCredits],0);
 		}
 	} else {
-		QueueEffect(SL04 | PUSH_1POR2P_START,0);
+		QueueEffect(SL04 | TXTLIBA_PUSH_1POR2P_START,0);
 	}
 }	
 
 static void sub_6c38(void) {
 	if(g.NumberCredits <= 1 && g.JapanJumper == FALSE) {
-		QueueEffect(SL04 | PUSH_1P_START,0);
+		QueueEffect(SL04 | TXTLIBA_PUSH_1P_START,0);
 	} else {
-		QueueEffect(SL04 | PUSH_1POR2P_START,0);
+		QueueEffect(SL04 | TXTLIBA_PUSH_1POR2P_START,0);
 	}
 	
 }
@@ -247,7 +247,7 @@ void task_creditscreen(void) {          /* 6b52 */
 					break;
 				case 2:
 					g.mode0 +=2;
-					QueueEffect(SL10 | 0x0, 0x0);
+					QueueEffect(SL10 | SL10_CREDITS, 0);
 					fadenwait5(1);
 					break;
 				case 4:

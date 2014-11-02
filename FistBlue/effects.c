@@ -582,6 +582,10 @@ static void syslib_10(void) {
 }
 
 
+/*!
+ Draw Macro Text in 12x12 characters
+ sf2ua: 0x5b22
+ */
 static void syslib_18(void) {		//5b22
 	Task *task = &Exec.Tasks[Exec.CurrentTask];
 	u16			*gfx_p;
@@ -591,7 +595,6 @@ static void syslib_18(void) {		//5b22
 	extern const u8 *data_8dbc4[];
 	
 	if (task->params.Param0 & 0x80) {
-		//5bba todo erase
 		data = data_8dbc4[task->params.Param0 & 0xff];
 		task->params.x0014 = 0;
 		OBJ_CURSOR_CPS(gfx_p, 0x910000 + (data[0] << 8) + data[1]);
@@ -632,7 +635,7 @@ SYSLIB18LOOP:
 				OBJECT_DRAW((gfx_p), (cp >> 16), (cp & 0xffff), (data[0] + SF2_TILE_OBJ_ASCII_12X12), palette);
 				OBJ_CURSOR_BUMP(gfx_p);
 			}
-			cp += 0xc0000;
+			cp += 0xc0000;      // x=12
 		}
 		data++;
 		if (task->params.Param2) {
@@ -644,6 +647,8 @@ SYSLIB18LOOP:
 }
 
 static void syslib_1c(void) {		//5c12
+    
+    // XXX all this is duped from DrawTileText, fix it one day
 	static const u16 data_8dfa8[12]={
 		0x0000, 0x0008, 0x00f0, 0x0000, 0x8120, 0x8121, 0x8122, 0x8123, 
 		0x8124, 0x8125, 0x8126, 0x0000,  };
@@ -862,15 +867,16 @@ static void syslib_20(void) {		//5410 increase player score
 
 static void aTextRoutine(Task *task) {		// 4f78
 	static void (*textRoutines[])(u8 param) = {		// 4f8a
-		showtextbank0,			// 5602
-		showtextbank1,			// 568c
-		showtextbank2,			// 574a		winners
-		print_libtextgfx,		// 5816
-		showtextbank4,			// 58c0
+		showtextbank0,			// 5602     SCR1 ASCII
+		showtextbank1,			// 568c     OBJ_8X8 ASCII
+		showtextbank2,			// 574a		winners ??? not done yet
+		DrawTileText,		// 5816     
+		showtextbank4,			// 58c0     unsure
 	};
 	
     textRoutines[task->params.x0015] (task->params.Param0 & 0xff);
 }
+
 static void syslib_08 (void) {	// 4f3a Text Blinker, insert coin etc.
 	Task *task = &Exec.Tasks[Exec.CurrentTask];
 
@@ -936,29 +942,29 @@ static void LBPlayerHasEntered(Player *ply) {		// 6fd4
 	ply->BlinkerMode0 = 4;
 	ply->BlinkerMode1 = 0;
 	ply->BlinkerMode2 = 0;
-	print_libtextgfx(0x80 + ply->Side);	
+	DrawTileText(LIBTEXT_ERASE + ply->Side);
 	give_100_points(ply->Opponent->Side);
 	give_100_points(ply->Side);	// 53d6
 }	
 
 static void setplayerblinker(Player *ply, unsigned char selector){		//6e8e
 	if (g.BattleOver) {
-		print_libtextgfx(ply->Side + 0x80);		// Erase the blinker
+		DrawTileText(LIBTEXT_ERASE + ply->Side);		// Erase the blinker
 	} else {
-		print_libtextgfx(selector);
+		DrawTileText(selector);
 	}
 }
 static void sub_703a(Player *ply, unsigned char erase) {
 	if (g.FreePlay) {
-		setplayerblinker(ply, erase + FREE_PLAY_P1 + ply->Side);
+		setplayerblinker(ply, erase + TILETEXT_FREE_PLAY_P1 + ply->Side);
 	} else if (g.TwoCreditsToStart) {
 		if (g.NumberCredits < 2) {
-			setplayerblinker(ply, erase + ADD_COIN_P1 + ply->Side);
+			setplayerblinker(ply, erase + TILETEXT_ADD_COIN_P1 + ply->Side);
 		} else {
-			setplayerblinker(ply, erase + PUSH_START_P1 + ply->Side);
+			setplayerblinker(ply, erase + TILETEXT_PUSH_START_P1 + ply->Side);
 		}
 	} else {
-		setplayerblinker(ply, erase + PUSH_START_P1 + ply->Side);
+		setplayerblinker(ply, erase + TILETEXT_PUSH_START_P1 + ply->Side);
 	}
 }
 static void sub_7018(Player *ply) {
@@ -975,9 +981,9 @@ static void sub_716a(Player *ply) {
 	u32 cp;
 	u16 index;
 	if (g.BattleOver ) {
-		print_libtextgfx(0x80 + ply->Side);	
+		DrawTileText(LIBTEXT_ERASE + ply->Side);
 	} else {
-		print_libtextgfx(0xc + ply->Side);
+		DrawTileText(TILETEXT_CONTINUE_P1 + ply->Side);
 		if (ply->Side) {
 			index = 0x68;
 			cp = MakePointObj(360, 240);
@@ -985,7 +991,7 @@ static void sub_716a(Player *ply) {
 			index = 0x30;
 			cp = MakePointObj(104, 240);
 		}
-		OBJECT_DRAW_ID(index / 8, CP_X, CP_Y, TILE_BIGDIGIT + ply->ContinueSecs, 0x0);
+		OBJECT_DRAW_ID(index / 8, CP_X, CP_Y, SF2_TILE_LARGE_HEX + ply->ContinueSecs, 0x0);
 		/* both buffers */
 	}
 }
@@ -1055,7 +1061,7 @@ static void LBCheckContinued(Player *ply) {
 			ply->BlinkerMode1=6;
 		}
 		ply->ContinueTick = 2;
-		print_libtextgfx(LIBTEXT_ERASE + ply->Side);	
+		DrawTileText(LIBTEXT_ERASE + ply->Side);	
 	}
 }
 static void LBContinueBump(Player *ply) {			// 7222
@@ -1074,7 +1080,7 @@ static void LBContinueBump(Player *ply) {			// 7222
 static void LBPlayerHasLeft(Player *ply) {			// 7660
 	g.PlayersOnline &= ~(1 << ply->Side);
 	ply->BlinkerMode0 = 0;
-	print_libtextgfx(LIBTEXT_ERASE + ply->Side);	
+	DrawTileText(LIBTEXT_ERASE + ply->Side);	
 }
 	
 static void SMPlayerBlinker(Task *task, Player *ply) {		// 6ea4
@@ -1153,7 +1159,7 @@ static void SMPlayerBlinker(Task *task, Player *ply) {		// 6ea4
 											ply->BlinkerMode0 = 0;
 											ply->BlinkerMode1 = 4;
 											/* 6e98 */
-											print_libtextgfx(LIBTEXT_ERASE + ply->Side);	
+											DrawTileText(LIBTEXT_ERASE + ply->Side);	
 										} else {
 											LBPlayerHasEntered(ply);
 										}
@@ -1214,7 +1220,7 @@ static void SMPlayerBlinker(Task *task, Player *ply) {		// 6ea4
 							ply->Alive = 2;
 							ply->BlinkerMode1 = 0;
 							ply->BlinkerMode2 = 0;
-							print_libtextgfx(0x80 + ply->Side);	
+							DrawTileText(LIBTEXT_ERASE + ply->Side);
 							break;
 
 						default:

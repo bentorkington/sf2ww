@@ -553,7 +553,7 @@ static void sub_91c8(void) {
 		add_bcd_8(g.x8a60[1], &tmp);
 		if (tmp == 0x20) {
 			g.BonusComplete = TRUE;
-			print_libtextgfx(0x1d);
+			DrawTileText(TILETEXT_PERFECT);
 		}
 		if (g.Player1.BonusScore == g.Player2.BonusScore) {
 			g.RoundResult = ROUNDRESULT_DRAW;
