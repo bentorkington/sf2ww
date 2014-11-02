@@ -550,7 +550,8 @@ static void _GSMaintScroll2(GState *gstate){      /* 831ca was nextlevel_dosetup
 			gstate->YOff = 0;
 			update_scroll2_X(gstate);   /*   sub_83270 player horiz scrolling */
 			update_scroll2_Y(gstate);		/* sub_83376 same for vert */
-			if(g.OnBonusStage) {
+//            if(g.OnBonusStage) {    // XXX
+              if(1) {
 				g.CPS.Scroll2X = gstate->XPI;
 			} else {
 				g.CPS.Scroll2X = gstate->XPI - 192;  
