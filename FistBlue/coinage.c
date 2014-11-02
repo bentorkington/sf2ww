@@ -8,9 +8,7 @@
  */
 #include <stdio.h>
 
-#include "sf2const.h"
-#include "sf2macros.h"
-#include "structs.h"
+#include "sf2.h"
 
 #include "lib.h"
 #include "sm.h"
@@ -23,6 +21,8 @@
 #include "gfxlib.h"
 #include "sf2io.h"
 #include "sprite.h"
+
+#include "structs.h"
 
 extern Game g;
 extern struct executive_t Exec;

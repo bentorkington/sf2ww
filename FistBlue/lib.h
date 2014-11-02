@@ -2,6 +2,7 @@
 #define INC_SF2LIB
 
 /* lib.c */
+#include "player.h"
 
 void task_playground(void);
 

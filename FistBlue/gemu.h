@@ -15,7 +15,6 @@
 #define OBJECT_PDRAW		gemuObjectDrawPoint			
 #define OBJECT_DRAW_ID		gemuObjectDrawID
 #define OBJECT_DRAW_COORDS	gemuObjectDrawIDCoords 
-#define COORDS_OFFSET		gemuIncGfxCursor        // XXX deprecated
 #define COORDS_OFFSET		gemuCoordOffset
 #define OBJECT_DRAW_SINGLE	gemuObjectDraw
 #define WRITE_END_TAG		gemuWriteEndTag(DSObjCur_g);

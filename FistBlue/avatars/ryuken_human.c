@@ -8,9 +8,7 @@
  */
 
 
-#include "sf2types.h"
-#include "sf2macros.h"
-#include "sf2const.h"
+#include "sf2.h"
 #include "sf2io.h"
 
 #include "structs.h"

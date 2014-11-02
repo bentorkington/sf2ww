@@ -1,7 +1,5 @@
 /* sf2 sprite.c */
-#include "sf2types.h"
-#include "sf2macros.h"
-#include "sf2const.h"
+#include "sf2.h"
 
 #include "gstate.h"
 #include "structs.h"
