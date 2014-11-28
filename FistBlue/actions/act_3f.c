@@ -39,7 +39,7 @@ void action_3f(Object *obj) {
 		case 0:
 			NEXT(obj->mode0);
 			obj->Path = data_cfe74;
-			obj->XPI = 192;
+			obj->XPI = (SCREEN_WIDTH / 2);
 			obj->YPI = 144;
 			setaction_direct(obj, actlist_2104a);
 			break;

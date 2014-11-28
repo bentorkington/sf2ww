@@ -51,7 +51,7 @@ void action_3e(Object *obj) {
 			NEXT(obj->mode0);
 			obj->Scroll = SCROLL_NONE;
 			obj->Pool   = 2;
-			obj->XPI	= 192;
+			obj->XPI	= (SCREEN_WIDTH / 2);
 			obj->YPI	= 32;
 			if (g.Version == VERSION_USA) {
 				setaction_list(obj, actlist_20fd8, 0);

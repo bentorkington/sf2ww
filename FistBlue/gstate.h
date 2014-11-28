@@ -20,12 +20,12 @@ typedef struct {
     FIXED16_16  X;      /* Fixed precision world->display offsets */
     FIXED16_16  Y;      /* 0xa-d */
     u16 SpecialStage;          /* either 0 or 2, 2 for bonus stage? */  
-    u16 x0010;          
+    u16 gs_0010;
     const u16 *TileMaps;      /* ptr to tilemap */
     u16 Offset;       /* offset  */
     u16 OffMask;      /* bitmask */
-    u16 x001a;
-    u16 x001c;
+    u16 gs_001a;
+    u16 gs_001c;
     u8  x001e;
     u8  x001f;
     u16 Index;      /* 0x0020 current offset */
@@ -46,13 +46,12 @@ typedef struct {
 	
     FIXED16_16  X;      /* Fixed precision world->display offsets */
     FIXED16_16  Y;      /* 0xa-d */
-    u16 ParallaxZero;          /* Parallax */  
-    u16 x0010;          
+    u16 CenterX;          /* the zero-parallax x coordinate */
+    u16 ss_0010;        /* amount of parallax skew per pixel off-center */
     u16 GroundRow;
-	FIXED16_16 x0014;
-    FIXED16_16 x0018;	// plane Scroll3 follows
-    u16 x001a;
-    short x001c[4];	// ff8cee
+	FIXED16_16 ss_0014;
+    FIXED16_16 ss_0018;	// plane Scroll3 follows
+    short ss_001c[4];	// ff8cee
 
 	u16  x0024;		/* used with x0025 as U16 */
     u16 XCoarse;    /* x0026 number of columns skipped in draw routine */

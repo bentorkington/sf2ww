@@ -365,7 +365,7 @@ static void _SMAct08(Object_G2 *obj) {		// 274e4
 			if ((nobj = AllocActor())) {
 				nobj->exists = TRUE;
 				nobj->Sel = 6;
-				nobj->XPI = 192;
+				nobj->XPI = (SCREEN_WIDTH / 2);
 				nobj->YPI = 48;
 				obj->Owner = (Player *)nobj;
 			}

@@ -25,15 +25,6 @@
 
 #include <stdio.h>
 
-
-//#ifdef FISTBLUE_DEBUG_SM
-//#define DEBUG_SM(string)        \
-//        printf ("SM%02x/%02x/%02x/%02x/%02x/%02x/:", g.mode0, g.mode1, g.mode2, g.mode3, g.mode4, g.mode5 );			\
-//		puts(string);
-//#else
-//#define DEBUG_SM(string)
-//#endif
-
 #define DEBUG_SM(string) \
 do { if (FISTBLUE_DEBUG_SM) fprintf(stderr, "%s:%d:%s():%s\n","SM", \
 __LINE__, __func__, string); } while (0)

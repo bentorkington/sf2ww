@@ -283,8 +283,7 @@ static const u16 *_GSLookupScroll3(GState *gs, CP cp) {	/* 83eba */
 
 #pragma mark ---- Scroll Maint ----
 
-
-static void sub_832f2(GState *gstate, int d1) {
+static void _gstate_against_right(GState *gstate, int d1) {         // sf2ua:832f2
 	int d3;
 	/* missing GPCollDetect redundant */
 	if (d1 > 6) {
@@ -300,7 +299,8 @@ static void sub_832f2(GState *gstate, int d1) {
 	}
 	gstate->x0024 = 4;
 }
-static void sub_83334(GState *gstate, int d0) {		// d0 is negative
+
+static void _gstate_against_left(GState *gstate, int d0) {		// sf2ua:83334   d0 is negative
 	int d3;
 	/* missing GPCollDetect redundant */
 	if (d0 < -6) {
@@ -317,12 +317,21 @@ static void sub_83334(GState *gstate, int d0) {		// d0 is negative
 	gstate->x0024 = 0xc;
 }
 
+#define SCR3X_PERSP 0
+#define SCR3X_NONE  2
+#define SCR3Y_NONE  0
+#define SCR3Y_2Y    2
+#define SCR3Y_0_75  4
+#define SCR3Y_0_50  6
+#define SCR3Y_0_875 8
+#define SCR3Y_1_25  10
+#define SCR3Y_2Y_MINUS_OFFSET 12
 
 static void _GSMaintScroll3X(GState *gs) {		// 83658
 	gs->x0024 = gstate_Scroll2.x0024;
 	switch (gs->XUpdateMethod) {
 		case 0:		// scroll 2 + Zdepth
-			gs->XPI = gstate_Scroll2.XPI + (gstate_RowScroll.x0018.part.integer - 192);
+			gs->XPI = gstate_Scroll2.XPI + (gstate_RowScroll.ss_0018.part.integer - (SCREEN_WIDTH / 2));
 			break;
 		case 2:
 			// do nothing
@@ -330,6 +339,7 @@ static void _GSMaintScroll3X(GState *gs) {		// 83658
 		FATALDEFAULT;
 	}
 }
+
 static void _GSMaintScroll3Y(GState *gs) {		// 8368c
 	if (g.ScreenWobbleMagnitude) {
 		return;
@@ -358,46 +368,49 @@ static void _GSMaintScroll3Y(GState *gs) {		// 8368c
 			gs->YOff = 0;
 			break;
     }
-
 }
+
+#define SCR2X_FIGHT 0
+#define SCR2X_NONE  2
+
 static void update_scroll2_X (GState *gstate) {     /* 0x83270 */
-	short plx, prx;
+	short leftmost_x, rightmost_x;
 	short d0;
 	Player *left, *right;
 	switch (gstate->XUpdateMethod) {
-		case 0:
+		case SCR2X_FIGHT:
 			if (g.Player1.XPI <= g.Player2.XPI) {
-				plx   = g.Player1.XPI; 
-				prx   = g.Player2.XPI;
+				leftmost_x    = g.Player1.XPI;
+				rightmost_x   = g.Player2.XPI;
 				left  = PLAYER1;
 				right = PLAYER2;
 			} else {
-				plx   = g.Player2.XPI; 
-				prx   = g.Player1.XPI;
+				leftmost_x    = g.Player2.XPI;
+				rightmost_x   = g.Player1.XPI;
 				left  = PLAYER2; 
 				right = PLAYER1;
 			}
-			plx -= left->Size;
-			prx += right->Size;
+			leftmost_x  -= left ->Size;
+			rightmost_x += right->Size;
 
-			if ((prx - plx) < 256) {
-				if (prx - gstate->XPI  >= (SCREEN_WIDTH - 64)) {
-					sub_832f2(gstate,prx - gstate->XPI - (SCREEN_WIDTH - 64));
-				} else if (plx - gstate->XPI < 64) {
-					sub_83334(gstate,plx - gstate->XPI - 64);
+			if ((rightmost_x - leftmost_x) < 256) {
+				if (rightmost_x - gstate->XPI  >= (SCREEN_WIDTH - 64)) {
+					_gstate_against_right(gstate,rightmost_x - gstate->XPI - (SCREEN_WIDTH - 64));
+				} else if (leftmost_x - gstate->XPI < 64) {
+					_gstate_against_left(gstate,leftmost_x - gstate->XPI - 64);
 				}
-			} else if ((prx - plx) < SCREEN_WIDTH) {
+			} else if ((rightmost_x - leftmost_x) < SCREEN_WIDTH) {             // XXX checkme
 				d0=(left->XPI - left->Size + right->XPI + right->Size)/2;
 				d0-=gstate->XPI;
 				d0-= SCREEN_WIDTH / 2;
 				if (d0<0) {
-					sub_83334(gstate, d0);
+					_gstate_against_left(gstate, d0);
 				} else {
-					sub_832f2(gstate, d0);					
+					_gstate_against_right(gstate, d0);					
 				}
 			}
 			break;
-		case 2:
+		case SCR2X_NONE:
 			/* empty method, nothing happens */
 			break;
 		FATALDEFAULT;
@@ -416,8 +429,10 @@ static void update_scroll2_Y (GState *gstate) { /* 0x3=83376 */
 			break;
 		FATALDEFAULT;
 	}
-	
 }
+
+#define QUARTER_PIXEL 0x4000
+
 static void _GSMaintScroll1X(GState *gs) {	// 834d0
     short int temp;
 	
@@ -425,11 +440,11 @@ static void _GSMaintScroll1X(GState *gs) {	// 834d0
     switch (gs->XUpdateMethod) {
 		case 0:
 			temp = gs->X.part.integer;
-			gs->XPI = gstate_Scroll2.XPI + gstate_RowScroll.XPI - 192;
+			gs->XPI = gstate_Scroll2.XPI + gstate_RowScroll.XPI - (SCREEN_WIDTH / 2);
 			g.x8b14 = gs->XPI - temp;
 			break;
 		case 2:
-			gs->X.full += 0x4000;		/* plus 0.25 */ 
+			gs->X.full += QUARTER_PIXEL;		/* plus 0.25 */
 			if(gs->mode1 == 0 && gs->XPI >= 0x200) {
 				gs->mode1 += 2;				
 				gs->YPI += 0x100;
@@ -438,7 +453,7 @@ static void _GSMaintScroll1X(GState *gs) {	// 834d0
 			gs->XPI  -= g.x8c02;
 			break;
 		case 4:
-			gs->X.full += 0x4000;
+			gs->X.full += QUARTER_PIXEL;
 			gs->x0024   = 4;
 			gs->XPI -= g.x8c02;
 			break;
@@ -508,9 +523,13 @@ static void _GSMaintScroll3(GState *gs) {   /* 835ec */
 			break;
     }
 }
+
+#define SCROLL_MAINT_INIT   0
+#define SCROLL_MAINT_NORM   2
+
 static void _GSMaintScroll2(GState *gstate){      /* 831ca was nextlevel_dosetups */
 	switch (gstate->mode0) {
-		case 0x0:
+		case SCROLL_MAINT_INIT:
 			switch (gstate->mode1) {
 				case 0x0:
 					gstate->mode1 +=2 ;
@@ -543,7 +562,7 @@ static void _GSMaintScroll2(GState *gstate){      /* 831ca was nextlevel_dosetup
 					break;
 			}
 			break;
-		case 0x2:
+		case SCROLL_MAINT_NORM:
 			gstate->XOff = 0;
 			gstate->YOff = 0;
 			update_scroll2_X(gstate);   /*   sub_83270 player horiz scrolling */
@@ -552,7 +571,7 @@ static void _GSMaintScroll2(GState *gstate){      /* 831ca was nextlevel_dosetup
               if(1) {
 				g.CPS.Scroll2X = gstate->XPI;
 			} else {
-				g.CPS.Scroll2X = gstate->XPI - 192;  
+				g.CPS.Scroll2X = gstate->XPI - (SCREEN_WIDTH / 2);
 			}
 			g.CPS.Scroll2Y = gstate->YPI;
     }
@@ -598,23 +617,24 @@ static void _GSMaintScroll1(GState *gs) {		// 8343a
 	}																\
 
 
-static void _GSMaintRowScroll(ScrollState *gs) {	/* 84480 */
+static void _GSMaintRowScroll(ScrollState *ss) {	/* 84480 */
 	short *a1;
 	
-	switch (gs->mode0) {
+	switch (ss->mode0) {
 		case 0:
 			/* 84496 */
-			NEXT(gs->mode0);
-			gs->ParallaxZero    = 448;	// not actually zdepth, but Scr2X where parallax is zero
-			gs->x0010           = 630;
-			gs->GroundRow       = 1968;
+			NEXT(ss->mode0);
+			ss->CenterX    = 448;	// not actually zdepth, but Scr2X where parallax is zero
+            // in other words, center of the stage
+			ss->ss_0010         = 630;
+			ss->GroundRow       = 984 * 2;
 			g.CPS.RowScrollBase = 0x9200;
 #ifdef CPS
-			g.x02be = (short *)0x921000;				/* XXX CPS-specific */
+			g.x02be = (short *)0x921000;
 #else 
 			g.x02be = gemu.RowScroll2;
 #endif
-			gs->x0024 = 0;
+			ss->x0024 = 0;
 			/* returns BTST #0, %d1 why???  */
 			break;
 		case 2:
@@ -624,13 +644,14 @@ static void _GSMaintRowScroll(ScrollState *gs) {	/* 84480 */
             // XXX double buffer rowscroll
             //BUMP_2BE(0x1000);
 			
-			a1 = &gs->x001c[gs->x0024 / 4];
-			gs->x0024 = (gs->x0024 + 4) & 0xc;		
-			gs->YPI = gstate_Scroll2.YPI;
-			g.CPS.RowScrollOffset = gs->YPI;
+			a1 = &ss->ss_001c[ss->x0024 / 4];
+            // xxx lookup 84564 - 2e
+			ss->x0024 = (ss->x0024 + 4) & 0xc;		
+			ss->YPI = gstate_Scroll2.YPI;
+			g.CPS.RowScrollOffset = ss->YPI;
 			if (a1[0] != gstate_Scroll2.XPI) {
 				a1[0] = gstate_Scroll2.XPI;
-				_GSUpdateRowScroll(gs, g.x02be, a1);
+				_GSUpdateRowScroll(ss, g.x02be, a1);
 			}
 			break;
 		FATALDEFAULT;
@@ -667,13 +688,13 @@ static void _GSStageScroll1 (short d0) {	/* 83730 */
 
 	int bonus;					/* not actually bonus, but VS Screen, etc */
 	//bonus = data_8375c[d0];
-	bonus = d0 >= 0x10 ? TRUE : FALSE;		/* more compact than a U16 LUT*/
+	bonus = d0 >= 0x10 ? TRUE : FALSE;		/* more compact than a U16 LUT */
 	
     gstate_Scroll1.SpecialStage = bonus * 2;
     gstate_Scroll1.Offset       = data_83834[bonus][0];			// add
     gstate_Scroll1.OffMask      = data_83834[bonus][1];			// mask
-    gstate_Scroll1.x001a        = data_83834[bonus][2];		// not used yet
-    gstate_Scroll1.x001c        = data_83834[bonus][3];		// not used yet
+    gstate_Scroll1.gs_001a      = data_83834[bonus][2];		// not used yet
+    gstate_Scroll1.gs_001c      = data_83834[bonus][3];		// not used yet
     
     gstate_Scroll1.TileMaps = data_89ebc[d0];
 }
@@ -683,10 +704,10 @@ static void _GSStageScroll2(short d0) {
 	bonus = d0 >= 0x10 ? 2: 0;
 
     gstate_Scroll2.SpecialStage = bonus;
-    gstate_Scroll2.Offset = data_83834[bonus/2][0];
+    gstate_Scroll2.Offset  = data_83834[bonus/2][0];
     gstate_Scroll2.OffMask = data_83834[bonus/2][1];
-    gstate_Scroll2.x001a = data_83834[bonus/2][2];
-    gstate_Scroll2.x001c = data_83834[bonus/2][3];
+    gstate_Scroll2.gs_001a = data_83834[bonus/2][2];
+    gstate_Scroll2.gs_001c = data_83834[bonus/2][3];
     
     gstate_Scroll2.TileMaps = data_89f0c[d0];
 }
@@ -698,8 +719,8 @@ static void _GSStageScroll3(short d0) {	/* 837e0 */
     gstate_Scroll3.SpecialStage = bonus;		// not actually bonus but scrolldisable
     gstate_Scroll3.Offset  = data_83834[bonus/2][0]; /* 0x8 or 0x10 */
     gstate_Scroll3.OffMask = data_83834[bonus/2][1]; /* 0xe or 0x7e */
-    gstate_Scroll3.x001a   = data_83834[bonus/2][2]; /* 0x6 or 0xe */
-    gstate_Scroll3.x001c   = data_83834[bonus/2][3]; /* 0x8 or 0x70 */
+    gstate_Scroll3.gs_001a = data_83834[bonus/2][2]; /* 0x6 or 0xe */
+    gstate_Scroll3.gs_001c = data_83834[bonus/2][3]; /* 0x8 or 0x70 */
     
     gstate_Scroll3.TileMaps = data_89f5c[d0];
 }
@@ -833,7 +854,7 @@ static const u16 *skyscraper_realign(GState *gs, u16 **gfx_p) {			// 84384
 	d0 |= d1;
 	*gfx_p = (u16 *)BMAP_SCROLL2 + (d0 / sizeof(u16));
 	
-	gs->InitialIndex = ((gs->InitialIndex + 2) & gs->x001a) | (gs->InitialIndex & gs->x001c);	
+	gs->InitialIndex = ((gs->InitialIndex + 2) & gs->gs_001a) | (gs->InitialIndex & gs->gs_001c);	
 	return &data_e0000[gs->TileMaps[gs->InitialIndex/2]][gs->YCoarse/2];
 }
 
@@ -1111,15 +1132,18 @@ static void gstate_update_scroll3 (GState *gs) {		//83d06
     }
 }
 
-
-static void _GSUpdateRowScroll(ScrollState *gs, short *a0, short *a1) { /* 84592 */
+/*!
+ %a0: pointer to linescroll array
+ %a1: pointer to position_x
+ */
+static void _GSUpdateRowScroll(ScrollState *ss, short *a0, short *a1) { /* 84592 */
 	int Offset;					// %d0
 	int i;
 	FIXED16_16 AccumOffset;		// %d1
 	short *a2, *a3;
 	int d3;
 	
-    return;     // XXX
+    //return;     // XXX
     
 #define LINESCROLL_SET_DEC(count)				\
 for (i=0; i<(count); ++i) {						\
@@ -1158,18 +1182,20 @@ for (i=0; i<(count); ++i) {						\
 for	(i=0; i<(count); ++i) {						\
 	AccumOffset.full += Offset;					\
 }												\
+
+#define GSTATE_PIXEL    1 << 16             // fixed precision 1.0
 	
 	switch (g.CurrentStage) {
 		case STAGE_JAPAN_RYU:
-			Offset = gs->x0010 * (gs->ParallaxZero - a1[0]);
-			a2 = a0 + ((u32)gs->GroundRow / 2);			
-			AccumOffset.full = 192 * 0x10000;
+			Offset = ss->ss_0010 * (ss->CenterX - a1[0]);
+			a2 = a0 + ((u32)ss->GroundRow / 2);			
+			AccumOffset.full = (SCREEN_WIDTH / 2) * GSTATE_PIXEL;
 			LINESCROLL_SET_DEC(12);
 			LINESCROLL_SET(12);
 
 			a3 = a2;
-			a2 = a0 + ((u32)gs->GroundRow / 2);
-			AccumOffset.full = 192 * 0x10000;
+			a2 = a0 + ((u32)ss->GroundRow / 2);
+			AccumOffset.full = (SCREEN_WIDTH / 2) * GSTATE_PIXEL;
 
 			LINESCROLL_SET_INC_BACK(24);
 			LINESCROLL_INC(16);
@@ -1177,7 +1203,7 @@ for	(i=0; i<(count); ++i) {						\
 			for (i=0; i<16; ++i) {
 				d3 += Offset;
 			}
-			gs->x0018.full = d3;
+			ss->ss_0018.full = d3;
 			for (i=0; i<8; ++i) {
 				d3 += Offset;
 			}
@@ -1185,125 +1211,126 @@ for	(i=0; i<(count); ++i) {						\
 			for (i=0; i<8; ++i) {
 				d3 += Offset;
 			}
-			gs->x0014.full = d3;
+			ss->ss_0014.full = d3;
 			LINESCROLL_SET_BACK(208);
 			break;
 		case STAGE_JAPAN_EHONDA:
-			Offset = gs->x0010 * (gs->ParallaxZero - a1[0]);
-			a2 = a0 + ((u32)gs->GroundRow / 2);		
-			AccumOffset.full = 192 * 0x10000;
+			Offset = ss->ss_0010 * (ss->CenterX - a1[0]);
+			a2 = a0 + ((u32)ss->GroundRow / 2);		
+			AccumOffset.full = (SCREEN_WIDTH / 2) * GSTATE_PIXEL;
 			LINESCROLL_SET_DEC(24);
-			a2 = a0 + ((u32)gs->GroundRow / 2);
-			AccumOffset.full = 192 * 0x10000;
+			a2 = a0 + ((u32)ss->GroundRow / 2);
+			AccumOffset.full = (SCREEN_WIDTH / 2) * GSTATE_PIXEL;
 			LINESCROLL_SET_INC_BACK(24);
-			gs->x0014.part.integer = AccumOffset.part.integer;
+			ss->ss_0014.part.integer = AccumOffset.part.integer;
 			LINESCROLL_SET_INC_BACK(16);
 			LINESCROLL_SET_BACK(16);
-			LINESCROLL_SET_BACK_CONST(5, gs->x0014.part.integer);
-			gs->x0018.full = AccumOffset.full;
-			AccumOffset.full = gs->x0014.full;
+			LINESCROLL_SET_BACK_CONST(5, ss->ss_0014.part.integer);
+			ss->ss_0018.full = AccumOffset.full;
+			AccumOffset.full = ss->ss_0014.full;
 			LINESCROLL_SET_INC_BACK(15);
-			AccumOffset.full = gs->x0018.full;
+			AccumOffset.full = ss->ss_0018.full;
 			LINESCROLL_SET_BACK(92);
 			LINESCROLL_SET_INC_BACK(64);
 			break;
 		case 2:
-			Offset = gs->x0010 * (gs->ParallaxZero - a1[0]);
-			a2 = a0 + ((u32)gs->GroundRow / 2);			
-			AccumOffset.full = 192 * 0x10000;
+			Offset = ss->ss_0010 * (ss->CenterX - a1[0]);
+			a2 = a0 + ((u32)ss->GroundRow / 2);			
+			AccumOffset.full = (SCREEN_WIDTH / 2) * GSTATE_PIXEL;
 			LINESCROLL_SET_DEC(24);
-			a2 = a0 + ((u32)gs->GroundRow / 2);			
-			AccumOffset.full = 192 * 0x10000;
+			a2 = a0 + ((u32)ss->GroundRow / 2);			
+			AccumOffset.full = (SCREEN_WIDTH / 2) * GSTATE_PIXEL;
 			LINESCROLL_SET_INC_BACK(24);
-			gs->x0018.full = AccumOffset.full;
+			ss->ss_0018.full = AccumOffset.full;
 			LINESCROLL_INC(16);
-			gs->x0014.full = AccumOffset.full;
+			ss->ss_0014.full = AccumOffset.full;
 			LINESCROLL_SET_BACK(208);
 			break;
 		case 3:
-			Offset = gs->x0010 * (gs->ParallaxZero - a1[0]);
-			a2 = a0 + ((u32)gs->GroundRow / 2);			
-			AccumOffset.full = 192 * 0x10000;
+			Offset = ss->ss_0010 * (ss->CenterX - a1[0]);
+			a2 = a0 + ((u32)ss->GroundRow / 2);			
+			AccumOffset.full = (SCREEN_WIDTH / 2) * GSTATE_PIXEL;
 			LINESCROLL_SET_DEC(24);
-			a2 = a0 + ((u32)gs->GroundRow / 2);			
-			AccumOffset.full = 192 * 0x10000;
+			a2 = a0 + ((u32)ss->GroundRow / 2);			
+			AccumOffset.full = (SCREEN_WIDTH / 2) * GSTATE_PIXEL;
 			LINESCROLL_SET_INC_BACK(8);
-			gs->x0018.full = AccumOffset.full;
+			ss->ss_0018.full = AccumOffset.full;
 			LINESCROLL_SET_INC_BACK(18);
 			d3 = AccumOffset.full;
 			for (i=0; i<16; ++i) {
 				d3 += Offset;
 			}
-			gs->x0014.full = d3;
+			ss->ss_0014.full = d3;
 			LINESCROLL_SET_BACK(0x7e);
 			LINESCROLL_SET_DEC_BACK(0x50);
 			break;
 		case 4:
-			Offset = gs->x0010 * (gs->ParallaxZero - a1[0]);
-			a2 = a0 + ((u32)gs->GroundRow / 2);			
-			AccumOffset.full = 192 * 0x10000;
+			Offset = ss->ss_0010 * (ss->CenterX - a1[0]);
+			a2 = a0 + ((u32)ss->GroundRow / 2);			
+			AccumOffset.full = (SCREEN_WIDTH / 2) * GSTATE_PIXEL;
 			LINESCROLL_SET_DEC(16);
-			gs->x0014.full = AccumOffset.full;
+			ss->ss_0014.full = AccumOffset.full;
 			LINESCROLL_SET(8);
 			
-			a2 = a0 + ((u32)gs->GroundRow / 2);			
-			AccumOffset.full = 192 * 0x10000;
+			a2 = a0 + ((u32)ss->GroundRow / 2);			
+			AccumOffset.full = (SCREEN_WIDTH / 2) * GSTATE_PIXEL;
 			LINESCROLL_SET_INC_BACK(0x28);
-			gs->x0018.full = AccumOffset.full;
+			ss->ss_0018.full = AccumOffset.full;
 			LINESCROLL_INC(16);
 			LINESCROLL_SET_BACK(192);
 			break;
 		case 5:
-			Offset = gs->x0010 * (gs->ParallaxZero - a1[0]);
-			a2 = a0 + ((u32)gs->GroundRow / 2);			
-			AccumOffset.full = 192 * 0x10000;
+			Offset = ss->ss_0010 * (ss->CenterX - a1[0]);
+			a2 = a0 + ((u32)ss->GroundRow / 2);			
+			AccumOffset.full = (SCREEN_WIDTH / 2) * GSTATE_PIXEL;
 			LINESCROLL_SET_DEC(24);
-			gs->x0014.full = AccumOffset.full;
-			a2 = a0 + ((u32)gs->GroundRow / 2);			
-			AccumOffset.full = 192 * 0x10000;
+			ss->ss_0014.full = AccumOffset.full;
+			a2 = a0 + ((u32)ss->GroundRow / 2);			
+			AccumOffset.full = (SCREEN_WIDTH / 2) * GSTATE_PIXEL;
 			LINESCROLL_SET_INC_BACK(0x28);
-			gs->x0018.full = AccumOffset.full;
+			ss->ss_0018.full = AccumOffset.full;
 			LINESCROLL_SET_BACK(192);
 			break;
 		case 6:
-			Offset = gs->x0010 * (gs->ParallaxZero - a1[0]);
-			a2 = a0 + ((u32)gs->GroundRow / 2);			
-			AccumOffset.full = 192 * 0x10000;
+			Offset = ss->ss_0010 * (ss->CenterX - a1[0]);
+			a2 = a0 + ((u32)ss->GroundRow / 2);			
+			AccumOffset.full = 192 * GSTATE_PIXEL;
 			LINESCROLL_SET_DEC(24);
-			gs->x0014.full = AccumOffset.full;
-			a2 = a0 + ((u32)gs->GroundRow / 2);			
-			AccumOffset.full = 192 * 0x10000;
+			ss->ss_0014.full = AccumOffset.full;
+			a2 = a0 + ((u32)ss->GroundRow / 2);			
+			AccumOffset.full = 192 * GSTATE_PIXEL;
 			LINESCROLL_SET_INC_BACK(0x22);
 			d3 = AccumOffset.full;
 			for (i=0; i<16; ++i) {
 				d3 += Offset;
 			}
-			gs->x0018.full = d3;
+			ss->ss_0018.full = d3;
 			LINESCROLL_SET_BACK(192);
 			break;
-		case 7:
-			Offset = gs->x0010 * (gs->ParallaxZero - a1[0]);
-			a2 = a0 + ((u32)gs->GroundRow / 2);			
-			AccumOffset.full = 192 * 0x10000;
+		case STAGE_INDIA_DHALSIM:
+			Offset = ss->ss_0010 * (ss->CenterX - a1[0]);
+			a2 = a0 + ((u32)ss->GroundRow / 2);			
+			AccumOffset.full = 192 * GSTATE_PIXEL;
 			LINESCROLL_SET_DEC(24);
-			a2 = a0 + ((u32)gs->GroundRow / 2);			
-			AccumOffset.full = 192 * 0x10000;
+			a2 = a0 + ((u32)ss->GroundRow / 2);			
+			AccumOffset.full = 192 * GSTATE_PIXEL;
+            ss->ss_0014.full = AccumOffset.full;
 			LINESCROLL_SET_INC_BACK(24);
-			gs->x0018.full = AccumOffset.full;
+			ss->ss_0018.full = AccumOffset.full;
 			LINESCROLL_SET_INC_BACK(16);
-			LINESCROLL_SET_BACK(192);           // XXX bad accesses here
-			break;
+			LINESCROLL_SET_BACK(192);
+            break;
 		case 8:
-			Offset = gs->x0010 * (gs->ParallaxZero - a1[0]);
-			a2 = a0 + ((u32)gs->GroundRow / 2);			
-			AccumOffset.full = 192 * 0x10000;
+			Offset = ss->ss_0010 * (ss->CenterX - a1[0]);
+			a2 = a0 + ((u32)ss->GroundRow / 2);			
+			AccumOffset.full = 192 * GSTATE_PIXEL;
 			LINESCROLL_SET_DEC(24);
-			a2 = a0 + ((u32)gs->GroundRow / 2);			
-			AccumOffset.full = 192 * 0x10000;
+			a2 = a0 + ((u32)ss->GroundRow / 2);			
+			AccumOffset.full = 192 * GSTATE_PIXEL;
 			LINESCROLL_SET_INC_BACK(8);
-			gs->x0014.full = AccumOffset.full;
+			ss->ss_0014.full = AccumOffset.full;
 			LINESCROLL_SET_INC_BACK(16);
-			gs->x0018.full = AccumOffset.full;
+			ss->ss_0018.full = AccumOffset.full;
 			LINESCROLL_SET_INC_BACK(16);
 			d3 = AccumOffset.full;
 			for (i=0; i<32; ++i) {
@@ -1314,53 +1341,53 @@ for	(i=0; i<(count); ++i) {						\
 			LINESCROLL_SET_DEC_BACK(64);
 			break;
 		case 9:
-			Offset = gs->x0010 * (gs->ParallaxZero - a1[0]);
-			a2 = a0 + ((u32)gs->GroundRow / 2);			
-			AccumOffset.full = 192 * 0x10000;
+			Offset = ss->ss_0010 * (ss->CenterX - a1[0]);
+			a2 = a0 + ((u32)ss->GroundRow / 2);			
+			AccumOffset.full = 192 * GSTATE_PIXEL;
 			LINESCROLL_SET_DEC(24);
-			gs->x0018.full = AccumOffset.full;
-			a2 = a0 + ((u32)gs->GroundRow / 2);			
-			AccumOffset.full = 192 * 0x10000;
+			ss->ss_0018.full = AccumOffset.full;
+			a2 = a0 + ((u32)ss->GroundRow / 2);			
+			AccumOffset.full = 192 * GSTATE_PIXEL;
 			LINESCROLL_SET_INC_BACK(24);
 			d3 = AccumOffset.full;
 			for (i=0; i<16; ++i) {
 				d3 += Offset;
 			}
-			gs->x0014.full = d3;
+			ss->ss_0014.full = d3;
 			LINESCROLL_SET_BACK(0xd0);
 			break;
 		case 10:
-			Offset = gs->x0010 * (gs->ParallaxZero - a1[0]);
-			a2 = a0 + ((u32)gs->GroundRow / 2);			
-			AccumOffset.full = 192 * 0x10000;
+			Offset = ss->ss_0010 * (ss->CenterX - a1[0]);
+			a2 = a0 + ((u32)ss->GroundRow / 2);			
+			AccumOffset.full = 192 * GSTATE_PIXEL;
 			LINESCROLL_SET_DEC(24);
-			a2 = a0 + ((u32)gs->GroundRow / 2);			
-			AccumOffset.full = 192 * 0x10000;
+			a2 = a0 + ((u32)ss->GroundRow / 2);			
+			AccumOffset.full = 192 * GSTATE_PIXEL;
 			LINESCROLL_SET_INC_BACK(13);
 			LINESCROLL_SET_BACK(11);
 			LINESCROLL_INC(20);
-			gs->x0018.full = AccumOffset.full;
+			ss->ss_0018.full = AccumOffset.full;
 			LINESCROLL_INC(20);
 			d3 = AccumOffset.full;
 			for (i=0; i<0x24; ++i) {
 				d3 += Offset;
 			}
-			gs->x0014.full = d3;
+			ss->ss_0014.full = d3;
 			LINESCROLL_SET_BACK(192);
 			break;
 		case 11:
-			Offset = gs->x0010 * (gs->ParallaxZero - a1[0]);
-			a2 = a0 + ((u32)gs->GroundRow / 2);			
-			AccumOffset.full = 192 * 0x10000;
+			Offset = ss->ss_0010 * (ss->CenterX - a1[0]);
+			a2 = a0 + ((u32)ss->GroundRow / 2);			
+			AccumOffset.full = 192 * GSTATE_PIXEL;
 			LINESCROLL_SET_DEC(24);
-			a2 = a0 + ((u32)gs->GroundRow / 2);			
-			AccumOffset.full = 192 * 0x10000;
+			a2 = a0 + ((u32)ss->GroundRow / 2);			
+			AccumOffset.full = 192 * GSTATE_PIXEL;
 			LINESCROLL_SET_INC_BACK(4);
-			gs->x0014.full = AccumOffset.full;
+			ss->ss_0014.full = AccumOffset.full;
 			LINESCROLL_SET_INC_BACK(12);
 			LINESCROLL_SET_BACK(0x3b);
 			LINESCROLL_INC(16);
-			gs->x0018.full = AccumOffset.full
+			ss->ss_0018.full = AccumOffset.full
 			LINESCROLL_INC(16);
 			LINESCROLL_SET_BACK(0x95);
 			break;
@@ -1372,6 +1399,11 @@ for	(i=0; i<(count); ++i) {						\
 			break;
 		FATALDEFAULT;
 	}
+    printf("x %4d skew %4d floor %f wall %f\n",
+           *a1,
+           ss->ss_0010,
+           (float)ss->ss_0014.full / 0x10000,
+           (float)ss->ss_0018.full / 0x10000);
 }
 
     

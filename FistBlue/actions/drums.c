@@ -170,14 +170,14 @@ void _SMAct04(Object_G2 *obj) {		// 27ea2 ID4 BONUS3
 			obj->HitBoxes = &hitboxes_28284;	// null hitboxes
 			obj->Pool = 4;
 			obj->UD.UDbonus3.h00b0s = 0;
-			if (obj->XPI < 192) {
+			if (obj->XPI < (SCREEN_WIDTH / 2)) {
 				obj->Direction = 0;
 			} else {
 				obj->Direction = 1;
 			}
 			break;
 		case 2:
-			if (obj->XPI < 192) {
+			if (obj->XPI < (SCREEN_WIDTH / 2)) {
 				obj->Direction = 0;
 			} else {
 				obj->Direction = 1;

@@ -141,7 +141,7 @@ static void sub_6704(void) {		// SF2 logo, spinning and scaling
 		obj->exists = TRUE;
 		obj->Sel    = 0x12;
 		obj->Scroll = SCROLL_3;
-		obj->XPI    = 192;
+		obj->XPI    = (SCREEN_WIDTH / 2);
 		obj->YPI    = 1956;
 		obj->SubSel = (char []) {
 			1,2,1,2,2,1,2,1,1,2,1,2,2,1,2,1

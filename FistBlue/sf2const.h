@@ -16,7 +16,7 @@
 #define SCREEN_WIDTH   384
 #define SCREEN_HEIGHT  256        /* only 224, 0xe0 according to MAME */
 
-#define VISIBLE_MARGIN  0x40
+#define VISIBLE_MARGIN  64
 #define STAGE_LENGTH	640		//0x280
 
 /* end compile-time params */

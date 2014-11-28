@@ -23,6 +23,7 @@
 #define FISTBLUE_DEBUG_SM 1
 #define FISTBLUE_DEBUG_AI 0
 #define FISTBLUE_DEBUG_GEN 2
+#define FISTBLUE_DEBUG_SPRITE 3
 
 // Override geographical location for ROMset
 //#define FISTBLUE_SF2UA_JAP
@@ -38,7 +39,16 @@
 
 #ifdef REDHAMMER
 #include "strings.h"
-#endif
+#include <stdio.h>
+#include <libgen.h>
 
 
-#endif
+#define DEBUG_GEN(fmt, ...) \
+do { if (FISTBLUE_DEBUG_GEN) fprintf(stderr, "%s:%d:%s():" fmt, \
+basename(__FILE__), __LINE__, __func__, __VA_ARGS__); } while (0)
+
+#endif  // REDHAMMER
+
+
+
+#endif  // MT2_sf2_h

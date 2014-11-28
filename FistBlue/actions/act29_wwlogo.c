@@ -42,7 +42,7 @@ void action_29(Object *obj) {
 			NEXT(obj->mode0);
 			obj->Scroll = SCROLL_NONE;
 			obj->Pool   = 4;
-			obj->XPI    = 192;
+			obj->XPI    = (SCREEN_WIDTH / 2);
 			obj->YPI    = 80;
 			obj->LocalTimer = 0;
 			ud->funky   = 0x00b00000;

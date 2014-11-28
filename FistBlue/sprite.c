@@ -886,11 +886,6 @@ void drawsprite(Object *obj) {         /* 7edaa */
     int attr;
     const short *coordlist;
 	short coordpair[2];
-	
-    if (obj->Sel == 2 && obj->SubSel != 90) {
-        printf("drawprite: Sel 0x%x SubSel 0x%x\n", obj->Sel, obj->SubSel);
-        printf("ende\n");
-    }
     
     //if(g.Debug && g.JPCost & JP_DBGSLEEP) {
 	//	dbg_draw_hitboxes((Player *)obj);
@@ -932,8 +927,10 @@ void drawsprite(Object *obj) {         /* 7edaa */
         g.DSOffsetY += obj->ActionScript->YOffset;
     }
     g.DSOffsetX -= obj->DSOffsetX;   /* ply->x0052 */
-    	
-	//printf("drawsprite dim 0x%x tiles %d \n", image->Dimensions, tiles_in_image);
+    
+    if (obj->Sel == 2 && obj->Sel == 7) {
+        DEBUG_GEN("Sel 0x%x SubSel 0x%x dim 0x%x tiles %d\n", obj->Sel, obj->SubSel, image->Dimensions, tiles_in_image);
+    }
     _draw_sprite(obj, image->Tiles, coordlist, coordpair[0], coordpair[1], tiles_in_image, attr);
 }            
 

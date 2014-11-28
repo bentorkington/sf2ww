@@ -980,7 +980,7 @@ static void action_12(Object *obj) {		// "Street Fighter" logo
 					NEXT(obj->mode0);
 					obj->Scroll = SCROLL_NONE;
 					obj->Pool	= 6;
-					obj->XPI	= 192;
+					obj->XPI	= (SCREEN_WIDTH / 2);
 					obj->YPI	= 152;
 					setaction_list(obj, actlist_11602, 1);
 					/* FALLTHRU */
