@@ -438,9 +438,9 @@ static void _GSMaintScroll1X(GState *gs) {	// 834d0
 	
     gs->x0024 = gstate_Scroll2.x0024;
     switch (gs->XUpdateMethod) {
-		case 0:
+		case 0:         // follow parallax from linescroll
 			temp = gs->X.part.integer;
-			gs->XPI = gstate_Scroll2.XPI + gstate_RowScroll.XPI - (SCREEN_WIDTH / 2);
+			gs->XPI = gstate_Scroll2.XPI + gstate_RowScroll.ss_0014.part.integer - (SCREEN_WIDTH / 2);
 			g.x8b14 = gs->XPI - temp;
 			break;
 		case 2:
@@ -626,7 +626,7 @@ static void _GSMaintRowScroll(ScrollState *ss) {	/* 84480 */
 			NEXT(ss->mode0);
 			ss->CenterX    = 448;	// not actually zdepth, but Scr2X where parallax is zero
             // in other words, center of the stage
-			ss->ss_0010         = 630;
+			ss->ss_0010         = 630;          // ~FP(0.0096) pixels per pixel per row
 			ss->GroundRow       = 984 * 2;
 			g.CPS.RowScrollBase = 0x9200;
 #ifdef CPS
@@ -1132,6 +1132,47 @@ static void gstate_update_scroll3 (GState *gs) {		//83d06
     }
 }
 
+#define LINESCROLL_SET_DEC(count)				\
+for (i=0; i<(count); ++i) {						\
+*cursor++ = AccumOffset.part.integer;			\
+AccumOffset.full -= Offset;					\
+}												\
+
+#define LINESCROLL_SET_INC_BACK(count)			\
+for (i=0; i<(count); ++i) {						\
+AccumOffset.full += Offset;					\
+*--cursor = AccumOffset.part.integer;			\
+}												\
+
+#define LINESCROLL_SET_DEC_BACK(count)			\
+for (i=0; i<(count); ++i) {						\
+AccumOffset.full -= Offset;					\
+*--cursor = AccumOffset.part.integer;			\
+}												\
+
+#define LINESCROLL_SET(count)					\
+for (i=0; i<(count); ++i) {						\
+*cursor++ = AccumOffset.part.integer;			\
+}												\
+
+#define LINESCROLL_SET_BACK(count)				\
+for (i=0; i<(count); ++i) {						\
+*--cursor = AccumOffset.part.integer;			\
+}												\
+
+#define LINESCROLL_SET_BACK_CONST(count,const)	\
+for (i=0; i<(count); ++i) {						\
+*--cursor = const;								\
+}												\
+
+#define LINESCROLL_INC(count);					\
+for	(i=0; i<(count); ++i) {						\
+AccumOffset.full += Offset;					\
+}												\
+
+#define GSTATE_PIXEL    1 << 16             // fixed precision 1.0
+
+
 /*!
  %a0: pointer to linescroll array
  %a1: pointer to position_x
@@ -1140,61 +1181,20 @@ static void _GSUpdateRowScroll(ScrollState *ss, short *a0, short *a1) { /* 84592
 	int Offset;					// %d0
 	int i;
 	FIXED16_16 AccumOffset;		// %d1
-	short *a2, *a3;
-	int d3;
-	
-    //return;     // XXX
+    short *cursor;              // %a2
+    short *a3;          // %a3
+	int d3;             // %d3 type should be u32
     
-#define LINESCROLL_SET_DEC(count)				\
-for (i=0; i<(count); ++i) {						\
-	*a2++ = AccumOffset.part.integer;			\
-	AccumOffset.full -= Offset;					\
-}												\
-
-#define LINESCROLL_SET_INC_BACK(count)			\
-for (i=0; i<(count); ++i) {						\
-	AccumOffset.full += Offset;					\
-	*--a2 = AccumOffset.part.integer;			\
-}												\
-
-#define LINESCROLL_SET_DEC_BACK(count)			\
-for (i=0; i<(count); ++i) {						\
-	AccumOffset.full -= Offset;					\
-	*--a2 = AccumOffset.part.integer;			\
-}												\
-
-#define LINESCROLL_SET(count)					\
-for (i=0; i<(count); ++i) {						\
-	*a2++ = AccumOffset.part.integer;			\
-}												\
-
-#define LINESCROLL_SET_BACK(count)				\
-for (i=0; i<(count); ++i) {						\
-	*--a2 = AccumOffset.part.integer;			\
-}												\
-
-#define LINESCROLL_SET_BACK_CONST(count,const)	\
-for (i=0; i<(count); ++i) {						\
-	*--a2 = const;								\
-}												\
-
-#define LINESCROLL_INC(count);					\
-for	(i=0; i<(count); ++i) {						\
-	AccumOffset.full += Offset;					\
-}												\
-
-#define GSTATE_PIXEL    1 << 16             // fixed precision 1.0
-	
 	switch (g.CurrentStage) {
 		case STAGE_JAPAN_RYU:
 			Offset = ss->ss_0010 * (ss->CenterX - a1[0]);
-			a2 = a0 + ((u32)ss->GroundRow / 2);			
+			cursor = a0 + ((u32)ss->GroundRow / 2);			
 			AccumOffset.full = (SCREEN_WIDTH / 2) * GSTATE_PIXEL;
 			LINESCROLL_SET_DEC(12);
 			LINESCROLL_SET(12);
 
-			a3 = a2;
-			a2 = a0 + ((u32)ss->GroundRow / 2);
+			a3 = cursor;
+			cursor = a0 + ((u32)ss->GroundRow / 2);
 			AccumOffset.full = (SCREEN_WIDTH / 2) * GSTATE_PIXEL;
 
 			LINESCROLL_SET_INC_BACK(24);
@@ -1207,7 +1207,7 @@ for	(i=0; i<(count); ++i) {						\
 			for (i=0; i<8; ++i) {
 				d3 += Offset;
 			}
-			//*a3 = d3;
+			*a3 = d3;                   // a3 is the lowermost row, 256
 			for (i=0; i<8; ++i) {
 				d3 += Offset;
 			}
@@ -1216,29 +1216,29 @@ for	(i=0; i<(count); ++i) {						\
 			break;
 		case STAGE_JAPAN_EHONDA:
 			Offset = ss->ss_0010 * (ss->CenterX - a1[0]);
-			a2 = a0 + ((u32)ss->GroundRow / 2);		
+			cursor = a0 + ((u32)ss->GroundRow / 2);		
 			AccumOffset.full = (SCREEN_WIDTH / 2) * GSTATE_PIXEL;
 			LINESCROLL_SET_DEC(24);
-			a2 = a0 + ((u32)ss->GroundRow / 2);
+			cursor = a0 + ((u32)ss->GroundRow / 2);
 			AccumOffset.full = (SCREEN_WIDTH / 2) * GSTATE_PIXEL;
 			LINESCROLL_SET_INC_BACK(24);
 			ss->ss_0014.part.integer = AccumOffset.part.integer;
 			LINESCROLL_SET_INC_BACK(16);
 			LINESCROLL_SET_BACK(16);
-			LINESCROLL_SET_BACK_CONST(5, ss->ss_0014.part.integer);
+			LINESCROLL_SET_BACK_CONST(5, ss->ss_0014.part.integer);     // front of bath
 			ss->ss_0018.full = AccumOffset.full;
 			AccumOffset.full = ss->ss_0014.full;
-			LINESCROLL_SET_INC_BACK(15);
+			LINESCROLL_SET_INC_BACK(15);                // top of bath
 			AccumOffset.full = ss->ss_0018.full;
 			LINESCROLL_SET_BACK(92);
 			LINESCROLL_SET_INC_BACK(64);
 			break;
-		case 2:
+		case STAGE_BRAZIL_BLANKA:
 			Offset = ss->ss_0010 * (ss->CenterX - a1[0]);
-			a2 = a0 + ((u32)ss->GroundRow / 2);			
+			cursor = a0 + ((u32)ss->GroundRow / 2);			
 			AccumOffset.full = (SCREEN_WIDTH / 2) * GSTATE_PIXEL;
 			LINESCROLL_SET_DEC(24);
-			a2 = a0 + ((u32)ss->GroundRow / 2);			
+			cursor = a0 + ((u32)ss->GroundRow / 2);			
 			AccumOffset.full = (SCREEN_WIDTH / 2) * GSTATE_PIXEL;
 			LINESCROLL_SET_INC_BACK(24);
 			ss->ss_0018.full = AccumOffset.full;
@@ -1246,12 +1246,12 @@ for	(i=0; i<(count); ++i) {						\
 			ss->ss_0014.full = AccumOffset.full;
 			LINESCROLL_SET_BACK(208);
 			break;
-		case 3:
+		case STAGE_USA_GUILE:
 			Offset = ss->ss_0010 * (ss->CenterX - a1[0]);
-			a2 = a0 + ((u32)ss->GroundRow / 2);			
+			cursor = a0 + ((u32)ss->GroundRow / 2);			
 			AccumOffset.full = (SCREEN_WIDTH / 2) * GSTATE_PIXEL;
 			LINESCROLL_SET_DEC(24);
-			a2 = a0 + ((u32)ss->GroundRow / 2);			
+			cursor = a0 + ((u32)ss->GroundRow / 2);			
 			AccumOffset.full = (SCREEN_WIDTH / 2) * GSTATE_PIXEL;
 			LINESCROLL_SET_INC_BACK(8);
 			ss->ss_0018.full = AccumOffset.full;
@@ -1261,45 +1261,45 @@ for	(i=0; i<(count); ++i) {						\
 				d3 += Offset;
 			}
 			ss->ss_0014.full = d3;
-			LINESCROLL_SET_BACK(0x7e);
-			LINESCROLL_SET_DEC_BACK(0x50);
+			LINESCROLL_SET_BACK(126);
+			LINESCROLL_SET_DEC_BACK(80);
 			break;
-		case 4:
+		case STAGE_USA_KEN:
 			Offset = ss->ss_0010 * (ss->CenterX - a1[0]);
-			a2 = a0 + ((u32)ss->GroundRow / 2);			
+			cursor = a0 + ((u32)ss->GroundRow / 2);			
 			AccumOffset.full = (SCREEN_WIDTH / 2) * GSTATE_PIXEL;
 			LINESCROLL_SET_DEC(16);
 			ss->ss_0014.full = AccumOffset.full;
 			LINESCROLL_SET(8);
 			
-			a2 = a0 + ((u32)ss->GroundRow / 2);			
+			cursor = a0 + ((u32)ss->GroundRow / 2);			
 			AccumOffset.full = (SCREEN_WIDTH / 2) * GSTATE_PIXEL;
-			LINESCROLL_SET_INC_BACK(0x28);
+			LINESCROLL_SET_INC_BACK(40);
 			ss->ss_0018.full = AccumOffset.full;
 			LINESCROLL_INC(16);
 			LINESCROLL_SET_BACK(192);
 			break;
-		case 5:
+		case STAGE_CHINA_CHUNLI:
 			Offset = ss->ss_0010 * (ss->CenterX - a1[0]);
-			a2 = a0 + ((u32)ss->GroundRow / 2);			
+			cursor = a0 + ((u32)ss->GroundRow / 2);			
 			AccumOffset.full = (SCREEN_WIDTH / 2) * GSTATE_PIXEL;
 			LINESCROLL_SET_DEC(24);
 			ss->ss_0014.full = AccumOffset.full;
-			a2 = a0 + ((u32)ss->GroundRow / 2);			
+			cursor = a0 + ((u32)ss->GroundRow / 2);			
 			AccumOffset.full = (SCREEN_WIDTH / 2) * GSTATE_PIXEL;
-			LINESCROLL_SET_INC_BACK(0x28);
+			LINESCROLL_SET_INC_BACK(40);
 			ss->ss_0018.full = AccumOffset.full;
 			LINESCROLL_SET_BACK(192);
 			break;
-		case 6:
+		case STAGE_USSR_ZANGIEF:
 			Offset = ss->ss_0010 * (ss->CenterX - a1[0]);
-			a2 = a0 + ((u32)ss->GroundRow / 2);			
+			cursor = a0 + ((u32)ss->GroundRow / 2);			
 			AccumOffset.full = 192 * GSTATE_PIXEL;
 			LINESCROLL_SET_DEC(24);
 			ss->ss_0014.full = AccumOffset.full;
-			a2 = a0 + ((u32)ss->GroundRow / 2);			
+			cursor = a0 + ((u32)ss->GroundRow / 2);			
 			AccumOffset.full = 192 * GSTATE_PIXEL;
-			LINESCROLL_SET_INC_BACK(0x22);
+			LINESCROLL_SET_INC_BACK(34);
 			d3 = AccumOffset.full;
 			for (i=0; i<16; ++i) {
 				d3 += Offset;
@@ -1309,10 +1309,10 @@ for	(i=0; i<(count); ++i) {						\
 			break;
 		case STAGE_INDIA_DHALSIM:
 			Offset = ss->ss_0010 * (ss->CenterX - a1[0]);
-			a2 = a0 + ((u32)ss->GroundRow / 2);			
+			cursor = a0 + ((u32)ss->GroundRow / 2);			
 			AccumOffset.full = 192 * GSTATE_PIXEL;
 			LINESCROLL_SET_DEC(24);
-			a2 = a0 + ((u32)ss->GroundRow / 2);			
+			cursor = a0 + ((u32)ss->GroundRow / 2);			
 			AccumOffset.full = 192 * GSTATE_PIXEL;
             ss->ss_0014.full = AccumOffset.full;
 			LINESCROLL_SET_INC_BACK(24);
@@ -1320,12 +1320,12 @@ for	(i=0; i<(count); ++i) {						\
 			LINESCROLL_SET_INC_BACK(16);
 			LINESCROLL_SET_BACK(192);
             break;
-		case 8:
+		case STAGE_THAILAND_BISON:
 			Offset = ss->ss_0010 * (ss->CenterX - a1[0]);
-			a2 = a0 + ((u32)ss->GroundRow / 2);			
+			cursor = a0 + ((u32)ss->GroundRow / 2);			
 			AccumOffset.full = 192 * GSTATE_PIXEL;
 			LINESCROLL_SET_DEC(24);
-			a2 = a0 + ((u32)ss->GroundRow / 2);			
+			cursor = a0 + ((u32)ss->GroundRow / 2);			
 			AccumOffset.full = 192 * GSTATE_PIXEL;
 			LINESCROLL_SET_INC_BACK(8);
 			ss->ss_0014.full = AccumOffset.full;
@@ -1340,13 +1340,13 @@ for	(i=0; i<(count); ++i) {						\
 			AccumOffset.full = d3;
 			LINESCROLL_SET_DEC_BACK(64);
 			break;
-		case 9:
+		case STAGE_THAILAND_SAGAT:
 			Offset = ss->ss_0010 * (ss->CenterX - a1[0]);
-			a2 = a0 + ((u32)ss->GroundRow / 2);			
+			cursor = a0 + ((u32)ss->GroundRow / 2);			
 			AccumOffset.full = 192 * GSTATE_PIXEL;
 			LINESCROLL_SET_DEC(24);
 			ss->ss_0018.full = AccumOffset.full;
-			a2 = a0 + ((u32)ss->GroundRow / 2);			
+			cursor = a0 + ((u32)ss->GroundRow / 2);			
 			AccumOffset.full = 192 * GSTATE_PIXEL;
 			LINESCROLL_SET_INC_BACK(24);
 			d3 = AccumOffset.full;
@@ -1354,42 +1354,42 @@ for	(i=0; i<(count); ++i) {						\
 				d3 += Offset;
 			}
 			ss->ss_0014.full = d3;
-			LINESCROLL_SET_BACK(0xd0);
+			LINESCROLL_SET_BACK(208);
 			break;
-		case 10:
+		case STAGE_USA_BALROG:
 			Offset = ss->ss_0010 * (ss->CenterX - a1[0]);
-			a2 = a0 + ((u32)ss->GroundRow / 2);			
+			cursor = a0 + ((u32)ss->GroundRow / 2);			
 			AccumOffset.full = 192 * GSTATE_PIXEL;
 			LINESCROLL_SET_DEC(24);
-			a2 = a0 + ((u32)ss->GroundRow / 2);			
+			cursor = a0 + ((u32)ss->GroundRow / 2);			
 			AccumOffset.full = 192 * GSTATE_PIXEL;
 			LINESCROLL_SET_INC_BACK(13);
-			LINESCROLL_SET_BACK(11);
+			LINESCROLL_SET_BACK(11);            // Light bulbs at edge of floor
 			LINESCROLL_INC(20);
 			ss->ss_0018.full = AccumOffset.full;
 			LINESCROLL_INC(20);
 			d3 = AccumOffset.full;
-			for (i=0; i<0x24; ++i) {
+			for (i=0; i<36; ++i) {
 				d3 += Offset;
 			}
 			ss->ss_0014.full = d3;
 			LINESCROLL_SET_BACK(192);
 			break;
-		case 11:
+		case STAGE_SPAIN_VEGA:
 			Offset = ss->ss_0010 * (ss->CenterX - a1[0]);
-			a2 = a0 + ((u32)ss->GroundRow / 2);			
+			cursor = a0 + ((u32)ss->GroundRow / 2);			
 			AccumOffset.full = 192 * GSTATE_PIXEL;
 			LINESCROLL_SET_DEC(24);
-			a2 = a0 + ((u32)ss->GroundRow / 2);			
+			cursor = a0 + ((u32)ss->GroundRow / 2);			
 			AccumOffset.full = 192 * GSTATE_PIXEL;
 			LINESCROLL_SET_INC_BACK(4);
 			ss->ss_0014.full = AccumOffset.full;
 			LINESCROLL_SET_INC_BACK(12);
-			LINESCROLL_SET_BACK(0x3b);
+			LINESCROLL_SET_BACK(59);
 			LINESCROLL_INC(16);
 			ss->ss_0018.full = AccumOffset.full
 			LINESCROLL_INC(16);
-			LINESCROLL_SET_BACK(0x95);
+			LINESCROLL_SET_BACK(149);
 			break;
 		case 12:
 		case 13:
