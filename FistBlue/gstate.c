@@ -233,16 +233,14 @@ static void *_GSCoordsScroll3(CP cp){
 static short _GSCalcBlockIndex(GState *gs, CP cp) {   
 	/* 0x83ee6 x and y div by 256 was cacl_gstate_2022 */
     short index;
-    if (gs->SpecialStage == FALSE) {
-        index = ((cp.y & 0x100) >> 5) + ((cp.x & 0x300) >> 7);	// XYY0 
-        gs->Index        = index;
-        gs->InitialIndex = index;
+    if (gs->SpecialStage) {
+        index = ((cp.y & 0x700) >> 4) + ((cp.x & 0x700) >> 7);	// 0YYY XXX0
     } else {
-        index = ((cp.y & 0x700) >> 4) + ((cp.x & 0x700) >> 7);	// 0XXX YYY0 
-        gs->Index        = index;
-        gs->InitialIndex = index;
+        index = ((cp.y & 0x100) >> 5) + ((cp.x & 0x300) >> 7);	// YXX0
     }
-	return gs->TileMaps[index/2];     
+    gs->Index        = index;
+    gs->InitialIndex = index;
+	return gs->TileMaps[index/2];
 }
 
 static const u16 *_GSLookupScroll1(GState *gs, CP cp) {	/* 83e5c */
