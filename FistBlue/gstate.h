@@ -4,6 +4,10 @@
 
 #include "sf2types.h"
 
+#ifdef REDHAMMER
+#include "../RedHammer/redhammer.h"
+#endif
+
 struct coordpair {
     short x;
     short y;
@@ -58,6 +62,11 @@ typedef struct {
     u16 YCoarse;    /* x0028 */
     u8  XUpdateMethod, YUpdateMethod;
     u16 XOff, YOff;	/* 0x30, 0x32 */
+#ifdef REDHAMMER
+    int nPlanes;
+    RHTilePlane *planes;
+    int RowOffset;
+#endif
 } ScrollState;
 
 void GSInitOffsets(void);

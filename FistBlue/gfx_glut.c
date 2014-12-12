@@ -8,6 +8,8 @@
 #include <time.h>
 #include <unistd.h>
 
+#include "redhammer.h"
+
 /* needs ifdef __APPLE__ since they put glut.h somewhere else */
 
 #ifdef __APPLE__
@@ -41,6 +43,7 @@ extern GLfloat gWimpScale;
 extern GState gstate_Scroll1;
 extern GState gstate_Scroll2;
 extern GState gstate_Scroll3;
+extern ScrollState gstate_RowScroll;
 
 extern struct executive_t Exec;
 extern struct effectstate es;
@@ -171,13 +174,14 @@ GLuint vaindex_scroll1[64 * 64][4];
 
 static void draw_scroll1(void);
 static void draw_scroll2(void);
+static void draw_scroll2_planes(void);
 static void draw_scroll3(void);
 static void draw_object(void);
 
 void (*SCROLL[])(void) = {
 	draw_object,
 	draw_scroll1,
-	draw_scroll2,
+    draw_scroll2,           //    draw_scroll2_planes,
 	draw_scroll3,
 };
 
@@ -728,6 +732,79 @@ static void draw_scroll2(void) {
 	glBindTexture(GL_TEXTURE_2D, 0);
 	glPopMatrix();
 }
+static void draw_scroll2_planes(void) {
+    int i;
+    int bottomRow, topRow;
+    int record;
+    int flip;
+    int scr2x, tiletx, tilety;
+    float size = TILE_SIZE_SCR2;
+    
+    if (!gemu_scroll_enable[2]) {
+        return;
+    }
+    if (!gstate_RowScroll.nPlanes) {
+        return;
+    }
+    glPushMatrix();
+    scr2x = g.CPS.Scroll2X;
+    glTranslatef(-(scr2x & 0xf) / 16.0 * TILE_SIZE_SCR2, ((g.CPS.Scroll2Y & 0xf) / 16.0 * TILE_SIZE_SCR2)  , 0);
+    
+    tilety = g.CPS.Scroll2Y / 16;
+    tiletx = scr2x          / 16;
+
+    for (i=0; i<gstate_RowScroll.nPlanes; ++i) {
+        RHTilePlane *plane = &gstate_RowScroll.planes[i];
+
+        bottomRow = plane->y1 >> 4;     // pixels to tiles
+        topRow    = plane->y2 >> 4;
+        
+        int tx,ty;
+        // z Stride per line (not tile row)
+        float zDepth = (plane->z2 - plane -> z1) / (plane->y2 - plane->y1);     // XXX zero division possible if y1==y2
+        
+        for (ty = bottomRow; ty <=topRow; ++ty) {
+
+            // case 1 - bottom Y is fractional, top Y is not
+            // case 2 - top Y is fractional, bottom Y is not
+            // case 3 - both are fractional
+            // case 4 - neither are (easiest)
+            float zBottom = (plane->z1 + (ty - bottomRow) * 16 * zDepth) / 30.0;    // div by 30 to squish it into the frustum
+            float zTop    = (zBottom + 16 * zDepth) / 30.0;
+            
+            for (tx = -6; tx<39 ; ++tx) {
+                record = SCROLL_DECODE_SCR2(tx,ty);
+                if (gemu.Tilemap_Scroll2[record][0] == TILE_BLANK_SCR2) {
+                    // Blank tile in SCR2
+                    continue;
+                }
+                gemu_cache_scroll2(gemu.Tilemap_Scroll2[record][0],
+                                   gemu.Tilemap_Scroll2[record][1] & TILE_MASK_PALETTE);
+                flip = (gemu.Tilemap_Scroll2[record][1] & TILE_MASK_FLIP) >> 5;
+
+                int sx = tx-12;
+                int sy = ty-8;
+                
+                // draw_gl_tile:
+                glBegin(GL_POLYGON);
+                glTexCoord2f(flips[flip][0][0],flips[flip][0][1]);
+                glVertex3f(((sx+1) * size), ((sy+1) * size), zTop);
+                glTexCoord2f(flips[flip][1][0],flips[flip][1][1]);
+                glVertex3f((( sx ) * size), ((sy+1) * size), zTop);
+                glTexCoord2f(flips[flip][2][0],flips[flip][2][1]);
+                glVertex3f((( sx ) * size), (( sy ) * size), zBottom);
+                glTexCoord2f(flips[flip][3][0],flips[flip][3][1]);
+                glVertex3f(((sx+1) * size), (( sy ) * size), zTop);
+                glEnd();
+
+
+            }
+        }
+    }
+    
+}
+
+
 static void draw_scroll3(void) {
 	int x,y, flip, tx, ty, tilety, tiletx;
 	float sx, sy;
@@ -865,7 +942,13 @@ void gfx_glut_drawgame(void) {
 	//glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_DECAL);
 	
 	
-	
+    printf("DispEna LSB is %02x %02x %02x %02x\n",
+           (g.CPS.DispEna >>   6) & 3,
+           (g.CPS.DispEna >>   8) & 3,
+           (g.CPS.DispEna >>  10) & 3,
+           (g.CPS.DispEna >>  12) & 3
+           
+           );
 	SCROLL[(g.CPS.DispEna >>   6) & 3]();
 	SCROLL[(g.CPS.DispEna >>   8) & 3]();
 	SCROLL[(g.CPS.DispEna >>  10) & 3]();

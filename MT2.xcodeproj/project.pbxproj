@@ -553,6 +553,7 @@
 		B5948A4C156EE0FF0029278E /* guile_comp.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = guile_comp.c; sourceTree = "<group>"; };
 		B5948BE4156F1B610029278E /* chunli_comp.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = chunli_comp.c; sourceTree = "<group>"; };
 		B5948BE6156F1B6E0029278E /* chunli_human.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = chunli_human.c; sourceTree = "<group>"; };
+		B59F4C931A2992B4003699C1 /* redhammer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = redhammer.h; sourceTree = "<group>"; };
 		B5AC6A5F1550BDBB00C9339E /* testlib.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = testlib.h; sourceTree = "<group>"; };
 		B5AC6A601550BDBB00C9339E /* testlib.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = testlib.c; sourceTree = "<group>"; };
 		B5ADB7A813B2B2EA00905DFE /* MainMenu.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MainMenu.xib; sourceTree = "<group>"; };
@@ -1216,6 +1217,7 @@
 				B5871ED61408E4F4004A45F5 /* pthreads.c */,
 				B57AE5DC19D7D1610065D862 /* strings.c */,
 				B57AE5DD19D7D1610065D862 /* strings.h */,
+				B59F4C931A2992B4003699C1 /* redhammer.h */,
 			);
 			path = RedHammer;
 			sourceTree = "<group>";
