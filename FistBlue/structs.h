@@ -34,13 +34,13 @@ typedef struct {
     u16 Scroll2X, Scroll2Y;	//3a
     u16 Scroll3X, Scroll3Y;	//3e
     u16 Star1X, Star1Y;		//42
-    u16 Star2X, Star2Y;		//44
-    u16 RowScrollOffset;	//48
-	u16 VidControl;			//4a
+    u16 Star2X, Star2Y;		//46
+    u16 RowScrollOffset;	//4a
+	u16 VidControl;			//4c
     /* missing */
-    u16 DispEna;
+    u16 DispEna;            // 0x52
     /*  so on ... */
-	u16	Prio[4];
+	u16	Prio[4];            // 0x54
 	/* Priority Masks */
 	u16 Scroll1XDash, Scroll1YDash;
 	u16 Scroll2XDash, Scroll2YDash;
