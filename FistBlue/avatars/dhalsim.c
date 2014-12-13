@@ -749,6 +749,7 @@ static void dhalsim_comp_attack_stand(Player *ply) {
 			break;
 		FATALDEFAULT;
 	}
+    PLAYERTICK;
 }
 static void dhalsim_comp_animate_exit_crouch(Player *ply) {			// 35e28
 	if (AF1) {
