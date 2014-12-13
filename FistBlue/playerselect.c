@@ -299,8 +299,8 @@ void SM_player_select(void) {		//7fc4
 							g.Player2.FighterID = FID_KEN;
 						}
 						if (g.PlayersOnline == 3) {
-							give_100_points(0);
-							give_100_points(1);
+							give_one_point(0);
+							give_one_point(1);
 						}
 					}
 					break;

@@ -122,7 +122,7 @@ static void sub_3366c (Player *ply) {
 	sub_33688(ply);
 }
 static void sub_33ac8(Player *ply) {
-	if (ply->Flip ^= ply->EnemyDirection) {
+	if (ply->Flip != ply->EnemyDirection) {
 		ply->Flip ^= 1;
 	}
 }

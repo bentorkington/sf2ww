@@ -80,7 +80,10 @@ static void _CDKillDecor2(Object *a6, Player *a2) {		// 7e424 checked
 	_CDDecorSoundPts(a6);		/* Make sound, reward points */
 }
 
-static void mac_stunhim_from76(Object *obj1, Player *vict) {		//7d908
+/*!
+ sf2ua: 7d908
+ */
+static void start_hitsplash(Object *obj1, Player *vict) {
 	/* 7d884 obj1 %a6 vict %a2 */
     Object *obj2;
     if((obj2 = AllocActor())) {
@@ -91,7 +94,7 @@ static void mac_stunhim_from76(Object *obj1, Player *vict) {		//7d908
         obj2->YPI    = g.GPCollY;
         obj2->Owner = vict;
         obj2->Flip   = obj1->Flip;      
-        obj2->SubSel = vict->NextReactMode2;
+        obj2->SubSel = vict->NextReelStrength;
 		if (obj2->SubSel > 5) {
 			panic(0);
 		}
@@ -99,33 +102,40 @@ static void mac_stunhim_from76(Object *obj1, Player *vict) {		//7d908
     }
 }
 
-static void sub_7d314(Object *a6, Player *a2) {
-	const HitBoxAct *a3;
-	/* 0x7d314  Object %a6, Player %a2, HitBoxAct %a3 */
-	if (g.PlayersThrowing || g.DebugNoCollide) {
+
+/*!
+ sf2ua: 7d314
+ obj    %a6
+ vict   %a2
+ active %a3
+ */
+static void sub_7d314(Object *obj, Player *vict) {
+	const HitBoxAct *active;
+
+    if (g.PlayersThrowing || g.DebugNoCollide) {
 		return;
 	}
-	a3 = get_active_hitbox(a6);
-	if (a3 == NULL) {
+	active = get_active_hitbox(obj);
+	if (active == NULL) {
 		return;
 	}
-	if (a2->TimerInvincible != 0) {
+	if (vict->TimerInvincible != 0) {
 		return;
 	}
-	if (check_main_hitboxes(a6, (Object *)a2, a3)==0) {
+	if (check_main_hitboxes(obj, (Object *)vict, active)==0) {
 		return;
 	}
-	a2->TimerInvincible = 120;
-	a2->DidCollide = TRUE;
-	a2->NextReactMode2 = a3->ReactMode2;
-	a6->Timer2 = 14;
-	a2->Timer2 = 14;
-	a2->Direction = a6->Flip;
-	--a2->Energy;
-	a2->ProjectilePushBack = FALSE;
-	set_newreact(a2, (Player *)a6, a3);
+	vict->TimerInvincible  = 120;
+	vict->DidCollide       = TRUE;
+	vict->NextReelStrength = active->Strength;
+	obj->Timer2            = 14;
+	vict->Timer2           = 14;
+	vict->Direction        = obj->Flip;
+	--vict->Energy;
+	vict->ProjectilePushBack = FALSE;
+	set_newreact(vict, (Player *)obj, active);
 	soundsting(SOUND_IMPACT5);
-	mac_stunhim_from76(a6, a2);
+	start_hitsplash(obj, vict);
 }
 
 
@@ -239,8 +249,8 @@ static void mac_stunme2(Player *ply, Player *opp) {		//7d824
         obj->Sel    = SF2ACT_HITSTUN;     /* hitstuns */
         obj->XPI    = g.GPCollX;
         obj->YPI    = g.GPCollY;
-        obj->Flip   = ply->Flip;       /*hmm */
-        if(g.GPWasProjectile) {		/* projectile? */
+        obj->Flip   = ply->Flip;
+        if( g.GPWasProjectile ) {
             obj->Owner = ply->Owner;
             obj->SubSel = 3;
             if(opp->BlockStun) {
@@ -248,7 +258,7 @@ static void mac_stunme2(Player *ply, Player *opp) {		//7d824
             }    
         } else {
             obj->Owner = ply;
-            obj->SubSel = opp->NextReactMode2;
+            obj->SubSel = opp->NextReelStrength;
             if(opp->BlockStun) {
                 obj->SubSel = 3;
             }    
@@ -280,7 +290,7 @@ static void _CDCheckObjBonus0(Player *plya6, Object_G2 *obja2, char *a1) {		// 7
 				*a1 = 1;
 			}
 			
-			obja2->NextReactMode2 = hba3->ReactMode2;
+			obja2->NextReelStrength = hba3->Strength;
 			obja2->Timer2 = 14;
 			plya6->Timer2 = 14;
 			obja2->Direction = plya6->Flip;
@@ -290,7 +300,7 @@ static void _CDCheckObjBonus0(Player *plya6, Object_G2 *obja2, char *a1) {		// 7
 				obja2->BlockStun = TRUE;
 			} else {
 				d0 = obja2->UD.UDcar.boxes[g.GPHitBoxHit];
-				d0 -= (hba3->ReactMode2 + 1);
+				d0 -= (hba3->Strength + 1);
 				if (d0 < 0) {
 					d0 = -1;
 				}
@@ -391,12 +401,12 @@ void _CDCheckObjBonus1(Player *plya6, Object_G2 *obja2, char *a1) {		// 7dc2e
 				} else {
 					*a1 = hb->Shove;
 				}
-				obja2->NextReactMode2 = hb->ReactMode2;
+				obja2->NextReelStrength = hb->Strength;
 				obja2->Timer2 = 14;
 				plya6->Timer2 = 14;
 				obja2->Direction = plya6->Flip;
 				obja2->BlockStun = FALSE;
-				obja2->Energy -= (hb->ReactMode2 + 1);
+				obja2->Energy -= (hb->Strength + 1);
 				if (obja2->Energy < 0) {
 					obja2->Energy = -1;
 					obja2->exists = 2;
@@ -446,28 +456,26 @@ void _CDBonus1(Object_G2 *a6) {		// 7dbc2
 
 #pragma mark BONUS2
 static void _CDCheckObjBonus2(Object_G2 *obj, Player *ply) {			// 7d2ae
-	HitBoxAct *hb;
+	const HitBoxAct *hb;
 	if (g.PlayersThrowing || g.DebugNoCollide) {
 		return;
 	}
-	if((hb=get_active_hitbox((Object *)obj)==0)) { return; }
-	if (ply->TimerInvincible) {
-		return;
-	}
-	if (check_main_hitboxes((Object *)obj, (Object *)ply, hb)==0) {
-		return;
-	}
-	ply->TimerInvincible = 120;
-	ply->DidCollide = TRUE;
-	ply->NextReactMode2 = hb->ReactMode2;
-	obj->Timer2 = 14;
-	ply->Timer2 = 14;
-	ply->Direction = obj->Flip;
-	ply->Energy--;
-	ply->ProjectilePushBack = FALSE;
-	ply->NextReactMode = RM_HITINAIR;
-	queuesound(45);
-	mac_stunhim_from76((Object *)obj, ply);
+    hb = get_active_hitbox((Object *)obj);
+	if(hb   && (ply->TimerInvincible == 0)
+            && check_main_hitboxes((Object *)obj, (Object *)ply, hb) != 0
+       ) {
+        ply->TimerInvincible = 120;
+        ply->DidCollide = TRUE;
+        ply->NextReelStrength = hb->Strength;
+        obj->Timer2 = 14;
+        ply->Timer2 = 14;
+        ply->Direction = obj->Flip;
+        ply->Energy--;
+        ply->ProjectilePushBack = FALSE;
+        ply->NextReactMode = RM_HITINAIR;
+        queuesound(45);
+        start_hitsplash((Object *)obj, ply);
+    }
 }
 static void sub_7d284(Object_G2 *obj) {
 	// XXX userdata;
@@ -521,12 +529,12 @@ static void sub_7dd7c(Player *a6, Object_G2 *a2, char *a1) {
 			if (a1[0]<0) {
 				a1[0]=1;
 			}
-			a2->NextReactMode2 = a3->ReactMode2;
+			a2->NextReelStrength = a3->Strength;
 			a6->Timer2 = 14;
 			a2->Timer2 = 14;
 			a2->Direction = a6->Flip;
 			a2->BlockStun = 0;
-			int d0 = a2->Energy - (a3->ReactMode2 + 1);
+			int d0 = a2->Energy - (a3->Strength + 1);
 			if (d0 >= 0) {
 				a2->Energy = d0;
 			} else {

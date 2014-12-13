@@ -737,7 +737,7 @@ void action_1e(Object *obj) {		//18c1c
 								g.Pause_9e1 = 1;
 								g.x0a02     = TRUE;
 							}
-							goto FLAGAGAIN;			// suck it, bitches
+							goto FLAGAGAIN;			// suck it
 							break;
 							FATALDEFAULT;
 					}

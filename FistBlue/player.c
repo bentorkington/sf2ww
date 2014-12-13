@@ -360,9 +360,9 @@ void check_powermove_input(Player *ply) { /* 2a7ea, actually void() */
 		PLCBPowerBlanka,
 		PLCBPowerGuile,
 		PLCBPowerRyu,
-		PLCBPowerChunLi,
-		PLCBPowerZangeif,
-		PLCBPowerDhalsim
+		(void (*const)(Player *))PLCBPowerChunLi,
+		(void (*const)(Player *))PLCBPowerZangeif,
+		(void (*const)(Player *))PLCBPowerDhalsim
 	} ; 
 	return data_2a7fa[ply->FighterID](ply);
 }
@@ -374,9 +374,9 @@ short ply_cb_standmove(Player *ply) {	/* 2a81a */
 		PLCBStandBlanka,
 		PLCBStandGuile,
 		PLCBStandRyu,
-		PLCBStandChunLi,
-		PLCBStandZangeif,
-		PLCBStandDhalsim,
+		(short (*const)(Player *))PLCBStandChunLi,
+		(short (*const)(Player *))PLCBStandZangeif,
+		(short (*const)(Player *))PLCBStandDhalsim,
 	};
 	return data_2a82a[ply->FighterID](ply);
 }
@@ -388,9 +388,9 @@ short ply_cb_crouchmove(Player *ply) {	/* 2a84a */
 		PLCBCrouchBlanka,
 		PLCBCrouchGuile,		
 		PLCBCrouchRyu,
-		PLCBCrouchChunLi,
-		PLCBCrouchZangeif,
-		PLCBCrouchDhalsim,
+		(short (*const)(Player *))PLCBCrouchChunLi,
+		(short (*const)(Player *))PLCBCrouchZangeif,
+		(short (*const)(Player *))PLCBCrouchDhalsim,
 	};			
 	
 	return data_2a85a[ply->FighterID](ply);
@@ -403,9 +403,9 @@ short ply_cb_jumpmove(Player *ply) {	/* 2a87a */
 		PLCBJumpBlanka,
 		PLCBJumpGuile,
 		PLCBJumpRyu,
-		PLCBJumpChunLi,
-		PLCBJumpZangeif,
-		PLCBJumpDhalsim,
+		(short (*const)(Player *))PLCBJumpChunLi,
+		(short (*const)(Player *))PLCBJumpZangeif,
+		(short (*const)(Player *))PLCBJumpDhalsim,
 	};
 	return data_2a88a[ply->FighterID](ply);
 }
@@ -433,9 +433,9 @@ static void (* const PL_CB_SETSTATUS2[])(Player *ply, short status, int argd0)={
 	pl_cb_setstatus2_guile,
 	pl_cb_setstatus2_ken,
 	pl_cb_setstatus2_chunli,
-	pl_cb_setstatus2_zangeif,
-	pl_cb_setstatus2_dhalsim,
-	pl_cb_setstatus2_mbison,
+	(void (*const)(Player *, short, int))pl_cb_setstatus2_zangeif,
+	(void (*const)(Player *, short, int))pl_cb_setstatus2_dhalsim,
+	(void (*const)(Player *, short, int))pl_cb_setstatus2_mbison,
 	NULL,
 	NULL,
 	NULL,

@@ -1,4 +1,4 @@
-/* effects.c Ported Low level CPS routines */
+    /* effects.c Ported Low level CPS routines */
 
 #include <stdio.h>
 
@@ -560,7 +560,7 @@ static void syslib_10(void) {
 			task->params.Param0 &= 0xff00;
 			task->params.Param0 |= g.TwoCreditsToStart ? 8 : 7;
 			sub_5982(task);
-			SCR1_CURSOR_CPS(gfx_p, 0x90d670);  // y=19 x=5
+			SCR1_CURSOR_CPS(gfx_p, 0x90d670);  // y=19f x=5
 			sub_5072(&gfx_p, g.NumberCredits, 0, 0);
 			DIEFREE;
 			break;
@@ -864,7 +864,7 @@ static void syslib_20(void) {		//5410 increase player score
 
 
 static void aTextRoutine(Task *task) {		// 4f78
-	static void (*textRoutines[])(u8 param) = {		// 4f8a
+	static void (*textRoutines[])(enum libtextgfx_sel) = {		// 4f8a
 		showtextbank0,			// 5602     SCR1 ASCII
 		showtextbank1,			// 568c     OBJ_8X8 ASCII
 		showtextbank2,			// 574a		winners ??? not done yet
@@ -941,8 +941,8 @@ static void LBPlayerHasEntered(Player *ply) {		// 6fd4
 	ply->BlinkerMode1 = 0;
 	ply->BlinkerMode2 = 0;
 	DrawTileText(LIBTEXT_ERASE + ply->Side);
-	give_100_points(ply->Opponent->Side);
-	give_100_points(ply->Side);	// 53d6
+	give_one_point(ply->Opponent->Side);
+	give_one_point(ply->Side);	// 53d6
 }	
 
 static void setplayerblinker(Player *ply, unsigned char selector){		//6e8e
@@ -1053,7 +1053,7 @@ static void LBCheckContinued(Player *ply) {
 		if (g.FreePlay == 0) {
 			g.NumberCredits--;		/* was BCD */
 		}
-		give_100_points(ply->Side ^ 1);
+		give_one_point(ply->Side ^ 1);
 		ply->BlinkerMode1 = 4;
 		if (g.NewChallengerWait) {
 			ply->BlinkerMode1=6;

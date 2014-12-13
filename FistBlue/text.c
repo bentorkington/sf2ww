@@ -54,7 +54,12 @@ void sub_54bc(u16 **gfx_p, short x, short y, u8 *string) {		// 54bc
 	}
 }
 
-void showtextbank4(u8 d0)  {		//58c0 showtextbank4
+/*!
+ showtextbank4
+ sf2ua: 0x58c0
+ sel %d0
+ */
+void showtextbank4(enum libtextgfx_sel sel)  {		//58c0 showtextbank4
 	u16			*gfx_p;
 	const u16	*data;
 	const u8	*data2;
@@ -66,9 +71,9 @@ void showtextbank4(u8 d0)  {		//58c0 showtextbank4
 	const short *offsets;
 	short count;
 	
-	if(d0 & 0x80) {
+	if(sel & 0x80) {
 		//593a 
-		data = data_8e2ac[d0 & 0x7f];
+		data = data_8e2ac[sel & 0x7f];
 		
 		
 		OBJ_CURSOR_CPS(gfx_p, 0x910000 + *data++);
@@ -78,7 +83,7 @@ void showtextbank4(u8 d0)  {		//58c0 showtextbank4
 			OBJECT_DRAW(gfx_p, 0, 0, 0, 0);
 		}
 	} else {
-		data = data_8e2ac[d0];
+		data = data_8e2ac[sel];
 		OBJ_CURSOR_CPS(gfx_p, 0x910000 + data[0]);
 		cp = MakePointObj(data[1], data[2]);
 		count = data[3];
@@ -176,7 +181,7 @@ void sub_5982(Task *task) {		// 5982 in scroll1
 	}
 }
 
-void showtextbank0(u8 sel) {		// 5602 Scroll1
+void showtextbank0(enum libtextgfx_sel sel) {		// 5602 Scroll1
 	const u8 *data = data_8d2ac[sel & 0x7f];
 	u16 *gfx_p;
 	u8 cx,cy;
@@ -188,7 +193,7 @@ void showtextbank0(u8 sel) {		// 5602 Scroll1
 	
 	const u8 *string = data;
 	char ch;
-	short x,y,attr;
+	short attr;
 	
 	if (sel & 0x80) {
 		// 564e
@@ -211,7 +216,7 @@ void showtextbank0(u8 sel) {		// 5602 Scroll1
 			if (ch == 0) {
 				return;
 			} else if (ch == SF2_TEXTLIB_EOL) {
-				SCR1_CURSOR_SET(gfx_p, x, y);
+				SCR1_CURSOR_SET(gfx_p, cx, cy);
 				attr = *string++;
 			} else {
 				if (ch != ' ') {	/* whitespace */
@@ -222,7 +227,7 @@ void showtextbank0(u8 sel) {		// 5602 Scroll1
 		}
 	}
 }
-void showtextbank1(u8 sel) {		// 568c draw text in OBJECT
+void showtextbank1(enum libtextgfx_sel sel) {		// 568c draw text in OBJECT
 	const u8 *data = data_8d2ac[sel & 0x7f];
 	
 	u16 *gfx_p;
@@ -271,7 +276,7 @@ void showtextbank1(u8 sel) {		// 568c draw text in OBJECT
 	}
 }
 
-void showtextbank2(u8 sel) {		// 574a Winners chants
+void showtextbank2(enum libtextgfx_sel sel) {		// 574a Winners chants
 	const char *string;
 	u16 *gfx_p;
 	if (sel & 0x80) {

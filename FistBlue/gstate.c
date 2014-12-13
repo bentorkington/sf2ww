@@ -13,7 +13,10 @@
 
 #include "gemu.h"
 
+#ifdef REDHAMMER
 #include <stdio.h>
+#include <stdlib.h>
+#endif
 
 extern CPSGFXEMU gemu;
 

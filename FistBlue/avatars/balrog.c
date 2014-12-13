@@ -203,7 +203,7 @@ static void sub_37250(Player *ply) {
 				case 0:
 					NEXT(ply->mode2);
 					ply->VelX.full = 0x0800;
-					if (ply->Flip == 0) {
+					if (ply->Flip == FACING_LEFT) {
 						ply->VelX.full = -ply->VelX.full;
 					}
 					ply->AclX.full = 0;
@@ -219,13 +219,13 @@ static void sub_37250(Player *ply) {
 					if (ply->BoundCheck) {
 						CATrajectory((Object *)ply);
 					} else {
-						if (ud->x0080 > ((ply->Flip ? 1 : -1) * ply->XPI - ud->x0082) 
+						if (ud->x0080 > ((ply->Flip != FACING_LEFT ? 1 : -1) * ply->XPI - ud->x0082)
 							&& ply->OppXDist > 0x50) {
 							CATrajectory((Object *)ply);
 						} else {
 							NEXT(ply->mode2);
 							ply->AclX.full = 0x00a0;
-							if (ply->Flip == 0) {
+							if (ply->Flip == FACING_LEFT) {
 								ply->AclX.full = -ply->AclX.full;
 							}
 							CATrajectory((Object *)ply);
@@ -234,8 +234,8 @@ static void sub_37250(Player *ply) {
 					}
 					break;
 				case 4:
-					if ((ply->Flip && ply->VelX.full < 0) 
-						||(ply->Flip == 0 && ply->VelX.full >= 0)) {
+					if ((ply->Flip && ply->VelX.full < 0) ||
+                        (ply->Flip == FACING_LEFT && ply->VelX.full >= 0)) {
 						if (AF1) {
 							sub_36f10(ply);
 						} else {

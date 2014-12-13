@@ -180,7 +180,9 @@ void SMdemo_titlefightanim(void) {	// 0x6650 mode is 2,0
 			start_effect(2,3);
 			queuesound(SOUND_DEMOMUSIC);
 			break;
-		case 2: if(g.Pause_9e1) {g.mode1 += 2;}
+		case 2:
+            if(g.Pause_9e1)
+                NEXT(g.mode1)
 			break;
 		case 4: 
 			gstate_Scroll2.Y.full+= 0x00008000;    /*half, parallax scroll*/

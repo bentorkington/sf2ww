@@ -67,13 +67,12 @@ static void _KnockPlayerOut(Player *victim) {     /* 34ec player knocked out */
 void check_level_sequence(Player *ply) {		// 0x2e94 player %a3
 	int i=0;
 	
-	while (g.LevelScript[i+1] != 0x10) {
-		if (g.LevelScript[i+1] == ply->FighterID) {     // don't fight ourselves
+	while (g.LevelScript[i] != 0x10) {
+		if (g.LevelScript[i] == ply->FighterID) {     // don't fight ourselves
 			g.LevelScript[i]   = -1;
-			g.LevelScript[i+1] = -1;
 			return;
 		}
-		i += 2;
+		i += 1;
 	}
 }
 void copy_level_table(short d0) {		// 2ecc 
@@ -466,7 +465,7 @@ int _check_throw(int airthrow, Player *ply) {		/* 0x3338 */
     ply->x01b0++;
     opp->ThrownFromDizzy = opp->DizzyStun;
 	opp->DizzyStun       = 0;
-    g.PlayersThrowing |= 1 << ply->Side;
+    g.PlayersThrowing |= (1 << ply->Side);
     
     bumpdifficulty_10(); /* difficulty */
     
@@ -484,9 +483,9 @@ void set_initial_positions(void) {          /* 0x37da */
     g.Player1.YPI = get_scr2y();
     g.Player2.XPI = get_scr2x();
     g.Player2.YPI = get_scr2y();
-    g.Player1.XPI += 104;		/* 88(d) pixels either side of centre, 104 and 280 */
+    g.Player1.XPI += (192 - 88);
     g.Player1.YPI +=  40;
-    g.Player2.XPI += 280;
+    g.Player2.XPI += (192 + 88);
     g.Player2.YPI +=  40;
     g.Player1.Direction			 = FACING_RIGHT;
     g.Player1.EnemyDirection     = FACING_RIGHT;
@@ -511,7 +510,7 @@ void set_initial_positions(void) {          /* 0x37da */
    
 
 
-void give_100_points(short side) {		//53d6, wrong, actually 1
+void give_one_point(short side) {		//53d6
 	Player *ply = side ? PLAYER2 : PLAYER1;
 	if (g.PlayersOnline & (1 << ply->Side)) {
 		add_bcd_32(0x1, &ply->Score);

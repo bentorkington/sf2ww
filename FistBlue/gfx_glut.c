@@ -942,14 +942,15 @@ void gfx_glut_drawgame(void) {
 	//glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_DECAL);
 	
 	
-    printf("DispEna LSB is %02x %02x %02x %02x\n",
-           (g.CPS.DispEna >>   6) & 3,
-           (g.CPS.DispEna >>   8) & 3,
-           (g.CPS.DispEna >>  10) & 3,
-           (g.CPS.DispEna >>  12) & 3
-           
-           );
-	SCROLL[(g.CPS.DispEna >>   6) & 3]();
+//    printf("DispEna LSB is %02x %02x %02x %02x\n",
+//           (g.CPS.DispEna >>   6) & 3,
+//           (g.CPS.DispEna >>   8) & 3,
+//           (g.CPS.DispEna >>  10) & 3,
+//           (g.CPS.DispEna >>  12) & 3
+//           
+//           );
+
+    SCROLL[(g.CPS.DispEna >>   6) & 3]();
 	SCROLL[(g.CPS.DispEna >>   8) & 3]();
 	SCROLL[(g.CPS.DispEna >>  10) & 3]();
 	SCROLL[(g.CPS.DispEna >>  12) & 3]();
@@ -958,7 +959,7 @@ void gfx_glut_drawgame(void) {
 	
 	glDisable(GL_SCISSOR_TEST);
 	glDisable(GL_TEXTURE_2D);
-	//drawGLText(gCamera);
+	drawGLText(gCamera);
 }
 
 void gCameraReset(void) {
@@ -980,7 +981,6 @@ void gCameraReset(void) {
 
 void drawGLText(recCamera cam) {
 	char outString [256] = "";
-	const char *endstring;
 	GLint matrixMode;
 	GLint vp[4];
 	GLint lineSpacing = 13;
@@ -1040,12 +1040,6 @@ void drawGLText(recCamera cam) {
 		
 		glColor3f (1.0, 1.0, 1.0);
 		line = 1;
-		//		sprintf(outString, "%d %d %d %d",
-		//				gframecnt,
-		//				gsupertaskcnt,
-		//				gtimercount,
-		//				gdrawallcnt);
-		//		drawGLString (10, (lineSpacing * line++) + startOffest, outString);		
 		sprintf (outString, "DISPENA %04x RTR %x/%x diff %x LS %02x",
 				 g.CPS.DispEna,
 				 g.Player1.RoughTimeRemain,
@@ -1060,8 +1054,7 @@ void drawGLText(recCamera cam) {
 		sprintf (outString, "%d(%d) %d(%d) %d(%d) %d(%d) %d(%d)",
 				 g.mode0,g.timer0,g.mode1,g.timer1,g.mode2,g.timer2, g.mode3, g.timer3, g.mode4, g.timer4);
 		drawGLString(10, (lineSpacing * line++) + startOffest, outString);
-		endstring = g.Player1.AnimFlags & 0x8000 ? "END" : "   ";
-		sprintf (outString, "P1 %x/%x/%x/%x X %04d Y %04d FL %d ST %d", 
+		sprintf (outString, "P1 %x/%x/%x/%x X %04d Y %04d FL %d ST %d",
 				 g.Player1.mode0,
 				 g.Player1.mode1,
 				 g.Player1.mode2,

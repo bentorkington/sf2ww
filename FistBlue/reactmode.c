@@ -385,14 +385,13 @@ void RMFootSwept(Player *ply) {		/* 29178 */
 			}
 			CATrajectory((Object *)ply); 
 			if((ply->PlatformFallDir != 0 || ply->BoundCheck != 0) && ply->GroundSoundDisa == FALSE ) {  
-				// we've hit a wall
+				// we've hit a wall?
 				queuesound(SOUND_GROUND_THUMP);
 				ply->ReactTimer = 12;               
 				ply->VelX.full  = 0;
 				if(ply->VelY.full >  0) { ply->VelY.full = 0; }
 			}
 			if(PLAYERGROUND) { sub_29280(ply); return; }
-			
 			
 			temp = ply->PSPushBacks[0];
 			if(temp < 0) {

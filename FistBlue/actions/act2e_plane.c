@@ -154,8 +154,13 @@ const VECT16 data_cfe74[64] = {
 
 
 
+/*!
+ action_2e
+ sf2ua: 0x18f92
+ description: plane on world map
+ */
 
-void action_2e(Object *obj) {		// 18f92
+void action_2e(Object *obj) {
 	UD2E *ud = (UD2E *)obj->UserData;
 	const static POINT16 city_coords[12] = {		// 19040
 		{ 0x00be, 0x00ab, }, { 0x00c4, 0x00b3, }, { 0x012c, 0x008c, }, { 0x0117, 0x00ac, },

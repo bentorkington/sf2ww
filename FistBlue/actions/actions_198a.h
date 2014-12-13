@@ -98,7 +98,7 @@ typedef struct object_g2{
     char			BlockStun;
     char			SufferHB5;					// 0x4a
 	char			NextReactMode;				/* 0x4b */
-	char			NextReactMode2;				/* 0x4c */
+	char			NextReelStrength;				/* 0x4c  was NextReactMode2 */
 	char			OnPlatform;					// 0x4d
 	char			OnPlatform2;				// 0x4e
 	u8				x004f[3];					/* for hitboxes 1,2,3 */

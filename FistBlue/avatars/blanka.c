@@ -118,7 +118,7 @@ void PSCBVictoryBlanka(Player *ply) {
 	switch (ply->mode3) {
 		case 0:
 			NEXT(ply->mode3);
-			if (ply->RoundsWon != 2 && g.OnFinalStage==0 &&	g.NotUsed==0) {
+			if (ply->RoundsWon != 2 && g.OnFinalStage == FALSE && g.NotUsed == FALSE) {
 				NEXT(ply->mode3);
 			}
 			d0 = (RAND16) + 0x20;

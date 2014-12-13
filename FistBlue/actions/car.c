@@ -28,6 +28,7 @@
 #include "actions_198a.h"
 
 #include "car.h"
+#include "coll_bonus.h"
 
 extern Game g;
 extern GState gstate_Scroll1;
@@ -39,10 +40,10 @@ const HitBoxAct hitb_25d78[] = {0,0,0,0,0,0,0,0,0,0,0,0};
 const struct hitboxes hitboxes_25d6c = {
 	hitb_25d86,
 	hitb_25d86,
+	(const struct hitbox *)hitb_25d78,
+	(const struct hitbox *)hitb_25d78,
 	hitb_25d78,
-	hitb_25d78,
-	hitb_25d78,
-	hitb_25d78,
+	(const struct hitbox *)hitb_25d78,
 };	
 
 
@@ -286,7 +287,7 @@ void _ActSMCar(Object_G2 *obj) {			// The CarID 6, BONUS0
 			break;
 		case 2:
 			_people_on_roof(obj);
-			CDBonusCollisionCheck((Object *)obj);			// collision detection			
+			CDBonusCollisionCheck(obj);			// collision detection
 			
 			if (!obj->mode1) {
 				if (obj->mode2) {

@@ -117,7 +117,9 @@ static void guile_attack_bison(Player *ply) {
 			case 0:
 				NEXT(ply->UserData[5]);
 				if (ply->Opponent->XPI > ply->XPI) 
-				{ply->Flip = 0;} else {ply->Flip = 1;}
+                    ply->Flip = 0;
+                else
+                    ply->Flip = 1;
 				ply->Step = ply->Flip;
 				ply->Path = data_3003c;
 				CASetAnim2(ply, STATUS_WALKING, 0);	// walk up to M.Bison

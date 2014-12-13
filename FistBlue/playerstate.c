@@ -204,7 +204,7 @@ static void PSPlayerDamage(Player *ply, short energy){		//2a460
 	ply->Attacking		= FALSE;
 	ply->IsJumpThreat	= FALSE;
 	ply->ReactMode		= ply->NextReactMode;
-	ply->ReactMode2		= ply->NextReactMode2;
+	ply->ReactMode2		= ply->NextReelStrength;
 	temp = ply->DizzyStun;
 	ply->DizzyStun = 0;
 	if (temp==0) {

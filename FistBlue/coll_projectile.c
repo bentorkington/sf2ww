@@ -88,7 +88,7 @@ void CDCheckProjectile(Object *obj, int d7) {   /* 0x7d0c0 check for projectile 
     
     /* projectile has collided */
     
-    opp->NextReactMode2 = a3->ReactMode2;
+    opp->NextReelStrength = a3->Strength;
     ply->Timer2 = opp->Timer2 = 14;             
     opp->Direction = obj->Flip;
     

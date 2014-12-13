@@ -1206,7 +1206,7 @@ static void sub_7ef86(Object *obj, const u16 *tilep, const short *offsets,
 					  short x, short y, u16 tiles, u16 attr) {     
 	short sx, sy;
 	u16 tile;
-	int d6 = (attr & 0xf000) >> 8 + 0x10;
+	int d6 = ((attr & 0xf000) >> 8) + 0x10;
 	
 	int count = 0;
 	

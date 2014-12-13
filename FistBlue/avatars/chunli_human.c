@@ -719,7 +719,7 @@ static void chunli_attack_jump(Player *ply) {			// 30afe
 					} else {
 						ply->Flip = FACING_LEFT;
 					}
-					ply->Timer2 = 12;		// XXX checkme
+					ply->Timer2 = 12;
 					soundsting(SOUND_CHUNLI_YUP);
 					break;
 				case 2:
@@ -771,7 +771,7 @@ static void chunli_attack_jump(Player *ply) {			// 30afe
 					ply->AclY.full = 0x48;
 					if (sub_30c46(ply)== 0) {
 						if (d6 == 0) {
-							if (ply->Flip == 0) {
+							if (ply->Flip == FACING_LEFT) {
 								ply->VelX.full = -ply->VelX.full;
 							}
 						} else if (d6 < 0) {

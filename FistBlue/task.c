@@ -46,10 +46,11 @@ static void despatch_tasks(void);
 void task_timer(void){
     sf2_interrupt();
 	despatch_tasks();
-	if (g.x8a30) {				// naaasty
-		despatch_tasks();		// to do speedup
-		despatch_tasks();		// to do speedup
-		despatch_tasks();		// to do speedup
+	if (g.x8a30) {
+        /* the CPS just loops here, we instead just hit it three more times to emulate the speed-up */
+		despatch_tasks();
+        despatch_tasks();
+        despatch_tasks();
 	}
 }
 

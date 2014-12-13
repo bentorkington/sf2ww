@@ -447,7 +447,7 @@ void _SMAct05(Object_G2 *obj) {				// 24ff6 Act05 Bonus2
 			break;
 		case 4:
 		case 6:
-			clearpush_1174((Object *)obj);
+			clearpush_1174(obj);
 		default:
 			break;
 			

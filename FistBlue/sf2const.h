@@ -45,8 +45,8 @@ typedef enum {
 
 // for Object.Flip and Object.EnemyDirection
 typedef enum {
-    FACING_LEFT,
-    FACING_RIGHT,
+    FACING_LEFT,        // or FALSE: not flipped
+    FACING_RIGHT,       // or TRUE: flipped
 } FBDirection;
 
 #define BOTH_COMPUTER  0

@@ -125,10 +125,10 @@ Object *(* const actiontypes[7])() = {
     &action_null,
     &action_null,
     &AllocProjectile,
-    &pop_1174,
+    (Object *(*const)())&pop_1174,
     &AllocActor,
     &action_null,
-    &pop_5d0c,
+    (Object *(*const)())&pop_5d0c,
 };
 
 Object *alloc_action_by_type(short type) {

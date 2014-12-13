@@ -295,7 +295,7 @@ static void sub_7d74e(Player *ply, Player *opp, const HitBoxAct *a3) {
         obj->YPI    = g.GPCollY;
         obj->Owner  = ply;
         obj->Flip   = ply->Flip;
-        obj->SubSel = opp->NextReactMode2;
+        obj->SubSel = opp->NextReelStrength;
         if(g.GPHitBlocked == 0 && opp->BlockStun) {
             obj->SubSel = 3;
             return;
@@ -304,7 +304,7 @@ static void sub_7d74e(Player *ply, Player *opp, const HitBoxAct *a3) {
 		if (obj->SubSel > 5) {				
 			// XXX
 			obj->SubSel = 3;
-			printf("Bad ChunLi NextReactMode2");
+			printf("Bad ChunLi NextReelStrength");
 		}
     } else {
         return;
@@ -323,21 +323,27 @@ static void sub_7d74e(Player *ply, Player *opp, const HitBoxAct *a3) {
     }
 }
 
+/*!
+ sf2ua: 0x7d884
+ ply %a6
+ opp: %a2
+ */
+
 void mac_stun_from76(Player *ply, Player *opp) {			//7d884
-    Object *obj;
+    Object *obj;    // %a4
     if((obj = AllocActor())) {
         center_collision_coords();
         obj->exists = TRUE;
         obj->Sel    = SF2ACT_HITSTUN;     /* hitstuns */
         obj->XPI    = g.GPCollX;
         obj->YPI    = g.GPCollY;
-        obj->Flip   = ply->Flip;       /*hmm */
-        if(g.GPWasProjectile) {		/* projectile ? */
+        obj->Flip   = ply->Flip;
+        if( g.GPWasProjectile ) {
             obj->Owner = ply->Owner;
             obj->SubSel = 3;    
         } else {
             obj->Owner = ply;
-            obj->SubSel = opp->NextReactMode2;
+            obj->SubSel = opp->NextReelStrength;
         }
 		if (obj->SubSel > 5) {
 			panic(0);
@@ -354,7 +360,7 @@ static void mac_stun2005(Player *ply, Player *opp) {		//7d8d4
         obj->XPI    = g.GPCollX;
         obj->YPI    = g.GPCollY;
         obj->Owner = opp;
-        obj->Flip   = ply->Flip;       /*hmm */
+        obj->Flip   = ply->Flip;
         obj->SubSel = 5;
     }
 }
@@ -949,7 +955,7 @@ static void _CDCheckPlayer(Player *ply, Player *vict) {     /* 7cf38 */
     if(vict->SufferHB5 < 0) {
         vict->SufferHB5 = 1;
     }
-    vict->NextReactMode2 = active->ReactMode2;
+    vict->NextReelStrength = active->Strength;
     ply->Timer2  = 14;
     vict->Timer2 = 14;
     _CDSpecialReactMode(ply, vict, active);

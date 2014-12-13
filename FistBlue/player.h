@@ -167,7 +167,7 @@ struct player_t {
     char		BlockStun;
     char		SufferHB5;
 	char		NextReactMode;			/* 4b */
-	char		NextReactMode2;		/* 4c  vomit / blood etc select for act20 */
+	char		NextReelStrength;		/* 4c  vomit / blood etc select for act20 */
 	char		OnPlatform, OnPlatform2;	// 4d , 4e
 	u8			HitBoxUnused[3];    /* for hitboxes 1,2,3 */
 	short		DSOffsetX;

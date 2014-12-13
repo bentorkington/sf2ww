@@ -720,6 +720,9 @@ static void dhalsim_comp_exit_stand(Player *ply) {		// 35dd2
 	ply->AIVolley    = FALSE;
 	exit_comp_normal(ply);	
 }
+/*!
+ sf2ua: 0x35d46
+ */
 static void dhalsim_comp_attack_stand(Player *ply) {
 	switch (ply->mode2) {
 		case 0:
@@ -955,6 +958,9 @@ static void dhalsim_comp_attack_special(Player *ply) {			// 361d8
 	}
 }
 
+/*!
+ sf2ua: 0x35d14
+ */
 void PLCBCompAttackDhalsim(Player *ply) {
 	if (ply->Timer2) {
 		--ply->Timer2;

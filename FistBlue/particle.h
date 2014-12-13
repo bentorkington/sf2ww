@@ -129,8 +129,7 @@ struct hitbox_active {		/* Attack hitbox is 0xc long */
 				 2=jumping normal
 				 3=special
 				 4=norm with priority  */
-    u8 ReactMode2;		/* 0x8 future victim 0x4c or */
-	/* mugenguild says 0=light,1=med 2=hard */
+    u8 Strength;		/* 0=light,1=med 2=hard */
 	
     u8 Random1;     
     u8 Random2;     /* 0xa */
@@ -171,14 +170,14 @@ typedef struct {
     char			BlockStun;
     char			SufferHB5;					// 0x4a
 	char			NextReactMode;				/* 0x4b */
-	char			NextReactMode2;				/* 0x4c */
+	char			NextReelStrength;			/* 0x4c was NextReactMode2  0=light 1=med 2=heavy */
 	char			OnPlatform;					// 0x4d
 	char			OnPlatform2;				// 0x4e
 	u8				x004f[3];					/* for hitboxes 1,2,3 */
 	short			DSOffsetX;
 	char			Direction;			/* 0x54 FACING_LEFT=0, FACING_RIGHT=1 */
 	u8				ReactMode;			/* 0x55 see RM_* */
-	u8				ReactMode2;
+	u8				ReactMode2;         // 0x56 0=light 1=med 2=heavy
 	u8				StepSave;			// 0x57
 	u8				Difficulty;
 	u8				x0059;
@@ -211,7 +210,7 @@ typedef struct {
 	
 	// rest of this could be rubbish
 	
-	u8				NextReactMode2;		/* 4c */
+	u8				NextReelStrength;		/* 4c */
 	char			x004d;
 	const signed char		*x004e;
 	short			DSOffsetX;

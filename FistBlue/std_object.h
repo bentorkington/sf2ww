@@ -30,7 +30,7 @@
 	char			x002f;
     const VECT16	*Path;					/* 0030 */
     const struct hitboxes *HitBoxes;		/* 0034 */
-    signed char		*MoreBoxes;				/* 0038 bullshit */
+    const signed char     *MoreBoxes;				/* 0038 bullshit */
     FIXED8_8		VelX;					// 3c
     FIXED8_8		VelY;					// 3e
 			// up to 0x40

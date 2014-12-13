@@ -1587,7 +1587,7 @@ static void action_1b(Object *obj) {
 			NEXT(obj->mode0);
 			obj->XPI = 0x110;
 			obj->YPI = 0x50;
-			obj->LocalTimer = 0x7f;
+			obj->LocalTimer = 127;
 			if (g.PlyLostToComp) {
 				ply = &g.Player2;
 				ply->SubSel = 1;
@@ -1599,7 +1599,8 @@ static void action_1b(Object *obj) {
 			obj->LocalTimer = 0;		// ??
 			/* FALLTHRU */
 		case 2:
-			if (obj->Owner->SubSel & (1 << g.ContinueBits)) {
+            ply = obj->Owner;
+			if (ply->SubSel & (1 << g.ContinueBits)) {
 				if (obj->LocalTimer != ply->ContinueSecs) {
 					obj->LocalTimer = ply->ContinueSecs;
 					queuesound(sounds[obj->LocalTimer]);
@@ -2969,7 +2970,7 @@ static void action_3b(Object *obj) {	//203ba
 	UD3B *ud = (UD3B *)&obj->UserData;
 	
 	Player *ply;
-	const Action *anim;
+	const Action *anim = NULL;
 	short d2;
 	int d0;
 	

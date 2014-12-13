@@ -55,11 +55,11 @@ static void sub_82c4c(Object2 *act) {
 
 static void sub_82bb2(Object2 *act) {
 	act->LocalTimer = act->x001f;
-	if (act->x004e[act->NextReactMode2] < 0) {
-		act->NextReactMode2 = 0;		
+	if (act->x004e[act->NextReelStrength] < 0) {
+		act->NextReelStrength = 0;		
 	}		/* coded like a while() in 68k */
-	act->Timer2 = act->x004e[act->NextReactMode2];
-	act->NextReactMode2++;
+	act->Timer2 = act->x004e[act->NextReelStrength];
+	act->NextReelStrength++;
 	sub_82bec(act);
 	sub_82c4c(act->x0042);	
 }
@@ -93,7 +93,7 @@ static void action_530a_00 (Object2 *act, short d7) {
 	/* next address 00082b9e */
 	
 	const static signed char *data_82b08[]={
-		&data_82b2e[0],				//NextReactMode2
+		&data_82b2e[0],				//NextReelStrength
 		&data_82b2e[3],
 		&data_82b2e[8],
 		&data_82b2e[0xd],
@@ -123,7 +123,7 @@ static void action_530a_00 (Object2 *act, short d7) {
 			/* 82a96 */
 			act->mode0 +=2;
 			
-			act->NextReactMode2 = 0;
+			act->NextReelStrength = 0;
 			act->UserByte = data_82acc[act->SubSel];	/* all chars */
 			act->x0040 = data_82acc[act->SubSel];	
 			act->x0041 = data_82af4[act->SubSel];
