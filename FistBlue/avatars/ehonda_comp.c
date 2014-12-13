@@ -92,27 +92,27 @@ static void sub_330d8(Player *ply) {	//330d8
 	
 	if (AF1) {//330e2 XXX refactor me
 		switch (ply->StandSquat) {
-			case 0:				//330fc
+			case PLY_STAND:				//330fc
 				ply->AISigAttack = FALSE;
 				ply->AIVolley = FALSE;
 				ud->x008a  = 0;
 				exit_comp_normal(ply);
 				break;
-			case 2:				//3310e
+			case PLY_CROUCH:				//3310e
 				ply->AISigAttack = FALSE;
 				ply->AIVolley = FALSE;
 				ud->x008a  = 0;
 				exit_to_compdisp1(ply);
 				break;
-			case 4:
-			case 6:
+			case PLY_JUMP:
+			case PLY_THROW:
 				//33120
 				ply->AISigAttack = FALSE;
 				ply->AIVolley = FALSE;
 				ud->x008a = 0;
 				PLAYERTICK;
 				break;
-				FATALDEFAULT;
+            FATALDEFAULT;
 		}
 	} else {
 		PLAYERTICK;
@@ -441,20 +441,20 @@ void PLCBCompAttackEHonda(Player *ply) {		//33016
 				}
 			} else {
 				switch (ply->StandSquat) {
-					case 0:
+					case PLY_STAND:
 						sub_334ba(ply, 0);
 						break;
-					case 2:
+					case PLY_CROUCH:
 						sub_334ba(ply, 4);
 						break;
-					case 4:
+					case PLY_JUMP:
 						if (ply->VelX.full == 0) {
 							sub_334ba(ply, 8);
 						} else {
 							sub_334ba(ply, 0xc);
 						}
 						break;
-						FATALDEFAULT;
+                    FATALDEFAULT;
 				}	
 			}
 			break;

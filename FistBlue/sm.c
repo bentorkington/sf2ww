@@ -518,7 +518,6 @@ static void draw_world_map(void) {		//856c mode 2,4,2
 			break;
 		FATALDEFAULT;
 	}
-
 }
 void game_mode_24 (void) {		// 0x7786
     switch (g.mode2) {
@@ -1061,9 +1060,9 @@ void gamemode_24I (void) {		// 7970
 					/* Bison has been beaten, so no chant */
 					
 					g.mode1 += 2;     /* Go to mode 2,6.*/
-					g.BisonBeater = g.BattleWinner;
+					g.BisonBeater   = g.BattleWinner;
 					g.BisonBeatSide = g.BattleWinSide;
-					g.ClockingPly = g.BattleWinSide == 0 ? PLAYER1 : PLAYER2;
+					g.ClockingPly   = ( g.BattleWinSide == 0 ) ? PLAYER1 : PLAYER2;
 					if (g.SkipEnding || g.NotUsed == 0) {
 						GEMU_CLEAR_OBJECT_72;       
 					}

@@ -527,7 +527,7 @@ void PLCBCompAttackMBison(Player *ply) {
 			}
 		} else {
 			switch (ply->StandSquat) {
-				case 0:
+				case PLY_STAND:
 					switch (ply->PunchKick) {
 						case 0:
 							sub_36318(ply);
@@ -539,7 +539,7 @@ void PLCBCompAttackMBison(Player *ply) {
 							break;
 					}
 					break;
-				case 2:			
+				case PLY_CROUCH:
 					switch (ply->mode2) {
 						case 0:
 							NEXT(ply->mode2);

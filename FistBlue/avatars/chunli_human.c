@@ -415,7 +415,7 @@ static int sub_30614(Player *ply, u16 buttons_d5) {
 	if(buttons_d5 && LBRareChance()) {
 		return sub_3042c(ply);
 	} else {
-		ply->StandSquat = 2;
+		ply->StandSquat = PLY_CROUCH;
 		ply->Move = ply->ButtonStrength / 2;
 		if (ply->Move) {
 			ud->x009f			= TRUE;
@@ -461,7 +461,7 @@ int PLCBJumpChunLi(Player *ply) {		// 30142
 	UD *ud=(UD *)&ply->UserData;
 	
 	if (_ChunLiButtons(ply)) {
-		ply->StandSquat = 4;
+		ply->StandSquat = PLY_JUMP;
 		switch (ply->PunchKick) {
 			case PLY_PUNCHING:
 				ud->didairthrow = 0;

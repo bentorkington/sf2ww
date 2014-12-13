@@ -104,7 +104,7 @@ static void sub_36f64(Player *ply) {
 }
 static int sub_37242(Player *ply) {
 	if (ply->AISigSpecial) {
-		ply->StandSquat = 6;
+		ply->StandSquat = PLY_THROW;
 		return TRUE;
 	}
 	return FALSE;

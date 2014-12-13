@@ -38,7 +38,7 @@ int PLCBCompJumpSagat (Player *ply) {		// 36cd6
 static int sub_36d00(Player *ply) {
 	if (ply->AISigSpecial) {
 		if (ply->PunchKick == 4 || ply->Projectile == NULL) {
-			ply->StandSquat = 8;
+			ply->StandSquat = PLY_SPECIAL;
 			return TRUE;
 		}
 	}
@@ -127,11 +127,11 @@ void PLCBCompAttackSagat (Player *ply) {	// 36c24
 			sub_36d00(ply);
 		}
 		switch (ply->StandSquat) {
-			case 0:		sub_36c50(ply);	break;
-			case 2:		sub_36caa(ply); break;
-			case 4:		PLCBCompJumpSagat(ply); break;
-			case 6:		sub_36cfc(ply); break;
-			case 8:		sub_36d20(ply); break;
+			case PLY_STAND:		sub_36c50(ply);	break;
+			case PLY_CROUCH:	sub_36caa(ply); break;
+			case PLY_JUMP:		PLCBCompJumpSagat(ply); break;
+			case PLY_THROW:		sub_36cfc(ply); break;
+			case PLY_SPECIAL:	sub_36d20(ply); break;
 				FATALDEFAULT;
 		}
 	}

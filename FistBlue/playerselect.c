@@ -208,9 +208,9 @@ void SM_player_select(void) {		//7fc4
 					g.PlayerSelectDone			= FALSE;
 					g.PLSL.ChallengerDelay      = 0;
 					g.Pause_9e1					= 0;
-					g.CPS.DispEna				= 0x12da;		// xxx
+					g.CPS.DispEna				= 0x12da;
 					g.Palette1					= 17;
-					palette_from_game();	// XXX check that's 0x1644
+					palette_from_game();
 					GSInitForStage();
 					g.CPS.Scroll2X				= 0;
 					g.CPS.Scroll2Y				= 0;

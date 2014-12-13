@@ -415,7 +415,7 @@ short PLCBStandBlanka(Player *ply) {		// 2e8e6
 	UD *ud=(UD *)&ply->UserData;
 	struct blankathrow BT;
 	short d0;
-	ply->StandSquat = 0;
+	ply->StandSquat = PLY_STAND;
 	ud->cannon_counter = 0;
 	decode_buttons(ply, ud->x0082);
 	if (_BlankaCheckCannonStart(ply)) { _BlankaStartCannon(ply); return TRUE; }

@@ -170,7 +170,7 @@ static struct ehondathrow sub_2e14c(Player *ply) {		//2e14c
 			retval.d2 = data[5];
 			retval.success = TRUE;
 			retval.d0 = data[6];
-			ply->StandSquat = 0;
+			ply->StandSquat = PLY_STAND;
 			return retval;
 		}
 		return retval;
@@ -251,7 +251,7 @@ short PLCBStandEHonda(Player *ply) {
 	struct ehondathrow ET;
 	struct ehondares ER;		// d0 and d1
 	
-	ply->StandSquat = 0;
+	ply->StandSquat = PLY_STAND;
 	ud->x0095 = 0;
 	decode_buttons(ply, ud->newbuttons);
 	if (_EHondaCheckFreeOink(ply)) {
@@ -279,7 +279,7 @@ short PLCBStandEHonda(Player *ply) {
 short PLCBCrouchEHonda(Player *ply) {		// 2de60
 	UD *ud=(UD *)&ply->UserData;
 	struct ehondares EH;
-	ply->StandSquat = 2;
+	ply->StandSquat = PLY_CROUCH;
 	short d0;
 	
 	EH = sub_2e0c2(ply);
@@ -298,7 +298,7 @@ short PLCBJumpEHonda(Player *ply) {		//2de7c
 	UD *ud=(UD *)&ply->UserData;
 	short d0;
 	
-	ply->StandSquat = 4;
+	ply->StandSquat = PLY_JUMP;
 	ud->x0095 = 0;
 	d0 = _AnyButtons(ply);
 	if (d0) {
@@ -429,7 +429,7 @@ static void ehonda_volley(Player *ply) {		// 2daae
 static void sub_2dcea(Player *ply) {
 	if (AF1) {
 		if ((ply->JoyDecode.full & 4) == 0) {
-			ply->StandSquat = 0;
+			ply->StandSquat = PLY_STAND;
 		}
 		ehonda_exit(ply);
 	} else {

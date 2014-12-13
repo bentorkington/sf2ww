@@ -55,6 +55,8 @@ void PSCBVictoryEHonda(Player *ply);
 void PSCBVictoryZangeif(Player *ply);
 
 // reco as 12 * 4 * struct Vect8
+// walking speed of each avatar
+
 const short data_2abb0[12][8] = {
 	{ -0x300, 0x0000, 0x0200, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000,  },
 	{ 0xfda0, 0x0000, 0x01a0, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000,  },
@@ -470,7 +472,7 @@ static void _PSDizzyState(Player *ply) {	/* 29f34 diziness */
 static int is_projectile_near(Player *ply) {			/* 2a6fe */
 	if(ply->Opponent->Projectile == 0) { return 0; }
 	if(
-	   ABS((ply->Opponent->Projectile->XPI- ply->XPI)) < 224) {
+	   ABS((ply->Opponent->Projectile->XPI - ply->XPI)) < 224 ) {
 		return TRUE;
 	} else {
 		return FALSE;
@@ -478,7 +480,7 @@ static int is_projectile_near(Player *ply) {			/* 2a6fe */
 }
 
 static int retreat_or_block(Player *ply) {     /* 2a6b8 */
-	if (is_projectile_near(ply) || (ply->Opponent->Attacking && ply->OppXDist <= 0xe0)) {	
+	if ( is_projectile_near(ply) || (ply->Opponent->Attacking && ply->OppXDist <= 0xe0) ) {
 		if(ply->Flip) {
 			if (ply->JoyDecode.full & 2) {
 				return TRUE;
@@ -551,36 +553,32 @@ void proc_plstat_normal(Player *ply) {          /* 286cc */
 			/* FALLTHRU */
 		case 2:
 			set_towardsaway(ply);
-			if(PSGetRoundResult()) { 
+			if(PSGetRoundResult())
 				react_to_result(ply);
-			} else if (is_facing_enemy(ply)) { 
+			else if (is_facing_enemy(ply))
 				turn_around(ply); 
-			} else if (is_holding_down(ply)) { 
+			else if (is_holding_down(ply))
 				crouch(ply);   
-			} else {
+			else {
 				temp = ply_cb_standmove(ply);
-				if(temp > 0) {
+				if(temp > 0)
 					set_attacking(ply);
-					return;
-				} else if (temp == 0) {
-					if (is_pushing_up(ply))      { 
+				else if (temp == 0) {
+					if ( is_pushing_up(ply) )
 						set_jumping(ply);  
-					} else if (retreat_or_block(ply)) { 
+					else if ( retreat_or_block(ply) )
 						set_standblock(ply);
-					} else if (check_platform_end(ply)) { 
+					else if ( check_platform_end(ply) )
 						set_falling_from_platform(ply);
-					} else if (ply->Step ^ ply->StepSave ) {
-						ply->StepSave = ply->Step;
-						CASetAnimWithStep(ply, STATUS_WALKING);
+                    else {
+                        if ( ply->Step != ply->StepSave ) {
+                            ply->StepSave = ply->Step;
+                            CASetAnimWithStep(ply, STATUS_WALKING);
+                        }
 						PLAYERTICK;
-						update_obj_path((Object *)ply);					
-					} else {
-						PLAYERTICK;
-						update_obj_path((Object *)ply);					
-					}
-					
+						update_obj_path((Object *)ply);
+                    }
 				}
-				
 			}
 			break;
 		FATALDEFAULT
@@ -592,40 +590,47 @@ void proc_plstat_crouch(Player *ply) {		// 28940
     switch (ply->mode2){
 		case 0:
 			PLAYERTICK;
-			if(check_platform_end(ply)) { set_falling_from_platform(ply); return; } 
-			if(PSGetRoundResult())      { react_to_result(ply);           return; }
-			if (is_facing_enemy(ply))   { turn_around(ply);               return; } 
-			if (is_holding_down(ply)) {
+			if(check_platform_end(ply))
+                set_falling_from_platform(ply);
+			else if ( PSGetRoundResult() )
+                react_to_result(ply);
+			else if ( is_facing_enemy(ply) )
+                turn_around(ply);
+			else if ( is_holding_down(ply) ) {
 				/* 289b2 */
 				result = ply_cb_crouchmove(ply);
-				if (result < 0) { return; }
-				if (result != 0) {	set_attacking(ply); return;	}
-				if (retreat_or_block(ply)) { standblock_crouch(ply); return;}
-				return;
+                if (result > 0) {
+                    if (result)
+                        set_attacking(ply);
+                    else if (retreat_or_block(ply) )
+                        standblock_crouch(ply);
+                }
 			} else {
 				result = ply_cb_standmove(ply);
-				if(result < 0) {return;}  /* special move */
-				if(result > 0) {
-					set_attacking(ply);
-					return;
-				}
-				if (is_pushing_up(ply))             { set_jumping(ply);    return; }
-				if (retreat_or_block(ply))          { set_standblock(ply); return; }
-				if (AF2 == 2)    { return; }
-				NEXT(ply->mode2);
-				CASetAnim2(ply, STATUS_STAND_UP, AF2);   
+                if ( result > 0 ) {
+                    if ( result )
+                        set_attacking(ply);
+                    else if ( is_pushing_up(ply) )
+                        set_jumping(ply);
+                    else if ( retreat_or_block(ply) )
+                        set_standblock(ply);
+                    else if ( AF2 != 2 ) {
+                        NEXT(ply->mode2);
+                        CASetAnim2(ply, STATUS_STAND_UP, AF2);
+                    }
+                }
 			}
 			break;
 		case 2:
 			// 289c8
 			PLAYERTICK;
-			if (check_platform_end(ply)) {
+			if (check_platform_end(ply))
 				set_falling_from_platform(ply);
-			} else if (PSGetRoundResult()) {
+			else if (PSGetRoundResult())
 				react_to_result(ply);
-			} else if (is_facing_enemy(ply)) {
+			else if (is_facing_enemy(ply))
 				turn_around(ply);
-			} else if (is_holding_down(ply)) {
+			else if (is_holding_down(ply)) {
 				result = ply_cb_crouchmove(ply);
 				if (result<0) {
 					return;
@@ -734,7 +739,7 @@ void proc_plstat_jumping(Player *ply) {         /* 28a46 */
 					ply->mode2 = 0;
 					ply->mode3 = 0;
 					if(ply->Timer2) {
-						ply->Timer2--;
+						--ply->Timer2;
 					} else {
 						CATrajectory((Object *)ply);
 						PLAYERTICK;
@@ -745,7 +750,7 @@ void proc_plstat_jumping(Player *ply) {         /* 28a46 */
 					ply->IsJumpThreat = TRUE;
 					/* %% */
 					if(ply->Timer2) {
-						ply->Timer2--;
+						--ply->Timer2;
 					} else {
 						jump_physics(ply);
 					}
@@ -1130,7 +1135,10 @@ void standattack_or_jump(Player *ply) {
 }
 
 void sub_28e64(Player *ply) {
-    ply->StandSquat == 0 ? ply_exit_stand(ply) : ply_exit_crouch(ply) ;
+    if ( ply->StandSquat == PLY_STAND )
+        ply_exit_stand(ply);
+    else
+        ply_exit_crouch(ply);
 }
 
 void sub_29280(Player *ply) {

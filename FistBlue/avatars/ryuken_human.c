@@ -391,13 +391,13 @@ void PSCBAttackRyu(Player *ply) {		//2d168
 			ud->x00c2--;
 		}
 		switch (ply->StandSquat) {
-			case 0:	_RyuAttack0(ply);	break;
-			case 2: _RyuAttack2(ply);	break;
-			case 4:
+			case PLY_STAND:	_RyuAttack0(ply);	break;
+			case PLY_CROUCH: _RyuAttack2(ply);	break;
+			case PLY_JUMP:
 				panic(0);
 				/* Shouldn't get here */
 				break;
-			case 6:	_RyuAttack6(ply);	break;
+			case PLY_THROW:	_RyuAttack6(ply);	break;
 				FATALDEFAULT;
 		}
 	}
@@ -429,7 +429,7 @@ short PLCBStandRyu(Player *ply) {		//2cf44
 	ud->x00c2 = 5;
 	buttons = sub_2d0d8(ply);
 	if(buttons.d0 == 0){ return 0; }						// KenRyu GetButtons
-	ply->StandSquat = 0;
+	ply->StandSquat = PLY_STAND;
 	g.HumanMoveCnt += 1;
 	decode_buttons(ply, buttons.d0);
 	if (LBRareChance()) {
@@ -471,7 +471,7 @@ short PLCBCrouchRyu(Player *ply) {		//2d05a
 	ud->x00c2 = 5;
 	buttons=sub_2d0d8(ply);
 	if (buttons.d0) {
-		ply->StandSquat = 2;
+		ply->StandSquat = PLY_CROUCH;
 		g.HumanMoveCnt++;
 		decode_buttons(ply, buttons.d0);
 		if (LBRareChance()) {

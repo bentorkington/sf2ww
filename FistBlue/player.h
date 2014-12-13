@@ -20,6 +20,7 @@
 #define PLY_CROUCH		0x2
 #define PLY_JUMP		0x4
 #define PLY_THROW		0x6
+#define PLY_SPECIAL     0x8
 
 //Player.Airborne
 #define AIR_ONGROUND	0

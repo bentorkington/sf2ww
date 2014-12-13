@@ -247,7 +247,7 @@ void PSCBAttackDhalsim(Player *ply) {			// 3258e
 			--ud->timer;
 		}
 		switch (ply->StandSquat) {
-			case 0:
+			case PLY_STAND:
 				if (ply->mode2) {
 					if (AF1) {
 						ud->timer = 0;
@@ -258,7 +258,7 @@ void PSCBAttackDhalsim(Player *ply) {			// 3258e
 					setstatus4(ply, (ply->PunchKick ? STATUS_KICK : STATUS_PUNCH));
 				}
 				break;
-			case 2:
+			case PLY_CROUCH:
 				if (ply->PunchKick == PLY_PUNCHING) {
 					switch (ply->mode2) {
 						case 0:
@@ -335,7 +335,7 @@ void PSCBAttackDhalsim(Player *ply) {			// 3258e
 					}
 				}
 				break;
-			case 4:
+			case PLY_JUMP:
 				dhalsim_trajectory(ply);
 				if (PLAYERGROUND) {
 					ply->Jumping = FALSE;
@@ -345,7 +345,7 @@ void PSCBAttackDhalsim(Player *ply) {			// 3258e
 					PLAYERTICK;
 				}
 				break;
-			case 6:
+			case PLY_THROW:
 				if (ply->ButtonStrength == 4) {
 					if (ply->mode2 == 0) {
 						NEXT(ply->mode2);
@@ -570,23 +570,17 @@ int PLCBJumpDhalsim(Player *ply) {
 		decode_buttons(ply, buttons);
 		if (ply->ButtonStrength >= 3) {
 			if (ply->VelY.full < 256 && ply->VelY.full >= -256) {
-				ply->StandSquat = 4;
-				ply->Move = ply->ButtonStrength + 1;
-				ply->Path = (VECT16 *)data_cfaf4;
+				ply->StandSquat = PLY_JUMP;
+				ply->Move       = ply->ButtonStrength + 1;
+				ply->Path       = (VECT16 *)data_cfaf4;
 				if (ply->PunchKick) {
 					CASetAnim2(ply, STATUS_JUMP_KICK, ply->ButtonStrength + 1);
-					if (ply->Flip) {
-						ud->x0080 =  0xb;
-					} else {
-						ud->x0080 = 0x15;
-					}
+					if (ply->Flip)      ud->x0080 =  0xb;
+					else                ud->x0080 = 0x15;
 				} else {
 					CASetAnim2(ply, STATUS_JUMP_PUNCH, ply->ButtonStrength + 1);
-					if (ply->Flip) {
-						ud->x0080 =	 0xa;
-					} else {
-						ud->x0080 = 0x16;
-					}					
+					if (ply->Flip)      ud->x0080 =	 0xa;
+					else                ud->x0080 = 0x16;
 				}
 				ply->mode1 = PLSTAT_ATTACKING;
 				ply->mode2 = 0;
@@ -701,7 +695,7 @@ void PSCBVictoryDhalsim(Player *ply) {		//328a8
 
 static int dhalsim_comp_check_special(Player *ply) {			// 361c0
 	if (ply->AISigSpecial && ply->Projectile == NULL) {
-		ply->StandSquat = 8;
+		ply->StandSquat = PLY_SPECIAL;
 		return TRUE;
 	}
 	return FALSE;
@@ -973,10 +967,10 @@ void PLCBCompAttackDhalsim(Player *ply) {
 		}
 		switch (ply->StandSquat) {
 			case PLY_STAND:		dhalsim_comp_attack_stand(ply);		break;
-			case PLY_CROUCH:	dhalsim_comp_attack_crouch(ply);		break;
+			case PLY_CROUCH:	dhalsim_comp_attack_crouch(ply);	break;
 			case PLY_JUMP:		dhalsim_comp_attack_jump(ply);		break;
 			case PLY_THROW:		dhalsim_comp_attack_throw(ply);		break;
-			case 8:				dhalsim_comp_attack_special(ply);		break;
+			case PLY_SPECIAL:	dhalsim_comp_attack_special(ply);	break;
 			FATALDEFAULT;
 		}
 	}

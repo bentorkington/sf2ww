@@ -51,7 +51,7 @@ static void sub_33b22(Player *ply) {
 static void sub_3438a(Player *ply) {
 	if (ply->AISigSpecial) {
 		if (ply->PunchKick || ply->Projectile == NULL) {
-			ply->StandSquat = 6;
+			ply->StandSquat = PLY_THROW;
 		} 
 	}
 }

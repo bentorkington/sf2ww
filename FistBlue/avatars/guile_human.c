@@ -157,7 +157,7 @@ static short GuileJumpMove(Player *ply) {		// 2f5e2
 	UD *ud=(UD *)&ply->UserData;
 	
 	g.HumanMoveCnt++;
-	ply->StandSquat = 4;
+	ply->StandSquat = PLY_JUMP;
 	switch (ply->PunchKick) {
 		case PLY_PUNCHING:
 			ud->AirThrow = FALSE;

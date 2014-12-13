@@ -37,10 +37,10 @@ static void sub_32efa(Player *ply) {
 	if(ply->CompDoThrow == 0) { return; }
 	PLY_THROW_SET(-0x18, 0x35, 0x18, 0x10);
 	if(throwvalid(ply)) {		/* 0x3338 */
-		ply->StandSquat = 0x6;
-		ply->Move = ply->PunchKick << 1;	
-		ply->Step = ply->IsWithinBounds ^ 1;
-		ply->Flip = ply->Step;
+		ply->StandSquat = PLY_THROW;
+		ply->Move       = ply->PunchKick << 1;
+		ply->Step       = ply->IsWithinBounds ^ 1;
+		ply->Flip       = ply->Step;
 	}
 }
 static void RyuExitStandAttack(Player *ply) {		/* 32d08 */
@@ -82,7 +82,7 @@ static short sub_32f56(Player *ply) {
 	if (ply->PunchKick == PLY_PUNCHING && ply->Projectile != NULL) {
 		return 0;
 	}
-	ply->StandSquat = 8;		
+	ply->StandSquat = PLY_SPECIAL;
 	return 1;
 }
 
@@ -180,7 +180,7 @@ void PLCBCompAttackRyuKen(Player *ply) {
 			}
 			PLAYERTICK;
 			break;
-		case 4:
+		case PLY_JUMP:
 			/* Does nothing */
 			break;
 		case PLY_THROW:

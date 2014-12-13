@@ -147,10 +147,10 @@ static struct vegathrow sub_37c12(Player *ply) {		// comp_checkthrow
 static void sub_37530(Player *ply) {
 	if (AF1) {
 		switch (ply->StandSquat) {
-			case 0: sub_37554(ply);	break;
-			case 2: sub_37566(ply); break;
-			case 4:
-			case 6: sub_3759c(ply); break;
+			case PLY_STAND:  sub_37554(ply);	break;
+			case PLY_CROUCH: sub_37566(ply); break;
+			case PLY_JUMP:
+			case PLY_THROW:  sub_3759c(ply); break;
 			FATALDEFAULT;
 		}
 	} else {
@@ -668,13 +668,13 @@ void PLCBCompAttackVega(Player *ply) {
 					sub_37d1a(ply);
 				} else {
 					switch (ply->StandSquat) {
-						case 0:				//sub_37c8a(ply);
+						case PLY_STAND:				//sub_37c8a(ply);
 							sub_37ca2(ply, 0);
 							break;
-						case 2:
+						case PLY_CROUCH:
 							sub_37ca2(ply, 4);
 							break;
-						case 4:
+						case PLY_JUMP:
 							sub_37c94(ply);
 							break;
 						FATALDEFAULT;
