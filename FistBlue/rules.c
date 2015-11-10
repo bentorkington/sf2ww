@@ -67,12 +67,14 @@ static void _KnockPlayerOut(Player *victim) {     /* 34ec player knocked out */
 void check_level_sequence(Player *ply) {		// 0x2e94 player %a3
 	int i=0;
 	
-	while (g.LevelScript[i] != 0x10) {
-		if (g.LevelScript[i] == ply->FighterID) {     // don't fight ourselves
+	while (g.LevelScript[i+1] != 0x10) {
+		if (g.LevelScript[i+1] == ply->FighterID) {     // don't fight ourselves
 			g.LevelScript[i]   = -1;
-			return;
+			g.LevelScript[i+1] = -1;
 		}
-		i += 1;
+		else {
+		    i += 1;
+		}
 	}
 }
 void copy_level_table(short d0) {		// 2ecc 

@@ -90,9 +90,9 @@ void check_onscreen_queue(Object *obj) {		// 0x2578
 
 
 void die_if_offscreen(Object *obj) {	// 248c
-	if (obj->XPI - gstate_Scroll2.XPI <= -96   ||
+	if (obj->XPI - gstate_Scroll2.XPI <= 96   ||
 		obj->XPI - gstate_Scroll2.XPI > 480 ||
-		obj->YPI - gstate_Scroll2.YPI <= -96 ||
+		obj->YPI - gstate_Scroll2.YPI <= 96 ||
 		obj->YPI - gstate_Scroll2.YPI > 352)
 	{	
 		obj->mode0 = 6;		// actor dies
