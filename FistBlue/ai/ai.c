@@ -244,13 +244,9 @@ const static u32 data_98152[12][32] = {
 static const char data_2b8a4[16] = { 1,2,1,0,1,2,1,0,2,1,2,1,1,1,2,1 };
 
 #pragma mark ---- AI Init ----
-struct ai_aggressive_pointer _AILookupStrategy(Player *ply) {		// 2b78e
-    // todo: modify this to take a pointer to a struct rather than return a struct.
-    struct ai_aggressive_pointer retval;
-	retval.a1 = dataAIAggressive[ply->FighterID]->a1[ply->OpponentID];
-	retval.a2 = dataAIAggressive[ply->FighterID]->a2[ply->OpponentID];
-		
-	return retval;
+void _AILookupStrategy(Player *ply, struct ai_aggressive_pointer *agg_struct) {		// 2b78e
+    agg_struct->a1 = dataAIAggressive[ply->FighterID]->a1[ply->OpponentID];
+    agg_struct->a2 = dataAIAggressive[ply->FighterID]->a2[ply->OpponentID];
 }
 static void AISetAgg0(Player *ply, const u8 **a1, const AIAggTable **a2) {	// 2b7ce
 	/* do something with a1 and a2 returned by _AILookupStrategy */
@@ -287,7 +283,7 @@ static void _AISetAgg1(Player *ply, const AIAggTable **a2) {		// 2b7ea
 void AIInitPlayer(Player *ply) {		//2b780
 	struct ai_aggressive_pointer DP;
 	ply->AIStartAgain=ply->RoughTimeRemain;
-	DP=_AILookupStrategy(ply);
+	_AILookupStrategy(ply, &DP);
 #if FISTBLUE_DEBUG_AI >= 2
 	int i;
 
@@ -1656,7 +1652,7 @@ static void _AIGoToAgg1(Player *ply) {			//2bb84
 	ply->AIAgressive = 2;
 	_AIResetState(ply);
 	ply->AISaveState = 1;
-	DP=_AILookupStrategy(ply);		
+	_AILookupStrategy(ply, &DP);
 	_AISetAgg1(ply, DP.a2);
 	// return to caller, who carries on to _AIGotoNextStrategy
 }		
