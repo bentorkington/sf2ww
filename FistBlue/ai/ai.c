@@ -73,7 +73,11 @@ static void AIAggHigh(Player *ply, short d0);
 static void _AISetAgg1(Player *ply, AIAggTable **a2);	// 2b7ea
 static void _AIDefHigh(Player *ply, short d0);
 
-
+// AI lookup function returns two registers, %A1 and %A2, which we handle by returning a struct
+struct ai_aggressive_pointer {
+    const u8 **a1;
+    const AIAggTable **a2;
+};
 
 #pragma mark Difficulty Lookups
 
@@ -239,12 +243,10 @@ const static u32 data_98152[12][32] = {
 /* next address 0009876a */
 static const char data_2b8a4[16] = { 1,2,1,0,1,2,1,0,2,1,2,1,1,1,2,1 };
 
-
-
 #pragma mark ---- AI Init ----
-struct dualptr _AILookupStrategy(Player *ply) {		// 2b78e
+struct ai_aggressive_pointer _AILookupStrategy(Player *ply) {		// 2b78e
     // todo: modify this to take a pointer to a struct rather than return a struct.
-	struct dualptr retval;
+    struct ai_aggressive_pointer retval;
 	retval.a1 = dataAIAggressive[ply->FighterID]->a1[ply->OpponentID];
 	retval.a2 = dataAIAggressive[ply->FighterID]->a2[ply->OpponentID];
 		
@@ -283,7 +285,7 @@ static void _AISetAgg1(Player *ply, const AIAggTable **a2) {		// 2b7ea
 }
 
 void AIInitPlayer(Player *ply) {		//2b780
-	struct dualptr DP;
+	struct ai_aggressive_pointer DP;
 	ply->AIStartAgain=ply->RoughTimeRemain;
 	DP=_AILookupStrategy(ply);
 #if FISTBLUE_DEBUG_AI >= 2
@@ -1649,7 +1651,7 @@ static short _AIClosestThreat(Player *ply) {		// 2bcd8 closest threat
 	}
 }
 static void _AIGoToAgg1(Player *ply) {			//2bb84
-	struct dualptr DP;
+	struct ai_aggressive_pointer DP;
 	ply->AIAggTimer0 = ply->AIAllowAggressive = ply->AIAggTimer1 = 0;
 	ply->AIAgressive = 2;
 	_AIResetState(ply);
