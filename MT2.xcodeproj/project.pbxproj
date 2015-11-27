@@ -1402,7 +1402,7 @@
 		29B97313FDCFA39411CA2CEA /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0600;
+				LastUpgradeCheck = 0710;
 				TargetAttributes = {
 					B52124D518D65A6D00D2F649 = {
 						TestTargetID = 8D1107260486CEB800E47090;
@@ -2047,6 +2047,7 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				INFOPLIST_FILE = "iMustard/iMustard-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.luckybulldozer.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -2088,6 +2089,7 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				INFOPLIST_FILE = "iMustard/iMustard-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.luckybulldozer.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -2134,6 +2136,7 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				INFOPLIST_FILE = "iMustardTests/iMustardTests-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.luckybulldozer.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = iphoneos;
 				TEST_HOST = "$(BUNDLE_LOADER)";
@@ -2174,6 +2177,7 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				INFOPLIST_FILE = "iMustardTests/iMustardTests-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.luckybulldozer.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = iphoneos;
 				TEST_HOST = "$(BUNDLE_LOADER)";
@@ -2197,6 +2201,7 @@
 				GCC_PREPROCESSOR_DEFINITIONS = FISTBLUE_TESTS;
 				INFOPLIST_FILE = "MT2 copy-Info.plist";
 				INSTALL_PATH = "$(HOME)/Applications";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.yourcompany.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = "MT2 copy";
 				SDKROOT = "";
 			};
@@ -2214,6 +2219,7 @@
 				GCC_PREPROCESSOR_DEFINITIONS = FISTBLUE_TESTS;
 				INFOPLIST_FILE = "MT2 copy-Info.plist";
 				INSTALL_PATH = "$(HOME)/Applications";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.yourcompany.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = "MT2 copy";
 				SDKROOT = "";
 			};
@@ -2234,6 +2240,7 @@
 				GCC_PREPROCESSOR_DEFINITIONS = FISTBLUE_SF2UA_JAP;
 				INFOPLIST_FILE = "MT2 JAP-Info.plist";
 				INSTALL_PATH = "$(HOME)/Applications";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.yourcompany.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = "MT2 JAP";
 				SDKROOT = "";
 			};
@@ -2251,6 +2258,7 @@
 				GCC_PREPROCESSOR_DEFINITIONS = FISTBLUE_SF2UA_JAP;
 				INFOPLIST_FILE = "MT2 JAP-Info.plist";
 				INSTALL_PATH = "$(HOME)/Applications";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.yourcompany.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = "MT2 JAP";
 				SDKROOT = "";
 			};
@@ -2271,6 +2279,7 @@
 				GCC_PREPROCESSOR_DEFINITIONS = FISTBLUE_SF2UA_ETC;
 				INFOPLIST_FILE = "MT2 ETC-Info.plist";
 				INSTALL_PATH = "$(HOME)/Applications";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.yourcompany.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = "MT2 ETC";
 				SDKROOT = "";
 			};
@@ -2288,6 +2297,7 @@
 				GCC_PREPROCESSOR_DEFINITIONS = FISTBLUE_SF2UA_ETC;
 				INFOPLIST_FILE = "MT2 ETC-Info.plist";
 				INSTALL_PATH = "$(HOME)/Applications";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.yourcompany.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = "MT2 ETC";
 				SDKROOT = "";
 			};
@@ -2358,6 +2368,7 @@
 				INFOPLIST_FILE = "MT2-Info.plist";
 				INSTALL_PATH = "$(HOME)/Applications";
 				MACOSX_DEPLOYMENT_TARGET = 10.9;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.yourcompany.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = MT2;
 				SDKROOT = macosx;
 			};
@@ -2375,6 +2386,7 @@
 				INFOPLIST_FILE = "MT2-Info.plist";
 				INSTALL_PATH = "$(HOME)/Applications";
 				MACOSX_DEPLOYMENT_TARGET = 10.9;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.yourcompany.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = MT2;
 				SDKROOT = macosx;
 			};
@@ -2383,6 +2395,7 @@
 		C01FCF4F08A954540054247B /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ENABLE_TESTABILITY = YES;
 				GCC_C_LANGUAGE_STANDARD = c99;
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
