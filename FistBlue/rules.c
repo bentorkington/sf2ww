@@ -778,7 +778,7 @@ void bumpdifficulty_02(void) {
     }
 }
 void bumpdifficulty_03(void) {	// 46e2
-	static char data_4716[] = {0,2,4,8,12,16,20,24,28,32};
+	static const char data_4716[] = {0,2,4,8,12,16,20,24,28,32};
 	
 	if (g.ActiveHumans == 3 || g.OnBonusStage) { return; }
 	if (g.Diff_WeakBoxCnt > 8) {
@@ -848,12 +848,12 @@ void bumpdifficulty_05(void) { /* 4584 */
 	   15,15,15,15,15,15,15,15,15,15, -1, -1, -1, -1, -1, -1,
 	};
 		
-	if (g.ActiveHumans != 3 && g.OnBonusStage == 0) {
+	if (g.ActiveHumans != 3 && g.OnBonusStage == FALSE) {
 		if (g.HumanLoser) {
-			d6 = 0;
+			d6 = FALSE;
 			data = data_48d6;
 		} else {
-			d6 = 1;
+			d6 = TRUE;
 			data = data_4836;
 		}
 		/* machine divides by zero if lookup below is negative */
@@ -875,7 +875,7 @@ void bumpdifficulty_06(void) { /* 45ea */
 	short d6;
 	
 	
-	if (g.ActiveHumans != 3 && g.OnBonusStage == 0) {
+	if (g.ActiveHumans != BOTH_HUMAN && g.OnBonusStage == 0) {
 		if (g.RoundResult < 0) {
 			// 4684
 			if(g.Diff06Cnt >= 9) {
@@ -943,7 +943,12 @@ void BumpDiff_PowerMove(void) {	// 46c2 same as 4816?
 		FBUpdateDifficulty();
 	}
 }
-            
+
+#pragma mark State machine
+
+/*!
+ sf2ua: 0x8d34
+ */
 static void game_over_one_ply_remains(void) {
 	g.BattleWinner  = g.WinningFighter;
 	g.BattleLoser   = g.LosingFighter;
@@ -954,6 +959,9 @@ static void game_over_one_ply_remains(void) {
 	g.mode2 += 4;
 }
 
+/*!
+ sf2ua: 0x8d64
+ */
 static void game_over_for_only_player(void) {
 	g.BattleLoser   = g.LosingFighter;
 	g.BattleWinner  = g.WinningFighter;
@@ -964,7 +972,11 @@ static void game_over_for_only_player(void) {
 	g.mode1 = 8;
 	g.mode2 = 0;	/* Game Over */
 }
-static void sub_8d94(short losing_side) {
+
+/*!
+ sf2ua: 0x8d94
+ */
+static void update_level_sequence_defeated(short losing_side) {
 	int cursor;
 	
 	Player *pl_lose;
@@ -1015,7 +1027,7 @@ static void sub_8d94(short losing_side) {
 
 static void victory_p1(void) {
 	g.VictoryCnt++;
-	sub_8d94(1);
+	update_level_sequence_defeated(1);
 	kill_ply2();
 	if(g.ActiveHumans == ONLY_P2) {
 		game_over_for_only_player();
@@ -1026,7 +1038,7 @@ static void victory_p1(void) {
 }
 static void victory_p2(void) {
 	g.VictoryCnt++;
-	sub_8d94(0);
+	update_level_sequence_defeated(0);
 	kill_ply1();
 	if(g.ActiveHumans == ONLY_P1) {
 		game_over_for_only_player();
