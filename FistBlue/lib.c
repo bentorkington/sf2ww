@@ -822,7 +822,7 @@ void LBInitPlayers(void) {		// 2c8a
 	g.TimeWarpTimer     = 0;
 	g.TimeWarpSlowdown  = 0;
 	g.TimeWarpSlowdown2 = 0;
-	bumpdifficulty();
+	FBUpdateDifficulty();
 	GSInitOffsets();
 }
     

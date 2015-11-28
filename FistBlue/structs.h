@@ -207,12 +207,12 @@ typedef struct game {
     u16		LastFightStage;
 	char	x0a02;
 	char	x0a03;
-    short	Diff_0a04;				/* max of a04,6,8 */
+    short	Diff_0a04;				/* Nett difficulty index */
     short	Diff_0a06;
     u16		Diff_0a08;
 	u16		x0a0a;
-	short	x0a0c;				// number of battles done 
-	char	x0a0e;
+	short	x0a0c;				// incremented each bumpdifficulty_01
+	char	x0a0e;              // number of continues
 	u8		x0a0f;
 	
 	u16		x0a10;				// not found set
@@ -260,7 +260,7 @@ typedef struct game {
     
     char    TimeResult;				/* 0ad4 */
     char    TimeOut;
-    u16		Diff_0ad6;
+    short	Diff_0ad6;              /* not found set */
 	u8		Diff_WeakBoxCnt;		/* incremented when hitbox4 hit */
 	
 	char	ScreenWobbleStarted;	// 0adb

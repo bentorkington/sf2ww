@@ -1062,6 +1062,9 @@ static void LBCheckContinued(Player *ply) {
 		DrawTileText(LIBTEXT_ERASE + ply->Side);	
 	}
 }
+/*!
+ Allow quickly dismissing the continue counter when <7 seconds left on it
+ */
 static void LBContinueBump(Player *ply) {			// 7222
 	u16 data;
 	if (ply->ContinueSecs < 7) {

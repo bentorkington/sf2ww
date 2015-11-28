@@ -522,7 +522,6 @@ void give_one_point(short side) {		//53d6
 	}
 }
         
-#pragma mark DIFFICULTY 
 
 static void bonus_level_setup(short stage) {	// 2be6
 	g.OnBonusStage = TRUE;
@@ -558,6 +557,8 @@ void sub_2b7c(void) {
 	}
 }
 
+#pragma mark DIFFICULTY
+
 void sub_4720(void) {
 	static const u16 data_4754[32]={
 		0x000a, 0x0020, 0x0002, 0x0000, 0x000a, 0x0008, 0x0010, 0x0008, 
@@ -572,7 +573,7 @@ void sub_4720(void) {
 	g.Diff_0a04 -= d0;
 	g.Diff_0a04 &= 0xff;
 	g.x8a40 = -d0;
-	bumpdifficulty();
+	FBUpdateDifficulty();
 }
 
 void sub_4794(void) {			// 4794
@@ -582,134 +583,48 @@ void sub_4794(void) {			// 4794
 	}
 }
 
-void bumpdifficulty(void) {				// 4414
+void FBUpdateDifficulty(void) {				// 4414
 	static const u16 data_98f42[8][16][2] = {
 		{ 
-			{ 0x0000, 0x0018,  },{ 0x0000, 0x0030,  },
-			{ 0x0000, 0x0050,  },{ 0x0000, 0x0088,  },
-			{ 0x0000, 0x00a8,  },{ 0x0000, 0x00a8,  },
-			{ 0x0000, 0x00a8,  },{ 0x0000, 0x00a8,  },
-			{ 0x0000, 0x00a8,  },{ 0x0000, 0x00a8,  },
-			{ 0x0000, 0x00a8,  },{ 0x0000, 0x00a8,  },
-			{ 0x0000, 0x00a8,  },{ 0x0000, 0x00a8,  },
-			{ 0x0000, 0x00a8,  },{ 0x0000, 0x00a8,  },
+			{ 0x0000, 0x0018, }, { 0x0000, 0x0030, }, { 0x0000, 0x0050, }, { 0x0000, 0x0088, },
+			{ 0x0000, 0x00a8, }, { 0x0000, 0x00a8, }, { 0x0000, 0x00a8, }, { 0x0000, 0x00a8, },
+			{ 0x0000, 0x00a8, }, { 0x0000, 0x00a8, }, { 0x0000, 0x00a8, }, { 0x0000, 0x00a8, },
+			{ 0x0000, 0x00a8, }, { 0x0000, 0x00a8, }, { 0x0000, 0x00a8, }, { 0x0000, 0x00a8, },
 		},{ 
-			{ 0x0018, 0x0030,  },{ 0x0018, 0x0048,  },
-			{ 0x0018, 0x0068,  },{ 0x0018, 0x0098,  },
-			{ 0x0018, 0x00c0,  },
-			{ 0x0018, 0x00c0,  },
-			{ 0x0018, 0x00c0,  },
-			{ 0x0018, 0x00c0,  },
-			{ 0x0018, 0x00c0,  },
-			{ 0x0018, 0x00c0,  },
-			{ 0x0018, 0x00c0,  },
-			{ 0x0018, 0x00c0,  },
-			{ 0x0018, 0x00c0,  },
-			{ 0x0018, 0x00c0,  },
-			{ 0x0018, 0x00c0,  },
-			{ 0x0018, 0x00c0,  },
+			{ 0x0018, 0x0030, }, { 0x0018, 0x0048, }, { 0x0018, 0x0068, }, { 0x0018, 0x0098, },
+			{ 0x0018, 0x00c0, }, { 0x0018, 0x00c0, }, { 0x0018, 0x00c0, }, { 0x0018, 0x00c0, },
+			{ 0x0018, 0x00c0, }, { 0x0018, 0x00c0, }, { 0x0018, 0x00c0, }, { 0x0018, 0x00c0, },
+			{ 0x0018, 0x00c0, }, { 0x0018, 0x00c0, }, { 0x0018, 0x00c0, }, { 0x0018, 0x00c0, },
 		},{ 
-			{ 0x0028, 0x0040,  },
-			{ 0x0028, 0x0058,  },
-			{ 0x0028, 0x0078,  },
-			{ 0x0028, 0x00a8,  },
-			{ 0x0028, 0x00d0,  },
-			{ 0x0028, 0x00d0,  },
-			{ 0x0028, 0x00d0,  },
-			{ 0x0028, 0x00d0,  },
-			{ 0x0028, 0x00d0,  },
-			{ 0x0028, 0x00d0,  },
-			{ 0x0028, 0x00d0,  },
-			{ 0x0028, 0x00d0,  },
-			{ 0x0028, 0x00d0,  },
-			{ 0x0028, 0x00d0,  },
-			{ 0x0028, 0x00d0,  },
-			{ 0x0028, 0x00d0,  },
+			{ 0x0028, 0x0040, }, { 0x0028, 0x0058, }, { 0x0028, 0x0078, }, { 0x0028, 0x00a8, },
+			{ 0x0028, 0x00d0, }, { 0x0028, 0x00d0, }, { 0x0028, 0x00d0, }, { 0x0028, 0x00d0, },
+			{ 0x0028, 0x00d0, }, { 0x0028, 0x00d0, }, { 0x0028, 0x00d0, }, { 0x0028, 0x00d0, },
+			{ 0x0028, 0x00d0, }, { 0x0028, 0x00d0, }, { 0x0028, 0x00d0, }, { 0x0028, 0x00d0, },
 		},{ 
-			{ 0x0038, 0x0050,  },
-			{ 0x0038, 0x0068,  },
-			{ 0x0038, 0x0088,  },
-			{ 0x0038, 0x00b8,  },
-			{ 0x0038, 0x00e0,  },
-			{ 0x0038, 0x00e0,  },
-			{ 0x0038, 0x00e0,  },
-			{ 0x0038, 0x00e0,  },
-			{ 0x0038, 0x00e0,  },
-			{ 0x0038, 0x00e0,  },
-			{ 0x0038, 0x00e0,  },
-			{ 0x0038, 0x00e0,  },
-			{ 0x0038, 0x00e0,  },
-			{ 0x0038, 0x00e0,  },
-			{ 0x0038, 0x00e0,  },
-			{ 0x0038, 0x00e0,  },
+			{ 0x0038, 0x0050, }, { 0x0038, 0x0068, }, { 0x0038, 0x0088, }, { 0x0038, 0x00b8, },
+			{ 0x0038, 0x00e0, }, { 0x0038, 0x00e0, }, { 0x0038, 0x00e0, }, { 0x0038, 0x00e0, },
+			{ 0x0038, 0x00e0, }, { 0x0038, 0x00e0, }, { 0x0038, 0x00e0, }, { 0x0038, 0x00e0, },
+			{ 0x0038, 0x00e0, }, { 0x0038, 0x00e0, }, { 0x0038, 0x00e0, }, { 0x0038, 0x00e0, },
+		},{
+			{ 0x0048, 0x0060, }, { 0x0048, 0x0078, }, { 0x0048, 0x0098, }, { 0x0048, 0x00c8, },
+			{ 0x0048, 0x00f0, }, { 0x0048, 0x00f0, }, { 0x0048, 0x00f0, }, { 0x0048, 0x00f0, },
+			{ 0x0048, 0x00f0, }, { 0x0048, 0x00f0, }, { 0x0048, 0x00f0, }, { 0x0048, 0x00f0, },
+			{ 0x0048, 0x00f0, }, { 0x0048, 0x00f0, }, { 0x0048, 0x00f0, }, { 0x0048, 0x00f0, },
+		},{
+			{ 0x0058, 0x0070, }, { 0x0058, 0x0088, }, { 0x0058, 0x00a8, }, { 0x0058, 0x00d8, },
+			{ 0x0058, 0x00ff, }, { 0x0058, 0x00ff, }, { 0x0058, 0x00ff, }, { 0x0058, 0x00ff, },
+			{ 0x0058, 0x00ff, }, { 0x0058, 0x00ff, }, { 0x0058, 0x00ff, }, { 0x0058, 0x00ff, },
+			{ 0x0058, 0x00ff, }, { 0x0058, 0x00ff, }, { 0x0058, 0x00ff, }, { 0x0058, 0x00ff, },
 		},{ 
-			{ 0x0048, 0x0060,  },
-			{ 0x0048, 0x0078,  },
-			{ 0x0048, 0x0098,  },
-			{ 0x0048, 0x00c8,  },
-			{ 0x0048, 0x00f0,  },
-			{ 0x0048, 0x00f0,  },
-			{ 0x0048, 0x00f0,  },
-			{ 0x0048, 0x00f0,  },
-			{ 0x0048, 0x00f0,  },
-			{ 0x0048, 0x00f0,  },
-			{ 0x0048, 0x00f0,  },
-			{ 0x0048, 0x00f0,  },
-			{ 0x0048, 0x00f0,  },
-			{ 0x0048, 0x00f0,  },
-			{ 0x0048, 0x00f0,  },
-			{ 0x0048, 0x00f0,  },
+			{ 0x0068, 0x0080, }, { 0x0068, 0x0098, }, { 0x0068, 0x00b8, }, { 0x0068, 0x00e8, },
+			{ 0x0068, 0x00ff, }, { 0x0068, 0x00ff, }, { 0x0068, 0x00ff, }, { 0x0068, 0x00ff, },
+			{ 0x0068, 0x00ff, }, { 0x0068, 0x00ff, }, { 0x0068, 0x00ff, }, { 0x0068, 0x00ff, },
+			{ 0x0068, 0x00ff, }, { 0x0068, 0x00ff, }, { 0x0068, 0x00ff, }, { 0x0068, 0x00ff, },
 		},{ 
-			{ 0x0058, 0x0070,  },
-			{ 0x0058, 0x0088,  },
-			{ 0x0058, 0x00a8,  },
-			{ 0x0058, 0x00d8,  },
-			{ 0x0058, 0x00ff,  },
-			{ 0x0058, 0x00ff,  },
-			{ 0x0058, 0x00ff,  },
-			{ 0x0058, 0x00ff,  },
-			{ 0x0058, 0x00ff,  },
-			{ 0x0058, 0x00ff,  },
-			{ 0x0058, 0x00ff,  },
-			{ 0x0058, 0x00ff,  },
-			{ 0x0058, 0x00ff,  },
-			{ 0x0058, 0x00ff,  },
-			{ 0x0058, 0x00ff,  },
-			{ 0x0058, 0x00ff,  },
-		},{ 
-			{ 0x0068, 0x0080,  },
-			{ 0x0068, 0x0098,  },
-			{ 0x0068, 0x00b8,  },
-			{ 0x0068, 0x00e8,  },
-			{ 0x0068, 0x00ff,  },
-			{ 0x0068, 0x00ff,  },
-			{ 0x0068, 0x00ff,  },
-			{ 0x0068, 0x00ff,  },
-			{ 0x0068, 0x00ff,  },
-			{ 0x0068, 0x00ff,  },
-			{ 0x0068, 0x00ff,  },
-			{ 0x0068, 0x00ff,  },
-			{ 0x0068, 0x00ff,  },
-			{ 0x0068, 0x00ff,  },
-			{ 0x0068, 0x00ff,  },
-			{ 0x0068, 0x00ff,  },
-		},{ 
-			{ 0x0078, 0x0090,  },
-			{ 0x0078, 0x00a8,  },
-			{ 0x0078, 0x00c8,  },
-			{ 0x0078, 0x00ff,  },
-			{ 0x0078, 0x00ff,  },
-			{ 0x0078, 0x00ff,  },
-			{ 0x0078, 0x00ff,  },
-			{ 0x0078, 0x00ff,  },
-			{ 0x0078, 0x00ff,  },
-			{ 0x0078, 0x00ff,  },
-			{ 0x0078, 0x00ff,  },
-			{ 0x0078, 0x00ff,  },
-			{ 0x0078, 0x00ff,  },
-			{ 0x0078, 0x00ff,  },
-			{ 0x0078, 0x00ff,  },
-			{ 0x0078, 0x00ff,  },
+			{ 0x0078, 0x0090, }, { 0x0078, 0x00a8, }, { 0x0078, 0x00c8, }, { 0x0078, 0x00ff, },
+			{ 0x0078, 0x00ff, }, { 0x0078, 0x00ff, }, { 0x0078, 0x00ff, }, { 0x0078, 0x00ff, },
+			{ 0x0078, 0x00ff, }, { 0x0078, 0x00ff, }, { 0x0078, 0x00ff, }, { 0x0078, 0x00ff, },
+			{ 0x0078, 0x00ff, }, { 0x0078, 0x00ff, }, { 0x0078, 0x00ff, }, { 0x0078, 0x00ff, },
 		},
 	};
 	static const char data_4976[256]={
@@ -733,33 +648,38 @@ void bumpdifficulty(void) {				// 4414
 	
 	if(g.InDemo) { return; };
 	if(g.x0a18) {		// not found set
-		/* 43d6 */
+		/* addr_sf2ua: 43d6 */
 		g.Diff_0a06 = 0x69;
 		g.Diff_0a08 = 0xff;
 		g.CurrentDifficulty = 0x1f;
 	} else {
 		g.Diff_0a06 = data_98f42[g.Difficulty][g.x0a16][0];
 		g.Diff_0a08 = data_98f42[g.Difficulty][g.x0a16][1];
-		
+        
 		if (g.Diff_0a06 > g.Diff_0a04) {g.Diff_0a04 = g.Diff_0a06;}
-		if (g.Diff_0a08 > g.Diff_0a04) {g.Diff_0a04 = g.Diff_0a08;}
+		if (g.Diff_0a08 > g.Diff_0a04) {g.Diff_0a04 = g.Diff_0a08;}     //x0a08 is invariably greater than x0a06
+        
 		g.CurrentDifficulty = data_4976[g.Diff_0a04];		/* u8 array */
 	}
 }
 
-void bumpdifficulty_4576(void) {
+void bumpdifficulty_4576(void) {            // called when a player continues
 	g.x0a0e++;
 	if ((g.x0a0e & 1) == 0) {
 		bumpdifficulty_01();
 	}
-	
 }
 
-void bumpdifficulty_01(void) {// 453c
-	static char data_4566[] = {
+/*! 
+ decrease the difficulty when a player continues
+ sf2ua: 0x453c
+ */
+void bumpdifficulty_01(void) {
+	static const char data_4566[] = {
 		24, 32, 40, 48, 56, 60, 64, 68, 
 		72, 76, 80, 84, 88, 92, 96, 99
 	};
+    
 	if (g.x0a0c < 16) {
 		g.Diff_0a04 -= data_4566[g.x0a0c];
 	} else {
@@ -770,10 +690,15 @@ void bumpdifficulty_01(void) {// 453c
 		g.Diff_0a04 = 0;
 	}
 	g.Diff_0a04 &= 0xff;
-	bumpdifficulty();
+	FBUpdateDifficulty();
 	++g.x0a0c;
 }
 
+/*!
+ Set the initial difficulty for a new game
+ Called each newgame()
+ sf2ua: 0x43d0
+ */
 void BumpDiff_NewGame(void) {
     if(g.InDemo) {
 		/* 43d6 inlined */
@@ -783,41 +708,53 @@ void BumpDiff_NewGame(void) {
     } else {
         g.Diff_GameCnt++;
         if(g.Diff_GameCnt &= 0xf) { /* deliberate */
-            bumpdifficulty();
-            return;
+            // every 16th game doesn't reset the difficulty
+            FBUpdateDifficulty();
+        } else if( 0x00802000 & (1 << RAND32) ) {
+            //1 in 16 chance of new game with last difficulty
+            FBUpdateDifficulty();
+        } else {
+            g.Diff_0a06 = g.Diff_0a04 = 0;
+            g.CurrentDifficulty = 0;
+            FBUpdateDifficulty();
         }
-        if( 0x00802000 & (1 << RAND32) ) {
-            bumpdifficulty();
-            return;
-        }
-        g.Diff_0a06 = g.Diff_0a04 = 0;
-        g.CurrentDifficulty = 0;
-        bumpdifficulty();
     }
 }
+
+/*!
+ Called once per frame, increases difficulty throughout round.
+ sf2ua: 0x4468
+ */
 void bumpdifficulty_08(void) {
 	short d0;
 	if(g.ActiveHumans == 3) { return; }
 	if(g.OnBonusStage)      { return; }
 	g.x0a0a++;
-	if(g.x0a0a < 0xf0) {		// xxx checkme
+	if(g.x0a0a >= 0xf0) {
 		g.x0a0a = 0;
 		g.Diff_0a04 += 3;
 		g.Diff_0a04 &= 0xff;
-		bumpdifficulty();
+		FBUpdateDifficulty();
 	}
 	d0 = (!g.ContrP1DB.full) & g.ContrP1.full;
-	if(g.Player1.Human==0) {
+
+    if(g.Player1.Human == FALSE) {
 		d0 = (!g.ContrP2DB.full) & g.ContrP2.full;
 	}
-	d0 &= BUTTON_MASK;
-	if(d0 == 0) {return;}
-	if(g.Diff_0ad6 < 0xffff) {
-		g.DisableTimer++;
-	} else {
-		g.Diff_0ad6 = 0xffff;
-	}
+    
+	if(d0 & BUTTON_MASK) {
+        if (g.Diff_0a06 < -1) {
+            g.Diff_0a06 = -1;
+        } else {
+            g.Diff_0a06 = g.Diff_0a06 + 1;
+        }
+    }
 }
+
+/*!
+ Called at end of each round
+ sf2ua: 0x44c6
+ */
 void bumpdifficulty_02(void) {
 	static const char data_44f6[70]={
 		0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 
@@ -827,16 +764,18 @@ void bumpdifficulty_02(void) {
 		0x04, 0x04, 0x04, 0x04, 0x04, 0x04, 
 	};
 
-	if(g.ActiveHumans == 3 || g.OnBonusStage) { return; }
-	if(g.Diff_0ad6 < 0x3d) {
-		g.x8a36     += data_44f6[g.Diff_0ad6];
-		g.Diff_0a04 += data_44f6[g.Diff_0ad6];		/* u16 */
-	} else {
-		g.x8a36     += 4;
-		g.Diff_0a04 += 4;
-	}
-	g.Diff_0a04 &= 0xff;
-	bumpdifficulty();
+	if(g.ActiveHumans != BOTH_HUMAN && !g.OnBonusStage)
+    {
+        if(g.Diff_0ad6 < 0x3d) {
+            g.x8a36      = data_44f6[g.Diff_0ad6];
+            g.Diff_0a04 += data_44f6[g.Diff_0ad6];		/* u16 */
+        } else {
+            g.x8a36      = 4;
+            g.Diff_0a04 += 4;
+        }
+        g.Diff_0a04 &= 0xff;
+        FBUpdateDifficulty();
+    }
 }
 void bumpdifficulty_03(void) {	// 46e2
 	static char data_4716[] = {0,2,4,8,12,16,20,24,28,32};
@@ -851,7 +790,7 @@ void bumpdifficulty_03(void) {	// 46e2
 	}
 
 	g.Diff_0a04 &= 0xff;
-	bumpdifficulty();	
+	FBUpdateDifficulty();	
 }
 void bumpdifficulty_04(void) { /* 47aa */
 	short d1 = 0;
@@ -876,7 +815,7 @@ void bumpdifficulty_04(void) { /* 47aa */
 		g.x8a3a = d0;
 		g.Diff_0a04 += d0;
 		g.Diff_0a04 &= 0xff;
-		bumpdifficulty();
+		FBUpdateDifficulty();
 	}
 }
 void bumpdifficulty_05(void) { /* 4584 */ 
@@ -927,7 +866,7 @@ void bumpdifficulty_05(void) { /* 4584 */
 			g.Diff_0a04 &= 0xff;
 			g.x8a3c = -data[g.TimeRemainBCD];
 		}
-		bumpdifficulty();
+		FBUpdateDifficulty();
 	}
 }
 void bumpdifficulty_06(void) { /* 45ea */ 
@@ -980,20 +919,20 @@ void bumpdifficulty_06(void) { /* 45ea */
 				g.x8a3e = -d3;
 			}
 		}
-		bumpdifficulty();
+		FBUpdateDifficulty();
 	}
 }
 
 void bumpdifficulty_10(void) {		/* 0x46b4 */
 	g.Diff_0a04 = (g.Diff_0a04 + 2) & 0xff;
-	bumpdifficulty();
+	FBUpdateDifficulty();
 }
 
 void bump_difficulty_4816(void) {  /* 0x4816 */
 	if(g.ActiveHumans != BOTH_HUMAN && g.OnBonusStage == 0) { 
 		g.Diff_0a04++;
 		g.Diff_0a04 &= 0xff;
-		bumpdifficulty();
+		FBUpdateDifficulty();
 	}
 }
 
@@ -1001,7 +940,7 @@ void BumpDiff_PowerMove(void) {	// 46c2 same as 4816?
 	if (g.ActiveHumans != BOTH_HUMAN && g.OnBonusStage == 0) {
 		++g.Diff_0a04;
 		g.Diff_0a04 &= 0xff;
-		bumpdifficulty();
+		FBUpdateDifficulty();
 	}
 }
             
