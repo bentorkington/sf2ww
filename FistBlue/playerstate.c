@@ -608,9 +608,10 @@ void proc_plstat_crouch(Player *ply) {		// 28940
 			} else {
 				result = ply_cb_standmove(ply);
                 if ( result > 0 ) {
-                    if ( result )
-                        set_attacking(ply);
-                    else if ( is_pushing_up(ply) )
+                    set_attacking(ply);
+                }
+                else if (result == 0) {
+                    if ( is_pushing_up(ply) )
                         set_jumping(ply);
                     else if ( retreat_or_block(ply) )
                         set_standblock(ply);
