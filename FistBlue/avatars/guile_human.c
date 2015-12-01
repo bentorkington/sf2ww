@@ -30,7 +30,6 @@ typedef struct UserData_Guile UD;
 
 static void _GuileMidPunch(Player *ply) {   /* 2f42c */
 	/* 2f42c */
-	ply->Move = 3;
 	if (ply->OppXDist >= 40) {
 		ply->Move = 3;
 	} else {
@@ -39,7 +38,6 @@ static void _GuileMidPunch(Player *ply) {   /* 2f42c */
 	quirkysound(1);
 }
 static void _GuileBigPunch(Player *ply) {   /* 2f47a */
-	ply->Move = 3;
 	if (ply->OppXDist >= 60) {
 		ply->Move = 5;
 	} else {
@@ -99,8 +97,8 @@ static short GuileStandMove(Player *ply) {		/* 2f3b2*/
 					quirkysound(0);
 					break;
 				case STRENGTH_MED:
-					if (ply->JoyDecode.full == 0 || ply->OppXDist >= 0x33) {
-						if (ply->OppXDist >= 0x26) {
+					if (ply->JoyDecode.full == 0 || ply->OppXDist >= 51) {
+						if (ply->OppXDist >= 38) {
 							ply->Move = 2;
 						} else {
 							ply->Move = 1;
@@ -112,7 +110,7 @@ static short GuileStandMove(Player *ply) {		/* 2f3b2*/
 					}
 					break;
 				case STRENGTH_HIGH:
-					if (ply->JoyDecode.full == 0 || ply->OppXDist >= 0x47) {
+					if (ply->JoyDecode.full == 0 || ply->OppXDist >= 71) {
 						if (ply->OppXDist >= 40) {
 							ply->Move = 4;
 						} else {
@@ -173,7 +171,8 @@ static short GuileJumpMove(Player *ply) {		// 2f5e2
 							ply->Move = 0;
 							ud->AirThrow = TRUE;
 						} else {
-							ply->Move = (ply->VelX.full == 0 ? 4 : 1);							quirkysound(1);
+							ply->Move = (ply->VelX.full == 0 ? 4 : 1);
+                            quirkysound(1);
 						}
 					} else {
 						ply->Move = (ply->VelX.full == 0 ? 4 : 1);
