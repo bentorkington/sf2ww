@@ -36,7 +36,7 @@ extern Game g;
 #include "trackball.h"
 #include "effects.h"
 
-
+#include "cps_tile.h"
 
 extern CPSGFXEMU gemu;
 extern GLfloat gWimpScale;
@@ -88,11 +88,6 @@ buf[1]=getc(gfxrom);	\
 buf[2]=getc(gfxrom);	\
 buf[3]=getc(gfxrom);
 
-#define PALETTE_MASK_BRIGHTNESS 0xf000
-#define PALETTE_MASK_COLOR_R    0x0f00
-#define PALETTE_MASK_COLOR_G    0x00f0
-#define PALETTE_MASK_COLOR_B    0x000f
-
 #define TRANSPARENT_COLOR_R     0
 #define TRANSPARENT_COLOR_G     255
 #define TRANSPARENT_COLOR_B     0
@@ -101,50 +96,17 @@ buf[3]=getc(gfxrom);
 #define ALPHA_TRANS   0x00          /* Alpha value for fully-transparent */
 #define ALPHA_OPAQUE  0xff          /* and fully opaque                  */
 
-
 #define TILE_SIZE_SCR3  1.0f
 #define TILE_SIZE_SCR2  (TILE_SIZE_SCR3 / 2.0f)
 #define TILE_SIZE_SCR1  (TILE_SIZE_SCR3 / 4.0f)
 #define TILE_SIZE_OBJ   (TILE_SIZE_SCR3 / 2.0f)
 
-#define TILE_PIXELS_SCR1    8
-#define TILE_PIXELS_SCR2    16
-#define TILE_PIXELS_SCR3    32
-#define TILE_PIXELS_OBJ     16
-
-/* Tile ROM locations and bytesizes */
-#define TILE_OFFSET_OBJECT      0
-#define TILE_OFFSET_SCROLLS     0x400000
-#define TILE_BYTES_8x8          0x40        // not a bug, the SCR1 tiles are packed ineffieintly
-#define TILE_BYTES_16x16        0x80
-#define TILE_BYTES_32x32        0x200
-
-
-/* Tile attribute masks */
-#define TILE_MASK_FLIP          0x0060
-#define TILE_MASK_PALETTE       0x001f
-
-/* Object masks */
-#define TILE_MASK_BLOCK_X   0x0f00
-#define TILE_MASK_BLOCK_Y   0xf000
-#define TILE_MASK_BLOCK     (TILE_MASK_BLOCK_X | TILE_MASK_BLOCK_Y)
-#define TILE_MASK_OFFSET    0x01ff
-
 #define TILE_BRIGHT_TO_FLOAT    61140.0     // divide by this to normalise brightness to 1.0
-
-/* Blank tile IDs */
-#define TILE_BLANK_SCR1     0x4000
-#define TILE_BLANK_SCR2     0x2800
-#define TILE_BLANK_SCR3     0x400
 
 /* conversion from plain x,y coords to how tiles are packed in CPS RAM */
 #define SCROLL_DECODE_SCR1(tx,ty) ((((ty) & 0x20) << 8) + ((tx) << 5) + ((ty) & 0x1f))
 #define SCROLL_DECODE_SCR2(tx,ty) ((((ty) & 0x30) << 6) + ((tx) * 16) + ((ty) & 0x0f))
 #define SCROLL_DECODE_SCR3(tx,ty) ((((ty) & 0x38)<<6) + ((tx) << 3) + ((ty) & 7))
-
-#define TILE_BRIGHT_TO_FLOAT    61140.0
-#define TILE_OBJECT_END_TAG     0xff00
-
 
 #define TEXTURE_CACHE_SIZE      0x10000
 
@@ -259,6 +221,7 @@ void gemu_clear_cache(void) {
 	}
 	gemuCacheClear = FALSE;
 }
+
 
 static inline void gemu_color_tile(int pixelSize, short palette, GLubyte *img, GPAL (*scrollPalette)[32][16]) {
     int u,v, master;
@@ -408,8 +371,11 @@ void gfx_glut_init(void) {
 
 }
 
-const static unsigned char pixbit[8] = { 128, 64, 32, 16, 8, 4, 2, 1 };
+const static unsigned char pixbit[8] = { 128, 64, 32, 16, 8, 4, 2, 1 }; // XXX replace with PIXELBIT
 
+#define PIXELBIT(n) (1 << (7 - (n)))
+
+#pragma mark Tile reading / decoding
 
 void gemu_readtile(u16 tileid) {          /* read a 16x16 tile */
     int u, v;
@@ -486,7 +452,8 @@ void gemu_readtile_scroll3(u16 tileid) {
     unsigned char pixbit[8] = { 128, 64, 32, 16, 8, 4, 2, 1 };
     int u, v;
     unsigned char buf[4];
-    if(tileid == 0x400) {tileid = 0x404;}
+    if(tileid == 0x400)     // SF2 CPS makes this tile transparent, even though it has data
+        tileid = 0x404;
 	
 	int tileaddr = (tileid * TILE_BYTES_32x32) + TILE_OFFSET_SCROLLS;
 	
@@ -524,6 +491,8 @@ void gemu_readtile_scroll3(u16 tileid) {
         }
     }
 }
+
+#pragma mark Tile drawing
 
 static inline void draw_gl_tile(int sx, int sy, int flip, float size) {
     glBegin(GL_POLYGON);
@@ -572,6 +541,7 @@ static void draw_scroll1(void) {
 	glBindTexture(GL_TEXTURE_2D, 0);
 	glPopMatrix();
 }
+
 static void draw_object(void) {
 
 #define DRAWTILE(TILE,PAL,FLIP,sx,sy)										\
@@ -684,6 +654,7 @@ glEnd();
 	}
 #undef DRAWTILE
 }
+
 static void draw_scroll2(void) {
 	int x,y, yloop, flip, tx, ty, tiletx, tilety;
 	int scr2x;
@@ -732,6 +703,7 @@ static void draw_scroll2(void) {
 	glBindTexture(GL_TEXTURE_2D, 0);
 	glPopMatrix();
 }
+
 static void draw_scroll2_planes(void) {
     int i;
     int bottomRow, topRow;
@@ -804,7 +776,6 @@ static void draw_scroll2_planes(void) {
     
 }
 
-
 static void draw_scroll3(void) {
 	int x,y, flip, tx, ty, tilety, tiletx;
 	float sx, sy;
@@ -848,7 +819,6 @@ static void draw_scroll3(void) {
 
 void gfx_glut_drawgame(void) {
 	GLfloat gShapeSize = 11.0f;
-	//float angle;
 	
 	GLdouble xmin, xmax, ymin, ymax;
 	// far frustum plane
@@ -861,10 +831,7 @@ void gfx_glut_drawgame(void) {
 	if (gemuCacheClear) {
 		gemu_clear_cache();
 	}
-	
-	//glClearColor(0.2, 0.4, 0.1, 0.0);
-	//glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-	
+		
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
 	if (aspect > 1.0) {
@@ -928,7 +895,6 @@ void gfx_glut_drawgame(void) {
 	
 	glEnable(GL_COLOR_MATERIAL);
 	glBlendFunc(GL_SRC_ALPHA,GL_ONE_MINUS_SRC_ALPHA);
-	//glBlendFunc(GL_SRC_ALPHA,GL_ONE);
 	
 	if (texture_mode) {
 		glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
@@ -939,17 +905,7 @@ void gfx_glut_drawgame(void) {
 		glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 		glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
 	}
-	//glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_DECAL);
 	
-	
-//    printf("DispEna LSB is %02x %02x %02x %02x\n",
-//           (g.CPS.DispEna >>   6) & 3,
-//           (g.CPS.DispEna >>   8) & 3,
-//           (g.CPS.DispEna >>  10) & 3,
-//           (g.CPS.DispEna >>  12) & 3
-//           
-//           );
-
     SCROLL[(g.CPS.DispEna >>   6) & 3]();
 	SCROLL[(g.CPS.DispEna >>   8) & 3]();
 	SCROLL[(g.CPS.DispEna >>  10) & 3]();
@@ -1019,13 +975,10 @@ void drawGLText(recCamera cam) {
 		drawGLString (10, cam.screenHeight - (lineSpacing * line++) - startOffest, outString);
 	}
 	
-	
 	if (gGameInWindow) {
 		DrawFrameAndTitle(gameView, gCamera.screenHeight);		
 		DrawFrameAndTitle(dummyWindow->view, gCamera.screenHeight);
 	}
-	
-	
 	
 	infoView.rect.left   = 180;
 	infoView.rect.top    =  20;
@@ -1159,7 +1112,6 @@ void drawGLText(recCamera cam) {
 	glViewport(vp[0], vp[1], vp[2], vp[3]);		// restore the saved viewport
 }
 
-
 void drawGLString(GLfloat x, GLfloat y, char *string){
 	int len, i;
 	
@@ -1170,7 +1122,7 @@ void drawGLString(GLfloat x, GLfloat y, char *string){
 	}
 }
 
-
+#pragma mark Trackball handling
 
 void mouseDolly(int pointx, int pointy) {
 	if (gDolly) {
@@ -1187,6 +1139,7 @@ void mouseDolly(int pointx, int pointy) {
 		gDollyPanStartPoint[1] = pointy;
 	}
 }
+
 void mousePan(int pointx, int pointy) {
 	if (gPan) {
 		GLint panX = (gDollyPanStartPoint[0] - pointx) / (900.0f / -gCamera.viewPos.z);
@@ -1197,11 +1150,14 @@ void mousePan(int pointx, int pointy) {
 		gDollyPanStartPoint[1] = pointy;
 	}
 }
+
 void mouseTrackball(int pointx, int pointy) {
 	if (gTrackBall) {
 		rollToTrackball (pointx, pointy, gTrackBallRotation);
 	}
 }
+
+#pragma mark Mouse callbacks
 
 void gfx_glut_mousedown(int pointx, int pointy) {
 	if (gDolly) { // if we are currently dollying, end dolly

@@ -99,6 +99,7 @@ inline void gemuObjectDraw(u16 *slot, u16 x, u16 y, u16 tile, u16 attr) {
 	*(slot+2)=tile;                
 	*(slot+3)=attr;		
 }
+
 inline void gemuObjectDrawNoAttr(u16 *slot, u16 x, u16 y, u16 tile) {
 	*(slot+0)=x;                   
 	*(slot+1)=y;                   
@@ -118,6 +119,7 @@ inline void gemuObjectDrawID(short id, u16 x, u16 y, u16 tile, u16 attr) {
 	gemu.Tilemap_Object[id][2]=tile;
 	gemu.Tilemap_Object[id][3]=attr;
 }
+
 inline void gemuObjectDrawIDCoords(short id, u16 x, u16 y, u16 tile, u16 attr) {
 	x += 0x40;
 	y ^= 0xff;

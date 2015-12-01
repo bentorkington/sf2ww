@@ -478,6 +478,7 @@
 		29B97325FDCFA39411CA2CEA /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = /System/Library/Frameworks/Foundation.framework; sourceTree = "<absolute>"; };
 		8D1107310486CEB800E47090 /* MT2-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "MT2-Info.plist"; sourceTree = "<group>"; };
 		8D1107320486CEB800E47090 /* MT2.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MT2.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		B50BCA161C040AF300C7A6F4 /* cps_tile.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = cps_tile.h; sourceTree = "<group>"; };
 		B51533F0147EEB4F004A87B0 /* car.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = car.h; sourceTree = "<group>"; };
 		B51533F1147EEB4F004A87B0 /* car.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = car.c; sourceTree = "<group>"; };
 		B51533F3147EEBDB004A87B0 /* drums.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = drums.h; sourceTree = "<group>"; };
@@ -1218,6 +1219,7 @@
 				B57AE5DC19D7D1610065D862 /* strings.c */,
 				B57AE5DD19D7D1610065D862 /* strings.h */,
 				B59F4C931A2992B4003699C1 /* redhammer.h */,
+				B50BCA161C040AF300C7A6F4 /* cps_tile.h */,
 			);
 			path = RedHammer;
 			sourceTree = "<group>";
