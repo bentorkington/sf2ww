@@ -257,6 +257,7 @@ void PSCBAttackDhalsim(Player *ply) {			// 3258e
 					quirkysound(ply->ButtonStrength / 2);
 					setstatus4(ply, (ply->PunchKick ? STATUS_KICK : STATUS_PUNCH));
 				}
+                PLAYERTICK;
 				break;
 			case PLY_CROUCH:
 				if (ply->PunchKick == PLY_PUNCHING) {
