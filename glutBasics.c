@@ -60,12 +60,11 @@ void SetLighting(unsigned int mode) {
 	GLfloat mat_specular[] = {1.0, 1.0, 1.0, 1.0};
 	GLfloat mat_shininess[] = {90.0};
 
-	GLfloat position[4] = {0.0,0.0,12.0,0.0};
-//	GLfloat position[4] = {7.0,-7.0,12.0,0.0};
+	GLfloat position[4] = {0.0, 0.0, 12.0, 0.0};
 
-	GLfloat ambient[4]  = {0.5,0.5,0.5,1.0};
-	GLfloat diffuse[4]  = {1.0,1.0,1.0,1.0};
-	GLfloat specular[4] = {1.0,1.0,1.0,1.0};
+	GLfloat ambient[4]  = {0.5, 0.5, 0.5, 1.0};
+	GLfloat diffuse[4]  = {1.0, 1.0, 1.0, 1.0};
+	GLfloat specular[4] = {1.0, 1.0, 1.0, 1.0};
 	
 	glMaterialfv (GL_FRONT_AND_BACK, GL_SPECULAR, mat_specular);
 	glMaterialfv (GL_FRONT_AND_BACK, GL_SHININESS, mat_shininess);
@@ -104,11 +103,10 @@ void SetLighting(unsigned int mode) {
 void init (void) {
     manual_init();
 
-	//glEnable(GL_DEPTH_TEST);
-	glShadeModel(GL_SMOOTH);    
+	glShadeModel(GL_SMOOTH);
 	glFrontFace(GL_CCW);
     
-	glColor3f(1.0,1.0,1.0);
+	glColor3f(1.0, 1.0, 1.0);
 	gCameraReset ();
 	
 	glPolygonOffset (1.0, 1.0);

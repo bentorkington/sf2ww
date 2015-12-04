@@ -649,7 +649,10 @@ void bin2bcd(short dec){
 
 
 
-	
+/*!
+ Generate an 8-bit pseudo-random number
+ sf2ua: 0xdd4
+ */
 short sf2rand(void) {
     int x = (g.randSeed1 << 8) + g.randSeed2;
 	
