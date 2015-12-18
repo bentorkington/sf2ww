@@ -30,14 +30,14 @@ static void sub_7cd3c(Object *obj) {
 		case 0:
 			NEXT(obj->mode2);
 			obj->LocalTimer = 8;
-			obj->x001f = 2;
+			obj->SubTimer = 2;
 			sub_7cd84();
 			sub_58c0(obj->UserData[0]);		/* byte */
 			break;
 		case 2:
 			if (--obj->LocalTimer == 0) {
 				obj->LocalTimer = 8;
-				if (--obj->x001f < 0) {
+				if (--obj->SubTimer < 0) {
 					NEXT(obj->mode0);
 				} else {
 					sub_7cd84();

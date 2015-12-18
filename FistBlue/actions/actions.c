@@ -1536,7 +1536,7 @@ static void action_1a(Object *obj) {		// 13a3a
 		case 0:
 			NEXT(obj->mode0);
 			obj->LocalTimer = data_13ac6[(sf2rand() & 0x3e)  ];
-			obj->x001f      = data_13ac6[(sf2rand() & 0x3e)+1];
+			obj->SubTimer   = data_13ac6[(sf2rand() & 0x3e)+1];
 			obj-> XPI      += data_13ae6[RAND16WD];
 			obj-> YPI      += data_13ae6[RAND16WD];
 			
@@ -1554,8 +1554,8 @@ static void action_1a(Object *obj) {		// 13a3a
 				NEXT(obj->mode0);
 			}
 			actiontick(obj);
-			if (obj->x001f) {
-				--obj->x001f;
+			if (obj->SubTimer) {
+				--obj->SubTimer;
 				check_rect_queue_draw(obj);
 			} else if ((obj->Timer & 1) == 0) {
 				check_rect_queue_draw(obj);
@@ -2734,22 +2734,22 @@ void action_36(Object *obj) {		/* 1fdc4 */
 		case 0:
 			NEXT(obj->mode0);
 			obj->LocalTimer = 8;
-			obj->x001f = 7;
+			obj->SubTimer = 7;
 			ud->Save_Scroll1Y = gstate_Scroll1.YPI;
 			ud->Save_Scroll2Y = gstate_Scroll2.YPI;
 			ud->Save_Scroll3Y = gstate_Scroll3.YPI;
 			break;
 		case 2:
-			if (--obj->x001f < 0) {
+			if (--obj->SubTimer < 0) {
 				if(--obj->LocalTimer == 0) {
 					NEXT(obj->mode0);
 					sub_1fe36(obj);
 					return;
 				} else {
-					obj->x001f = 7;
+					obj->SubTimer = 7;
 				}
 			}
-			if (obj->x001f & 1) {
+			if (obj->SubTimer & 1) {
                 g.ScreenWobbleMagnitude = 3;
                 ud->Save_Scroll1Y = gstate_Scroll1.YPI;
                 ud->Save_Scroll2Y = gstate_Scroll2.YPI;

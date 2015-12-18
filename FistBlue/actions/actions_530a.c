@@ -54,7 +54,7 @@ static void sub_82c4c(Object2 *act) {
 }
 
 static void sub_82bb2(Object2 *act) {
-	act->LocalTimer = act->x001f;
+	act->LocalTimer = act->SubTimer;
 	if (act->x004e[act->NextReelStrength] < 0) {
 		act->NextReelStrength = 0;		
 	}		/* coded like a while() in 68k */
@@ -115,7 +115,7 @@ static void action_530a_00 (Object2 *act, short d7) {
 	};
 	
 	const static unsigned char data_82acc[20]={0x02,0x02,0x02,0x02,0x02,0x02,0x02,0x02,0x02,0x02,0x02,0x01,0x01,0x01,0x03,0x03,0x02,0x02,0x03,0x05};               /* for x0040 and UserByte */
-	const static unsigned char data_82ae0[20]={0x14, 0x0e, 0x0a, 0x04, 0x04, 0x04, 0x10, 0x04, 0x0a, 0x04, 0x0e, 0x07, 0x0a, 0x0c, 0x05, 0x05, 0x0a, 0x10, 0x09, 0x1f };     /* for x001f */
+	const static unsigned char data_82ae0[20]={0x14, 0x0e, 0x0a, 0x04, 0x04, 0x04, 0x10, 0x04, 0x0a, 0x04, 0x0e, 0x07, 0x0a, 0x0c, 0x05, 0x05, 0x0a, 0x10, 0x09, 0x1f };     /* for SubTimer */
 	const static unsigned char data_82af4[20]={0x06, 0x10, 0x1a, 0x1b, 0x1c, 0x1d, 0x18, 0x0e, 0x11, 0x02, 0x09, 0x17, 0x16, 0x08, 0x0f, 0x1f, 0x1a, 0x1c, 0x04, 0x44 };		/* for x0041 XXX check that last value */
 	
 	switch (act->mode0) {
@@ -127,7 +127,7 @@ static void action_530a_00 (Object2 *act, short d7) {
 			act->UserByte = data_82acc[act->SubSel];	/* all chars */
 			act->x0040 = data_82acc[act->SubSel];	
 			act->x0041 = data_82af4[act->SubSel];
-			act->x001f = data_82ae0[act->SubSel];
+			act->SubTimer = data_82ae0[act->SubSel];
 			act->x004e = data_82b08[act->SubSel];	
 			sub_82c26(act);	/* lookup palette in data_90000, x0040, x0041 */
 			break;

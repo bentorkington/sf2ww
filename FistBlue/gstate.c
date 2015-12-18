@@ -543,7 +543,7 @@ static void _GSMaintScroll2(GState *gstate){      /* 831ca was nextlevel_dosetup
 					_GSInitDispEna();
 					
 					gstate-> x001e = 0;
-					gstate-> x001f = 0;
+					gstate-> SubTimer = 0;
 					gstate-> x0024 = 0;
 					gstate-> x0025 = 0;
 					g.x8a4b = 0;		
@@ -588,7 +588,7 @@ static void _GSMaintScroll1(GState *gs) {		// 8343a
 					break;
 				case 2:
 					NEXT(gs->mode1)
-					gs->x001e = gs->x001f = gs->x0024 = gs->x0025 = 0;
+					gs->x001e = gs->SubTimer = gs->x0024 = gs->x0025 = 0;
 					gstate_update_scroll1(gs);
 					break;
 				case 4:
@@ -1124,9 +1124,9 @@ static void gstate_update_scroll2 (GState *gs) {
     _GSDrawScroll2A(gs, _GSCoordsScroll2(cp), _GSCoordsScroll2(cp),cp);
     
     temp  = gs->YPI & 0x10;
-    temp ^= gs->x001f;
+    temp ^= gs->SubTimer;
     if(temp == 0) {
-        gs->x001f ^= 0x10;
+        gs->SubTimer ^= 0x10;
         
     }
     cp = _GSCoordOffsetScr2(gs, gs->x0024);
@@ -1149,9 +1149,9 @@ static void gstate_update_scroll3 (GState *gs) {		//83d06
     	
     
     temp  = gs->YPI & 0x20;
-    temp ^= gs->x001f;
+    temp ^= gs->SubTimer;
     if(temp == 0) {
-        gs->x001f ^= 0x20;
+        gs->SubTimer ^= 0x20;
 		cp = _GSCoordOffsetScr3(gs, gs->x0024);
 		// XXX _GSDrawScroll3B(gs, _GSCoordsScroll3(cp), _GSLookupScroll3(gs, cp),cp);
     }

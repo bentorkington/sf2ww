@@ -16,7 +16,7 @@
     short			Timer;                  // 0x18 
     const struct action	*ActionScript;		// 0X1a full 32 bit pointer on CPS
     char			LocalTimer;				// 0x1e	 another Timer 
-    char			x001f;
+    char			SubTimer;
     signed char		Sel;					// 20
     signed char		SubSel;					// 21
     short			Layer;					// 22

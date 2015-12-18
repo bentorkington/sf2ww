@@ -715,7 +715,7 @@ void action_1e(Object *obj) {		//18c1c
 							NEXT(obj->mode1);
 							ud->x0084 = 1;
 							obj->LocalTimer = data_18e2a[obj->UserByte - 9][0];
-							obj->x001f      = data_18e2a[obj->UserByte - 9][1];
+							obj->SubTimer      = data_18e2a[obj->UserByte - 9][1];
 							setaction_list(obj, actlist_1a200, obj->UserByte);
 							break;
 						case 12:
@@ -726,7 +726,7 @@ void action_1e(Object *obj) {		//18c1c
 							}
 							break;
 						case 14:
-							if (--obj->x001f == 0) {
+							if (--obj->SubTimer == 0) {
 								NEXT(obj->mode1);
 								sub_18e52(obj);
 							}

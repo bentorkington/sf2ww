@@ -40,7 +40,7 @@ struct particle {
     short			Timer;                  // 0x18 
     struct action	*ActionScript;
     char			LocalTimer;				//001e	 another Timer 
-    char			x001f;
+    char			SubTimer;
     signed char		Sel;					// 20
     signed char		SubSel;					// 21
     short			Layer;					// 22
