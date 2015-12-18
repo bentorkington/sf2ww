@@ -90,17 +90,17 @@ void PSCBPowerRyu(Player *ply) {		//2d714
 	}
 }
 static void _RyuStandNoThrow(Player *ply) {
-	static const short data_2cfaa[]={0x19, 0x1f, 0x29};
+	static const short data_2cfaa[]={25, 31, 41};
 	static const short data_2cfb0[]={ 0,  0, 40};
 
 	ply->Move = ply->ButtonStrength;
 	if (ply->PunchKick==PLY_PUNCHING) {
-		if (ply->OppXDist > data_2cfaa[ply->ButtonStrength]) {
+		if (ply->OppXDist > data_2cfaa[ply->ButtonStrength / 2]) {
 			ply->Move++;		/* do different punch if opponent is close */
 		}
 	}
 	else {
-		if (ply->OppXDist > data_2cfb0[ply->ButtonStrength]) {
+		if (ply->OppXDist > data_2cfb0[ply->ButtonStrength / 2]) {
 			ply->Move++;		/* Do scissor kick instead of roundhouse */
 		}
 	}
@@ -124,7 +124,7 @@ static short _RyuKenCheckThrow(Player *ply, short d6) {	//2cfb6
 }
 
 
-static void _RyuStandThrow(Player *ply, short d6) {
+static void _RyuKenStandMove(Player *ply, short d6) {     // XXX misnamed
 	struct UserData_RyuKen *ud=(struct UserData_RyuKen *)&ply->UserData;
 	
 	
@@ -158,12 +158,12 @@ static void _RyuAttack0(Player *ply) {		// 2d1b4
 	switch (ply->mode2) {
 		case 0:
 			quirkysound(ply->ButtonStrength / 2);
-			if (ply->PunchKick != 0) {
-				setstatus4(ply, STATUS_KICK);
-			} else {
-				setstatus4(ply, STATUS_PUNCH);
-			}
-			break;
+			if (ply->PunchKick == PLY_PUNCHING)
+                setstatus4(ply, STATUS_PUNCH);
+            else
+                setstatus4(ply, STATUS_KICK);
+
+            break;
 		case 2:
 			if (AF1) {
 				ply_exit_stand(ply);
@@ -217,7 +217,7 @@ static void _RyuAttack2(Player *ply) {		//2d214
 	}
 	PLAYERTICK;
 }
-static void _RyuAttack6(Player *ply) {		//2d28e
+static void _RyuAttack6(Player *ply) {		//2d28e RyuKenThrow
 	UD *ud=(UD *)&ply->UserData;
 	
 	if (ply->FighterID) {
@@ -429,6 +429,7 @@ short PLCBStandRyu(Player *ply) {		//2cf44
 	ud->x00c2 = 5;
 	buttons = sub_2d0d8(ply);
 	if(buttons.d0 == 0){ return 0; }						// KenRyu GetButtons
+    
 	ply->StandSquat = PLY_STAND;
 	g.HumanMoveCnt += 1;
 	decode_buttons(ply, buttons.d0);
@@ -445,7 +446,7 @@ short PLCBStandRyu(Player *ply) {		//2cf44
 						return sub_2d080(ply);
 					}
 					else {
-						_RyuStandThrow(ply, buttons.d6);
+						_RyuKenStandMove(ply, buttons.d6);
 						return TRUE;
 					}
 				} else {
@@ -459,7 +460,7 @@ short PLCBStandRyu(Player *ply) {		//2cf44
 			}
 		}
 	} else {
-		_RyuStandThrow(ply, buttons.d6);
+		_RyuKenStandMove(ply, buttons.d6);
 		return TRUE;
 	}		
 	
@@ -484,7 +485,7 @@ short PLCBCrouchRyu(Player *ply) {		//2d05a
 					if (ply->StandSquat) {
 						return sub_2d080(ply);
 					} else {
-						_RyuStandThrow(ply, buttons.d6);
+						_RyuKenStandMove(ply, buttons.d6);
 						return TRUE;
 					}
 				} else {

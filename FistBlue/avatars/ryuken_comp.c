@@ -126,7 +126,8 @@ void PLCBCompAttackRyuKen(Player *ply) {
 					/* 32c9e */
 					quirkysound(ply->ButtonStrength / 2);
 					ply->Move = ply->ButtonStrength;
-					if (ply->PunchKick==0) {
+                    
+					if (ply->PunchKick == PLY_PUNCHING) {
 						if (ply->OppXDist > data_32cd0[ply->Move]) {	
 							ply->Move++;	
 						}
@@ -159,7 +160,7 @@ void PLCBCompAttackRyuKen(Player *ply) {
 			switch (ply->mode2) {
 				case 0:
 					/* 32d38 */
-					ply->Move = ply->ButtonStrength >> 1;
+					ply->Move = ply->ButtonStrength / 2;
 					quirkysound(ply->Move);
 					if (ply->PunchKick) {
 						setstatus4(ply, STATUS_CROUCH_KICK);
