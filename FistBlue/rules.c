@@ -413,8 +413,13 @@ int check_special_ability(Player *ply) {       /* 0x32e4 */
         return 1;
     }
 }
+/*!
+ sf2ua: 3338
+ @param set to TRUE if airthrow
+ @param the player performing the throw
+ */
 int _check_throw(int airthrow, Player *ply) {		/* 0x3338 */
-    int temp4, temp5,temp6 ;
+    int throwX , throwY;
  	
     Player *opp = ply->Opponent;
     
@@ -446,18 +451,15 @@ int _check_throw(int airthrow, Player *ply) {		/* 0x3338 */
     if (opp->Invincible)						{ return FALSE; }
     if (opp->TCollDis)							{ return FALSE; }
     
-    temp5 = ply->Throw[0];		// x offset
-    if (ply->Flip) { temp5 = -temp5; }
-	///      
-    temp5 = temp5 + ply->XPI - opp->XPI + ply->Throw[2] + opp->ThrowCatchX;
-    temp4 = 2 * (ply->Throw[2] + opp->ThrowCatchX);
+    if (ply->Flip)
+        throwX = ply->XPI - ply->Throw[0] - opp->XPI + ply->Throw[2] + opp->ThrowCatchX;
+    else
+        throwX = ply->XPI + ply->Throw[0] - opp->XPI + ply->Throw[2] + opp->ThrowCatchX;
     
+    if (throwX > (2 * (ply->Throw[2] + opp->ThrowCatchX)) || throwX < 0) { return 0; }
     
-    
-    if (temp5 > temp4 || temp5 < 0) { return 0; }
-    
-	temp6 = ply->YPI + ply->Throw[1] - (opp->YPI + opp->ThrowCatchY) + ply->Throw[3];
-    if (temp6 > (2 * ply->Throw[3]) || temp6 < 0 )   { return 0; }
+	throwY = ply->YPI + ply->Throw[1] - (opp->YPI + opp->ThrowCatchY) + ply->Throw[3];
+    if (throwY > (2 * ply->Throw[3]) || throwY < 0 )   { return 0; }
     
     opp->DSOffsetX = 0;
     ply->ThrowStat = 1;
