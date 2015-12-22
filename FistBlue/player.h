@@ -401,6 +401,9 @@ void check_ply_x_bounds(Player *ply);
 int find_apex(Player *ply);
 
 void LBGetDamage(Player *ply, Player *opp, int d2);
+/*!
+ sf2ua: 3668
+ */
 void set_throw_trajectory(Player *ply, int trajectory, int direction, short damage);	//3668 
 
 void ply_grip_release(Player *ply, int direction);

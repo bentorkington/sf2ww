@@ -226,7 +226,7 @@ void PLCBCompAttackRyuKen(Player *ply) {
 									PLAYERTICK;
 									break;
 								case 2:
-									if(RyuAtApex(ply) < 0) {
+									if(KenTrajectory(ply) < 0) {
 										PLAYERGROUND;
 									}
 									if (AF2) {
@@ -236,7 +236,7 @@ void PLCBCompAttackRyuKen(Player *ply) {
 									}
 									break;
 								case 4:
-									if(RyuAtApex(ply)<0) {
+									if(KenTrajectory(ply)<0) {
 										if(PLAYERGROUND){
 											NEXT(ply->mode3);
 											ActStartScreenWobble();

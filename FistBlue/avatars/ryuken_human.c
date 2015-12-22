@@ -113,7 +113,7 @@ static short _RyuKenCheckThrow(Player *ply, short d6) {	//2cfb6
 	}
 	PLY_THROW_SET(-0x18, 0x35, 0x18, 0x10);
 	if(throwvalid(ply)) {
-		if ((ply->JoyDecode.full & JOY_UP)==0) {
+		if ((ply->JoyDecode.full & JOY_LEFT) == 0) {
 			ply->Flip = FACING_LEFT;
 		} else {
 			ply->Flip = FACING_RIGHT;
@@ -217,64 +217,94 @@ static void _RyuAttack2(Player *ply) {		//2d214
 	}
 	PLAYERTICK;
 }
+/*!
+ sf2ua: 2d2e8
+ */
+static void _RyuKenFinishThrow(Player *ply) {
+    if (AF1) {
+        ply->Flip = ply->Flip ^ 1;
+        ply->EnemyDirection = ply->Flip;
+        ply_exit_stand(ply);
+    } else {
+        PLAYERTICK;
+    }
+}
+/*!
+ * sf2ua: 2d2ba
+ */
+static void _RyuKenTopThrow(Player *ply) {
+    switch (ply->mode3) {
+        case 0:
+            if (AF2) {
+                set_throw_trajectory(ply, 0, ply->Flip ^ 1, 13);
+                NEXT(ply->mode3)
+            }
+            PLAYERTICK;
+            break;
+        case 2:
+            _RyuKenFinishThrow(ply);
+            break;
+        FATALDEFAULT;
+    }
+}
 static void _RyuAttack6(Player *ply) {		//2d28e RyuKenThrow
 	UD *ud=(UD *)&ply->UserData;
 	
-	if (ply->FighterID) {
+	if (ply->FighterID != FID_RYU) {
 		// ken  sub_2d308
 		switch (ply->mode2) {
 			case 0:
-				ply->mode2 += 2;
+                NEXT(ply->mode2)
 				ud->ShoryukenX.full = 0x48000;
-				if (ply->Flip != FACING_LEFT) {
-					ud->ShoryukenX.full = -ud->ShoryukenX.full;
-				}
+
+                if (ply->Flip)
+                    ud->ShoryukenX.full = -0x48000;
+				else
+                    ud->ShoryukenX.full = 0x48000;
+                
 				ud->ShoryukenY.full     = 0x00020000;
 				ud->ShoryukenYDash.full = 0xffffe000;
-				soundsting(SOUND_HUA);
+
+                soundsting(SOUND_HUA);
 				CASetAnim2(ply, 0x54, ply->Move);
 				break;
 			case 2:
-				switch (ply->mode3) {
-					case 0:
-						if (AF2) {
-							NEXT(ply->mode3);
-						}
-						PLAYERTICK;
-						break;
-					case 2:
-						if(RyuAtApex(ply) < 0) { PLAYERGROUND; }
-						if (AF2) {
-							/* inlined 2d2d0 */
-							set_throw_trajectory(ply, 0, ply->Flip ^ 1, 13);
-							NEXT(ply->mode3);
-						}
-						PLAYERTICK;
-						break;
-					case 4:
-						if(RyuAtApex(ply) < 0) {
-							if(PLAYERGROUND) {
-								NEXT(ply->mode3);
-								ActStartScreenWobble(); 
-							}
-						}
-						break;
-					case 6:
-						/* reinlined 2d2e8 */
-						if (AF1) {
-							ply->Flip = ply->Flip ^ 1;
-							ply->EnemyDirection = ply->Flip;
-							ply_exit_stand(ply);
-						} else {
-							PLAYERTICK;
-						}
-						break;
-						FATALDEFAULT;
-				}
-				break;
-				FATALDEFAULT;
-		}
-		
+                if (ply->PunchKick == PLY_PUNCHING) {
+                    _RyuKenTopThrow(ply);
+                } else {
+                    switch (ply->mode3) {
+                        case 0:
+                            if (AF2 == 0) {
+                                NEXT(ply->mode3);
+                            }
+                            PLAYERTICK;
+                            break;
+                        case 2:
+                            if(KenTrajectory(ply) < 0) { PLAYERGROUND; }
+                            if (AF2) {
+                                /* inlined 2d2d0 */
+                                set_throw_trajectory(ply, 0, ply->Flip ^ 1, 13);
+                                NEXT(ply->mode3);
+                            }
+                            PLAYERTICK;
+                            break;
+                        case 4:
+                            if(KenTrajectory(ply) < 0) {
+                                if(PLAYERGROUND) {
+                                    NEXT(ply->mode3);
+                                    ActStartScreenWobble(); 
+                                }
+                            }
+                            break;
+                        case 6:
+                            _RyuKenFinishThrow(ply);
+                            break;
+                        FATALDEFAULT;
+                    }
+                }
+                break;
+            FATALDEFAULT;
+        }
 	} else {
 		// RYU
 		switch (ply->mode2) {
@@ -284,30 +314,11 @@ static void _RyuAttack6(Player *ply) {		//2d28e RyuKenThrow
 				CASetAnim2(ply, 0x54, ply->Move);
 				break;
 			case 2:
-				switch (ply->mode3) {
-					case 0:
-						if (AF2) {
-							set_throw_trajectory(ply, 0, ply->Flip ^ 1, 13);
-							NEXT(ply->mode3)
-						}
-						PLAYERTICK;
-						break;
-					case 2:
-						if (AF1) {
-							ply->Flip = ply->Flip ^ 1;
-							ply->EnemyDirection = ply->Flip;
-							ply_exit_stand(ply);
-						} else {
-							PLAYERTICK;
-						}
-						break;
-				}
+                _RyuKenTopThrow(ply);
 				break;
-				FATALDEFAULT;
+            FATALDEFAULT;
 		}
-		
 	}
-	
 }
 short RyuPowerSuccess(Player *ply, char *a2) { // 2d6ee
 	struct UserData_RyuKen *ud=(struct UserData_RyuKen *)&ply->UserData;

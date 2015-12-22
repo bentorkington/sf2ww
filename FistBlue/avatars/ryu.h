@@ -25,7 +25,11 @@ void RyuStartHurricane(Player *ply);
 void RyuSMHurricane(Player *ply);
 short sub_2d7d2(Player *ply);
 
-int RyuAtApex(Player *ply);
+/*!
+ sf2ua: 2d3a2
+ @return the Y velocity
+ */
+int KenTrajectory(Player *ply);
 
 int PLCBCompJumpRyuKen (Player *ply);	/* callback from 2c9be */
 void PLCBCompAttackRyuKen(Player *ply);

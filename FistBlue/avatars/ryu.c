@@ -169,9 +169,11 @@ short sub_2d7d2(Player *ply) {
 
 
 #pragma mark Shoryuken
-
-/* 2d3a2 apex finder */
-int RyuAtApex(Player *ply) {		//2d3a2
+/*!
+ * sf2ua: 2d3a2
+ * returns: the Y velocity
+ */
+int KenTrajectory(Player *ply) {
 	UD *ud=(UD *)&ply->UserData;
 	
 	ply->X.full += ud->ShoryukenX.full;
@@ -277,7 +279,7 @@ void RyuSMHurricane(Player *ply) {		//2d96e
 	
 	switch (ply->mode3) {
 		case 0:
-			if(RyuAtApex(ply)<0){
+			if(KenTrajectory(ply)<0){
 				NEXT(ply->mode3);
 				CASetAnim2(ply, STATUS_HURRICANE, (ply->ButtonStrength/2)+2);
 			}
@@ -295,7 +297,7 @@ void RyuSMHurricane(Player *ply) {		//2d96e
 			PLAYERTICK;
 			break;
 		case 4:
-			RyuAtApex(ply);
+			KenTrajectory(ply);
 			if (PLAYERGROUND) {
 				NEXT(ply->mode2);
 				ply->mode3        = 0;
