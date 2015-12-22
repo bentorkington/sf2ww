@@ -711,7 +711,7 @@ static void SM_game_postanim_8(void) {
 			NEXT(g.mode4);
 			g.timer4 = 0x3;
 			g.CanSpeedUpScoreCount = FALSE;		/* u8 */
-			g.x8ab2 = 0;			/* u16 */
+			g.TotalBonusCount = 0;		
 			if(g.HumanWinner == 0) {
 				g.timer4 = 3 * TICKS_PER_SECOND;
 			}
@@ -748,7 +748,7 @@ static void SM_game_postanim_8(void) {
 			}
 			break;
 		case 0xe:
-			if(g.x8ab4 == 0) {		/* u8 */
+			if(g.ScoreCountFlags == 0) {		/* u8 */
 				NEXT(g.mode4);
 				g.timer4 = 0x78;
 			}

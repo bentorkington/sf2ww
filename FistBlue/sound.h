@@ -33,7 +33,7 @@ void sound_cq_f7_ff(void);
 #define SOUND_CURSORMOVE		0x21
 #define SOUND_PLAYERSELECT		0x22
 #define SOUND_CONTTICK			0x23
-#define SOUND_UNK_DING			0x24
+#define SOUND_SCORE_DING        0x24
 #define SOUND_PUNCH1			0x25
 #define SOUND_PUNCH2			0x26
 #define SOUND_PUNCH3			0x27

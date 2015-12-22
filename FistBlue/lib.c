@@ -636,7 +636,7 @@ void bin2bcd(short dec){
 		dec = (int) dec / 10; /* moved down here for clarity */
 	}		 
 					 
-	g.x8a42 = result;
+	g.bin2bcd_result = result;
 #endif
 #ifdef CPS
 	/* use 68000 asm code */
@@ -1340,6 +1340,22 @@ void sub_bcd_32(int op, u32 *bcd) {
 	t5 = ~t4 & 0x11111110;
 	t6 = (t5 >> 2) | (t5 >> 3);
 	add_bcd_32(t2 - t6, bcd);
+}
+void add_bcd_32_16(u32 op, u16 *bcd) {
+    u32 arg = *bcd;
+    add_bcd_32(op, &arg);
+    *bcd = arg;
+}
+void sub_bcd_32_16(u32 op, u16 *bcd) {
+    u32 arg = *bcd;
+    sub_bcd_32(op, &arg);
+    *bcd = arg;
+}
+void sub_bcd_32_8shift(u32 op, u16 *bcd) {
+    u32 arg = *bcd >> 8;
+    u32 unused = *bcd & 0xff;
+    sub_bcd_32(op, &arg);
+    *bcd = (arg << 8) + unused;
 }
 void add_bcd_16(u16 op, u16 *bcd) {
 	u32 arg = *bcd;

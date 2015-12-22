@@ -2917,6 +2917,8 @@ static void action_3a(Object *obj) {		// 201a0
 
 #pragma mark Act3B Score Counters
 
+#define ACT3B_TIME_BONUS_BUSY  1
+#define ACT3B_VITAL_BONUS_BUSY 2
 
 /*!
  @abstract draw BCD encoded score to tile RAM
@@ -2924,9 +2926,7 @@ static void action_3a(Object *obj) {		// 201a0
  @param pointer to tile RAM (%a1)
  @discussion sf2ua:0x205f6
  */
-
 static void _act3b_print_counter(u32 d0, short d2, u16 *a1) {
-    printf("print counter %08x\n", d0);
 	d2 -= 3;
 	while (d2 >= 0) {
         --a1;
@@ -2940,30 +2940,29 @@ static void _init_counter_image(Object *obj) {		//20610
 	u16 *dest;
 	int i;
 
-	/* all same anyway               tiles pal   */
-	const static u16 data_20640[] = {0x1, 0xd, 0x2d, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, SF2_TILE_LARGE_HEX_ZERO};
-	const static u16 data_20654[] = {0x1, 0xd, 0x2d, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, SF2_TILE_LARGE_HEX_ZERO};
-	const static u16 data_20668[] = {0x1, 0xe, 0x2d, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, SF2_TILE_LARGE_HEX_ZERO}; // todo: put palette back to 0xd
-
+	/* all same anyway  sf2ua: 20640  original ROM uses three the same   */
+	const static u16 blank_counter_image[] = {0x1, 0xd, 0x2d, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, SF2_TILE_LARGE_HEX_ZERO};
 	
 	switch (obj->SubSel) {
 		case 0:
-			source = data_20640; dest = g.TimeBonusSprite; break;
+			source = blank_counter_image; dest = g.TimeBonusSprite; break;
 		case 2:
-			source = data_20654; dest = g.VitalBonusSprite; break;
+			source = blank_counter_image; dest = g.VitalBonusSprite; break;
 		case 4: 
-			source = data_20668; dest = g.TotalBonusSprite; break;
+			source = blank_counter_image; dest = g.TotalBonusSprite; break;
 		FATALDEFAULT;
 	}
 	for (i=0; i<10; i++) {
 		dest[i] = source[i];
 	}
 }
-
-static void sub_205d8(Object *obj) {
+/*!
+sfu2a: 205d8 add points to total bonus
+ */
+static void _add_to_total_bonus(Object *obj) {
 	UD3B *ud = (UD3B *)&obj->UserData;
-	add_bcd_32(ud->x0080, &g.x8ab0);
-	start_effect(0x2002, g.RoundWinnerSide);
+	add_bcd_32_16(ud->x0082, &g.TotalBonusCount);
+    start_effect(0x2002, g.RoundWinnerSide);        // 100 points
 }
 
 static void action_3b(Object *obj) {	//203ba
@@ -2974,27 +2973,26 @@ static void action_3b(Object *obj) {	//203ba
 	short d2;
 	int d0;
 	
-	//coordinates of score counters
-	static const short data_20412[][2] = {
+	//coordinates of score counters sf2ua: 20412
+	static const short bonus_coords[][2] = {
 		{216, 176},
 		{216, 160},
 		{216, 136}, 
 	};
 	
-	/* perfect energy score per player */
-	static const short data_204d8[12] = {
-		0x300, 0x300, 0x300, 0x300, 
+	/* perfect energy score per player sf2ua 204d8 */
+	static const short perfect_bonus_per_fighter[12] = {
+		0x300, 0x300, 0x300, 0x300,
 		0x300, 0x300, 0x300, 0x300, 
 		0x800, 0x500, 0x500, 0x500,		// Bison, three other bosses
 	};
 	
-	static const Action action_2067c = 
+	static const Action action_time_bonus  =      // sf2ua: 2067c
         {8, 0, 0, (Image *)&g.TimeBonusSprite, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
-	static const Action action_20694 = 
+	static const Action action_vital_bonus =      // sf2ua: 20694
         {8, 0, 0, (Image *)&g.VitalBonusSprite, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
-	static const Action action_206ac = 
+	static const Action action_total_bonus =      // sf2ua: 206ac
         {8, 0, 0, (Image *)&g.TotalBonusSprite, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
-	
 	
 	switch (obj->mode0) {
 		case 0:							// init the animation
@@ -3005,19 +3003,19 @@ static void action_3b(Object *obj) {	//203ba
 			
 			_init_counter_image(obj);
 			
-			obj->XPI = data_20412[obj->SubSel/2][0];
-			obj->YPI = data_20412[obj->SubSel/2][1];
+			obj->XPI = bonus_coords[obj->SubSel/2][0];
+			obj->YPI = bonus_coords[obj->SubSel/2][1];
 			switch (obj->SubSel) {
 				case 0:												// TIME
-					ud->x0080 = (g.TimeRemainBCD << 12);
+					ud->x0080 = (g.TimeRemainBCD << 8);
 					if (g.TimeRemainBCD != 0) {
 						d2 = (g.TimeRemainBCD & 0xf0) ? 4 : 3;		// number of tiles
 						g.TimeBonusSprite[0] = d2;
 						g.TimeBonusSprite[8] = SF2_TILE_LARGE_HEX_ZERO;
-						_act3b_print_counter(g.TimeRemainBCD, d2, &g.TimeBonusSprite[7]);
+						_act3b_print_counter(g.TimeRemainBCD, d2, &g.TimeBonusSprite[8]);
 					}
-					g.x8ab4 |= 1;
-					anim = &action_2067c;  
+					g.ScoreCountFlags |= ACT3B_TIME_BONUS_BUSY;
+                    setaction_direct(obj, &action_time_bonus);
 					break;
 				case 2:												// VITAL
 					ply = g.RoundWinnerSide ? PLAYER2 : PLAYER1;
@@ -3025,12 +3023,12 @@ static void action_3b(Object *obj) {	//203ba
 						if (ply->Energy < 0x90) {
 							// 20494
 							bin2bcd(ply->Energy);
-							d0 = g.x8a42;
+							d0 = g.bin2bcd_result;
 						} else {
 							queuesound(SOUND_PERFECT);
-							d0 = data_204d8[ply->Opponent->FighterID];
+							d0 = perfect_bonus_per_fighter[ply->Opponent->FighterID];
 						}
-						ud->x0080 = d0 << 16;
+						ud->x0080 = d0;
 						if (d0 < 0x10) {
 							d2 = 3;
 						} else if (d0 < 0x100) {
@@ -3040,61 +3038,63 @@ static void action_3b(Object *obj) {	//203ba
 						}
 						g.VitalBonusSprite[0] = d2;
 						g.VitalBonusSprite[8] = SF2_TILE_LARGE_HEX_ZERO;
-						_act3b_print_counter(d0, d2, &g.VitalBonusSprite[7]);
+						_act3b_print_counter(d0, d2, &g.VitalBonusSprite[8]);
 					}
-					g.x8ab4 |= 2;
-					anim = &action_20694;
+					g.ScoreCountFlags |= ACT3B_VITAL_BONUS_BUSY;
+                    setaction_direct(obj, &action_vital_bonus);
 					break;
 				case 4:											// TOTAL
-					ud->x0080 = g.x8ab2 << 16;
-					anim = &action_206ac;
+					ud->x0080 = g.TotalBonusCount;
+                    setaction_direct(obj, &action_total_bonus);
 					break;
 				FATALDEFAULT;
 			}
-			setaction_direct(obj, anim);
 			break;
 		case 2:							// 204fc animate and decrement score
 			switch (obj->SubSel) {
 				case 0:
 					if (g.CanSpeedUpScoreCount) {
-						if (ud->x0080 & 0xff000000) {
-							sub_bcd_32(1, &ud->x0080);
-							ud->x0080 &= 0xff000000;
-							ud->x0080 |= 0x00000001;
-							sub_205d8(obj);
+						if (ud->x0080 & 0xff00) {
+							sub_bcd_32_8shift(1, &ud->x0080);
+							ud->x0082 = 0x0001;
+							_add_to_total_bonus(obj);
 						} else {
-							g.x8ab4 &= 0xfffffffe;
+							g.ScoreCountFlags &= ~ACT3B_TIME_BONUS_BUSY;
 						}
 					}
 					break;
 				case 2:
 					if (g.CanSpeedUpScoreCount) {
-						if (ud->x0080 & 0xffff0000) {
-							sub_bcd_32(1, &ud->x0080);	// XXX
-							ud->x0080 &= 0xff000000;
-							ud->x0080 |= 0x00000001;
-							sub_205d8(obj);
+						if (ud->x0080) {
+                            obj->SubTimer = 1;      // hacky, used for BCD operand
+                                                    // in CPS. side effects?
+							sub_bcd_32_16(1, &ud->x0080);	// XXX
+                            ud->x0082 = 0x0001;
+							_add_to_total_bonus(obj);
 						} else {
-							g.x8ab4 &= 0xfffffffd;
+							g.ScoreCountFlags &= ~ACT3B_VITAL_BONUS_BUSY;
 						}						
 					}
 					break;
 				case 4:
 					g.CanSpeedUpScoreCount = TRUE;
-					if (g.x8ab2) {
-						if (g.x8ab2 < 0x10) {
+					if (g.TotalBonusCount) {
+						if (g.TotalBonusCount < 0x10) {
 							d2 = 3;
-						} else if (g.x8ab2 < 0x100) {
+						} else if (g.TotalBonusCount < 0x100) {
 							d2 = 4;
 						} else {
 							d2 = 5;
 						}
-						_act3b_print_counter(g.x8ab2, d2, &g.TotalBonusSprite[6]);
-						if ((g.libsplatter & 3)==0 && g.x8ab2 != ud->x0080) {
-							queuesound(SOUND_UNK_DING);	/* Ding! */
+                        g.TotalBonusSprite[0] = d2;
+                        g.TotalBonusSprite[8] = SF2_TILE_LARGE_HEX_ZERO;
+
+						_act3b_print_counter(g.TotalBonusCount, d2, &g.TotalBonusSprite[8]);
+						if ((g.libsplatter & 3) == 0 && g.TotalBonusCount != ud->x0080) {
+							queuesound(SOUND_SCORE_DING);
 						}
 					}
-					setaction_direct(obj, &action_206ac);
+					setaction_direct(obj, &action_total_bonus);
 					break;
 				FATALDEFAULT;
 			}

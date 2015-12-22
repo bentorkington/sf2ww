@@ -356,7 +356,7 @@ typedef struct game {
 	short	x8a3e;
 	short	x8a3c;
 	short	x8a40;	/* difficulty */
-	u32		x8a42;
+	u32		bin2bcd_result;  /* bin2bcd result */
 	
 	char	x8a4b;
 	
@@ -385,12 +385,13 @@ typedef struct game {
     
 	// u32 x8aa8;
 	u32		x8aac;
-	u16		x8ab0;		
-	u16		x8ab2;
-	u32		x8ab4;
-    
-	u8		CanSpeedUpScoreCount;		// sf2ua: x8ab5
+
+    // act3b score counter
+    u16		TotalBonusCount;            // sf2ua: x8ab2
+	u8		ScoreCountFlags;            // sf2ua: x8ab4
+	u8		CanSpeedUpScoreCount;		// sf2ua: x8ab5, set when total bonus being counted
 	
+    // bonus stage flags
 	Object		*x8ab6;			/* XXX Barrels something */
 	signed char x8ab8;
 	u8			x8ab9;			/* some other remain counter */

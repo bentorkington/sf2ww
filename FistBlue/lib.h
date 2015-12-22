@@ -92,8 +92,11 @@ u16 *coords_scroll3(short x, short y);
 
 void add_bcd_32(int op, u32 *bcd);
 void add_bcd_16(u16 op, u16 *bcd);
+void add_bcd_32_16(u32 op, u16 *bcd);
 void add_bcd_8(u8 op, u8 *bcd);
 void sub_bcd_32(int op, u32 *bcd);
+void sub_bcd_32_16(u32 op, u16 *bcd);
+void sub_bcd_32_8shift(u32 op, u16 *bcd);
 void sub_bcd_16(u16 op, u16 *bcd);
 void sub_bcd_8(u8 op, u8 *bcd);
 void LBAddPoints(int d0, short d1);		// 55c2
