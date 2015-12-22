@@ -7,6 +7,30 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		6CF004561C2A01C9008EA965 /* redhammer.c in Sources */ = {isa = PBXBuildFile; fileRef = 6CF004551C2A01C9008EA965 /* redhammer.c */; };
+		6CF0046E1C2A128C008EA965 /* sf2_05.bin in Resources */ = {isa = PBXBuildFile; fileRef = 6CF004571C2A128C008EA965 /* sf2_05.bin */; };
+		6CF0046F1C2A128C008EA965 /* sf2_06.bin in Resources */ = {isa = PBXBuildFile; fileRef = 6CF004581C2A128C008EA965 /* sf2_06.bin */; };
+		6CF004701C2A128C008EA965 /* sf2_07.bin in Resources */ = {isa = PBXBuildFile; fileRef = 6CF004591C2A128C008EA965 /* sf2_07.bin */; };
+		6CF004711C2A128C008EA965 /* sf2_08.bin in Resources */ = {isa = PBXBuildFile; fileRef = 6CF0045A1C2A128C008EA965 /* sf2_08.bin */; };
+		6CF004721C2A128C008EA965 /* sf2_09.bin in Resources */ = {isa = PBXBuildFile; fileRef = 6CF0045B1C2A128C008EA965 /* sf2_09.bin */; };
+		6CF004731C2A128C008EA965 /* sf2_14.bin in Resources */ = {isa = PBXBuildFile; fileRef = 6CF0045C1C2A128C008EA965 /* sf2_14.bin */; };
+		6CF004741C2A128C008EA965 /* sf2_15.bin in Resources */ = {isa = PBXBuildFile; fileRef = 6CF0045D1C2A128C008EA965 /* sf2_15.bin */; };
+		6CF004751C2A128C008EA965 /* sf2_16.bin in Resources */ = {isa = PBXBuildFile; fileRef = 6CF0045E1C2A128C008EA965 /* sf2_16.bin */; };
+		6CF004761C2A128C008EA965 /* sf2_17.bin in Resources */ = {isa = PBXBuildFile; fileRef = 6CF0045F1C2A128C008EA965 /* sf2_17.bin */; };
+		6CF004771C2A128D008EA965 /* sf2_18.bin in Resources */ = {isa = PBXBuildFile; fileRef = 6CF004601C2A128C008EA965 /* sf2_18.bin */; };
+		6CF004781C2A128D008EA965 /* sf2_19.bin in Resources */ = {isa = PBXBuildFile; fileRef = 6CF004611C2A128C008EA965 /* sf2_19.bin */; };
+		6CF004791C2A128D008EA965 /* sf2_24.bin in Resources */ = {isa = PBXBuildFile; fileRef = 6CF004621C2A128C008EA965 /* sf2_24.bin */; };
+		6CF0047A1C2A128D008EA965 /* sf2_25.bin in Resources */ = {isa = PBXBuildFile; fileRef = 6CF004631C2A128C008EA965 /* sf2_25.bin */; };
+		6CF0047B1C2A128D008EA965 /* sf2_26.bin in Resources */ = {isa = PBXBuildFile; fileRef = 6CF004641C2A128C008EA965 /* sf2_26.bin */; };
+		6CF0047C1C2A128D008EA965 /* sf2_27.bin in Resources */ = {isa = PBXBuildFile; fileRef = 6CF004651C2A128C008EA965 /* sf2_27.bin */; };
+		6CF0047D1C2A128D008EA965 /* sf2_29a.bin in Resources */ = {isa = PBXBuildFile; fileRef = 6CF004661C2A128C008EA965 /* sf2_29a.bin */; };
+		6CF0047E1C2A128D008EA965 /* sf2_36a.bin in Resources */ = {isa = PBXBuildFile; fileRef = 6CF004671C2A128C008EA965 /* sf2_36a.bin */; };
+		6CF0047F1C2A128D008EA965 /* sf2u.37a in Resources */ = {isa = PBXBuildFile; fileRef = 6CF004681C2A128C008EA965 /* sf2u.37a */; };
+		6CF004801C2A128D008EA965 /* sf2u.35a in Resources */ = {isa = PBXBuildFile; fileRef = 6CF004691C2A128C008EA965 /* sf2u.35a */; };
+		6CF004811C2A128D008EA965 /* sf2u.31a in Resources */ = {isa = PBXBuildFile; fileRef = 6CF0046A1C2A128C008EA965 /* sf2u.31a */; };
+		6CF004821C2A128D008EA965 /* sf2u.30a in Resources */ = {isa = PBXBuildFile; fileRef = 6CF0046B1C2A128C008EA965 /* sf2u.30a */; };
+		6CF004831C2A128D008EA965 /* sf2u.28a in Resources */ = {isa = PBXBuildFile; fileRef = 6CF0046C1C2A128C008EA965 /* sf2u.28a */; };
+		6CF004841C2A128D008EA965 /* sf2u.38a in Resources */ = {isa = PBXBuildFile; fileRef = 6CF0046D1C2A128C008EA965 /* sf2u.38a */; };
 		8D11072B0486CEB800E47090 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 089C165CFE840E0CC02AAC07 /* InfoPlist.strings */; };
 		8D11072F0486CEB800E47090 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */; };
 		B51533F2147EEB4F004A87B0 /* car.c in Sources */ = {isa = PBXBuildFile; fileRef = B51533F1147EEB4F004A87B0 /* car.c */; };
@@ -476,6 +500,30 @@
 		29B97316FDCFA39411CA2CEA /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		29B97324FDCFA39411CA2CEA /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = /System/Library/Frameworks/AppKit.framework; sourceTree = "<absolute>"; };
 		29B97325FDCFA39411CA2CEA /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = /System/Library/Frameworks/Foundation.framework; sourceTree = "<absolute>"; };
+		6CF004551C2A01C9008EA965 /* redhammer.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = redhammer.c; sourceTree = "<group>"; };
+		6CF004571C2A128C008EA965 /* sf2_05.bin */ = {isa = PBXFileReference; lastKnownFileType = archive.macbinary; path = sf2_05.bin; sourceTree = "<group>"; };
+		6CF004581C2A128C008EA965 /* sf2_06.bin */ = {isa = PBXFileReference; lastKnownFileType = archive.macbinary; path = sf2_06.bin; sourceTree = "<group>"; };
+		6CF004591C2A128C008EA965 /* sf2_07.bin */ = {isa = PBXFileReference; lastKnownFileType = archive.macbinary; path = sf2_07.bin; sourceTree = "<group>"; };
+		6CF0045A1C2A128C008EA965 /* sf2_08.bin */ = {isa = PBXFileReference; lastKnownFileType = archive.macbinary; path = sf2_08.bin; sourceTree = "<group>"; };
+		6CF0045B1C2A128C008EA965 /* sf2_09.bin */ = {isa = PBXFileReference; lastKnownFileType = archive.macbinary; path = sf2_09.bin; sourceTree = "<group>"; };
+		6CF0045C1C2A128C008EA965 /* sf2_14.bin */ = {isa = PBXFileReference; lastKnownFileType = archive.macbinary; path = sf2_14.bin; sourceTree = "<group>"; };
+		6CF0045D1C2A128C008EA965 /* sf2_15.bin */ = {isa = PBXFileReference; lastKnownFileType = archive.macbinary; path = sf2_15.bin; sourceTree = "<group>"; };
+		6CF0045E1C2A128C008EA965 /* sf2_16.bin */ = {isa = PBXFileReference; lastKnownFileType = archive.macbinary; path = sf2_16.bin; sourceTree = "<group>"; };
+		6CF0045F1C2A128C008EA965 /* sf2_17.bin */ = {isa = PBXFileReference; lastKnownFileType = archive.macbinary; path = sf2_17.bin; sourceTree = "<group>"; };
+		6CF004601C2A128C008EA965 /* sf2_18.bin */ = {isa = PBXFileReference; lastKnownFileType = archive.macbinary; path = sf2_18.bin; sourceTree = "<group>"; };
+		6CF004611C2A128C008EA965 /* sf2_19.bin */ = {isa = PBXFileReference; lastKnownFileType = archive.macbinary; path = sf2_19.bin; sourceTree = "<group>"; };
+		6CF004621C2A128C008EA965 /* sf2_24.bin */ = {isa = PBXFileReference; lastKnownFileType = archive.macbinary; path = sf2_24.bin; sourceTree = "<group>"; };
+		6CF004631C2A128C008EA965 /* sf2_25.bin */ = {isa = PBXFileReference; lastKnownFileType = archive.macbinary; path = sf2_25.bin; sourceTree = "<group>"; };
+		6CF004641C2A128C008EA965 /* sf2_26.bin */ = {isa = PBXFileReference; lastKnownFileType = archive.macbinary; path = sf2_26.bin; sourceTree = "<group>"; };
+		6CF004651C2A128C008EA965 /* sf2_27.bin */ = {isa = PBXFileReference; lastKnownFileType = archive.macbinary; path = sf2_27.bin; sourceTree = "<group>"; };
+		6CF004661C2A128C008EA965 /* sf2_29a.bin */ = {isa = PBXFileReference; lastKnownFileType = archive.macbinary; path = sf2_29a.bin; sourceTree = "<group>"; };
+		6CF004671C2A128C008EA965 /* sf2_36a.bin */ = {isa = PBXFileReference; lastKnownFileType = archive.macbinary; path = sf2_36a.bin; sourceTree = "<group>"; };
+		6CF004681C2A128C008EA965 /* sf2u.37a */ = {isa = PBXFileReference; lastKnownFileType = file; path = sf2u.37a; sourceTree = "<group>"; };
+		6CF004691C2A128C008EA965 /* sf2u.35a */ = {isa = PBXFileReference; lastKnownFileType = file; path = sf2u.35a; sourceTree = "<group>"; };
+		6CF0046A1C2A128C008EA965 /* sf2u.31a */ = {isa = PBXFileReference; lastKnownFileType = file; path = sf2u.31a; sourceTree = "<group>"; };
+		6CF0046B1C2A128C008EA965 /* sf2u.30a */ = {isa = PBXFileReference; lastKnownFileType = file; path = sf2u.30a; sourceTree = "<group>"; };
+		6CF0046C1C2A128C008EA965 /* sf2u.28a */ = {isa = PBXFileReference; lastKnownFileType = file; path = sf2u.28a; sourceTree = "<group>"; };
+		6CF0046D1C2A128C008EA965 /* sf2u.38a */ = {isa = PBXFileReference; lastKnownFileType = file; path = sf2u.38a; sourceTree = "<group>"; };
 		8D1107310486CEB800E47090 /* MT2-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "MT2-Info.plist"; sourceTree = "<group>"; };
 		8D1107320486CEB800E47090 /* MT2.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MT2.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B50BCA161C040AF300C7A6F4 /* cps_tile.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = cps_tile.h; sourceTree = "<group>"; };
@@ -880,6 +928,29 @@
 		29B97317FDCFA39411CA2CEA /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				6CF004571C2A128C008EA965 /* sf2_05.bin */,
+				6CF004581C2A128C008EA965 /* sf2_06.bin */,
+				6CF004591C2A128C008EA965 /* sf2_07.bin */,
+				6CF0045A1C2A128C008EA965 /* sf2_08.bin */,
+				6CF0045B1C2A128C008EA965 /* sf2_09.bin */,
+				6CF0045C1C2A128C008EA965 /* sf2_14.bin */,
+				6CF0045D1C2A128C008EA965 /* sf2_15.bin */,
+				6CF0045E1C2A128C008EA965 /* sf2_16.bin */,
+				6CF0045F1C2A128C008EA965 /* sf2_17.bin */,
+				6CF004601C2A128C008EA965 /* sf2_18.bin */,
+				6CF004611C2A128C008EA965 /* sf2_19.bin */,
+				6CF004621C2A128C008EA965 /* sf2_24.bin */,
+				6CF004631C2A128C008EA965 /* sf2_25.bin */,
+				6CF004641C2A128C008EA965 /* sf2_26.bin */,
+				6CF004651C2A128C008EA965 /* sf2_27.bin */,
+				6CF004661C2A128C008EA965 /* sf2_29a.bin */,
+				6CF004671C2A128C008EA965 /* sf2_36a.bin */,
+				6CF004681C2A128C008EA965 /* sf2u.37a */,
+				6CF004691C2A128C008EA965 /* sf2u.35a */,
+				6CF0046A1C2A128C008EA965 /* sf2u.31a */,
+				6CF0046B1C2A128C008EA965 /* sf2u.30a */,
+				6CF0046C1C2A128C008EA965 /* sf2u.28a */,
+				6CF0046D1C2A128C008EA965 /* sf2u.38a */,
 				B5B39B69157832F200494662 /* sf2gfx.bin */,
 				B5ADB7A813B2B2EA00905DFE /* MainMenu.xib */,
 				8D1107310486CEB800E47090 /* MT2-Info.plist */,
@@ -1220,6 +1291,7 @@
 				B57AE5DD19D7D1610065D862 /* strings.h */,
 				B59F4C931A2992B4003699C1 /* redhammer.h */,
 				B50BCA161C040AF300C7A6F4 /* cps_tile.h */,
+				6CF004551C2A01C9008EA965 /* redhammer.c */,
 			);
 			path = RedHammer;
 			sourceTree = "<group>";
@@ -1443,10 +1515,33 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				6CF0047C1C2A128D008EA965 /* sf2_27.bin in Resources */,
 				8D11072B0486CEB800E47090 /* InfoPlist.strings in Resources */,
+				6CF004791C2A128D008EA965 /* sf2_24.bin in Resources */,
+				6CF004781C2A128D008EA965 /* sf2_19.bin in Resources */,
+				6CF004761C2A128C008EA965 /* sf2_17.bin in Resources */,
+				6CF004831C2A128D008EA965 /* sf2u.28a in Resources */,
+				6CF004801C2A128D008EA965 /* sf2u.35a in Resources */,
+				6CF0047F1C2A128D008EA965 /* sf2u.37a in Resources */,
+				6CF0046E1C2A128C008EA965 /* sf2_05.bin in Resources */,
+				6CF0047A1C2A128D008EA965 /* sf2_25.bin in Resources */,
+				6CF004701C2A128C008EA965 /* sf2_07.bin in Resources */,
+				6CF004721C2A128C008EA965 /* sf2_09.bin in Resources */,
+				6CF004811C2A128D008EA965 /* sf2u.31a in Resources */,
+				6CF004711C2A128C008EA965 /* sf2_08.bin in Resources */,
+				6CF004821C2A128D008EA965 /* sf2u.30a in Resources */,
+				6CF004841C2A128D008EA965 /* sf2u.38a in Resources */,
 				B5ADB7A913B2B2EA00905DFE /* MainMenu.xib in Resources */,
+				6CF004731C2A128C008EA965 /* sf2_14.bin in Resources */,
+				6CF0047B1C2A128D008EA965 /* sf2_26.bin in Resources */,
+				6CF0046F1C2A128C008EA965 /* sf2_06.bin in Resources */,
+				6CF0047E1C2A128D008EA965 /* sf2_36a.bin in Resources */,
 				B5E9056513B2D61900833C5A /* ParamController.xib in Resources */,
+				6CF004771C2A128D008EA965 /* sf2_18.bin in Resources */,
+				6CF0047D1C2A128D008EA965 /* sf2_29a.bin in Resources */,
 				B5B39B6A157832F200494662 /* sf2gfx.bin in Resources */,
+				6CF004751C2A128C008EA965 /* sf2_16.bin in Resources */,
+				6CF004741C2A128C008EA965 /* sf2_15.bin in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1528,6 +1623,7 @@
 				B5ADB85C13B2B57E00905DFE /* effects.c in Sources */,
 				B5ADB85D13B2B57E00905DFE /* fightgfx.c in Sources */,
 				B5ADB85E13B2B57E00905DFE /* gemu.c in Sources */,
+				6CF004561C2A01C9008EA965 /* redhammer.c in Sources */,
 				B5ADB85F13B2B57E00905DFE /* gfx_glut.c in Sources */,
 				B5ADB86013B2B57E00905DFE /* palettes.c in Sources */,
 				B5ADB86113B2B57E00905DFE /* gfxlib.c in Sources */,

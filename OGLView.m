@@ -31,6 +31,8 @@
 #include "game.h"
 #include "task.h"
 
+#include "redhammer.h"
+
 #define DEBUG TRUE
 extern Game g;
 extern CPSGFXEMU gemu;
@@ -100,6 +102,7 @@ GLfloat gShapeSize = 11.0f;
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
 	
 	gfx_glut_init();
+    load_cps_roms();
 	glwimp_init(900, 600);
 	
 	dummyWindow = createWindow(40, 50, 384, 224);

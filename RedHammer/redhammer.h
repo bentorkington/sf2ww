@@ -9,6 +9,8 @@
 #ifndef MT2_redhammer_h
 #define MT2_redhammer_h
 
+extern char *g_code_roms;
+
 struct fistblue_tile_plane {
     int y1;
     int y2;
@@ -16,5 +18,8 @@ struct fistblue_tile_plane {
     float z2;
 };
 typedef struct fistblue_tile_plane RHTilePlane;
+
+int load_cps_roms();
+
 
 #endif
