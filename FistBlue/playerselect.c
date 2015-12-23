@@ -222,7 +222,7 @@ void SM_player_select(void) {		//7fc4
 					g.PLSL.TimerCoarse			= 32;
 					g.PLSL.TimerFine			= 1 * TICKS_PER_SECOND;		
 					g.ActionLibSel				= 1;
-					gemu_setpalette(PALETTE_0C, data_80be);
+                    FBSetPalette(PALETTE_0C, RHCODE16(0x80be));
 					soundsting(SOUND_PLAYERSELECTSCR);
 					QueueEffect(SL1C | 0x16, 0);
 					actionlibrary();    

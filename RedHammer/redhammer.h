@@ -27,6 +27,7 @@ const u16 *RHOffsetLookup16(const u16 *base, int index);
 const u16 RHWordOffset(u32 base, int index);
 const u8 RHByteOffset(u32 base, int index);
 
+const u16 RHWordAt(u32 base);
 
 u32 RHSwapLong(const u32 num);
 u16 RHSwapWord(const u16 num);
@@ -35,5 +36,9 @@ typedef u32 RHROMPtr;
 typedef u16 RHShortPtr;
 
 #define RHCODE(x) &g_code_roms[(x)]
+
+#define RHCODE16(x) (u16 *)&g_code_roms[(x)]
+
+#define RHCODE16_ARRAY(base, stride, index) (u16 *)&g_code_roms[(base)+(2 * (stride) * (index))]
 
 #endif

@@ -2227,7 +2227,7 @@ const CAFrame *actlist_13fba[]={
 	actlist_145dc, 	actlist_14530, 	actlist_14484, 	actlist_143d8, 	actlist_1432c, 	actlist_14280, 	actlist_141d4, 	actlist_14128, 	actlist_1407c, 	actlist_13fd0, 
 };
 
-#pragma mark Act1C
+#pragma mark Act1C wooden crate fragments
 const Image image_15928 = {
     1, 0x001d, 0x29, 0, 0,
     { 0x8397,  }

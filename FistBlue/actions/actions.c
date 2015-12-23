@@ -1618,15 +1618,8 @@ static void action_1b(Object *obj) {
 	}
 }
 
-#pragma mark Act1C
+#pragma mark Act1C wooden crate fragments
 static void action_1c(Object *obj) {
-	static const u16 data_1585a[]={0x0200, 0xFEC0, 0x0180, 0xFEA0, 0x0160, 0xFE80, 0x0140, 0xFE00, };
-	static const u16 data_1586a[]={0x04E0, 0x03C0, 0x04B0, 0x0390, 0x05A0, 0x03F0, 0x0510, 0x0480, };
-	static const u16 data_1587a[]={0xFFD0, 0x0015, 0x0000, 0x0020, 0xFFEB, 0xFFE0, 0x0010, 0xFFF0, };
-	static const u16 data_1588a[]={0x0020, 0x0000, 0x0008, 0x0005, 0x0015, 0x0013, 0x0010, 0x0017, };
-	static const u16 data_1589a[]={0x0000, 0xFFFC, 0x0004, 0x0002, 0xFFFE, 0x0001, 0xFFFF, 0xFFFD, };
-	static const u16 data_158ea[]={0x0280, 0x02A0, 0x0240, 0x0260, 0x0250, 0x02B0, 0x0290, 0x0270, };
-	
 	switch (obj->mode0) {
 		case 0:
 			NEXT(obj->mode0);
@@ -1667,12 +1660,12 @@ static void action_1c(Object *obj) {
 							}
 						}
 					} else {
-						obj->VelX.full = data_1585a[RAND8WD];
-						obj->VelY.full = data_1586a[RAND8WD];
-						obj->XPI += data_1587a[RAND8WD];
-						obj->YPI += data_1588a[RAND8WD];
+                        obj->VelY.full = RHSwapWord(*RHCODE16_ARRAY(0x1585a, 1, RAND8WD));
+                        obj->VelX.full = RHSwapWord(*RHCODE16_ARRAY(0x1586a, 1, RAND8WD));
+                        obj->XPI += RHSwapWord(*RHCODE16_ARRAY(0x1587a, 1, RAND8WD));
+                        obj->YPI += RHSwapWord(*RHCODE16_ARRAY(0x1588a, 1, RAND8WD));
 					}
-					obj->UserData[2] = data_1589a[RAND8WD] + 0x28;
+                    obj->UserData[2] = RHSwapWord(*RHCODE16_ARRAY(0x15891, 1, RAND8WD)) + 0x28;
 					if (obj->Step == 0) {
 						obj->VelX.full = -obj->VelX.full;
 						obj->Flip ^= 1;
@@ -1688,7 +1681,7 @@ static void action_1c(Object *obj) {
 					}
 					CATrajectory(obj);
 					if (obj->VelY.full < 0 && obj->YPI <= obj->UserData[2]) {
-						obj->VelY.full = data_158ea[RAND8W];
+                        obj->VelY.full = RHSwapWord(*RHCODE16_ARRAY(0x158ea, 1, RAND8WD));
 					}
 					break;
 				FATALDEFAULT;
@@ -1764,8 +1757,7 @@ void action_b8aa() {
 
 
 static void sub_160ca(void) {
-	gemu_setpalette(17+g.BattleLoser, data_160ea[g.BattleLoser]);
-	/* sets palette from 900220 + (battleloser * 32) using copy32bytes */
+    FBSetPalette(17 + g.BattleLoser, RHCODE16_ARRAY(0x160ae, 16, g.BattleLoser));
 }
 void action_1606c() {
 	Object *obj;
@@ -1959,18 +1951,13 @@ static void action_21(Object *obj) {    // 1153e
 #pragma mark Act22 RoundXFight!
 
 void action_start_22(void) { //  1abc6  round X .. fight!
-	const static u16 pals_1abf6[]={
-		0xf000, 0xffff, 0xfccb, 0xf887, 0xf8ff, 0xf4cc, 0xf1aa, 0xfcef,                             
-		0xfaef, 0xf8cf, 0xf69e, 0xf46e, 0xf04d, 0xf02c, 0xf00b, 0xf00a,
-	};
-	
 	Object *obj;
 	if ((obj=AllocActor())) {
 		obj->exists = TRUE;
 		obj->Sel = SF2ACT_PREROUNDANIM;
 	}
 	if ((g.CurrentStage == STAGE_THAILAND_BISON) && (g.RoundCnt != 0)) {
-		gemu_setpalette(11, pals_1abf6);
+        FBSetPalette(11, RHCODE16(0x1abf6));
 	}
 }
 

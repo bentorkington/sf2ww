@@ -549,17 +549,17 @@ void fight_player_names() {			// 961a
 	if (g.OnBonusStage == FALSE || g.Player1.Human) {
 		OBJ_CURSOR_SET(gfx_p, 28);
 		if (g.Version == VERSION_JAP) {
-			DrawFighterNameAt(gfx_p, 32, 208, PLAYER1, (const u16 *)RHCODE(0x96b6));
+			DrawFighterNameAt(gfx_p, 32, 208, PLAYER1, RHCODE16(0x96b6));
 		} else {
-			DrawFighterNameAt(gfx_p, 32, 208, PLAYER1, (const u16 *)RHCODE(0x96e6));
+			DrawFighterNameAt(gfx_p, 32, 208, PLAYER1, RHCODE16(0x96e6));
 		}
 	}
 	if (g.OnBonusStage == FALSE || g.Player2.Human) {
 		OBJ_CURSOR_SET(gfx_p, 37);
 		if (g.Version == VERSION_JAP) {
-            DrawFighterNameAt(gfx_p, RHWordOffset(0x969e, g.Player2.FighterID), 208, PLAYER2, (const u16 *)RHCODE(0x96e6));
+            DrawFighterNameAt(gfx_p, RHWordOffset(0x969e, g.Player2.FighterID), 208, PLAYER2, RHCODE16(0x96e6));
 		} else {
-            DrawFighterNameAt(gfx_p, RHWordOffset(0x96ce, g.Player2.FighterID), 208, PLAYER2, (const u16 *)RHCODE(0x96e6));
+            DrawFighterNameAt(gfx_p, RHWordOffset(0x96ce, g.Player2.FighterID), 208, PLAYER2, RHCODE16(0x96e6));
 		}
 	}
 }
@@ -793,24 +793,12 @@ void draw_simple(Object *obj) {             /* 0x4200 */
 }
 
 void sub_1a0c(void) {			//1a0c 
-	const static u16 data_1a42[5][16] = {
-		{ 0x0000, 0x055b, 0x089f, 0x0f76, 0x0666, 0x0530, 0x0651, 0x0862, 
-		  0x0a73, 0x0c84, 0x0ea7, 0x0fc9, 0x0fec, 0x0fff, 0x0f00, 0x0000, },
-		{ 0x0530, 0x0651, 0x0862, 0x0a73, 0x0c84, 0x0d96, 0x0eb7, 0x0fc9, 
-		  0x0feb, 0x0ffc, 0x0fff, 0x0b34, 0x0d65, 0x0f87, 0x0666, 0x0000, },
-		{ 0x0530, 0x0651, 0x0862, 0x0a73, 0x0c84, 0x0d96, 0x0eb7, 0x0fc9, 
-		  0x0fda, 0x0feb, 0x0059, 0x0ffd, 0x006b, 0x0fff, 0x0666, 0x0000, },
-		{ 0x0111, 0x0fdc, 0x0fd9, 0x0fb8, 0x0e97, 0x0c86, 0x0965, 0x0643, 
-		  0x0600, 0x0999, 0x0600, 0x0900, 0x0c40, 0x0d73, 0x0fa7, 0x0000, },
-		{ 0x0530, 0x0651, 0x0862, 0x0a73, 0x0c84, 0x0d96, 0x0eb7, 0x0fc9, 
-		  0x0feb, 0x0ffc, 0x0fff, 0x0fff, 0x0ffc, 0x0feb, 0x0666, 0x0000, },
-	};
-	gemu_setpalette(16, data_1a42[0]);
-	gemu_setpalette(17, data_1a42[1]);
-	gemu_setpalette(18, data_1a42[2]);
-	gemu_setpalette(19, data_1a42[3]);
-	gemu_setpalette(20, data_1a42[4]);
-
+    FBSetPalette(16, RHCODE16_ARRAY(0x1a42, 16, 0));
+    FBSetPalette(17, RHCODE16_ARRAY(0x1a42, 16, 1));
+    FBSetPalette(18, RHCODE16_ARRAY(0x1a42, 16, 2));
+    FBSetPalette(19, RHCODE16_ARRAY(0x1a42, 16, 3));
+    FBSetPalette(20, RHCODE16_ARRAY(0x1a42, 16, 4));
+    
 	setpalette_scroll1(0x13);
 	setpalette_scroll2(g.Palette1);
 	setpalette_scroll3(g.Palette1);

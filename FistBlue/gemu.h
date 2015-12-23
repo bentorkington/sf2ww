@@ -152,7 +152,8 @@ void gemuCoordOffset(u32 *gfxcursor, short x, short y);
 void gemuWriteEndTag(u16 *slot);
 u16 *gemuObjCursorSet(short id);
 
-void gemu_setpalette(short major, const u16 *palette);
+void FBSetPalette(short major, const u16 *palette);
+//void gemu_setpalette(short major, const u16 *palette);
 void palette_base_1k(void);
 void scroll1_base_1k(short stage);
 void scroll2_base_1k(short stage);

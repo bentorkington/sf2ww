@@ -46,14 +46,13 @@ void gemu_clear_object_first72(void) {		// 5f84
 }
 //#endif /* ifdef CPS */
 
-
-void gemu_setpalette(short major, const u16 *palette) {
-	short i;
-	for (i = 0; i < 16; i++) {
-		gemu.PalObject[major][i] = palette[i];
-	}
+void FBSetPalette(short major, const u16 *palette)
+{
+    int i;
+    for (i=0; i<16; ++i) {
+        gemu.PalObject[major][i] = RHSwapWord(palette[i]);
+    }
 }
-
 void palette_base_1k(void) {		// move me back to gfxlib
     int u, v;
     for(u=0; u<32; u++) {
