@@ -2828,26 +2828,14 @@ static void action_38(Object *obj) {		// 1fd50
 
 static void action_39(Object *obj) {	// 1fec2
 	Player *ply = obj->SubSel ? PLAYER2 : PLAYER1;
-	
-	static signed char data_1ff20[] = {
-		0x8c, 0x74, 0x8c, 0x74, 0x8c, 0x74, 0x8c, 0x74, 
-		0x94, 0x78, 0x8c, 0x74, 0x8c, 0x72, 0x92, 0x6e,
-		0x96, 0x74, 0x90, 0x72, 0x90, 0x7a, 0x90, 0x74,
-	};
-	static signed char data_1ff38[] = {
-		0x8c, 0x74, 0x8c, 0x74, 0x8c, 0x74, 0x8c, 0x74, 
-		0x94, 0x78, 0x8c, 0x74, 0x8c, 0x72, 0x92, 0x6e,
-		0x90, 0x7a, 0x90, 0x72, 0x90, 0x74, 0x96, 0x74,
-	};
-	
-	
+		
 	switch (obj->mode0) {
 		case 0:
 			if (g.Version != VERSION_JAP) {
-				obj->XPI += data_1ff38[(ply->FighterID * 2)+ply->Side];
+                obj->XPI += RHByteOffset(0x1ff38, (ply->FighterID * 2) + ply->Side);
 			} else {
-				obj->XPI += data_1ff20[(ply->FighterID * 2)+ply->Side];
-			}			
+                obj->XPI += RHByteOffset(0x1ff20, (ply->FighterID * 2) + ply->Side);
+			}
 			break;
 		case 2:
 			check_rect_queue_draw(obj);
@@ -2970,7 +2958,6 @@ static void action_3b(Object *obj) {	//203ba
 	UD3B *ud = (UD3B *)&obj->UserData;
 	
 	Player *ply;
-	const Action *anim = NULL;
 	short d2;
 	int d0;
 	

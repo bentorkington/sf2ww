@@ -96,6 +96,10 @@ const u16 RHWordOffset(u32 base, int index)
 {
     return RHSwapWord(*(u16 *)(RHCODE(base + (2 * index))));
 }
+const u8 RHByteOffset(u32 base, int index)
+{
+    return *(u8 *)(RHCODE(base + index));
+}
 u32 RHSwapLong(const u32 num)
 {
     return ((num>>24)&0xff) | ((num<<8)&0xff0000) | ((num>>8)&0xff00) | ((num<<24)&0xff000000);

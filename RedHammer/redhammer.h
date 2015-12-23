@@ -25,6 +25,8 @@ int load_cps_roms();
 
 const u16 *RHOffsetLookup16(const u16 *base, int index);
 const u16 RHWordOffset(u32 base, int index);
+const u8 RHByteOffset(u32 base, int index);
+
 
 u32 RHSwapLong(const u32 num);
 u16 RHSwapWord(const u16 num);
