@@ -41,6 +41,7 @@
 #include "strings.h"
 #include <stdio.h>
 #include <libgen.h>
+#include "redhammer.h"
 
 
 #define DEBUG_GEN(fmt, ...) \

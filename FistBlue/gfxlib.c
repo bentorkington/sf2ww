@@ -210,9 +210,9 @@ void printnibble (u16 **gfx_p, u32 *gfxcursor, u16 attr, u8 arg, u8 *printzeroes
 
 
 void DrawTileLine(u16 *gfx_p, const u16 *source, int x, int y) {	//5de2
-	// regs: %a0, %a2, %d5, %d6
-	u16 attr;
-	u32 cp = MakePointObj(x, y);
+    // regs: %a0, %a2, %d5, %d6
+    u16 attr;
+    u32 cp = MakePointObj(x, y);
     
     int i=0;
     attr = source[0];
@@ -220,8 +220,24 @@ void DrawTileLine(u16 *gfx_p, const u16 *source, int x, int y) {	//5de2
     
     while(source[i]) {
         OBJECT_DRAW(gfx_p, CP_X , CP_Y, source[i], attr);
-		OBJ_CURSOR_BUMP(gfx_p);
-		COORDS_OFFSET(&cp, 16, 0);
+        OBJ_CURSOR_BUMP(gfx_p);
+        COORDS_OFFSET(&cp, 16, 0);
+        i++;
+    }
+}           
+void FBDrawTileLine(u16 *gfx_p, const u16 *source, int x, int y) {	//5de2
+    // regs: %a0, %a2, %d5, %d6
+    u16 attr;
+    u32 cp = MakePointObj(x, y);
+    
+    int i=0;
+    attr = RHSwapWord(source[0]);
+    source++;
+    
+    while(RHSwapWord(source[i])) {
+        OBJECT_DRAW(gfx_p, CP_X , CP_Y, RHSwapWord(source[i]), attr);
+        OBJ_CURSOR_BUMP(gfx_p);
+        COORDS_OFFSET(&cp, 16, 0);
         i++;
     }
 }           
@@ -523,57 +539,27 @@ void sub_6060(void) {		// 6060 dot cloth scroll2
 	gfxrepeat(BMAP_SCROLL2, 0x3ff, GFXROM_SCROLL2 + 4, 0);
 }
 
-void DrawFighterNameAt(u16 *gfx_p, int x_d5, int y_d6, Player *ply, const u16 **a3) {			// 968c
-	DrawTileLine(gfx_p, a3[ply->FighterID], x_d5, y_d6);
+void DrawFighterNameAt(u16 *gfx_p, int x_d5, int y_d6, Player *ply, const u16 *a3) {			// 968c
+	FBDrawTileLine(gfx_p, RHOffsetLookup16(a3, ply->FighterID), x_d5, y_d6);
 }
 
 void fight_player_names() {			// 961a
-	const static u16 data_96fe[]={PALETTE_0D, 0x1008, 0x1009, 0x0000,  };			// RYU...
-	const static u16 data_9706[]={PALETTE_0D, 0x7e0c, 0x7e0d, 0x7e0e, 0x7e0f, 0x0000,  };
-	const static u16 data_9712[]={PALETTE_0D, 0x100a, 0x100b, 0x100c, 0x100d, 0x0000,  };
-	const static u16 data_971e[]={PALETTE_0D, 0x7fc0, 0x7fc1, 0x7fc2, 0x0000,  };
-	const static u16 data_9728[]={PALETTE_0D, 0x100e, 0x100f, 0x0000,  };
-	const static u16 data_9730[]={PALETTE_0D, 0x1018, 0x1019, 0x101a, 0x101b, 0x0000,  };
-	const static u16 data_973c[]={PALETTE_0D, 0x101c, 0x101d, 0x101e, 0x101f, 0x0000,  };
-	const static u16 data_9748[]={PALETTE_0D, 0x103b, 0x103c, 0x103d, 0x103e, 0x103f, 0x0000,  };
-	const static u16 data_9756[]={PALETTE_0D, 0x1038, 0x1039, 0x103a, 0x0000,  };
-	const static u16 data_9760[]={PALETTE_0D, 0x7fd0, 0x7fd1, 0x7fd2, 0x0000,  };
-	const static u16 data_976a[]={PALETTE_0D, 0x1028, 0x1029, 0x102a, 0x102b, 0x0000,  };
-	const static u16 data_9776[]={PALETTE_0D, 0x102c, 0x102d, 0x102e, 0x102f, 0x0000,  };
-	
-	
-	const static u16 data_969e[12]={
-		0x0144, 0x0120, 0x0126, 0x0130, 0x0141, 0x0122, 0x0122, 0x011f, 0x0138, 0x0130, 0x0122, 0x0128,  };				
-	const static u16 data_96ce[12]={
-		0x0144, 0x0120, 0x0126, 0x0130, 0x0141, 0x0122, 0x0122, 0x011f, 0x0122, 0x0130, 0x0128, 0x0138,  };
-	
-	const static u16 *player_names_japan[12]={			// 96b6
-		data_96fe, data_9706, data_9712, data_971e, 
-		data_9728, data_9730, data_973c, data_9748, 
-		data_9756, data_9760, data_976a, data_9776, 
-	};													
-	const static u16 *player_names_other[12]={			// 96e6
-		data_96fe, data_9706, data_9712, data_971e, 
-		data_9728, data_9730, data_973c, data_9748, 
-		data_976a, data_9760, data_9776, data_9756, 
-	};
-	
 	u16 *gfx_p;
-	
+    
 	if (g.OnBonusStage == FALSE || g.Player1.Human) {
 		OBJ_CURSOR_SET(gfx_p, 28);
 		if (g.Version == VERSION_JAP) {
-			DrawFighterNameAt(gfx_p, 32, 208, PLAYER1, player_names_japan);
+			DrawFighterNameAt(gfx_p, 32, 208, PLAYER1, (const u16 *)RHCODE(0x96b6));
 		} else {
-			DrawFighterNameAt(gfx_p, 32, 208, PLAYER1, player_names_other);
+			DrawFighterNameAt(gfx_p, 32, 208, PLAYER1, (const u16 *)RHCODE(0x96e6));
 		}
 	}
 	if (g.OnBonusStage == FALSE || g.Player2.Human) {
 		OBJ_CURSOR_SET(gfx_p, 37);
 		if (g.Version == VERSION_JAP) {
-			DrawFighterNameAt(gfx_p, data_969e[g.Player2.FighterID], 208, PLAYER2, player_names_japan);
+            DrawFighterNameAt(gfx_p, RHWordOffset(0x969e, g.Player2.FighterID), 208, PLAYER2, (const u16 *)RHCODE(0x96e6));
 		} else {
-			DrawFighterNameAt(gfx_p, data_96ce[g.Player2.FighterID], 208, PLAYER2, player_names_other);
+            DrawFighterNameAt(gfx_p, RHWordOffset(0x96ce, g.Player2.FighterID), 208, PLAYER2, (const u16 *)RHCODE(0x96e6));
 		}
 	}
 }

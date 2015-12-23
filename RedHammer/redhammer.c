@@ -9,6 +9,10 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+#include "redhammer.h"
+
+#include "sf2types.h"
+
 char *g_code_roms;
 char *g_sound_roms;
 char *g_gfx_roms;
@@ -73,6 +77,31 @@ int load_cps_roms()
         return 0;
     }
     
+    for (int i=0x20640; i<0x20740; ++i) {
+        printf("%02x ", g_code_roms[i] & 0xff);
+        if (i % 16 == 15) {
+            printf("\n");
+        }
+    }
+    
     return 1;
     
+}
+
+const u16 *RHOffsetLookup16(const u16 *base, int index)
+{    
+    return base + (RHSwapWord(*(base + index)) / 2);
+}
+const u16 RHWordOffset(u32 base, int index)
+{
+    return RHSwapWord(*(u16 *)(RHCODE(base + (2 * index))));
+}
+u32 RHSwapLong(const u32 num)
+{
+    return ((num>>24)&0xff) | ((num<<8)&0xff0000) | ((num>>8)&0xff00) | ((num<<24)&0xff000000);
+}
+
+u16 RHSwapWord(const u16 num)
+{
+    return ((num >> 8) & 0xff) | ((num << 8) & 0xff00);
 }

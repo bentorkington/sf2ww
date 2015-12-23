@@ -14,15 +14,39 @@ extern GState gstate_Scroll1;
 extern GState gstate_Scroll2;
 extern GState gstate_Scroll3;
 
-void setaction_list(Object *obj, const Action **list, short sel ) {		/* 0x23ce */
 
-    const Action *act = list[sel];    
+#ifdef REDHAMMER_EXTROM
+void RHSetActionList(Object *obj, const Action **list, short sel) {
+    
+}
+
+void RHSetAction(Object *obj, FBAction *act) {
+    obj->ActionScript       = act;
+    obj->Timer              = RHSwapWord(act->Delay);
+    obj->AnimFlags          = RHSwapWord(act->Flags);
+}
+void RHActionTick(Object *obj) {
+    if(--obj->Timer == 0) {
+        if(obj->ActionScript->Flags < 0) {
+            
+            u32 *next = (void *)obj->ActionScript + sizeof(FBAction);
+            obj->ActionScript = (FBAction *)RHCODE(*next);
+        } else {
+            obj->ActionScript++;
+        }
+        setaction_direct(obj, obj->ActionScript);
+    }
+}
+#else
+void setaction_list(Object *obj, const Action **list, short sel ) {		/* 0x23ce */
+    
+    const Action *act = list[sel];
     /* Action *act = (Action *)list + (u16 *)*(list + (sel * sizeof (short))); */
     setaction_direct(obj, act);
 }
 
 void setaction_direct(Object *obj, const Action *act) {			/* 23da */
-	obj->ActionScript       = act;
+    obj->ActionScript       = act;
     obj->Timer              = act->Delay;
     obj->AnimFlags          = act->Loop << 8 | act->Next;
 }
@@ -37,7 +61,7 @@ void actiontick(Object *obj) {		/* 23ec */
         setaction_direct(obj, obj->ActionScript);
     }
 }
-
+#endif
 
 void sub_25f8(Object *obj) {
 	GState *gs;

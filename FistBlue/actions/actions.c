@@ -21,6 +21,7 @@
 
 #include "actiondata.h"
 
+#include "redhammer.h"
 
 extern Game g;
 extern GState gstate_Scroll1;
@@ -2942,7 +2943,7 @@ static void _init_counter_image(Object *obj) {		//20610
 
 	/* all same anyway  sf2ua: 20640  original ROM uses three the same   */
 	const static u16 blank_counter_image[] = {0x1, 0xd, 0x2d, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, SF2_TILE_LARGE_HEX_ZERO};
-	
+    
 	switch (obj->SubSel) {
 		case 0:
 			source = blank_counter_image; dest = g.TimeBonusSprite; break;

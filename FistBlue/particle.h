@@ -58,8 +58,31 @@ struct particle {
     FIXED8_8		VelY;					// 3e
 };
 
+typedef u32 RHImagePtr;
 
-struct action { 
+struct fb_action {
+    u16		Delay;			/* aka chr ctr */
+    u16		Flags;
+    RHImagePtr Image;
+    u8		HB_Head, HB_Body, HB_Foot, HB_Weak, HB_Active, HB_Push;	/* 8-0xd */
+    u8		Shadow;     /* 0xe */
+    u8		Priority;	/* f  */
+    u8		Catch;      /* 10 CATCH index for data_93440[] @ply_thrown */
+    u8		Block;		/* 0 for non block, 1 for standing block, 2 for crouching */
+    u8		Crouch;     /* exit status stand/crouch 0x12 AI uses this to determine if should block */
+    /* mugenguild dude has this as weak box mode, determines behaviour when chars
+     weak box is hit */
+    u8		FlipBits;   /* 0x13 */
+    /* mugenguild dude says this is 0 for stand, 1 for crouch */
+    char	YOffset;    /* 0x14 */
+    u8		DamageMod;  /* 0x15 */
+    u8		ExtraSprite;/* extra sprite selector*/
+    char	Yoke;		/* YOKE, 0x17 neutral jumps, 06 forward/backward jumps, 0xff walking */
+} __attribute__((packed));
+
+typedef struct fb_action FBAction;
+
+struct action {
     u16		Delay;			/* aka chr ctr */
     u8		Loop;			/* aka chr type */
     u8		Next;
@@ -80,6 +103,7 @@ struct action {
     char	Yoke;		/* YOKE, 0x17 neutral jumps, 06 forward/backward jumps, 0xff walking */
 };
 
+
 struct simpleaction {
 	u16 Delay;
 	u8	Loop;
@@ -97,6 +121,8 @@ struct image {
 	short	OffsetY;
 	u16		Tiles[];		// C99
 };
+
+typedef struct image FBImage;
 
 struct image2 {
 	u16		Width;
