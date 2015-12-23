@@ -26,6 +26,7 @@
 #include "sound.h"
 
 #include "actions_198a.h"
+#include "actions.h"
 
 #include "car.h"
 #include "coll_bonus.h"
