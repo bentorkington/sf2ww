@@ -11,6 +11,6 @@ void action_1e(Object *obj);
 void action_2c(Object *obj);
 
 struct UserData_Act1e {
-	const CAFrame **x0080;
+	u32 x0080;
 	char	x0084;	
 };

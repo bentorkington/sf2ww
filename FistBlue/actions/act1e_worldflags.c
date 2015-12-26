@@ -623,12 +623,16 @@ static void sub_18e52(Object *obj) {
 }
 
 void action_1e(Object *obj) {		//18c1c
+    //XXX
+    FreeActor(obj);
+    return;
+    
 	UD1E *ud = (UD1E *)&obj->UserData;
 	static const char data_18e2a[][2]={{0x78, 0x78},{0x28,0xc8},{0x50,0xa0}};
 	switch (obj->SubSel) {
 		case 3:
-			if (obj->mode0 == 0) {		
-				setaction_list(obj, actlist_1912a, obj->UserByte);		// flags
+			if (obj->mode0 == 0) {
+                RHSetActionList(obj, RHCODE(0x1912a), obj->UserByte);
 			}
 			enqueue_and_layer(obj);
 			break;
@@ -639,8 +643,8 @@ void action_1e(Object *obj) {		//18c1c
 					obj->LocalTimer = 1 * TICKS_PER_SECOND;
 					ud->x0084 = 0;
 					g.PlaneLandedInCity[obj->UserByte] = FALSE;
-					ud->x0080 = actlist_1912a;
-					setaction_list(obj, actlist_1912a, obj->UserByte);
+                    ud->x0080 = 0x1912a;                //actlist_1912a;
+                    RHSetActionList(obj, RHCODE(0x1912a), obj->UserByte);
 					if (obj->UserByte >= STAGE_THAILAND_BISON) {
 						if (g.UpToBosses == FALSE) {
 							obj->mode0 = 6;
@@ -684,13 +688,14 @@ void action_1e(Object *obj) {		//18c1c
 						case 0:
 						FLAGAGAIN:
 							if (g.Defeated[obj->UserByte]) {
-								ud->x0080 = actlist_grayflags;
+                                ud->x0080 = 0x1917a;            //actlist_grayflags;
 							} else {
-								ud->x0080 = actlist_1912a;	
+                                ud->x0080 = 0x1912a;            //actlist_1912a;
 							}
 							sub_18d9a(obj, PLAYER1);
 							sub_18d9a(obj, PLAYER2);
-							setaction_list(obj, ud->x0080, obj->UserByte);
+                            
+                            RHSetActionList(obj, RHCODE(ud->x0080), obj->UserByte);
 							if (g.PlaneLandedInCity[obj->UserByte]) {
 								NEXT(obj->mode1);
 							}
@@ -701,7 +706,7 @@ void action_1e(Object *obj) {		//18c1c
 						case 4:
 							NEXT(obj->mode1);
 							obj->LocalTimer = 3 * TICKS_PER_SECOND;
-							setaction_list(obj, actlist_1a200, obj->UserByte);
+                            RHSetActionList(obj, RHCODE(0x1a200), obj->UserByte);
 							break;
 						case 6:
 							if (--obj->LocalTimer == 0) {
@@ -716,7 +721,7 @@ void action_1e(Object *obj) {		//18c1c
 							ud->x0084 = 1;
 							obj->LocalTimer = data_18e2a[obj->UserByte - 9][0];
 							obj->SubTimer      = data_18e2a[obj->UserByte - 9][1];
-							setaction_list(obj, actlist_1a200, obj->UserByte);
+                            RHSetActionList(obj, RHCODE(0x1a200), obj->UserByte);
 							break;
 						case 12:
 							if (--obj->LocalTimer == 0) {
@@ -767,7 +772,7 @@ void action_2c (Object *obj) {
 		case 0:
 			NEXT(obj->mode0);
 			obj->Pool = 6;
-			setaction_list(obj, actlist_1a200, obj->UserByte);
+            RHSetActionList(obj, RHCODE(0x1a200), obj->UserByte);
 			break;
 		case 2:
 			if(g.Defeated[obj->UserByte]) {
