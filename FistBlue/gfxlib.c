@@ -503,20 +503,30 @@ int test_offset_scroll3(Player *ply) {
 }
 
 void sub_41c2(Object *obj, const struct simpleaction *act) {		//41c2
-	obj->ActionScript = (Action *)act; 
+#ifdef REDHAMMER_EXTROM
+    obj->ActionScript = (FBAction *)act;
+    obj->Timer = obj->ActionScript->Delay;
+    obj->AnimFlags = obj->ActionScript->Flags;
+#else
+	obj->ActionScript = (Action *)act;
     obj->Timer      = obj->ActionScript->Delay;
     obj->AnimFlags  = obj->ActionScript->Loop << 8 | obj->ActionScript->Next; 
-	
+#endif
     draw_simple(obj);
 }
 
 void setactiondraw(Object *obj, const CASimpleFrame **act, int step) {	//41b6
 	/* 41c2 inlined for efficiency */
-    obj->ActionScript = (Action *)act[step]; 
+#ifdef REDHAMMER_EXTROM
+    obj->ActionScript = (FBAction *)act[step];
+    obj->Timer = obj->ActionScript->Delay;
+    obj->AnimFlags = obj->ActionScript->Flags;
+#else
+    obj->ActionScript = (Action *)act[step];
 	
     obj->Timer      = obj->ActionScript->Delay;
     obj->AnimFlags  = obj->ActionScript->Loop << 8 | obj->ActionScript->Next; 
-  
+#endif
     draw_simple(obj);
 }
 
@@ -756,14 +766,18 @@ void actiontickdraw(Object *obj) {		/* 0x41d4 */
 	// XXX C messiness, not emulated
 	CASimpleFrame *temp = (CASimpleFrame *)obj->ActionScript;
 	temp++;
-	
+#ifdef REDHAMMER_EXTROM
+    
+    
+#else
     if(obj->ActionScript->Loop == 0) {
 		obj->ActionScript = (const Action *)temp;
 	} else {
 		obj->ActionScript = (const Action *)((struct simpleaction *)obj->ActionScript)[1].Image;
     }
     obj->Timer      = obj->ActionScript->Delay;
-    obj->AnimFlags  = obj->ActionScript->Loop << 8 | obj->ActionScript->Next; 
+    obj->AnimFlags  = obj->ActionScript->Loop << 8 | obj->ActionScript->Next;
+#endif
     draw_simple(obj);
 }        
 

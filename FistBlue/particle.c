@@ -16,27 +16,29 @@ extern GState gstate_Scroll3;
 
 
 #ifdef REDHAMMER_EXTROM
-void RHSetActionList(Object *obj, const Action **list, short sel) {
-    
+void RHSetActionList(Object *obj, void *listaddr, short sel) {
+    RHSetAction(obj, (FBAction *)RHOffsetLookup16(listaddr, sel));
 }
-
-void RHSetAction(Object *obj, FBAction *act) {
+void RHSetAction(Object *obj, const FBAction *act) {
     obj->ActionScript       = act;
     obj->Timer              = RHSwapWord(act->Delay);
     obj->AnimFlags          = RHSwapWord(act->Flags);
 }
 void RHActionTick(Object *obj) {
     if(--obj->Timer == 0) {
-        if(obj->ActionScript->Flags < 0) {
+        if(RHSwapWord(obj->ActionScript->Flags) & 0x8000) {
             
             u32 *next = (void *)obj->ActionScript + sizeof(FBAction);
-            obj->ActionScript = (FBAction *)RHCODE(*next);
+            obj->ActionScript = (FBAction *)RHCODE(RHSwapLong(*next));
         } else {
             obj->ActionScript++;
         }
-        setaction_direct(obj, obj->ActionScript);
+        RHSetAction(obj, obj->ActionScript);
     }
 }
+void setaction_list(Object *obj, const Action **list, short sel) {}
+void setaction_direct(Object *obj, const Action *act) {}
+void actiontick(Object *obj) {}
 #else
 void setaction_list(Object *obj, const Action **list, short sel ) {		/* 0x23ce */
     

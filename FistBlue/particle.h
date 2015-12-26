@@ -276,6 +276,12 @@ typedef struct action CAFrame;
 
 /* particle.c */
 
+#ifdef REDHAMMER_EXTROM
+void RHSetActionList(Object *obj, void *listaddr, short sel);
+void RHSetAction(Object *obj, const FBAction *act);
+void RHActionTick(Object *obj);
+#endif
+
 void setaction_list(Object *obj, const Action **list, short sel);
 void setaction_direct(Object *obj, const Action *act);
 void actiontick(Object *obj);

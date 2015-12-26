@@ -1968,11 +1968,43 @@ void task_playground(void) {
                     
                     //                    g.CPS.Scroll1X = 0; g.CPS.Scroll1Y = 0x100;
                     LBResetState();
+                    
+                    g.Player1.FighterID = FID_RYU;
+                    g.Player1.XPI = 552;
+                    g.Player2.XPI = 40;
+                    g.Player1.exists = TRUE;
+      
+                    gstate_Scroll2.XPI = 0x1ce;
+                    gstate_Scroll2.YPI = 0;
+                    
+#ifdef REDHAMMER_EXTROM
+                    g.Player1.FighterID = FID_RYU;
+                    g.Player1.exists = TRUE;
+                    g.Player1.flag1 = TRUE;
+
+                    void *baseAddr = RHCODE(0);
+                    void *ryuStand = RHOffsetLookup16(RHCODE(0x37f1e), 0);
+                    
+                    printf("Ryu offset = %lx\n", ryuStand - baseAddr);
+                    
+                    int offset2 = RHSwapWord(*(u16 *)ryuStand);
+                    printf("offset2 = %x\n", offset2);
+                    
+                    void *location2 = ryuStand + offset2;
+                    printf("addr2 = %lx\n", location2 - baseAddr);
+                    
+                    RHSetActionList(&g.Player1, ryuStand, 2);
+#endif
                     break;
                 case 2:
                     obj = AllocActor();
                     INITOBJ(obj, 6, 0);
                     NEXT(g.mode0);
+
+#ifdef REDHAMMER_EXTROM
+
+                    RHActionTick(&g.Player1);
+#endif
                     proc_actions();
                     GSMain();
                     DSDrawAllMain();

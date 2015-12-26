@@ -87,7 +87,10 @@ int load_cps_roms()
     return 1;
     
 }
-
+void print_rom_offset(const char *message, const void *addr)
+{
+    printf("%s: %08lx\n", message, ((char *)addr) - g_code_roms);
+}
 const u16 *RHOffsetLookup16(const u16 *base, int index)
 {    
     return base + (RHSwapWord(*(base + index)) / 2);
@@ -108,4 +111,9 @@ u32 RHSwapLong(const u32 num)
 u16 RHSwapWord(const u16 num)
 {
     return ((num >> 8) & 0xff) | ((num << 8) & 0xff00);
+}
+u32 RHReadLong(int romaddr)
+{
+    void *addr = RHCODE(romaddr);
+    return RHSwapLong(*(u32 *)addr);
 }
