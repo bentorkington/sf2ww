@@ -230,7 +230,7 @@ static void sub_23508(Object *obj, short d7) {	/* Yoga Flame */
 			obj->MoreBoxes	= data_249da;
 			obj->XPI	   += obj->Flip ? -0x48 : 0x48 ;
 			obj->YPI	   += 0x1e;
-			setaction_list(obj, data_23b6e, obj->SubSel >> 1);
+            RHSetActionList(obj, RHCODE(0x23b6e), obj->SubSel / 2);
 			break;
 		case 2:
 			CDCheckProjectile(obj, d7);
@@ -249,7 +249,7 @@ static void sub_23508(Object *obj, short d7) {	/* Yoga Flame */
 				return;
 			}
 			if(obj->Energy < 0) {
-				setaction_list(obj, data_23b6e, 3);
+                RHSetActionList(obj, RHCODE(0x23b6e), 3);
 				obj->Energy = 0;
 			}
 			if (obj->CA_ENDFLAG) {

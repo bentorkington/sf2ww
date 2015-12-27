@@ -197,10 +197,10 @@ void _SMAct04(Object_G2 *obj) {		// 27ea2 ID4 BONUS3
 				if (data_27f3e[obj->UD.UDbonus3.h00b0s] < 0) {
 					obj->mode1 = 0;
 					obj->mode2 = 0;
-					setaction_list((Object *)obj, actlist_27fa6, data_27f72[RAND16WD]);
+                    RHSetActionList((Object *)obj, RHCODE(0x27fa6), data_27f72[RAND16WD]);
 				} else {
 					obj->LocalTimer = data_27f3e[obj->UD.UDbonus3.h00b0s];
-					setaction_list((Object *)obj, actlist_27fa6, 0);
+                    RHSetActionList((Object *)obj, RHCODE(0x27fa6), 0);
 				}
 			} else {
 				// 27f92
@@ -371,7 +371,7 @@ void _SMAct05(Object_G2 *obj) {				// 24ff6 Act05 Bonus2
 			obj->Pool = 2;
 			obj->Scroll = SCROLL_2;
 			obj->Step = obj->Flip;
-			//setaction_direct(obj, action_25834);
+            RHSetAction((Object *)obj, RHCODE(0x25834));
 			
 			// userdata ...
 			

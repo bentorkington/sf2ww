@@ -45,12 +45,7 @@ void pl_cb_setstatus1_blanka(Player *ply, short status) {
 }
 
 void sub_33ada(Player *ply, short sel ) {
-    
-    if (sel > 42) {
-        return;                // XXX 46df4 is incomplete
-    }
-    
-	setaction_direct((Object *)ply, data_46df4[sel]);
+    RHSetActionList((Object *)ply, RHCODE(0x46df4), sel);
 }
 
 void _BlankaCatchLU(Player *ply) {		//2e886
@@ -112,9 +107,12 @@ void _BlankaCatchSet(Player *ply) {		//2e8a6
 	d1 = bc[1] - ply->Opponent->YPI;
 	ply->YPI = -d1;
 }
+
 void _BlankaSetAnim(Player *ply, u16 d0, u16 d1) {		// 2ef68
-	setaction_direct((Object *)ply, data_46df4[d0] + (d1 / 18));
-}		
+    u32 offset = RHReadWord(0x46df4 + d0);
+    RHSetActionList((Object *)ply, offset, d1);
+}
+
 void PSCBVictoryBlanka(Player *ply) {
 	UD *ud=(UD *)&ply->UserData;
 	short d0;

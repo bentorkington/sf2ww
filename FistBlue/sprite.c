@@ -898,12 +898,6 @@ void drawsprite(Object *obj) {         /* 7edaa */
 
     image = (const struct image *)RHCODE(RHSwapLong(obj->ActionScript->Image));
 
-    if (obj == &g.Ply1Shadow) {
-        printf("p1 shadow!\n");
-        print_rom_offset("p1 shadow im", image);
-        print_rom_offset("p1 action as", obj->ActionScript);
-    }
-
     if (image == NULL) {
         return;
     }

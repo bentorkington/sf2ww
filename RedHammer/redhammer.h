@@ -27,14 +27,13 @@ const void *RHOffsetLookup16(const u16 *base, int index);
 const u16 RHWordOffset(u32 base, int index);
 const u8 RHByteOffset(u32 base, int index);
 
-const u16 RHWordAt(u32 base);
-
 u32 RHSwapLong(const u32 num);
 u16 RHSwapWord(const u16 num);
 
 u32 RHReadLong(int romaddr);
+u16 RHReadWord(int romaddr);
 
-void print_rom_offset(const char *message, const void *addr);
+void print_rom_qoffset(const char *message, const void *addr);
 
 typedef u32 RHROMPtr;
 typedef u16 RHShortPtr;

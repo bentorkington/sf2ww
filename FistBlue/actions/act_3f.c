@@ -41,7 +41,7 @@ void action_3f(Object *obj) {
 			obj->Path = data_cfe74;
 			obj->XPI = (SCREEN_WIDTH / 2);
 			obj->YPI = 144;
-			setaction_direct(obj, actlist_2104a);
+            RHSetAction(obj, RHCODE(0x2104a));
 			break;
 		case 2:
 			switch (obj->mode1) {

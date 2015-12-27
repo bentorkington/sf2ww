@@ -49,8 +49,8 @@ void pl_cb_setstatus1_ehonda(Player *ply, short status) {
 	pl_cb_setstatus2_ehonda(ply, status, 0);
 }
 
-void sub_2e3ac(Player *ply, u16 d0) {		
-	// XXX setaction_direct((Object *)ply, actlist_3ffbc[d0]);		// XXX
+void sub_2e3ac(Player *ply, u16 d0) {
+    RHSetActionList((Object *)ply, RHCODE(0x3ffbc), d0);
 }		
 	
 void PSCBVictoryEHonda(Player *ply) {		// 2e1fe

@@ -234,7 +234,7 @@ void action_16(Object *obj) {
 				case 0:
 					NEXT(obj->mode0);
 					obj->Pool = 2;
-					setactiondraw(obj, actlist_128d2, obj->SubSel);
+                    RHSetScrollActionList(obj, RHCODE(0x128d2), obj->SubSel);
 					break;
 				case 2:
 					actiontickdraw(obj);
@@ -248,13 +248,13 @@ void action_16(Object *obj) {
 					NEXT(obj->mode0);
 					obj->Pool = 4;
 					g.x8a64[0] = 0;
-					setaction_direct(obj, action_12b70);
+                    RHSetAction(obj, RHCODE(0x12b70));
 					check_rect_queue_draw(obj);
 					break;
 				case 2:
 					if (g.x8a64[0]) {
 						g.x8a64[0] = 0;
-						setaction_direct(obj, action_12b70);
+                        RHSetAction(obj, RHCODE(0x12b70));
 					}
 					actiontick(obj);
 					check_rect_queue_draw(obj);
@@ -272,7 +272,7 @@ void action_16(Object *obj) {
 				obj->Draw2.part.integer = 0x1d;
 				obj->XPI = (short []){0x30, 0x50, 0x138, 0x158}[obj->UserByte];
 				obj->YPI = 0xa4;
-				setaction_list(obj, actlist_12c60, sub_12890(obj));
+                RHSetActionList(obj, RHCODE(0x12c60), sub_12890(obj));
 			} else {
 				obj->Draw2.part.integer = 0x1d;
 				if (g.x8a62[obj->UserByte / 2]) {
@@ -281,7 +281,7 @@ void action_16(Object *obj) {
 						obj->Draw2.part.integer = 6;
 					}
 				}
-				setaction_list(obj, actlist_12c60, sub_12890(obj));
+                RHSetActionList(obj, RHCODE(0x12c60), sub_12890(obj));
 				check_rect_queue_draw(obj);
 			}
 			break;
@@ -289,7 +289,7 @@ void action_16(Object *obj) {
 			if (obj->mode0 == 0) {
 				NEXT(obj->mode0);
 				obj->Pool = 6;
-				setaction_direct(obj, action_12e90);
+                RHSetAction(obj, RHCODE(0x12e90));
 			}
 			check_rect_queue_draw(obj);
 			break;

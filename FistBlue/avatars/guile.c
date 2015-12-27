@@ -152,7 +152,7 @@ static void guile_attack_bison(Player *ply) {
 						obj->Pool = 6;
 					}
 					PLAYERY -= 6;
-					//setaction_direct((Object *)ply, actlist_4d22e);  todo
+                    RHSetAction((Object *)ply, RHCODE(0x4d223));
 				} else {
 					PLAYERTICK;
 				}

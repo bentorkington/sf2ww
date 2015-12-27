@@ -48,7 +48,7 @@ static void _SMAct00(Object_G2 *obj) {			// 24a50
 	switch (obj->mode0) {
 		case 0:
 			NEXT(obj->mode0);
-			setaction_direct((Object *)obj, actlist_24cfe);
+            RHSetAction((Object *)obj, RHCODE(0x24cfe));
 			break;
 		case 2:
 			check_rect_queue_draw((Object *)obj);
@@ -73,7 +73,7 @@ static void _SMKenDrums(Object_G2 *obj) {				// 24a74
 			NEXT(obj->mode0);
 			obj->Step = obj->Flip;
 			obj->HitBoxes = &data_24eba;
-			setaction_direct((Object *)obj, actlist_24d54);
+            RHSetAction((Object *)obj, RHCODE(0x24d54));
 			break;
 		case 2:
 			switch (obj->mode1) {
@@ -136,7 +136,7 @@ static void _SMKenDrums(Object_G2 *obj) {				// 24a74
 							nobj->XPI = obj->XPI - 0x30;
 							nobj->YPI = obj->YPI + 16;
 						}
-						setaction_direct((Object *)obj, actlist_24d70);
+                        RHSetAction((Object *)obj, RHCODE(0x24d70));
 					}
 					break;
 				FATALDEFAULT;
@@ -162,7 +162,7 @@ static void _SMRyuSigns(Object_G2 *obj) {		// 24c4e
 			NEXT(obj->mode0);
 			obj->Step = obj->Flip;
 			obj->HitBoxes = &hitboxes_24eda;
-			setaction_direct((Object *)obj, actlist_24e1a);
+            RHSetAction((Object *)obj, RHCODE(0x24e1a));
 			break;
 		case 2:
 			switch (obj->mode1) {
@@ -184,7 +184,7 @@ static void _SMRyuSigns(Object_G2 *obj) {		// 24c4e
 								nobj->Y = obj->Y;
 							}
 						}
-						setaction_direct((Object *)obj, actlist_24e36);
+                        RHSetAction((Object *)obj, RHCODE(0x24e36));
 					}
 					break;
 				FATALDEFAULT;
@@ -215,9 +215,6 @@ static void sub_24f96(int argd0, Object *obj) {
 	
 }
 
-const static Image image_24f6a={0, 0, 0x28, 0, 0, 0, };
-const static CAFrame frame_24f52={0x8, 0, 0, &image_24f6a, 0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0};
-	
 const HitBox hitb_24f8e[] = {EMPTY_HITBOX, {0, 80, 16, 80}};
 
 const struct hitboxes hitboxes_24f76 = {
@@ -235,7 +232,7 @@ static void _SMAct03(Object_G2 *obj) {		// 24efa
 		case 0:
 			NEXT(obj->mode0);
 			obj->HitBoxes = &hitboxes_24f76;
-			setaction_direct((Object *)obj, &frame_24f52);
+            RHSetAction((Object *)obj, RHCODE(0x24f52));
 			break;
 		case 2:
 			CDCheckDecor(obj);
@@ -280,7 +277,7 @@ static void _SMAct07(Object_G2 *obj) {			// 272c6
 			obj->Energy = 0;
 			obj->HitBoxes = &hitboxes_274c4;
 			obj->Pool = 0;
-			setaction_direct((Object *)obj, actlist_273a2);
+            RHSetAction((Object *)obj, RHCODE(0x273a2));
 			break;
 		case 2:
 			switch (obj->mode1) {
@@ -303,7 +300,7 @@ static void _SMAct07(Object_G2 *obj) {			// 272c6
 								nobj->YPI = obj->YPI + 0x2d;
 							}
 						}
-						setaction_direct((Object *)obj, actlist_27404);
+                        RHSetAction((Object *)obj, RHCODE(0x27404));
 					}
 					break;
 				case 4:
@@ -707,7 +704,7 @@ static void sub_27862(Object_G2 *obj) {			// 27862 Act09 BONUS1
 							NEXT(obj->mode1);
 							sub_278ac(obj);
 							obj->Pool = 0;
-							setaction_list((Object *)obj, actlist_27c54, 0);
+                            RHSetActionList((Object *)obj, RHCODE(0x27c54), 0);
 							check_rect_queue_draw((Object *)obj);
 						
 						}
@@ -795,10 +792,10 @@ static void sub_27862(Object_G2 *obj) {			// 27862 Act09 BONUS1
 	
 
 
-//void sub_24f0e(Object *obj) {
-//	NEXT(obj->mode0);
-//	setaction_direct(obj, action_24f52);
-//}
+void sub_24f0e(Object *obj) {
+	NEXT(obj->mode0);
+    RHSetAction(obj, RHCODE(0x24f52));
+}
 
 void sub_24f22(Object_G2 *obj) {
 	Object *nobj;

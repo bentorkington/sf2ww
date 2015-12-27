@@ -102,7 +102,7 @@ static void sub_37648(Player *ply) {
 	}
 }
 static void sub_37d86(Player *ply, short arg_d0) {
-	setaction_direct((Object *)ply, data_7905e[arg_d0]);
+    RHSetActionList((Object *)ply, RHCODE(0x7905e), arg_d0);
 }
 static void sub_37a02(Player *ply) {
 	NEXT(ply->mode3);
@@ -542,7 +542,7 @@ static void sub_378c2(Player *ply) {
 					sub_37982(ply);	// ???
 				} else {
 					NEXT(ply->mode3);
-					setaction_direct((Object *)ply, ply->ActionScript + sizeof(struct action));
+                    RHSetAction((Object *)ply, ply->ActionScript++);
 				}
 			}
 			break;

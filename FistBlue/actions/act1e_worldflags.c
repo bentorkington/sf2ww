@@ -619,7 +619,7 @@ static void sub_18d9a(Object *obj, Player *ply) {
 	}
 }
 static void sub_18e52(Object *obj) {
-	setaction_list(obj, actlist_19142, obj->UserByte);
+    RHSetActionList(obj, RHCODE(0x19142), obj->UserByte);
 }
 
 void action_1e(Object *obj) {		//18c1c
@@ -688,7 +688,8 @@ void action_1e(Object *obj) {		//18c1c
 						case 0:
 						FLAGAGAIN:
 							if (g.Defeated[obj->UserByte]) {
-                                ud->x0080 = 0x1917a;            //actlist_grayflags;
+                                ud->x0080 = 0x1912a;            //actlist_grayflags;
+//                                ud->x0080 = 0x1917a;            //actlist_grayflags;
 							} else {
                                 ud->x0080 = 0x1912a;            //actlist_1912a;
 							}

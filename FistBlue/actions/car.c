@@ -63,8 +63,8 @@ static int _car_check_P2(Object_G2 *obj){			// 25da8
 	return FALSE;
 }
 static void car_setaction(Object_G2 *obj) {//25dbc
-	// XXX setaction_list(obj, data____, obj->UD.UDcar.HitsTaken + obj->UD.UDcar.h0092c);
-}	
+    RHSetActionList((Object *)obj, RHCODE(0x25b8a), obj->UD.UDcar.HitsTaken + obj->UD.UDcar.h0092c);
+}
 static void _car_disable_ply_shadow(Player *ply) {				// 26122
 	if (ply->YPI != 40) {
 		if (ply->Side) {

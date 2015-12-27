@@ -1106,7 +1106,7 @@ void PSCBVictoryZangeif(Player *ply) {		// 31f48
 							if (ply->Owner->Owner->UserData[0x10]) { //XXX
 								NEXT(ud->x0094);
 								ply->Flip = ply->Owner->Owner->Flip ^ 1;
-								// XXX setaction_direct(ply, actlist_32074);
+                                RHSetAction((Object *)ply, RHCODE(0x32074));
 							}
 							break;
 						case 4:

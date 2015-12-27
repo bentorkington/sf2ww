@@ -249,7 +249,7 @@ static void action_1(Object *obj) {	/* cb2a */
 			NEXT(obj->mode0);
 			obj->Pool     = data_cb60[obj->SubSel];
 			obj->OnGround = data_cb6c[obj->SubSel];
-			setaction_direct(obj, actlist_cb78[obj->SubSel]);
+            RHSetActionList(obj, RHCODE(0xcb78), obj->SubSel);
 			break;
 		case 2:
 			switch (obj->SubSel) {
@@ -315,7 +315,7 @@ static void action_3(Object *obj) {    /* d81e Das Boat */
 			NEXT(obj->mode0);
 			obj->Pool = 6;
 			gstate_Scroll3.YOff = 0;	/* Scroll3 + 0x32 u16 */
-			setaction_direct(obj, actlist_d878);
+            RHSetAction(obj, RHCODE(0xd878));
 			break;
 		case 2:
 			if (0x74f6 & ( 1 << RAND16)) {
@@ -523,7 +523,7 @@ static void action_09(Object *obj) {	// f568
 			ud->h0082c = 0;
 			ud->h0083c = 0;
 			ud->h0080s = 0;
-			setaction_direct(obj, actlist_f708);
+            RHSetAction(obj, RHCODE(0xf708));
 			// Tamper protection removed
 			break;
 		case 2:
@@ -544,7 +544,7 @@ static void action_09(Object *obj) {	// f568
 					// f64e
 					if (--obj->LocalTimer == 0) {
 						obj->mode1 = 0;
-						setaction_direct(obj, actlist_f708);
+                        RHSetAction(obj, RHCODE(0xf708));
 					} else {
 						actiontick(obj);
 					}
@@ -622,7 +622,7 @@ static void action_0b(Object *obj) {	// fa12 Ryu Stage Bird
 					NEXT(obj->mode1);
 					obj->YPI = ud->h0082s;
 					obj->ZDepth = obj->YPI;
-					setaction_list(obj, actlist_fb2e , obj->SubSel);
+                    RHSetActionList(obj, RHCODE(0xfb2e), obj->SubSel);
 					break;
 				case 2:
 					if ((obj->AnimFlags & 0xff) == 1) {
@@ -652,7 +652,7 @@ static void action_0b(Object *obj) {	// fa12 Ryu Stage Bird
 					}
 					obj->Y.full += (obj->VelY.full * 256);
 					if (obj->YPI <= ud->h0080s) {
-						setaction_list(obj, actlist_fb32, obj->SubSel);
+                        RHSetActionList(obj, RHCODE(0xfb32), obj->SubSel);
 					}
 					break;
 				case 10:
@@ -746,7 +746,7 @@ static void action_0e(Object *obj) {		// 10756
 		case 0:
 			NEXT(obj->mode0);
 			obj->Pool = 6;
-			setaction_direct(obj, actlist_10822);
+            RHSetAction(obj, RHCODE(0x10822));
 			break;
 		case 2:
 			switch (obj->mode1) {
@@ -771,7 +771,7 @@ static void action_0e(Object *obj) {		// 10756
 						NEXT(obj->mode1);
 						obj->LocalTimer = 15;
 						obj->YPI = ud->h0080s;
-						setaction_direct(obj, actlist_10852);
+                        RHSetAction(obj, RHCODE(0x10852));
 					}
 					break;
 				case 6:
@@ -808,7 +808,7 @@ static void action_0f(Object *obj) {		// 10b44 Another Bird
 					if (--obj->LocalTimer == 0) {
 						NEXT(obj->mode0);
 						obj->mode1 = 0;
-						setaction_list(obj, actlist_10bc2, obj->Step);
+                        RHSetActionList(obj, RHCODE(0x10bc2), obj->Step);
 					}
 				default:
 					break;
@@ -866,9 +866,9 @@ static void action_10(Object *obj) {
 					NEXT(obj->mode0);
 					obj->mode1=0;
 					if (0x5555 & (1 << RAND32)) {
-						setaction_direct(obj, act_10f90);
+                        RHSetAction(obj, RHCODE(0x10f90));
 					} else {
-						setaction_direct(obj, act_10f5c);
+                        RHSetAction(obj, RHCODE(0x10f5c));
 					}
 				FATALDEFAULT
 			}
@@ -930,7 +930,7 @@ static void action_11(Object *obj) {
 				d0 = (sf2rand() & 0xe);		// SF2UA bug does & 0x1e
 				obj->XPI = data_1104e[d0/2];
 				obj->YPI = data_1105e[d0/2];
-				setaction_list(obj, actlist_111e6, 0);
+                RHSetActionList(obj, RHCODE(0x111e6), 0);
 			} else {
 				NEXT(obj->mode0);
 				obj->LocalTimer = 0x1e;
@@ -1281,7 +1281,7 @@ static void action_13(Object *obj) {  // 119ee
 			obj->ZDepth = 0;
 			obj->Scroll = SCROLL_2;
 			obj->Pool = 0;
-			setaction_list(obj, actlist_11aca, obj->SubSel);
+            RHSetActionList(obj, RHCODE(0x11aca), obj->SubSel);
 			break;
 		case 2:
 			switch (obj->mode1) {
@@ -1332,7 +1332,7 @@ static void action_14(Object *obj) {
 			actiontick(obj);
 			check_rect_queue_draw(obj);
 		} else {
-			setaction_direct(obj, action_1237c);
+            RHSetAction(obj, RHCODE(0x1237c));
 		}
 	} else {
 		switch (obj->mode0) {
@@ -1449,6 +1449,7 @@ static void action_19(Object *obj) {     // 1322c
 		case 0:
 			NEXT(obj->mode0);
 			obj->Pool = 6;
+            RHSetActionList(obj, RHCODE(0x1325e), obj->SubSel);
 			setaction_list(obj, actlist_1325e, obj->SubSel);
 			break;
 		case 2:
@@ -1477,15 +1478,15 @@ static int action_13bf8(void) {
 static void sub_13c1a(Object *obj) {
 	if (obj->UserData[0] & 0x80) {
 		if (0xaaaa & (1 << (RAND16))) {
-			setaction_list(obj, actlist_13c5a, obj->UserData[1]);
+            RHSetActionList(obj, RHCODE(0x13c5a), obj->UserData[1]);
 		} else {
-			setaction_list(obj, actlist_13c54, obj->UserData[1]);
+            RHSetActionList(obj, RHCODE(0x13c54), obj->UserData[1]);
 		}
 	} else {
 		if (obj->UserData[0]) {
-			setaction_list(obj, actlist_13c5a,obj->UserData[1]);
+            RHSetActionList(obj, RHCODE(0x13c5a), obj->UserData[1]);
 		} else {
-			setaction_list(obj, actlist_13c54,obj->UserData[1]);
+            RHSetActionList(obj, RHCODE(0x13c54), obj->UserData[1]);
 		}
 		
 	}
@@ -1605,7 +1606,7 @@ static void action_1b(Object *obj) {
 				if (obj->LocalTimer != ply->ContinueSecs) {
 					obj->LocalTimer = ply->ContinueSecs;
 					queuesound(sounds[obj->LocalTimer]);
-					setaction_list(obj, actlist_13fba, obj->LocalTimer);
+                    RHSetActionList(obj, RHCODE(0x13fba), obj->LocalTimer);
 				}
 			}
 			actiontick(obj);
@@ -1635,7 +1636,7 @@ static void action_1c(Object *obj) {
 					obj->Pool = 6;
 				}
 			}
-			setaction_list(obj, actlist_158fe, obj->SubSel);
+            RHSetActionList(obj, RHCODE(0x158fe), obj->SubSel);
 			break;
 		case 2:
 			switch (obj->mode1) {
@@ -1983,7 +1984,7 @@ static void sub_1acaa(Object *obj) {
 				--obj->Draw2.full;
 				if(obj->Draw2.full < 0 && obj->Draw2.full > -16) {return;}
 				NEXT(obj->mode1);
-				setaction_direct(obj, actlist_1af7e);	/* START */
+                RHSetAction(obj, RHCODE(0x1af7e));      /* START */
 				break;
 			case 6:		//1ae00
 				if (obj->Draw2.full) {
@@ -2766,7 +2767,7 @@ static void action_37(Object *obj) {	//1fc84
 			obj->Pool = 6;
 			obj->UserData[0] = 0;
 			obj->Flip = obj->Step;
-			setaction_list(obj,actlist_1fcfa , 0);
+            RHSetActionList(obj, RHCODE(0x1fcfa), 0);
 			break;
 		case 2:
 			switch (obj->mode1) {
@@ -2990,7 +2991,7 @@ static void action_3b(Object *obj) {	//203ba
 						_act3b_print_counter(g.TimeRemainBCD, d2, &g.TimeBonusSprite[8]);
 					}
 					g.ScoreCountFlags |= ACT3B_TIME_BONUS_BUSY;
-                    setaction_direct(obj, &action_time_bonus);
+                    RHSetAction(obj, RHCODE(0x2067c));
 					break;
 				case 2:												// VITAL
 					ply = g.RoundWinnerSide ? PLAYER2 : PLAYER1;
@@ -3016,11 +3017,11 @@ static void action_3b(Object *obj) {	//203ba
 						_act3b_print_counter(d0, d2, &g.VitalBonusSprite[8]);
 					}
 					g.ScoreCountFlags |= ACT3B_VITAL_BONUS_BUSY;
-                    setaction_direct(obj, &action_vital_bonus);
+                    RHSetAction(obj, RHCODE(0x20694));
 					break;
 				case 4:											// TOTAL
 					ud->x0080 = g.TotalBonusCount;
-                    setaction_direct(obj, &action_total_bonus);
+                    RHSetAction(obj, RHCODE(0x206ac));
 					break;
 				FATALDEFAULT;
 			}
@@ -3069,7 +3070,7 @@ static void action_3b(Object *obj) {	//203ba
 							queuesound(SOUND_SCORE_DING);
 						}
 					}
-					setaction_direct(obj, &action_total_bonus);
+                    RHSetAction(obj, RHCODE(0x206ac));
 					break;
 				FATALDEFAULT;
 			}
@@ -3099,7 +3100,7 @@ static void action_43(Object *obj) {        //219ce
                 
 				//todo
 //				memcpy(gfx_p, data_21b2a, 160);
-//				setaction_list(obj, data_21f26, 0);
+                RHSetActionList(obj, RHCODE(0x21f26), 0);
 				break;
 			case 2:
 				if (obj->LocalTimer) {
@@ -3132,7 +3133,7 @@ static void action_43(Object *obj) {        //219ce
 					obj->YPI += 0x50;
 					obj->LocalTimer = 0x80;
 					obj->x002e = 0x40;
-//					setaction_list(obj, data_21bea, 1); TODO
+                    RHSetActionList(obj, RHCODE(0x21bea), 1);
 					break;
 				case 2:
 					if (g.mode2 == 0xc) {
@@ -3167,6 +3168,7 @@ static void action_43(Object *obj) {        //219ce
 					obj->YPI += 0xb7;
 					obj->LocalTimer = 0x80;
 					obj->x002e = 0x40;
+                    RHSetActionList(obj, RHCODE(0x21bea), 0);
 					//setaction_list(obj, data_21bea, 0); TODO
 					break;
 				case 2:
@@ -3278,7 +3280,7 @@ static void action_44(Object *obj) {
 				obj->VelY.full= (short []){0x600, 0x380}[obj->UserByte - 1];
 				obj->AclX.full = 0;
 				obj->AclY.full = 0x40;
-//				setaction_list(obj, data_2246a, obj->UserByte + 1); TODO
+                RHSetActionList(obj, RHCODE(0x2246a), obj->UserByte + 1);
 				break;
 			case 2:
 				switch (obj->mode1) {
@@ -3328,7 +3330,7 @@ static void action_44(Object *obj) {
 				obj->XPI += data_222cc[d0];
 				obj->YPI += data_222dc[d0];
 				obj->SubSel = sf2rand() & 1;
-				//setaction_list(obj, data_2246a, obj->SubSel); TODO
+                RHSetActionList(obj, RHCODE(0x2246a), obj->SubSel);
 				break;
 			case 2:
 				switch (obj->mode1) {

@@ -484,11 +484,11 @@ void CASetAnim1(Player *ply, short status) {
 
 
 void CASetAnim_BurningFall(Player *ply) {        /* 0x3a8e */
-	setaction_direct((Object *)ply, actlist_3aa4);
+    RHSetAction((Object *)ply, RHCODE(0x3aa4));
 }
 
 void CASetAnim_IcyFall(Player *ply) {
-	setaction_direct((Object *)ply, actlist_3bc8);
+    RHSetAction((Object *)ply, RHCODE(0x3bc8));
 }
 
 

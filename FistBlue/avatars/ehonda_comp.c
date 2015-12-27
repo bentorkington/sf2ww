@@ -129,7 +129,7 @@ static void sub_330ba (Player *ply) {
 	sub_330d8(ply);
 }
 static void sub_33570(Player *ply, short sel ) {
-	// XXX setaction_direct((Object *)ply, actlist_3ffbc[sel]);
+    RHSetActionList((Object *)ply, RHCODE(0x3ffbc), sel);
 }
 static void sub_3314e(Player *ply) {
 	NEXT(ply->mode3);
