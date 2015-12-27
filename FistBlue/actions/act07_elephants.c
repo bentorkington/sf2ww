@@ -301,7 +301,7 @@ void action_07(Object *obj) {		//e6cc
 							obj->UserData[1] = 0;
 							obj->LocalTimer = 0x70;
 							obj->UserData[0]=TRUE;
-							setactiondraw(obj, simpleact_e8ca,obj->SubSel - 1);
+                            RHSetScrollActionList(obj, RHCODE(0xe8ca), obj->SubSel - 1);
 							queuesound(SOUND_ELEPHANT);
 						}
 						break;
@@ -314,7 +314,7 @@ void action_07(Object *obj) {		//e6cc
 						break;
 					case 4:
 						NEXT(obj->mode1);
-						setactiondraw(obj, simpleact_e982, obj->SubSel - 1);
+                        RHSetScrollActionList(obj, RHCODE(0xe982), obj->SubSel - 1);
 						if (obj->SubSel == 1) {
 							queuesound(SOUND_ELEPHANT);
 						}

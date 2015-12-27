@@ -23,7 +23,7 @@ typedef struct fistblue_tile_plane RHTilePlane;
 
 int load_cps_roms();
 
-const u16 *RHOffsetLookup16(const u16 *base, int index);
+const void *RHOffsetLookup16(const u16 *base, int index);
 const u16 RHWordOffset(u32 base, int index);
 const u8 RHByteOffset(u32 base, int index);
 
@@ -39,7 +39,7 @@ void print_rom_offset(const char *message, const void *addr);
 typedef u32 RHROMPtr;
 typedef u16 RHShortPtr;
 
-#define RHCODE(x) &g_code_roms[(x)]
+#define RHCODE(x) (void *)&g_code_roms[(x)]
 
 #define RHCODE16(x) (u16 *)&g_code_roms[(x)]
 

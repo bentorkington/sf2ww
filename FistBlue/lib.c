@@ -1997,9 +1997,9 @@ void task_playground(void) {
 #endif
                     break;
                 case 2:
-                    obj = AllocActor();
-                    INITOBJ(obj, 6, 0);
-                    NEXT(g.mode0);
+//                    obj = AllocActor();
+//                    INITOBJ(obj, 6, 0);
+//                    NEXT(g.mode0);
 
 #ifdef REDHAMMER_EXTROM
 

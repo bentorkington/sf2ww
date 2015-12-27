@@ -515,6 +515,17 @@ void sub_41c2(Object *obj, const struct simpleaction *act) {		//41c2
     draw_simple(obj);
 }
 
+#ifdef REDHAMMER_EXTROM
+void RHSetScrollAction(Object *obj, const struct simpleaction *act) {
+    obj->ActionScript = (FBAction *)act;
+    obj->Timer        = RHSwapWord(obj->ActionScript->Delay);
+    obj->AnimFlags    = RHSwapWord(obj->ActionScript->Flags);
+}
+void RHSetScrollActionList(Object *obj, void *act, int step) {
+    RHSetScrollAction(obj, (const struct simpleaction *)RHOffsetLookup16(act, step));
+}
+#endif
+
 void setactiondraw(Object *obj, const CASimpleFrame **act, int step) {	//41b6
 	/* 41c2 inlined for efficiency */
 #ifdef REDHAMMER_EXTROM
@@ -634,7 +645,7 @@ static void drawsimple_scroll1noattr(Object *obj, const u16 *tiles, int width, i
         coord2=coord;
         for(y=0; y<height; y++) {
             /* tile */
-            SCR1_DRAW_TILE_NOATTR(coord2, tiles[0] + GFXROM_SCROLL1);
+            SCR1_DRAW_TILE_NOATTR(coord2, RHSwapWord(tiles[0]) + GFXROM_SCROLL1);
 			tiles++;
             SCR1_CURSOR_BUMP(coord2, 0, 1);
         }
@@ -653,7 +664,7 @@ void drawsimple_scroll1attr(Object *obj,  const u16 *tiles, int width, int heigh
         coord2=coord;
         for(y=0; y<height; y++) {
 			/* tile, attr*/
-            SCR1_DRAW_TILE(coord2, tiles[0] + GFXROM_SCROLL1, tiles[1]);
+            SCR1_DRAW_TILE(coord2, RHSwapWord(tiles[0]) + GFXROM_SCROLL1, RHSwapWord(tiles[1]));
 			tiles++;
 			SCR1_CURSOR_BUMP(coord2, 0, 1);
         }
@@ -676,7 +687,7 @@ static void drawsimple_scroll2noattr(Object *obj, const u16 *tiles, int width, i
         coord2=coord;
         for(y=0; y<height; y++) {
 			/* tile, attr*/
-            SCR2_DRAW_TILE_NOATTR(coord2, tiles[0] + GFXROM_SCROLL2);    
+            SCR2_DRAW_TILE_NOATTR(coord2, RHSwapWord(tiles[0]) + GFXROM_SCROLL2);
 			tiles++;
 			SCR2_CURSOR_BUMP(coord2, 0, 1);
 		}
@@ -691,8 +702,8 @@ static void drawsimple_scroll2attr(Object *obj, const u16 *tiles, int width, int
 	for(x=0; x<width; x++) {
         coord2=coord;
         for(y=0; y<height; y++) {
-			if ((tiles[0] & 0x8000) == 0) {
-				SCR2_DRAW_TILE(coord2, tiles[0] + GFXROM_SCROLL2, tiles[1]); 
+			if ((RHSwapWord(tiles[0]) & 0x8000) == 0) {
+				SCR2_DRAW_TILE(coord2, RHSwapWord(tiles[0]) + GFXROM_SCROLL2, RHSwapWord(tiles[1]));
 			}
 			tiles+=2;
 			SCR2_CURSOR_BUMP(coord2, 0, 1);
@@ -713,7 +724,7 @@ static void drawsimple_scroll3noattr(Object *obj, const u16 *tiles, int width, i
         coord2=coord;
         for(y=0; y<height; y++) {
 			/* tile, attr*/
-            SCR3_DRAW_TILE_NOATTR(coord2, tiles[0] + GFXROM_SCROLL3);    
+            SCR3_DRAW_TILE_NOATTR(coord2, RHSwapWord(tiles[0]) + GFXROM_SCROLL3);
 			tiles++;
 			SCR3_CURSOR_BUMP(coord2, 0, 1);
         }
@@ -733,7 +744,7 @@ static void drawsimple_scroll3attr(Object *obj, const u16 *tiles, int width, int
         coord2=coord;
         for(y=0; y<height; y++) {
 			if ((tiles[0] & 0x8000) == 0) {
-				SCR3_DRAW_TILE(coord2, tiles[0] + GFXROM_SCROLL3, tiles[1]);    
+				SCR3_DRAW_TILE(coord2, RHSwapWord(tiles[0]) + GFXROM_SCROLL3, RHSwapWord(tiles[1]));
 			}
 			tiles += 2;
             SCR3_CURSOR_BUMP(coord2, 0, 1);
@@ -784,12 +795,22 @@ void actiontickdraw(Object *obj) {		/* 0x41d4 */
 void draw_simple(Object *obj) {             /* 0x4200 */
     unsigned int width, height, palette;
 	const u16 *tiles;
+    print_rom_offset("draw_simple", obj->ActionScript);
+    
+#ifdef REDHAMMER_EXTROM
+    struct image2 *im = (struct image2 *)RHCODE(RHSwapLong(obj->ActionScript->Image));
+    
+    width   = RHSwapWord(im->Width);
+    height  = RHSwapWord(im->Height);
+    palette = RHSwapWord(im->Palette);
+#else
 	struct image2 *im = (struct image2 *)obj->ActionScript->Image;
-	
+
     width   = im->Width;
     height  = im->Height;
     palette = im->Palette;		// not actually a palette: a flag indicating tile, attr pairs
-	
+#endif
+
 	tiles = im->Tiles;
     if (palette == 0) {
         if(obj->Pool == 0) {

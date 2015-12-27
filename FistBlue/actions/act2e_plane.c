@@ -192,7 +192,7 @@ void action_2e(Object *obj) {
 						d6 = calc_flightpath(obj, ud->destination.x, ud->destination.y);
 						
 						obj->Step = (d6 + 2) / 4;
-						setaction_list(obj, actlist_19fa2, (obj->Step+1) >> 3);
+                        RHSetActionList(obj, RHCODE(0x19fa2), (obj->Step+1) >> 3);
 					}
 					break;
 				case 2:

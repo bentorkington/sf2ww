@@ -30,7 +30,11 @@ extern Game g;
 
 
 void pl_cb_setstatus2_chunli(Player *ply, short status, int argd0) {
-	setaction_list((Object *)ply, data_56dbc[status / 2], argd0);
+#ifdef REDHAMMER_EXTROM
+    RHSetActionList((Object *)ply, RHOffsetLookup16(RHCODE(0x56dbc), status / 2), argd0);
+#else
+    setaction_list((Object *)ply, data_56dbc[status / 2], argd0);
+#endif
 }
 void pl_cb_setstatus3_chunli(Player *ply, short status) {
 	pl_cb_setstatus2_chunli(ply, status, ply->Step ^ ply->Flip);

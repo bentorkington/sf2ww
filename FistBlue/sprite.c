@@ -804,7 +804,7 @@ void DSDrawShadows(void) {			/* 7bc00 */
     draw_shadow(PLAYER1, &g.Ply1Shadow);
     draw_shadow(PLAYER2, &g.Ply2Shadow);    
 }
-void draw_shadow(Player *ply, Object *obj) {
+void draw_shadow(Player *ply, Object *obj) {    //7bc14
     if(obj->mode0 == 0) {
         obj->mode0  = 2;
         obj->exists = TRUE;
@@ -821,7 +821,7 @@ void draw_shadow(Player *ply, Object *obj) {
     if (ply->ActionScript->Shadow == 0) {
         obj->exists = FALSE;
     }
-    setaction_list(obj, actlist_7bc66, ply->ActionScript->Shadow & 0x7f );
+    RHSetActionList(obj, RHCODE(0x7bc66), ply->ActionScript->Shadow & 0x7f);
 }
 
 #pragma mark DrawSprite et al.
@@ -829,7 +829,6 @@ void draw_shadow(Player *ply, Object *obj) {
 static void _draw_sprite(Object *obj, const u16 *tilep, const short *offsets, 
 					  short x, short y, unsigned short tiles, short attr) {
 	//7ee2c
-
 	if(obj->Draw1 > 0) {
         attr &= 0xffe0;						/* mask out the palette bits */
         attr |= obj->Draw2.part.integer;    /* OR in a replacement palette */
@@ -891,6 +890,7 @@ void drawsprite(Object *obj) {         /* 7edaa */
     const short *coordlist;
     short coordpair[2];
     
+
     //if(g.Debug && g.JPCost & JP_DBGSLEEP) {
     //	dbg_draw_hitboxes((Player *)obj);
     //}
@@ -898,14 +898,20 @@ void drawsprite(Object *obj) {         /* 7edaa */
 
     image = (const struct image *)RHCODE(RHSwapLong(obj->ActionScript->Image));
 
+    if (obj == &g.Ply1Shadow) {
+        printf("p1 shadow!\n");
+        print_rom_offset("p1 shadow im", image);
+        print_rom_offset("p1 action as", obj->ActionScript);
+    }
+
     if (image == NULL) {
         return;
     }
     tiles_in_image = RHSwapWord(image->TileCount);
     
-    if(image->TileCount == 0) { return; }
+    if(tiles_in_image == 0) { return; }
     if(tiles_in_image & IMAGE_ATTR) {
-        sub_7f244(obj, tiles_in_image, obj->ActionScript->Image, coordpair[0], coordpair[1]);
+        sub_7f244(obj, tiles_in_image, image, coordpair[0], coordpair[1]);
         /* tiles are in tile,attr pairs */
         return;
     }
@@ -1011,14 +1017,14 @@ static void sub_7eea2(Object *obj, const u16 *tilep, const short *offsets, short
 	int sx,sy;
 	const short *transform = data_trig[obj->Step];
 	while (tiles > 0) {
-		if (*tilep != 0) {
+		if (RHSwapWord(*tilep) != 0) {
 			g.x8b0e = (((offsets[0]+8) * obj->Draw2.full) / 16) + offsets[0] + 8;
 			sx = ((transform[0] * g.x8b0e) / 256) + x;
 			sy = ((transform[1] * g.x8b0e) / 256) + y;
 			g.x8b10 = (((offsets[1]+8) * obj->Draw2.full) / 16) + offsets[1] + 8;
 			sx +=((transform[2] * g.x8b10) / 256) - 8;
 			sy +=((transform[3] * g.x8b10) / 256) - 8;
-			OBJECT_DRAW_SINGLE(DSObjCur_g, sx, sy, *tilep, attr);
+			OBJECT_DRAW_SINGLE(DSObjCur_g, sx, sy, RHSwapWord(*tilep), attr);
 			OBJ_CURSOR_BUMP(DSObjCur_g);
 			
 		}
@@ -1041,10 +1047,10 @@ static void sub_7f244 (Object *obj, u16 tiles_in_image, const Image *image, shor
 	g.ObjTileBudget -= tiles_in_image;
 	g_tilecount -= tiles_in_image;
 	tiles_in_image--;
-	attr = image->Attr & 0xe0;	/* Only flips */
-	offsets = sub_7f224(image->Dimensions);
-	g.DSOffsetX = image->OffsetX;
-	g.DSOffsetY = image->OffsetY;
+	attr = RHSwapWord(image->Attr) & 0xe0;	/* Only flips */
+	offsets = sub_7f224(RHSwapWord(image->Dimensions));
+	g.DSOffsetX = RHSwapWord(image->OffsetX);
+	g.DSOffsetY = RHSwapWord(image->OffsetY);
 	if(obj->ActionScript->FlipBits & 0x3) {
         attr ^= (obj->ActionScript->FlipBits & 0x3) << 5;      /* apply flips */
         g.DSOffsetY += (obj->ActionScript->YOffset & 0xff);
@@ -1064,7 +1070,7 @@ static void sub_7f244 (Object *obj, u16 tiles_in_image, const Image *image, shor
 			x += g.DSOffsetX;
 			y -= g.DSOffsetY;
 			for (i=0; i<tiles_in_image; i++) {
-				if (*tilep == 0) {
+				if (RHSwapWord(*tilep) == 0) {
 					tilep+=2;
 					offsets+=2;
 					continue;
@@ -1078,8 +1084,8 @@ static void sub_7f244 (Object *obj, u16 tiles_in_image, const Image *image, shor
 					continue;
 				}
 				sy = (y - *offsets++ -16) & 0x1ff;
-				tile = *tilep++;
-				OBJECT_DRAW_SINGLE(DSObjCur_g, sx, sy, tile, attr ^ (*tilep++));
+				tile = RHSwapWord(*tilep++);
+				OBJECT_DRAW_SINGLE(DSObjCur_g, sx, sy, tile, attr ^ (RHSwapWord(*tilep++)));
 				OBJ_CURSOR_BUMP(DSObjCur_g);
 			}
 			
@@ -1088,7 +1094,7 @@ static void sub_7f244 (Object *obj, u16 tiles_in_image, const Image *image, shor
 			y += g.DSOffsetY;
 			/* 7f3b2 */
 			for (i=0; i<tiles_in_image; i++) {
-				if (*tilep == 0) {
+				if (RHSwapWord(*tilep) == 0) {
 					tilep+=2;
 					offsets+=2;
 					continue;
@@ -1102,8 +1108,8 @@ static void sub_7f244 (Object *obj, u16 tiles_in_image, const Image *image, shor
 					continue;
 				}
 				sy = (y + *offsets++) & 0x1ff;
-				tile = *tilep++;
-				OBJECT_DRAW_SINGLE(DSObjCur_g, sx, sy, tile, attr ^ (*tilep++));
+				tile = RHSwapWord(*tilep++);
+				OBJECT_DRAW_SINGLE(DSObjCur_g, sx, sy, tile, attr ^ (RHSwapWord(*tilep++)));
 				OBJ_CURSOR_BUMP(DSObjCur_g);
 			}
 		}
@@ -1114,7 +1120,7 @@ static void sub_7f244 (Object *obj, u16 tiles_in_image, const Image *image, shor
 		y -= g.DSOffsetY;
 		
 		for (i=0; i<tiles_in_image; i++) {
-			if (*tilep == 0) {
+			if (RHSwapWord(*tilep) == 0) {
 				tilep+=2;
 				offsets+=2;
 				continue;
@@ -1128,8 +1134,8 @@ static void sub_7f244 (Object *obj, u16 tiles_in_image, const Image *image, shor
 				continue;
 			}
 			sy = (y + *offsets++) & 0x1ff;
-			tile = *tilep++;
-			OBJECT_DRAW_SINGLE(DSObjCur_g, sx, sy, tile, attr ^ (*tilep++));
+			tile = RHSwapWord(*tilep++);
+			OBJECT_DRAW_SINGLE(DSObjCur_g, sx, sy, tile, attr ^ (RHSwapWord(*tilep++)));
 			OBJ_CURSOR_BUMP(DSObjCur_g);
 		}		
 		
@@ -1141,7 +1147,7 @@ static void sub_7f244 (Object *obj, u16 tiles_in_image, const Image *image, shor
 		if(obj->Draw1 < 0) {
 			/* sub_7f316()  sincos */
 			for (i=0; i<tiles_in_image; i++) {
-				if (*tilep == 0) {
+				if (RHSwapWord(*tilep) == 0) {
 					tilep+=2;
 					offsets+=2;
 				} else {
@@ -1154,16 +1160,16 @@ static void sub_7f244 (Object *obj, u16 tiles_in_image, const Image *image, shor
 					sysin = sy * data_trig[obj->Step][2] / 256;
 					sycos = sx * data_trig[obj->Step][3] / 256;
 					
-					tile = *tilep++;
+					tile = RHSwapWord(*tilep++);
 					OBJECT_DRAW_SINGLE(DSObjCur_g, sxcos + sysin - 8, sxsin + sycos - 8,
-									   tile, attr ^ (*tilep++));
+									   tile, attr ^ (RHSwapWord(*tilep++)));
 					OBJ_CURSOR_BUMP(DSObjCur_g);
 				}
 			}
 			return;
 		}
 		for (i=0; i<tiles_in_image; i++) {
-			if (*tilep == 0) {
+			if (RHSwapWord(*tilep) == 0) {
 				tilep   += 2;
 				offsets += 2;
 			} else {
@@ -1176,8 +1182,8 @@ static void sub_7f244 (Object *obj, u16 tiles_in_image, const Image *image, shor
 					continue;
 				}
 				sy = (y + offsets[1]) & 0x1ff;
-				tile = *tilep++;
-				OBJECT_DRAW_SINGLE(DSObjCur_g, sx, sy, tile, attr ^ (*tilep++));
+				tile = RHSwapWord(*tilep++);
+				OBJECT_DRAW_SINGLE(DSObjCur_g, sx, sy, tile, attr ^ (RHSwapWord(*tilep++)));
 				OBJ_CURSOR_BUMP(DSObjCur_g);
 				offsets += 2;
 			}
@@ -1403,7 +1409,7 @@ static short *sub_7f60c(const HitBox *hb) {			//7f60c
 }
 
 // Six hitboxes
-static void sub_7f4f2(Player *ply, const Action *act) {		// 7f4f2 Pushbox
+static void sub_7f4f2(Player *ply, const FBAction *act) {		// 7f4f2 Pushbox
 	short *a2;
 	// player %a1, act %a3
 	if (act->HB_Push) {
@@ -1412,7 +1418,7 @@ static void sub_7f4f2(Player *ply, const Action *act) {		// 7f4f2 Pushbox
 		dbg_draw_hitbox(ply, a2);
 	}
 }
-static void sub_7f51e(Player *ply, const Action *act) {		// 7f51e Active Hitbox
+static void sub_7f51e(Player *ply, const FBAction *act) {		// 7f51e Active Hitbox
 	short *a2;
 	// player %a1, act %a3
 	if (act->HB_Active) {
@@ -1421,7 +1427,7 @@ static void sub_7f51e(Player *ply, const Action *act) {		// 7f51e Active Hitbox
 		dbg_draw_hitbox(ply, a2);
 	}
 }
-static void sub_7f550(Player *ply, const Action *act) {		// Weak
+static void sub_7f550(Player *ply, const FBAction *act) {		// Weak
 	short *a2;
 	// player %a1, act %a3
 	if (act->HB_Weak) {
@@ -1430,7 +1436,7 @@ static void sub_7f550(Player *ply, const Action *act) {		// Weak
 		dbg_draw_hitbox(ply, a2);
 	}
 }
-static void sub_7f57c(Player *ply, const Action *act) {		// Foot
+static void sub_7f57c(Player *ply, const FBAction *act) {		// Foot
 	short *a2;
 	// player %a1, act %a3
 	if (act->HB_Foot) {
@@ -1439,7 +1445,7 @@ static void sub_7f57c(Player *ply, const Action *act) {		// Foot
 		dbg_draw_hitbox(ply, a2);
 	}
 }
-static void sub_7f5a8(Player *ply, const Action *act) {		// Body
+static void sub_7f5a8(Player *ply, const FBAction *act) {		// Body
 	short *a2;
 	// player %a1, act %a3
 	if (act->HB_Body) {
@@ -1448,7 +1454,7 @@ static void sub_7f5a8(Player *ply, const Action *act) {		// Body
 		dbg_draw_hitbox(ply, a2);
 	}
 }
-static void sub_7f5d4(Player *ply, const Action *act) {		// Head
+static void sub_7f5d4(Player *ply, const FBAction *act) {		// Head
 	short *a2;
 	// player %a1, act %a3
 
@@ -1473,7 +1479,7 @@ void debug_spr_crosshair(void) { /* 7f63a */
 }
 void dbg_draw_hitboxes(Player *ply) {		// 7f49a 
 	short coordpair[2];
-	const Action *act = ply->ActionScript;
+	const FBAction *act = ply->ActionScript;
 	sprite_coords((Object *)ply, coordpair);
 	g.hitbox_center_x = coordpair[0];
 	g.hitbox_center_y = coordpair[1] + 512;		// XXX

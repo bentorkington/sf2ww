@@ -91,7 +91,7 @@ void print_rom_offset(const char *message, const void *addr)
 {
     printf("%s: %08lx\n", message, ((char *)addr) - g_code_roms);
 }
-const u16 *RHOffsetLookup16(const u16 *base, int index)
+const void *RHOffsetLookup16(const u16 *base, int index)
 {    
     return base + (RHSwapWord(*(base + index)) / 2);
 }

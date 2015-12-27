@@ -36,7 +36,11 @@ typedef struct UserData_EHonda UD;
 
 
 void pl_cb_setstatus2_ehonda(Player *ply, short status, int argd0) {
-	setaction_list((Object *)ply, data_3d2fc[status / 2], argd0);
+#ifdef REDHAMMER_EXTROM
+    RHSetActionList((Object *)ply, RHOffsetLookup16(RHCODE(0x3d2fc), status / 2), argd0);
+#else
+    setaction_list((Object *)ply, data_3d2fc[status / 2], argd0);
+#endif
 }
 void pl_cb_setstatus3_ehonda(Player *ply, short status) {
 	pl_cb_setstatus2_ehonda(ply, status, ply->Step ^ ply->Flip);

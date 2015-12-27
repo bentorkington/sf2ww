@@ -122,7 +122,7 @@ static void Act23SMVomit(Object *obj) {					// 1e43a
 	switch (obj->mode0) {
 		case 0:
 			NEXT(obj->mode0);
-			setaction_list(obj, actlist_1e8d6, obj->SubSel + obj->UserByte);
+            RHSetActionList(obj, RHCODE(0x1e8d6), obj->SubSel + obj->UserByte);
 			obj->Flip = obj->Owner->Flip;
 			ud->PlyX = obj->Owner->XPI;
 			ud->PlyY = obj->Owner->YPI;
@@ -192,7 +192,7 @@ static void sub_1e59a(Object *obj) {		// birds and stars?
 				case 2:
 					if (--obj->LocalTimer == 0) {
 						NEXT(obj->mode0);
-						setaction_list(obj, actlist_1e8d6, obj->SubSel + obj->UserByte);
+                        RHSetActionList(obj, RHCODE(0x1e8d6), obj->SubSel + obj->UserByte);
 						ply = sub_1e7ae(obj);
 						obj->Flip = ply->Flip;
 						ud->PlyX = ply->XPI;
@@ -229,7 +229,7 @@ static void sub_1e59a(Object *obj) {		// birds and stars?
 			obj->Flip = ply->VelX.full < 0 ? 0 : 1;
 			obj->Pool = obj->Flip * 4;
 			
-			setaction_list(obj, actlist_1e8d6, ((obj->Flip * 2) + 4 + obj->UserByte));
+            RHSetActionList(obj, RHCODE(0x1e8d6), ((obj->Flip * 2) + 4 + obj->UserByte));
 			CAApplyVelocity(obj);		/* bottom half of calc-trajectory */
 			if (obj->UserByte == 0) {
 				obj->Draw1 = TRUE;
@@ -279,7 +279,7 @@ static void Act23SMBlood(Object *obj) {		// 1e6fc not actually blood, just a sta
 			op = Act23RandomSmallOffset();
 			obj->XPI += op.x;
 			obj->YPI += op.y;
-			setaction_list(obj, actlist_1e8d6, 8);		/* star */
+            RHSetActionList(obj, RHCODE(0x1e8d6), 8);   /* star */
 			break;
 		case 2:
 			_act23_animate(obj);
@@ -305,7 +305,7 @@ static void sub_1e84c(Object *obj) {			// 1e84c blood
 			obj->XPI += op.x;
 			obj->YPI += op.y;
 			ud->x0092 = 3;
-			setaction_direct(obj, actlist_1eb42);
+            RHSetAction(obj, RHCODE(0x1eb42));
 			/* FALL THRU */
 		case 2:
 			_act23_animate(obj);

@@ -114,7 +114,7 @@ static void proc_yogafire(Object *obj, short d7) {  /* 0x23426 */
 			obj->XPI		+= obj->Flip ? 0x38 : -0x38;
 			obj->YPI		+= 40;
 			obj->Path = data_2349a[obj->SubSel/2];
-			setaction_list(obj, data_23612, obj->SubSel >> 1);
+            RHSetActionList(obj, RHCODE(0x23612), obj->SubSel / 2);
 			break;
 		case 2:
 			CDCheckProjectile(obj, d7);
@@ -171,10 +171,11 @@ static void projsm_fireball(Object *obj, short d7) {
 			} else {
 				obj->Path = data_22c32[obj->SubSel/2];
 			}
-			setaction_list(obj, (const Action **[])
-					  {action_22cd2,action_22cd2,action_22cd2,action_22e88,action_23134}   /* data_22c4a: Hadouken, unused, unused, Sonic Boom, Tiger */
-					  [obj->Sel], 0);
-			if(obj->Sel == 0 && sf2rand() == 0) {
+
+            /* data_22c4a: Hadouken, unused, unused, Sonic Boom, Tiger */
+            RHSetActionList(obj, RHCODE(((const u32[]){0x22cd2, 0x22cd2, 0x22cd2, 0x22cd2, 0x22e88, 0x23134}[obj->Sel])), 0);
+
+            if(obj->Sel == 0 && sf2rand() == 0) {
 				obj->Draw1				= TRUE;
 				obj->Draw2.part.integer = PALETTE_OBJ_GOLDFIREBALL;	
 			}

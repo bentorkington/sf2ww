@@ -54,9 +54,9 @@ void action_3e(Object *obj) {
 			obj->XPI	= (SCREEN_WIDTH / 2);
 			obj->YPI	= 32;
 			if (g.Version == VERSION_USA) {
-				setaction_list(obj, actlist_20fd8, 0);
+                RHSetActionList(obj, RHCODE(0x20fd8), 0);
 			} else {
-				setaction_list(obj, actlist_20fd8, 1);
+                RHSetActionList(obj, RHCODE(0x20fd8), 1);
 			}
 			/* FALLTHRU */
 		case 2:

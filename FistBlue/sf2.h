@@ -30,6 +30,7 @@
 //#define FISTBLUE_SF2UA_ETC
 
 #define REDHAMMER 1
+#define REDHAMMER_EXTROM 1
 
 // Jumpers
 #define FISTBLUE_JUMPER_0   0x00

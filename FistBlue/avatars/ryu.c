@@ -34,7 +34,11 @@ typedef struct UserData_RyuKen UD;
 
 
 void pl_cb_setstatus2_ryu(Player *ply, short status, int argd0) {
+#ifdef REDHAMMER_EXTROM
+    RHSetActionList((Object *)ply, RHOffsetLookup16(RHCODE(0x37f1e), status / 2), argd0);
+#else
 	setaction_list((Object *)ply, data_37f1e[status / 2], argd0);
+#endif
 }
 void pl_cb_setstatus3_ryu(Player *ply, short status) {
 	pl_cb_setstatus2_ryu(ply, status, ply->Step ^ ply->Flip);
@@ -44,7 +48,11 @@ void pl_cb_setstatus1_ryu(Player *ply, short status) {
 }
 
 void pl_cb_setstatus2_ken(Player *ply, short status, int argd0) {
-	setaction_list((Object *)ply, data_51730[status / 2], argd0);
+#ifdef REDHAMMER_EXTROM
+    RHSetActionList((Object *)ply, RHOffsetLookup16(RHCODE(0x51730), status / 2), argd0);
+#else
+    setaction_list((Object *)ply, data_51730[status / 2], argd0);
+#endif
 }
 void pl_cb_setstatus3_ken(Player *ply, short status) {
 	pl_cb_setstatus2_ken(ply, status, ply->Step ^ ply->Flip);

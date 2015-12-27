@@ -189,9 +189,9 @@ void action_2(Object *obj) {				//d240 Bicycle people
 				obj->YPI    = 64;
 				obj->Path   = (const VECT16 *)data_d3ae;
 				if (obj->SubSel < 0) {
-					setaction_list(obj, actlist_d6e8, RAND8);
+                    RHSetActionList(obj, RHCODE(0xd6e8), RAND8);
 				} else {		// shadow
-					setaction_direct(obj, actlist_d438);
+                    RHSetAction(obj, RHCODE(0xd438));
 				}
 				break;
 			case 2:

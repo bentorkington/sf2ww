@@ -50,7 +50,7 @@ void action_29(Object *obj) {
 			if (obj->SubSel) {
 				NEXT(obj->mode1);
 			}
-			setaction_direct(obj, actlist_20f76);
+            RHSetAction(obj, RHCODE(0x20f76));
 			/* FALLTHRU */
 		case 2:
 			switch (obj->mode1) {

@@ -983,7 +983,7 @@ static void action_12(Object *obj) {		// "Street Fighter" logo
 					obj->Pool	= 6;
 					obj->XPI	= (SCREEN_WIDTH / 2);
 					obj->YPI	= 152;
-					setaction_list(obj, actlist_11602, 1);
+                    RHSetActionList(obj, RHCODE(0x11602), 1);
 					/* FALLTHRU */
 				case 2:
 					enqueue_and_layer(obj);
@@ -1001,7 +1001,7 @@ static void action_12(Object *obj) {		// "Street Fighter" logo
 					NEXT(obj->mode0);
 					obj->Pool	= 6;
 					ud->h0080c  = 0;
-					setaction_list(obj, actlist_11602, 0);
+                    RHSetActionList(obj, RHCODE(0x11602), 0);
 					break;
 				case 2:
 					switch (obj->mode1) {
@@ -1023,7 +1023,7 @@ static void action_12(Object *obj) {		// "Street Fighter" logo
 									nobj->exists = TRUE;
 									nobj->Sel    = 0x29;
 								}
-								setaction_list(obj, actlist_11602, 1);
+                                RHSetActionList(obj, RHCODE(0x11602), 1);
 							}
 							break;
 						case 4:
@@ -1053,7 +1053,7 @@ static void action_12(Object *obj) {		// "Street Fighter" logo
 					NEXT(obj->mode0);
 					obj->Pool = 6;
 					ud->h0080c = 0;
-					setaction_list(obj, actlist_11602, 0);
+                    RHSetActionList(obj, RHCODE(0x11602), 0);
 					break;
 				case 2:
 					switch (obj->mode1) {
@@ -1075,7 +1075,7 @@ static void action_12(Object *obj) {		// "Street Fighter" logo
 									nobj->exists = TRUE;
 									nobj->Sel = 0x29;
 								}
-								setaction_list(obj, actlist_11602, 1);
+                                RHSetActionList(obj, RHCODE(0x11602), 1);
 							}
 							break;
 						case 4:
@@ -1801,7 +1801,7 @@ static void action_1f(Object *obj) {		//18e7e
 		case 0:
 			if (ply->Human) {
 				NEXT(obj->mode0);
-				setaction_list(obj, actlist_1a10c, obj->SubSel);
+                RHSetActionList(obj, RHCODE(0x1a10c), obj->SubSel);
 			}
 			break;
 		case 2:
@@ -1810,7 +1810,7 @@ static void action_1f(Object *obj) {		//18e7e
 					actiontick(obj);
 					if (ply->SelectComplete || ply->SelectDelayTmr) {
 						NEXT(obj->mode1);
-						setaction_list(obj, actlist_1a10c, obj->SubSel);
+                        RHSetActionList(obj, RHCODE(0x1a10c), obj->SubSel);
 					}
 					break;
 				case 2:
@@ -1853,7 +1853,7 @@ static void action_20(Object *obj) {
 				temp = (sf2rand() & 0xc ) >> 2;
 				obj->XPI += data_1de94[temp].x;
 				obj->YPI += data_1de94[temp].y;
-				setaction_list(obj, actlist_1dec6, obj->SubSel);
+                RHSetActionList(obj, RHCODE(0x1dec6), obj->SubSel);
 				break;
 			case 2:
 				actiontick(obj);
@@ -1906,7 +1906,7 @@ static void action_21(Object *obj) {    // 1153e
 			obj->Pool	= 2;
 			obj->XPI	= 192;
 			obj->YPI	= 207;
-			setaction_direct(obj, actlist_117aa);	/* Flashing KO */
+            RHSetAction(obj, RHCODE(0x117aa));      /* Flashing KO */
 			/* FALLTHRU */
 		case 2:
 			switch (obj->mode1) {
@@ -1926,7 +1926,7 @@ static void action_21(Object *obj) {    // 1153e
 					actiontick(obj);
 					if (g.Player1.Energy < 0 || g.Player2.Energy < 0) {
 						NEXT(obj->mode1);
-						setaction_direct(obj, actlist_117aa);
+                        RHSetAction(obj, RHCODE(0x117aa));
 					}
 					break;
 				case 4:
@@ -1969,7 +1969,7 @@ static void sub_1acaa(Object *obj) {
 				NEXT(obj->mode1);
 				obj->Draw2.full	= 0x40;
 				obj->LocalTimer = 120;
-				setaction_direct(obj, actlist_1af46);	/* BONUS STAGE */
+                RHSetAction(obj, RHCODE(0x1af46));      /* BONUS STAGE */
 				break;
 			case 2:		//1adcc
 				if (obj->Draw2.full) {
@@ -2000,8 +2000,8 @@ static void sub_1acaa(Object *obj) {
 		switch (obj->mode1) {
 			case 0:
 				NEXT(obj->mode0);
-				obj->Draw2.full = 0xfff0;	
-				setaction_list(obj, actlist_1ae1a, g.RoundCnt);
+				obj->Draw2.full = 0xfff0;
+                RHSetActionList(obj, RHCODE(0x1ae1a), g.RoundCnt);
 				break;
 			case 2:
 				if (obj->Draw2.full) {
@@ -2037,7 +2037,7 @@ static void sub_1acaa(Object *obj) {
 				if(obj->Draw2.full < 0 && obj->Draw2.full > -16) {return;}
 				NEXT(obj->mode1);
 				g.x0305 = FALSE;		// Queue the Bison Cape remove anim
-				setaction_direct(obj, actlist_1af62);		/* FIGHT! */
+                RHSetAction(obj, RHCODE(0x1af62));          /* FIGHT! */
 				break;
 			case 10:
 				if (obj->Draw2.full) {
@@ -2290,7 +2290,7 @@ static void skyskraperanim_00(Object *obj) {		// 1d176
 			g.x8a75   = 0xf0;
 			obj->Pool = 4;
 			ud->OldY  = obj->YPI;
-			setaction_list(obj, actlist_1d4f0, 0);
+            RHSetActionList(obj, RHCODE(0x1d4f0), 0);
 			sub_25f8(obj);
 			break;
 		case 2:
@@ -2301,7 +2301,7 @@ static void skyskraperanim_00(Object *obj) {		// 1d176
 						g.x8a74  =  1;
 						g.x8a75  = 16;
 						obj->XPI = 0xc8;
-						setaction_list(obj, actlist_1d4f0, 2);
+                        RHSetActionList(obj, RHCODE(0x1d4f0), 2);
 					} else {
 						obj->YPI = ud->OldY;
 						obj->YPI |= ((g.x8a75 & 0x10)>>3);
@@ -2316,7 +2316,7 @@ static void skyskraperanim_00(Object *obj) {		// 1d176
 						obj->XPI  = 0xb0;
 						obj->YPI  = 0x610;
 						obj->Pool = 4;
-						setaction_list(obj, actlist_1d4f0, 3);
+                        RHSetActionList(obj, RHCODE(0x1d4f0), 3);
 					}
 					sub_25f8(obj);
 					break;
@@ -2344,7 +2344,7 @@ static void skyskraperanim_02(Object *obj) {		// 1d250
 			NEXT(obj->mode0);
 			obj->Pool = 4;
 			ud->OldY = obj->YPI;
-			setaction_list(obj, actlist_1d4f0, 1);		// black guy
+            RHSetActionList(obj, RHCODE(0x1d4f0), 1);   // black guy
 			sub_25f8(obj);
 			break;
 		case 2:
@@ -2365,7 +2365,7 @@ static void skyskraperanim_02(Object *obj) {		// 1d250
 						obj->YPI = 0x610;
 						obj->Pool = 4;
 						obj->LocalTimer = 6;
-						setaction_list(obj, actlist_1d4f0, 4);	// black guy reeling backwards
+                        RHSetActionList(obj, RHCODE(0x1d4f0), 4);   //black guy reeling backwards
 						sub_25f8(obj);
 					}
 					break;
@@ -2394,7 +2394,7 @@ static void skyskraperanim_04(Object *obj) {		// 1d308
 		case 0:
 			NEXT(obj->mode0);
 			obj->Pool = 4;
-			setaction_list(obj, actlist_1d4f0, 5);		// punched head
+            RHSetActionList(obj, RHCODE(0x1d450), 5);   // punched head
 			break;
 		case 2:
 			switch (obj->mode1) {
@@ -2438,7 +2438,7 @@ static void skyskraperanim_06(Object *obj) {		// 1d394
 		case 0:
 			NEXT(obj->mode0);
 			obj->Pool = 6;
-			setaction_list(obj, actlist_1d4f0, 6);		// bang
+            RHSetActionList(obj, RHCODE(0x1d4f0), 6);   // bang
 			break;
 		case 2:
 			switch (obj->mode1) {
@@ -2486,7 +2486,7 @@ static void skyskraperanim_08(Object *obj) {		// 1d41a teeth
 			obj->Pool = 4;
 			ud->VelY.full    = 0x00000000;
 			ud->Gravity.full = 0xffffc000;
-			setaction_list(obj, actlist_1d4f0, 7);		// Teeth
+            RHSetActionList(obj, RHCODE(0x1d4f0), 7);   // Teeth
 			break;
 		case 2:
 			switch (obj->mode1) {
@@ -2547,7 +2547,7 @@ static void action_30(Object *obj) {		// 1da4a
 			obj->XPI += gstate_Scroll3.XPI;
 			obj->YPI += gstate_Scroll3.YPI;
 			obj->Pool = 6;
-			setaction_direct(obj, actlist_1da8c);
+            RHSetAction(obj, RHCODE(0x1da8c));
 			/* FALLTHRU */
 		case 2:
 			actiontick(obj);
@@ -2567,7 +2567,7 @@ static void action_33(Object *obj) {
 			NEXT(obj->mode0);
 			obj->Flip = obj->Step;
 			obj->Pool = obj->UserByte;
-			setaction_list(obj, actlist_1f502, obj->SubSel);
+            RHSetActionList(obj, RHCODE(0x1f502), obj->SubSel);
 			break;
 		case 2:
 			check_rect_queue_draw(obj);
@@ -2636,10 +2636,10 @@ static void action_35(Object *obj) {			//1f9fa
 			} else if (d0 < 0) {
 				NEXT(obj->mode0);
 			} else if (g.CurrentStage == STAGE_JAPAN_EHONDA) {
-				setaction_list(obj, actlist_1fb52, d0);			// water splashes
+                RHSetActionList(obj, RHCODE(0x1fb52), d0);      // water splashes
 				check_rect_queue_draw(obj);
 			} else {
-				setaction_list(obj, actlist_1fb46, d0);			// dust clouds
+                RHSetActionList(obj, RHCODE(0x1fb46), d0);      // dust clouds
 				check_rect_queue_draw(obj);
 			}
 			break;
@@ -3414,7 +3414,7 @@ static void action_48(Object *obj) {		//226b6
 			obj->YPI		= 0xa0;
 			obj->Draw1		= 0;
 			obj->Draw2.part.integer = obj->SubSel == 9 ? 0xf : 0xe;
-			setaction_list(obj, actlist_2278c, obj->SubSel);
+            RHSetActionList(obj, RHCODE(0x2278c), obj->SubSel);
 			break;
 		case 2:
 			sub_22746(obj);
