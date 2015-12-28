@@ -1701,8 +1701,8 @@ void setup_stage_actions (void) { /* 822be */
 	};
 	
 	Object *action;
-	short count = counts[g.CurrentStage];
-	if (count < 0) { return; }
+	short count = counts[g.CurrentStage] + 1;
+	if (count <= 0) { return; }
 	
 	const struct actionhdr *data = data_stageactions[g.CurrentStage];
 	for (i=0; i<count; ++i) {
@@ -1894,8 +1894,8 @@ void actionlibrary(void) {
 	
 	int i;
 	Object *action;
-	short count = counts[g.ActionLibSel];
-	if (count < 0) { return; }
+	short count = counts[g.ActionLibSel] + 1;
+	if (count <= 0) { return; }
 	
 	const struct actionhdr *data = data_actions[g.ActionLibSel];
 	for (i=0; i< count; i++) {
