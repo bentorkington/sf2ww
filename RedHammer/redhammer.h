@@ -33,7 +33,7 @@ u16 RHSwapWord(const u16 num);
 u32 RHReadLong(int romaddr);
 u16 RHReadWord(int romaddr);
 
-void print_rom_qoffset(const char *message, const void *addr);
+void print_rom_offset(const char *message, const void *addr);
 
 typedef u32 RHROMPtr;
 typedef u16 RHShortPtr;

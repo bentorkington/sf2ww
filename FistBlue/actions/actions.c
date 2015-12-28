@@ -2395,7 +2395,7 @@ static void skyskraperanim_04(Object *obj) {		// 1d308
 		case 0:
 			NEXT(obj->mode0);
 			obj->Pool = 4;
-            RHSetActionList(obj, RHCODE(0x1d450), 5);   // punched head
+            RHSetActionList(obj, RHCODE(0x1d4f0), 5);   // punched head
 			break;
 		case 2:
 			switch (obj->mode1) {
