@@ -598,13 +598,13 @@ void sub_4386(short d1, short width_d3, short width_d4, const u16 *a1, u16 **gfx
 		for(;width_d3>=0;width_d3--) {			/* postdecrements */
 			a2 = *gfx_p;
 			for(d2 = width_d4;d2>=0;d2--) {
-				if((*a1) & 0x8000) {
+				if(RHSwapWord(*a1) & 0x8000) {
 					/* 431e */
 					a1+=2;
 					a2+=2;
 				} else {
-					a2[0] = GFXROM_SCROLL2 + a1[0];
-					a2[1] = a1[1];
+					a2[0] = GFXROM_SCROLL2 + RHSwapWord(a1[0]);
+					a2[1] = RHSwapWord(a1[1]);
 					a1 +=2;
 					a2 +=2;
 				}
@@ -624,10 +624,9 @@ void sub_4386(short d1, short width_d3, short width_d4, const u16 *a1, u16 **gfx
 		for(; width_d3 >= 0; --width_d3){
 			a2 = *gfx_p;
 			for(d6 = width_d4; d6 >= 0; --d6) {
-				if((a1[-2] & 0x8000) == 0) {
-					a2[-2] = GFXROM_SCROLL2 + a1[-2];
-					//a2[-2] = GFXROM_SCROLL2 + 0x4;		// XXX
-					a2[-1] = ATTR_X_FLIP ^ a1[-1];
+				if((RHSwapWord(a1[-2]) & 0x8000) == 0) {
+					a2[-2] = GFXROM_SCROLL2 + RHSwapWord(a1[-2]);
+					a2[-1] = ATTR_X_FLIP ^ RHSwapWord(a1[-1]);
 				}
 				a1 -= 2;
 				a2 -= 2;				
