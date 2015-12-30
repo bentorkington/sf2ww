@@ -261,22 +261,23 @@ void LBInitHitBoxes(Player *ply) {	/* 388c initialise player hitboxes, vega clar
 }
     
 void ply_thrown(Player *ply) {        /* 3948 data at 93440 */
-	signed char *data;
-    Player *opp = ply->Opponent;
-	
-    // XXX data not all done!
-	//data = data_93440[opp->FighterID][ply->FighterID][opp->ActionScript->Catch];    
-	
-	data = data_93440[0][0][opp->ActionScript->Catch];    
-
-	
-    ply->XPI = opp->XPI + (opp->Flip ? -data[0] : data[0]) ;
-    ply->YPI = opp->YPI + data[1];
+    struct throwcatch {
+        char x;
+        char y;
+        char drawOrder;
+        char catchSprite;
+    } __attribute__((packed));
     
-    g.PlyDrawOrder = (data[2] & 1) ^ ply->Side ^ 1; 
+    const void *opponent = RHOffsetLookup16(RHCODE(0x93440), ply->Opponent->FighterID);
+    const struct throwcatch *catch = RHOffsetLookup16(opponent, ply->FighterID);
+    
+    ply->XPI = ply->Opponent->XPI + (ply->Opponent->Flip ? -catch->x : catch->x) ;
+    ply->YPI = ply->Opponent->YPI + catch->y;
+    
+    g.PlyDrawOrder = (catch->drawOrder & 1) ^ ply->Side ^ 1;
 
-    ply->Flip = ((data[2] & 0x20)>>5) ^ opp->Flip;
-    CASetAnim2(ply, STATUS_GETTING_THROWN, data[3]);  
+    ply->Flip = ((catch->drawOrder & 0x20)>>5) ^ ply->Opponent->Flip;
+    CASetAnim2(ply, STATUS_GETTING_THROWN, catch->catchSprite);
 }
     
 void random_damage_adjust_1(Player *ply, int damage_d0, int damage_d1) {			// 3f62
