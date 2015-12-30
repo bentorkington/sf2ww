@@ -1450,7 +1450,6 @@ static void action_19(Object *obj) {     // 1322c
 			NEXT(obj->mode0);
 			obj->Pool = 6;
             RHSetActionList(obj, RHCODE(0x1325e), obj->SubSel);
-			setaction_list(obj, actlist_1325e, obj->SubSel);
 			break;
 		case 2:
 			check_rect_queue_draw(obj);

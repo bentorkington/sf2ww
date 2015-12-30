@@ -22,9 +22,7 @@
 #include "lib.h"
 #include "gfxlib.h"
 
-
 #include "ehonda.h"
-#include "ehondadata.h"
 
 extern Game g;
 

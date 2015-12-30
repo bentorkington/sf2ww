@@ -23,7 +23,6 @@
 
 #include "projectiles.h"
 #include "guile.h"
-#include "guiledata.h"
 
 extern Game g;
 

@@ -22,9 +22,7 @@
 #include "lib.h"
 #include "gfxlib.h"
 
-
 #include "zangeif.h"
-#include "zangeifdata.h"
 
 extern Game g;
 extern GState gstate_Scroll2;

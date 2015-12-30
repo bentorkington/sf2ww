@@ -23,7 +23,6 @@
 extern Game g;
 
 #include "vega.h"
-#include "vegadata.h"
 typedef struct UserData_Vega UD;
 
 

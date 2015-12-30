@@ -22,7 +22,6 @@
 #include "gfxlib.h"
 
 #include "mbison.h"
-#include "mbisondata.h"
 
 extern Game g;
 

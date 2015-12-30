@@ -22,7 +22,6 @@
 #include "gfxlib.h"
 
 #include "chunli.h"
-#include "chunlidata.h"
 
 typedef struct UserData_ChunLi UD;
 typedef struct UserDataComp_ChunLi UDCOMP;

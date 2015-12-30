@@ -24,7 +24,6 @@
 
 
 #include "blanka.h"
-#include "blankadata.h"
 
 extern Game g;
 

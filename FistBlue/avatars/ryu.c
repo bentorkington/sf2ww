@@ -24,8 +24,6 @@
 
 #include "projectiles.h"
 #include "ryu.h"
-#include "ryudata.h"
-#include "kendata.h"
 
 extern Game g;
 
@@ -268,6 +266,8 @@ void RyuSMShoryuken(Player *ply) {		//2d84a
 void RyuStartHurricane(Player *ply) {		//2d914
 	struct UserData_RyuKen *ud=(struct UserData_RyuKen *)&ply->UserData;
 
+    int data_2d962[3]={ 0x00028000, 0x00030000, 0x00038000 };
+
 	NEXT(ply->mode2);
 	ply->mode3=0;
 	soundsting(SOUND_HURRICANE);	/* "Don't scratch that veruca!" */
@@ -284,7 +284,10 @@ void RyuStartHurricane(Player *ply) {		//2d914
 // manage state while in air, then finish
 void RyuSMHurricane(Player *ply) {		//2d96e
 	UD *ud=(UD *)&ply->UserData;
-	
+
+    // ThrowDisable after Hurricane
+    const static char data_2d9fe[16]={1,5,5,5,10,10,10,10,15,15,15,15,20,20,20,30};
+
 	switch (ply->mode3) {
 		case 0:
 			if(KenTrajectory(ply)<0){
