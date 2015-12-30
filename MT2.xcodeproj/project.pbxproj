@@ -7,6 +7,29 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		6C6F0DE81C349FAA004CD78E /* redhammer.c in Sources */ = {isa = PBXBuildFile; fileRef = 6CF004551C2A01C9008EA965 /* redhammer.c */; };
+		6C6F0DE91C349FED004CD78E /* sf2_06.bin in Resources */ = {isa = PBXBuildFile; fileRef = 6CF004581C2A128C008EA965 /* sf2_06.bin */; };
+		6C6F0DEA1C349FED004CD78E /* sf2_07.bin in Resources */ = {isa = PBXBuildFile; fileRef = 6CF004591C2A128C008EA965 /* sf2_07.bin */; };
+		6C6F0DEB1C349FED004CD78E /* sf2_08.bin in Resources */ = {isa = PBXBuildFile; fileRef = 6CF0045A1C2A128C008EA965 /* sf2_08.bin */; };
+		6C6F0DEC1C349FED004CD78E /* sf2_09.bin in Resources */ = {isa = PBXBuildFile; fileRef = 6CF0045B1C2A128C008EA965 /* sf2_09.bin */; };
+		6C6F0DED1C349FED004CD78E /* sf2_14.bin in Resources */ = {isa = PBXBuildFile; fileRef = 6CF0045C1C2A128C008EA965 /* sf2_14.bin */; };
+		6C6F0DEE1C349FED004CD78E /* sf2_15.bin in Resources */ = {isa = PBXBuildFile; fileRef = 6CF0045D1C2A128C008EA965 /* sf2_15.bin */; };
+		6C6F0DEF1C349FED004CD78E /* sf2_16.bin in Resources */ = {isa = PBXBuildFile; fileRef = 6CF0045E1C2A128C008EA965 /* sf2_16.bin */; };
+		6C6F0DF01C349FED004CD78E /* sf2_17.bin in Resources */ = {isa = PBXBuildFile; fileRef = 6CF0045F1C2A128C008EA965 /* sf2_17.bin */; };
+		6C6F0DF11C349FED004CD78E /* sf2_18.bin in Resources */ = {isa = PBXBuildFile; fileRef = 6CF004601C2A128C008EA965 /* sf2_18.bin */; };
+		6C6F0DF21C349FED004CD78E /* sf2_19.bin in Resources */ = {isa = PBXBuildFile; fileRef = 6CF004611C2A128C008EA965 /* sf2_19.bin */; };
+		6C6F0DF31C349FED004CD78E /* sf2_24.bin in Resources */ = {isa = PBXBuildFile; fileRef = 6CF004621C2A128C008EA965 /* sf2_24.bin */; };
+		6C6F0DF41C349FED004CD78E /* sf2_25.bin in Resources */ = {isa = PBXBuildFile; fileRef = 6CF004631C2A128C008EA965 /* sf2_25.bin */; };
+		6C6F0DF51C349FED004CD78E /* sf2_26.bin in Resources */ = {isa = PBXBuildFile; fileRef = 6CF004641C2A128C008EA965 /* sf2_26.bin */; };
+		6C6F0DF61C349FED004CD78E /* sf2_27.bin in Resources */ = {isa = PBXBuildFile; fileRef = 6CF004651C2A128C008EA965 /* sf2_27.bin */; };
+		6C6F0DF71C349FED004CD78E /* sf2_29a.bin in Resources */ = {isa = PBXBuildFile; fileRef = 6CF004661C2A128C008EA965 /* sf2_29a.bin */; };
+		6C6F0DF81C349FED004CD78E /* sf2_36a.bin in Resources */ = {isa = PBXBuildFile; fileRef = 6CF004671C2A128C008EA965 /* sf2_36a.bin */; };
+		6C6F0DF91C349FED004CD78E /* sf2u.37a in Resources */ = {isa = PBXBuildFile; fileRef = 6CF004681C2A128C008EA965 /* sf2u.37a */; };
+		6C6F0DFA1C349FED004CD78E /* sf2u.35a in Resources */ = {isa = PBXBuildFile; fileRef = 6CF004691C2A128C008EA965 /* sf2u.35a */; };
+		6C6F0DFB1C349FED004CD78E /* sf2u.31a in Resources */ = {isa = PBXBuildFile; fileRef = 6CF0046A1C2A128C008EA965 /* sf2u.31a */; };
+		6C6F0DFC1C349FED004CD78E /* sf2u.30a in Resources */ = {isa = PBXBuildFile; fileRef = 6CF0046B1C2A128C008EA965 /* sf2u.30a */; };
+		6C6F0DFD1C349FED004CD78E /* sf2u.28a in Resources */ = {isa = PBXBuildFile; fileRef = 6CF0046C1C2A128C008EA965 /* sf2u.28a */; };
+		6C6F0DFE1C349FED004CD78E /* sf2u.38a in Resources */ = {isa = PBXBuildFile; fileRef = 6CF0046D1C2A128C008EA965 /* sf2u.38a */; };
 		6CF004561C2A01C9008EA965 /* redhammer.c in Sources */ = {isa = PBXBuildFile; fileRef = 6CF004551C2A01C9008EA965 /* redhammer.c */; };
 		6CF0046E1C2A128C008EA965 /* sf2_05.bin in Resources */ = {isa = PBXBuildFile; fileRef = 6CF004571C2A128C008EA965 /* sf2_05.bin */; };
 		6CF0046F1C2A128C008EA965 /* sf2_06.bin in Resources */ = {isa = PBXBuildFile; fileRef = 6CF004581C2A128C008EA965 /* sf2_06.bin */; };
@@ -1546,9 +1569,31 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				6C6F0DF51C349FED004CD78E /* sf2_26.bin in Resources */,
+				6C6F0DF71C349FED004CD78E /* sf2_29a.bin in Resources */,
 				B5C5742C1772782600496283 /* InfoPlist.strings in Resources */,
+				6C6F0DF31C349FED004CD78E /* sf2_24.bin in Resources */,
+				6C6F0DFE1C349FED004CD78E /* sf2u.38a in Resources */,
+				6C6F0DF41C349FED004CD78E /* sf2_25.bin in Resources */,
+				6C6F0DEE1C349FED004CD78E /* sf2_15.bin in Resources */,
+				6C6F0DEB1C349FED004CD78E /* sf2_08.bin in Resources */,
+				6C6F0DF01C349FED004CD78E /* sf2_17.bin in Resources */,
+				6C6F0DE91C349FED004CD78E /* sf2_06.bin in Resources */,
+				6C6F0DED1C349FED004CD78E /* sf2_14.bin in Resources */,
+				6C6F0DFC1C349FED004CD78E /* sf2u.30a in Resources */,
+				6C6F0DFB1C349FED004CD78E /* sf2u.31a in Resources */,
+				6C6F0DFD1C349FED004CD78E /* sf2u.28a in Resources */,
+				6C6F0DEF1C349FED004CD78E /* sf2_16.bin in Resources */,
+				6C6F0DEA1C349FED004CD78E /* sf2_07.bin in Resources */,
+				6C6F0DF11C349FED004CD78E /* sf2_18.bin in Resources */,
+				6C6F0DF21C349FED004CD78E /* sf2_19.bin in Resources */,
+				6C6F0DF91C349FED004CD78E /* sf2u.37a in Resources */,
+				6C6F0DEC1C349FED004CD78E /* sf2_09.bin in Resources */,
 				B5C5742D1772782600496283 /* MainMenu.xib in Resources */,
+				6C6F0DFA1C349FED004CD78E /* sf2u.35a in Resources */,
 				B5C5742E1772782600496283 /* ParamController.xib in Resources */,
+				6C6F0DF61C349FED004CD78E /* sf2_27.bin in Resources */,
+				6C6F0DF81C349FED004CD78E /* sf2_36a.bin in Resources */,
 				B5C5742F1772782600496283 /* sf2gfx.bin in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1721,6 +1766,7 @@
 				B5C574531772782600496283 /* pthreads.c in Sources */,
 				B5C574541772782600496283 /* game.c in Sources */,
 				B5C574551772782600496283 /* coinage.c in Sources */,
+				6C6F0DE81C349FAA004CD78E /* redhammer.c in Sources */,
 				B5C574561772782600496283 /* car.c in Sources */,
 				B5C574571772782600496283 /* drums.c in Sources */,
 				B5C574581772782600496283 /* actions.c in Sources */,

@@ -30,6 +30,7 @@ struct game g;
 void manual_init(void) {
 #ifdef FISTBLUE_TESTS
 	fistblue_run_tests();
+    redhammer_run_tests();
 #endif
 	memclear(&g, sizeof(struct game));
 	LBResetState();

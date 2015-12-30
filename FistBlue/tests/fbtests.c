@@ -189,8 +189,6 @@ void fistblue_run_tests(void) {
     printf("bcd_add_8 after 0x%08x\n", bcdtest);
 	
 	free(obj);
-		
-	exit(0);
 }
 
 void fistblue_test_gfx(void) {
