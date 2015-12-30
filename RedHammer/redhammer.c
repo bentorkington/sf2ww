@@ -103,11 +103,37 @@ const u8 RHByteOffset(u32 base, int index)
 {
     return *(u8 *)(RHCODE(base + index));
 }
+const u32 RH3DLong(u32 base, int dim2, int dim3, int i1, int i2, int i3)
+{
+    u32 *array = RHCODE(base);
+    return RHSwapLong(*(array + (i1 * dim2 * dim3) + (i2 * dim3) + i3));
+}
+const u32 RH2DLong(u32 base, int dim2, int i1, int i2)
+{
+    u32 *array = RHCODE(base);
+    return RHSwapLong(*(array + (i1 * dim2) + i2));
+}
 const u16 RH3DWord(u32 base, int dim2, int dim3, int i1, int i2, int i3)
 {
     u16 *array = RHCODE(base);
     return RHSwapWord(*(array + (i1 * dim2 * dim3) + (i2 * dim3) + i3));
 }
+const u16 RH2DWord(u32 base, int dim2, int i1, int i2)
+{
+    u16 *array = RHCODE(base);
+    return RHSwapWord(*(array + (i1 * dim2) + i2));
+}
+const u8 RH3DByte(u32 base, int dim2, int dim3, int i1, int i2, int i3)
+{
+    u8 *array = RHCODE(base);
+    return *(array + (i1 * dim2 * dim3) + (i2 * dim3) + i3);
+}
+const u8 RH2DByte(u32 base, int dim2, int i1, int i2)
+{
+    u8 *array = RHCODE(base);
+    return *(array + (i1 * dim2) + i2);
+}
+
 
 u32 RHSwapLong(const u32 num)
 {
