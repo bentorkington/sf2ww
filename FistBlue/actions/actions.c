@@ -954,6 +954,7 @@ static void action_11(Object *obj) {
 					}
 				}
 			}
+            break;
 		FATALDEFAULT;
 	}
 }
