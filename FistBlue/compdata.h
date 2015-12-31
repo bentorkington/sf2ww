@@ -19,11 +19,6 @@ const u32 data_2c388[32]={			// chance out of 32 of being hit
 };		
 
 
-//////////////////////////////////////////
-// matrices for comp_ply_difficulty_lookup
-//////////////////////////////////////////
-
-
 short data_995ae[12][2] = {
 	//       , JumpMoveHeight
 	{ 0x0040, 0x0078,  },		//Ryu
