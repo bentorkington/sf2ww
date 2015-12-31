@@ -191,10 +191,6 @@ void SM_player_select(void) {		//7fc4
 	short d0, d1;
 	Object *obj;
 	
-	static const u16 data_80be[16]={        // a palette
-		0x0ee7, 0x0ff0, 0x0f00, 0x006d, 0x0eef, 0x00af, 0x0060, 0x0777, 
-		0x004a, 0x0fc7, 0x0fa6, 0x0f85, 0x0e64, 0x0d43, 0x0c02, 0x0000, 
-	};
 	switch (g.PLSL.mode0) {
 		case 0:
 			switch (g.PLSL.mode1) {

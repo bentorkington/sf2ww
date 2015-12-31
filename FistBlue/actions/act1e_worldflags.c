@@ -35,7 +35,6 @@ static void sub_18e52(Object *obj) {
 
 void action_1e(Object *obj) {		//18c1c
 	UD1E *ud = (UD1E *)&obj->UserData;
-	static const char data_18e2a[][2]={{0x78, 0x78},{0x28,0xc8},{0x50,0xa0}};
     
 	switch (obj->SubSel) {
 		case 3:
@@ -127,8 +126,8 @@ void action_1e(Object *obj) {		//18c1c
 						case 10:
 							NEXT(obj->mode1);
 							ud->x0084 = 1;
-							obj->LocalTimer    = data_18e2a[obj->UserByte - 9][0];
-							obj->SubTimer      = data_18e2a[obj->UserByte - 9][1];
+                            obj->LocalTimer    = RH2DByte(0x18e2a, 2, obj->UserByte - 9, 0);
+							obj->SubTimer      = RH2DByte(0x18e2a, 2, obj->UserByte - 9, 1);
                             RHSetActionList(obj, RHCODE(0x1a200), obj->UserByte);
 							break;
 						case 12:

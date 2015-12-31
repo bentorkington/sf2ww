@@ -1222,13 +1222,6 @@ void action_print_chant() {			/* 15a2a */
 #pragma mark Act13 Ryu Sign fragments
 
 static void action_13(Object *obj) {  // 119ee
-	const static short data_11a80[4][4]={
-		{-0xc0, -0x80, 0x100, 0xa0},
-		{0x500, 0x400, 0x500, 0x400},
-		{ -0x8,     0,   0x8,   0x8},
-		{ 0x46,  0x36,  0x36,  0x26}
-	};
-	
 	switch (obj->mode0) {
 		case 0:
 			NEXT(obj->mode0);
@@ -1242,10 +1235,10 @@ static void action_13(Object *obj) {  // 119ee
 			switch (obj->mode1) {
 				case 0:
 					NEXT(obj->mode1);
-					obj->VelX.full = data_11a80[0][obj->SubSel];
-					obj->VelY.full = data_11a80[1][obj->SubSel];
-					obj->XPI += data_11a80[2][obj->SubSel];
-					obj->YPI += data_11a80[3][obj->SubSel];
+                    obj->VelX.full = RH2DWord(0x11a80, 4, 0, obj->SubSel);
+					obj->VelY.full = RH2DWord(0x11a80, 4, 1, obj->SubSel);
+					obj->XPI      += RH2DWord(0x11a80, 4, 2, obj->SubSel);
+					obj->YPI      += RH2DWord(0x11a80, 4, 3, obj->SubSel);
 					obj->AclY.full = 0x40;
 					obj->AclX.full = 0;
 					obj->Pool = 6;
@@ -1698,17 +1691,6 @@ void action_1606c() {
 
 #pragma mark Act1f Player Select Cursor
 static void action_1f(Object *obj) {		//18e7e
-	static const short data_18eb8[8][2] = {
-		{   144,    64,  },
-		{   176,    64,  },
-		{   208,    64,  },
-		{   240,    64,  },
-		{   144,    32,  },
-		{   176,    32,  },
-		{   208,    32,  },
-		{   240,    32,  },
-	};
-	
 	Player *ply = obj->SubSel ? PLAYER2 : PLAYER1;
 	switch (obj->mode0) {
 		case 0:
@@ -1731,8 +1713,8 @@ static void action_1f(Object *obj) {		//18e7e
 					break;
 				FATALDEFAULT;
 			}
-			obj->XPI = data_18eb8[ply->FighterID][0];
-			obj->YPI = data_18eb8[ply->FighterID][1];
+            obj->XPI = RH2DWord(0x18eb8, 2, ply->FighterID, 0);
+            obj->YPI = RH2DWord(0x18eb8, 2, ply->FighterID, 1);
 			enqueue_and_layer(obj);
 			break;
 			// no FreeActor(), I get killed.
