@@ -104,6 +104,7 @@ static void action_2f(Object *obj);
 
 static void action_30(Object *obj);
 
+static void action_32(Object *obj);
 static void action_33(Object *obj);
 
 static void action_35(Object *obj);
@@ -116,6 +117,7 @@ static void action_3b(Object *obj);
 
 extern void action_3e(Object *obj);
 extern void action_3f(Object *obj);
+static void action_40(Object *obj);
 
 static void action_44(Object *obj);
 static void action_48(Object *obj);
@@ -200,7 +202,8 @@ void proc_actions(void) {			/* c7da */
 				ACT117C(0x2f, action_2f)
 				ACT117C(0x30, action_30)
 				
-				ACT117C(0x33, action_33)
+                ACT117C(0x32, action_32)
+                ACT117C(0x33, action_33)
 				
 				ACT117C(0x35, action_35)
 				ACT117C(0x36, action_36)
@@ -211,7 +214,8 @@ void proc_actions(void) {			/* c7da */
 				ACT117C(0x3b, action_3b)
 				
 				ACT117C(0x3e, action_3e)
-				ACT117C(0x3f, action_3f)
+                ACT117C(0x3f, action_3f)
+                ACT117C(0x40, action_40)
 				
 				ACT117C(0x44, action_44)
 				ACT117C(0x48, action_48)
@@ -2813,6 +2817,52 @@ static void action_30(Object *obj) {		// 1da4a
 			FATALDEFAULT;
 	}
 }
+
+#pragma mark Act32 car shake
+
+static void action_1f406(Object *obj)
+{
+    struct UserData_Act32 *ud = (struct UserData_Act32 *)obj->UserData;
+
+    g.CarOffX += RHSwapWord(ud->x0080[0]);
+    g.CarOffY += RHSwapWord(ud->x0080[1]);
+    if (RHSwapWord(ud->x0080[2] < 0)) {
+        obj->mode0 = 4;
+    }
+    else {
+        obj->LocalTimer = RHSwapWord(ud->x0080[2]);
+        ud->x0080 += 3;
+    }
+}
+
+static void action_32(Object *obj)       // 1f3c6
+{
+    struct UserData_Act32 *ud = (struct UserData_Act32 *)obj->UserData;
+    
+    switch (obj->mode0) {
+        case 0:
+            NEXT(obj->mode0);
+            if (g.x8abe) {
+                FreeActor(obj);
+            }
+            else {
+                ud->x0080 = RHOffsetLookup16(RHCODE(0x1f432), obj->SubSel);
+                action_1f406(obj);
+            }
+            break;
+        case 2:
+            if (--obj->LocalTimer == 0) {
+                action_1f406(obj);
+            }
+            break;
+        case 4:
+        case 6:
+            FreeActor(obj);
+            break;
+        FATALDEFAULT;
+    }
+}
+
 #pragma mark Act33 random stage decor
 static void action_33(Object *obj) {
 	switch (obj->mode0) {
@@ -3337,6 +3387,100 @@ static void action_3b(Object *obj) {	//203ba
 		FATALDEFAULT;
 	}
 }
+#pragma mark Act40 20de8
+static void sub_20f10(Object *obj, Player *ply) {
+    sub_bcd_32(0x400, &ply->x015c);
+    if (ply->x015c > 0) {
+        start_effect(0x2002, ply->Side);
+    } else {
+        obj->UserData[ply->Side] = 1;
+        return;
+    }
+    sub_bcd_32(0x400, &ply->x015c);
+    if (ply->x015c > 0) {
+        start_effect(0x2002, ply->Side);
+    } else {
+        obj->UserData[ply->Side] = 1;
+        return;
+    }
+}
+static void action_40(Object *obj)
+{
+    switch (obj->SubSel) {
+        case 0:
+            switch (obj->mode0) {
+                case 0:
+                    NEXT(obj->mode0);
+                    obj->LocalTimer = 10;
+                    if (g.CurrentStage == STAGE_BONUS_BARRELS) {
+                        g.Pause_9e1 = 1;
+                        NEXT(obj->mode0);
+                    }
+                    break;
+                case 2:
+                    if (--obj->LocalTimer == 0) {
+                        obj->LocalTimer = 10;
+                        if (g.TimeRemainBCD == 0) {
+                            NEXT(obj->mode0);
+                            g.Pause_9e1 = 1;
+                        } else {
+                            // Award 2000 points to each player for each second remaining
+                            
+                            sub_bcd_8(1, &g.TimeRemainBCD);
+                            sub_529c();                 // update time remain display
+                            if (g.Player1.exists) {
+                                LBAddPoints(8, 0);
+                            }
+                            if (g.Player2.exists) {
+                                LBAddPoints(8, 1);
+                            }
+                            queuesound(SOUND_SCORE_DING);
+                        }
+                    }
+                    break;
+                case 4:
+                case 6:
+                    FreeActor(obj);
+                    break;
+                FATALDEFAULT
+            }
+            break;
+        case 1:
+            switch (obj->mode0) {
+                case 0:
+                    obj->UserData[0] = g.Player1.exists ^ 1;
+                    obj->UserData[1] = g.Player2.exists ^ 1;
+                    g.Player1.x015c = g.Player1.BonusScore;
+                    g.Player2.x015c = g.Player2.BonusScore;
+                    break;
+                case 2:
+                    if (!obj->UserData[0] && g.Player1.exists) {
+                        sub_20f10(obj, &g.Player1);
+                    }
+                    if (!obj->UserData[1] && g.Player2.exists) {
+                        sub_20f10(obj, &g.Player2);
+                    }
+                    if ((g.libsplatter & 3) == 0) {
+                        queuesound(SOUND_SCORE_DING);
+                    }
+                    if (obj->UserData[0] & obj->UserData[1]) {
+                        NEXT(obj->mode0);
+                        g.Pause_9e1 = 1;
+                    }
+                    break;
+                case 4:
+                case 6:
+                    FreeActor(obj);
+                    break;
+                FATALDEFAULT
+            }
+            break;
+
+        FATALDEFAULT
+    }
+    
+}
+
 
 #pragma mark Projectile 207f0
 

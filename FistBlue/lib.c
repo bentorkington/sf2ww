@@ -1167,7 +1167,7 @@ void sub_528a() {		/* print number of barrels remaining */
 	u32 coords=MakePointObj(176, 208);
 	_LBPrintTicker(&coords, g.x8ab9);		
 }
-static void sub_529c() {
+void sub_529c() {
 	u32 coords = MakePointObj(176, 208);
 	_LBPrintTicker(&coords,g.TimeRemainBCD);
 }
@@ -1919,6 +1919,7 @@ void _bumplevel(void) {		/* 2bf2 */
 		/* 2b76 */
 		++g.LevelCursor;
 	}
+    g.CurrentStage = 12; g.OnBonusStage = TRUE;
 	if(g.LevelScript[g.LevelCursor+1] ==  0x10) {g.OnFinalStage = TRUE;}
 	boss_level_check();
 }

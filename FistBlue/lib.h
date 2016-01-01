@@ -72,7 +72,7 @@ void startgame(int d2);
 void sub_528a();
 void bin2bcd(short d0);
 void wait_for_ply_PSFinishedParticipating(void);
-
+void sub_529c();
 u32 MakePointObj(int x, int y);
 void decode_buttons(Player *ply, short d0);
 short buttonspressed(Player *ply, u16 d1);

@@ -85,14 +85,15 @@ struct UserData_Act1d {
 	char	h0084c;
 	Player *x0088;
 };
-
-
 	
 struct UserData_Act2f {
 	short	OldY;
 	FIXED16_16	VelX, VelY, Gravity;
 };
-	
+
+struct UserData_Act32 {
+    const short *x0080;
+};
 
 struct UserData_Act35 {
 	short	x0080;	
