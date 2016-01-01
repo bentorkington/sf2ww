@@ -118,6 +118,7 @@ static void action_3b(Object *obj);
 extern void action_3e(Object *obj);
 extern void action_3f(Object *obj);
 static void action_40(Object *obj);
+static void action_41(Object *obj);
 
 static void action_44(Object *obj);
 static void action_48(Object *obj);
@@ -216,6 +217,7 @@ void proc_actions(void) {			/* c7da */
 				ACT117C(0x3e, action_3e)
                 ACT117C(0x3f, action_3f)
                 ACT117C(0x40, action_40)
+                ACT117C(0x41, action_41)
 				
 				ACT117C(0x44, action_44)
 				ACT117C(0x48, action_48)
@@ -1302,7 +1304,7 @@ static void action_14(Object *obj) {
 
 }
 
-#pragma mark Act15
+#pragma mark Act15 Chun Li stage anims
 static void action_15(Object *obj) {
 	switch (obj->mode0) {
 		case 0:

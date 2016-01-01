@@ -1402,11 +1402,11 @@ static void _GSUpdateRowScroll(ScrollState *ss, short *a0, short *a1) { /* 84592
 			break;
 		FATALDEFAULT;
 	}
-    printf("x %4d skew %4d floor %f wall %f\n",
-           *a1,
-           ss->ss_0010,
-           (float)ss->ss_0014.full / 0x10000,
-           (float)ss->ss_0018.full / 0x10000);
+//    printf("x %4d skew %4d floor %f wall %f\n",
+//           *a1,
+//           ss->ss_0010,
+//           (float)ss->ss_0014.full / 0x10000,
+//           (float)ss->ss_0018.full / 0x10000);
 }
 
     
