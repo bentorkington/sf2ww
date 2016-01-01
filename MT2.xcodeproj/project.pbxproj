@@ -125,7 +125,6 @@
 		B5ADB85D13B2B57E00905DFE /* fightgfx.c in Sources */ = {isa = PBXBuildFile; fileRef = B5ADB81E13B2B57D00905DFE /* fightgfx.c */; };
 		B5ADB85E13B2B57E00905DFE /* gemu.c in Sources */ = {isa = PBXBuildFile; fileRef = B5ADB82013B2B57D00905DFE /* gemu.c */; };
 		B5ADB85F13B2B57E00905DFE /* gfx_glut.c in Sources */ = {isa = PBXBuildFile; fileRef = B5ADB82213B2B57D00905DFE /* gfx_glut.c */; };
-		B5ADB86013B2B57E00905DFE /* palettes.c in Sources */ = {isa = PBXBuildFile; fileRef = B5ADB82513B2B57D00905DFE /* palettes.c */; };
 		B5ADB86113B2B57E00905DFE /* gfxlib.c in Sources */ = {isa = PBXBuildFile; fileRef = B5ADB82913B2B57D00905DFE /* gfxlib.c */; };
 		B5ADB86213B2B57E00905DFE /* gstate.c in Sources */ = {isa = PBXBuildFile; fileRef = B5ADB82B13B2B57D00905DFE /* gstate.c */; };
 		B5ADB86313B2B57E00905DFE /* lib.c in Sources */ = {isa = PBXBuildFile; fileRef = B5ADB82D13B2B57E00905DFE /* lib.c */; };
@@ -173,7 +172,6 @@
 		B5C574401772782600496283 /* fightgfx.c in Sources */ = {isa = PBXBuildFile; fileRef = B5ADB81E13B2B57D00905DFE /* fightgfx.c */; };
 		B5C574411772782600496283 /* gemu.c in Sources */ = {isa = PBXBuildFile; fileRef = B5ADB82013B2B57D00905DFE /* gemu.c */; };
 		B5C574421772782600496283 /* gfx_glut.c in Sources */ = {isa = PBXBuildFile; fileRef = B5ADB82213B2B57D00905DFE /* gfx_glut.c */; };
-		B5C574431772782600496283 /* palettes.c in Sources */ = {isa = PBXBuildFile; fileRef = B5ADB82513B2B57D00905DFE /* palettes.c */; };
 		B5C574441772782600496283 /* gfxlib.c in Sources */ = {isa = PBXBuildFile; fileRef = B5ADB82913B2B57D00905DFE /* gfxlib.c */; };
 		B5C574451772782600496283 /* gstate.c in Sources */ = {isa = PBXBuildFile; fileRef = B5ADB82B13B2B57D00905DFE /* gstate.c */; };
 		B5C574461772782600496283 /* lib.c in Sources */ = {isa = PBXBuildFile; fileRef = B5ADB82D13B2B57E00905DFE /* lib.c */; };
@@ -255,7 +253,6 @@
 		B5E0EFCE17754D8800F50790 /* fightgfx.c in Sources */ = {isa = PBXBuildFile; fileRef = B5ADB81E13B2B57D00905DFE /* fightgfx.c */; };
 		B5E0EFCF17754D8800F50790 /* gemu.c in Sources */ = {isa = PBXBuildFile; fileRef = B5ADB82013B2B57D00905DFE /* gemu.c */; };
 		B5E0EFD017754D8800F50790 /* gfx_glut.c in Sources */ = {isa = PBXBuildFile; fileRef = B5ADB82213B2B57D00905DFE /* gfx_glut.c */; };
-		B5E0EFD117754D8800F50790 /* palettes.c in Sources */ = {isa = PBXBuildFile; fileRef = B5ADB82513B2B57D00905DFE /* palettes.c */; };
 		B5E0EFD217754D8800F50790 /* gfxlib.c in Sources */ = {isa = PBXBuildFile; fileRef = B5ADB82913B2B57D00905DFE /* gfxlib.c */; };
 		B5E0EFD317754D8800F50790 /* gstate.c in Sources */ = {isa = PBXBuildFile; fileRef = B5ADB82B13B2B57D00905DFE /* gstate.c */; };
 		B5E0EFD417754D8800F50790 /* lib.c in Sources */ = {isa = PBXBuildFile; fileRef = B5ADB82D13B2B57E00905DFE /* lib.c */; };
@@ -337,7 +334,6 @@
 		B5E0F02917754D9500F50790 /* fightgfx.c in Sources */ = {isa = PBXBuildFile; fileRef = B5ADB81E13B2B57D00905DFE /* fightgfx.c */; };
 		B5E0F02A17754D9500F50790 /* gemu.c in Sources */ = {isa = PBXBuildFile; fileRef = B5ADB82013B2B57D00905DFE /* gemu.c */; };
 		B5E0F02B17754D9500F50790 /* gfx_glut.c in Sources */ = {isa = PBXBuildFile; fileRef = B5ADB82213B2B57D00905DFE /* gfx_glut.c */; };
-		B5E0F02C17754D9500F50790 /* palettes.c in Sources */ = {isa = PBXBuildFile; fileRef = B5ADB82513B2B57D00905DFE /* palettes.c */; };
 		B5E0F02D17754D9500F50790 /* gfxlib.c in Sources */ = {isa = PBXBuildFile; fileRef = B5ADB82913B2B57D00905DFE /* gfxlib.c */; };
 		B5E0F02E17754D9500F50790 /* gstate.c in Sources */ = {isa = PBXBuildFile; fileRef = B5ADB82B13B2B57D00905DFE /* gstate.c */; };
 		B5E0F02F17754D9500F50790 /* lib.c in Sources */ = {isa = PBXBuildFile; fileRef = B5ADB82D13B2B57E00905DFE /* lib.c */; };
@@ -450,7 +446,6 @@
 		B5E8FD4A1776C89D00C6060E /* effects.c in Sources */ = {isa = PBXBuildFile; fileRef = B5ADB81C13B2B57D00905DFE /* effects.c */; };
 		B5E8FD4B1776C89D00C6060E /* fightgfx.c in Sources */ = {isa = PBXBuildFile; fileRef = B5ADB81E13B2B57D00905DFE /* fightgfx.c */; };
 		B5E8FD4C1776C89D00C6060E /* game.c in Sources */ = {isa = PBXBuildFile; fileRef = B56A718B1411B0D300DF7F02 /* game.c */; };
-		B5E8FD4D1776C8A600C6060E /* palettes.c in Sources */ = {isa = PBXBuildFile; fileRef = B5ADB82513B2B57D00905DFE /* palettes.c */; };
 		B5E8FD4E1776C8A600C6060E /* graphics.c in Sources */ = {isa = PBXBuildFile; fileRef = B5869A8413B561F1001844D9 /* graphics.c */; };
 		B5E8FD4F1776C8BF00C6060E /* gfxlib.c in Sources */ = {isa = PBXBuildFile; fileRef = B5ADB82913B2B57D00905DFE /* gfxlib.c */; };
 		B5E8FD501776C8BF00C6060E /* gstate.c in Sources */ = {isa = PBXBuildFile; fileRef = B5ADB82B13B2B57D00905DFE /* gstate.c */; };
@@ -688,7 +683,6 @@
 		B5ADB82113B2B57D00905DFE /* gemu.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = gemu.h; path = ../FistBlue/gemu.h; sourceTree = "<group>"; };
 		B5ADB82213B2B57D00905DFE /* gfx_glut.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = gfx_glut.c; path = ../FistBlue/gfx_glut.c; sourceTree = "<group>"; };
 		B5ADB82313B2B57D00905DFE /* gfx_glut.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = gfx_glut.h; path = ../FistBlue/gfx_glut.h; sourceTree = "<group>"; };
-		B5ADB82513B2B57D00905DFE /* palettes.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = palettes.c; sourceTree = "<group>"; };
 		B5ADB82613B2B57D00905DFE /* projdata.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = projdata.h; sourceTree = "<group>"; };
 		B5ADB82813B2B57D00905DFE /* stagegfx.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = stagegfx.h; sourceTree = "<group>"; };
 		B5ADB82913B2B57D00905DFE /* gfxlib.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = gfxlib.c; sourceTree = "<group>"; };
@@ -1256,7 +1250,6 @@
 		B5ADB82413B2B57D00905DFE /* gfxdata */ = {
 			isa = PBXGroup;
 			children = (
-				B5ADB82513B2B57D00905DFE /* palettes.c */,
 				B5ADB82613B2B57D00905DFE /* projdata.h */,
 				B5ADB82813B2B57D00905DFE /* stagegfx.h */,
 				B5869A8313B561F1001844D9 /* graphics.h */,
@@ -1644,7 +1637,6 @@
 				B5ADB85E13B2B57E00905DFE /* gemu.c in Sources */,
 				6CF004561C2A01C9008EA965 /* redhammer.c in Sources */,
 				B5ADB85F13B2B57E00905DFE /* gfx_glut.c in Sources */,
-				B5ADB86013B2B57E00905DFE /* palettes.c in Sources */,
 				B5ADB86113B2B57E00905DFE /* gfxlib.c in Sources */,
 				B5ADB86213B2B57E00905DFE /* gstate.c in Sources */,
 				B5ADB86313B2B57E00905DFE /* lib.c in Sources */,
@@ -1745,7 +1737,6 @@
 				B5C574401772782600496283 /* fightgfx.c in Sources */,
 				B5C574411772782600496283 /* gemu.c in Sources */,
 				B5C574421772782600496283 /* gfx_glut.c in Sources */,
-				B5C574431772782600496283 /* palettes.c in Sources */,
 				B5C574441772782600496283 /* gfxlib.c in Sources */,
 				B5C574451772782600496283 /* gstate.c in Sources */,
 				B5C574461772782600496283 /* lib.c in Sources */,
@@ -1828,7 +1819,6 @@
 				B5E0EFCE17754D8800F50790 /* fightgfx.c in Sources */,
 				B5E0EFCF17754D8800F50790 /* gemu.c in Sources */,
 				B5E0EFD017754D8800F50790 /* gfx_glut.c in Sources */,
-				B5E0EFD117754D8800F50790 /* palettes.c in Sources */,
 				B5E0EFD217754D8800F50790 /* gfxlib.c in Sources */,
 				B5E0EFD317754D8800F50790 /* gstate.c in Sources */,
 				B5E0EFD417754D8800F50790 /* lib.c in Sources */,
@@ -1910,7 +1900,6 @@
 				B5E0F02917754D9500F50790 /* fightgfx.c in Sources */,
 				B5E0F02A17754D9500F50790 /* gemu.c in Sources */,
 				B5E0F02B17754D9500F50790 /* gfx_glut.c in Sources */,
-				B5E0F02C17754D9500F50790 /* palettes.c in Sources */,
 				B5E0F02D17754D9500F50790 /* gfxlib.c in Sources */,
 				B5E0F02E17754D9500F50790 /* gstate.c in Sources */,
 				B5E0F02F17754D9500F50790 /* lib.c in Sources */,
@@ -2024,7 +2013,6 @@
 				B5E8FD4A1776C89D00C6060E /* effects.c in Sources */,
 				B5E8FD4B1776C89D00C6060E /* fightgfx.c in Sources */,
 				B5E8FD4C1776C89D00C6060E /* game.c in Sources */,
-				B5E8FD4D1776C8A600C6060E /* palettes.c in Sources */,
 				B5E8FD4E1776C8A600C6060E /* graphics.c in Sources */,
 				B5E8FD4F1776C8BF00C6060E /* gfxlib.c in Sources */,
 				B5E8FD501776C8BF00C6060E /* gstate.c in Sources */,

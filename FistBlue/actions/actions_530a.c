@@ -27,17 +27,12 @@ extern Game g;
 
 u16 **data_82c16[4] = {
 	NULL, NULL, NULL, NULL, 
-	/* XXX
-	 &data_8a8ac,
-	 data_c0000,
-	 data_c5000,
-	 data_ca000,
-	 */	
+    // XXX
 };
 
 static void sub_82bec(Object2 *act) {
 	act->x0048=data_82c16[act->UserByte][g.CurrentStage][act->Timer2];		
-	/* array array of void * */
+	/* XXX fixme */
 }
 
 

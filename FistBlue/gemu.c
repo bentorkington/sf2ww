@@ -23,11 +23,6 @@ int gemu_scroll_enable[4];
 
 struct inputs gInputs;
 
-extern PALETTEWORD data_8a8ac[32][16];
-extern PALETTEWORD data_c5000[20][32][16];
-extern PALETTEWORD data_ca000[20][32][16];
-extern PALETTEWORD data_c0000[20][32][16];
-
 //#ifndef CPS
 void gemu_clear_object(void) {			// 5fbc CPS actually takes u16* param
 	int i;
@@ -57,7 +52,7 @@ void palette_base_1k(void) {		// move me back to gfxlib
     int u, v;
     for(u=0; u<32; u++) {
         for(v=0; v<16; v++) {
-            gemu.PalObject[u][v] = data_8a8ac[u][v] ; 
+            gemu.PalObject[u][v] = RH2DWord(0x8a8ac, 16, u, v);
         }
     }
 }
@@ -67,7 +62,7 @@ void scroll1_base_1k(short stage) {
     printf ("Setting palette stage %d\n",stage);
     for(u=0; u<32; u++) {
         for(v=0; v<16; v++) {
-			gemu.PalScroll1[u][v] = data_c0000[stage][u][v];
+            gemu.PalScroll1[u][v] = RH3DWord(0xc0000, 32, 16, stage, u, v);
         }
     }
 }
@@ -77,7 +72,7 @@ void scroll2_base_1k(short stage) {
     for(u=0; u<32; u++) {
         for(v=0; v<16; v++) {
             /* convert 4-bit RGBM to 8-bit RGBM */
-            gemu.PalScroll2[u][v] = data_c5000[stage][u][v];
+            gemu.PalScroll2[u][v] = RH3DWord(0xc5000, 32, 16, stage, u, v);
         }
     }
 }
@@ -87,7 +82,7 @@ void scroll3_base_1k(short stage) {
     for(u=0; u<32; u++) {
         for(v=0; v<16; v++) {
             /* convert 4-bit RGBM to 8-bit RGBM */
-            gemu.PalScroll3[u][v] = data_ca000[stage][u][v];
+            gemu.PalScroll3[u][v] = RH3DWord(0xca000, 32, 16, stage, u, v);
         }
     }
 }

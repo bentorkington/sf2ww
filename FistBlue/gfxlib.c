@@ -22,13 +22,6 @@ extern Game g;
 
 extern CPSGFXEMU gemu;
 
-extern u16 data_86676[32][16];
-extern u16 data_8a8ac[32][16];
-extern u16 data_8aaac[20][16][16];
-extern u16 data_c0000[20][32][16];
-extern u16 data_c5000[20][32][16];
-extern u16 data_ca000[20][32][16];
-
 static void drawsimple_scroll2noattr(Object *obj, const u16 *tiles, int width, int height);
 
 
@@ -42,22 +35,18 @@ void palette_base_scroll1(void) {
     int u, v;
     for(u=0; u<32; u++) {
         for(v=0; v<16; v++) {
-			gemu.PalScroll1[u][v] = data_86676[u][v];
+            gemu.PalScroll1[u][v] = RH2DWord(0x86676, 16, u, v);
         }
     }
 }
 void set_shadow_pen(void) {	/* 1ae2 Shadow opaque colour */
-	const static u16 data_1af6[15]={
-		0x0700, 0x0007, 0x0650, 0x0555, 0x0700, 0x0870, 0x0566, 0x0060,
-		0x0555, 0x0666, 0x0000, 0x0700, 0x0700, 0x0666, 0x0666              
-	};
-	gemu.PalObject[10][0] = data_1af6[g.CurrentStage];
+    gemu.PalObject[10][0] = RHWordOffset(0x1af6, g.CurrentStage);
 }
 void setpalette_objtop(short palette) {		// 16ae
     short u, v;
     for(u=16; u<32; u++) {
         for(v=0;v<16; v++) {
-			gemu.PalObject[u][v] = data_8aaac[palette][u-16][v];			
+            gemu.PalObject[u][v] = RH3DWord(0x8aaac, 16, 16, palette, u-16, v);
         }
     }
 }
@@ -92,7 +81,7 @@ void setpalette_scroll1(short palette) {		// emulation of 16ca
 
     for(u=0; u<32; u++) {
         for(v=0; v<16; v++) {
-			gemu.PalScroll1[u][v] = data_c0000[palette][u][v];
+            gemu.PalScroll1[u][v] = RH3DWord(0xc0000, 32, 16, palette, u, v);
         }
     }
 }
@@ -109,7 +98,7 @@ void setpalette_scroll2(short palette) {		// emulation of 16ea
 
     for(u=0; u<32; u++) {
         for(v=0; v<16; v++) {
-			gemu.PalScroll2[u][v] = data_c5000[palette][u][v];
+            gemu.PalScroll2[u][v] = RH3DWord(0xc5000, 32, 16, palette, u, v);
 		}
     }
 }
@@ -118,7 +107,7 @@ void setpalette_scroll3(short palette) {		// emulation of 1706
 
     for(u=0; u<32; u++) {
         for(v=0; v<16; v++) {
-			gemu.PalScroll3[u][v] = data_ca000[palette][u][v];
+            gemu.PalScroll3[u][v] = RH3DWord(0xca000, 32, 16, palette, u, v);
         }
     }
 }
@@ -129,7 +118,7 @@ void sub_1742(int palette) {
 
     for(u=16; u<32; u++) {
         for(v=0;v<16; v++) {
-			gemu.PalObject[u][v] = data_8aaac[palette][u-16][v] | 0xf000; 
+			gemu.PalObject[u][v] = RH3DWord(0x8aaac, 16, 16, palette, u-16, v) | 0xf000;
         }
     }
 }
