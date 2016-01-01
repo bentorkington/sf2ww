@@ -1151,6 +1151,7 @@ static void sub_7ee58(Object *obj, const u16 *tilep, const short *offsets, short
 				offsets++;
 				g.ObjTileBudget++;
 				g_tilecount -= 1;
+                tiles--;
 				continue;
 			}
 			/* 7ee86 */
@@ -1192,6 +1193,7 @@ static void sub_7ef2a(Object *obj, const u16 *tilep, const short *offsets,
 			offsets++;
 			g.ObjTileBudget++;
 			g_tilecount -= 1;
+            tiles--;
 			continue;
 		}
 		sy = (y + *offsets) & 0x1ff;
@@ -1230,6 +1232,7 @@ static void sub_7ef86(Object *obj, const u16 *tilep, const short *offsets,
 			offsets++;
 			g.ObjTileBudget++;
 			g_tilecount -= 1;
+            tiles--;
 			continue;
 		}
 		sy = (y - *offsets - d6) & 0x1ff;
@@ -1269,6 +1272,7 @@ static void sub_7efd8(Object *obj, const u16 *tilep, const short *offsets,
 			offsets++;
 			g.ObjTileBudget++;
 			g_tilecount -= 1;
+            tiles--;
 			continue;
 		}
 		sy = (y - *offsets - d6) & 0x1ff;
