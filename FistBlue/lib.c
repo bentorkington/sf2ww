@@ -164,6 +164,7 @@ void debughook(int data) {
 
 void panic(int data) {
 	printf("PANIC()\n");
+    return;
 
 #ifndef CPS
 	void *callstack[128];
@@ -1415,7 +1416,7 @@ static void decide_timeout_result(void) {   /* 0x901e */
 		ply2_loses();
 	}
 }
-/* check if time or bonus stage expired */
+/* check if time or bonus stage expired sf2ua:8e8e */
 void LBCheckRoundResult(void) {
 	if(g.OnBonusStage) {
 		/* 0x913a */
@@ -1685,16 +1686,16 @@ void setup_stage_actions (void) { /* 822be */
 		data_82312, 
 		data_82350, 
 		data_823d6, 
-		data_824b0, 
-		data_82512, 
+		data_824b0,
+		data_82512,     //4
 		data_825bc, 
 		data_82642, 
 		data_82668, 
-		data_8268e, 
+		data_8268e,     //8
 		data_826f0, 
 		data_8272e, 
 		data_8285c, 
-		data_8292a, 
+		data_8292a,     //12
 		data_82938, 
 		data_829a6, 
 		data_829c0, 

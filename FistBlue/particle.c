@@ -17,12 +17,25 @@ extern GState gstate_Scroll3;
 
 #ifdef REDHAMMER_EXTROM
 void RHSetActionList(Object *obj, const void *listaddr, short sel) {
+#if 0
+    print_rom_offset("setactionList", listaddr);
+#endif
     RHSetAction(obj, (FBAction *)RHOffsetLookup16(listaddr, sel));
 }
 void RHSetAction(Object *obj, const FBAction *act) {
     obj->ActionScript       = act;
     obj->Timer              = RHSwapWord(act->Delay);
     obj->AnimFlags          = RHSwapWord(act->Flags);
+
+#if 0
+    const struct image *image = (const struct image *)RHCODE(RHSwapLong(obj->ActionScript->Image));
+    
+    if ((void *)image < (void *)act || ((void *)image - (void *)act) > 0x8000) {
+        print_rom_offset("act", act);
+        print_rom_offset("img", image);
+        printf("suspect image %p\n", image);
+    }
+#endif
 }
 void RHActionTick(Object *obj) {
     if(--obj->Timer == 0) {
