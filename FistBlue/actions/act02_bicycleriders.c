@@ -79,7 +79,6 @@ void action_2(Object *obj) {				//d240 Bicycle people
 				obj->ZDepth = 64;	
 				obj->Flip   = obj->Step;
 				obj->XPI    = gstate_Scroll2.XPI;
-//				obj->XPI   += obj->Step ? 464 : -80;
 				obj->XPI   += obj->Step ? -80 : 464;
 				obj->YPI    = 64;
 				obj->Path   = (const VECT16 *)data_d3ae;
@@ -95,9 +94,7 @@ void action_2(Object *obj) {				//d240 Bicycle people
 					if(((g.libsplatter + g_d7) & 7) == 0) {
 						die_if_offscreen(obj);	/* check if still on screen */
 					}
-                    printf("bicycle %d X1:%04d ", g_d7, obj->X.part.integer);
 					update_motion(obj);
-                    printf("X2:%04d\n", obj->X.part.integer);
 					_update_bicycle_shadow(obj);
 					actiontick(obj);
 				}
@@ -105,7 +102,6 @@ void action_2(Object *obj) {				//d240 Bicycle people
 				break;
 			case 4:
 			case 6:		//object went offscreen
-                printf("bicycle %d die\n", g_d7);
 				/* d412 */
 				if (obj->SubSel >= 0) {
 					struct UserData_Act2 *udowner = (struct UserData_Act2 *)&obj->Owner->UserData;
