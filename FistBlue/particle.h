@@ -111,13 +111,6 @@ struct fb_simpleaction {
 
 typedef struct fb_simpleaction FBSimpleAction;
 
-struct simpleaction {
-	u16 Delay;
-	u8	Loop;
-	u8	Next;
-	const struct image2 *Image;
-};
-
 typedef struct image Image;
 
 struct image {
@@ -277,7 +270,7 @@ typedef struct {
 } Object2;
 
 
-typedef struct simpleaction CASimpleFrame;
+//typedef struct simpleaction CASimpleFrame;
 
 typedef struct action CAFrame;
 

@@ -502,7 +502,7 @@ int test_offset_scroll3(Player *ply) {
     return 0;
 }
 
-void sub_41c2(Object *obj, const struct simpleaction *act) {		//41c2
+void sub_41c2(Object *obj, const FBSimpleAction *act) {		//41c2
 #ifdef REDHAMMER_EXTROM
     obj->ActionScript = (FBAction *)act;
     obj->Timer = obj->ActionScript->Delay;
@@ -516,17 +516,17 @@ void sub_41c2(Object *obj, const struct simpleaction *act) {		//41c2
 }
 
 #ifdef REDHAMMER_EXTROM
-void RHSetScrollAction(Object *obj, const struct simpleaction *act) {
+void RHSetScrollAction(Object *obj, const FBSimpleAction *act) {
     obj->ActionScript = (FBAction *)act;
     obj->Timer        = RHSwapWord(obj->ActionScript->Delay);
     obj->AnimFlags    = RHSwapWord(obj->ActionScript->Flags);
 }
 void RHSetScrollActionList(Object *obj, void *act, int step) {
-    RHSetScrollAction(obj, (const struct simpleaction *)RHOffsetLookup16(act, step));
+    RHSetScrollAction(obj, (const FBSimpleAction *)RHOffsetLookup16(act, step));
 }
 #endif
 
-void setactiondraw(Object *obj, const CASimpleFrame **act, int step) {	//41b6
+void setactiondraw(Object *obj, const FBSimpleAction **act, int step) {	//41b6
 	/* 41c2 inlined for efficiency */
 #ifdef REDHAMMER_EXTROM
     obj->ActionScript = (FBAction *)act[step];
