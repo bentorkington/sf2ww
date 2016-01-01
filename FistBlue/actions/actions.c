@@ -3481,6 +3481,309 @@ static void action_40(Object *obj)
     
 }
 
+#pragma mark Act41
+static void action_41(Object *obj)
+{
+    switch (obj->SubSel) {
+        case 0:
+        case 3:
+        case 4:         // 2109e
+            switch (obj->mode0) {
+                case 0:
+                    NEXT(obj->mode0);
+                    obj->Pool = 0;
+                    obj->UserData[0] = 0;
+                    int temp = obj->SubSel;
+                    if (temp) {
+                        temp -= 2;
+                    }
+                    obj->XPI       = RH2DWord(0x21102, 3, 0, temp);
+                    obj->YPI       = RH2DWord(0x21102, 3, 1, temp);
+                    obj->VelX.full = RH2DWord(0x21102, 3, 2, temp);
+                    obj->VelY.full = RH2DWord(0x21102, 3, 3, temp);
+                    obj->AclX.full = 0;
+                    obj->AclY.full = 0x40;
+                    
+                    obj->LocalTimer = 0x14;
+                    RHSetActionList(obj, RHCODE(0x2155c), obj->SubSel);
+                    break;
+                case 2:
+                    switch (obj->mode1) {
+                        case 0:
+                            if (--obj->LocalTimer == 0) {
+                                NEXT(obj->mode1);
+                                obj->UserData[0] = 0x14;
+                            }
+                            break;
+                        case 2:
+                            if (--obj->UserData[0] == 0) {
+                                NEXT(obj->mode0);
+                                obj->mode1 = 0;
+                            }
+                        FATALDEFAULT
+                    }
+                    CATrajectory(obj);
+                    if ((obj->UserData[0] & 1) == 0) {
+                        check_rect_queue_draw(obj);
+                    }
+                    break;
+                case 4:
+                case 6:
+                    FreeActor(obj);
+                    break;
+                FATALDEFAULT
+            }
+            break;
+        case 1:
+            // 2115e
+            switch (obj->mode0) {
+                case 0:
+                    NEXT(obj->mode0);
+                    obj->Pool = 0;
+                    obj->UserData[0] = 0;
+                    obj->XPI       = 0x00cf;
+                    obj->YPI       = 0x005a;
+                    obj->VelY.full = 0x0600;
+                    if (obj->Step)
+                        obj->VelX.full = -0x300;
+                    else
+                        obj->VelX.full =  0x300;
+
+                    obj->AclX.full = 0;
+                    obj->AclY.full = 0x40;
+                    
+                    obj->LocalTimer = 0x14;
+                    RHSetActionList(obj, RHCODE(0x2155c), obj->SubSel);
+                    break;
+                case 2:
+                    switch (obj->mode1) {
+                        case 0:
+                            if (--obj->LocalTimer == 0) {
+                                NEXT(obj->mode1);
+                                obj->UserData[0] = 0x14;
+                            }
+                            break;
+                        case 2:
+                            if (--obj->UserData[0] == 0) {
+                                NEXT(obj->mode0);
+                                obj->mode1 = 0;
+                            }
+                        FATALDEFAULT
+                    }
+                    CATrajectory(obj);
+                    if ((obj->UserData[0] & 1) == 0) {
+                        check_rect_queue_draw(obj);
+                    }
+                    break;
+                case 4:
+                case 6:
+                    FreeActor(obj);
+                FATALDEFAULT
+            }
+            break;
+        case 2:
+        case 8:
+            // 21202
+            switch (obj->mode0) {
+                case 0:
+                    NEXT(obj->mode0);
+                    obj->Pool = 0;
+                    obj->UserData[0] = 0;
+                    if (obj->SubSel == 2) {
+                        obj->XPI       = RH2DWord(0x21298, 2, 0, obj->Step);
+                        obj->YPI       = RH2DWord(0x21298, 2, 1, obj->Step);
+                        obj->VelX.full = RH2DWord(0x21298, 2, 2, obj->Step);
+                        obj->VelY.full = RH2DWord(0x21298, 2, 3, obj->Step);
+                    }
+                    else {
+                        obj->XPI       = RH2DWord(0x212a8, 2, 0, obj->Step);
+                        obj->YPI       = RH2DWord(0x212a8, 2, 1, obj->Step);
+                        obj->VelX.full = RH2DWord(0x212a8, 2, 2, obj->Step);
+                        obj->VelY.full = RH2DWord(0x212a8, 2, 3, obj->Step);
+                    }
+                    obj->AclX.full = 0;
+                    obj->AclY.full = 0x40;
+                    
+                    obj->LocalTimer = 0x14;
+                    
+                    if (obj->SubSel == 2) {
+                        RHSetActionList(obj, RHCODE(0x2155c), 2);
+                    } else {
+                        if (obj->Step) {
+                            RHSetActionList(obj, RHCODE(0x2155c), 9);
+                        } else {
+                            RHSetActionList(obj, RHCODE(0x2155c), 8);
+                        }
+                    }
+                    break;
+                case 2:
+                    switch (obj->mode1) {
+                        case 0:
+                            if (--obj->LocalTimer == 0) {
+                                NEXT(obj->mode1);
+                                obj->UserData[0] = 0x14;
+                            }
+                            break;
+                        case 2:
+                            if (--obj->UserData[0] == 0) {
+                                NEXT(obj->mode0);
+                                obj->mode1 = 0;
+                            }
+                            FATALDEFAULT
+                    }
+                    CATrajectory(obj);
+                    if ((obj->UserData[0] & 1) == 0) {
+                        check_rect_queue_draw(obj);
+                    }
+                    break;
+                case 4:
+                case 6:
+                    FreeActor(obj);
+                    break;
+                FATALDEFAULT
+            }
+            break;
+        case 5:
+            //212fc
+            switch (obj->mode0) {
+                case 0:
+                    NEXT(obj->mode0);
+                    obj->Pool = 0;
+                    obj->UserData[1] = 0;
+                    obj->UserData[2] = 0;
+
+                    obj->XPI       = RH2DWord(RHCODE(0x21358), 4, 0, obj->Step);
+                    obj->YPI       = RH2DWord(RHCODE(0x21358), 4, 1, obj->Step);
+                    obj->VelX.full = RH2DWord(RHCODE(0x21358), 4, 2, obj->Step);
+                    obj->VelY.full = RH2DWord(RHCODE(0x21358), 4, 3, obj->Step);
+
+                    obj->AclX.full = 0;
+                    obj->AclY.full = 0x40;
+                    RHSetActionList(obj, RHCODE(0x2155c), obj->SubSel);
+                    break;
+                case 2:
+                    switch (obj->mode1) {
+                        case 0:
+                            CATrajectory(obj);
+                            if (obj->VelY.full < 0) {
+                                NEXT(obj->mode1)
+                                obj->UserData[1] = 0x1e;
+                                obj->UserData[2] = 1;
+                            }
+                            break;
+                        case 2:
+                            if (--obj->UserData[1] < 0) {
+                                obj->mode0 -= 2;
+                                obj->mode1 = 0;
+                                if (--obj->LocalTimer == 0) {
+                                    obj->mode0 += 4;
+                                }
+                            }
+                            break;
+                        FATALDEFAULT
+                    }
+                    RHActionTick(obj);
+                    if (g.libsplatter & 1 && obj->UserData[2]) {
+                        check_rect_queue_draw(obj);
+                    }
+                    break;
+                case 4:
+                case 6:
+                    FreeActor(obj);
+                    break;
+                FATALDEFAULT
+            }
+            break;
+        case 6:
+            //213d8
+            switch (obj->mode0) {
+                case 0:
+                    NEXT(obj->mode0);
+                    obj->Pool = 0;
+                    obj->UserData[0] = 0;
+                    
+                    obj->XPI       = RH2DWord(RHCODE(0x21436), 3, 0, obj->Step);
+                    obj->YPI       = RH2DWord(RHCODE(0x21436), 3, 1, obj->Step);
+                    obj->VelX.full = RH2DWord(RHCODE(0x21436), 3, 2, obj->Step);
+                    obj->VelY.full = RH2DWord(RHCODE(0x21436), 3, 3, obj->Step);
+                    
+                    obj->AclX.full = 0;
+                    obj->AclY.full = 0x40;
+                    obj->LocalTimer = 0x14;
+                    RHSetActionList(obj, RHCODE(0x2155c), obj->SubSel);
+                    break;
+                case 2:
+                    switch (obj->mode1) {
+                        case 0:
+                            if (--obj->LocalTimer == 0) {
+                                NEXT(obj->mode1);
+                                obj->UserData[0] = 0x14;
+                            }
+                            break;
+                        case 2:
+                            if (--obj->UserData[0] == 0) {
+                                NEXT(obj->mode0);
+                                obj->mode1 = 0;
+                            }
+                        FATALDEFAULT
+                    }
+                    CATrajectory(obj);
+                    if ((obj->UserData[0] & 1) == 0) {
+                        check_rect_queue_draw(obj);
+                    }
+                    break;
+                case 4:
+                case 6:
+                    FreeActor(obj);
+                    break;
+                FATALDEFAULT
+            }
+            break;
+        case 7:
+            // 21492
+            switch (obj->mode0) {
+                case 0:
+                    NEXT(obj->mode0);
+                    obj->Pool = 0;
+                    obj->XPI = RH2DWord(0x214e0, 2, 0, obj->Step);
+                    obj->YPI = RH2DWord(0x214e0, 2, 1, obj->Step);
+                    if (obj->Step) {
+                        obj->Draw1      = 1;
+                        obj->Draw2.full = 0xf;
+                    }
+                    RHSetActionList(obj, RHCODE(0x2155c), obj->SubSel);
+                    break;
+                case 2:
+                    switch (obj->mode1) {
+                        case 0:
+                            if (obj->AnimFlags < 0) {
+                                NEXT(obj->mode1)
+                                RHSetAction(obj, RHCODE(0x216f8));
+                                obj->Timer = RHWordOffset(0x2152e, RAND8WD);
+                            }
+                            RHActionTick(obj);
+                            break;
+                        case 2:
+                            obj->mode1 -= 2;
+                            RHSetActionList(obj, RHCODE(0x2155c), obj->SubSel);
+                            RHActionTick(obj);
+                            break;
+                        FATALDEFAULT
+                    }
+                    if (g.libsplatter & 1) {
+                        check_rect_queue_draw(obj);
+                    }
+                    break;
+                case 4:
+                case 6:
+                    FreeActor(obj);
+                    break;
+                FATALDEFAULT
+            }
+            break;
+        FATALDEFAULT
+    }
+}
 
 #pragma mark Projectile 207f0
 
