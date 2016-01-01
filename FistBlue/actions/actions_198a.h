@@ -42,6 +42,9 @@ typedef struct {
 	char	HitsTaken;		// 91
 	char	h0092c;
 	char	h0093c;
+    
+    short   h00a0w;     //X
+    short   h00a2w;     //Y
 } UDcar;		// (bonus0)
 
 

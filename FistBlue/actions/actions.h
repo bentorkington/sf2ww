@@ -8,6 +8,8 @@
  */
 
 /* actions.c */
+#include "actions_198a.h"
+
 void proc_actions(void);
 
 void action_start_35(Player *ply);
@@ -30,6 +32,7 @@ void action_b8aa();
 void action_1606c();
 void ActBlankaBiteBlood(Player *ply);
 
+void action_132fe(Object_G2 *obj_a2, int arg_d6);       // Car collision
 
 void ActStartScreenWobble(void);
 void StartDizzyAnim(Player *ply);

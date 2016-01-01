@@ -1409,18 +1409,407 @@ static void action_19(Object *obj) {     // 1322c
 	}
 }
 
+#pragma mark Car Collision
 #pragma mark Act1A
-static int action_13bf8(void) {
-	Object *nobj;
-	if ((nobj = AllocActor())) {
-		nobj->exists = TRUE;
-		nobj->Sel = 0x1a;
-		nobj->XPI = g.GPCollX;
-		nobj->YPI = g.GPCollY;
-		return TRUE;
-	}
-	return FALSE;
+
+static Object *sub_13bf8(void)
+{
+    Object *obj = AllocActor();
+    if (obj) {
+        obj->exists = TRUE;
+        obj->Sel = 0x1A;
+        obj->XPI = g.GPCollX;
+        obj->YPI = g.GPCollY;
+    }
+    return obj;
 }
+
+static void sub_13a0e(Object_G2 *obj_a2, int count_d4, int d2, int d5, int d3)
+{
+    UDcar *car = (UDcar *)&obj_a2->UserByte;
+    while (count_d4 >= 0) {
+        Object *glass = sub_13bf8();
+        if (glass) {
+            glass->UserData[0] = d2;
+            glass->UserData[1] = d5;
+            glass->UserData[2] = d3;
+            if (car->h00a0w) {
+                glass->XPI = car->h00a0w;
+                glass->YPI = car->h00a2w;
+            }
+        }
+        --count_d4;
+    }
+}
+
+static void action_139ea(Object_G2 *obj_a2)
+{
+    UDcar *car = (UDcar *)&obj_a2->UserByte;
+    car->h00a0w = 0;
+    sub_13a0e(obj_a2, 3, 0, 0, 0);
+}
+static void action_139fc(Object_G2 *obj_a2)
+{
+    UDcar *car = (UDcar *)&obj_a2->UserByte;
+    car->h00a0w = 0;
+    sub_13a0e(obj_a2, 3, 1, 0, 0);
+}
+void action_132fe(Object_G2 *obj_a2, int arg_d6)
+{
+    UDcar *car = (UDcar *)&obj_a2->UserByte;
+
+    if (car->h0093c <= 0xf && car->h0093c > 0) {
+        switch (car->h0093c - 1) {
+            case 0:
+            case 1:
+            case 2:         // sf2ua:0x13336
+                if (arg_d6) {
+                    action_139ea(obj_a2);
+                }
+                else {
+                    if (g.GPHitBoxHit) {
+                        car->h00a0w = 0xe2;
+                    }
+                    else {
+                        car->h00a0w = 0x8b;
+                    }
+                    car->h00a2w = 0x74;
+                    sub_13a0e(obj_a2, 10, -1, 0, 1);
+                }
+                break;
+            case 4:         // sf2ua:0x13368
+                if (!arg_d6) {
+                    car->h00a0w = 0x9b;
+                    car->h00a2w = 0x71;
+                    sub_13a0e(obj_a2, 12, -1, 2, 2);
+                    
+                    car->h00a0w = 0xb6;
+                    car->h00a2w = 0x66;
+                    sub_13a0e(obj_a2, 12, -1, 1, 1);
+                    
+                    car->h00a0w = 0xe3;
+                    car->h00a2w = 0x58;
+                    sub_13a0e(obj_a2, 10, 1, 2, 2);
+                    
+                    Object *obj;
+                    if ((obj = AllocActor())) {
+                        obj->exists = TRUE;
+                        obj->Sel    = 0x41;
+                        obj->SubSel = 0;
+                    }
+                    if ((obj = AllocActor())) {
+                        obj->exists = TRUE;
+                        obj->Sel    = 0x41;
+                        obj->SubSel = 8;
+                        obj->Step   = 0;
+                    }
+                    if ((obj = AllocActor())) {
+                        obj->exists = TRUE;
+                        obj->Sel    = 0x41;
+                        obj->SubSel = 8;
+                        obj->Step   = 1;
+                    }
+                }
+                break;
+            case 5:         // sf2ua:0x13416
+                if (!arg_d6) {
+                    car->h00a0w = 0xa8;
+                    car->h00a2w = 0x6b;
+                    sub_13a0e(obj_a2, 7, 0, 0, 1);
+                }
+                break;
+            case 6:         // sf2ua:0x13436
+                if (!arg_d6) {
+                    car->h00a0w = 0x65;
+                    car->h00a2w = 0x54;
+                    sub_13a0e(obj_a2, 5, 1, 2, 2);
+                    
+                    car->h00a0w = 0x79;
+                    car->h00a2w = 0x6a;
+                    sub_13a0e(obj_a2, 3, 0, 2, 2);
+                    
+                    car->h00a0w = 0x95;
+                    car->h00a2w = 0x6d;
+                    sub_13a0e(obj_a2, 4, -1, 1, 1);
+                    
+                    car->h00a0w = 0xac;
+                    car->h00a2w = 0x69;
+                    sub_13a0e(obj_a2, 4, -1, 1, 1);
+                }
+                break;
+            case 7:         // sf2ua:134a4
+                if (arg_d6) {
+                    action_139fc(obj_a2);
+                }
+                else {
+                    car->h00a0w = 0xed;
+                    car->h00a2w = 0x64;
+                    sub_13a0e(obj_a2, 5, 1, 1, 1);
+                    
+                    car->h00a0w = 0xbd;
+                    car->h00a2w = 0x60;
+                    sub_13a0e(obj_a2, 4, 1, 1, 1);
+                    
+                    car->h00a0w = 0xd9;
+                    car->h00a2w = 0x55;
+                    sub_13a0e(obj_a2, 4, 1, 1, 1);
+                }
+                break;
+            case 8:         // 134f8
+                if (arg_d6) {
+                    action_139fc(obj_a2);
+                }
+                else {
+                    car->h00a0w = 0x101;
+                    car->h00a2w = 0x5e;
+                    sub_13a0e(obj_a2, 5, 1, 1, 1);
+                    
+                    car->h00a0w = 0x93;
+                    car->h00a2w = 0x67;
+                    sub_13a0e(obj_a2, 5, 1, 1, 1);
+                    
+                    car->h00a0w = 0xb8;
+                    car->h00a2w = 0x5a;
+                    sub_13a0e(obj_a2, 4, 1, 1, 1);
+                }
+                break;
+            case 9:         // 1354c
+                if (arg_d6) {
+                    action_139fc(obj_a2);
+                }
+                else {
+                    car->h00a0w = 0xa2;
+                    car->h00a2w = 0x62;
+                    sub_13a0e(obj_a2, 5, 1, 1, 1);
+                    
+                    car->h00a0w = 0xc0;
+                    car->h00a2w = 0x60;
+                    sub_13a0e(obj_a2, 4, 1, 1, 1);
+                    
+                    car->h00a0w = 0xf9;
+                    car->h00a2w = 0x55;
+                    sub_13a0e(obj_a2, 4, 1, 1, 1);
+                }
+                break;
+            case 10:           // 135a0
+                if (arg_d6) {
+                    action_139fc(obj_a2);
+                }
+                else {
+                    car->h00a0w = 0x94;
+                    car->h00a2w = 0x61;
+                    sub_13a0e(obj_a2, 5, 1, 1, 1);
+                    
+                    car->h00a0w = 0xb2;
+                    car->h00a2w = 0x5d;
+                    sub_13a0e(obj_a2, 5, 1, 1, 1);
+                    
+                    car->h00a0w = 0xd5;
+                    car->h00a2w = 0x5d;
+                    sub_13a0e(obj_a2, 4, 1, 1, 1);
+
+                    car->h00a0w = 0x101;
+                    car->h00a2w = 0x5d;
+                    sub_13a0e(obj_a2, 4, 1, 1, 1);
+                    
+                    Object *obj;
+                    if ((obj = AllocActor())) {
+                        obj->exists = TRUE;
+                        obj->Sel    = 0x41;
+                        obj->SubSel = 1;
+                        obj->Step   = obj_a2->Direction;
+                    }
+                }
+                break;
+            case 11:        //13630
+                if (arg_d6) {
+                    action_139fc(obj_a2);
+                }
+                else {
+                    car->h00a0w = 0xcb;
+                    car->h00a2w = 0x50;
+                    sub_13a0e(obj_a2, 5, 1, 1, 1);
+                    
+                    car->h00a0w = 0xaf;
+                    car->h00a2w = 0x64;
+                    sub_13a0e(obj_a2, 5, 1, 1, 1);
+                    
+                    car->h00a0w = 0xa1;
+                    car->h00a2w = 0x59;
+                    sub_13a0e(obj_a2, 4, 1, 1, 1);
+                    
+                    car->h00a0w = 0x101;
+                    car->h00a2w = 0x5d;
+                    sub_13a0e(obj_a2, 4, 1, 1, 1);
+                    
+                    Object *obj;
+                    if ((obj = AllocActor())) {
+                        obj->exists = TRUE;
+                        obj->Sel    = 0x41;
+                        obj->SubSel = 3;
+                    }
+                    if ((obj = AllocActor())) {
+                        obj->exists = TRUE;
+                        obj->Sel    = 0x41;
+                        obj->SubSel = 2;
+                        obj->Step   = 0;
+                        obj->Flip   = obj->Step;
+                    }
+                    if ((obj = AllocActor())) {
+                        obj->exists = TRUE;
+                        obj->Sel    = 0x41;
+                        obj->SubSel = 2;
+                        obj->Step   = 1;
+                        obj->Flip   = obj->Step;
+                    }
+                }
+                break;
+            case 12:        // 13706
+                if (arg_d6) {
+                    action_139fc(obj_a2);
+                }
+                else {
+                    car->h00a0w = 0xcb;
+                    car->h00a2w = 0x50;
+                    sub_13a0e(obj_a2, 5, 1, 1, 1);
+                    
+                    car->h00a0w = 0xb2;
+                    car->h00a2w = 0x5d;
+                    sub_13a0e(obj_a2, 5, 1, 1, 1);
+                    
+                    car->h00a0w = 0xd5;
+                    car->h00a2w = 0x5d;
+                    sub_13a0e(obj_a2, 4, 1, 1, 1);
+                    
+                    car->h00a0w = 0x101;
+                    car->h00a2w = 0x5d;
+                    sub_13a0e(obj_a2, 4, 1, 1, 1);
+                }
+                break;
+            case 13:        // 13774
+                if (arg_d6) {
+                    action_139fc(obj_a2);
+                }
+                else {
+                    car->h00a0w = 0x80;
+                    car->h00a2w = 0x57;
+                    sub_13a0e(obj_a2, 5, 1, 1, 1);
+                    
+                    car->h00a0w = 0xa1;
+                    car->h00a2w = 0x47;
+                    sub_13a0e(obj_a2, 5, 1, 1, 1);
+                    
+                    car->h00a0w = 0xda;
+                    car->h00a2w = 0x3d;
+                    sub_13a0e(obj_a2, 4, 1, 1, 1);
+                    
+                    car->h00a0w = 0x101;
+                    car->h00a2w = 0x4a;
+                    sub_13a0e(obj_a2, 4, 1, 1, 1);
+                    
+                    Object *obj;
+                    if ((obj = AllocActor())) {
+                        obj->exists = TRUE;
+                        obj->Sel    = 0x41;
+                        obj->SubSel = 4;
+                        obj->Step   = obj_a2->Direction ^ 1;
+                    }
+                }
+                break;
+            case 14:        // 1380a
+                if (arg_d6) {
+                    action_139fc(obj_a2);
+                }
+                else {
+                    Object *obj;
+                    if ((obj = AllocActor())) {
+                        obj->exists = TRUE;
+                        obj->Sel    = 0x41;
+                        obj->SubSel = 7;
+                        obj->Step   = 0;
+                    }
+                    if ((obj = AllocActor())) {
+                        obj->exists = TRUE;
+                        obj->Sel    = 0x41;
+                        obj->SubSel = 7;
+                        obj->Step   = 1;
+                    }
+                    if ((obj = AllocActor())) {
+                        obj->exists = TRUE;
+                        obj->Sel    = 0x41;
+                        obj->SubSel = 6;
+                        obj->Step   = 0;
+                    }
+                    if ((obj = AllocActor())) {
+                        obj->exists = TRUE;
+                        obj->Sel    = 0x41;
+                        obj->SubSel = 6;
+                        obj->Step   = 1;
+                    }
+                    if ((obj = AllocActor())) {
+                        obj->exists = TRUE;
+                        obj->Sel    = 0x41;
+                        obj->SubSel = 6;
+                        obj->Step   = 2;
+                    }
+                    if ((obj = AllocActor())) {
+                        obj->exists = TRUE;
+                        obj->Sel    = 0x41;
+                        obj->SubSel = 5;
+                        obj->Step   = 0;
+                        obj->LocalTimer = 3;
+                    }
+                    if ((obj = AllocActor())) {
+                        obj->exists = TRUE;
+                        obj->Sel    = 0x41;
+                        obj->SubSel = 5;
+                        obj->Step   = 1;
+                        obj->LocalTimer = 3;
+                    }
+                    if ((obj = AllocActor())) {
+                        obj->exists = TRUE;
+                        obj->Sel    = 0x41;
+                        obj->SubSel = 5;
+                        obj->Step   = 2;
+                        obj->LocalTimer = 3;
+                    }
+                    if ((obj = AllocActor())) {
+                        obj->exists = TRUE;
+                        obj->Sel    = 0x41;
+                        obj->SubSel = 5;
+                        obj->Step   = 2;
+                        obj->LocalTimer = 3;
+                    }
+                    car->h00a0w = 0x67;
+                    car->h00a2w = 0x56;
+                    sub_13a0e(obj_a2, 5, 1, 2, 2);
+                    
+                    car->h00a0w = 0x9a;
+                    car->h00a2w = 0x6b;
+                    sub_13a0e(obj_a2, 2, 0, 0, 1);
+                    
+                    car->h00a0w = 0x86;
+                    car->h00a2w = 0x51;
+                    sub_13a0e(obj_a2, 5, 1, 2, 2);
+                    
+                    car->h00a0w = 0xaf;
+                    car->h00a2w = 0x58;
+                    sub_13a0e(obj_a2, 5, 1, 2, 2);
+                    
+                    car->h00a0w = 0xdb;
+                    car->h00a2w = 0x58;
+                    sub_13a0e(obj_a2, 3, 1, 1, 2);
+                    
+                    car->h00a0w = 0x103;
+                    car->h00a2w = 0x63;
+                    sub_13a0e(obj_a2, 2, 1, 2, 2);
+                }
+                break;
+            FATALDEFAULT;
+        }
+    }
+}
+
 
 static void sub_13c1a(Object *obj) {
 	if (obj->UserData[0] & 0x80) {
