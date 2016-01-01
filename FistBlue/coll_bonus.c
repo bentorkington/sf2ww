@@ -492,9 +492,9 @@ static void sub_7d284(Object_G2 *obj) {
 static void sub_7de06(Object_G2 *a2) {
 	if (g.TimeOut == FALSE) {
 		if (a2->Energy < 0 && (a2->AnimFlags & 0xff) == 0) {
-			//sub_221ea();		//Action44 todo
+			sub_221ea(a2);
 		} else {
-			//sub_221bc();
+			sub_221bc(a2);
 		}
 	}
 }
@@ -592,7 +592,7 @@ static void _CDBonus2(Object_G2 *a6) {		// 7dd0c
 }
 void CDBonusCollisionCheck(Object_G2 *a6) {		// 7dd9a - entry for Bonus objects
 	// disable collision detection for most objects
-	char data_7d9ba[]={-1, -1, -1, -1, 6, 4, 0, -1, -1, 2, -1, -1, -1, -1, -1, -1};
+	const static char data_7d9ba[]={-1, -1, -1, -1, 6, 4, 0, -1, -1, 2, -1, -1, -1, -1, -1, -1};
 	
 	// Subsel    BonusX
 	//  4			3

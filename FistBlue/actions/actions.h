@@ -44,7 +44,8 @@ void draw_portraits_prefight(void);		/* 15f9e */
 void draw_portraits_postfight(void);
 void action_print_chant(void);
 
-
+void sub_221ea(Object_G2 *obj_a2);
+void sub_221bc(Object_G2 *obj_a2);
 
 
 #define ACT117C(id,function)    \

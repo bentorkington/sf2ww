@@ -35,7 +35,7 @@ extern Game g;
 extern GState gstate_Scroll1;
 
 const HitBox hitb_25d86[] = {
-	{ 0,  0, -56, 64}, {22, 25, 56, 65}, {22, 25, 0, 22}, {61, 22, 48, 46},};
+	{ 0,  0, -56, 64}, {22, 25, 56, 64}, {22, 25, 0, 25}, {61, 22, 48, 46},};
 const HitBoxAct hitb_25d78[] = {0,0,0,0,0,0,0,0,0,0,0,0};
 
 const struct hitboxes hitboxes_25d6c = {

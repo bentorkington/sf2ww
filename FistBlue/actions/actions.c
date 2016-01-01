@@ -3904,7 +3904,7 @@ static void action_43(Object *obj) {        //219ce
 
 
 #pragma mark Act44
-static void sub_2224c(Object *obj_a4, Object *obj_a2) {
+static void sub_2224c(Object *obj_a4, Object_G2 *obj_a2) {
 	obj_a4->exists = TRUE;
 	obj_a4->Sel    = 0x44;
 	obj_a4->UserByte = 0;
@@ -3912,7 +3912,7 @@ static void sub_2224c(Object *obj_a4, Object *obj_a2) {
 	obj_a4->YPI = g.GPCollY;
 	obj_a4->Flip = obj_a2->Direction ^ 1;
 }
-void sub_221ea(Object *obj_a2) {
+void sub_221ea(Object_G2 *obj_a2) {
 	Object *obj;		// %a4
 	if ((obj = AllocActor())) {
 		obj->exists   = TRUE;
@@ -3931,7 +3931,7 @@ void sub_221ea(Object *obj_a2) {
 		obj->Flip	  = obj_a2->Direction ^ 1;
 	}
 }
-void sub_221bc(Object *obj_a2) {
+void sub_221bc(Object_G2 *obj_a2) {
 	Object *obj;		// %a2
 	if ((obj = AllocActor())) {
 		sub_2224c(obj, obj_a2);
