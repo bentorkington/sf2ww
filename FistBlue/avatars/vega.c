@@ -27,11 +27,7 @@ typedef struct UserData_Vega UD;
 
 
 void pl_cb_setstatus2_vega(Player *ply, short status, int argd0) {
-#ifdef REDHAMMER_EXTROM
     RHSetActionList((Object *)ply, RHOffsetLookup16(RHCODE(0x76f66), status / 2), argd0);
-#else
-    setaction_list((Object *)ply, data_76f66[status / 2], argd0);
-#endif
 }
 void pl_cb_setstatus3_vega(Player *ply, short status) {
 	pl_cb_setstatus2_vega(ply, status, ply->Step ^ ply->Flip);

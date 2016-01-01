@@ -745,11 +745,8 @@ static void draw_player_extrasprite(Player *ply) {	/* 7ed04 */
 			g.DSOffsetY += (ply->ActionScript->YOffset & 0x00ff);
 		}
 		g.DSOffsetX -= ply->DSOffsetX;
-#ifdef REDHAMMER_EXTROM
         attr ^= ((((struct image *)RHCODE16(ply->ActionScript->Image))->Attr& 3) << 5);
-#else 
-        attr ^= ((ply->ActionScript->Image->Attr& 3) << 5);
-#endif
+        
 		_draw_sprite((Object *)ply, ply->Image2->Tiles, coordpointer, coordpair[0], coordpair[1], tiles_in_image, attr);
 
 	}
@@ -881,7 +878,6 @@ static void sprite_coords(Object *obj, short *coordpair) {		// 7f160
     coordpair[1] ^= 0xff;
     coordpair[1] += 1;
 }
-#ifdef REDHAMMER_EXTROM
 void drawsprite(Object *obj) {         /* 7edaa */
     const struct image *image;
     u16 tiles_in_image;
@@ -938,60 +934,6 @@ void drawsprite(Object *obj) {         /* 7edaa */
     }
     _draw_sprite(obj, image->Tiles, coordlist, coordpair[0], coordpair[1], tiles_in_image, attr);
 }
-#else
-void drawsprite(Object *obj) {         /* 7edaa */
-    const struct image *image;
-    u16 tiles_in_image;
-    int attr;
-    const short *coordlist;
-    short coordpair[2];
-    
-    //if(g.Debug && g.JPCost & JP_DBGSLEEP) {
-    //	dbg_draw_hitboxes((Player *)obj);
-    //}
-    sprite_coords(obj, coordpair);	/* set coords in d0 and d1 to follow scroll X */
-    image = obj->ActionScript->Image;
-    if (image == NULL) {
-        return;
-    }
-    tiles_in_image = image->TileCount;
-    if(image->TileCount == 0) { return; }
-    if(tiles_in_image & IMAGE_ATTR) {
-        sub_7f244(obj, tiles_in_image, obj->ActionScript->Image, coordpair[0], coordpair[1]);
-        /* tiles are in tile,attr pairs */
-        return;
-    }
-    if(tiles_in_image > g.ObjTileBudget) {
-        printf("Over Tile Budget!\n");
-        return;
-    }
-    g.ObjTileBudget -= tiles_in_image;
-    attr = image->Attr;
-    
-    /* this used to be after the Block image check but we do the Block sprites in software now */
-    g_tilecount -= tiles_in_image;
-    
-    if(image->Attr & 0xff00) {
-        tiles_in_image = 1;
-    }
-    //--tiles_in_image;
-    coordlist = sub_7f224(image->Dimensions);        /* set a3 from Image->Dimensions */
-    
-    g.DSOffsetX = image->OffsetX;
-    g.DSOffsetY = image->OffsetY;
-    
-    if(obj->ActionScript->FlipBits & 0x3) {
-        attr ^= ((obj->ActionScript->FlipBits & 0x3) << 5);      /* apply flips */
-        g.DSOffsetY += obj->ActionScript->YOffset;
-    }
-    g.DSOffsetX -= obj->DSOffsetX;   /* ply->x0052 */
-    
-    if (obj->Sel == 2 && obj->Sel == 7) {
-        DEBUG_GEN("Sel 0x%x SubSel 0x%x dim 0x%x tiles %d\n", obj->Sel, obj->SubSel, image->Dimensions, tiles_in_image);
-    }
-    _draw_sprite(obj, image->Tiles, coordlist, coordpair[0], coordpair[1], tiles_in_image, attr);
-}            
-#endif
 /*!
  @abstract draw an object
  @param obj The object to draw (%a1)
@@ -1197,12 +1139,9 @@ static void sub_7ee58(Object *obj, const u16 *tilep, const short *offsets, short
 		sub_7eea2(obj, tilep, offsets, x, y, tiles, attr);			/* draw with sin,cos effect */
 	} else {
 		while(tiles) {
-#ifdef REDHAMMER_EXTROM
 			tile = RHSwapWord(*tilep++);
-#else
-            tile = *tilep++;
-#endif
-			if(tile == 0) {
+
+            if(tile == 0) {
 				offsets +=2;
 				continue;
 			}
@@ -1240,12 +1179,9 @@ static void sub_7ef2a(Object *obj, const u16 *tilep, const short *offsets,
 	y += g.DSOffsetY;
 	
 	while(tiles > 0) {
-#ifdef REDHAMMER_EXTROM
         tile = RHSwapWord(*tilep++);
-#else
-        tile = *tilep++;
-#endif
-		if(tile == 0) {
+
+        if(tile == 0) {
 			offsets +=2;
 			continue;
 		}
@@ -1280,12 +1216,9 @@ static void sub_7ef86(Object *obj, const u16 *tilep, const short *offsets,
 	y -= g.DSOffsetY;
 	
 	while(tiles>0) {
-#ifdef REDHAMMER_EXTROM
         tile = RHSwapWord(*tilep++);
-#else
-        tile = *tilep++;
-#endif
-		if(tile == 0) {
+
+        if(tile == 0) {
 			offsets +=2;
 			continue;
 		}
@@ -1323,12 +1256,9 @@ static void sub_7efd8(Object *obj, const u16 *tilep, const short *offsets,
 	y -= g.DSOffsetY;
 	
 	while(tiles>0) {
-#ifdef REDHAMMER_EXTROM
         tile = RHSwapWord(*tilep++);
-#else
-        tile = *tilep++;
-#endif
-		if(tile == 0) {
+
+        if(tile == 0) {
 			offsets +=2;
 			continue;
 		}

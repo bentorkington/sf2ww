@@ -31,11 +31,7 @@ typedef struct UserData_MBison UD;
 
 
 void pl_cb_setstatus2_mbison(Player *ply, short status, int argd0) {
-#ifdef REDHAMMER_EXTROM
     RHSetActionList((Object *)ply, RHOffsetLookup16(RHCODE(0x6aba0), status / 2), argd0);
-#else
-    setaction_list((Object *)ply, data_6aba0[status / 2], argd0);
-#endif
 }
 void pl_cb_setstatus3_mbison(Player *ply, short status) {
 	pl_cb_setstatus2_mbison(ply, status, ply->Step ^ ply->Flip);

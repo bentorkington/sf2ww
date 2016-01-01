@@ -68,11 +68,7 @@ typedef struct UserData_Zangeif UD;
 typedef struct UserDataComp_Zangeif UDCOMP;
 
 void pl_cb_setstatus2_zangeif(Player *ply, short status, int argd0) {
-#ifdef REDHAMMER_EXTROM
     RHSetActionList((Object *)ply, RHOffsetLookup16(RHCODE(0x5de06), status / 2), argd0);
-#else
-    setaction_list((Object *)ply, data_5de06[status / 2], argd0);
-#endif
 }
 void pl_cb_setstatus3_zangeif(Player *ply, short status) {
 	pl_cb_setstatus2_zangeif(ply, status, ply->Step ^ ply->Flip);

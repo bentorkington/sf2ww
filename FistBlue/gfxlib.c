@@ -492,19 +492,12 @@ int test_offset_scroll3(Player *ply) {
 }
 
 void sub_41c2(Object *obj, const FBSimpleAction *act) {		//41c2
-#ifdef REDHAMMER_EXTROM
     obj->ActionScript = (FBAction *)act;
     obj->Timer = obj->ActionScript->Delay;
     obj->AnimFlags = obj->ActionScript->Flags;
-#else
-	obj->ActionScript = (Action *)act;
-    obj->Timer      = obj->ActionScript->Delay;
-    obj->AnimFlags  = obj->ActionScript->Loop << 8 | obj->ActionScript->Next; 
-#endif
     draw_simple(obj);
 }
 
-#ifdef REDHAMMER_EXTROM
 void RHSetScrollAction(Object *obj, const FBSimpleAction *act) {
     obj->ActionScript = (FBAction *)act;
     obj->Timer        = RHSwapWord(obj->ActionScript->Delay);
@@ -513,20 +506,12 @@ void RHSetScrollAction(Object *obj, const FBSimpleAction *act) {
 void RHSetScrollActionList(Object *obj, void *act, int step) {
     RHSetScrollAction(obj, (const FBSimpleAction *)RHOffsetLookup16(act, step));
 }
-#endif
 
 void setactiondraw(Object *obj, const FBSimpleAction **act, int step) {	//41b6
 	/* 41c2 inlined for efficiency */
-#ifdef REDHAMMER_EXTROM
     obj->ActionScript = (FBAction *)act[step];
     obj->Timer = obj->ActionScript->Delay;
     obj->AnimFlags = obj->ActionScript->Flags;
-#else
-    obj->ActionScript = (Action *)act[step];
-	
-    obj->Timer      = obj->ActionScript->Delay;
-    obj->AnimFlags  = obj->ActionScript->Loop << 8 | obj->ActionScript->Next; 
-#endif
     draw_simple(obj);
 }
 
@@ -762,7 +747,6 @@ void (*DRAW_ATTR_NOCHECK[3])(Object *, const u16 *, int, int)   =
 void actiontickdraw(Object *obj) {		/* 0x41d4 */
     if(--obj->Timer) { return; }
 
-#ifdef REDHAMMER_EXTROM
     if (RHSwapWord(obj->ActionScript->Flags) & 0x8000) {
         u32 *next = (void *)obj->ActionScript + sizeof(FBSimpleAction);
         obj->ActionScript = (const FBAction *)RHCODE(RHSwapLong(*next));
@@ -772,15 +756,6 @@ void actiontickdraw(Object *obj) {		/* 0x41d4 */
     }
     obj->Timer       = RHSwapWord(obj->ActionScript->Delay);
     obj->AnimFlags   = RHSwapWord(obj->ActionScript->Flags);
-#else
-    if(obj->ActionScript->Loop == 0) {
-		obj->ActionScript = (const Action *)temp;
-	} else {
-		obj->ActionScript = (const Action *)((struct simpleaction *)obj->ActionScript)[1].Image;
-    }
-    obj->Timer      = obj->ActionScript->Delay;
-    obj->AnimFlags  = obj->ActionScript->Loop << 8 | obj->ActionScript->Next;
-#endif
     draw_simple(obj);
 }        
 
@@ -788,19 +763,11 @@ void draw_simple(Object *obj) {             /* 0x4200 */
     unsigned int width, height, palette;
 	const u16 *tiles;
     
-#ifdef REDHAMMER_EXTROM
     struct image2 *im = (struct image2 *)RHCODE(RHSwapLong(obj->ActionScript->Image));
     
     width   = RHSwapWord(im->Width);
     height  = RHSwapWord(im->Height);
-    palette = RHSwapWord(im->Palette);
-#else
-	struct image2 *im = (struct image2 *)obj->ActionScript->Image;
-
-    width   = im->Width;
-    height  = im->Height;
-    palette = im->Palette;		// not actually a palette: a flag indicating tile, attr pairs
-#endif
+    palette = RHSwapWord(im->Palette);  // not actually a palette: a flag indicating tile, attr pairs
 
 	tiles = im->Tiles;
     if (palette == 0) {

@@ -30,11 +30,7 @@ extern Game g;
 typedef struct UserData_Blanka UD;
 
 void pl_cb_setstatus2_blanka(Player *ply, short status, int argd0) {		//43b80
-#ifdef REDHAMMER_EXTROM
     RHSetActionList((Object *)ply, RHOffsetLookup16(RHCODE(0x43b90), status / 2), argd0);
-#else
-    setaction_list((Object *)ply, data_43b90[status / 2], argd0);
-#endif
 }
 void pl_cb_setstatus3_blanka(Player *ply, short status) {
 	pl_cb_setstatus2_blanka(ply, status, ply->Step ^ ply->Flip);

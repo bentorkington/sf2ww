@@ -15,7 +15,6 @@ extern GState gstate_Scroll2;
 extern GState gstate_Scroll3;
 
 
-#ifdef REDHAMMER_EXTROM
 void RHSetActionList(Object *obj, const void *listaddr, short sel) {
 #if 0
     print_rom_offset("setactionList", listaddr);
@@ -58,31 +57,6 @@ void setaction_direct(Object *obj, const Action *act) {
 void actiontick(Object *obj) {
     RHActionTick(obj);
 }
-#else
-void setaction_list(Object *obj, const Action **list, short sel ) {		/* 0x23ce */
-    
-    const Action *act = list[sel];
-    /* Action *act = (Action *)list + (u16 *)*(list + (sel * sizeof (short))); */
-    setaction_direct(obj, act);
-}
-
-void setaction_direct(Object *obj, const Action *act) {			/* 23da */
-    obj->ActionScript       = act;
-    obj->Timer              = act->Delay;
-    obj->AnimFlags          = act->Loop << 8 | act->Next;
-}
-
-void actiontick(Object *obj) {		/* 23ec */
-    if(--obj->Timer == 0) {
-        if(obj->ActionScript->Loop & 0x80) {
-            obj->ActionScript = (Action *)obj->ActionScript[1].Image;
-        } else {
-            obj->ActionScript++;
-        }
-        setaction_direct(obj, obj->ActionScript);
-    }
-}
-#endif
 
 void sub_25f8(Object *obj) {
 	GState *gs;

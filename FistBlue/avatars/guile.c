@@ -39,11 +39,7 @@ typedef struct UserData_Guile UD;
 #pragma mark Animation Callbacks
 
 void pl_cb_setstatus2_guile(Player *ply, short status, int argd0) {
-#ifdef REDHAMMER_EXTROM
     RHSetActionList((Object *)ply, RHOffsetLookup16(RHCODE(0x4abac), status / 2), argd0);
-#else
-    setaction_list((Object *)ply, data_4abac[status / 2], argd0);
-#endif
 }
 void pl_cb_setstatus3_guile(Player *ply, short status) {
 	pl_cb_setstatus2_guile(ply, status, ply->Step ^ ply->Flip);

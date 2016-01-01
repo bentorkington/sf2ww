@@ -85,11 +85,7 @@ struct UserData_Dhalsim {
 typedef struct UserData_Dhalsim UD;
 
 void pl_cb_setstatus2_dhalsim(Player *ply, short status, int argd0) {
-#ifdef REDHAMMER_EXTROM
     RHSetActionList((Object *)ply, RHOffsetLookup16(RHCODE(0x64fbe), status / 2), argd0);
-#else
-    setaction_list((Object *)ply, data_64fbe[status / 2], argd0);
-#endif
 }
 void pl_cb_setstatus3_dhalsim(Player *ply, short status) {
 	pl_cb_setstatus2_dhalsim(ply, status, ply->Step ^ ply->Flip);

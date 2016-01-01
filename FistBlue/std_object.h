@@ -14,11 +14,7 @@
     u16				AnimFlags;				/* 0x0014 maybe split into two? */
 	FIXED8_8		Draw2;					// 0x16	
     short			Timer;                  // 0x18
-#ifdef REDHAMMER_EXTROM
     const FBAction *ActionScript;
-#else
-    const struct action	*ActionScript;		// 0X1a full 32 bit pointer on CPS
-#endif
     char			LocalTimer;				// 0x1e	 another Timer 
     char			SubTimer;
     signed char		Sel;					// 20
