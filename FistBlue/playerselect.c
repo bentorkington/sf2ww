@@ -381,13 +381,17 @@ void SM_player_select(void) {		//7fc4
 			break;
 		case 6:
 			g.PlayerSelectDone = TRUE;
-			if (g.InDemo == FALSE) {
-				// todo some funkyfeatures here @0x8408
-				g.Player1.x02ae = g.Player1.Human;
-				/* some redundant code removed */
-				g.Player2.x02ae = g.Player2.Human;
-				fadenwait3();
-			} 
+			if (g.InDemo || (g.Debug && (g.JPCost & 0x20))) {
+                if (g.Player1.Human) {
+                    g.Player1.x02ae = g.Player1.Human;
+                    g.Player1.Human = FALSE;
+                }
+                if (g.Player2.Human) {
+                    g.Player2.x02ae = g.Player2.Human;
+                    g.Player2.Human = FALSE;
+                }
+			}
+            fadenwait3();
 			break;
 		FATALDEFAULT;
 	}

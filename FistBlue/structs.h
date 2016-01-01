@@ -250,7 +250,7 @@ typedef struct game {
 							 
 							 /* 0xace to 0xb4e */
 
-	/* Begin 0x80 bytes from ace to b4e reset at 2cba */
+	/* Begin 0x80 bytes from ace to b4e reset at 2c8a */
 	u8		TimeRemainBCD;			/* 0xace */
     u8		TimeRemainTicks;
     

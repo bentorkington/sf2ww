@@ -71,12 +71,13 @@ void CDCheckPlayers(void) {       /* 7cee0, called from fighttick. */
     if(g.Player1.CompImmune) {g.Player1.CompImmune--;}
     if(g.Player2.CompImmune) {g.Player2.CompImmune--;}
 	
-    if(g.Player1.Human || g.DebugNoCollide==0) {
-        _CDCheckPlayer(PLAYER1, PLAYER2);
-    }
-	
-    if(g.Player2.Human || g.DebugNoCollide==0) {
-        _CDCheckPlayer(PLAYER2, PLAYER1);
+    if (g.Player1.exists && g.Player2.exists) {
+        if(g.Player1.Human || g.DebugNoCollide==0) {
+            _CDCheckPlayer(PLAYER1, PLAYER2);
+        }
+        if(g.Player2.Human || g.DebugNoCollide==0) {
+            _CDCheckPlayer(PLAYER2, PLAYER1);
+        }
     }
 }
 

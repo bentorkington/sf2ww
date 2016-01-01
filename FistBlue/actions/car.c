@@ -279,6 +279,7 @@ static void _people_on_roof(Object_G2 *obj) {		// 25df2
 void _ActSMCar(Object_G2 *obj) {			// The CarID 6, BONUS0
 	switch (obj->mode0) {
 		case 0:
+            NEXT(obj->mode0);
 			memclear(&obj->UD.UDcar, sizeof (UDcar));
 			g.x8abe = FALSE;
 			obj->HitBoxes = &hitboxes_25d6c;
@@ -393,7 +394,7 @@ void _ActSMCar(Object_G2 *obj) {			// The CarID 6, BONUS0
 			NEXT(obj->mode0);
 			break;
 		case 6:
-			clearpush_1174((Object *)obj);
+			clearpush_1174(obj);
 			break;
 			FATALDEFAULT;
 	}

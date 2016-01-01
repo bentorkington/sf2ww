@@ -190,6 +190,7 @@ static void _SMRyuSigns(Object_G2 *obj) {		// 24c4e
 				FATALDEFAULT;
 			}
 			check_rect_queue_draw((Object *)obj);
+            break;
 		case 4:
 			clearpush_1174(obj);
 			break;
@@ -820,7 +821,7 @@ void actions_198a(void) {			/* 249fa */
 	debughook(1);
 	g_d7=15;
 	for(i=0; i<16; i++) {
-		if(g.Objects2[i].exists == 0) {break;}
+		if(g.Objects2[i].exists == 0) {continue;}
 		switch (g.Objects2[i].Sel) {
 			case BLANKA_FISH:		_SMAct00(&g.Objects2[i]);		break;
 			case KEN_DRUMS:			_SMKenDrums(&g.Objects2[i]);	break;
