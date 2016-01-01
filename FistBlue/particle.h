@@ -103,6 +103,13 @@ struct action {
     char	Yoke;		/* YOKE, 0x17 neutral jumps, 06 forward/backward jumps, 0xff walking */
 };
 
+struct fb_simpleaction {
+    short Delay;
+    short Flags;
+    RHImagePtr Image;
+} __attribute__((packed));
+
+typedef struct fb_simpleaction FBSimpleAction;
 
 struct simpleaction {
 	u16 Delay;

@@ -772,13 +772,17 @@ void (*DRAW_ATTR_NOCHECK[3])(Object *, const u16 *, int, int)   =
 
 void actiontickdraw(Object *obj) {		/* 0x41d4 */
     if(--obj->Timer) { return; }
-	
-	// XXX C messiness, not emulated
-	CASimpleFrame *temp = (CASimpleFrame *)obj->ActionScript;
-	temp++;
+
 #ifdef REDHAMMER_EXTROM
-    
-    
+    if (RHSwapWord(obj->ActionScript->Flags) & 0x8000) {
+        u32 *next = (void *)obj->ActionScript + sizeof(FBSimpleAction);
+        obj->ActionScript = (const FBAction *)RHCODE(RHSwapLong(*next));
+    } else {
+        const void *next = (void *)obj->ActionScript + sizeof(FBSimpleAction);
+        obj->ActionScript = (const FBAction *)next;
+    }
+    obj->Timer       = RHSwapWord(obj->ActionScript->Delay);
+    obj->AnimFlags   = RHSwapWord(obj->ActionScript->Flags);
 #else
     if(obj->ActionScript->Loop == 0) {
 		obj->ActionScript = (const Action *)temp;
@@ -794,7 +798,6 @@ void actiontickdraw(Object *obj) {		/* 0x41d4 */
 void draw_simple(Object *obj) {             /* 0x4200 */
     unsigned int width, height, palette;
 	const u16 *tiles;
-    print_rom_offset("draw_simple", obj->ActionScript);
     
 #ifdef REDHAMMER_EXTROM
     struct image2 *im = (struct image2 *)RHCODE(RHSwapLong(obj->ActionScript->Image));
