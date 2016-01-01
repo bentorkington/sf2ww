@@ -361,7 +361,7 @@ void set_defeated_false(Player *ply) {		//2eba
 
 void proc_round_result(void) {		/* 8c80 */
     if(g.OnBonusStage) {
-        g.mode2    +=2;
+        g.mode2    +=4;
         g.BonusDone++;
     } else {
         if (g.RoundResult < 0) {
