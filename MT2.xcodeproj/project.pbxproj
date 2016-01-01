@@ -690,7 +690,6 @@
 		B5ADB82313B2B57D00905DFE /* gfx_glut.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = gfx_glut.h; path = ../FistBlue/gfx_glut.h; sourceTree = "<group>"; };
 		B5ADB82513B2B57D00905DFE /* palettes.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = palettes.c; sourceTree = "<group>"; };
 		B5ADB82613B2B57D00905DFE /* projdata.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = projdata.h; sourceTree = "<group>"; };
-		B5ADB82713B2B57D00905DFE /* shadowdata.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = shadowdata.h; sourceTree = "<group>"; };
 		B5ADB82813B2B57D00905DFE /* stagegfx.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = stagegfx.h; sourceTree = "<group>"; };
 		B5ADB82913B2B57D00905DFE /* gfxlib.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = gfxlib.c; sourceTree = "<group>"; };
 		B5ADB82A13B2B57D00905DFE /* gfxlib.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = gfxlib.h; sourceTree = "<group>"; };
@@ -1259,7 +1258,6 @@
 			children = (
 				B5ADB82513B2B57D00905DFE /* palettes.c */,
 				B5ADB82613B2B57D00905DFE /* projdata.h */,
-				B5ADB82713B2B57D00905DFE /* shadowdata.h */,
 				B5ADB82813B2B57D00905DFE /* stagegfx.h */,
 				B5869A8313B561F1001844D9 /* graphics.h */,
 				B5869A8413B561F1001844D9 /* graphics.c */,

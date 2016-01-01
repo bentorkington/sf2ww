@@ -10,7 +10,6 @@
 #include "particle.h"
 #include "gfxlib.h"
 
-#include "shadowdata.h"
 #include "gemu.h"
 
 #include "playerstate.h"
