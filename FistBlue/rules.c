@@ -491,9 +491,9 @@ void set_initial_positions(void) {          /* 0x37da */
     g.Player1.YPI +=  40;
     g.Player2.XPI += (192 + 88);
     g.Player2.YPI +=  40;
-    g.Player1.Direction			 = FACING_RIGHT;
+    g.Player1.Flip   			 = FACING_RIGHT;
     g.Player1.EnemyDirection     = FACING_RIGHT;
-    g.Player2.Direction			 = FACING_LEFT;
+    g.Player2.Flip   			 = FACING_LEFT;
     g.Player2.EnemyDirection     = FACING_LEFT;
     
     g.Player1.OldX.part.integer = g.Player1.XPI;
