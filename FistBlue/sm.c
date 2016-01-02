@@ -624,17 +624,19 @@ void gamemode_vs_screen (void) {
 static void gamemode_init_round (void) {
     switch (g.mode3) {
 		case 0:
-			DEBUG_SM("init_round");
+			DEBUG_SM("2/4/6/0 init_round");
 			NEXT(g.mode3);
 			LBResetState();
 			LBInitPlayers();		/* set player difficulties, initial energy */
 			break;
 		case 2:
+            DEBUG_SM("2/4/6/2");
 			NEXT(g.mode3);
 			palettes_nextlevel();
 			set_shadow_pen();    /* set Object Pal 10 for current stage */
 			break;
 		case 4:
+            DEBUG_SM("2/4/6/4");
 			NEXT(g.mode3);
 			g.TimeRemainBCD   = 0x99;   
 			g.TimeRemainTicks = 40;
@@ -672,7 +674,7 @@ static void gamemode_init_round (void) {
 void gamemode_prefightanim (void){     
     switch(g.mode3) {
         case 0: {
-			DEBUG_SM("PreFightAnim");
+			DEBUG_SM("2/4/8 PreFightAnim");
             g.mode3  +=2;
             setstagemusic();
             g.PreRoundAnim = TRUE;
@@ -1047,6 +1049,7 @@ void gamemode_24G (void) {		//7916
 void gamemode_24I (void) {		// 7970
     switch(g.mode3) {
 		case 0:
+            DEBUG_SM("2/4/I/0");
 			g.mode3 +=2;
 			if(g.OnBonusStage == 0 && g.ActiveHumans != BOTH_HUMAN) {
 				g.LevelCursor++;
@@ -1075,6 +1078,7 @@ void gamemode_24I (void) {		// 7970
 			}    
 			break;
 		case 2:
+            DEBUG_SM("2/4/I/2-A");
 			g.mode3 +=2;
 			es.FadeBusy = TRUE;
 			start_effect(0xc1c, 3);
