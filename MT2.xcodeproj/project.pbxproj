@@ -30,6 +30,10 @@
 		6C6F0DFC1C349FED004CD78E /* sf2u.30a in Resources */ = {isa = PBXBuildFile; fileRef = 6CF0046B1C2A128C008EA965 /* sf2u.30a */; };
 		6C6F0DFD1C349FED004CD78E /* sf2u.28a in Resources */ = {isa = PBXBuildFile; fileRef = 6CF0046C1C2A128C008EA965 /* sf2u.28a */; };
 		6C6F0DFE1C349FED004CD78E /* sf2u.38a in Resources */ = {isa = PBXBuildFile; fileRef = 6CF0046D1C2A128C008EA965 /* sf2u.38a */; };
+		6C8C65261C37717200635FDB /* barrels.c in Sources */ = {isa = PBXBuildFile; fileRef = 6C8C65241C37717200635FDB /* barrels.c */; };
+		6C8C65271C37717200635FDB /* barrels.c in Sources */ = {isa = PBXBuildFile; fileRef = 6C8C65241C37717200635FDB /* barrels.c */; };
+		6C8C65281C37717200635FDB /* barrels.c in Sources */ = {isa = PBXBuildFile; fileRef = 6C8C65241C37717200635FDB /* barrels.c */; };
+		6C8C65291C37717200635FDB /* barrels.c in Sources */ = {isa = PBXBuildFile; fileRef = 6C8C65241C37717200635FDB /* barrels.c */; };
 		6CF004561C2A01C9008EA965 /* redhammer.c in Sources */ = {isa = PBXBuildFile; fileRef = 6CF004551C2A01C9008EA965 /* redhammer.c */; };
 		6CF0046E1C2A128C008EA965 /* sf2_05.bin in Resources */ = {isa = PBXBuildFile; fileRef = 6CF004571C2A128C008EA965 /* sf2_05.bin */; };
 		6CF0046F1C2A128C008EA965 /* sf2_06.bin in Resources */ = {isa = PBXBuildFile; fileRef = 6CF004581C2A128C008EA965 /* sf2_06.bin */; };
@@ -518,6 +522,8 @@
 		29B97316FDCFA39411CA2CEA /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		29B97324FDCFA39411CA2CEA /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = /System/Library/Frameworks/AppKit.framework; sourceTree = "<absolute>"; };
 		29B97325FDCFA39411CA2CEA /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = /System/Library/Frameworks/Foundation.framework; sourceTree = "<absolute>"; };
+		6C8C65241C37717200635FDB /* barrels.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = barrels.c; sourceTree = "<group>"; };
+		6C8C65251C37717200635FDB /* barrels.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = barrels.h; sourceTree = "<group>"; };
 		6CF004551C2A01C9008EA965 /* redhammer.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = redhammer.c; sourceTree = "<group>"; };
 		6CF004571C2A128C008EA965 /* sf2_05.bin */ = {isa = PBXFileReference; lastKnownFileType = archive.macbinary; path = sf2_05.bin; sourceTree = "<group>"; };
 		6CF004581C2A128C008EA965 /* sf2_06.bin */ = {isa = PBXFileReference; lastKnownFileType = archive.macbinary; path = sf2_06.bin; sourceTree = "<group>"; };
@@ -992,6 +998,8 @@
 				B51533F1147EEB4F004A87B0 /* car.c */,
 				B51533F3147EEBDB004A87B0 /* drums.h */,
 				B51533F4147EEBDB004A87B0 /* drums.c */,
+				6C8C65241C37717200635FDB /* barrels.c */,
+				6C8C65251C37717200635FDB /* barrels.h */,
 			);
 			name = actions_b;
 			sourceTree = "<group>";
@@ -1647,6 +1655,7 @@
 				B5ADB86813B2B57E00905DFE /* projectiles.c in Sources */,
 				B5ADB86913B2B57E00905DFE /* reactmode.c in Sources */,
 				B5ADB86A13B2B57E00905DFE /* rules.c in Sources */,
+				6C8C65261C37717200635FDB /* barrels.c in Sources */,
 				B5ADB86B13B2B57E00905DFE /* sm.c in Sources */,
 				B5ADB86C13B2B57E00905DFE /* sound.c in Sources */,
 				B5ADB86D13B2B57E00905DFE /* sprite.c in Sources */,
@@ -1768,6 +1777,7 @@
 				B5C5745F1772782600496283 /* testlib.c in Sources */,
 				B5C574601772782600496283 /* act2e_plane.c in Sources */,
 				B5C574611772782600496283 /* act1e_worldflags.c in Sources */,
+				6C8C65271C37717200635FDB /* barrels.c in Sources */,
 				B5C574621772782600496283 /* act02_bicycleriders.c in Sources */,
 				B5C574631772782600496283 /* act07_elephants.c in Sources */,
 				B5C574641772782600496283 /* act29_wwlogo.c in Sources */,
@@ -1816,6 +1826,7 @@
 				B5E0EFCB17754D8800F50790 /* collision.c in Sources */,
 				B5E0EFCC17754D8800F50790 /* computer.c in Sources */,
 				B5E0EFCD17754D8800F50790 /* effects.c in Sources */,
+				6C8C65281C37717200635FDB /* barrels.c in Sources */,
 				B5E0EFCE17754D8800F50790 /* fightgfx.c in Sources */,
 				B5E0EFCF17754D8800F50790 /* gemu.c in Sources */,
 				B5E0EFD017754D8800F50790 /* gfx_glut.c in Sources */,
@@ -1897,6 +1908,7 @@
 				B5E0F02617754D9500F50790 /* collision.c in Sources */,
 				B5E0F02717754D9500F50790 /* computer.c in Sources */,
 				B5E0F02817754D9500F50790 /* effects.c in Sources */,
+				6C8C65291C37717200635FDB /* barrels.c in Sources */,
 				B5E0F02917754D9500F50790 /* fightgfx.c in Sources */,
 				B5E0F02A17754D9500F50790 /* gemu.c in Sources */,
 				B5E0F02B17754D9500F50790 /* gfx_glut.c in Sources */,

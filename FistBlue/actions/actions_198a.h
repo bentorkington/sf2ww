@@ -22,7 +22,7 @@ typedef enum actions_198a {
 	ACTB_CAR,				// BONUS0 Collisions
 	ACTB_GUILE_CRATE,
 	ACT_B08,
-	ACT_B09,				// BONUS1 Collisions
+	ACT_B09,				// BONUS1 Collisions (Barrel)
 } ObjG2ID;
 
 

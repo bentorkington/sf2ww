@@ -648,7 +648,7 @@ static void drawsimple_scroll1attr_check(Object *obj, const u16 *tiles, int widt
     if(test_offset_scroll1((Player *)obj)) { return; }
     drawsimple_scroll1attr(obj, tiles, width, height);
 }
-static void drawsimple_scroll2noattr_check(Object *obj, const u16 *tiles, int width, int height) {	/* 0x42c2 */
+void drawsimple_scroll2noattr_check(Object *obj, const u16 *tiles, int width, int height) {	/* 0x42c2 */
     if(test_offset_scroll2((Player *)obj)) { return; }
     drawsimple_scroll2noattr(obj, tiles, width, height);
 }

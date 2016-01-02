@@ -19,6 +19,7 @@
 #include "rules.h"
 #include "actions.h"
 #include "collision.h"
+#include "barrels.h"        // to calculate proximity
 
 #include "lib.h"
 
@@ -1708,33 +1709,6 @@ static void _PSOppDistCalc(Player *a0, Player *a1) {		/* 2858c */
 		temp = 0;
 	}
 	a0->OppXDist = temp;
-}
-
-static short sub_208c8(short d2) {		// 208c8 probably belongs in actions.c
-	// barrel distance calc
-	struct UserData_Barrels {
-		Object *barrel[8];		/* 0xb0 */
-	};
-	struct UserData_Barrel {
-		short playerdists[2];		//x0098
-	};
-	
-	struct UserData_Barrels *ud = (struct UserData_Barrels *)&g.x8ab6->UserData;
-	typedef struct UserData_Barrel Bar;
-	Bar *bar;
-	
-	short d0 = 0x100;
-	Object *a2;
-	short i;
-
-	for (i=0;i<8;i++) {
-		a2 = ud->barrel[i];
-		bar = (Bar *)&a2->UserData;
-		if (bar->playerdists[d2]<d0) {
-			d0 = bar->playerdists[d2];
-		}
-	}
-	return d0;
 }
 
 static void sub_208a6(void) {		// 208a6 Calc Oppdist when on Barrels

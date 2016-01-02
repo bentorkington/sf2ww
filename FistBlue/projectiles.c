@@ -18,7 +18,7 @@
 #include "collision.h"
 
 #include "projectiles.h"
-
+#include "barrels.h"
 #include "projdata.h"
 
 extern Game g;
@@ -26,7 +26,6 @@ extern Game g;
 static void sub_23508(Object *obj, short d7);
 static void projsm_fireball(Object *obj, short d7);
 static void proc_yogafire(Object *obj, short d7); /* 0x23426 */
-static void action_207f0(Object *obj, short d7);
 
 static void destroy_projectile(Object *obj) {		// 235f8
 	NEXT(obj->mode0);
@@ -55,47 +54,6 @@ void process_projectiles(void) {			/* 22aca */
 		--d7;
 	}
 }
-
-// 207f0 barrels
-void action_207f0(Object *obj, short d7) {
-	int i;
-	Object *obj2;
-	
-	if (g.PreRoundAnim) {
-		return;
-	}
-	switch (obj->mode0) {
-		case 0:
-			NEXT(obj->mode0);
-			g.x8ab8 = 20;
-			g.x8ab9 = 32;
-			obj->LocalTimer = 1;
-			g.x8ab6 = obj;
-			for(i=0; i<=7; i++) {
-				if ((obj2=AllocActor())) {
-					obj2->exists = 2;
-					obj2->Sel = SF2ACT_0X09;
-					obj2->SubSel = 7-i;
-					obj2->x002e = 0;
-					// XXX ud->x00b0[i]=obj;
-				}
-			}
-			break;
-		case 2:
-			if (--obj->LocalTimer == 0) {
-				// XXX sub_20858(obj);
-			}
-			break;
-		case 4:
-		case 6:
-			FreeProjectile(obj);
-		default:
-			break;
-	}
-	/* XXX */
-}
-
-
 
 static void proc_yogafire(Object *obj, short d7) {  /* 0x23426 */
 	Object *nobj;

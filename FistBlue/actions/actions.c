@@ -563,14 +563,14 @@ static void action_09(Object *obj) {	// f568
 			if ((obj->AnimFlags & 0xff) == ud->h0080s) {
 				if (ud->h0082c) {
 					ud->h0082c = 0;
-					// XXX drawsimple_scroll2noattr_check(obj, data_f86c[ud->h0080s], 21, 1);
+					drawsimple_scroll2noattr_check(obj, RHOffsetLookup16(RHCODE(0xf86c), ud->h0080s), 21, 1);
 				}
 			} else {
 				ud->h0080s = obj->AnimFlags & 0xff;
 				ud->h0082c = TRUE;
 			}
 			enqueue_and_layer(obj);
-
+            break;
 		FATALDEFAULT;
 																  
 	}
@@ -3798,6 +3798,8 @@ static void action_41(Object *obj)
 }
 
 #pragma mark Projectile 207f0
+// see barrels.c
+
 
 #pragma mark Act43
 static void action_43(Object *obj) {        //219ce
