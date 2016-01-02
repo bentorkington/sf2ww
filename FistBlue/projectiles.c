@@ -56,7 +56,7 @@ void process_projectiles(void) {			/* 22aca */
 	}
 }
 
-// 207f0 actually a projectile
+// 207f0 barrels
 void action_207f0(Object *obj, short d7) {
 	int i;
 	Object *obj2;

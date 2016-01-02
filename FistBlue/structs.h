@@ -392,7 +392,7 @@ typedef struct game {
 	u8		CanSpeedUpScoreCount;		// sf2ua: x8ab5, set when total bonus being counted
 	
     // bonus stage flags
-	Object		*x8ab6;			/* XXX Barrels something */
+	Object		*x8ab6;			/* Last barrel to appear */
 	signed char x8ab8;
 	u8			x8ab9;			/* some other remain counter */
 

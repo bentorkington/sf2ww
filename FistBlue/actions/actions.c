@@ -234,7 +234,7 @@ void proc_actions(void) {			/* c7da */
 
 
 
-static void action_0(Object *obj) {    /* c934 */
+static void action_0(Object *obj) {    /* c934 Guile stage actions */
     switch(obj->mode0) {
     case 0:
         NEXT(obj->mode0);
@@ -786,6 +786,7 @@ static void action_0e(Object *obj) {		// 10756
 						obj->mode1 = 0; 
 					}
 					actiontick(obj);
+                    break;
 				FATALDEFAULT
 			}
 			check_rect_queue_draw(obj);
@@ -1994,6 +1995,7 @@ static void action_1c(Object *obj) {
 		case 4:
 		case 6:
 			FreeActor(obj);
+            break;
 		FATALDEFAULT;
 	}
 }
@@ -3413,7 +3415,7 @@ static void sub_20f10(Object *obj, Player *ply) {
         return;
     }
 }
-static void action_40(Object *obj)
+static void action_40(Object *obj)      // 20de8
 {
     switch (obj->SubSel) {
         case 0:
@@ -3457,6 +3459,7 @@ static void action_40(Object *obj)
         case 1:
             switch (obj->mode0) {
                 case 0:
+                    NEXT(obj->mode0);
                     obj->UserData[0] = g.Player1.exists ^ 1;
                     obj->UserData[1] = g.Player2.exists ^ 1;
                     g.Player1.x015c = g.Player1.BonusScore;

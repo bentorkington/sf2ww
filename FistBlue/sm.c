@@ -763,7 +763,7 @@ static void SM_game_postanim_8(void) {
 	}
 }
 
-void gamemode_postfightanim (void) {
+void gamemode_postfightanim (void) {        // 882c
 	Object *obj;
 	short temp;
 	
@@ -881,12 +881,12 @@ void gamemode_postfightanim (void) {
 						break;
 					case 4:
 						/* 8c0c */
-						NEXT(g.mode2);
+						NEXT(g.mode4);
 						g.Pause_9e1 = 0;
 						if ((obj=AllocActor())) {
 							obj->exists = TRUE;
 							obj->Sel = SF2ACT_0X40;
-							obj->SubSel = 0x1;
+							obj->SubSel = 0;
 						}
 						break;
 					case 6:
