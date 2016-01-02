@@ -2289,7 +2289,7 @@ static void sub_1acaa(Object *obj) {
 	} else {
 		switch (obj->mode1) {
 			case 0:
-				NEXT(obj->mode0);
+				NEXT(obj->mode1);
 				obj->Draw2.full = 0xfff0;
                 RHSetActionList(obj, RHCODE(0x1ae1a), g.RoundCnt);
 				break;
@@ -2365,9 +2365,16 @@ static void action_22(Object *obj) {		// 1ac16
 			}
 			showtextbank1(0x14);	/* BATTLE */
 			
-			/* XXX  todo */
-			
-			break;
+            int d0 = g.VictoryCnt;
+            if (d0 > 0x63) {
+                d0 = 0x62;
+            }
+            bin2bcd(d0);
+            u8 printZeroes = 0;
+            u16 *gfx_p = CPS_OBJ(0x910230);
+            printbytehex(gfx_p, 0xd8, 0x78, g.bin2bcd_result, &printZeroes, 0xd);
+
+            break;
 		case 2:
 			sub_1acaa(obj);
 			if (g.NewPlayers == 0) {

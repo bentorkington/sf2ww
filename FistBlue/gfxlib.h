@@ -56,6 +56,8 @@ void setpalette_scroll2(short palette);
 void setpalette_scroll3(short palette);
 void printbyte(u16 **cursor, u32 *gfxcursor, unsigned short attr, u8 arg, u8 *printzeroes);
 void printnibble(u16 **cursor, u32 *gfxcursor, unsigned short attr, u8 arg, u8 *printzeroes);
+void printbytehex(u16 *cursor, int x, int y, u8 byte, u8 *printzeroes, u16 attr);
+
 void clear_scrolls(void);
 void clear_rowscroll(void);	/* actually rowscroll */
 

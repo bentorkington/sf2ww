@@ -683,7 +683,6 @@ void gamemode_prefightanim (void){
         }
         case 2: {
             check_if_new_player();
-			g.PreRoundAnim = FALSE;
         }
 			break;
 		FATALDEFAULT;
