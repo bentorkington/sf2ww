@@ -24,16 +24,16 @@ extern Game g;
 
 void draw_victorysigns(void) {                /* 0x9316 */
     if (g.Player1.RoundsWon > 0) {
-        OBJECT_DRAW_COORDS(66, 0x0, 0xe0, SF2_TILE_OBJ_VICTORY, ATTR_NO_FLIP | PALETTE_0D);
+        OBJECT_DRAW_COORDS(33, 0x0, 0xe0, SF2_TILE_OBJ_VICTORY, ATTR_NO_FLIP | PALETTE_0D);
     }
     if (g.Player1.RoundsWon > 1) {
-        OBJECT_DRAW_COORDS(68, 0x10, 0xe0, SF2_TILE_OBJ_VICTORY, ATTR_NO_FLIP | PALETTE_0D);
+        OBJECT_DRAW_COORDS(34, 0x10, 0xe0, SF2_TILE_OBJ_VICTORY, ATTR_NO_FLIP | PALETTE_0D);
     }
     if (g.Player2.RoundsWon > 0) {
-        OBJECT_DRAW_COORDS(84, 0x170, 0xe0, SF2_TILE_OBJ_VICTORY, ATTR_NO_FLIP | PALETTE_0D);
+        OBJECT_DRAW_COORDS(42, 0x170, 0xe0, SF2_TILE_OBJ_VICTORY, ATTR_NO_FLIP | PALETTE_0D);
     }
     if (g.Player2.RoundsWon > 1) {
-        OBJECT_DRAW_COORDS(86, 0x160, 0xe0, SF2_TILE_OBJ_VICTORY, ATTR_NO_FLIP | PALETTE_0D);
+        OBJECT_DRAW_COORDS(43, 0x160, 0xe0, SF2_TILE_OBJ_VICTORY, ATTR_NO_FLIP | PALETTE_0D);
     }
 }
 
