@@ -2359,7 +2359,7 @@ static void action_22(Object *obj) {		// 1ac16
 			obj->YPI	= 0x90;
 			obj->Draw1  = -1;
 			obj->Draw2.full  = 0;
-			obj->Step	= 0x11;
+			obj->Step	= 0;
 			if (g.OnBonusStage) {
 				return;
 			}
