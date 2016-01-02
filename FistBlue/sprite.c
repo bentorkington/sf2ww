@@ -905,7 +905,7 @@ void drawsprite(Object *obj) {         /* 7edaa */
         return;
     }
     if(tiles_in_image > g.ObjTileBudget) {
-        printf("Over Tile Budget!\n");
+        //printf("Over Tile Budget!\n");
         return;
     }
     g.ObjTileBudget -= tiles_in_image;
