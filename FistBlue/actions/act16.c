@@ -34,7 +34,7 @@ static int sub_12890(Object *obj) {
 void action_16(Object *obj) {
 	switch (obj->SubSel) {
 		case 0:
-		case 1:
+        case 1:                     // conveyor belts
 			switch (obj->mode0) {
 				case 0:
 					NEXT(obj->mode0);
@@ -47,7 +47,7 @@ void action_16(Object *obj) {
 					FATALDEFAULT;
 			}
 			break;
-		case 2:
+		case 2:                 // trampoline for barrels to bounce off
 			switch (obj->mode0) {
 				case 0:
 					NEXT(obj->mode0);
@@ -67,7 +67,7 @@ void action_16(Object *obj) {
 					FATALDEFAULT;
 			}
 			break;
-		case 3:
+		case 3:             // barrel score counter each P1 & P2
 			if (obj->mode0 == 0) {
 				NEXT(obj->mode0);
 				obj->Pool = 6;
@@ -90,7 +90,7 @@ void action_16(Object *obj) {
 				check_rect_queue_draw(obj);
 			}
 			break;
-		case 4:
+		case 4:         // P2 score background (P1 is burned into scroll tiles)
 			if (obj->mode0 == 0) {
 				NEXT(obj->mode0);
 				obj->Pool = 6;

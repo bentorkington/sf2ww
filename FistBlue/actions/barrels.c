@@ -59,18 +59,22 @@ static void sub_20858(Object *obj)
             if (g.x8ab8 < 0) {
                 NEXT(obj->mode0);
             } else {
-                obj->Timer = RHByteOffset(0x20892, g.x8ab8);
+                obj->LocalTimer = RHByteOffset(0x20892, g.x8ab8);
+                ud->barrel[i]->x002e = 1;         // cue the barrel to start rolling
+                goto all_done;                    // disregard the constabulary
             }
             break;
         }
     }
     obj->LocalTimer = 1;
+all_done:
+    return;
 }
 
 // 207f0 barrels
 void action_207f0(Object *obj, short d7) {
     int i;
-    Object *obj2;
+    Object_G2 *obj2;
     
     UD_Bars *ud = (UD_Bars *)&obj->UserData;
     

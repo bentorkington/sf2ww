@@ -540,7 +540,7 @@ static void sub_922c(void) {
 		g.NewChallengerWait = TRUE;
 	}
 }
-static void sub_91c8(void) {
+void sub_91c8(void) {
 	unsigned char tmp = 0;
 	if (g.RoundResult) {
 		wait_for_ply_PSFinishedParticipating();
@@ -603,7 +603,7 @@ static void sub_27912(Object_G2 *obj) {
 
 #pragma mark Act09 Bonus1 Barrels
 
-static int sub_27b4c(Object_G2 *obj) {				// 27b4c
+static int _barrel_gravity(Object_G2 *obj) {				// 27b4c
 	obj->Y.full += obj->UD.UDbonus1.Velocity.full;
 	obj->UD.UDbonus1.Velocity.full += obj->UD.UDbonus1.Accel.full;
 	return obj->UD.UDbonus1.Velocity.full;
@@ -630,17 +630,18 @@ static void sub_27b5e(Object_G2 *obj) {			// 27b5e
 			obj->UD.UDbonus1.h009as = ACTB09_ply_distance(PLAYER2, obj);
 		}
 	}
-
 }
 
-static void sub_278ac(Object_G2 *obj) {
-	//todo
+static void _init_barrel_hitpoints(Object_G2 *obj) {     // 278ac
+    const static char data_278c2[] = {
+        0, 1, 2, 0, 1, 2, 0, 3, 0, 1, 2, 0, 1, 2, 0, 0
+    };
+
+    obj->Energy     = data_278c2[RAND16WD];
+    obj->EnergyDash = obj->Energy;
 }
 
 static void sub_27862(Object_G2 *obj) {			// 27862 Act09 BONUS1
-	const static char data_278c2[] = {
-		0, 1, 2, 0, 1, 2, 0, 3, 0, 1, 2, 0, 1, 2, 0, 0
-	};
 	int temp;
 	switch (obj->mode0) {
 		case 0:
@@ -655,8 +656,7 @@ static void sub_27862(Object_G2 *obj) {			// 27862 Act09 BONUS1
 			obj->HitBoxes = &hitboxes_27e6a;
 			obj->Pool = 0;
 			obj->Flip = 0;
-			obj->Energy = data_278c2[RAND16WD];
-			obj->EnergyDash = obj->Energy;
+            _init_barrel_hitpoints(obj);
 			break;
 		case 2:
 			CDCheckDecor(obj);
@@ -668,12 +668,15 @@ static void sub_27862(Object_G2 *obj) {			// 27862 Act09 BONUS1
 				// 2793e
 				obj->EnergyDash = obj->Energy;
 				obj->UD.UDbonus1.Accel.full = 0xffffc000;	
-				obj->Flip = 0;
-				if (obj->Direction) {
+
+                if (obj->Direction) {
 					obj->UD.UDbonus1.H009c.part.integer = 2;
+                    obj->Flip = 0;
 				} else {
 					obj->UD.UDbonus1.H009c.part.integer = -2;
+                    obj->Flip = 1;
 				}
+                
 				if (obj->mode1 >= 8) {
 					//2798a
 					obj->mode1 = 8;
@@ -689,7 +692,7 @@ static void sub_27862(Object_G2 *obj) {			// 27862 Act09 BONUS1
 				sub_27b5e(obj);
 				switch (obj->mode1) {
 					case 0:			// 279a0
-						if (obj->x002e != 0) {
+						if (obj->x002e != 0) {      // wait unti we'e told to start
 							obj->YPI = 0x00d6;
 							if (g.x8ab8 & 1) {
 								obj->XPI = 0x180;
@@ -703,28 +706,27 @@ static void sub_27862(Object_G2 *obj) {			// 27862 Act09 BONUS1
 								obj->Flip = 0;
 							}
 							NEXT(obj->mode1);
-							sub_278ac(obj);
+							_init_barrel_hitpoints(obj);
 							obj->Pool = 0;
                             RHSetActionList((Object *)obj, RHCODE(0x27c54), 0);
 							check_rect_queue_draw((Object *)obj);
-						
 						}
 						break;
 					case 2:					// 27a00
 						obj->XPI += obj->UD.UDbonus1.H009c.part.integer;
-						if (obj->XPI >= 0xa0 && obj->XPI <0xe0 ) {
+						if (obj->XPI >= 0xa0 && obj->XPI <0xe0 ) {      // fall through the gap
 							NEXT(obj->mode1);
 							obj->UD.UDbonus1.Velocity.full = 0;
-							obj->UD.UDbonus1.Accel.full = 0xfffc0000;
+							obj->UD.UDbonus1.Accel.full = 0xffffc000;
 						}
 						actiontick((Object *)obj);
 						check_rect_queue_draw((Object *)obj);
 						break;
 					case 4:					// 27a34
 						obj->XPI += obj->UD.UDbonus1.H009c.part.integer;
-						sub_27b4c(obj);
-						if (obj->XPI < 0xa0) {
-							NEXT(obj->mode1);
+						_barrel_gravity(obj);
+						if (obj->YPI < 0xa0 && obj->YPI >= 0) {
+							NEXT(obj->mode1);       // bounce off the silly trampoline
 							g.x8a64[0] = 1;
 							obj->UD.UDbonus1.Velocity.full = 0x0004c000;
 							temp = (sf2rand() & 1) + obj->SubSel;
@@ -736,7 +738,7 @@ static void sub_27862(Object_G2 *obj) {			// 27862 Act09 BONUS1
 					case 6:										// 27a8a
 						if(obj->mode2) {
 							obj->X.full += obj->UD.UDbonus1.H009c.full;
-							if(sub_27b4c(obj)<0 && obj->YPI < 40) {
+							if(_barrel_gravity(obj)<0 && obj->YPI < 40) {
 								NEXT(obj->mode1);
 								obj->mode2 = 0;
 								if (sf2rand() & 4) {
@@ -752,7 +754,7 @@ static void sub_27862(Object_G2 *obj) {			// 27862 Act09 BONUS1
 							check_rect_queue_draw((Object *)obj);
 						} else {
 							obj->X.full += obj->UD.UDbonus1.H009c.full;
-							if(sub_27b4c(obj)<0) {
+							if(_barrel_gravity(obj)<0) {
 								NEXT(obj->mode2);
 								obj->Pool = 2;
 								obj->exists = 1;
@@ -764,9 +766,23 @@ static void sub_27862(Object_G2 *obj) {			// 27862 Act09 BONUS1
 						break;
 					case 8:
 						// 27b08
+                        obj->X.full += obj->UD.UDbonus1.H009c.full;
+                        if(_barrel_gravity(obj) < 0 && obj->YPI < 40 && obj->YPI >= 0) {
+                            NEXT(obj->mode1);
+                            RHSetActionList((Object *)obj, RHCODE(0x27c54), 3);
+                        }
+                        actiontick((Object *)obj);
+                        check_rect_queue_draw((Object *)obj);
 						break;
 					case 10:
 						// 27b34
+                        if (obj->flag1) {       // still on screen?
+                            obj->XPI += obj->UD.UDbonus1.H009c.part.integer;
+                            actiontick((Object *)obj);
+                            check_rect_queue_draw((Object *)obj);
+                        } else {
+                            NEXT(obj->mode0);
+                        }
 						break;
 					FATALDEFAULT;
 				}

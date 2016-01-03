@@ -1426,7 +1426,10 @@ void LBCheckRoundResult(void) {
 			g.RoundResult = ROUNDRESULT_DRAW;
 			return;
 		} else {
-			if(g.CurrentStage == STAGE_BONUS_BARRELS) { /* sub_91c8(); XXX */  return; }
+			if(g.CurrentStage == STAGE_BONUS_BARRELS) {
+                sub_91c8();
+                return;
+            }
 			if(g.CurrentStage == STAGE_BONUS_CAR ||
 			   g.CurrentStage == STAGE_BONUS_DRUMS) {
 				/* 0x916e */
@@ -1925,6 +1928,12 @@ void _bumplevel(void) {		/* 2bf2 */
 		/* 2b76 */
 		++g.LevelCursor;
 	}
+    
+    // XXX
+    g.CurrentStage = 13; g.OnBonusStage = 1;
+    // XXX
+    
+    
 	if(g.LevelScript[g.LevelCursor+1] ==  0x10) {g.OnFinalStage = TRUE;}
 	boss_level_check();
 }

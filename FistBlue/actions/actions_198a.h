@@ -11,6 +11,7 @@
 #define INC_ACT198A
 
 void actions_198a(void);			/* 249fa */
+void sub_91c8(void);
 
 typedef enum actions_198a {
 	BLANKA_FISH = 0,
