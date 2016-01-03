@@ -917,7 +917,6 @@ void drawsprite(Object *obj) {         /* 7edaa */
     if(attr & 0xff00) {
         tiles_in_image = 1;
     }
-    //--tiles_in_image;
     coordlist = sub_7f224(RHSwapWord(image->Dimensions));        /* set a3 from Image->Dimensions */
     
     g.DSOffsetX = RHSwapWord(image->OffsetX);
@@ -981,7 +980,6 @@ static void sub_7f244 (Object *obj, u16 tiles_in_image, const Image *image, shor
 	if(g.ObjTileBudget < tiles_in_image)		{ return; }
 	g.ObjTileBudget -= tiles_in_image;
 	g_tilecount -= tiles_in_image;
-	tiles_in_image--;
 	attr = RHSwapWord(image->Attr) & 0xe0;	/* Only flips */
 	offsets = sub_7f224(RHSwapWord(image->Dimensions));
 	g.DSOffsetX = RHSwapWord(image->OffsetX);
