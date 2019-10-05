@@ -35,29 +35,6 @@
 		6C8C65281C37717200635FDB /* barrels.c in Sources */ = {isa = PBXBuildFile; fileRef = 6C8C65241C37717200635FDB /* barrels.c */; };
 		6C8C65291C37717200635FDB /* barrels.c in Sources */ = {isa = PBXBuildFile; fileRef = 6C8C65241C37717200635FDB /* barrels.c */; };
 		6CF004561C2A01C9008EA965 /* redhammer.c in Sources */ = {isa = PBXBuildFile; fileRef = 6CF004551C2A01C9008EA965 /* redhammer.c */; };
-		6CF0046E1C2A128C008EA965 /* sf2_05.bin in Resources */ = {isa = PBXBuildFile; fileRef = 6CF004571C2A128C008EA965 /* sf2_05.bin */; };
-		6CF0046F1C2A128C008EA965 /* sf2_06.bin in Resources */ = {isa = PBXBuildFile; fileRef = 6CF004581C2A128C008EA965 /* sf2_06.bin */; };
-		6CF004701C2A128C008EA965 /* sf2_07.bin in Resources */ = {isa = PBXBuildFile; fileRef = 6CF004591C2A128C008EA965 /* sf2_07.bin */; };
-		6CF004711C2A128C008EA965 /* sf2_08.bin in Resources */ = {isa = PBXBuildFile; fileRef = 6CF0045A1C2A128C008EA965 /* sf2_08.bin */; };
-		6CF004721C2A128C008EA965 /* sf2_09.bin in Resources */ = {isa = PBXBuildFile; fileRef = 6CF0045B1C2A128C008EA965 /* sf2_09.bin */; };
-		6CF004731C2A128C008EA965 /* sf2_14.bin in Resources */ = {isa = PBXBuildFile; fileRef = 6CF0045C1C2A128C008EA965 /* sf2_14.bin */; };
-		6CF004741C2A128C008EA965 /* sf2_15.bin in Resources */ = {isa = PBXBuildFile; fileRef = 6CF0045D1C2A128C008EA965 /* sf2_15.bin */; };
-		6CF004751C2A128C008EA965 /* sf2_16.bin in Resources */ = {isa = PBXBuildFile; fileRef = 6CF0045E1C2A128C008EA965 /* sf2_16.bin */; };
-		6CF004761C2A128C008EA965 /* sf2_17.bin in Resources */ = {isa = PBXBuildFile; fileRef = 6CF0045F1C2A128C008EA965 /* sf2_17.bin */; };
-		6CF004771C2A128D008EA965 /* sf2_18.bin in Resources */ = {isa = PBXBuildFile; fileRef = 6CF004601C2A128C008EA965 /* sf2_18.bin */; };
-		6CF004781C2A128D008EA965 /* sf2_19.bin in Resources */ = {isa = PBXBuildFile; fileRef = 6CF004611C2A128C008EA965 /* sf2_19.bin */; };
-		6CF004791C2A128D008EA965 /* sf2_24.bin in Resources */ = {isa = PBXBuildFile; fileRef = 6CF004621C2A128C008EA965 /* sf2_24.bin */; };
-		6CF0047A1C2A128D008EA965 /* sf2_25.bin in Resources */ = {isa = PBXBuildFile; fileRef = 6CF004631C2A128C008EA965 /* sf2_25.bin */; };
-		6CF0047B1C2A128D008EA965 /* sf2_26.bin in Resources */ = {isa = PBXBuildFile; fileRef = 6CF004641C2A128C008EA965 /* sf2_26.bin */; };
-		6CF0047C1C2A128D008EA965 /* sf2_27.bin in Resources */ = {isa = PBXBuildFile; fileRef = 6CF004651C2A128C008EA965 /* sf2_27.bin */; };
-		6CF0047D1C2A128D008EA965 /* sf2_29a.bin in Resources */ = {isa = PBXBuildFile; fileRef = 6CF004661C2A128C008EA965 /* sf2_29a.bin */; };
-		6CF0047E1C2A128D008EA965 /* sf2_36a.bin in Resources */ = {isa = PBXBuildFile; fileRef = 6CF004671C2A128C008EA965 /* sf2_36a.bin */; };
-		6CF0047F1C2A128D008EA965 /* sf2u.37a in Resources */ = {isa = PBXBuildFile; fileRef = 6CF004681C2A128C008EA965 /* sf2u.37a */; };
-		6CF004801C2A128D008EA965 /* sf2u.35a in Resources */ = {isa = PBXBuildFile; fileRef = 6CF004691C2A128C008EA965 /* sf2u.35a */; };
-		6CF004811C2A128D008EA965 /* sf2u.31a in Resources */ = {isa = PBXBuildFile; fileRef = 6CF0046A1C2A128C008EA965 /* sf2u.31a */; };
-		6CF004821C2A128D008EA965 /* sf2u.30a in Resources */ = {isa = PBXBuildFile; fileRef = 6CF0046B1C2A128C008EA965 /* sf2u.30a */; };
-		6CF004831C2A128D008EA965 /* sf2u.28a in Resources */ = {isa = PBXBuildFile; fileRef = 6CF0046C1C2A128C008EA965 /* sf2u.28a */; };
-		6CF004841C2A128D008EA965 /* sf2u.38a in Resources */ = {isa = PBXBuildFile; fileRef = 6CF0046D1C2A128C008EA965 /* sf2u.38a */; };
 		8D11072B0486CEB800E47090 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 089C165CFE840E0CC02AAC07 /* InfoPlist.strings */; };
 		8D11072F0486CEB800E47090 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */; };
 		B51533F2147EEB4F004A87B0 /* car.c in Sources */ = {isa = PBXBuildFile; fileRef = B51533F1147EEB4F004A87B0 /* car.c */; };
@@ -148,7 +125,6 @@
 		B5B0761615548649009D301D /* act1e_worldflags.c in Sources */ = {isa = PBXBuildFile; fileRef = B5B0761515548649009D301D /* act1e_worldflags.c */; };
 		B5B0763D155489B5009D301D /* act02_bicycleriders.c in Sources */ = {isa = PBXBuildFile; fileRef = B5B0763C155489B5009D301D /* act02_bicycleriders.c */; };
 		B5B0764615548B28009D301D /* act07_elephants.c in Sources */ = {isa = PBXBuildFile; fileRef = B5B0764515548B28009D301D /* act07_elephants.c */; };
-		B5B39B6A157832F200494662 /* sf2gfx.bin in Resources */ = {isa = PBXBuildFile; fileRef = B5B39B69157832F200494662 /* sf2gfx.bin */; };
 		B5B39CFC1578370D00494662 /* MT2AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 256AC3D90F4B6AC300CF3369 /* MT2AppDelegate.m */; };
 		B5B39CFD1578370E00494662 /* OGLView.m in Sources */ = {isa = PBXBuildFile; fileRef = B5ADB7AC13B2B34900905DFE /* OGLView.m */; };
 		B5B39CFE1578370E00494662 /* ParamController.m in Sources */ = {isa = PBXBuildFile; fileRef = B5E9056213B2D5FE00833C5A /* ParamController.m */; };
@@ -1513,33 +1489,9 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				6CF0047C1C2A128D008EA965 /* sf2_27.bin in Resources */,
 				8D11072B0486CEB800E47090 /* InfoPlist.strings in Resources */,
-				6CF004791C2A128D008EA965 /* sf2_24.bin in Resources */,
-				6CF004781C2A128D008EA965 /* sf2_19.bin in Resources */,
-				6CF004761C2A128C008EA965 /* sf2_17.bin in Resources */,
-				6CF004831C2A128D008EA965 /* sf2u.28a in Resources */,
-				6CF004801C2A128D008EA965 /* sf2u.35a in Resources */,
-				6CF0047F1C2A128D008EA965 /* sf2u.37a in Resources */,
-				6CF0046E1C2A128C008EA965 /* sf2_05.bin in Resources */,
-				6CF0047A1C2A128D008EA965 /* sf2_25.bin in Resources */,
-				6CF004701C2A128C008EA965 /* sf2_07.bin in Resources */,
-				6CF004721C2A128C008EA965 /* sf2_09.bin in Resources */,
-				6CF004811C2A128D008EA965 /* sf2u.31a in Resources */,
-				6CF004711C2A128C008EA965 /* sf2_08.bin in Resources */,
-				6CF004821C2A128D008EA965 /* sf2u.30a in Resources */,
-				6CF004841C2A128D008EA965 /* sf2u.38a in Resources */,
 				B5ADB7A913B2B2EA00905DFE /* MainMenu.xib in Resources */,
-				6CF004731C2A128C008EA965 /* sf2_14.bin in Resources */,
-				6CF0047B1C2A128D008EA965 /* sf2_26.bin in Resources */,
-				6CF0046F1C2A128C008EA965 /* sf2_06.bin in Resources */,
-				6CF0047E1C2A128D008EA965 /* sf2_36a.bin in Resources */,
 				B5E9056513B2D61900833C5A /* ParamController.xib in Resources */,
-				6CF004771C2A128D008EA965 /* sf2_18.bin in Resources */,
-				6CF0047D1C2A128D008EA965 /* sf2_29a.bin in Resources */,
-				B5B39B6A157832F200494662 /* sf2gfx.bin in Resources */,
-				6CF004751C2A128C008EA965 /* sf2_16.bin in Resources */,
-				6CF004741C2A128C008EA965 /* sf2_15.bin in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

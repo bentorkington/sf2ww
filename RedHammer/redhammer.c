@@ -8,6 +8,7 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <unistd.h>
 
 #include "redhammer.h"
 
@@ -61,6 +62,9 @@ int load_cps_roms()
     if ((g_code_roms = malloc(ALL_CODE_SIZE))) {
         FILE *rom0;     // even ROM
         FILE *rom1;     // odd ROM
+        
+        printf("opening from %s", getcwd(__DARWIN_NULL, 0));
+        
         for (int i=0; i<4; ++i) {
             printf("opening %s and %s\n", code_rom_names[2*i + 0], code_rom_names[2*i + 1]);
             rom0 = fopen(code_rom_names[2*i + 0], "r");
