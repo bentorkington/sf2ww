@@ -137,36 +137,36 @@ void AIInitPlayer(Player *ply) {		//2b780
 static short sub_2c120(Player *ply, Player *a0, short *d6) {	
 	/* one caller */
 	short d0;
-	u16 *yokeptr;
 	
-	if (*d6 != 6 && *d6 != 0x18) {
+	if (*d6 != 6 && *d6 != 24) {
 		return TRUE;
 	}
 	if (a0->Airborne == AIR_ONGROUND) {
 		return FALSE;
 	}
-	yokeptr = data_995de[a0->FighterID];	
-	if(a0->OppXDist > yokeptr[23]){		// beats me
+
+    if(a0->OppXDist > data_995de[a0->FighterID][23]){		// beats me
 		*d6 = -1;
 		return FALSE;
 	}
-	d0 = ABS(get_scr2x() - a0->XPI) - 0x60;
-	if (0xc0 > d0) {
+	d0 = ABS(get_scr2x() - a0->XPI) - 96;
+
+    if (192 > d0) {
 		return TRUE;
 	}
 	if (a0->VelX.full >= 0) {
-		if (0xe0 < d0) {
+		if (224 < d0) {
 			*d6 = -1;
 			return FALSE;
 		}
-		*d6 = 0x17;
+		*d6 = 23;
 		return TRUE;
 	}
 	if (d0 >= 0) {
 		*d6 = -1;
 		return FALSE;
 	}
-	*d6=0x17;
+	*d6 = 23;
 	return TRUE;
 }
 
@@ -174,30 +174,25 @@ static short sub_2c120(Player *ply, Player *a0, short *d6) {
  return TRUE if so. One caller */
 
 static short sub_2c0ce(Player *ply) {
-	short d6;
-	
-	if (ply->Opponent->Projectile) {
-		if(ply->Opponent->Projectile->x0024)  {		// is is a threat?
-			d6 = ply->Opponent->Projectile->ActionScript->Yoke;
-			if(sub_2fe6(ply, ply->Opponent->Projectile, 
-						d6)) {
-				ply->YokeAttackingMe = d6;
-				return TRUE;
-			}
-		}
-	}
-	if (ply->Opponent->IsJumpThreat==0 && ply->Opponent->Attacking==0 ) {
+    if (ply->Opponent->Projectile && ply->Opponent->Projectile->x0024) { // is is a threat?
+        if(sub_2fe6(ply, ply->Opponent->Projectile,
+                    ply->Opponent->Projectile->ActionScript->Yoke)) {
+            ply->YokeAttackingMe = ply->Opponent->Projectile->ActionScript->Yoke;
+            return TRUE;
+        }
+    }
+	if (ply->Opponent->IsJumpThreat == 0 && ply->Opponent->Attacking == 0 ) {
 		return FALSE;
 	}
-	d6=ply->Opponent->ActionScript->Yoke;
+	short d6=ply->Opponent->ActionScript->Yoke;
 	
 	if (d6 < 0) {
 		return FALSE;
 	}
-	if (sub_2fe6(ply, (Object *)ply->Opponent, d6)==0) {
+	if (sub_2fe6(ply, (Object *) ply->Opponent, d6) == 0) {
 		return FALSE;
 	}
-	if (sub_2c120(ply,ply->Opponent,&d6)==0) {
+	if (sub_2c120(ply, ply->Opponent, &d6) == 0) {
 		return FALSE;
 	}
 	ply->YokeAttackingMe = d6;
@@ -205,27 +200,25 @@ static short sub_2c0ce(Player *ply) {
 }
 
 void AICheckThreats(Player *ply) {		// 2c056 per-frame before comp_frontend
-	if(ply->AIThreatCheckMode == 0) {		// check for threats if enabled
+	if(ply->AIThreatCheckMode && sub_2c0ce(ply)) {		// check for threats if enabled
+        if(ply->AITimerThreatCheck) {
+            --ply->AITimerThreatCheck;
+            ply->AIThreatFound = FALSE;
+        }
+        else if (ply->AIThreatFound || ply->AIThreatCheckMode != 2 ||
+            comp_ply_difficulty_lookup(ply, RHCODE(0x98152)) ) {
+            ply->AIThreatFound = TRUE;
+        }
+        else {
+            /* delay next threat check for 30f */
+            ply->AITimerThreatCheck = 30;		
+            /* was a table lookup, but they were always the same */
+        }
+    } else {
 		/* 2c09a */
 		ply->AITimerThreatCheck = 0;				// no threat, reset timer
 		ply->AIThreatFound = FALSE;
 		return;
-	}
-	if(sub_2c0ce(ply) == 0) {
-		ply->AITimerThreatCheck = 0;				// no threat, reset timer
-		ply->AIThreatFound = FALSE;
-		return;
-	}	
-	if(ply->AITimerThreatCheck) {
-		--ply->AITimerThreatCheck;
-		ply->AIThreatFound = FALSE;
-	} else if (ply->AIThreatFound || ply->AIThreatCheckMode != 2 ||
-			   comp_ply_difficulty_lookup(ply, RHCODE(0x98152)) ) {
-		ply->AIThreatFound=TRUE;
-	} else {
-		/* delay next threat check for 30f */
-		ply->AITimerThreatCheck = 30;		
-		/* was a table lookup, but they were always the same */
 	}
 }
 
@@ -556,8 +549,10 @@ static void _AIStratStandStill(Player *ply) {		/* 2ae50 standing still*/
 					ply->AIMode2    = 8;				//AINewTimerTooClose
 					ply->AITooClose = ply->AIParam2;
 					ply->AITimer    = (char []){		/* data_2af08 */ 
-						120, 120, 120, 120, 120, 120, 120, 120, 100, 100, 100, 100, 100, 100, 100, 100, 
-						80,  80,  80,  80,  80,  80,  80,  80,  60,  60,  60,  60,  60,  60,  60,  60, 
+						120, 120, 120, 120, 120, 120, 120, 120,
+                        100, 100, 100, 100, 100, 100, 100, 100,
+						80,  80,  80,  80,  80,  80,  80,  80,
+                        60,  60,  60,  60,  60,  60,  60,  60,
 					}[RAND32];
 					_AINewTimerTooClose(ply);
 				} else if (ply->AIParam1 & 0x40) {
@@ -645,7 +640,7 @@ static void _AIStratKick(Player *ply) {
 
 //STRAT_SHORTWALK
 static void _AIStratShortWalk(Player *ply) {		/* 2afb0 */
-	short temp, d0;
+	short d0;
 	switch (ply->AIMode2) {
 		case 0:
 			NEXT(ply->AIMode2); 
@@ -662,11 +657,10 @@ static void _AIStratShortWalk(Player *ply) {		/* 2afb0 */
 				}
 				
 				if (ply->AIWalkDirection) {
-					temp = data_2b09a[ply->AIParam1 & 0xf][RAND32];		//size of = 32bytes
+                    ply->AIWalkTarget = ply->XPI + data_2b09a[ply->AIParam1 & 0xf][RAND32];
 				} else {
-					temp = -data_2b09a[ply->AIParam1 & 0xf][RAND32];	
+                    ply->AIWalkTarget = ply->XPI - data_2b09a[ply->AIParam1 & 0xf][RAND32];
 				}
-				ply->AIWalkTarget = temp + ply->XPI;
 			} else {
 				// 2b022
 				if (ply->AIParam1 & AIB_WALKAWAY) {
@@ -677,12 +671,12 @@ static void _AIStratShortWalk(Player *ply) {		/* 2afb0 */
 				if (ply->Flip) {
 					ply->AIWalkDirection ^= 1;
 				}
+                
 				if (ply->AIWalkDirection) {
-					temp = data_2b094[ply->AIParam1 & 0xf];		/* RIGHT */
+                    ply->AIWalkTarget = ply->XPI + data_2b094[ply->AIParam1 & 0xf];	/* RIGHT */
 				} else {
-					temp = -data_2b094[ply->AIParam1 & 0xf];	/* LEFT */
+                    ply->AIWalkTarget = ply->XPI - data_2b094[ply->AIParam1 & 0xf];	/* LEFT */
 				}
-				ply->AIWalkTarget = temp + ply->XPI;
 			}
 			/* FALLTHRU */
 		case 2:
@@ -693,7 +687,7 @@ static void _AIStratShortWalk(Player *ply) {		/* 2afb0 */
 				_AIFinish(ply); 
 			} else {
 				d0 = ply->BoundCheck;
-				if (ply->BoundCheck==0) {
+				if (ply->BoundCheck == 0) {
 					d0 = ply->PlatformFallDir;
 					if (d0 == 0) {
 						_AICheckAggressive(ply);
@@ -865,7 +859,7 @@ static void _AIStratJump(Player *ply) {
 				return;
 			}
 			if (ply->x022a & 0x10) {		/* should we attack during the jump? */
-				if (comp_ply_difficulty_lookup(ply, RHCODE(0x97522))==0) {
+				if (comp_ply_difficulty_lookup(ply, RHCODE(0x97522)) == 0) {
 					return;
 				}
 			}
