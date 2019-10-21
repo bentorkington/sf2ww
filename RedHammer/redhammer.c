@@ -18,6 +18,13 @@ char *g_code_roms;
 char *g_sound_roms;
 char *g_gfx_roms;
 
+
+/** use the combined 'allroms.bin' instead of separate hi/lo ROMs */
+#define REDHAMMER_USE_ALLROMS_BIN
+
+#ifndef REDHAMMER_USE_ALLROMS_BIN
+
+/** the names of each of the games code ROMs, in even/odd pairs */
 const char *code_rom_names[] = {
     "sf2u.30a",
     "sf2u.37a",
@@ -28,9 +35,13 @@ const char *code_rom_names[] = {
     "sf2_29a.bin",
     "sf2_36a.bin",
 };
+#endif
 
+/** the size of one code ROM, in bytes */
 #define CODE_ROM_SIZE 0x20000
+/** the size of a pair of hi/lo ROMs, in bytes */
 #define ROM_PAIR_SIZE (CODE_ROM_SIZE * 2)
+/** the size of all the game's code ROMs, in bytes */
 #define ALL_CODE_SIZE (CODE_ROM_SIZE * 8)
 
 const char *gfx_rom_names[] = {
@@ -60,6 +71,11 @@ const char *sample_rom_names[] = {
 int load_cps_roms()
 {
     if ((g_code_roms = malloc(ALL_CODE_SIZE))) {
+#ifdef REDHAMMER_USE_ALLROMS_BIN
+        FILE *allroms = fopen("allroms.bin", "r");
+        int bytesread = fread(g_code_roms, 1, ALL_CODE_SIZE, allroms);
+        printf("allroms: read %d bytes\n", bytesread);
+#else
         FILE *rom0;     // even ROM
         FILE *rom1;     // odd ROM
         
@@ -76,6 +92,7 @@ int load_cps_roms()
             fclose(rom0);
             fclose(rom1);
         }
+#endif
     }
     else {
         return 0;
