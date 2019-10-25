@@ -1,6 +1,6 @@
 # MustardTiger
 
-C99 rewrite of Street Fighter II World Warror (MAME romset sf2ua)
+C99 rewrite of Street Fighter II World Warrior (MAME romset sf2ua)
 
 ## Fistblue
 
