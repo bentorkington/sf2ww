@@ -692,7 +692,10 @@ void set_ply_directions(Player *ply) {	/* 2f8a */
 	}
 }
 		
-/* rarely returns 1 for free blades etc + spritelib */
+/* rarely returns 1 for free blades etc + spritelib
+ This is the 1-in-512 chance for 512-Special and 512-Guard
+ */
+
 short LBRareChance(void) {					// 3052
 	if(data_98d82[RAND64] & (1 << RAND8)) {
 		return TRUE;
