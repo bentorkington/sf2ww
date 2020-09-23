@@ -21,6 +21,7 @@
 #include "fightgfx.h"
 #include "gfxlib.h"
 #include "collision.h"
+#include "coll_bonus.h"
 
 #include "sound.h"
 

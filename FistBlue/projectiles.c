@@ -26,7 +26,7 @@ extern Game g;
 static void sub_23508(Object *obj, short d7);
 static void projsm_fireball(Object *obj, short d7);
 static void proc_yogafire(Object *obj, short d7); /* 0x23426 */
-
+static void action_207f0(Object *obj, short d7);
 static void destroy_projectile(Object *obj) {		// 235f8
 	NEXT(obj->mode0);
 	if(obj->Energy == -1) {
