@@ -67,7 +67,7 @@ static void start_timewarp_action (Player *vict);
 /* main entry to check collisions between players */
 void CDCheckPlayers(void) {       /* 7cee0, called from fighttick. */
     debughook(6);
-    if(g.PlayersThrowing) { return; }
+    if(g.x0ade) { return; }
     if(g.Player1.CompImmune) {g.Player1.CompImmune--;}
     if(g.Player2.CompImmune) {g.Player2.CompImmune--;}
 	
@@ -208,7 +208,7 @@ short diminishing_damage(int damage, Player *vict) {  /* 7d4b6 */
 	static const char data_93420[31]={
 		24,  24,  24,  24,  24,  24,  20,  20,  20,  20,  20,  16,  16,  16,  16,  16, 
 		12,  12,  12,  12,  12,   8,   8,   8,   8,   8,   4,   4,   4,   4,   4, 
-	};
+	}; // XXX there's one more byte I think? 0xc0
 	
     if(vict->Energy >= 0x1f) { return damage; }
     damage -= (damage * data_93420[vict->Energy]) >> 5;

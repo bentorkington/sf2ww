@@ -112,7 +112,12 @@ void setpalette_scroll3(short palette) {		// emulation of 1706
     }
 }
 
-
+/**
+ * @brief 
+ * 
+ * @param palette 
+ * @see sf2ua/0x1742
+ */
 void sub_1742(int palette) {
 	short u, v;
 

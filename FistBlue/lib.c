@@ -627,6 +627,9 @@ void startup (void) {
 }
 
 
+/**
+ sf2ua: 0x52e6
+ */
 void bin2bcd(short dec){
 #ifndef CPS
 	/* Artificial for non-embedded systems */

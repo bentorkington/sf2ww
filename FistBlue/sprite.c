@@ -70,6 +70,10 @@ static const short data_trig[32][4] = {		/* 7f030 */
     {   236,   -97,    97,   236,  },
     {   250,   -49,    49,   250,  },
 };
+
+// these values are converted from m68k offset tables
+// to u16 offsets in the 0x7f7f2 array
+
 static const short data_7f6f2[]={
 	3288, 4560, 4484, 2604, 2766, 3080, 4036, 4388,
 	1740, 1752, 3598, 3070, 2352, 2886, 4340, 2370, 

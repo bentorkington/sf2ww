@@ -475,9 +475,15 @@ int _check_throw(int airthrow, Player *ply) {		/* 0x3338 */
     
     return TRUE;
 }
+/**
+ sf2ua: 0x3332
+ */
 int airthrowvalid(Player *ply) {
     return _check_throw(TRUE, ply);
 }
+/**
+ sf2ua: 0x3338
+ */
 int throwvalid(Player *ply) {
     return _check_throw(FALSE, ply);
 }

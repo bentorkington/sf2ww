@@ -266,7 +266,7 @@ typedef struct game {
 	char	ScreenWobbleStarted;	// 0adb
     char    ScreenWobbleMagnitude;			/* 0adc */
     u8      PlayersThrowing;
-    u8		x0ade;					// not found set
+    u8		x0ade;					// not found set, disables collision detection
 	char	LastDrawOrder;			/* last draw order */
 
 	u8		ThrowEndHoldoff;

@@ -519,6 +519,7 @@ static void draw_world_map(void) {		//856c mode 2,4,2
 		FATALDEFAULT;
 	}
 }
+
 void game_mode_24 (void) {		// 0x7786
     switch (g.mode2) {
         case 0:
