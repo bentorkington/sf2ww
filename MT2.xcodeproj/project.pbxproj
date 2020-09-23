@@ -69,7 +69,6 @@
 		B558918F1485B04A00BBB0BA /* coll_bonus.c in Sources */ = {isa = PBXBuildFile; fileRef = B558918E1485B04A00BBB0BA /* coll_bonus.c */; };
 		B5613C3B155F9917001E127A /* text.c in Sources */ = {isa = PBXBuildFile; fileRef = B5613C3A155F9917001E127A /* text.c */; };
 		B56A718C1411B0D300DF7F02 /* game.c in Sources */ = {isa = PBXBuildFile; fileRef = B56A718B1411B0D300DF7F02 /* game.c */; };
-		B56BBD5514859AA100FF84CB /* fbtests.c in Sources */ = {isa = PBXBuildFile; fileRef = B56BBD5414859AA100FF84CB /* fbtests.c */; };
 		B56BFC68156B43C500DC7BAD /* blanka_comp.c in Sources */ = {isa = PBXBuildFile; fileRef = B56BFC67156B43C500DC7BAD /* blanka_comp.c */; };
 		B56BFC70156B444F00DC7BAD /* blanka_human.c in Sources */ = {isa = PBXBuildFile; fileRef = B56BFC6F156B444F00DC7BAD /* blanka_human.c */; };
 		B56BFC8F156B48F600DC7BAD /* ryuken_human.c in Sources */ = {isa = PBXBuildFile; fileRef = B56BFC8E156B48F600DC7BAD /* ryuken_human.c */; };
@@ -173,7 +172,6 @@
 		B5C574561772782600496283 /* car.c in Sources */ = {isa = PBXBuildFile; fileRef = B51533F1147EEB4F004A87B0 /* car.c */; };
 		B5C574571772782600496283 /* drums.c in Sources */ = {isa = PBXBuildFile; fileRef = B51533F4147EEBDB004A87B0 /* drums.c */; };
 		B5C574581772782600496283 /* actions.c in Sources */ = {isa = PBXBuildFile; fileRef = B5ADB7E413B2B57D00905DFE /* actions.c */; };
-		B5C574591772782600496283 /* fbtests.c in Sources */ = {isa = PBXBuildFile; fileRef = B56BBD5414859AA100FF84CB /* fbtests.c */; };
 		B5C5745A1772782600496283 /* coll_projectile.c in Sources */ = {isa = PBXBuildFile; fileRef = B55891421485AB2A00BBB0BA /* coll_projectile.c */; };
 		B5C5745B1772782600496283 /* coll_bonus.c in Sources */ = {isa = PBXBuildFile; fileRef = B558918E1485B04A00BBB0BA /* coll_bonus.c */; };
 		B5C5745C1772782600496283 /* demo.c in Sources */ = {isa = PBXBuildFile; fileRef = B5FD9F7E1488260A00DDF4D9 /* demo.c */; };
@@ -254,7 +252,6 @@
 		B5E0EFE417754D8800F50790 /* car.c in Sources */ = {isa = PBXBuildFile; fileRef = B51533F1147EEB4F004A87B0 /* car.c */; };
 		B5E0EFE517754D8800F50790 /* drums.c in Sources */ = {isa = PBXBuildFile; fileRef = B51533F4147EEBDB004A87B0 /* drums.c */; };
 		B5E0EFE617754D8800F50790 /* actions.c in Sources */ = {isa = PBXBuildFile; fileRef = B5ADB7E413B2B57D00905DFE /* actions.c */; };
-		B5E0EFE717754D8800F50790 /* fbtests.c in Sources */ = {isa = PBXBuildFile; fileRef = B56BBD5414859AA100FF84CB /* fbtests.c */; };
 		B5E0EFE817754D8800F50790 /* coll_projectile.c in Sources */ = {isa = PBXBuildFile; fileRef = B55891421485AB2A00BBB0BA /* coll_projectile.c */; };
 		B5E0EFE917754D8800F50790 /* coll_bonus.c in Sources */ = {isa = PBXBuildFile; fileRef = B558918E1485B04A00BBB0BA /* coll_bonus.c */; };
 		B5E0EFEA17754D8800F50790 /* demo.c in Sources */ = {isa = PBXBuildFile; fileRef = B5FD9F7E1488260A00DDF4D9 /* demo.c */; };
@@ -335,7 +332,6 @@
 		B5E0F03F17754D9500F50790 /* car.c in Sources */ = {isa = PBXBuildFile; fileRef = B51533F1147EEB4F004A87B0 /* car.c */; };
 		B5E0F04017754D9500F50790 /* drums.c in Sources */ = {isa = PBXBuildFile; fileRef = B51533F4147EEBDB004A87B0 /* drums.c */; };
 		B5E0F04117754D9500F50790 /* actions.c in Sources */ = {isa = PBXBuildFile; fileRef = B5ADB7E413B2B57D00905DFE /* actions.c */; };
-		B5E0F04217754D9500F50790 /* fbtests.c in Sources */ = {isa = PBXBuildFile; fileRef = B56BBD5414859AA100FF84CB /* fbtests.c */; };
 		B5E0F04317754D9500F50790 /* coll_projectile.c in Sources */ = {isa = PBXBuildFile; fileRef = B55891421485AB2A00BBB0BA /* coll_projectile.c */; };
 		B5E0F04417754D9500F50790 /* coll_bonus.c in Sources */ = {isa = PBXBuildFile; fileRef = B558918E1485B04A00BBB0BA /* coll_bonus.c */; };
 		B5E0F04517754D9500F50790 /* demo.c in Sources */ = {isa = PBXBuildFile; fileRef = B5FD9F7E1488260A00DDF4D9 /* demo.c */; };
@@ -602,6 +598,19 @@
 		B5948BE4156F1B610029278E /* chunli_comp.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = chunli_comp.c; sourceTree = "<group>"; };
 		B5948BE6156F1B6E0029278E /* chunli_human.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = chunli_human.c; sourceTree = "<group>"; };
 		B59F4C931A2992B4003699C1 /* redhammer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = redhammer.h; sourceTree = "<group>"; };
+		B5A7C45D251B014D00CB08BD /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		B5A7C45F251B014D00CB08BD /* GameScene.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = GameScene.sks; sourceTree = "<group>"; };
+		B5A7C461251B014D00CB08BD /* Actions.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = Actions.sks; sourceTree = "<group>"; };
+		B5A7C463251B014D00CB08BD /* GameScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameScene.swift; sourceTree = "<group>"; };
+		B5A7C465251B014D00CB08BD /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		B5A7C467251B014F00CB08BD /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		B5A7C46A251B014F00CB08BD /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		B5A7C46C251B014F00CB08BD /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		B5A7C46D251B014F00CB08BD /* MT2SK.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = MT2SK.entitlements; sourceTree = "<group>"; };
+		B5A7C476251B015000CB08BD /* MT2SKTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MT2SKTests.swift; sourceTree = "<group>"; };
+		B5A7C478251B015000CB08BD /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		B5A7C481251B015000CB08BD /* MT2SKUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MT2SKUITests.swift; sourceTree = "<group>"; };
+		B5A7C483251B015000CB08BD /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		B5AC6A5F1550BDBB00C9339E /* testlib.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = testlib.h; sourceTree = "<group>"; };
 		B5AC6A601550BDBB00C9339E /* testlib.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = testlib.c; sourceTree = "<group>"; };
 		B5ADB7A813B2B2EA00905DFE /* MainMenu.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MainMenu.xib; sourceTree = "<group>"; };
@@ -887,6 +896,9 @@
 				B5E8FD131776C7D400C6060E /* MT2 GLUT */,
 				B52124B718D65A6D00D2F649 /* iMustard */,
 				B52124DD18D65A6E00D2F649 /* iMustardTests */,
+				B5A7C45C251B014D00CB08BD /* MT2SK */,
+				B5A7C475251B015000CB08BD /* MT2SKTests */,
+				B5A7C480251B015000CB08BD /* MT2SKUITests */,
 				29B97323FDCFA39411CA2CEA /* Frameworks */,
 				19C28FACFE9D520D11CA2CBB /* Products */,
 				B5C574841772782800496283 /* MT2 JAP-Info.plist */,
@@ -1061,6 +1073,40 @@
 				B5B39BB01578345600494662 /* glutBasics.c */,
 			);
 			name = "GLUT App";
+			sourceTree = "<group>";
+		};
+		B5A7C45C251B014D00CB08BD /* MT2SK */ = {
+			isa = PBXGroup;
+			children = (
+				B5A7C45D251B014D00CB08BD /* AppDelegate.swift */,
+				B5A7C45F251B014D00CB08BD /* GameScene.sks */,
+				B5A7C461251B014D00CB08BD /* Actions.sks */,
+				B5A7C463251B014D00CB08BD /* GameScene.swift */,
+				B5A7C465251B014D00CB08BD /* ViewController.swift */,
+				B5A7C467251B014F00CB08BD /* Assets.xcassets */,
+				B5A7C469251B014F00CB08BD /* Main.storyboard */,
+				B5A7C46C251B014F00CB08BD /* Info.plist */,
+				B5A7C46D251B014F00CB08BD /* MT2SK.entitlements */,
+			);
+			path = MT2SK;
+			sourceTree = "<group>";
+		};
+		B5A7C475251B015000CB08BD /* MT2SKTests */ = {
+			isa = PBXGroup;
+			children = (
+				B5A7C476251B015000CB08BD /* MT2SKTests.swift */,
+				B5A7C478251B015000CB08BD /* Info.plist */,
+			);
+			path = MT2SKTests;
+			sourceTree = "<group>";
+		};
+		B5A7C480251B015000CB08BD /* MT2SKUITests */ = {
+			isa = PBXGroup;
+			children = (
+				B5A7C481251B015000CB08BD /* MT2SKUITests.swift */,
+				B5A7C483251B015000CB08BD /* Info.plist */,
+			);
+			path = MT2SKUITests;
 			sourceTree = "<group>";
 		};
 		B5ADB7E113B2B57D00905DFE /* FistBlue */ = {
@@ -1450,6 +1496,7 @@
 		29B97313FDCFA39411CA2CEA /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
+				LastSwiftUpdateCheck = 1220;
 				LastUpgradeCheck = 0710;
 				TargetAttributes = {
 					B52124D518D65A6D00D2F649 = {
@@ -1619,7 +1666,6 @@
 				B51533F2147EEB4F004A87B0 /* car.c in Sources */,
 				B51533F5147EEBDB004A87B0 /* drums.c in Sources */,
 				B5BA3ACE147F0EBC0069ACD3 /* actions.c in Sources */,
-				B56BBD5514859AA100FF84CB /* fbtests.c in Sources */,
 				B55891431485AB2A00BBB0BA /* coll_projectile.c in Sources */,
 				B558918F1485B04A00BBB0BA /* coll_bonus.c in Sources */,
 				B5FD9F801488260A00DDF4D9 /* demo.c in Sources */,
@@ -1720,7 +1766,6 @@
 				B5C574561772782600496283 /* car.c in Sources */,
 				B5C574571772782600496283 /* drums.c in Sources */,
 				B5C574581772782600496283 /* actions.c in Sources */,
-				B5C574591772782600496283 /* fbtests.c in Sources */,
 				B5C5745A1772782600496283 /* coll_projectile.c in Sources */,
 				B5C5745B1772782600496283 /* coll_bonus.c in Sources */,
 				B5C5745C1772782600496283 /* demo.c in Sources */,
@@ -1803,7 +1848,6 @@
 				B5E0EFE417754D8800F50790 /* car.c in Sources */,
 				B5E0EFE517754D8800F50790 /* drums.c in Sources */,
 				B5E0EFE617754D8800F50790 /* actions.c in Sources */,
-				B5E0EFE717754D8800F50790 /* fbtests.c in Sources */,
 				B5E0EFE817754D8800F50790 /* coll_projectile.c in Sources */,
 				B5E0EFE917754D8800F50790 /* coll_bonus.c in Sources */,
 				B5E0EFEA17754D8800F50790 /* demo.c in Sources */,
@@ -1885,7 +1929,6 @@
 				B5E0F03F17754D9500F50790 /* car.c in Sources */,
 				B5E0F04017754D9500F50790 /* drums.c in Sources */,
 				B5E0F04117754D9500F50790 /* actions.c in Sources */,
-				B5E0F04217754D9500F50790 /* fbtests.c in Sources */,
 				B5E0F04317754D9500F50790 /* coll_projectile.c in Sources */,
 				B5E0F04417754D9500F50790 /* coll_bonus.c in Sources */,
 				B5E0F04517754D9500F50790 /* demo.c in Sources */,
@@ -2049,6 +2092,14 @@
 				B52124E118D65A6E00D2F649 /* en */,
 			);
 			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+		B5A7C469251B014F00CB08BD /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				B5A7C46A251B014F00CB08BD /* Base */,
+			);
+			name = Main.storyboard;
 			sourceTree = "<group>";
 		};
 		B5C574181772781A00496283 /* InfoPlist.strings */ = {
