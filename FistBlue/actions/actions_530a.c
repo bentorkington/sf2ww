@@ -35,7 +35,6 @@ static void sub_82bec(Object2 *act) {
 	/* XXX fixme */
 }
 
-
 static void sub_82c4c(Object2 *act) {
 	u16 *a0 = act->x0042;
 	u16 *a1 = act->x0048;

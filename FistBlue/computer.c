@@ -778,14 +778,14 @@ short comp_setnextaction(Player *ply) {		/* 2c5de */
 		
 		if(check_round_result()) { 
 			ply->NextAction = NEXTACT_ROUNDOVER;
-			return 1;
+			return TRUE;
 		}
 		ply->NextAction = NEXTACT_TURNAROUND;
 		check_my_direction(ply);			/* no conditional */
 		/* go to 2c62e */
 		if(check_comp_should_jump(ply)) { 
 			ply->NextAction = NEXTACT_JUMP;
-			return 1; 
+			return TRUE; 
 		}
 		ply->NextAction = NEXTACT_STANDUP;
 		if(comp_check_block(ply)==0) { return 1; }
@@ -848,6 +848,7 @@ static void process_plstat_frontend(Player *ply) {		/* 2ad2a */
 	}
 	comp_proc_stat(ply);
 }
+
 static void comp_changetactics(Player *ply, short d0) {	/* 2c1b4 */
 	ply->YokeSaved = ply->YokeAttackingMe;
 	if(d0 != 2) {	/* Save current AI state for later retrieval, and set AIForceDefensive */

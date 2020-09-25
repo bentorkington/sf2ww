@@ -16,7 +16,10 @@
 
 #include "act29_wwlogo.h"
 
-
+struct UserData_29 {
+	short XSave;
+	int funky;		// was actually stored in VelX VelY
+};
 typedef struct UserData_29 * UD;
 
 void action_29(Object *obj) {
@@ -51,11 +54,7 @@ void action_29(Object *obj) {
 						}
 					} else {
 						++obj->LocalTimer;
-						if (obj->LocalTimer & 1) {
-							obj->X.full += ud->funky;
-						} else {
-							obj->X.full -= ud->funky;
-						}
+                        obj->X.full += (obj->LocalTimer & 1) ? ud->funky: -ud->funky;
 					}
 					break;
 				case 2:

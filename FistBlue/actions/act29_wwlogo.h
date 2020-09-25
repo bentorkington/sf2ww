@@ -8,8 +8,3 @@
  */
 
 void action_29(Object *obj);
-
-struct UserData_29 {
-	short XSave;
-	int funky;		// was actually stored in VelX VelY
-};

@@ -829,9 +829,11 @@ void sub_24f22(Object_G2 *obj) {
 	check_rect_queue_draw((Object *)obj);
 }
 
-
-
-void actions_198a(void) {			/* 249fa */
+/**
+ * @brief set up object-based stage actions
+ * @addr 0x249fa
+ */
+void actions_198a(void) {
 	short i;
 	
 	debughook(1);

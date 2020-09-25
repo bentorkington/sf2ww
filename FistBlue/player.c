@@ -111,7 +111,7 @@ static void apply_throw_damage(Player *ply, Player *opp_a3, short index) {		///0
     opp_a3->UndealtDamage = dr.damage;
     opp_a3->RewardID = dr.d5;             /* score reward */
     if(g.FastEndingFight == 0 && g.OnBonusStage == 0) {
-        if(opp_a3->Energy - dr.damage >= 0) { return; }
+        if(opp_a3->Energy < dr.damage) { return; }
         
         /* player is knocked out */
         if(opp_a3->FighterID == FID_CHUN_LI) {

@@ -142,6 +142,7 @@ static void PSMakeDizzy(Player *ply) {			/* 2a652 make dizzy */
 			break;
 	}
 }
+
 static void PSDizzyRandomise(Player *ply) {	        	/* 2a638 4 callers */
 	static const char data_2a698[32] = {
 		1, -1, 2, 0, 1, 0, 0, -2, 0, 1, -1, -2, 0, 0, 2, 0, 3, -3,
@@ -153,6 +154,7 @@ static void PSDizzyRandomise(Player *ply) {	        	/* 2a638 4 callers */
 		PSMakeDizzy(ply);
 	}
 }
+
 static void PSDizzyAccounting(Player *ply) {
 	static const u16 data_2a5ec[3][2] = {{0x6, 0x28},{0xb, 0x37},{0xe, 0x50}};
 	

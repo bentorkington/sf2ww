@@ -38,7 +38,7 @@ const char *code_rom_names[] = {
 #endif
 
 /** the size of one code ROM, in bytes */
-#define CODE_ROM_SIZE 0x20000
+#define CODE_ROM_SIZE 0x20000 // 128 kiB
 /** the size of a pair of hi/lo ROMs, in bytes */
 #define ROM_PAIR_SIZE (CODE_ROM_SIZE * 2)
 /** the size of all the game's code ROMs, in bytes */
@@ -139,8 +139,17 @@ const u16 RH3DWord(u32 base, int dim2, int dim3, int i1, int i2, int i3)
     u16 *array = RHCODE(base);
     return RHSwapWord(*(array + (i1 * dim2 * dim3) + (i2 * dim3) + i3));
 }
+const short RH3DShort(u32 base, int dim2, int dim3, int i1, int i2, int i3)
+{
+    u16 *array = RHCODE(base);
+    return RHSwapWord(*(array + (i1 * dim2 * dim3) + (i2 * dim3) + i3));
+}
 const u16 RH2DWord(u32 base, int dim2, int i1, int i2)
 {
+    u16 *array = RHCODE(base);
+    return RHSwapWord(*(array + (i1 * dim2) + i2));
+}
+const short RH2DShort(u32 base, int dim2, int i1, int i2) {
     u16 *array = RHCODE(base);
     return RHSwapWord(*(array + (i1 * dim2) + i2));
 }
