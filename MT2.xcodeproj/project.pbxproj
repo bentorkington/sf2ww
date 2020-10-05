@@ -598,19 +598,6 @@
 		B5948BE4156F1B610029278E /* chunli_comp.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = chunli_comp.c; sourceTree = "<group>"; };
 		B5948BE6156F1B6E0029278E /* chunli_human.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = chunli_human.c; sourceTree = "<group>"; };
 		B59F4C931A2992B4003699C1 /* redhammer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = redhammer.h; sourceTree = "<group>"; };
-		B5A7C45D251B014D00CB08BD /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		B5A7C45F251B014D00CB08BD /* GameScene.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = GameScene.sks; sourceTree = "<group>"; };
-		B5A7C461251B014D00CB08BD /* Actions.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = Actions.sks; sourceTree = "<group>"; };
-		B5A7C463251B014D00CB08BD /* GameScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameScene.swift; sourceTree = "<group>"; };
-		B5A7C465251B014D00CB08BD /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
-		B5A7C467251B014F00CB08BD /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
-		B5A7C46A251B014F00CB08BD /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
-		B5A7C46C251B014F00CB08BD /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		B5A7C46D251B014F00CB08BD /* MT2SK.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = MT2SK.entitlements; sourceTree = "<group>"; };
-		B5A7C476251B015000CB08BD /* MT2SKTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MT2SKTests.swift; sourceTree = "<group>"; };
-		B5A7C478251B015000CB08BD /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		B5A7C481251B015000CB08BD /* MT2SKUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MT2SKUITests.swift; sourceTree = "<group>"; };
-		B5A7C483251B015000CB08BD /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		B5AC6A5F1550BDBB00C9339E /* testlib.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = testlib.h; sourceTree = "<group>"; };
 		B5AC6A601550BDBB00C9339E /* testlib.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = testlib.c; sourceTree = "<group>"; };
 		B5ADB7A813B2B2EA00905DFE /* MainMenu.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MainMenu.xib; sourceTree = "<group>"; };
@@ -896,9 +883,6 @@
 				B5E8FD131776C7D400C6060E /* MT2 GLUT */,
 				B52124B718D65A6D00D2F649 /* iMustard */,
 				B52124DD18D65A6E00D2F649 /* iMustardTests */,
-				B5A7C45C251B014D00CB08BD /* MT2SK */,
-				B5A7C475251B015000CB08BD /* MT2SKTests */,
-				B5A7C480251B015000CB08BD /* MT2SKUITests */,
 				29B97323FDCFA39411CA2CEA /* Frameworks */,
 				19C28FACFE9D520D11CA2CBB /* Products */,
 				B5C574841772782800496283 /* MT2 JAP-Info.plist */,
@@ -1073,40 +1057,6 @@
 				B5B39BB01578345600494662 /* glutBasics.c */,
 			);
 			name = "GLUT App";
-			sourceTree = "<group>";
-		};
-		B5A7C45C251B014D00CB08BD /* MT2SK */ = {
-			isa = PBXGroup;
-			children = (
-				B5A7C45D251B014D00CB08BD /* AppDelegate.swift */,
-				B5A7C45F251B014D00CB08BD /* GameScene.sks */,
-				B5A7C461251B014D00CB08BD /* Actions.sks */,
-				B5A7C463251B014D00CB08BD /* GameScene.swift */,
-				B5A7C465251B014D00CB08BD /* ViewController.swift */,
-				B5A7C467251B014F00CB08BD /* Assets.xcassets */,
-				B5A7C469251B014F00CB08BD /* Main.storyboard */,
-				B5A7C46C251B014F00CB08BD /* Info.plist */,
-				B5A7C46D251B014F00CB08BD /* MT2SK.entitlements */,
-			);
-			path = MT2SK;
-			sourceTree = "<group>";
-		};
-		B5A7C475251B015000CB08BD /* MT2SKTests */ = {
-			isa = PBXGroup;
-			children = (
-				B5A7C476251B015000CB08BD /* MT2SKTests.swift */,
-				B5A7C478251B015000CB08BD /* Info.plist */,
-			);
-			path = MT2SKTests;
-			sourceTree = "<group>";
-		};
-		B5A7C480251B015000CB08BD /* MT2SKUITests */ = {
-			isa = PBXGroup;
-			children = (
-				B5A7C481251B015000CB08BD /* MT2SKUITests.swift */,
-				B5A7C483251B015000CB08BD /* Info.plist */,
-			);
-			path = MT2SKUITests;
 			sourceTree = "<group>";
 		};
 		B5ADB7E113B2B57D00905DFE /* FistBlue */ = {
@@ -2092,14 +2042,6 @@
 				B52124E118D65A6E00D2F649 /* en */,
 			);
 			name = InfoPlist.strings;
-			sourceTree = "<group>";
-		};
-		B5A7C469251B014F00CB08BD /* Main.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				B5A7C46A251B014F00CB08BD /* Base */,
-			);
-			name = Main.storyboard;
 			sourceTree = "<group>";
 		};
 		B5C574181772781A00496283 /* InfoPlist.strings */ = {
