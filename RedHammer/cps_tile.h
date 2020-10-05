@@ -18,7 +18,7 @@
 
 /* Tile ROM locations and bytesizes */
 #define TILE_OFFSET_OBJECT      0
-#define TILE_OFFSET_SCROLLS     0x400000
+#define TILE_OFFSET_SCROLLS     0x400000    // this is weird, sprites occupy up to 0x480000, but scroll tiles are still relative to this address
 #define TILE_BYTES_8x8          0x40        // not a bug, the SCR1 tiles are packed ineffieintly
 #define TILE_BYTES_16x16        0x80
 #define TILE_BYTES_32x32        0x200
