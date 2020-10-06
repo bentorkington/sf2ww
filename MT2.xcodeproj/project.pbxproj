@@ -723,11 +723,11 @@
 		B5C574221772781A00496283 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
 		B5C574251772781A00496283 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/MainMenu.xib; sourceTree = "<group>"; };
 		B5C574831772782600496283 /* MT2 copy.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "MT2 copy.app"; sourceTree = BUILT_PRODUCTS_DIR; };
-		B5C574841772782800496283 /* MT2 JAP-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "MT2 JAP-Info.plist"; path = "/Users/ben/Documents/dev/cloudco/MT2/MT2 JAP-Info.plist"; sourceTree = "<absolute>"; };
+		B5C574841772782800496283 /* MT2 JAP-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "MT2 JAP-Info.plist"; sourceTree = SOURCE_ROOT; };
 		B5E0F01117754D8800F50790 /* MT2 JAP.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "MT2 JAP.app"; sourceTree = BUILT_PRODUCTS_DIR; };
-		B5E0F01217754D8A00F50790 /* MT2 copy-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "MT2 copy-Info.plist"; path = "/Users/ben/Documents/dev/cloudco/MT2/MT2 copy-Info.plist"; sourceTree = "<absolute>"; };
+		B5E0F01217754D8A00F50790 /* MT2 copy-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "MT2 copy-Info.plist"; sourceTree = SOURCE_ROOT; };
 		B5E0F06C17754D9500F50790 /* MT2 ETC.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "MT2 ETC.app"; sourceTree = BUILT_PRODUCTS_DIR; };
-		B5E0F06D17754D9700F50790 /* MT2 ETC-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "MT2 ETC-Info.plist"; path = "/Users/ben/Documents/dev/cloudco/MT2/MT2 ETC-Info.plist"; sourceTree = "<absolute>"; };
+		B5E0F06D17754D9700F50790 /* MT2 ETC-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "MT2 ETC-Info.plist"; sourceTree = SOURCE_ROOT; };
 		B5E21387156894FA00D96161 /* sagat.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = sagat.h; sourceTree = "<group>"; };
 		B5E21388156894FA00D96161 /* sagat.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = sagat.c; sourceTree = "<group>"; };
 		B5E2138A1568950900D96161 /* balrog.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = balrog.h; sourceTree = "<group>"; };
