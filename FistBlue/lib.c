@@ -1934,12 +1934,7 @@ void _bumplevel(void) {		/* 2bf2 */
 		/* 2b76 */
 		++g.LevelCursor;
 	}
-    
-    // XXX
-    g.CurrentStage = 13; g.OnBonusStage = 1;
-    // XXX
-    
-    
+        
 	if(g.LevelScript[g.LevelCursor+1] ==  0x10) {g.OnFinalStage = TRUE;}
 	boss_level_check();
 }
