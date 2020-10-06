@@ -440,10 +440,8 @@
 		B5E8FD5D1776C8BF00C6060E /* text.c in Sources */ = {isa = PBXBuildFile; fileRef = B5613C3A155F9917001E127A /* text.c */; };
 		B5E8FD5F1776C8BF00C6060E /* endings.c in Sources */ = {isa = PBXBuildFile; fileRef = B550DEA216BBA1BF00983A54 /* endings.c */; };
 		B5E8FD601776C8C900C6060E /* trackball.c in Sources */ = {isa = PBXBuildFile; fileRef = B5ADB7B013B2B38400905DFE /* trackball.c */; };
-		B5E8FD621776C91700C6060E /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B5E8FD611776C91700C6060E /* OpenGL.framework */; };
 		B5E8FD631776C9DD00C6060E /* glwimp.c in Sources */ = {isa = PBXBuildFile; fileRef = B5ADB87013B2B59A00905DFE /* glwimp.c */; };
 		B5E8FD641776CA1A00C6060E /* blanka_human.c in Sources */ = {isa = PBXBuildFile; fileRef = B56BFC6F156B444F00DC7BAD /* blanka_human.c */; };
-		B5E8FD661776CA3200C6060E /* GLUT.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B5E8FD651776CA3200C6060E /* GLUT.framework */; };
 		B5E8FD681776DF3A00C6060E /* sf2gfx.bin in CopyFiles */ = {isa = PBXBuildFile; fileRef = B5B39B69157832F200494662 /* sf2gfx.bin */; };
 		B5E9056513B2D61900833C5A /* ParamController.xib in Resources */ = {isa = PBXBuildFile; fileRef = B5E9056413B2D61900833C5A /* ParamController.xib */; };
 		B5EB38E1149816D5007100DB /* reels.c in Sources */ = {isa = PBXBuildFile; fileRef = B5EB38E0149816D5007100DB /* reels.c */; };
@@ -737,8 +735,6 @@
 		B5E8FD101776C7D400C6060E /* MT2 GLUT */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = "MT2 GLUT"; sourceTree = BUILT_PRODUCTS_DIR; };
 		B5E8FD111776C7D400C6060E /* CoreFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreFoundation.framework; path = System/Library/Frameworks/CoreFoundation.framework; sourceTree = SDKROOT; };
 		B5E8FD161776C7D400C6060E /* MT2_GLUT.1 */ = {isa = PBXFileReference; lastKnownFileType = text.man; path = MT2_GLUT.1; sourceTree = "<group>"; };
-		B5E8FD611776C91700C6060E /* OpenGL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGL.framework; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.8.sdk/System/Library/Frameworks/OpenGL.framework; sourceTree = DEVELOPER_DIR; };
-		B5E8FD651776CA3200C6060E /* GLUT.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GLUT.framework; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.8.sdk/System/Library/Frameworks/GLUT.framework; sourceTree = DEVELOPER_DIR; };
 		B5E9056113B2D5FE00833C5A /* ParamController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ParamController.h; sourceTree = "<group>"; };
 		B5E9056213B2D5FE00833C5A /* ParamController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ParamController.m; sourceTree = "<group>"; };
 		B5E9056413B2D61900833C5A /* ParamController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ParamController.xib; sourceTree = "<group>"; };
@@ -817,8 +813,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				B5E8FD661776CA3200C6060E /* GLUT.framework in Frameworks */,
-				B5E8FD621776C91700C6060E /* OpenGL.framework in Frameworks */,
 				B5E8FD121776C7D400C6060E /* CoreFoundation.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -874,8 +868,6 @@
 		29B97314FDCFA39411CA2CEA /* MT2 */ = {
 			isa = PBXGroup;
 			children = (
-				B5E8FD651776CA3200C6060E /* GLUT.framework */,
-				B5E8FD611776C91700C6060E /* OpenGL.framework */,
 				080E96DDFE201D6D7F000001 /* Classes */,
 				29B97315FDCFA39411CA2CEA /* Other Sources */,
 				29B97317FDCFA39411CA2CEA /* Resources */,
