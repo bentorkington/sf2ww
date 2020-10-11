@@ -74,7 +74,7 @@ void bin2bcd(short d0);
 void wait_for_ply_PSFinishedParticipating(void);
 void sub_529c();
 u32 MakePointObj(int x, int y);
-void decode_buttons(Player *ply, short d0);
+void decode_buttons(Player *ply, u16 d0);
 short buttonspressed(Player *ply, u16 d1);
 short buttonsreleased(Player *ply, u16 d1);
 

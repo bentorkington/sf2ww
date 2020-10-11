@@ -511,42 +511,42 @@ inline static void draw_playersprite(Player *ply) ;
 static void _DSDrawShadows(void);	/* 7e726 playe shadows */
  
 void draw_layer1_grp1(void) {
-    while(g.Layer1Grp1Cnt) {
+    while (g.Layer1Grp1Cnt) {
         drawsprite(g.x8e16[--g.Layer1Grp1Cnt]);    
     }
 }       
 void draw_layer1_grp2(void) {
-    while(g.Layer1Grp2Cnt) {
+    while (g.Layer1Grp2Cnt) {
         drawsprite(g.x8e26[--g.Layer1Grp2Cnt]);
     }
 }
 void draw_layer3_grp1(void) {
-    while(g.Layer3Grp1Cnt) {
+    while (g.Layer3Grp1Cnt) {
         drawsprite(g.x8efe[--g.Layer3Grp1Cnt]);
     }
 }
 void draw_layer3_grp2(void) {
-    while(g.Layer3Grp2Cnt) {
+    while (g.Layer3Grp2Cnt) {
         drawsprite(g.x8f76[--g.Layer3Grp2Cnt]);
     }
 }
 void draw_layer3_grp3(void) {
-    while(g.Layer3Grp3Cnt) {
+    while (g.Layer3Grp3Cnt) {
         drawsprite(g.x8fee[--g.Layer3Grp3Cnt]);
     }
 }
 void draw_layer3_grp4(void) {
-    while(g.Layer3Grp4Cnt) {
+    while (g.Layer3Grp4Cnt) {
         drawsprite(g.x9066[--g.Layer3Grp4Cnt]);
     }
 }
 void draw_layer3_grp5(void) {
-    while(g.Layer3Grp5Cnt) {
+    while (g.Layer3Grp5Cnt) {
         drawsprite(g.x90de[--g.Layer3Grp5Cnt]);
     }
 }
 void draw_layer3_grp6(void) {
-    while(g.Layer3Grp6Cnt) {
+    while (g.Layer3Grp6Cnt) {
         drawsprite(g.x9156[--g.Layer3Grp6Cnt]);
     }
 }
@@ -556,12 +556,12 @@ void draw_layer2_grp1(void) {
     }
 }
 void draw_layer2_grp2(void) {
-    while(g.Layer2Grp2Cnt) {
+    while (g.Layer2Grp2Cnt) {
         drawsprite(g.x8e66[--g.Layer2Grp2Cnt]);
     }
 }
 void draw_layer2_grp3(void) {
-    while(g.Layer2Grp3Cnt) {
+    while (g.Layer2Grp3Cnt) {
         drawsprite(g.x8e86[--g.Layer2Grp3Cnt]);
     }
 }
@@ -605,7 +605,7 @@ void sub_7e4dc(void) {
 		OBJ_CURSOR_SET( DSObjCur_g, 0x0060 ); /* 0x910300 */
 //	}
 	g_tilecount=160;	// first 96 reserved
-	g.ObjTileBudget=g_tilecount;
+	g.ObjTileBudget = g_tilecount;
 	spritelib_drawall();
 	WRITE_END_TAG;
 	swap_object_buffer();
@@ -620,7 +620,7 @@ void DSDrawAll_176(void) {
 		OBJ_CURSOR_SET( DSObjCur_g, 0x0050 ); /* 0x910280 */
 //	}
 	g_tilecount=176;
-	g.ObjTileBudget=g_tilecount;
+	g.ObjTileBudget = g_tilecount;
 	spritelib_drawall();
 	WRITE_END_TAG;
 	swap_object_buffer();
@@ -635,7 +635,7 @@ void sub_7e544(void) {
 		OBJ_CURSOR_SET( DSObjCur_g, 0x001a ); /* 0x9100d0 */
 //	}
 	g_tilecount=230;
-	g.ObjTileBudget=g_tilecount;
+	g.ObjTileBudget = g_tilecount;
 	spritelib_drawall();
     WRITE_END_TAG;
 	swap_object_buffer();
@@ -651,8 +651,8 @@ void DSDrawAllMain(void) {		/* 7e578 library, main draw all sprite routine */
 //	} else {
 		OBJ_CURSOR_SET( DSObjCur_g, 0x48 );		//0x910240
 //	}
-	g_tilecount=184;
-	g.ObjTileBudget=g_tilecount;
+	g_tilecount = 184;
+	g.ObjTileBudget = g_tilecount;
 	spritelib_drawall();
     WRITE_END_TAG;
 	swap_object_buffer();
@@ -676,7 +676,7 @@ void DSDrawAll_Hira(void) {		/* library */
 
 
 static void swap_object_buffer(void) {	/* 7e610 */
-	if(g.DisableDblBuf) {
+	if (g.DisableDblBuf) {
 		g.CPS.ObjBase = 0x9100;	/* flip bit in DblBuffer emu */
 		return;
 	}
@@ -730,16 +730,16 @@ static void draw_player_extrasprite(Player *ply) {	/* 7ed04 */
 	const short *coordpointer;
 	u16 attr;
 	short tiles_in_image;
-	if(ply->exists && ply->flag1 && ply->ExtraSpriteEna && ply->VegaHasClaw) {
+	if (ply->exists && ply->flag1 && ply->ExtraSpriteEna && ply->VegaHasClaw) {
 		g.DSOffsetX = -ply->Draw_OffsetX;
 		g.DSOffsetY = -ply->Draw_OffsetY;
 		sprite_coords((Object *)ply, coordpair);
 		
-		if(!(tiles_in_image = ply->Image2->TileCount))   { return; }
-		if(g.ObjTileBudget < tiles_in_image)			 { return; }
+		if (!(tiles_in_image = ply->Image2->TileCount))   { return; }
+		if (g.ObjTileBudget < tiles_in_image)			 { return; }
 		g.ObjTileBudget -= tiles_in_image;
 		attr = ply->Image2->Attr;
-		if(attr & 0xff00) {
+		if (attr & 0xff00) {
 			/* tiled sprite */
 			tiles_in_image = 1;
 		}
@@ -749,7 +749,7 @@ static void draw_player_extrasprite(Player *ply) {	/* 7ed04 */
 			g.DSOffsetY += (ply->ActionScript->YOffset & 0x00ff);
 		}
 		g.DSOffsetX -= ply->DSOffsetX;
-        attr ^= ((((struct image *)RHCODE16(ply->ActionScript->Image))->Attr& 3) << 5);
+        attr ^= ((((struct image *)RHCODE16(ply->ActionScript->Image))->Attr & 3) << 5);
         
 		_draw_sprite((Object *)ply, ply->Image2->Tiles, coordpointer, coordpair[0], coordpair[1], tiles_in_image, attr);
 
@@ -759,7 +759,7 @@ static void draw_player_extrasprite(Player *ply) {	/* 7ed04 */
 /* draw the players depending on g.PlyDrawOrder, ExtraSprite, and layer3grp[5,6] */
 
 static void _DSDrawPlayers(void) {
-	if(g.PlyDrawOrder) {
+	if (g.PlyDrawOrder) {
 		draw_layer3_grp6();		/* P2 is drawn first */
 		draw_player_extrasprite(PLAYER2);
 		draw_playersprite(PLAYER2);
@@ -778,7 +778,7 @@ static void _DSDrawPlayers(void) {
 	}
 }
 inline static void draw_playersprite(Player *ply) {
-	if(ply->exists && ply->flag1) {
+	if (ply->exists && ply->flag1) {
 		ply->OnGround = ply->Airborne;
 		drawsprite((Object *)ply);
 	}
@@ -792,10 +792,10 @@ static void _DSDrawShadows(void) {
 	 */
 	
 
-	if(g.Ply1Shadow.exists && g.Ply1Shadow.flag1) {
+	if (g.Ply1Shadow.exists && g.Ply1Shadow.flag1) {
 		drawsprite(&g.Ply1Shadow);
 	}
-	if(g.Ply2Shadow.exists && g.Ply2Shadow.flag1) {
+	if (g.Ply2Shadow.exists && g.Ply2Shadow.flag1) {
 		drawsprite(&g.Ply2Shadow);
 	}
 }
@@ -805,7 +805,7 @@ void DSDrawShadows(void) {			/* 7bc00 */
     draw_shadow(PLAYER2, &g.Ply2Shadow);    
 }
 void draw_shadow(Player *ply, Object *obj) {    //7bc14
-    if(obj->mode0 == 0) {
+    if (obj->mode0 == 0) {
         obj->mode0  = 2;
         obj->exists = TRUE;
         obj->LocalTimer  = ply->Side;		//???
@@ -829,13 +829,13 @@ void draw_shadow(Player *ply, Object *obj) {    //7bc14
 static void _draw_sprite(Object *obj, const u16 *tilep, const short *offsets, 
 					  short x, short y, unsigned short tiles, short attr) {
 	//7ee2c
-	if(obj->Draw1 > 0) {
+	if (obj->Draw1 > 0) {
         attr &= 0xffe0;						/* mask out the palette bits */
         attr |= obj->Draw2.part.integer;    /* OR in a replacement palette */
     }
 	
     attr ^= (obj->Flip & 3) << 5;
-    if(attr & ATTR_X_FLIP) {	
+    if (attr & ATTR_X_FLIP) {	
         sub_7ef2a(obj, tilep, offsets, x, y, tiles, attr);
     } else  if (attr & ATTR_Y_FLIP) {
         sub_7ef86(obj, tilep, offsets, x, y, tiles, attr);
@@ -846,7 +846,7 @@ static void _draw_sprite(Object *obj, const u16 *tilep, const short *offsets,
 
 static void sprite_coords(Object *obj, short *coordpair) {		// 7f160
 	int temp;
-	if(obj->Scroll < 0) {
+	if (obj->Scroll < 0) {
 		coordpair[0]=obj->XPI;
 		coordpair[1]=obj->YPI;
 	} else {
@@ -902,13 +902,13 @@ void drawsprite(Object *obj) {         /* 7edaa */
     }
     tiles_in_image = RHSwapWord(image->TileCount);
     
-    if(tiles_in_image == 0) { return; }
-    if(tiles_in_image & IMAGE_ATTR) {
+    if (tiles_in_image == 0) { return; }
+    if (tiles_in_image & IMAGE_ATTR) {
         sub_7f244(obj, tiles_in_image, image, coordpair[0], coordpair[1]);
         /* tiles are in tile,attr pairs */
         return;
     }
-    if(tiles_in_image > g.ObjTileBudget) {
+    if (tiles_in_image > g.ObjTileBudget) {
         //printf("Over Tile Budget!\n");
         return;
     }
@@ -918,7 +918,7 @@ void drawsprite(Object *obj) {         /* 7edaa */
     /* this used to be after the Block image check but we do the Block sprites in software now */
     g_tilecount -= tiles_in_image;
     
-    if(attr & 0xff00) {
+    if (attr & 0xff00) {
         tiles_in_image = 1;
     }
     coordlist = sub_7f224(RHSwapWord(image->Dimensions));        /* set a3 from Image->Dimensions */
@@ -926,7 +926,7 @@ void drawsprite(Object *obj) {         /* 7edaa */
     g.DSOffsetX = RHSwapWord(image->OffsetX);
     g.DSOffsetY = RHSwapWord(image->OffsetY);
     
-    if(obj->ActionScript->FlipBits & 0x3) {
+    if (obj->ActionScript->FlipBits & 0x3) {
         attr ^= ((obj->ActionScript->FlipBits & 0x3) << 5);      /* apply flips */
         g.DSOffsetY += obj->ActionScript->YOffset;
     }
@@ -980,29 +980,29 @@ static void sub_7f244 (Object *obj, u16 tiles_in_image, const Image *image, shor
 	short i, sx, sy, sysin, sycos, sxsin, sxcos;
 	const short *offsets;
 	
-	tiles_in_image &= (IMAGE_ATTR-1);
-	if(g.ObjTileBudget < tiles_in_image)		{ return; }
+	tiles_in_image &= (IMAGE_ATTR - 1);
+	if (g.ObjTileBudget < tiles_in_image)		{ return; }
 	g.ObjTileBudget -= tiles_in_image;
 	g_tilecount -= tiles_in_image;
 	attr = RHSwapWord(image->Attr) & 0xe0;	/* Only flips */
 	offsets = sub_7f224(RHSwapWord(image->Dimensions));
 	g.DSOffsetX = RHSwapWord(image->OffsetX);
 	g.DSOffsetY = RHSwapWord(image->OffsetY);
-	if(obj->ActionScript->FlipBits & 0x3) {
+	if (obj->ActionScript->FlipBits & 0x3) {
         attr ^= (obj->ActionScript->FlipBits & 0x3) << 5;      /* apply flips */
         g.DSOffsetY += (obj->ActionScript->YOffset & 0xff);
     }
 	g.DSOffsetX += obj->DSOffsetX;
-	if(obj->Draw1 > 0) {
+	if (obj->Draw1 > 0) {
 		attr &= 0xffe0;
 		attr |= obj->Draw2.part.integer;
 	}
 	tilep = &image->Tiles[0];
 	
 	attr ^= ((obj->Flip & 0x3) << 5);
-	if(attr & ATTR_X_FLIP) {
+	if (attr & ATTR_X_FLIP) {
 		/* 7f3a2() */
-		if( attr & ATTR_Y_FLIP) {
+		if (attr & ATTR_Y_FLIP) {
 			/* 7f446 utter rascal, both flips */
 			x += g.DSOffsetX;
 			y -= g.DSOffsetY;
@@ -1013,9 +1013,9 @@ static void sub_7f244 (Object *obj, u16 tiles_in_image, const Image *image, shor
 					continue;
 				}
 				sx = x  - (*offsets++) - 16;
-				if(sx<0 || sx > 0x200) {
+				if (sx<0 || sx > 0x200) {
 					offsets++;
-					tilep+=2;
+					tilep += 2;
 					g.ObjTileBudget++;
 					g_tilecount++;
 					continue;
@@ -1025,7 +1025,6 @@ static void sub_7f244 (Object *obj, u16 tiles_in_image, const Image *image, shor
 				OBJECT_DRAW_SINGLE(DSObjCur_g, sx, sy, tile, attr ^ (RHSwapWord(*tilep++)));
 				OBJ_CURSOR_BUMP(DSObjCur_g);
 			}
-			
 		} else {
 			x += g.DSOffsetX;
 			y += g.DSOffsetY;
@@ -1036,10 +1035,10 @@ static void sub_7f244 (Object *obj, u16 tiles_in_image, const Image *image, shor
 					offsets+=2;
 					continue;
 				}
-				sx = x  - (*offsets++) - 16;
-				if(sx<0 || sx > 0x200) {
+				sx = x - (*offsets++) - 16;
+				if (sx<0 || sx > 0x200) {
 					offsets++;
-					tilep+=2;
+					tilep += 2;
 					g.ObjTileBudget++;
 					g_tilecount++;
 					continue;
@@ -1056,14 +1055,14 @@ static void sub_7f244 (Object *obj, u16 tiles_in_image, const Image *image, shor
 		x -= g.DSOffsetX;
 		y -= g.DSOffsetY;
 		
-		for (i=0; i<tiles_in_image; i++) {
+		for (i=0; i < tiles_in_image; i++) {
 			if (RHSwapWord(*tilep) == 0) {
-				tilep+=2;
-				offsets+=2;
+				tilep += 2;
+				offsets += 2;
 				continue;
 			}
 			sx = x + *offsets++;
-			if(sx<0 || sx > 0x200) {
+			if(sx < 0 || sx > 0x200) {
 				offsets++;
 				tilep+=2;
 				g.ObjTileBudget++;
@@ -1075,8 +1074,6 @@ static void sub_7f244 (Object *obj, u16 tiles_in_image, const Image *image, shor
 			OBJECT_DRAW_SINGLE(DSObjCur_g, sx, sy, tile, attr ^ (RHSwapWord(*tilep++)));
 			OBJ_CURSOR_BUMP(DSObjCur_g);
 		}		
-		
-		
 	} else {
 		/* 7f2c6 */
 		x -= g.DSOffsetX;
@@ -1105,15 +1102,15 @@ static void sub_7f244 (Object *obj, u16 tiles_in_image, const Image *image, shor
 			}
 			return;
 		}
-		for (i=0; i<tiles_in_image; i++) {
+		for (i = 0; i < tiles_in_image; i++) {
 			if (RHSwapWord(*tilep) == 0) {
 				tilep   += 2;
 				offsets += 2;
 			} else {
 				sx = x + offsets[0];
-				if(sx<0 || sx > 0x200) {
+				if(sx < 0 || sx > 0x200) {
 					offsets += 2;
-					tilep+=2;
+					tilep += 2;
 					g.ObjTileBudget++;
 					g_tilecount++;
 					continue;
@@ -1144,12 +1141,12 @@ static void sub_7ee58(Object *obj, const u16 *tilep, const short *offsets, short
 			tile = RHSwapWord(*tilep++);
 
             if(tile == 0) {
-				offsets +=2;
+				offsets += 2;
 				continue;
 			}
-			sx= x + *offsets;
+			sx = x + *offsets;
 			offsets++;
-			if(sx>512 || sx < 0) {
+			if(sx > 512 || sx < 0) {
 				offsets++;
 				g.ObjTileBudget++;
 				g_tilecount -= 1;
@@ -1191,7 +1188,7 @@ static void sub_7ef2a(Object *obj, const u16 *tilep, const short *offsets,
 		++count;
 		sx = x - (*offsets + d5);
 		offsets++;
-		if(sx>512 || sx < 0) {
+		if(sx > 512 || sx < 0) {
 			offsets++;
 			g.ObjTileBudget++;
 			g_tilecount -= 1;
@@ -1219,7 +1216,7 @@ static void sub_7ef86(Object *obj, const u16 *tilep, const short *offsets,
     x -= g.DSOffsetX;
 	y -= g.DSOffsetY;
 	
-	while(tiles>0) {
+	while(tiles > 0) {
         tile = RHSwapWord(*tilep++);
 
         if(tile == 0) {
@@ -1230,7 +1227,7 @@ static void sub_7ef86(Object *obj, const u16 *tilep, const short *offsets,
 		++count;
 		sx= x + *offsets;
 		offsets++;
-		if(sx < 0 || sx>512) {
+		if(sx < 0 || sx > 512) {
 			offsets++;
 			g.ObjTileBudget++;
 			g_tilecount -= 1;
@@ -1317,7 +1314,7 @@ static void dbg_draw_hitbox(Player *ply, short *hb) {		// 7f672
 }
 	
 static short *sub_7f600(const HitBoxAct *hb) {		//7f600
-	if(hb->Shove >= 0) {
+	if (hb->Shove >= 0) {
 		g.GPHitBoxCopy[0] = hb->X;
 	} else {
 		g.GPHitBoxCopy[0] = -hb->Shove;
@@ -1339,58 +1336,39 @@ static short *sub_7f60c(const HitBox *hb) {			//7f60c
 
 // Six hitboxes
 static void sub_7f4f2(Player *ply, const FBAction *act) {		// 7f4f2 Pushbox
-	short *a2;
-	// player %a1, act %a3
 	if (act->HB_Push) {
-		a2=sub_7f60c(&ply->HitBoxes->push[act->HB_Push]);
 		g.DBGPalette = 7;
-		dbg_draw_hitbox(ply, a2);
+		dbg_draw_hitbox(ply, sub_7f60c(&ply->HitBoxes->push[act->HB_Push]));
 	}
 }
 static void sub_7f51e(Player *ply, const FBAction *act) {		// 7f51e Active Hitbox
-	short *a2;
-	// player %a1, act %a3
 	if (act->HB_Active) {
-		a2=sub_7f600(&ply->HitBoxes->active[act->HB_Active]);
 		g.DBGPalette = 7;
-		dbg_draw_hitbox(ply, a2);
+		dbg_draw_hitbox(ply, sub_7f600(&ply->HitBoxes->active[act->HB_Active]));
 	}
 }
 static void sub_7f550(Player *ply, const FBAction *act) {		// Weak
-	short *a2;
-	// player %a1, act %a3
 	if (act->HB_Weak) {
-		a2=sub_7f60c(&ply->HitBoxes->weak[act->HB_Weak]);
 		g.DBGPalette = 1;
-		dbg_draw_hitbox(ply, a2);
+		dbg_draw_hitbox(ply, sub_7f60c(&ply->HitBoxes->weak[act->HB_Weak]));
 	}
 }
 static void sub_7f57c(Player *ply, const FBAction *act) {		// Foot
-	short *a2;
-	// player %a1, act %a3
 	if (act->HB_Foot) {
-		a2=sub_7f60c(&ply->HitBoxes->foot[act->HB_Foot]);
 		g.DBGPalette = 7;
-		dbg_draw_hitbox(ply, a2);
+		dbg_draw_hitbox(ply, sub_7f60c(&ply->HitBoxes->foot[act->HB_Foot]));
 	}
 }
 static void sub_7f5a8(Player *ply, const FBAction *act) {		// Body
-	short *a2;
-	// player %a1, act %a3
 	if (act->HB_Body) {
-		a2=sub_7f60c(&ply->HitBoxes->body[act->HB_Body]);
 		g.DBGPalette = 1;
-		dbg_draw_hitbox(ply, a2);
+		dbg_draw_hitbox(ply, sub_7f60c(&ply->HitBoxes->body[act->HB_Body]));
 	}
 }
 static void sub_7f5d4(Player *ply, const FBAction *act) {		// Head
-	short *a2;
-	// player %a1, act %a3
-
 	if (act->HB_Head) {
-		a2=sub_7f60c(&ply->HitBoxes->head[act->HB_Head]);
 		g.DBGPalette = 0;
-		dbg_draw_hitbox(ply, a2);
+		dbg_draw_hitbox(ply, sub_7f60c(&ply->HitBoxes->head[act->HB_Head]));
 	}
 }
 

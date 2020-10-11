@@ -47,13 +47,16 @@ struct UserData_RyuKen {
 	u16		x0084;
 	char	x0086;
 	
-	//State information for each of the Powermoves
-	char	x0090[8];	// fireball 
-	char	x0098[8];	// hurricane kick
-	char	x00a0[8];	// shoryuken
+	// State information for each of the Powermoves triggers
+	char	FireballTriggerState[8];	// 0x90 
+	char	HurricaneTriggerState[8];	// 0x98
+	char	ShoryukenTriggerState[8];	// 0xa0
+
+    // Powermove state machine
 	char	x00c0;
 	char	x00c1;
 	char	x00c2;
+
 	Object *x00d0;
 	FIXED16_16	ShoryukenX;			/* 0xf0 */
 	FIXED16_16  ShoryukenXDash;
@@ -65,8 +68,6 @@ struct KenRyuButtons {
 	u16 d0;
 	u16 d6;
 };
-
-
 
 #define STATUS_HADOUKEN     0x4c
 #define STATUS_SHORYUKEN	0x4e

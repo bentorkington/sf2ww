@@ -39,9 +39,11 @@ void palette_base_scroll1(void) {
         }
     }
 }
+
 void set_shadow_pen(void) {	/* 1ae2 Shadow opaque colour */
     gemu.PalObject[10][0] = RHWordOffset(0x1af6, g.CurrentStage);
 }
+
 void setpalette_objtop(short palette) {		// 16ae
     short u, v;
     for(u=16; u<32; u++) {
@@ -50,6 +52,7 @@ void setpalette_objtop(short palette) {		// 16ae
         }
     }
 }
+
 void palette_from_game(void) {			// 160c
 	printf("palettes_from_game %d\n", g.Palette1);
 
@@ -58,13 +61,14 @@ void palette_from_game(void) {			// 160c
     setpalette_scroll2(g.Palette1);
     setpalette_scroll3(g.Palette1);
 }
-void palettes_nextlevel(void) {			// 1698
 
+void palettes_nextlevel(void) {			// 1698
     setpalette_objtop (g.CurrentStage);
     setpalette_scroll1(g.CurrentStage);
     setpalette_scroll2(g.CurrentStage);
     setpalette_scroll3(g.CurrentStage);
 }
+
 void palette_macro(int palette) {			
     setpalette_objtop (palette);
     setpalette_scroll1(palette);
@@ -72,10 +76,10 @@ void palette_macro(int palette) {
     setpalette_scroll3(palette);
 }
 
-
 void setpalette_scroll1_CS(void) {
     setpalette_scroll1(g.CurrentStage);
 }
+
 void setpalette_scroll1(short palette) {		// emulation of 16ca
     int u,v;
 
@@ -89,6 +93,7 @@ void setpalette_scroll1(short palette) {		// emulation of 16ca
 inline void palette_scr1_16(void) {		/* 168c  */
 	setpalette_scroll1(16);
 }
+
 inline void palette_scr1_19(void) {		// 1692
 	setpalette_scroll1(19);
 }
@@ -113,9 +118,9 @@ void setpalette_scroll3(short palette) {		// emulation of 1706
 }
 
 /**
- * @brief 
- * 
- * @param palette 
+ * @brief Set the upper-half sprite palette with all colors at maximum brightness
+ *
+ * @param palette The palette index
  * @see sf2ua/0x1742
  */
 void sub_1742(int palette) {
@@ -128,8 +133,14 @@ void sub_1742(int palette) {
     }
 }
 
-
-void gfxrepeat(u16 *gfxram, int count, u16 character, u16 attribute) {		// 56fe
+/**
+ @brief Fill a tilemap with a single tile and attribute
+ @param count The number of tiles to fill
+ @param character the tile id
+ @param attribute the tile attribute
+ @see sf2ua/0x56fe
+ */
+void gfxrepeat(u16 *gfxram, int count, u16 character, u16 attribute) {
     unsigned int i;
     for(i=0; i<count; i++) {
         gfxram[(i*2)+0] = character;
@@ -168,11 +179,12 @@ void printchar2 (u16 *cursor, int x, int y ,u8 *printzeroes, u16 tile, u16 attr)
 	}
 }
 
-void sub_50e2(u16 *cursor, int x, int y, u8 byte, u8 *printzeroes, u16 attr) { /* 0x50e2 */
+static void sub_50e2(u16 *cursor, int x, int y, u8 byte, u8 *printzeroes, u16 attr) { /* 0x50e2 */
 	/* x and y are actually passed as a coordpair in %d5 */
 	printchar2(cursor, x, y, printzeroes, byte >> 4 , attr);
 	printchar2(cursor, x, y, printzeroes, byte & 0xf, attr);
 }
+
 void printwordhex(u16 *cursor, int x, int y, u16 word, u8 *printzeroes, u16 attr) { /* 0x50d8 */
 	/* x and y are actually passed as a coordpair in %d5 */
 	sub_50e2(cursor, x, y,  word >>  8 ,printzeroes,  attr);
@@ -184,10 +196,20 @@ void printbytehex(u16 *cursor, int x, int y, u8 byte, u8 *printzeroes, u16 attr)
 	printchar2(cursor, CP_X, CP_Y, printzeroes, byte & 0xf, attr);
 }
 void printbyte (u16 **cursor, u32 *gfxcursor, u16 attr, u8 arg, u8 *printzeroes) {
-    printnibble(cursor, gfxcursor, attr, arg   , printzeroes);
-    printnibble(cursor, gfxcursor, attr, arg>>4, printzeroes);
+    CreateNibbleSprite(cursor, gfxcursor, attr, arg   , printzeroes);
+    CreateNibbleSprite(cursor, gfxcursor, attr, arg>>4, printzeroes);
 }
-void printnibble (u16 **gfx_p, u32 *gfxcursor, u16 attr, u8 arg, u8 *printzeroes) {   /* 0x51ba */
+
+/**
+ * @brief create a sprite for displaying a nibble
+ * @param gfx_p
+ * @param gfxcursor
+ * @param attr the tile attribute to use
+ * @param arg the nibble to display in the sprite
+ * @param printzeroes a pointer to a boolean indicating if zeroes should be printed. The first non-zero digit encountered will set this to TRUE
+ * @see sf2ua/0x51ba
+ */
+void CreateNibbleSprite (u16 **gfx_p, u32 *gfxcursor, u16 attr, u8 arg, u8 *printzeroes) {
 	u16 x, y;
     if(*printzeroes == 0 && (arg & 0xf) == 0) {
         COORDS_OFFSET(gfxcursor, 16, 0);
@@ -200,8 +222,6 @@ void printnibble (u16 **gfx_p, u32 *gfxcursor, u16 attr, u8 arg, u8 *printzeroes
     COORDS_OFFSET(gfxcursor, 16, 0);
     OBJ_CURSOR_BUMP(*gfx_p);
 }
-
-
 
 void DrawTileLine(u16 *gfx_p, const u16 *source, int x, int y) {	//5de2
     // regs: %a0, %a2, %d5, %d6
@@ -218,7 +238,8 @@ void DrawTileLine(u16 *gfx_p, const u16 *source, int x, int y) {	//5de2
         COORDS_OFFSET(&cp, 16, 0);
         i++;
     }
-}           
+}
+
 void FBDrawTileLine(u16 *gfx_p, const u16 *source, int x, int y) {	//5de2
     // regs: %a0, %a2, %d5, %d6
     u16 attr;
@@ -245,19 +266,26 @@ static void _putchar(u16 **cursor, u32 *gfxcursor, u16 arg, u16 attr) { /* 521a 
     COORDS_OFFSET(gfxcursor, 12,0);
     OBJ_CURSOR_BUMP(cursor);
 }
+
 static void _putword(u16 **cursor, u32 *gfxcursor, u16 arg, u16 attr){		//5208
     _putchar(cursor,gfxcursor,arg >> 8  , attr);
     _putchar(cursor,gfxcursor,arg & 0xff, attr);
 }
-void _putlong(u16 **cursor, short x, short y, int arg, short attr) {	//51fe
+
+/**
+ @brief Create a sprite for a 32-bit BCD/hex value
+ @see sf2ua/0x51fe
+ */
+void CreateLongwordSprite(u16 **cursor, short x, short y, int arg, short attr) {
     u32 gfxcursor = MakePointObj(x,y);
     _putword(cursor, &gfxcursor, arg >> 16   , attr);
     _putword(cursor, &gfxcursor, arg & 0xffff, attr);
 }
-/*!
- Print number in 12-pixel wide digits
+/**
+ @brief Print number in 12-pixel wide digits
+ @see sf2ua/0x516a
  */
-void sub_516a(u16 **gfx_p, u32 *cp_p, u8 d0, short *leading_zero, u16 d3 ) {		// 516a
+void CreateIntegerSprite(u16 **gfx_p, u32 *cp_p, u8 d0, short *leading_zero, u16 d3 ) {
 	u32 cp;
 	if (*leading_zero == 0) {
 		if (d0 & 0xf) {
@@ -278,8 +306,8 @@ void sub_516a(u16 **gfx_p, u32 *cp_p, u8 d0, short *leading_zero, u16 d3 ) {		//
 
 static void sub_5152(u16 **cursor, u32 *gfxcursor, u16 arg, u16 attr) {
 	short lz = 0;
-	sub_516a(cursor, gfxcursor, arg >> 4, &lz, attr);
-	sub_516a(cursor, gfxcursor, arg     , &lz, attr);
+	CreateIntegerSprite(cursor, gfxcursor, arg >> 4, &lz, attr);
+	CreateIntegerSprite(cursor, gfxcursor, arg     , &lz, attr);
 }
 
 static void sub_5148(u16 **cursor, u32 *gfxcursor, u16 arg, u16 attr) {
@@ -293,8 +321,8 @@ void printlonghex2(u16 **cursor, short x, short y, int arg, short attr) {
 	sub_5148(cursor, &gfxcursor, arg,                attr);
 }
 void sub_5162(u16 **gfx_p, u32 *cp, u8 d0, short *d2, u16 d3) {
-	sub_516a(gfx_p, cp, d0 >> 4, d2, d3);
-	sub_516a(gfx_p, cp, d0,      d2, d3);
+	CreateIntegerSprite(gfx_p, cp, d0 >> 4, d2, d3);
+	CreateIntegerSprite(gfx_p, cp, d0,      d2, d3);
 }
 
 
@@ -308,8 +336,8 @@ void print_bonusremaining(void) {		// 5248
 	coords = MakePointObj(176, 208);
 	OBJ_CURSOR_SET(gfx_p, 14);			/* 0x910070 */
 	
-	printnibble(&gfx_p, &coords, PALETTE_0D, g.x8ab9 >> 4, &printzeroes);	/* number of barrels remaining */
-	printnibble(&gfx_p, &coords, PALETTE_0D, g.x8ab9     , &printzeroes);
+	CreateNibbleSprite(&gfx_p, &coords, PALETTE_0D, g.x8ab9 >> 4, &printzeroes);	/* number of barrels remaining */
+	CreateNibbleSprite(&gfx_p, &coords, PALETTE_0D, g.x8ab9     , &printzeroes);
 }
 void print_timeremaining(void) {		//5260
 	u32 coords;
@@ -320,8 +348,8 @@ void print_timeremaining(void) {		//5260
 	
 	coords = MakePointObj(176, 208);
 	OBJ_CURSOR_SET(gfx_p, 14);			/* 0x910070 */
-	printnibble(&gfx_p, &coords, PALETTE_0D, g.TimeRemainBCD >> 4, &printzeroes);
-	printnibble(&gfx_p, &coords, PALETTE_0D, g.TimeRemainBCD     , &printzeroes);
+	CreateNibbleSprite(&gfx_p, &coords, PALETTE_0D, g.TimeRemainBCD >> 4, &printzeroes);
+	CreateNibbleSprite(&gfx_p, &coords, PALETTE_0D, g.TimeRemainBCD     , &printzeroes);
 }
 	
 
@@ -508,6 +536,7 @@ void RHSetScrollAction(Object *obj, const FBSimpleAction *act) {
     obj->Timer        = RHSwapWord(obj->ActionScript->Delay);
     obj->AnimFlags    = RHSwapWord(obj->ActionScript->Flags);
 }
+
 void RHSetScrollActionList(Object *obj, void *act, int step) {
     RHSetScrollAction(obj, (const FBSimpleAction *)RHOffsetLookup16(act, step));
 }

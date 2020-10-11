@@ -53,8 +53,8 @@ typedef struct {
     u16 CenterX;          /* the zero-parallax x coordinate */
     u16 ss_0010;        /* amount of parallax skew per pixel off-center */
     u16 GroundRow;
-	FIXED16_16 ss_0014; // scroll 1 X parallax
-    FIXED16_16 ss_0018;	// scroll 3 X parallax
+	FIXED16_16 Scroll1Parallax; // 0x14
+    FIXED16_16 Scroll3Parallax;	// 0x18
     short ss_001c[4];	// ff8cee
 
 	u16  x0024;		/* used with x0025 as U16 */

@@ -172,7 +172,8 @@ struct player_t {
 	char		OnPlatform, OnPlatform2;	// 4d , 4e
 	u8			HitBoxUnused[3];    /* for hitboxes 1,2,3 */
 	short		DSOffsetX;
-	char		Direction;			/* 0x54 FACING_LEFT=0, FACING_RIGHT=1 */
+    /** The direction the player is facing  */
+	FBDirection		Direction;			/* 0x54 FACING_LEFT=0, FACING_RIGHT=1 */
 	u8			ReactMode, ReactMode2;		// 55, 56
 	u8			StepSave;					// 57
 	short		Difficulty;					// 58

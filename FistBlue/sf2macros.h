@@ -26,15 +26,27 @@
 
 #define NEXT(A) A += 2;
 
+// A random number between 0 and 63
 #define RAND64 (sf2rand() & 0x3f)
+/// A random number between 0 and 31
 #define RAND32 (sf2rand() & 0x1f)
+// An even random number between 0 and 30
 #define RAND16W (sf2rand() & 0x1e)
-#define RAND16WD (RAND16W >> 1)
+// A random number between 0 and 15
 #define RAND16 (sf2rand() & 0xf)
+// A random number between 0 and 7
 #define RAND8  (sf2rand() & 7)
+// An even random number between 0 and 14
 #define RAND8W (sf2rand() & 0xe)
-#define RAND8WD (RAND8W >> 1)
+// A random number between 0 and 3
 #define RAND4  (sf2rand() & 3)
+
+// These pedantic macros emulate word offset lookups more accurately
+// A random numbert between 0 and 7
+#define RAND16WD (RAND16W >> 1)
+// A random number between 0 and 3
+#define RAND8WD (RAND8W >> 1)
+
 
 #define RESET_MODES g.mode0 = g.mode1 = g.mode2 = g.mode3 = g.mode4 = g.mode5 = 0
 

@@ -14,7 +14,6 @@
 #include "task.h"
 #include "rules.h"
 
-
 #include "gfxlib.h"
 #include "gemu.h"
 #include "sprite.h"
@@ -23,8 +22,6 @@
 #include "text.h"
 #include "effects.h"
 #include "sf2io.h"
-
-
 
 #include "textdata.c"
 
@@ -38,10 +35,10 @@ void sub_54bc(u16 **gfx_p, short x, short y, u8 *string) {		// 54bc
 	if (*((u32 *)string) == 0) {
 		COORDS_OFFSET(&cp, 0x48, 0);
 		leadingzero = TRUE;
-		sub_516a(gfx_p, &cp, 0, &leadingzero, 13);	/* XXX really not sure where d3 (13) comes from */
+		CreateIntegerSprite(gfx_p, &cp, 0, &leadingzero, 13);	/* XXX really not sure where d3 (13) comes from */
 	} else {
 #ifdef SF2_ENDIAN_LITTLE
-	 	sub_516a(gfx_p, &cp, string[3], &leadingzero, 13);
+	 	CreateIntegerSprite(gfx_p, &cp, string[3], &leadingzero, 13);
 		sub_5162(gfx_p, &cp, string[2], &leadingzero, 13);
 		sub_5162(gfx_p, &cp, string[1], &leadingzero, 13);
 		sub_5162(gfx_p, &cp, string[0], &leadingzero, 13);

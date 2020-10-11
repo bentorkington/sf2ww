@@ -55,7 +55,7 @@ void setpalette_scroll1(short palette);
 void setpalette_scroll2(short palette);
 void setpalette_scroll3(short palette);
 void printbyte(u16 **cursor, u32 *gfxcursor, unsigned short attr, u8 arg, u8 *printzeroes);
-void printnibble(u16 **cursor, u32 *gfxcursor, unsigned short attr, u8 arg, u8 *printzeroes);
+void CreateNibbleSprite(u16 **cursor, u32 *gfxcursor, unsigned short attr, u8 arg, u8 *printzeroes);
 void printbytehex(u16 *cursor, int x, int y, u8 byte, u8 *printzeroes, u16 attr);
 
 void clear_scrolls(void);
@@ -94,12 +94,12 @@ void drawsimple_scroll2noattr_check(Object *obj, const u16 *tiles, int width, in
 
 void set_shadow_pen(void);
 
-void _putlong(u16 **cursor, short x, short y, int arg, short attr);	//51fe
+void CreateLongwordSprite(u16 **cursor, short x, short y, int arg, short attr);	//51fe
 void printlonghex2(u16 **cursor, short x, short y, int arg, short attr);
 
 void sub_6126(void);
 void sub_61a0(void);
-void sub_516a(u16 **gfx_p, u32 *cp_p, u8 d0, short *leading_zero, u16 d3 );
+void CreateIntegerSprite(u16 **gfx_p, u32 *cp_p, u8 d0, short *leading_zero, u16 d3 );
 void sub_5162(u16 **gfx_p, u32 *cp, u8 d0, short *d2, u16 d3);
 
 void fight_player_names();

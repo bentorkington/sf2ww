@@ -526,10 +526,10 @@ static void _draw_bcd_char_scr1(u16 **gfx_p, u8 d0, short *drawZeroes, u16 d3) {
 	SCR1_CURSOR_BUMP(*gfx_p, 0, 1);
 }
 /*!
- Draw a pair of BCD digits to SCR1
- SF2UA: 0x5072
- attr (%d3) the palette and attribute
- leadingZeroes (%d2) BOOL incdicating if a leading zero should be printed
+ @brief Draw a pair of BCD digits to SCR1
+ @see sf2ua/0x5072
+ @param attr (%d3) the palette and attribute
+ @param leadingZeroes (%d2) BOOL incdicating if a leading zero should be printed
  */
 static void sub_5072(u16 **gfx_p, short d0, short leadingZeroes, u16 attr) {		//5072
 	_draw_bcd_char_scr1(gfx_p, d0 >> 4, &leadingZeroes, attr);
@@ -571,7 +571,7 @@ static void syslib_10(void) {
 				printlonghex2(&gfx_p, 0x80, 0xc0 - (i * 32), g.HiScoreTable[i].score, 0);
 			}
 			for (i=4; i>=0; --i) {
-				_putlong(&gfx_p, 0x100, 0xc0 - (i * 32), g.HiScoreTable[i].name, 0);
+				CreateLongwordSprite(&gfx_p, 0x100, 0xc0 - (i * 32), g.HiScoreTable[i].name, 0);
 			}
 			DIEFREE;
 			break;

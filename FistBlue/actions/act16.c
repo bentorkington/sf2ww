@@ -17,10 +17,8 @@
 #include "gfxlib.h"
 #include "act16.h"
 
-
 extern Game g;
 extern int g_d7;
-
 
 static int sub_12890(Object *obj) {
 	if (obj->UserByte & 1) {

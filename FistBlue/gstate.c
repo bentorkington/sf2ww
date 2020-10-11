@@ -66,28 +66,39 @@ static void _GSUpdateRowScroll(ScrollState *gs, short *a0, short *a1);
 
 static void _GSDrawScroll3A(GState *gs, u16 *gfx_p, const u16 *tilep, CP cp);
 
+#define SCR3X_PERSP 0
+#define SCR3X_NONE  2
+#define SCR3Y_NONE  0
+#define SCR3Y_2Y    2
+#define SCR3Y_0_75  4
+#define SCR3Y_0_50  6
+#define SCR3Y_0_875 8
+#define SCR3Y_1_25  10
+#define SCR3Y_2Y_MINUS_OFFSET 12
 
+#define SCR2X_FIGHT 0
+#define SCR2X_NONE  2
 
 #pragma mark ---- Layer Initialisers ----
 
 static void _GSInitUpdateMethods(void) {
 	static const char data_83900[16][6] = {	// Scroll update methods
-		{ 0x2, 0x4, 0x0, 0x0, 0x0, 0x4,  },  /* RYU JAPAN */
-		{ 0x0, 0x2, 0x0, 0x0, 0x0, 0x2,  },
-		{ 0x4, 0x4, 0x0, 0x0, 0x0, 0x2,  },
-		{ 0x0, 0x4, 0x0, 0x0, 0x0, 0x2,  },
-		{ 0x6, 0x6, 0x0, 0x0, 0x0, 0xc,  },
-		{ 0x6, 0x6, 0x0, 0x0, 0x0, 0x2,  },
-		{ 0x0, 0x2, 0x0, 0x0, 0x0, 0x2,  },
-		{ 0x0, 0xe, 0x0, 0x0, 0x0, 0x2,  },
-		{ 0x0, 0x2, 0x0, 0x0, 0x0, 0x2,  },
-		{ 0x0, 0x4, 0x0, 0x0, 0x0, 0xa,  },
-		{ 0x0, 0x4, 0x0, 0x0, 0x0, 0x2,  },
-		{ 0x0, 0x2, 0x0, 0x0, 0x0, 0x2,  },
-		{ 0x6, 0x0, 0x2, 0x2, 0x2, 0x2,  },
-		{ 0x6, 0x2, 0x2, 0x0, 0x2, 0x2,  },
-		{ 0x4, 0x2, 0x2, 0x0, 0x2, 0x2,  },
-		{ 0x6, 0x2, 0x2, 0x0, 0x2, 0x2,  },
+		{ 0x2, 0x4, 0x0, 0x0, SCR3X_PERSP, 0x4,  },  /* RYU JAPAN */
+		{ 0x0, 0x2, 0x0, 0x0, SCR3X_PERSP, 0x2,  },
+		{ 0x4, 0x4, 0x0, 0x0, SCR3X_PERSP, 0x2,  },
+		{ 0x0, 0x4, 0x0, 0x0, SCR3X_PERSP, 0x2,  },
+		{ 0x6, 0x6, 0x0, 0x0, SCR3X_PERSP, 0xc,  },
+		{ 0x6, 0x6, 0x0, 0x0, SCR3X_PERSP, 0x2,  },
+		{ 0x0, 0x2, 0x0, 0x0, SCR3X_PERSP, 0x2,  },
+		{ 0x0, 0xe, 0x0, 0x0, SCR3X_PERSP, 0x2,  },
+		{ 0x0, 0x2, 0x0, 0x0, SCR3X_PERSP, 0x2,  },
+		{ 0x0, 0x4, 0x0, 0x0, SCR3X_PERSP, 0xa,  },
+		{ 0x0, 0x4, 0x0, 0x0, SCR3X_PERSP, 0x2,  },
+		{ 0x0, 0x2, 0x0, 0x0, SCR3X_PERSP, 0x2,  },
+		{ 0x6, 0x0, 0x2, 0x2, SCR3X_NONE, 0x2,  },
+		{ 0x6, 0x2, 0x2, 0x0, SCR3X_NONE, 0x2,  },
+		{ 0x4, 0x2, 0x2, 0x0, SCR3X_NONE, 0x2,  },
+		{ 0x6, 0x2, 0x2, 0x0, SCR3X_NONE, 0x2,  },
 	};
 	
     gstate_Scroll1.XUpdateMethod = data_83900[g.CurrentStage][0];
@@ -318,23 +329,15 @@ static void _gstate_against_left(GState *gstate, int d0) {		// sf2ua:83334   d0 
 	gstate->x0024 = 0xc;
 }
 
-#define SCR3X_PERSP 0
-#define SCR3X_NONE  2
-#define SCR3Y_NONE  0
-#define SCR3Y_2Y    2
-#define SCR3Y_0_75  4
-#define SCR3Y_0_50  6
-#define SCR3Y_0_875 8
-#define SCR3Y_1_25  10
-#define SCR3Y_2Y_MINUS_OFFSET 12
+
 
 static void _GSMaintScroll3X(GState *gs) {		// 83658
 	gs->x0024 = gstate_Scroll2.x0024;
 	switch (gs->XUpdateMethod) {
-		case 0:		// scroll 2 + Zdepth
-			gs->XPI = gstate_Scroll2.XPI + (gstate_RowScroll.ss_0018.part.integer - (SCREEN_WIDTH / 2));
+		case SCR3X_PERSP:		// scroll 2 + Zdepth
+			gs->XPI = gstate_Scroll2.XPI + (gstate_RowScroll.Scroll3Parallax.part.integer - (SCREEN_WIDTH / 2));
 			break;
-		case 2:
+		case SCR3X_NONE:
 			// do nothing
 			break;
 		FATALDEFAULT;
@@ -370,9 +373,6 @@ static void _GSMaintScroll3Y(GState *gs) {		// 8368c
 			break;
     }
 }
-
-#define SCR2X_FIGHT 0
-#define SCR2X_NONE  2
 
 static void update_scroll2_X (GState *gstate) {     /* 0x83270 */
 	short leftmost_x, rightmost_x;
@@ -441,7 +441,7 @@ static void _GSMaintScroll1X(GState *gs) {	// 834d0
     switch (gs->XUpdateMethod) {
 		case 0:         // follow parallax from linescroll
 			temp = gs->X.part.integer;
-			gs->XPI = gstate_Scroll2.XPI + gstate_RowScroll.ss_0014.part.integer - (SCREEN_WIDTH / 2);
+			gs->XPI = gstate_Scroll2.XPI + gstate_RowScroll.Scroll1Parallax.part.integer - (SCREEN_WIDTH / 2);
 			g.x8b14 = gs->XPI - temp;
 			break;
 		case 2:
@@ -845,6 +845,7 @@ static const u16 *_GSRealignScr1a(GState *gs, u16 **gfx_p) {	// 84052 checked
 	gs->Index = (gs->Index + gs->Offset) & gs->OffMask;
 	return &data_d6800[gs->TileMaps[gs->Index/2]][gs->XCoarse/2];
 }
+
 static const u16 *_GSRealignScroll2A(GState *gs, u16 **gfx_p) {
 	// 840e4 scroll2
 	u32 d0;
@@ -1157,6 +1158,7 @@ static void gstate_update_scroll3 (GState *gs) {		//83d06
     }
 }
 
+#pragma mark Linescroll
 
 #define LINESCROLL_SET_DEC(count)				\
 for (i=0; i<(count); ++i) {						\
@@ -1233,7 +1235,7 @@ static void _GSUpdateRowScroll(ScrollState *ss, short *a0, short *a1) { /* 84592
 			for (i=0; i<16; ++i) {
 				d3 += Offset;
 			}
-			ss->ss_0018.full = d3;
+			ss->Scroll3Parallax.full = d3;
 			for (i=0; i<8; ++i) {
 				d3 += Offset;
 			}
@@ -1241,7 +1243,7 @@ static void _GSUpdateRowScroll(ScrollState *ss, short *a0, short *a1) { /* 84592
 			for (i=0; i<8; ++i) {
 				d3 += Offset;
 			}
-			ss->ss_0014.full = d3;
+			ss->Scroll1Parallax.full = d3;
 			LINESCROLL_SET_BACK(208);
 			break;
 		case STAGE_JAPAN_EHONDA:
@@ -1249,14 +1251,17 @@ static void _GSUpdateRowScroll(ScrollState *ss, short *a0, short *a1) { /* 84592
 			cursor = a0 + ((u32)ss->GroundRow / 2);
 			AccumOffset.full = (SCREEN_WIDTH / 2) * GSTATE_PIXEL;
 			LINESCROLL_SET_INC_BACK(24);
-			ss->ss_0014.part.integer = AccumOffset.part.integer;
+			ss->Scroll1Parallax.part.integer = AccumOffset.part.integer;
 			LINESCROLL_SET_INC_BACK(16);
 			LINESCROLL_SET_BACK(16);
-			LINESCROLL_SET_BACK_CONST(5, ss->ss_0014.part.integer);     // front of bath
-			ss->ss_0018.full = AccumOffset.full;
-			AccumOffset.full = ss->ss_0014.full;
+            
+			LINESCROLL_SET_BACK_CONST(5, ss->Scroll1Parallax.part.integer);     // front of bath
+            
+			ss->Scroll3Parallax.full = AccumOffset.full;
+            
+			AccumOffset.full = ss->Scroll1Parallax.full;
 			LINESCROLL_SET_INC_BACK(15);                // top of bath
-			AccumOffset.full = ss->ss_0018.full;
+			AccumOffset.full = ss->Scroll3Parallax.full;
 			LINESCROLL_SET_BACK(92);
 			LINESCROLL_SET_INC_BACK(64);
 			break;
@@ -1265,9 +1270,9 @@ static void _GSUpdateRowScroll(ScrollState *ss, short *a0, short *a1) { /* 84592
 			cursor = a0 + ((u32)ss->GroundRow / 2);			
 			AccumOffset.full = (SCREEN_WIDTH / 2) * GSTATE_PIXEL;
 			LINESCROLL_SET_INC_BACK(24);
-			ss->ss_0018.full = AccumOffset.full;
+			ss->Scroll3Parallax.full = AccumOffset.full;
 			LINESCROLL_INC(16);
-			ss->ss_0014.full = AccumOffset.full;
+			ss->Scroll1Parallax.full = AccumOffset.full;
 			LINESCROLL_SET_BACK(208);
 			break;
 		case STAGE_USA_GUILE:
@@ -1275,40 +1280,40 @@ static void _GSUpdateRowScroll(ScrollState *ss, short *a0, short *a1) { /* 84592
 			cursor = a0 + ((u32)ss->GroundRow / 2);			
 			AccumOffset.full = (SCREEN_WIDTH / 2) * GSTATE_PIXEL;
 			LINESCROLL_SET_INC_BACK(8);
-			ss->ss_0018.full = AccumOffset.full;
+			ss->Scroll3Parallax.full = AccumOffset.full;
 			LINESCROLL_SET_INC_BACK(18);
 			d3 = AccumOffset.full;
 			for (i=0; i<16; ++i) {
 				d3 += Offset;
 			}
-			ss->ss_0014.full = d3;
+			ss->Scroll1Parallax.full = d3;
 			LINESCROLL_SET_BACK(126);
 			LINESCROLL_SET_DEC_BACK(80);
 			break;
 		case STAGE_USA_KEN:
 			LINESCROLL_SET_DEC(16);
-			ss->ss_0014.full = AccumOffset.full;
+			ss->Scroll1Parallax.full = AccumOffset.full;
 			LINESCROLL_SET(8);
 			
 			cursor = a0 + ((u32)ss->GroundRow / 2);			
 			AccumOffset.full = (SCREEN_WIDTH / 2) * GSTATE_PIXEL;
 			LINESCROLL_SET_INC_BACK(40);
-			ss->ss_0018.full = AccumOffset.full;
+			ss->Scroll3Parallax.full = AccumOffset.full;
 			LINESCROLL_INC(16);
 			LINESCROLL_SET_BACK(192);
 			break;
 		case STAGE_CHINA_CHUNLI:
 			LINESCROLL_SET_DEC(24);
-			ss->ss_0014.full = AccumOffset.full;
+			ss->Scroll1Parallax.full = AccumOffset.full;
 			cursor = a0 + ((u32)ss->GroundRow / 2);			
 			AccumOffset.full = (SCREEN_WIDTH / 2) * GSTATE_PIXEL;
 			LINESCROLL_SET_INC_BACK(40);
-			ss->ss_0018.full = AccumOffset.full;
+			ss->Scroll3Parallax.full = AccumOffset.full;
 			LINESCROLL_SET_BACK(192);
 			break;
 		case STAGE_USSR_ZANGIEF:
 			LINESCROLL_SET_DEC(24);
-			ss->ss_0014.full = AccumOffset.full;
+			ss->Scroll1Parallax.full = AccumOffset.full;
 			cursor = a0 + ((u32)ss->GroundRow / 2);			
 			AccumOffset.full = 192 * GSTATE_PIXEL;
 			LINESCROLL_SET_INC_BACK(34);
@@ -1316,7 +1321,7 @@ static void _GSUpdateRowScroll(ScrollState *ss, short *a0, short *a1) { /* 84592
 			for (i=0; i<16; ++i) {
 				d3 += Offset;
 			}
-			ss->ss_0018.full = d3;
+			ss->Scroll3Parallax.full = d3;
 			LINESCROLL_SET_BACK(192);
 			break;
 		case STAGE_INDIA_DHALSIM:
@@ -1331,8 +1336,8 @@ static void _GSUpdateRowScroll(ScrollState *ss, short *a0, short *a1) { /* 84592
 			LINESCROLL_SET_INC_BACK(16);
 			LINESCROLL_SET_BACK(192);
 #else
-            ss->ss_0014.full = 192 * GSTATE_PIXEL;
-            ss->ss_0018.full = 192 * GSTATE_PIXEL + (24 * Offset);
+            ss->Scroll1Parallax.full = 192 * GSTATE_PIXEL;
+            ss->Scroll3Parallax.full = 192 * GSTATE_PIXEL + (24 * Offset);
 #endif
             break;
 		case STAGE_THAILAND_BISON:
@@ -1340,9 +1345,9 @@ static void _GSUpdateRowScroll(ScrollState *ss, short *a0, short *a1) { /* 84592
 			cursor = a0 + ((u32)ss->GroundRow / 2);			
 			AccumOffset.full = 192 * GSTATE_PIXEL;
 			LINESCROLL_SET_INC_BACK(8);
-			ss->ss_0014.full = AccumOffset.full;
+			ss->Scroll1Parallax.full = AccumOffset.full;
 			LINESCROLL_SET_INC_BACK(16);
-			ss->ss_0018.full = AccumOffset.full;
+			ss->Scroll3Parallax.full = AccumOffset.full;
 			LINESCROLL_SET_INC_BACK(16);
 			d3 = AccumOffset.full;
 			for (i=0; i<32; ++i) {
@@ -1354,7 +1359,7 @@ static void _GSUpdateRowScroll(ScrollState *ss, short *a0, short *a1) { /* 84592
 			break;
 		case STAGE_THAILAND_SAGAT:
 			LINESCROLL_SET_DEC(24);
-			ss->ss_0018.full = AccumOffset.full;
+			ss->Scroll3Parallax.full = AccumOffset.full;
 			cursor = a0 + ((u32)ss->GroundRow / 2);			
 			AccumOffset.full = 192 * GSTATE_PIXEL;
 			LINESCROLL_SET_INC_BACK(24);
@@ -1362,7 +1367,7 @@ static void _GSUpdateRowScroll(ScrollState *ss, short *a0, short *a1) { /* 84592
 			for (i=0; i<16; ++i) {
 				d3 += Offset;
 			}
-			ss->ss_0014.full = d3;
+			ss->Scroll1Parallax.full = d3;
 			LINESCROLL_SET_BACK(208);
 			break;
 		case STAGE_USA_BALROG:
@@ -1372,13 +1377,13 @@ static void _GSUpdateRowScroll(ScrollState *ss, short *a0, short *a1) { /* 84592
 			LINESCROLL_SET_INC_BACK(13);
 			LINESCROLL_SET_BACK(11);            // Light bulbs at edge of floor
 			LINESCROLL_INC(20);
-			ss->ss_0018.full = AccumOffset.full;
+			ss->Scroll3Parallax.full = AccumOffset.full;
 			LINESCROLL_INC(20);
 			d3 = AccumOffset.full;
 			for (i=0; i<36; ++i) {
 				d3 += Offset;
 			}
-			ss->ss_0014.full = d3;
+			ss->Scroll1Parallax.full = d3;
 			LINESCROLL_SET_BACK(192);
 			break;
 		case STAGE_SPAIN_VEGA:
@@ -1386,11 +1391,11 @@ static void _GSUpdateRowScroll(ScrollState *ss, short *a0, short *a1) { /* 84592
 			cursor = a0 + ((u32)ss->GroundRow / 2);			
 			AccumOffset.full = 192 * GSTATE_PIXEL;
 			LINESCROLL_SET_INC_BACK(4);
-			ss->ss_0014.full = AccumOffset.full;
+			ss->Scroll1Parallax.full = AccumOffset.full;
 			LINESCROLL_SET_INC_BACK(12);
 			LINESCROLL_SET_BACK(59);
 			LINESCROLL_INC(16);
-			ss->ss_0018.full = AccumOffset.full
+			ss->Scroll3Parallax.full = AccumOffset.full
 			LINESCROLL_INC(16);
 			LINESCROLL_SET_BACK(149);
 			break;

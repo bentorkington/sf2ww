@@ -74,15 +74,17 @@ void object_dot_cloth(void) {
 			OBJECT_DRAW_ID((x * 16) + y, cp >> 16, cp & 0xffff, SF2_TILE_OBJ_ASCII_12X12 + (((x * 16) + y)&0xf), 0);
 		}
 	}
-	
 }
+
 #include "gemu.h"
 
-void sub_92de(u16 *gfx_p, u32 cp, const char *a1) {
+static void sub_92de(u16 *gfx_p, u32 cp, const char *a1) {
     int i;
     for (i=2; i>=0; --i) {
         gemuObjectDraw(gfx_p,          CP_X, CP_Y, *a1 + SF2_TILE_OBJ_ASCII_12X12, 13);
+#ifdef CPS
         gemuObjectDraw(gfx_p + 0x4000, CP_X, CP_Y, *a1 + SF2_TILE_OBJ_ASCII_12X12, 13);
+#endif
         gfx_p += 4;
         ++a1;
         COORDS_OFFSET(&cp, 12, 0);
@@ -90,11 +92,11 @@ void sub_92de(u16 *gfx_p, u32 cp, const char *a1) {
 }
 
 /*!
- Show the name of the high score owner.
+ @brief Show the name of the high score owner.
  'HI' is displayed if on of the current players has the high score.
- sf2ua: 0x929c
+ @see sf2ua/0x929c
  */
-void _print_high_score_name(void) {
+static void _print_high_score_name(void) {
     u32 cp;
     u16 *gfx_p;
     static const char hi[]=" HI\xff";

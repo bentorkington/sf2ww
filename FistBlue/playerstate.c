@@ -1404,10 +1404,10 @@ void SMTumble(Player *ply) {		//2a052 was downandout()
 			}
 			if(PLAYERGROUND) {
 				NEXT(ply->mode3);
-				ply->VelX.full    = ply->Next3VelX.full;
-				ply->AclX.full  = ply->Next3AclX.full;
-				ply->VelY.full    = ply->Next3VelY.full;
-				ply->AclY.full  = ply->Next3AclY.full;  
+				ply->VelX.full = ply->Next3VelX.full;
+				ply->AclX.full = ply->Next3AclX.full;
+				ply->VelY.full = ply->Next3VelY.full;
+				ply->AclY.full = ply->Next3AclY.full;  
 				ply->Airborne = 0;
 				if(ply->Direction == FACING_LEFT) {
 					ply->VelX.full = -ply->VelX.full;
@@ -1652,11 +1652,11 @@ static void ply_calc_draw_order(void) {		/* 28414 */
 }
 
 static void ply_set_direction_bonus(Player *ply) {		/* 284f6 */
-	if (ply->Airborne==0) {
-		if (ply->JoyDecode.full & 0x2) {
-			ply->EnemyDirection=FACING_LEFT;
-		} else if(ply->JoyDecode.full & 0x1) {
-			ply->EnemyDirection=FACING_RIGHT;
+	if (ply->Airborne == 0) {
+		if (ply->JoyDecode.full & JOY_LEFT) {
+			ply->EnemyDirection = FACING_LEFT;
+		} else if(ply->JoyDecode.full & JOY_RIGHT) {
+			ply->EnemyDirection = FACING_RIGHT;
 		}
 	}
 }
@@ -1695,22 +1695,18 @@ inline static void _PSPlayerDelta(void) {		/* 2851c */
 }
 
 static void _PSBonusCarOppDistCalc(Player *ply) {			/* 285c2 */
-	int x=0x90;
+	int x = 0x90;
 	
 	if (ply->XPI < 0xb0) {
 		x = 0xf0;
 	}
-	x = ABS(x - ply->XPI)-ply->Size;
-	if (x<0) { x = 0;}
+	x = ABS(x - ply->XPI) - ply->Size;
+	if (x < 0) { x = 0; }
 	ply->OppXDist = x;
 }
 
 static void _PSOppDistCalc(Player *a0, Player *a1) {		/* 2858c */
-	int temp=ABS(a1->XPI - a0->XPI)-a1->Size;
-	if (temp<0) {
-		temp = 0;
-	}
-	a0->OppXDist = temp;
+	a0->OppXDist = MAX(0, ABS(a1->XPI - a0->XPI) - a1->Size);
 }
 
 static void sub_208a6(void) {		// 208a6 Calc Oppdist when on Barrels

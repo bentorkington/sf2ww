@@ -231,10 +231,13 @@ static void _comp_bounce_off_wall(Player *ply, short d0) {	//2cb86
 	queuesound(SOUND_IMPACT8);
 	CASetAnim1(ply, STATUS_BOUNCE_WALL);
 }
-static void comp_jump_physics(Player *ply) {		/* 2c854 */
-	if(ply->x014e) {
-		if(--ply->x014e == 0){ply->AICanJumpAttack = TRUE;}	
-	}
+/**
+ @see sf2ua/0x2c854
+ */
+static void comp_jump_physics(Player *ply) {
+	if(ply->x014e && --ply->x014e == 0)
+        ply->AICanJumpAttack = TRUE;
+	
 	CATrajectory((Object *)ply);
 	if(ply->VelY.full >= 0) {
 		PLAYERTICK;
@@ -253,36 +256,36 @@ static void comp_jump_physics(Player *ply) {		/* 2c854 */
 		return;
 	}
 	
-	if(ply->AIWallBounce==TRUE) {
-		if(ply->FighterID == FID_CHUN_LI || ply->FighterID == FID_VEGA) {
-			if(ply->TmrWallBounce) {
-				ply->TmrWallBounce--;
-			} else {
-				if(ply->YPI >= 104 && ply->VelX.full != 0) {
-					if(ply->PlatformFallDir) {
-						_comp_bounce_off_wall(ply, ply->PlatformFallDir-1);
-						return;
-					}
-					if(ply->BoundCheck) {
-						_comp_bounce_off_wall(ply, ply->BoundCheck-1);
-						return;
-					}
-					PLAYERTICK;
-				}
-			}
-		}
+	if(ply->AIWallBounce && (ply->FighterID == FID_CHUN_LI || ply->FighterID == FID_VEGA)) {
+        if(ply->TmrWallBounce) {
+            ply->TmrWallBounce--;
+        } else {
+            if(ply->YPI >= 104 && ply->VelX.full != 0) {
+                if(ply->PlatformFallDir) {
+                    _comp_bounce_off_wall(ply, ply->PlatformFallDir-1);
+                    return;
+                }
+                if(ply->BoundCheck) {
+                    _comp_bounce_off_wall(ply, ply->BoundCheck-1);
+                    return;
+                }
+            }
+        }
 	}
 	PLAYERTICK;
 }
 
-static void _AICalcTrajTick(Player *ply) {   /* 2c820 computer jump tracjectory */
+/**
+ @see sf2ua/0x2c820
+ */
+static void _AICalcTrajTick(Player *ply) {
 	CATrajectory((Object *)ply);
 	PLAYERTICK;
 }
 
 static void comp_jump_dhalsimcheck(Player *ply) {		/* 2c828 */
 	if (ply->FighterID == FID_DHALSIM && ply->CompDoThrow != 0) {
-		if(sub_35fe6(ply) < 0) {		/*Dhalsim something */
+		if(sub_35fe6(ply) < 0) {		/* Dhalsim something */
 			/* 2c804 */
 			ply->Attacking		= TRUE;
 			ply->IsJumpThreat	= TRUE;
@@ -437,13 +440,17 @@ static void comp_plstat_crouch (Player *ply) {		/* 2c682 was comp_disposition_1*
 			
 	}
 }
-static void comp_plstat_jump(Player *ply) { /* 2c788 was comp_desire_jump */
+
+/**
+ @see sf2ua/0x2c788
+ */
+static void comp_plstat_jump(Player *ply) {
 	int d0;
 	switch (ply->mode2) {
 		case 0:
-			PLAYERTICK;		/* tick through the initial jump anim */
-			if ((AF2) == 0) {
-				NEXT(ply->mode2);			/* have 'lifted off' */
+			PLAYERTICK;		      // tick through the initial jump anim
+			if (AF2 == 0) {       // until our feet have lifted off
+				NEXT(ply->mode2);
 				ply->Airborne    = AIR_JUMPING;
 				ply->OnPlatform2 = FALSE;
 			}
@@ -452,7 +459,7 @@ static void comp_plstat_jump(Player *ply) { /* 2c788 was comp_desire_jump */
 			if (ply->AICanJumpAttack) {
 				if (ply->Opponent->YPI >= 56) {
 					/*2cf74*/
-					if(ply->OppXDist > ply->x0228) {comp_jump_dhalsimcheck(ply);return;}
+					if(ply->OppXDist > ply->x0228) { comp_jump_dhalsimcheck(ply); return; }
 				} else {
 					if(ply->VelY.full >= 0 && ply->YPI > ply->x023c) {
 						comp_jump_dhalsimcheck(ply);       /* 2c828 */
@@ -493,26 +500,19 @@ static void comp_plstat_jump(Player *ply) { /* 2c788 was comp_desire_jump */
 			} else if (comp_check_block(ply)) {
 				/* 2c94a ... */
 				ply->LocalTimer = 0;
-				if ((d0=comp_check_newtactics(ply))) {
-					comp_changetactics(ply, d0);
-				} else if (comp_check_standattack(ply)) {
-					CompStateGroundAttack(ply, PLY_CROUCH);
-				} else if (check_compDoBlockStun(ply)) {
-					comp_standblock(ply);
-				} else {
+                if ((d0=comp_check_newtactics(ply)))  {	comp_changetactics(ply, d0);            }
+                else if (comp_check_standattack(ply)) {	CompStateGroundAttack(ply, PLY_CROUCH); }
+                else if (check_compDoBlockStun(ply))  {	comp_standblock(ply);                   }
+                else {
 					comp_check_set_crouch(ply);
 				}
 			} else {
-				if ((d0=comp_check_newtactics(ply))) {
-					comp_changetactics(ply, d0);
-				} else if (comp_check_standattack(ply)) {
-					CompStateGroundAttack(ply, PLY_STAND);
-				} else if (check_comp_should_jump(ply)) {
-					comp_set_jump(ply);
-				} else if (check_compDoBlockStun(ply)) {
-					comp_standblock(ply);
-				} else {
-					--ply->LocalTimer;
+                if ((d0 = comp_check_newtactics(ply)))  {   comp_changetactics(ply, d0);            }
+                else if (comp_check_standattack(ply))   {	CompStateGroundAttack(ply, PLY_STAND);  }
+                else if (check_comp_should_jump(ply))   {	comp_set_jump(ply);                     }
+                else if (check_compDoBlockStun(ply))    {	comp_standblock(ply);                   }
+				else {
+					ply->LocalTimer -= 1;
 					exit_comp_normal(ply);
 				}
 			}
@@ -543,6 +543,7 @@ static void comp_plstat_jump(Player *ply) { /* 2c788 was comp_desire_jump */
 		FATALDEFAULT;
 	}
 }
+
 static void comp_plstat_turnaround(Player *ply) {	/* 2c9fe */
 	short temp;
 	switch (ply->mode2) {

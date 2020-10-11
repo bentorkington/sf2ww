@@ -79,14 +79,14 @@ static void _SMKenDrums(Object_G2 *obj) {				// 24a74
 			switch (obj->mode1) {
 				case 0:
 					CDCheckDecor(obj);
-					if(obj->Energy < 0) { NEXT(obj->mode1) }
+					if (obj->Energy < 0) { NEXT(obj->mode1) }
 					break;
 				case 2:
 					if (obj->Timer2) {
 						obj->Timer2--;
 					} else {
 						NEXT(obj->mode1);
-						for(i=11;i>=0;i--) {
+						for (i = 11; i >= 0; i--) {
 							if ((nobj = AllocActor())) {
 								nobj->exists = TRUE;
 								nobj->Sel = SF2ACT_USAKEN_DRUMFRAGS;
@@ -97,7 +97,7 @@ static void _SMKenDrums(Object_G2 *obj) {				// 24a74
 								nobj->YPI = obj->YPI + 45;
 							}
 						}
-						if((nobj = AllocActor())) {
+						if ((nobj = AllocActor())) {
 							nobj->exists = TRUE;
 							nobj->Sel = SF2ACT_USAKEN_DRUMFRAGS;
 							nobj->SubSel = 5;
@@ -107,7 +107,7 @@ static void _SMKenDrums(Object_G2 *obj) {				// 24a74
 							nobj->XPI = obj->XPI - 16;
 							nobj->YPI = obj->YPI + 40;
 						}
-						if((nobj = AllocActor())) {
+						if ((nobj = AllocActor())) {
 							nobj->exists = TRUE;
 							nobj->Sel = SF2ACT_USAKEN_DRUMFRAGS;
 							nobj->SubSel = 6;
@@ -116,7 +116,7 @@ static void _SMKenDrums(Object_G2 *obj) {				// 24a74
 							nobj->ZDepth = obj->ZDepth;
 							nobj->XPI = obj->XPI - 16;
 						}
-						if((nobj = AllocActor())) {
+						if ((nobj = AllocActor())) {
 							nobj->exists = TRUE;
 							nobj->Sel = SF2ACT_USAKEN_DRUMFRAGS;
 							nobj->SubSel = 5;
@@ -126,7 +126,7 @@ static void _SMKenDrums(Object_G2 *obj) {				// 24a74
 							nobj->XPI = obj->XPI - 0x30;
 							nobj->YPI = obj->YPI + 0x38;
 						}
-						if((nobj = AllocActor())) {
+						if ((nobj = AllocActor())) {
 							nobj->exists = TRUE;
 							nobj->Sel = SF2ACT_USAKEN_DRUMFRAGS;
 							nobj->SubSel = 6;
@@ -175,7 +175,7 @@ static void _SMRyuSigns(Object_G2 *obj) {		// 24c4e
 						obj->Timer2--;
 					} else {
 						NEXT(obj->mode1);
-						for(i=3;i>=0;i--) {
+						for(i = 3; i >= 0; i--) {
 							if ((nobj = AllocActor())) {
 								nobj->exists = TRUE;
 								nobj->Sel = SF2ACT_0X13;

@@ -258,7 +258,7 @@ void react_to_attack(Player *ply) {							/* 0x28ed8 */
     switch (ply->mode2) {
 		case 0:
 			NEXT(ply->mode2);
-			if(ply->ReactMode == RM_0x0c) {
+			if (ply->ReactMode == RM_0x0c) {
 				ply->ReactMode2 = 0;
 			} else if (ply->ReactMode == RM_0x14) {
 				ply->ReactMode2 = 2;
@@ -272,9 +272,9 @@ void react_to_attack(Player *ply) {							/* 0x28ed8 */
 			ply->Flip = ply->Direction ^ 1;
 			
 			if(ply->ReactMode == RM_MULTIHIT) {
-				CASetAnim2(ply, reactmode_to_status[ply->ReactMode/2 + ply->MultiHitToggle], ply->ReactMode2);
+				CASetAnim2(ply, reactmode_to_status[ply->ReactMode / 2 + ply->MultiHitToggle], ply->ReactMode2);
 			} else {
-				CASetAnim2(ply, reactmode_to_status[ply->ReactMode/2], ply->ReactMode2);
+				CASetAnim2(ply, reactmode_to_status[ply->ReactMode / 2], ply->ReactMode2);
 			}
 			action_start_35(ply);
 			
@@ -295,14 +295,14 @@ void react_to_attack(Player *ply) {							/* 0x28ed8 */
 				ply->Timer2--;
 				return;
 			}
-			a=ply->PSPushBacks[0];
+			a = ply->PSPushBacks[0];
 			if(a >= 0) {
 				ply->PSPushBacks++;   
 				if (ply->Direction == FACING_LEFT) {
 					a = -a;
-					b=1;
+					b = 1;
 				} else {
-					b=2;
+					b = 2;
 				}
 				if(ply->ProjectilePushBack !=0 || (ply->BoundCheck != b && ply->PlatformFallDir != b)){
 					ply->X.part.integer += a;
@@ -352,6 +352,7 @@ void react_to_attack(Player *ply) {							/* 0x28ed8 */
 		FATALDEFAULT;
     }
 }
+
 void RMFootSwept(Player *ply) {		/* 29178 */
     int temp, temp2;
     
@@ -359,7 +360,7 @@ void RMFootSwept(Player *ply) {		/* 29178 */
 		case 0x0:
 			NEXT(ply->mode2);
 			ply->Flip = ply->Direction ^ 1;
-			CASetAnim2(ply,STATUS_FOOTSWEPT,0);
+			CASetAnim2(ply, STATUS_FOOTSWEPT, 0);
 			break;
 		case 0x2:
 			if(ply->Timer2) {
@@ -373,25 +374,25 @@ void RMFootSwept(Player *ply) {		/* 29178 */
 				ply->AclX.full  = 0x0000;
 				ply->VelY.full  = 0x05c0;		//5.75
 				ply->AclY.full  = 0x0048; /* standard gravity 0.28125 */
-				if(ply->Flip) {ply->VelX.full = -ply->VelX.full;}
+				if (ply->Flip) { ply->VelX.full = -ply->VelX.full; }
 				ply->x012a = ply->VelX.full;
 				ply->PSPushBacks = data_29150;
 			}
 			break;
 		case 0x4:
-			if(ply->ReactTimer) {
+			if (ply->ReactTimer) {
 				ply->GroundSoundDisa = TRUE;
-				if(--ply->ReactTimer) { return; }
+				if (--ply->ReactTimer) { return; }
 			}
 			CATrajectory((Object *)ply); 
-			if((ply->PlatformFallDir != 0 || ply->BoundCheck != 0) && ply->GroundSoundDisa == FALSE ) {  
+			if ((ply->PlatformFallDir != 0 || ply->BoundCheck != 0) && ply->GroundSoundDisa == FALSE) {  
 				// we've hit a wall?
 				queuesound(SOUND_GROUND_THUMP);
 				ply->ReactTimer = 12;               
 				ply->VelX.full  = 0;
-				if(ply->VelY.full >  0) { ply->VelY.full = 0; }
+				if (ply->VelY.full >  0) { ply->VelY.full = 0; }
 			}
-			if(PLAYERGROUND) { sub_29280(ply); return; }
+			if (PLAYERGROUND) { sub_29280(ply); return; }
 			
 			temp = ply->PSPushBacks[0];
 			if(temp < 0) {
@@ -420,7 +421,7 @@ void RMFootSwept(Player *ply) {		/* 29178 */
 static void sub_29426(Player *ply, short d6) {		
 	const char *cur = ply->PSPushBacks;
 	short a,b;
-	if(*cur >= 0) {
+	if (*cur >= 0) {
 		a=*cur++;
 	} else {
 		a=0;
@@ -457,7 +458,7 @@ void RMHitInAir(Player *ply) {			// 2933e
 			ply->AclX.full    = 0x0000;
 			ply->VelY.full    = 0x05c0;
 			ply->AclY.full    = 0x0048;
-			if (ply->Flip) {ply->VelX.full = -ply->VelX.full; }
+			if (ply->Flip) { ply->VelX.full = -ply->VelX.full; }
 			ply->x012a = ply->VelX.full;
 			ply->PSPushBacks = data_29150;
 			ply->YPI += 16;
@@ -475,7 +476,7 @@ void RMHitInAir(Player *ply) {			// 2933e
 					ply->VelY.full = 0;
 				}
 			}
-			if(PLAYERGROUND) { 
+			if (PLAYERGROUND) { 
 				ply->NoThrow_t       = data_292d4[RAND32];
 				ply->TimerInvincible = 120;
 				ply->Invincible      = FALSE;
@@ -488,6 +489,7 @@ void RMHitInAir(Player *ply) {			// 2933e
 		FATALDEFAULT;
     }
 }
+
 void RMElectrocuted(Player *ply) {
     switch(ply->mode2) {    
     case 0:
@@ -548,6 +550,7 @@ void RMFireball(Player *ply) { /* 29460 */
 						     0x100, 0x14,   0x0,  0x0);
 			
 			ply->TumbleStatus = STATUS_KNOCKDOWN;
+
 			if(ply->ReactMode == RM_YOGAFIREHIT) {
 				ply->ProjHit = PROJHIT_FIERY;   
 			} else if (ply->ReactMode == RM_FIREBALLHIT) {
@@ -868,7 +871,7 @@ static void _RMTumbleSM3(Player *ply) {		/* 2a21a tumble sm */
 			break;
 		case 10:
 			/* 2a3ee */
-			if(find_apex(ply)==0 || ply->PlatformFallDir || ply->BoundCheck) {
+			if(find_apex(ply) == 0 || ply->PlatformFallDir || ply->BoundCheck) {
 				ply->mode3 = 0;
 				ply->Tumble = FALSE;
 			}

@@ -1050,26 +1050,31 @@ static void sub_297a(void) {
 	}
 }
 #pragma mark ---- Decoding ----
-void decode_buttons(Player *ply, short d0) {		/* 3296 */
+/**
+ @brief Set `ButtonStrength` to the strength of `button`. Do not call if no buttons are pressed.
+ @param buttons the current buttons
+ @see sf2ua/0x3296
+ */
+void decode_buttons(Player *ply, u16 buttons) {
 /* only valid if a button is actually pressed, otherwise will always
  result in Big Kick */
 	
 	ply->PunchKick = PLY_PUNCHING;
-	if (d0 & BUTTON_A) {
+	if (buttons & BUTTON_A) {
 		ply->ButtonStrength = STRENGTH_LOW;
 		return;
-	} else if (d0 & BUTTON_B) {
+	} else if (buttons & BUTTON_B) {
 		ply->ButtonStrength = STRENGTH_MED;
 		return;
-	} else if (d0 & BUTTON_C) {
+	} else if (buttons & BUTTON_C) {
 		ply->ButtonStrength = STRENGTH_HIGH;
 		return;
 	}
 	ply->PunchKick = PLY_KICKING;
-	if (d0 & BUTTON_D) {
+	if (buttons & BUTTON_D) {
 		ply->ButtonStrength = STRENGTH_LOW;
 		return;
-	} else if (d0 & BUTTON_E) {
+	} else if (buttons & BUTTON_E) {
 		ply->ButtonStrength = STRENGTH_MED;
 		return;
 	} else {

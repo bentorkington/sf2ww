@@ -773,7 +773,7 @@ void gamemode_postfightanim (void) {        // 882c
             case 0:
 				DEBUG_SM("PostFightAnim");
                 queuesound(0x30f9); /* fade out */
-                if(g.CurrentStage != 0xd && g.TimeOut ) {  /* barrels */
+                if(g.CurrentStage != STAGE_BONUS_BARRELS && g.TimeOut ) {
                     g.mode3 += 2;
                     g.x0ae7  = TRUE;
                     g.timer3 = 3 * TICKS_PER_SECOND;
@@ -787,8 +787,8 @@ void gamemode_postfightanim (void) {        // 882c
                 }
 				break;
             case 2: 
-                if(--g.timer3==0){
-                    g.mode3=6;
+                if(--g.timer3 == 0){
+                    g.mode3 = 6;
                     DrawTileText(LIBTEXT_ERASE | TILETEXT_TIME_OVER);
                 }
 				break;
@@ -807,10 +807,10 @@ void gamemode_postfightanim (void) {        // 882c
 							DrawTileText(LIBTEXT_ERASE + TILETEXT_PERFECT);
 							if (g.RoundResult < 0) {
 								/* 8b26 */
-								if ((obj=AllocActor())) {
-									INITOBJ(obj, 0x3f, 0);
+								if ((obj = AllocActor())) {
+									INITOBJ(obj, SF2ACT_0X3F, 0);
 								}
-								if ((obj=AllocActor())) {
+								if ((obj = AllocActor())) {
 									obj->exists=TRUE;
 									obj->Sel = SF2ACT_0X3F;
 									obj->SubSel = 1;
@@ -818,13 +818,13 @@ void gamemode_postfightanim (void) {        // 882c
 							} else {
 								/* 8b04 */
 								if (g.RoundResult == ROUNDRESULT_P1_WINS) {
-									if ((obj=AllocActor())) {
+									if ((obj = AllocActor())) {
 										obj->exists = TRUE;
 										obj->Sel = SF2ACT_0X3F;
 										obj->SubSel = 0;
 									}
 								} else {
-									if ((obj=AllocActor())) {
+									if ((obj = AllocActor())) {
 										obj->exists = TRUE;
 										obj->Sel = SF2ACT_0X3F;
 										obj->SubSel = 1;
@@ -838,7 +838,7 @@ void gamemode_postfightanim (void) {        // 882c
 							temp = g.RoundResult < 0 ? 2 : 1;
 							if (g.Pause_9e1 == temp) {
 								NEXT(g.mode4);
-								g.timer4 = SF2ACT_BISONCAPE;
+								g.timer4 = 0x3c;
 							}
 						break;
 					case 6:
@@ -884,7 +884,7 @@ void gamemode_postfightanim (void) {        // 882c
 						/* 8c0c */
 						NEXT(g.mode4);
 						g.Pause_9e1 = 0;
-						if ((obj=AllocActor())) {
+						if ((obj = AllocActor())) {
 							obj->exists = TRUE;
 							obj->Sel = SF2ACT_0X40;
 							obj->SubSel = 0;
@@ -894,7 +894,7 @@ void gamemode_postfightanim (void) {        // 882c
 						if (g.Pause_9e1) {
 							NEXT(g.mode4);
 							g.Pause_9e1 = 0;
-							if ((obj=AllocActor())) { INITOBJ(obj,SF2ACT_0X40,1) }
+							if ((obj = AllocActor())) { INITOBJ(obj,SF2ACT_0X40,1) }
 						}
 						break;
 					case 8:
@@ -1006,12 +1006,12 @@ void gamemode_postfightanim (void) {        // 882c
 
 static short sub_7e86(void) {		// 7e86
 	if (g.NewPlayers) {
-		g.mode1=0xc;
-		g.mode2=0x6;
-		g.mode3=0;
-		g.mode4=0;
-		g.mode5=0;
-		g.WaitMode=FALSE;
+		g.mode1 = 0xc;
+		g.mode2 = 0x6;
+		g.mode3 = 0;
+		g.mode4 = 0;
+		g.mode5 = 0;
+		g.WaitMode = FALSE;
 		soundsting(SOUND_CHALLENGER);	/* new challenger */
 		return TRUE;
 	}

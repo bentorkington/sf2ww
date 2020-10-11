@@ -254,18 +254,18 @@ void RyuSMShoryuken(Player *ply) {		//2d84a
 
 
 #pragma mark Hurricane
-// start moving
+
 void RyuStartHurricane(Player *ply) {		//2d914
 	struct UserData_RyuKen *ud=(struct UserData_RyuKen *)&ply->UserData;
 
     int data_2d962[3]={ 0x00028000, 0x00030000, 0x00038000 };
 
 	NEXT(ply->mode2);
-	ply->mode3=0;
-	soundsting(SOUND_HURRICANE);	/* "Don't scratch that veruca!" */
-	ud->x00c1 = (ply->ButtonStrength/2)+2;
-	ud->ShoryukenX.full = data_2d962[ply->ButtonStrength/2];
-	if (ply->Flip==FACING_LEFT) {
+	ply->mode3 = 0;
+	soundsting(SOUND_HURRICANE);
+	ud->x00c1 = (ply->ButtonStrength/2) + 2;
+	ud->ShoryukenX.full = data_2d962[ply->ButtonStrength / 2];
+	if (ply->Flip == FACING_LEFT) {
 		ud->ShoryukenX.full = -ud->ShoryukenX.full;
 	}
 	ud->ShoryukenY.full = 0x00040000;
@@ -282,9 +282,9 @@ void RyuSMHurricane(Player *ply) {		//2d96e
 
 	switch (ply->mode3) {
 		case 0:
-			if(KenTrajectory(ply)<0){
+			if(KenTrajectory(ply) < 0){
 				NEXT(ply->mode3);
-				CASetAnim2(ply, STATUS_HURRICANE, (ply->ButtonStrength/2)+2);
+				CASetAnim2(ply, STATUS_HURRICANE, (ply->ButtonStrength / 2) + 2);
 			}
 			PLAYERTICK;
 			break;
