@@ -44,6 +44,12 @@
 
 #include "libdata.h"
 
+#pragma mark Constants
+
+#define TICKER_X 176
+#define TICKER_Y 208
+
+
 
 extern Game g;
 extern GState gstate_Scroll1;
@@ -1165,22 +1171,31 @@ static void sub_52bc(u16 *gp, short x, short y, char c) {
 	OBJECT_DRAW_NOATTR(gp, x, y, (c & 0xf) + SF2_TILE_OBJ_HEXCHARS);	
 	/* print the object in both both buffers */
 }
-static void _LBPrintTicker(u32 *coords, u8 a) {		//52ac print time remaining
+
+/**
+ @brief Update the ticker
+ @param time Time or objects remaining in seconds, BCD
+ @see sf2ua/0x52ac
+ */
+static void _LBPrintTicker(u32 *coords, u8 remaining_bcd) {
 	u16 *gp;
 	OBJ_CURSOR_SET(gp, 14);
-	sub_52bc(gp, *coords >> 16, *coords & 0xffff,a >> 4);
+	sub_52bc(gp, *coords >> 16, *coords & 0xffff, remaining_bcd >> 4);
 	COORDS_OFFSET(coords, 16, 0);
 	OBJ_CURSOR_SET(gp, 15);
-	sub_52bc(gp, *coords >> 16, *coords & 0xffff,a );
+	sub_52bc(gp, *coords >> 16, *coords & 0xffff, remaining_bcd);
 }
+
 void sub_528a() {		/* print number of barrels remaining */
-	u32 coords=MakePointObj(176, 208);
+	u32 coords=MakePointObj(TICKER_X, TICKER_Y);
 	_LBPrintTicker(&coords, g.x8ab9);		
 }
+
 void sub_529c() {
-	u32 coords = MakePointObj(176, 208);
-	_LBPrintTicker(&coords,g.TimeRemainBCD);
+	u32 coords = MakePointObj(TICKER_X, TICKER_Y);
+	_LBPrintTicker(&coords, g.TimeRemainBCD);
 }
+
 static void ply1_loses(void) {		/* 0x8f7a */
 	print_timeremaining();
 	g.RoundResult = ROUNDRESULT_P2_WINS;

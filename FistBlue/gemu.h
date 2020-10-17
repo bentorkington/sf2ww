@@ -144,7 +144,7 @@ gemuObjCursorSet((addr - 0x910000)/8);
 void gemuObjectDrawPoint(u16 *slot, u32 point, u16 tile, u16 attr);
 void gemuObjectDraw(u16 *slot, u16 x, u16 y, u16 tile, u16 attr);
 void gemuObjectDrawNoAttr(u16 *slot, u16 x, u16 y, u16 tile);
-void gemuObjectDrawID(short slow, u16 x, u16 y, u16 tile, u16 attr);
+void gemuObjectDrawID(short slot, u16 x, u16 y, u16 tile, u16 attr);
 void gemuObjectDrawIDCoords(short id, u16 x, u16 y, u16 tile, u16 attr);
 
 void gemuIncGfxCursor(u32 *gfxcursor, short x, short y);
