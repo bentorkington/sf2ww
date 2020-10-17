@@ -64,9 +64,9 @@ struct UserData_RyuKen {
 	FIXED16_16	ShoryukenYDash;	
 } __attribute__((packed));
 
-struct KenRyuButtons {
-	u16 d0;
-	u16 d6;
+struct KenRyuInputs {
+	u16 buttons; // %d0
+	u16 stick; // %d6
 };
 
 #define STATUS_HADOUKEN     0x4c
