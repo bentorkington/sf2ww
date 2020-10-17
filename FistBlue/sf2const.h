@@ -43,12 +43,6 @@ typedef enum {
 #define STEP_LEFT		0
 #define	STEP_STILL		2
 
-// for Object.Flip and Object.EnemyDirection
-typedef enum {
-    FACING_LEFT,        // or FALSE: not flipped
-    FACING_RIGHT,       // or TRUE: flipped
-} FBDirection;
-
 #define BOTH_COMPUTER  0
 #define ONLY_P1        1
 #define ONLY_P2        2

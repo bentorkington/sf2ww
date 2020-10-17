@@ -173,5 +173,10 @@ struct extrasprite {
     struct image	*Image;
 };    
 
+// for Object.Flip and Object.EnemyDirection
+typedef enum {
+    FACING_LEFT,        // or FALSE: not flipped
+    FACING_RIGHT,       // or TRUE: flipped
+} FBDirection;
 
 #endif /* INC_SF2TYPES */
