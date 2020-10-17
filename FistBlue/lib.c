@@ -84,7 +84,6 @@ static void sub_2c38(void) {		// 2c38
 				if (d2 == g.CurrentStage) {
 					d2=g.Player2.FighterID;
 				}
-					
 			}
 			g.Player2.FighterID = d2;
 		} else {

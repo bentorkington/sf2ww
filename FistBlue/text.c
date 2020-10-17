@@ -56,7 +56,7 @@ void sub_54bc(u16 **gfx_p, short x, short y, u8 *string) {		// 54bc
  sf2ua: 0x58c0
  sel %d0
  */
-void showtextbank4(enum libtextgfx_sel sel)  {		//58c0 showtextbank4
+void showtextbank4(enum libtextgfx_sel sel) {
 	u16			*gfx_p;
 	const u16	*data;
 	const u8	*data2;
@@ -99,9 +99,7 @@ void showtextbank4(enum libtextgfx_sel sel)  {		//58c0 showtextbank4
 				OBJECT_DRAW(gfx_p, x2, y2, ch, palette);
 			}
 		}
-		
 	}
-	
 }
 
 void sub_5982(Task *task) {		// 5982 in scroll1
