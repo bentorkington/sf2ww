@@ -34,10 +34,7 @@ extern GState gstate_Scroll1;
 extern GState gstate_Scroll2;
 extern GState gstate_Scroll3;
 
-
-short g_d7;		/* global for counter */
-
-
+extern short g_d7;		/* global for counter */
 
 static void sub_25f06(Object_G2 *obj);
 

@@ -33,8 +33,6 @@
 
 #include "glwimp.h"
 
-int gShowHelp;
-
 extern Game g;
 extern int gGameInWindow;
 

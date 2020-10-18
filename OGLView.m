@@ -37,12 +37,12 @@
 extern Game g;
 extern CPSGFXEMU gemu;
 
-int gGameInWindow;
+extern int gGameInWindow;
 LBView *gGameTitleBar;
 LBView *gGameWindowIcon;
 LBView *gGameArea;
-LBView *gameView;
-LBWindow *dummyWindow;
+extern LBView *gameView;
+extern LBWindow *dummyWindow;
 
 
 extern LBView rootView;

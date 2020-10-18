@@ -19,8 +19,6 @@
 CPSGFXEMU gemu;
 extern Game g;
 
-int gemu_scroll_enable[4];
-
 struct inputs gInputs;
 
 //#ifndef CPS
