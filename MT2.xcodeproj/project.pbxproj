@@ -43,6 +43,8 @@
 		B51D1CA1253BE0B500CEB195 /* GLUT.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B5ADB7BD13B2B3BE00905DFE /* GLUT.framework */; };
 		B51D1CA9253BE0C300CEB195 /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B5ADB7B913B2B3B300905DFE /* OpenGL.framework */; };
 		B51D1CB1253BE0E600CEB195 /* barrels.c in Sources */ = {isa = PBXBuildFile; fileRef = 6C8C65241C37717200635FDB /* barrels.c */; };
+		B51D1CEF253BE9B800CEB195 /* redhammer.c in Sources */ = {isa = PBXBuildFile; fileRef = 6CF004551C2A01C9008EA965 /* redhammer.c */; };
+		B51D1CF5253BE9B800CEB195 /* redhammer.c in Sources */ = {isa = PBXBuildFile; fileRef = 6CF004551C2A01C9008EA965 /* redhammer.c */; };
 		B53EBC59155F86F400581C8D /* act29_wwlogo.c in Sources */ = {isa = PBXBuildFile; fileRef = B53EBC58155F86F400581C8D /* act29_wwlogo.c */; };
 		B53EBC62155F8A4600581C8D /* act3e_capcomlogos.c in Sources */ = {isa = PBXBuildFile; fileRef = B53EBC61155F8A4600581C8D /* act3e_capcomlogos.c */; };
 		B53EBC6E155F8C0600581C8D /* act_3f.c in Sources */ = {isa = PBXBuildFile; fileRef = B53EBC6D155F8C0600581C8D /* act_3f.c */; };
@@ -1571,6 +1573,7 @@
 				B5E0EFD317754D8800F50790 /* gstate.c in Sources */,
 				B5E0EFD417754D8800F50790 /* lib.c in Sources */,
 				B5E0EFD517754D8800F50790 /* particle.c in Sources */,
+				B51D1CF5253BE9B800CEB195 /* redhammer.c in Sources */,
 				B5E0EFD617754D8800F50790 /* player.c in Sources */,
 				B5E0EFD717754D8800F50790 /* playerselect.c in Sources */,
 				B5E0EFD817754D8800F50790 /* playerstate.c in Sources */,
@@ -1652,6 +1655,7 @@
 				B5E0F02E17754D9500F50790 /* gstate.c in Sources */,
 				B5E0F02F17754D9500F50790 /* lib.c in Sources */,
 				B5E0F03017754D9500F50790 /* particle.c in Sources */,
+				B51D1CEF253BE9B800CEB195 /* redhammer.c in Sources */,
 				B5E0F03117754D9500F50790 /* player.c in Sources */,
 				B5E0F03217754D9500F50790 /* playerselect.c in Sources */,
 				B5E0F03317754D9500F50790 /* playerstate.c in Sources */,
