@@ -355,12 +355,12 @@ void gfx_glut_init(void) {
 	}
 	
 	for (i=0; i<CPS1_OTHER_SIZE; i++) {
-		gemu.Tilemap_Scroll1[i][0]=0xf;
-		gemu.Tilemap_Scroll2[i][0]=0x0;
-		gemu.Tilemap_Scroll3[i][0]=0x0;		
-		gemu.Tilemap_Scroll1[i][1]=0x0;
-		gemu.Tilemap_Scroll2[i][1]=0x0;
-		gemu.Tilemap_Scroll3[i][1]=0x0;		
+		gemu.Tilemap_Scroll1[i][0] = TILE_BLANK_SCR1;
+		gemu.Tilemap_Scroll2[i][0] = TILE_BLANK_SCR2;
+		gemu.Tilemap_Scroll3[i][0] = TILE_BLANK_SCR3;
+		gemu.Tilemap_Scroll1[i][1] = 0x0;
+		gemu.Tilemap_Scroll2[i][1] = 0x0;
+		gemu.Tilemap_Scroll3[i][1] = 0x0;		
 	}
 	gWorldRotation[0] = 180.0;
 	gWorldRotation[1] = 0.0;

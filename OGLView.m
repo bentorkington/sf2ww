@@ -168,16 +168,12 @@ void renderDummy(struct view *view) {
 
 - (void)timerCallback
 {
-    //intproc();
     task_timer();
-    
     [self setNeedsDisplay:YES];
 }
 
 - (void)drawGame:(NSRect)dirtyRect {
     gfx_glut_drawgame();
-    //glFinish();
-    //glutSwapBuffers();	
 }
 
 - (void)drawRect:(NSRect)r {
