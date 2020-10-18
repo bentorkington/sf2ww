@@ -244,6 +244,7 @@ static void sub_25476(Object_G2 *obj) {
 
 static int sub_254da (Object_G2 *obj) {		// sets %d0 and %d3
 	//todo
+    return -1;
 }
 
 static void sub_25670 (Object_G2 *obj) {
@@ -251,10 +252,12 @@ static void sub_25670 (Object_G2 *obj) {
 }
 
 static int sub_2529a (Object_G2 *obj) {
-	//todo 
+	//todo
+    return -1;
 }
 static int sub_255b2(Object_G2 *obj) {
 	//todo
+    return -1;
 }
 static Object *sub_24fc2(Object_G2 *obj) {
 	//	if (obj->UD.UDunknown.h0097c) {
@@ -262,6 +265,7 @@ static Object *sub_24fc2(Object_G2 *obj) {
 	//	} else {
 	//		return;
 	//	}
+    return NULL; // XXX
 }
 
 void _SMAct05(Object_G2 *obj) {				// 24ff6 Act05 Bonus2

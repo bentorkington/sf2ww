@@ -75,10 +75,11 @@ static struct ehondathrow sub_333cc(Player *ply, short airthrow_d6) {
 			retval.d2 = data[5];
 			retval.success = TRUE;
 			retval.d0 = data[6];
-			return retval;
 		}
+        return retval; // todo: check retval value if above conditional is not met
 	}
 }
+
 static void sub_330fc(Player *ply) {			// 330fc
 	UDCOMP *ud=(UDCOMP *)&ply->UserData;
 	

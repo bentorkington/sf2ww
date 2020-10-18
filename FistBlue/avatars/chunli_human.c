@@ -342,9 +342,9 @@ static int sub_3042c(Player *ply) {
 		}
 	} else {
 		if (rand & 0x40) {	// can't happen?! BTST #10
-			sub_302b4(ply, 2);
+			return sub_302b4(ply, 2);
 		} else if (rand & 0x20) {		// again, can't happen?
-			sub_302b4(ply, 1); 
+			return sub_302b4(ply, 1); 
 		} else {
 			return sub_302b4(ply, 0);
 		}
