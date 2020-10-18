@@ -39,6 +39,7 @@
 #include "sf2io.h"
 #include "gemu.h"
 #include "workarounds.h"
+#include "redhammer.h"
 
 
 Game g;
@@ -102,7 +103,7 @@ void SetLighting(unsigned int mode) {
 
 void init (void) {
     manual_init();
-
+    
     glShadeModel(GL_SMOOTH);
     glFrontFace(GL_CCW);
     
@@ -218,6 +219,8 @@ void timerFunc(int value) {
 }
 int main (int argc, const char * argv[])
 {
+    load_cps_roms();
+
     glutInit(&argc, (char **)argv);
     glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH); 
     glutInitWindowPosition (300, 50);

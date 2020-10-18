@@ -39,6 +39,10 @@
 		8D11072F0486CEB800E47090 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */; };
 		B51533F2147EEB4F004A87B0 /* car.c in Sources */ = {isa = PBXBuildFile; fileRef = B51533F1147EEB4F004A87B0 /* car.c */; };
 		B51533F5147EEBDB004A87B0 /* drums.c in Sources */ = {isa = PBXBuildFile; fileRef = B51533F4147EEBDB004A87B0 /* drums.c */; };
+		B51D1C99253BE07100CEB195 /* redhammer.c in Sources */ = {isa = PBXBuildFile; fileRef = 6CF004551C2A01C9008EA965 /* redhammer.c */; };
+		B51D1CA1253BE0B500CEB195 /* GLUT.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B5ADB7BD13B2B3BE00905DFE /* GLUT.framework */; };
+		B51D1CA9253BE0C300CEB195 /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B5ADB7B913B2B3B300905DFE /* OpenGL.framework */; };
+		B51D1CB1253BE0E600CEB195 /* barrels.c in Sources */ = {isa = PBXBuildFile; fileRef = 6C8C65241C37717200635FDB /* barrels.c */; };
 		B52124AE18D65A6D00D2F649 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B52124AD18D65A6D00D2F649 /* Foundation.framework */; };
 		B52124B018D65A6D00D2F649 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B52124AF18D65A6D00D2F649 /* CoreGraphics.framework */; };
 		B52124B218D65A6D00D2F649 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B52124B118D65A6D00D2F649 /* UIKit.framework */; };
@@ -813,6 +817,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B51D1CA9253BE0C300CEB195 /* OpenGL.framework in Frameworks */,
+				B51D1CA1253BE0B500CEB195 /* GLUT.framework in Frameworks */,
 				B5E8FD121776C7D400C6060E /* CoreFoundation.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1957,6 +1963,7 @@
 				B5E8FD451776C89400C6060E /* chunli_comp.c in Sources */,
 				B5E8FD461776C89400C6060E /* chunli_human.c in Sources */,
 				B5E8FD471776C89D00C6060E /* coinage.c in Sources */,
+				B51D1CB1253BE0E600CEB195 /* barrels.c in Sources */,
 				B5E8FD481776C89D00C6060E /* computer.c in Sources */,
 				B5E8FD491776C89D00C6060E /* demo.c in Sources */,
 				B5E8FD4A1776C89D00C6060E /* effects.c in Sources */,
@@ -1982,6 +1989,7 @@
 				B5E8FD601776C8C900C6060E /* trackball.c in Sources */,
 				B5E8FD631776C9DD00C6060E /* glwimp.c in Sources */,
 				B5E8FD641776CA1A00C6060E /* blanka_human.c in Sources */,
+				B51D1C99253BE07100CEB195 /* redhammer.c in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
