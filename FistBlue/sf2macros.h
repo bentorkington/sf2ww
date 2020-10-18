@@ -60,7 +60,7 @@
 /* use at the end of switch statements to trap incorrect cases in the default */
 #define FATALDEFAULT \
 default:			 \
-panic(99);			 \
+FBPanic(99);			 \
 break;				
 
 /* DIEBREAK used at end of switch statements to save typing 'break' (just to quiet warnings anyway) */

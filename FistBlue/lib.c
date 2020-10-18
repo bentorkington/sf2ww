@@ -167,7 +167,8 @@ void debughook(int data) {
 
 }
 
-void panic(int data) {
+// todo: move me
+void FBPanic(int data) {
 	printf("PANIC()\n");
     return;
 

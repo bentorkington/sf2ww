@@ -10,7 +10,7 @@ void sleep2(void);
 void init_fight_vars(void);
 void newgame(void);
 void debughook(int data);
-void panic(int data);
+void FBPanic(int data);
 void decode_difficulty(void);
 void decode_params(void);
 void intproc(void);
