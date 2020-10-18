@@ -9,6 +9,8 @@
 #ifndef INC_GFX_GLUT
 #define INC_GFX_GLUT
 
+#include "sf2types.h"
+
 #ifdef __APPLE__
 #include <GLUT/glut.h>
 #include <OpenGL/glext.h>
