@@ -10,6 +10,8 @@
 #ifndef INC_GEMU
 #define INC_GEMU
 
+#include "sf2types.h"
+
 #define OBJECT_DRAW			gemuObjectDraw			
 #define OBJECT_DRAW_NOATTR	gemuObjectDrawNoAttr
 #define OBJECT_PDRAW		gemuObjectDrawPoint			
