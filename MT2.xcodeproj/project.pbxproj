@@ -39,12 +39,91 @@
 		8D11072F0486CEB800E47090 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */; };
 		B51533F2147EEB4F004A87B0 /* car.c in Sources */ = {isa = PBXBuildFile; fileRef = B51533F1147EEB4F004A87B0 /* car.c */; };
 		B51533F5147EEBDB004A87B0 /* drums.c in Sources */ = {isa = PBXBuildFile; fileRef = B51533F4147EEBDB004A87B0 /* drums.c */; };
+		B519C69F253C039E0084B88D /* glwimp.c in Sources */ = {isa = PBXBuildFile; fileRef = B5ADB87013B2B59A00905DFE /* glwimp.c */; };
+		B519C6A6253C03BB0084B88D /* blanka_human.c in Sources */ = {isa = PBXBuildFile; fileRef = B56BFC6F156B444F00DC7BAD /* blanka_human.c */; };
+		B519C6AD253C03CF0084B88D /* trackball.c in Sources */ = {isa = PBXBuildFile; fileRef = B5ADB7B013B2B38400905DFE /* trackball.c */; };
 		B51D1C99253BE07100CEB195 /* redhammer.c in Sources */ = {isa = PBXBuildFile; fileRef = 6CF004551C2A01C9008EA965 /* redhammer.c */; };
 		B51D1CA1253BE0B500CEB195 /* GLUT.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B5ADB7BD13B2B3BE00905DFE /* GLUT.framework */; };
 		B51D1CA9253BE0C300CEB195 /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B5ADB7B913B2B3B300905DFE /* OpenGL.framework */; };
 		B51D1CB1253BE0E600CEB195 /* barrels.c in Sources */ = {isa = PBXBuildFile; fileRef = 6C8C65241C37717200635FDB /* barrels.c */; };
 		B51D1CEF253BE9B800CEB195 /* redhammer.c in Sources */ = {isa = PBXBuildFile; fileRef = 6CF004551C2A01C9008EA965 /* redhammer.c */; };
 		B51D1CF5253BE9B800CEB195 /* redhammer.c in Sources */ = {isa = PBXBuildFile; fileRef = 6CF004551C2A01C9008EA965 /* redhammer.c */; };
+		B51D1D1A253BF34100CEB195 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B51D1D19253BF34100CEB195 /* AppDelegate.swift */; };
+		B51D1D1C253BF34300CEB195 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B51D1D1B253BF34300CEB195 /* Assets.xcassets */; };
+		B51D1D1F253BF34300CEB195 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = B51D1D1D253BF34300CEB195 /* MainMenu.xib */; };
+		B51D1D2C253BF3A300CEB195 /* MyNSOpenGLView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B51D1D2B253BF3A300CEB195 /* MyNSOpenGLView.swift */; };
+		B51D1D64253BF67A00CEB195 /* Matrix4.swift in Sources */ = {isa = PBXBuildFile; fileRef = B51D1D63253BF67A00CEB195 /* Matrix4.swift */; };
+		B51D1D6C253BF79100CEB195 /* ShaderProgram.swift in Sources */ = {isa = PBXBuildFile; fileRef = B51D1D6B253BF79100CEB195 /* ShaderProgram.swift */; };
+		B51D1D73253BFA3C00CEB195 /* sf2gfx.bin in Resources */ = {isa = PBXBuildFile; fileRef = B5B39B69157832F200494662 /* sf2gfx.bin */; };
+		B51D1D8D253BFC7700CEB195 /* pointshader.fs in Resources */ = {isa = PBXBuildFile; fileRef = B51D1D85253BFC2500CEB195 /* pointshader.fs */; };
+		B51D1D8E253BFC7700CEB195 /* pointshader.vs in Resources */ = {isa = PBXBuildFile; fileRef = B51D1D86253BFC2500CEB195 /* pointshader.vs */; };
+		B51D1D96253BFD0D00CEB195 /* Game.swift in Sources */ = {isa = PBXBuildFile; fileRef = B51D1D95253BFD0D00CEB195 /* Game.swift */; };
+		B51D1D9D253BFF1300CEB195 /* gfx_glut.c in Sources */ = {isa = PBXBuildFile; fileRef = B5ADB82213B2B57D00905DFE /* gfx_glut.c */; };
+		B51D1DA4253BFF1500CEB195 /* gemu.c in Sources */ = {isa = PBXBuildFile; fileRef = B5ADB82013B2B57D00905DFE /* gemu.c */; };
+		B51D1DAB253BFF1A00CEB195 /* pthreads.c in Sources */ = {isa = PBXBuildFile; fileRef = B5871ED61408E4F4004A45F5 /* pthreads.c */; };
+		B51D1DB2253BFF2700CEB195 /* redhammer.c in Sources */ = {isa = PBXBuildFile; fileRef = 6CF004551C2A01C9008EA965 /* redhammer.c */; };
+		B51D1DB9253BFF5600CEB195 /* collision.c in Sources */ = {isa = PBXBuildFile; fileRef = B5ADB81713B2B57D00905DFE /* collision.c */; };
+		B51D1DC0253BFF5900CEB195 /* coll_projectile.c in Sources */ = {isa = PBXBuildFile; fileRef = B55891421485AB2A00BBB0BA /* coll_projectile.c */; };
+		B51D1DC7253BFF5C00CEB195 /* coll_bonus.c in Sources */ = {isa = PBXBuildFile; fileRef = B558918E1485B04A00BBB0BA /* coll_bonus.c */; };
+		B51D1DCE253BFF7400CEB195 /* car.c in Sources */ = {isa = PBXBuildFile; fileRef = B51533F1147EEB4F004A87B0 /* car.c */; };
+		B51D1DD5253BFF7700CEB195 /* drums.c in Sources */ = {isa = PBXBuildFile; fileRef = B51533F4147EEBDB004A87B0 /* drums.c */; };
+		B51D1DDC253BFF7B00CEB195 /* barrels.c in Sources */ = {isa = PBXBuildFile; fileRef = 6C8C65241C37717200635FDB /* barrels.c */; };
+		B51D1DE3253BFF7F00CEB195 /* actions.c in Sources */ = {isa = PBXBuildFile; fileRef = B5ADB7E413B2B57D00905DFE /* actions.c */; };
+		B51D1DEA253BFF8300CEB195 /* actions_198a.c in Sources */ = {isa = PBXBuildFile; fileRef = B5ADB7E613B2B57D00905DFE /* actions_198a.c */; };
+		B51D1DF1253BFF8500CEB195 /* actions_530a.c in Sources */ = {isa = PBXBuildFile; fileRef = B5ADB7E813B2B57D00905DFE /* actions_530a.c */; };
+		B51D1DF8253BFF8C00CEB195 /* reels.c in Sources */ = {isa = PBXBuildFile; fileRef = B5EB38E0149816D5007100DB /* reels.c */; };
+		B51D1DFF253BFF8F00CEB195 /* act02_bicycleriders.c in Sources */ = {isa = PBXBuildFile; fileRef = B5B0763C155489B5009D301D /* act02_bicycleriders.c */; };
+		B51D1E06253BFF9100CEB195 /* act07_elephants.c in Sources */ = {isa = PBXBuildFile; fileRef = B5B0764515548B28009D301D /* act07_elephants.c */; };
+		B51D1E0D253BFF9400CEB195 /* act17.c in Sources */ = {isa = PBXBuildFile; fileRef = B53EBC7F155F91F900581C8D /* act17.c */; };
+		B51D1E14253BFF9700CEB195 /* act1e_worldflags.c in Sources */ = {isa = PBXBuildFile; fileRef = B5B0761515548649009D301D /* act1e_worldflags.c */; };
+		B51D1E1B253BFF9A00CEB195 /* act29_wwlogo.c in Sources */ = {isa = PBXBuildFile; fileRef = B53EBC58155F86F400581C8D /* act29_wwlogo.c */; };
+		B51D1E22253BFF9C00CEB195 /* act2e_plane.c in Sources */ = {isa = PBXBuildFile; fileRef = B5B075B21554803E009D301D /* act2e_plane.c */; };
+		B51D1E29253BFFA000CEB195 /* act3e_capcomlogos.c in Sources */ = {isa = PBXBuildFile; fileRef = B53EBC61155F8A4600581C8D /* act3e_capcomlogos.c */; };
+		B51D1E30253BFFA200CEB195 /* act_3f.c in Sources */ = {isa = PBXBuildFile; fileRef = B53EBC6D155F8C0600581C8D /* act_3f.c */; };
+		B51D1E37253BFFA500CEB195 /* act16.c in Sources */ = {isa = PBXBuildFile; fileRef = B53EBC83155F927300581C8D /* act16.c */; };
+		B51D1E3E253BFFAB00CEB195 /* ai.c in Sources */ = {isa = PBXBuildFile; fileRef = B5ADB7ED13B2B57D00905DFE /* ai.c */; };
+		B51D1E45253BFFB400CEB195 /* balrog.c in Sources */ = {isa = PBXBuildFile; fileRef = B5E2138B1568950900D96161 /* balrog.c */; };
+		B51D1E4C253BFFB700CEB195 /* blanka.c in Sources */ = {isa = PBXBuildFile; fileRef = B5ADB7FD13B2B57D00905DFE /* blanka.c */; };
+		B51D1E53253BFFC800CEB195 /* guile_comp.c in Sources */ = {isa = PBXBuildFile; fileRef = B5948A4C156EE0FF0029278E /* guile_comp.c */; };
+		B51D1E54253BFFC800CEB195 /* blanka_comp.c in Sources */ = {isa = PBXBuildFile; fileRef = B56BFC67156B43C500DC7BAD /* blanka_comp.c */; };
+		B51D1E55253BFFC800CEB195 /* sagat.c in Sources */ = {isa = PBXBuildFile; fileRef = B5E21388156894FA00D96161 /* sagat.c */; };
+		B51D1E56253BFFC800CEB195 /* chunli_human.c in Sources */ = {isa = PBXBuildFile; fileRef = B5948BE6156F1B6E0029278E /* chunli_human.c */; };
+		B51D1E57253BFFC800CEB195 /* ehonda.c in Sources */ = {isa = PBXBuildFile; fileRef = B5ADB80613B2B57D00905DFE /* ehonda.c */; };
+		B51D1E58253BFFC800CEB195 /* dhalsim.c in Sources */ = {isa = PBXBuildFile; fileRef = B5ADB80313B2B57D00905DFE /* dhalsim.c */; };
+		B51D1E59253BFFC800CEB195 /* ryuken_human.c in Sources */ = {isa = PBXBuildFile; fileRef = B56BFC8E156B48F600DC7BAD /* ryuken_human.c */; };
+		B51D1E5A253BFFC800CEB195 /* chunli_comp.c in Sources */ = {isa = PBXBuildFile; fileRef = B5948BE4156F1B610029278E /* chunli_comp.c */; };
+		B51D1E5B253BFFC800CEB195 /* guile.c in Sources */ = {isa = PBXBuildFile; fileRef = B5ADB80913B2B57D00905DFE /* guile.c */; };
+		B51D1E5C253BFFC800CEB195 /* guile_human.c in Sources */ = {isa = PBXBuildFile; fileRef = B5948A4A156EE0F50029278E /* guile_human.c */; };
+		B51D1E5D253BFFC800CEB195 /* ehonda_comp.c in Sources */ = {isa = PBXBuildFile; fileRef = B5948A25156EDE260029278E /* ehonda_comp.c */; };
+		B51D1E5E253BFFC800CEB195 /* ryu.c in Sources */ = {isa = PBXBuildFile; fileRef = B5ADB81113B2B57D00905DFE /* ryu.c */; };
+		B51D1E5F253BFFC800CEB195 /* ryuken_comp.c in Sources */ = {isa = PBXBuildFile; fileRef = B56BFC91156B48FD00DC7BAD /* ryuken_comp.c */; };
+		B51D1E60253BFFC800CEB195 /* zangeif.c in Sources */ = {isa = PBXBuildFile; fileRef = B5F335371562FFA4005A4637 /* zangeif.c */; };
+		B51D1E61253BFFC800CEB195 /* mbison.c in Sources */ = {isa = PBXBuildFile; fileRef = B5ADB80D13B2B57D00905DFE /* mbison.c */; };
+		B51D1E62253BFFC800CEB195 /* ehonda_human.c in Sources */ = {isa = PBXBuildFile; fileRef = B5948A27156EDE3C0029278E /* ehonda_human.c */; };
+		B51D1E63253BFFC800CEB195 /* chunli.c in Sources */ = {isa = PBXBuildFile; fileRef = B5ADB80013B2B57D00905DFE /* chunli.c */; };
+		B51D1E64253BFFC800CEB195 /* vega.c in Sources */ = {isa = PBXBuildFile; fileRef = B5ADB81413B2B57D00905DFE /* vega.c */; };
+		B51D1E6B253BFFD400CEB195 /* fightgfx.c in Sources */ = {isa = PBXBuildFile; fileRef = B5ADB81E13B2B57D00905DFE /* fightgfx.c */; };
+		B51D1E6C253BFFD400CEB195 /* computer.c in Sources */ = {isa = PBXBuildFile; fileRef = B5ADB81A13B2B57D00905DFE /* computer.c */; };
+		B51D1E6D253BFFD400CEB195 /* coinage.c in Sources */ = {isa = PBXBuildFile; fileRef = B551553414773E8A00A8BBD9 /* coinage.c */; };
+		B51D1E6E253BFFD400CEB195 /* effects.c in Sources */ = {isa = PBXBuildFile; fileRef = B5ADB81C13B2B57D00905DFE /* effects.c */; };
+		B51D1E6F253BFFD400CEB195 /* game.c in Sources */ = {isa = PBXBuildFile; fileRef = B56A718B1411B0D300DF7F02 /* game.c */; };
+		B51D1E70253BFFD400CEB195 /* demo.c in Sources */ = {isa = PBXBuildFile; fileRef = B5FD9F7E1488260A00DDF4D9 /* demo.c */; };
+		B51D1E77253C001900CEB195 /* gfxlib.c in Sources */ = {isa = PBXBuildFile; fileRef = B5ADB82913B2B57D00905DFE /* gfxlib.c */; };
+		B51D1E7E253C001C00CEB195 /* gstate.c in Sources */ = {isa = PBXBuildFile; fileRef = B5ADB82B13B2B57D00905DFE /* gstate.c */; };
+		B51D1E85253C001F00CEB195 /* lib.c in Sources */ = {isa = PBXBuildFile; fileRef = B5ADB82D13B2B57E00905DFE /* lib.c */; };
+		B51D1E8C253C002100CEB195 /* particle.c in Sources */ = {isa = PBXBuildFile; fileRef = B5ADB83013B2B57E00905DFE /* particle.c */; };
+		B51D1E93253C002400CEB195 /* player.c in Sources */ = {isa = PBXBuildFile; fileRef = B5ADB83213B2B57E00905DFE /* player.c */; };
+		B51D1E9A253C002700CEB195 /* playerselect.c in Sources */ = {isa = PBXBuildFile; fileRef = B5ADB83413B2B57E00905DFE /* playerselect.c */; };
+		B51D1EA1253C002A00CEB195 /* playerstate.c in Sources */ = {isa = PBXBuildFile; fileRef = B5ADB83613B2B57E00905DFE /* playerstate.c */; };
+		B51D1EA8253C002C00CEB195 /* projectiles.c in Sources */ = {isa = PBXBuildFile; fileRef = B5ADB83813B2B57E00905DFE /* projectiles.c */; };
+		B51D1EAF253C002F00CEB195 /* reactmode.c in Sources */ = {isa = PBXBuildFile; fileRef = B5ADB83A13B2B57E00905DFE /* reactmode.c */; };
+		B51D1EB6253C003100CEB195 /* rules.c in Sources */ = {isa = PBXBuildFile; fileRef = B5ADB83C13B2B57E00905DFE /* rules.c */; };
+		B51D1EBD253C003500CEB195 /* sm.c in Sources */ = {isa = PBXBuildFile; fileRef = B5ADB84113B2B57E00905DFE /* sm.c */; };
+		B51D1EC4253C003800CEB195 /* sound.c in Sources */ = {isa = PBXBuildFile; fileRef = B5ADB84313B2B57E00905DFE /* sound.c */; };
+		B51D1ECB253C003A00CEB195 /* sprite.c in Sources */ = {isa = PBXBuildFile; fileRef = B5ADB84513B2B57E00905DFE /* sprite.c */; };
+		B51D1ED2253C003D00CEB195 /* task.c in Sources */ = {isa = PBXBuildFile; fileRef = B5ADB84913B2B57E00905DFE /* task.c */; };
+		B51D1ED9253C004000CEB195 /* text.c in Sources */ = {isa = PBXBuildFile; fileRef = B5613C3A155F9917001E127A /* text.c */; };
+		B51D1EE0253C004F00CEB195 /* endings.c in Sources */ = {isa = PBXBuildFile; fileRef = B550DEA216BBA1BF00983A54 /* endings.c */; };
 		B53EBC59155F86F400581C8D /* act29_wwlogo.c in Sources */ = {isa = PBXBuildFile; fileRef = B53EBC58155F86F400581C8D /* act29_wwlogo.c */; };
 		B53EBC62155F8A4600581C8D /* act3e_capcomlogos.c in Sources */ = {isa = PBXBuildFile; fileRef = B53EBC61155F8A4600581C8D /* act3e_capcomlogos.c */; };
 		B53EBC6E155F8C0600581C8D /* act_3f.c in Sources */ = {isa = PBXBuildFile; fileRef = B53EBC6D155F8C0600581C8D /* act_3f.c */; };
@@ -502,7 +581,20 @@
 		B51533F1147EEB4F004A87B0 /* car.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = car.c; sourceTree = "<group>"; };
 		B51533F3147EEBDB004A87B0 /* drums.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = drums.h; sourceTree = "<group>"; };
 		B51533F4147EEBDB004A87B0 /* drums.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = drums.c; sourceTree = "<group>"; };
+		B519C6B4253C04A60084B88D /* game-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "game-Bridging-Header.h"; sourceTree = "<group>"; };
 		B51D1CC8253BE4C400CEB195 /* OpenGLES.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGLES.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS14.0.sdk/System/Library/Frameworks/OpenGLES.framework; sourceTree = DEVELOPER_DIR; };
+		B51D1D17253BF34100CEB195 /* MT2-GLcore.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "MT2-GLcore.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		B51D1D19253BF34100CEB195 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		B51D1D1B253BF34300CEB195 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		B51D1D1E253BF34300CEB195 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/MainMenu.xib; sourceTree = "<group>"; };
+		B51D1D20253BF34300CEB195 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		B51D1D21253BF34300CEB195 /* MT2_GLcore.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = MT2_GLcore.entitlements; sourceTree = "<group>"; };
+		B51D1D2B253BF3A300CEB195 /* MyNSOpenGLView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyNSOpenGLView.swift; sourceTree = "<group>"; };
+		B51D1D63253BF67A00CEB195 /* Matrix4.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Matrix4.swift; sourceTree = "<group>"; };
+		B51D1D6B253BF79100CEB195 /* ShaderProgram.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShaderProgram.swift; sourceTree = "<group>"; };
+		B51D1D85253BFC2500CEB195 /* pointshader.fs */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.glsl; path = pointshader.fs; sourceTree = "<group>"; };
+		B51D1D86253BFC2500CEB195 /* pointshader.vs */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.glsl; path = pointshader.vs; sourceTree = "<group>"; };
+		B51D1D95253BFD0D00CEB195 /* Game.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Game.swift; sourceTree = "<group>"; };
 		B52124AD18D65A6D00D2F649 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		B52124AF18D65A6D00D2F649 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
 		B527F61315508A0800BC70D8 /* aitests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = aitests.h; sourceTree = "<group>"; };
@@ -712,6 +804,13 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		B51D1D14253BF34100CEB195 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		B5C5747C1772782600496283 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -794,6 +893,7 @@
 				B5E0F01117754D8800F50790 /* MT2 JAP.app */,
 				B5E0F06C17754D9500F50790 /* MT2 ETC.app */,
 				B5E8FD101776C7D400C6060E /* MT2 GLUT */,
+				B51D1D17253BF34100CEB195 /* MT2-GLcore.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -806,6 +906,7 @@
 				29B97317FDCFA39411CA2CEA /* Resources */,
 				B5C574151772781900496283 /* MT2_tests */,
 				B5E8FD131776C7D400C6060E /* MT2 GLUT */,
+				B51D1D18253BF34100CEB195 /* MT2-GLcore */,
 				29B97323FDCFA39411CA2CEA /* Frameworks */,
 				19C28FACFE9D520D11CA2CBB /* Products */,
 				B5C574841772782800496283 /* MT2 JAP-Info.plist */,
@@ -893,6 +994,33 @@
 				6C8C65251C37717200635FDB /* barrels.h */,
 			);
 			name = actions_b;
+			sourceTree = "<group>";
+		};
+		B51D1D18253BF34100CEB195 /* MT2-GLcore */ = {
+			isa = PBXGroup;
+			children = (
+				B51D1D84253BFC0E00CEB195 /* Shaders */,
+				B51D1D63253BF67A00CEB195 /* Matrix4.swift */,
+				B51D1D19253BF34100CEB195 /* AppDelegate.swift */,
+				B51D1D1B253BF34300CEB195 /* Assets.xcassets */,
+				B51D1D1D253BF34300CEB195 /* MainMenu.xib */,
+				B51D1D20253BF34300CEB195 /* Info.plist */,
+				B51D1D21253BF34300CEB195 /* MT2_GLcore.entitlements */,
+				B51D1D2B253BF3A300CEB195 /* MyNSOpenGLView.swift */,
+				B51D1D6B253BF79100CEB195 /* ShaderProgram.swift */,
+				B51D1D95253BFD0D00CEB195 /* Game.swift */,
+				B519C6B4253C04A60084B88D /* game-Bridging-Header.h */,
+			);
+			path = "MT2-GLcore";
+			sourceTree = "<group>";
+		};
+		B51D1D84253BFC0E00CEB195 /* Shaders */ = {
+			isa = PBXGroup;
+			children = (
+				B51D1D85253BFC2500CEB195 /* pointshader.fs */,
+				B51D1D86253BFC2500CEB195 /* pointshader.vs */,
+			);
+			path = Shaders;
 			sourceTree = "<group>";
 		};
 		B55891401485AB1B00BBB0BA /* coll */ = {
@@ -1206,6 +1334,23 @@
 			productReference = 8D1107320486CEB800E47090 /* MT2.app */;
 			productType = "com.apple.product-type.application";
 		};
+		B51D1D16253BF34100CEB195 /* MT2-GLcore */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = B51D1D24253BF34300CEB195 /* Build configuration list for PBXNativeTarget "MT2-GLcore" */;
+			buildPhases = (
+				B51D1D13253BF34100CEB195 /* Sources */,
+				B51D1D14253BF34100CEB195 /* Frameworks */,
+				B51D1D15253BF34100CEB195 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "MT2-GLcore";
+			productName = "MT2-GLcore";
+			productReference = B51D1D17253BF34100CEB195 /* MT2-GLcore.app */;
+			productType = "com.apple.product-type.application";
+		};
 		B5C5742A1772782600496283 /* MT2 tests */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = B5C574801772782600496283 /* Build configuration list for PBXNativeTarget "MT2 tests" */;
@@ -1284,8 +1429,15 @@
 		29B97313FDCFA39411CA2CEA /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastSwiftUpdateCheck = 1220;
+				LastSwiftUpdateCheck = 1200;
 				LastUpgradeCheck = 1200;
+				TargetAttributes = {
+					B51D1D16253BF34100CEB195 = {
+						CreatedOnToolsVersion = 12.0;
+						DevelopmentTeam = L2D42QR3GV;
+						ProvisioningStyle = Automatic;
+					};
+				};
 			};
 			buildConfigurationList = C01FCF4E08A954540054247B /* Build configuration list for PBXProject "MT2" */;
 			compatibilityVersion = "Xcode 3.2";
@@ -1308,6 +1460,7 @@
 				B5E0EFB817754D8800F50790 /* MT2 JAP */,
 				B5E0F01317754D9500F50790 /* MT2 ETC */,
 				B5E8FD0F1776C7D400C6060E /* MT2 GLUT */,
+				B51D1D16253BF34100CEB195 /* MT2-GLcore */,
 			);
 		};
 /* End PBXProject section */
@@ -1320,6 +1473,18 @@
 				8D11072B0486CEB800E47090 /* InfoPlist.strings in Resources */,
 				B5ADB7A913B2B2EA00905DFE /* MainMenu.xib in Resources */,
 				B5E9056513B2D61900833C5A /* ParamController.xib in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		B51D1D15253BF34100CEB195 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				B51D1D8D253BFC7700CEB195 /* pointshader.fs in Resources */,
+				B51D1D8E253BFC7700CEB195 /* pointshader.vs in Resources */,
+				B51D1D73253BFA3C00CEB195 /* sf2gfx.bin in Resources */,
+				B51D1D1C253BF34300CEB195 /* Assets.xcassets in Resources */,
+				B51D1D1F253BF34300CEB195 /* MainMenu.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1461,6 +1626,87 @@
 				B5B39CFE1578370E00494662 /* ParamController.m in Sources */,
 				B5B39CFF1578371400494662 /* main.m in Sources */,
 				B550DEA316BBA1BF00983A54 /* endings.c in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		B51D1D13253BF34100CEB195 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				B519C6A6253C03BB0084B88D /* blanka_human.c in Sources */,
+				B51D1E0D253BFF9400CEB195 /* act17.c in Sources */,
+				B51D1E53253BFFC800CEB195 /* guile_comp.c in Sources */,
+				B51D1DF1253BFF8500CEB195 /* actions_530a.c in Sources */,
+				B51D1EB6253C003100CEB195 /* rules.c in Sources */,
+				B51D1E85253C001F00CEB195 /* lib.c in Sources */,
+				B519C6AD253C03CF0084B88D /* trackball.c in Sources */,
+				B51D1DF8253BFF8C00CEB195 /* reels.c in Sources */,
+				B51D1DDC253BFF7B00CEB195 /* barrels.c in Sources */,
+				B51D1E29253BFFA000CEB195 /* act3e_capcomlogos.c in Sources */,
+				B51D1E58253BFFC800CEB195 /* dhalsim.c in Sources */,
+				B51D1E30253BFFA200CEB195 /* act_3f.c in Sources */,
+				B51D1E56253BFFC800CEB195 /* chunli_human.c in Sources */,
+				B51D1E57253BFFC800CEB195 /* ehonda.c in Sources */,
+				B51D1DFF253BFF8F00CEB195 /* act02_bicycleriders.c in Sources */,
+				B51D1E64253BFFC800CEB195 /* vega.c in Sources */,
+				B51D1E6B253BFFD400CEB195 /* fightgfx.c in Sources */,
+				B51D1E59253BFFC800CEB195 /* ryuken_human.c in Sources */,
+				B51D1DC0253BFF5900CEB195 /* coll_projectile.c in Sources */,
+				B51D1EAF253C002F00CEB195 /* reactmode.c in Sources */,
+				B51D1E4C253BFFB700CEB195 /* blanka.c in Sources */,
+				B51D1E55253BFFC800CEB195 /* sagat.c in Sources */,
+				B51D1E5D253BFFC800CEB195 /* ehonda_comp.c in Sources */,
+				B51D1E5A253BFFC800CEB195 /* chunli_comp.c in Sources */,
+				B51D1DD5253BFF7700CEB195 /* drums.c in Sources */,
+				B51D1DB9253BFF5600CEB195 /* collision.c in Sources */,
+				B51D1E45253BFFB400CEB195 /* balrog.c in Sources */,
+				B51D1E1B253BFF9A00CEB195 /* act29_wwlogo.c in Sources */,
+				B51D1D2C253BF3A300CEB195 /* MyNSOpenGLView.swift in Sources */,
+				B51D1D96253BFD0D00CEB195 /* Game.swift in Sources */,
+				B51D1DB2253BFF2700CEB195 /* redhammer.c in Sources */,
+				B51D1E9A253C002700CEB195 /* playerselect.c in Sources */,
+				B51D1D6C253BF79100CEB195 /* ShaderProgram.swift in Sources */,
+				B51D1EE0253C004F00CEB195 /* endings.c in Sources */,
+				B51D1E60253BFFC800CEB195 /* zangeif.c in Sources */,
+				B51D1D1A253BF34100CEB195 /* AppDelegate.swift in Sources */,
+				B51D1E8C253C002100CEB195 /* particle.c in Sources */,
+				B51D1EA1253C002A00CEB195 /* playerstate.c in Sources */,
+				B51D1E77253C001900CEB195 /* gfxlib.c in Sources */,
+				B51D1EC4253C003800CEB195 /* sound.c in Sources */,
+				B51D1ED2253C003D00CEB195 /* task.c in Sources */,
+				B51D1E5C253BFFC800CEB195 /* guile_human.c in Sources */,
+				B51D1E70253BFFD400CEB195 /* demo.c in Sources */,
+				B51D1ED9253C004000CEB195 /* text.c in Sources */,
+				B51D1D64253BF67A00CEB195 /* Matrix4.swift in Sources */,
+				B51D1E5E253BFFC800CEB195 /* ryu.c in Sources */,
+				B51D1E3E253BFFAB00CEB195 /* ai.c in Sources */,
+				B51D1E7E253C001C00CEB195 /* gstate.c in Sources */,
+				B51D1E61253BFFC800CEB195 /* mbison.c in Sources */,
+				B51D1ECB253C003A00CEB195 /* sprite.c in Sources */,
+				B51D1E5F253BFFC800CEB195 /* ryuken_comp.c in Sources */,
+				B51D1DEA253BFF8300CEB195 /* actions_198a.c in Sources */,
+				B51D1DCE253BFF7400CEB195 /* car.c in Sources */,
+				B51D1E6E253BFFD400CEB195 /* effects.c in Sources */,
+				B51D1DE3253BFF7F00CEB195 /* actions.c in Sources */,
+				B51D1EA8253C002C00CEB195 /* projectiles.c in Sources */,
+				B51D1E5B253BFFC800CEB195 /* guile.c in Sources */,
+				B51D1E62253BFFC800CEB195 /* ehonda_human.c in Sources */,
+				B51D1E6D253BFFD400CEB195 /* coinage.c in Sources */,
+				B51D1E22253BFF9C00CEB195 /* act2e_plane.c in Sources */,
+				B51D1D9D253BFF1300CEB195 /* gfx_glut.c in Sources */,
+				B51D1E6C253BFFD400CEB195 /* computer.c in Sources */,
+				B51D1EBD253C003500CEB195 /* sm.c in Sources */,
+				B51D1E6F253BFFD400CEB195 /* game.c in Sources */,
+				B51D1E14253BFF9700CEB195 /* act1e_worldflags.c in Sources */,
+				B51D1E54253BFFC800CEB195 /* blanka_comp.c in Sources */,
+				B51D1E06253BFF9100CEB195 /* act07_elephants.c in Sources */,
+				B519C69F253C039E0084B88D /* glwimp.c in Sources */,
+				B51D1DC7253BFF5C00CEB195 /* coll_bonus.c in Sources */,
+				B51D1E63253BFFC800CEB195 /* chunli.c in Sources */,
+				B51D1DAB253BFF1A00CEB195 /* pthreads.c in Sources */,
+				B51D1DA4253BFF1500CEB195 /* gemu.c in Sources */,
+				B51D1E93253C002400CEB195 /* player.c in Sources */,
+				B51D1E37253BFFA500CEB195 /* act16.c in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1800,6 +2046,14 @@
 			name = InfoPlist.strings;
 			sourceTree = "<group>";
 		};
+		B51D1D1D253BF34300CEB195 /* MainMenu.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				B51D1D1E253BF34300CEB195 /* Base */,
+			);
+			name = MainMenu.xib;
+			sourceTree = "<group>";
+		};
 		B5C574181772781A00496283 /* InfoPlist.strings */ = {
 			isa = PBXVariantGroup;
 			children = (
@@ -1827,6 +2081,94 @@
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
+		B51D1D22253BF34300CEB195 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_ENTITLEMENTS = "MT2-GLcore/MT2_GLcore.entitlements";
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEVELOPMENT_TEAM = L2D42QR3GV;
+				ENABLE_HARDENED_RUNTIME = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"GL_SILENCE_DEPRECATION=1",
+					"DEBUG=1",
+				);
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				INFOPLIST_FILE = "MT2-GLcore/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
+				MACOSX_DEPLOYMENT_TARGET = 10.15;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.sf2platinum.MT2-GLcore";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OBJC_BRIDGING_HEADER = "MT2-GLcore/game-Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
+			};
+			name = Debug;
+		};
+		B51D1D23253BF34300CEB195 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_ENTITLEMENTS = "MT2-GLcore/MT2_GLcore.entitlements";
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEVELOPMENT_TEAM = L2D42QR3GV;
+				ENABLE_HARDENED_RUNTIME = YES;
+				ENABLE_NS_ASSERTIONS = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_PREPROCESSOR_DEFINITIONS = "GL_SILENCE_DEPRECATION=1";
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				INFOPLIST_FILE = "MT2-GLcore/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
+				MACOSX_DEPLOYMENT_TARGET = 10.15;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.sf2platinum.MT2-GLcore";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "MT2-GLcore/game-Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
+				SWIFT_VERSION = 5.0;
+			};
+			name = Release;
+		};
 		B5C574811772782600496283 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -2125,6 +2467,15 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		B51D1D24253BF34300CEB195 /* Build configuration list for PBXNativeTarget "MT2-GLcore" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				B51D1D22253BF34300CEB195 /* Debug */,
+				B51D1D23253BF34300CEB195 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		B5C574801772782600496283 /* Build configuration list for PBXNativeTarget "MT2 tests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
