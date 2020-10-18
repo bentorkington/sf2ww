@@ -43,25 +43,15 @@
 		B51D1CA1253BE0B500CEB195 /* GLUT.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B5ADB7BD13B2B3BE00905DFE /* GLUT.framework */; };
 		B51D1CA9253BE0C300CEB195 /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B5ADB7B913B2B3B300905DFE /* OpenGL.framework */; };
 		B51D1CB1253BE0E600CEB195 /* barrels.c in Sources */ = {isa = PBXBuildFile; fileRef = 6C8C65241C37717200635FDB /* barrels.c */; };
+		B51D1CC9253BE4C500CEB195 /* OpenGLES.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B51D1CC8253BE4C400CEB195 /* OpenGLES.framework */; };
 		B52124AE18D65A6D00D2F649 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B52124AD18D65A6D00D2F649 /* Foundation.framework */; };
 		B52124B018D65A6D00D2F649 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B52124AF18D65A6D00D2F649 /* CoreGraphics.framework */; };
 		B52124B218D65A6D00D2F649 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B52124B118D65A6D00D2F649 /* UIKit.framework */; };
 		B52124B418D65A6D00D2F649 /* GLKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B52124B318D65A6D00D2F649 /* GLKit.framework */; };
 		B52124B618D65A6D00D2F649 /* OpenGLES.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B52124B518D65A6D00D2F649 /* OpenGLES.framework */; };
-		B52124BC18D65A6D00D2F649 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = B52124BA18D65A6D00D2F649 /* InfoPlist.strings */; };
-		B52124BE18D65A6D00D2F649 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = B52124BD18D65A6D00D2F649 /* main.m */; };
-		B52124C218D65A6D00D2F649 /* MTIAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = B52124C118D65A6D00D2F649 /* MTIAppDelegate.m */; };
-		B52124C518D65A6D00D2F649 /* Main_iPhone.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B52124C318D65A6D00D2F649 /* Main_iPhone.storyboard */; };
-		B52124C818D65A6D00D2F649 /* Main_iPad.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B52124C618D65A6D00D2F649 /* Main_iPad.storyboard */; };
-		B52124CA18D65A6D00D2F649 /* Shader.fsh in Resources */ = {isa = PBXBuildFile; fileRef = B52124C918D65A6D00D2F649 /* Shader.fsh */; };
-		B52124CC18D65A6D00D2F649 /* Shader.vsh in Resources */ = {isa = PBXBuildFile; fileRef = B52124CB18D65A6D00D2F649 /* Shader.vsh */; };
-		B52124CF18D65A6D00D2F649 /* MTIViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B52124CE18D65A6D00D2F649 /* MTIViewController.m */; };
-		B52124D118D65A6D00D2F649 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B52124D018D65A6D00D2F649 /* Images.xcassets */; };
 		B52124D818D65A6E00D2F649 /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B52124D718D65A6E00D2F649 /* XCTest.framework */; };
 		B52124D918D65A6E00D2F649 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B52124AD18D65A6D00D2F649 /* Foundation.framework */; };
 		B52124DA18D65A6E00D2F649 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B52124B118D65A6D00D2F649 /* UIKit.framework */; };
-		B52124E218D65A6E00D2F649 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = B52124E018D65A6E00D2F649 /* InfoPlist.strings */; };
-		B52124E418D65A6E00D2F649 /* iMustardTests.m in Sources */ = {isa = PBXBuildFile; fileRef = B52124E318D65A6E00D2F649 /* iMustardTests.m */; };
 		B53EBC59155F86F400581C8D /* act29_wwlogo.c in Sources */ = {isa = PBXBuildFile; fileRef = B53EBC58155F86F400581C8D /* act29_wwlogo.c */; };
 		B53EBC62155F8A4600581C8D /* act3e_capcomlogos.c in Sources */ = {isa = PBXBuildFile; fileRef = B53EBC61155F8A4600581C8D /* act3e_capcomlogos.c */; };
 		B53EBC6E155F8C0600581C8D /* act_3f.c in Sources */ = {isa = PBXBuildFile; fileRef = B53EBC6D155F8C0600581C8D /* act_3f.c */; };
@@ -529,30 +519,15 @@
 		B51533F1147EEB4F004A87B0 /* car.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = car.c; sourceTree = "<group>"; };
 		B51533F3147EEBDB004A87B0 /* drums.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = drums.h; sourceTree = "<group>"; };
 		B51533F4147EEBDB004A87B0 /* drums.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = drums.c; sourceTree = "<group>"; };
+		B51D1CC8253BE4C400CEB195 /* OpenGLES.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGLES.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS14.0.sdk/System/Library/Frameworks/OpenGLES.framework; sourceTree = DEVELOPER_DIR; };
 		B52124AC18D65A6D00D2F649 /* iMustard.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = iMustard.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B52124AD18D65A6D00D2F649 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		B52124AF18D65A6D00D2F649 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
 		B52124B118D65A6D00D2F649 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = Library/Frameworks/UIKit.framework; sourceTree = DEVELOPER_DIR; };
 		B52124B318D65A6D00D2F649 /* GLKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GLKit.framework; path = Library/Frameworks/GLKit.framework; sourceTree = DEVELOPER_DIR; };
 		B52124B518D65A6D00D2F649 /* OpenGLES.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGLES.framework; path = Library/Frameworks/OpenGLES.framework; sourceTree = DEVELOPER_DIR; };
-		B52124B918D65A6D00D2F649 /* iMustard-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "iMustard-Info.plist"; sourceTree = "<group>"; };
-		B52124BB18D65A6D00D2F649 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
-		B52124BD18D65A6D00D2F649 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
-		B52124BF18D65A6D00D2F649 /* iMustard-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "iMustard-Prefix.pch"; sourceTree = "<group>"; };
-		B52124C018D65A6D00D2F649 /* MTIAppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MTIAppDelegate.h; sourceTree = "<group>"; };
-		B52124C118D65A6D00D2F649 /* MTIAppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MTIAppDelegate.m; sourceTree = "<group>"; };
-		B52124C418D65A6D00D2F649 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main_iPhone.storyboard; sourceTree = "<group>"; };
-		B52124C718D65A6D00D2F649 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main_iPad.storyboard; sourceTree = "<group>"; };
-		B52124C918D65A6D00D2F649 /* Shader.fsh */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.glsl; name = Shader.fsh; path = Shaders/Shader.fsh; sourceTree = "<group>"; };
-		B52124CB18D65A6D00D2F649 /* Shader.vsh */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.glsl; name = Shader.vsh; path = Shaders/Shader.vsh; sourceTree = "<group>"; };
-		B52124CD18D65A6D00D2F649 /* MTIViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MTIViewController.h; sourceTree = "<group>"; };
-		B52124CE18D65A6D00D2F649 /* MTIViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MTIViewController.m; sourceTree = "<group>"; };
-		B52124D018D65A6D00D2F649 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		B52124D618D65A6D00D2F649 /* iMustardTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = iMustardTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		B52124D718D65A6E00D2F649 /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
-		B52124DF18D65A6E00D2F649 /* iMustardTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "iMustardTests-Info.plist"; sourceTree = "<group>"; };
-		B52124E118D65A6E00D2F649 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
-		B52124E318D65A6E00D2F649 /* iMustardTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = iMustardTests.m; sourceTree = "<group>"; };
 		B527F61315508A0800BC70D8 /* aitests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = aitests.h; sourceTree = "<group>"; };
 		B527F61415508A0800BC70D8 /* aitests.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = aitests.c; sourceTree = "<group>"; };
 		B529FCEC15606B0A005EE9B7 /* textdata.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = textdata.c; sourceTree = "<group>"; };
@@ -770,6 +745,7 @@
 				B52124B218D65A6D00D2F649 /* UIKit.framework in Frameworks */,
 				B52124B418D65A6D00D2F649 /* GLKit.framework in Frameworks */,
 				B52124AE18D65A6D00D2F649 /* Foundation.framework in Frameworks */,
+				B51D1CC9253BE4C500CEB195 /* OpenGLES.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -879,8 +855,6 @@
 				29B97317FDCFA39411CA2CEA /* Resources */,
 				B5C574151772781900496283 /* MT2_tests */,
 				B5E8FD131776C7D400C6060E /* MT2 GLUT */,
-				B52124B718D65A6D00D2F649 /* iMustard */,
-				B52124DD18D65A6E00D2F649 /* iMustardTests */,
 				29B97323FDCFA39411CA2CEA /* Frameworks */,
 				19C28FACFE9D520D11CA2CBB /* Products */,
 				B5C574841772782800496283 /* MT2 JAP-Info.plist */,
@@ -945,6 +919,7 @@
 		29B97323FDCFA39411CA2CEA /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				B51D1CC8253BE4C400CEB195 /* OpenGLES.framework */,
 				1058C7A0FEA54F0111CA2CBB /* Linked Frameworks */,
 				B5C574131772781900496283 /* Cocoa.framework */,
 				B5E8FD111776C7D400C6060E /* CoreFoundation.framework */,
@@ -972,52 +947,6 @@
 				6C8C65251C37717200635FDB /* barrels.h */,
 			);
 			name = actions_b;
-			sourceTree = "<group>";
-		};
-		B52124B718D65A6D00D2F649 /* iMustard */ = {
-			isa = PBXGroup;
-			children = (
-				B52124C018D65A6D00D2F649 /* MTIAppDelegate.h */,
-				B52124C118D65A6D00D2F649 /* MTIAppDelegate.m */,
-				B52124C318D65A6D00D2F649 /* Main_iPhone.storyboard */,
-				B52124C618D65A6D00D2F649 /* Main_iPad.storyboard */,
-				B52124C918D65A6D00D2F649 /* Shader.fsh */,
-				B52124CB18D65A6D00D2F649 /* Shader.vsh */,
-				B52124CD18D65A6D00D2F649 /* MTIViewController.h */,
-				B52124CE18D65A6D00D2F649 /* MTIViewController.m */,
-				B52124D018D65A6D00D2F649 /* Images.xcassets */,
-				B52124B818D65A6D00D2F649 /* Supporting Files */,
-			);
-			path = iMustard;
-			sourceTree = "<group>";
-		};
-		B52124B818D65A6D00D2F649 /* Supporting Files */ = {
-			isa = PBXGroup;
-			children = (
-				B52124B918D65A6D00D2F649 /* iMustard-Info.plist */,
-				B52124BA18D65A6D00D2F649 /* InfoPlist.strings */,
-				B52124BD18D65A6D00D2F649 /* main.m */,
-				B52124BF18D65A6D00D2F649 /* iMustard-Prefix.pch */,
-			);
-			name = "Supporting Files";
-			sourceTree = "<group>";
-		};
-		B52124DD18D65A6E00D2F649 /* iMustardTests */ = {
-			isa = PBXGroup;
-			children = (
-				B52124E318D65A6E00D2F649 /* iMustardTests.m */,
-				B52124DE18D65A6E00D2F649 /* Supporting Files */,
-			);
-			path = iMustardTests;
-			sourceTree = "<group>";
-		};
-		B52124DE18D65A6E00D2F649 /* Supporting Files */ = {
-			isa = PBXGroup;
-			children = (
-				B52124DF18D65A6E00D2F649 /* iMustardTests-Info.plist */,
-				B52124E018D65A6E00D2F649 /* InfoPlist.strings */,
-			);
-			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
 		B55891401485AB1B00BBB0BA /* coll */ = {
@@ -1494,12 +1423,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				B52124CA18D65A6D00D2F649 /* Shader.fsh in Resources */,
-				B52124C818D65A6D00D2F649 /* Main_iPad.storyboard in Resources */,
-				B52124C518D65A6D00D2F649 /* Main_iPhone.storyboard in Resources */,
-				B52124D118D65A6D00D2F649 /* Images.xcassets in Resources */,
-				B52124BC18D65A6D00D2F649 /* InfoPlist.strings in Resources */,
-				B52124CC18D65A6D00D2F649 /* Shader.vsh in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1507,7 +1430,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				B52124E218D65A6E00D2F649 /* InfoPlist.strings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1656,9 +1578,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				B52124CF18D65A6D00D2F649 /* MTIViewController.m in Sources */,
-				B52124BE18D65A6D00D2F649 /* main.m in Sources */,
-				B52124C218D65A6D00D2F649 /* MTIAppDelegate.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1666,7 +1585,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				B52124E418D65A6E00D2F649 /* iMustardTests.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2008,38 +1926,6 @@
 			isa = PBXVariantGroup;
 			children = (
 				089C165DFE840E0CC02AAC07 /* English */,
-			);
-			name = InfoPlist.strings;
-			sourceTree = "<group>";
-		};
-		B52124BA18D65A6D00D2F649 /* InfoPlist.strings */ = {
-			isa = PBXVariantGroup;
-			children = (
-				B52124BB18D65A6D00D2F649 /* en */,
-			);
-			name = InfoPlist.strings;
-			sourceTree = "<group>";
-		};
-		B52124C318D65A6D00D2F649 /* Main_iPhone.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				B52124C418D65A6D00D2F649 /* Base */,
-			);
-			name = Main_iPhone.storyboard;
-			sourceTree = "<group>";
-		};
-		B52124C618D65A6D00D2F649 /* Main_iPad.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				B52124C718D65A6D00D2F649 /* Base */,
-			);
-			name = Main_iPad.storyboard;
-			sourceTree = "<group>";
-		};
-		B52124E018D65A6E00D2F649 /* InfoPlist.strings */ = {
-			isa = PBXVariantGroup;
-			children = (
-				B52124E118D65A6E00D2F649 /* en */,
 			);
 			name = InfoPlist.strings;
 			sourceTree = "<group>";
