@@ -653,7 +653,7 @@ void bin2bcd(short dec){
 	volatile __asm__ {
 		//68000 asm here
 	}
-	panic(1);
+	FBPanic(1);
 #endif
 }
 

@@ -372,7 +372,7 @@ static void _AIBeginAgain(Player *ply) {
 
 	if (debug_ai_recurse > 20) {
 		printf("AI Recursed too deep!\n");
-		panic(0);
+		FBPanic(0);
 	}
 	ply->AIMode2 = 0;
 	ply->AISigAttack = ply->CompDoBlockStun =
@@ -952,7 +952,7 @@ void AIInitDefensive(Player *ply) {				// 2b82a
 	
 #ifdef DEBUG_AI
 	if (ply->YokeSaved < 0 || ply->YokeSaved >= 0x10) {
-		panic(0x27a);
+		FBPanic(0x27a);
 	}
 #endif
 	DS = dataAIDefensive[ply->FighterID][(unsigned char)ply->YokeSaved];	/* * to vector list to struct */
@@ -993,7 +993,7 @@ static void _AILoadStrategyParams(Player *ply, unsigned char arg_d0) {	// 2b93e
 		} 	
 	} else {
 		switch (arg_d0) {
-			case 0:		/* can't happen */ panic(0); break;
+			case 0:		/* can't happen */ FBPanic(0); break;
 			case STRAT_SHORTWALK:
 			case STRAT_SETBLOCK:
 			case STRAT_STUN:
@@ -1021,7 +1021,7 @@ static void _AILoadStrategyParams(Player *ply, unsigned char arg_d0) {	// 2b93e
 				break;
 			default:
 				printf("AI Error: Bad token %02x\n", arg_d0);
-				panic(0);
+				FBPanic(0);
 		}
 	}
 }
@@ -1325,7 +1325,7 @@ void AIPanic(const unsigned char *a2, short d2) {
 		printf("%02x ", a2[i]);
 	}
 	printf("\n");
-	panic(0);
+	FBPanic(0);
 }
 	
 static short _AISkipOverParams(Player *ply, u8 d0, const unsigned char *a2, short *d2) {

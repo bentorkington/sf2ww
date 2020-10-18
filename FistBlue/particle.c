@@ -49,10 +49,10 @@ void RHActionTick(Object *obj) {
     }
 }
 void setaction_list(Object *obj, const Action **list, short sel) {
-    panic(99);
+    FBPanic(99);
 }
 void setaction_direct(Object *obj, const Action *act) {
-    panic(99);
+    FBPanic(99);
 }
 void actiontick(Object *obj) {
     RHActionTick(obj);

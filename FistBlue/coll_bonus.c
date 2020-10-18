@@ -96,7 +96,7 @@ static void start_hitsplash(Object *obj1, Player *vict) {
         obj2->Flip   = obj1->Flip;      
         obj2->SubSel = vict->NextReelStrength;
 		if (obj2->SubSel > 5) {
-			panic(0);
+			FBPanic(0);
 		}
 		
     }
@@ -265,7 +265,7 @@ static void mac_stunme2(Player *ply, Player *opp) {		//7d824
 			
         }
 		if (obj->SubSel > 5) {
-			panic(0);
+			FBPanic(0);
 		}
 		
     }

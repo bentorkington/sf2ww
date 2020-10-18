@@ -416,7 +416,7 @@ void PSCBAttackRyu(Player *ply) {		//2d168
 			case PLY_STAND:	_RyuAttack0(ply);	break;
 			case PLY_CROUCH: _RyuAttack2(ply);	break;
 			case PLY_JUMP:
-				panic(0);
+				FBPanic(0);
 				/* Shouldn't get here */
 				break;
 			case PLY_THROW:	_RyuAttack6(ply);	break;

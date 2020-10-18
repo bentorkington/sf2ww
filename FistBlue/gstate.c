@@ -644,7 +644,7 @@ static void _GSMaintRowScroll(ScrollState *ss) {	/* 84480 */
                 case STAGE_INDIA_DHALSIM:
                     ss->planes = calloc(sizeof(RHTilePlane), 2);
                     if (!ss->planes) {
-                        panic(1);
+                        FBPanic(1);
                     }
                     ss->nPlanes = 2;
                     ss->planes[0] = (RHTilePlane){  0,  63, -24, 40 };

@@ -292,7 +292,7 @@ void PLCBPowerBlanka(Player *ply) {
 	}
 	/* suicide, shouldn't get here */
     return; /* XXX */
-	panic(111);
+	FBPanic(111);
 	if ((obj = AllocActor())) {
 		obj->Sel = sf2rand();	// !!!
 		obj->exists = TRUE;

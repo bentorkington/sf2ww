@@ -347,7 +347,7 @@ void mac_stun_from76(Player *ply, Player *opp) {			//7d884
             obj->SubSel = opp->NextReelStrength;
         }
 		if (obj->SubSel > 5) {
-			panic(0);
+			FBPanic(0);
 		}
 		
     }
