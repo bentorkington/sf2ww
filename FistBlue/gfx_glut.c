@@ -1060,7 +1060,7 @@ void drawGLText(recCamera cam) {
 						 gstate_Scroll1.OffMask,
 						 gstate_Scroll1.x001e,
 						 gstate_Scroll1.Index,
-						 gemu.PalScroll1[0][0] & PALETTE_MASK_BRIGHTNESS
+						 (gemu.PalScroll1[0][0] & PALETTE_MASK_BRIGHTNESS) >> 12
 						 );
 				drawGLString(10, (lineSpacing * line++) + startOffest, outString);
 				sprintf	(outString, "SCR2: X:%04x Y:%04x (%04x/%04x) 1E:%04x 20:%04x FADE %x",
@@ -1070,7 +1070,7 @@ void drawGLText(recCamera cam) {
 						 gstate_Scroll2.OffMask,
 						 gstate_Scroll2.x001e,
 						 gstate_Scroll2.Index,
-						 gemu.PalScroll2[0][0] & PALETTE_MASK_BRIGHTNESS
+						 (gemu.PalScroll2[0][0] & PALETTE_MASK_BRIGHTNESS) >> 12
 						 );
 				drawGLString(10, (lineSpacing * line++) + startOffest, outString);
 		sprintf	(outString, "SCR3: X:%04x Y:%04x (%04x/%04x) 1E:%04x 20:%04x FADE %x",
@@ -1080,7 +1080,7 @@ void drawGLText(recCamera cam) {
 				 gstate_Scroll3.OffMask,
 				 gstate_Scroll3.x001e,
 				 gstate_Scroll3.Index,
-				 gemu.PalScroll3[0][0] & PALETTE_MASK_BRIGHTNESS
+				 (gemu.PalScroll3[0][0] & PALETTE_MASK_BRIGHTNESS) >> 12
 				 );
 		drawGLString(10, (lineSpacing * line++) + startOffest, outString);
 		sprintf	(outString, "SCRL: X:%04x",gemu.RowScroll2[0]);
