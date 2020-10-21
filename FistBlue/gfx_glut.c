@@ -104,7 +104,7 @@ buf[3]=getc(gfxrom);
 #define TILE_BRIGHT_TO_FLOAT    61140.0     // divide by this to normalise brightness to 1.0
 
 /* conversion from plain x,y coords to how tiles are packed in CPS RAM */
-#define SCROLL_DECODE_SCR1(tx,ty) ((((ty) & 0x20) << 8) + ((tx) << 5) + ((ty) & 0x1f))
+#define SCROLL_DECODE_SCR1(tx,ty) ((((ty) & 0x20) << 6) + ((tx) << 5) + ((ty) & 0x1f))
 #define SCROLL_DECODE_SCR2(tx,ty) ((((ty) & 0x30) << 6) + ((tx) * 16) + ((ty) & 0x0f))
 #define SCROLL_DECODE_SCR3(tx,ty) ((((ty) & 0x38)<<6) + ((tx) << 3) + ((ty) & 7))
 
@@ -360,7 +360,7 @@ void gfx_glut_init(void) {
 		gemu.Tilemap_Scroll3[i][0] = TILE_BLANK_SCR3;
 		gemu.Tilemap_Scroll1[i][1] = 0x0;
 		gemu.Tilemap_Scroll2[i][1] = 0x0;
-		gemu.Tilemap_Scroll3[i][1] = 0x0;		
+		gemu.Tilemap_Scroll3[i][1] = 0x0;
 	}
 	gWorldRotation[0] = 180.0;
 	gWorldRotation[1] = 0.0;
