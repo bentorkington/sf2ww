@@ -272,6 +272,10 @@ void renderDummy(struct view *view) {
             case '2': gInputs.in0 |= IPT_START2;	   break;
             case '5': gInputs.in0 |= IPT_COIN1;	       break;
             case '6': gInputs.in0 |= IPT_COIN2;	       break;
+            case '7': gemu_flip_scroll_enable(0);      break;
+            case '8': gemu_flip_scroll_enable(1);      break;
+            case '9': gemu_flip_scroll_enable(2);      break;
+            case '0': gemu_flip_scroll_enable(3);      break;
             case 'T': print_task_table();              break;
             case 'K': g.Player2.Energy = -1;           break;
             case 'p': g.JPParam ^= JP_FREEZE;          break;
