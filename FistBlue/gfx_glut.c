@@ -531,7 +531,7 @@ static void draw_scroll1(void) {
 	
 	for(y=0;y<32;y++) {
         for(x=0;x<48;x++) {
-			gx = x + ((g.CPS.Scroll1X >> 3 ) & 0x1f);
+			int gx = x + ((g.CPS.Scroll1X >> 3) & 0x3f);
 			
             element = SCROLL_DECODE_SCR1(gx, y);
 			
