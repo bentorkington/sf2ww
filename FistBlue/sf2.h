@@ -17,7 +17,7 @@
 
 //#define REDHAMMER_PLAYGROUND
 
-#define FISTBLUE_SKIP_COPYRIGHT
+// #define FISTBLUE_SKIP_COPYRIGHT
 
 // Debug levels
 #define FISTBLUE_DEBUG_SM 1
