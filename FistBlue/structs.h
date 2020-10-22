@@ -53,7 +53,7 @@ struct state_playerselect{
 	char	mode0;				// 5dbe
 	char	mode1;				// 5dbf
 	
-	u8		TimerCoarse;		//5dc2q
+	u8		TimerCoarse;		//5dc2
 	u8		TimerFine;
 	char	TimeExpired;
 	char	PLSLNewPlayers;

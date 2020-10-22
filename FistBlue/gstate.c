@@ -572,6 +572,7 @@ static void _GSMaintScroll2(GState *gstate){      /* 831ca was nextlevel_dosetup
               if(1) {
 				g.CPS.Scroll2X = gstate->XPI;
 			} else {
+                // compensate for Rowscroll
 				g.CPS.Scroll2X = gstate->XPI - (SCREEN_WIDTH / 2);
 			}
 			g.CPS.Scroll2Y = gstate->YPI;
@@ -773,9 +774,13 @@ static void _GSFillScroll2(GState *gs) {  /* 0x83ae0 fill scroll2 from tilemap *
     SCR2_CURSOR_SET(gfx_p, 0, 32);         /* starting at tile 0x800:   
                               0x906000 = 0x904000 + (0x800 * 4) */
     
-	for(i=0;i<8; i++) {
-        for(j=0; j<256; j++) {
-            SCR2_DRAW_TILE(gfx_p, data_e0000[ gs->TileMaps[i] ][j*2],data_e0000[ gs->TileMaps[i] ][(j*2)+1]);
+	for (i=0; i<8; i++) {
+        for (j=0; j<256; j++) {
+            SCR2_DRAW_TILE(
+                gfx_p,
+                data_e0000[ gs->TileMaps[i] ][j*2],
+                data_e0000[ gs->TileMaps[i] ][(j*2)+1]
+            );
             SCR2_CURSOR_BUMP(gfx_p, 0, 1);
         }
     }
@@ -790,8 +795,8 @@ static void _GSFillScroll3(GState *gs) {        /* 0x83b2a fill scroll3 from til
     
 	SCR3_CURSOR_SET(gfx_p, 0, 24);	
 	
-	for(i=0;i<4; i++) {
-        for(j=0; j<64; j++) {
+	for (i=0; i<4; i++) {
+        for (j=0; j<64; j++) {
             SCR3_DRAW_TILE(gfx_p, data_d8000[ gs->TileMaps[i] ][ j*2 ],data_d8000[ gs->TileMaps[i] ][ (j*2) +1]);
             SCR3_CURSOR_BUMP(gfx_p, 0, 1);
         }
@@ -812,8 +817,8 @@ static void _GSInitScroll1(GState *gstate) {	/* 83b78 checked init scroll1 */
 	const u16 *a1;
 	u16 *gfx_p;
 	
-	g.CPS.Scroll1X=gstate->XPI;
-	g.CPS.Scroll1Y=gstate->YPI;
+	g.CPS.Scroll1X = gstate->XPI;
+	g.CPS.Scroll1Y = gstate->YPI;
 	
 	cp.x = gstate->XPI - 0x40;
 	cp.y = ~(gstate->YPI + 0x160);
@@ -1114,11 +1119,10 @@ static void gstate_update_scroll2 (GState *gs) {
     g.CPS.Scroll2X = gs->XPI;
     g.CPS.Scroll2Y = gs->YPI;
     	
-    temp  = gs->XPI & 0x10;
+    temp = gs->XPI & 0x10;
     temp ^= gs->x001e;
-    if(temp == 0) {
+    if (temp == 0) {
         gs->x001e ^= 0x10;
-        
     }
     
     cp = _GSCoordOffsetScr2(gs, gs->x0024);

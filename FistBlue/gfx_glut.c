@@ -519,21 +519,19 @@ static void draw_scroll1(void) {
 	if (!gemu_scroll_enable[1]) {
 		return;
 	}
-	int x,y, gx, flip;
-	int element;
+	int x,y, flip;
 	int modtransx;
 	
 	modtransx = g.CPS.Scroll1X & 0x7;
 	glPushMatrix();
-	glTranslatef((-modtransx * TILE_SIZE_SCR1 / 8), 0, -0.1f);
+	glTranslatef((-modtransx * TILE_SIZE_SCR1 / 8), 0.0, -0.0f);
 	GLfloat master = (gemu.PalScroll1[0][0] & PALETTE_MASK_BRIGHTNESS) / TILE_BRIGHT_TO_FLOAT;
 	glColor3f(master, master, master);
 	
-	for(y=0;y<32;y++) {
-        for(x=0;x<48;x++) {
+	for(y=0; y<32; y++) {
+        for(x=0; x<48; x++) {
 			int gx = x + ((g.CPS.Scroll1X >> 3) & 0x3f);
-			
-            element = SCROLL_DECODE_SCR1(gx, y);
+            int element = SCROLL_DECODE_SCR1(gx, y);
 			
 			if (gemu.Tilemap_Scroll1[element][0] == TILE_BLANK_SCR1) {
 				continue;
