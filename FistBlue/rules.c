@@ -297,7 +297,7 @@ static int get_human_struggle(Player *ply) {		//4014 ply %a4
  @return a value indicating struggle
  @discussion sf2ua:0x4004
  */
-static int get_struggle_1(Player *ply) {		// 4004 ply %a4
+static int get_struggle_1(Player *ply) {
 	static const u16 data_98e42[32]={
 		0x0000, 0x0000, 0x0000, 0x0000, 0x0002, 0x0000, 0x0000, 0x0800, 
 		0x0200, 0x0000, 0x0020, 0x0020, 0x0800, 0x2000, 0x0020, 0x0020, 
@@ -320,7 +320,7 @@ static int get_struggle_1(Player *ply) {		// 4004 ply %a4
  @return a value indicating struggle
  @discussion sf2ua:0x400e
  */
-static int get_struggle_2(Player *ply, Player *opp) {			// 400e
+static int get_struggle_2(Player *ply, Player *opp) {
 	static const u16 data_98ec2[32]={
 		0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x8000, 0x0010, 0x0000, 
 		0x0000, 0x0200, 0x2000, 0x0040, 0x0002, 0x0800, 0x8000, 0x0001, 
@@ -332,7 +332,7 @@ static int get_struggle_2(Player *ply, Player *opp) {			// 400e
 		return get_human_struggle(opp);
 	} else {
 		if (data_98ec2[opp->Difficulty] & (1 << RAND32)) {
-			return (char []){4,6,8,4,4,2,6,10,8,4,3,2}[opp->FighterID];
+			return (char []){ 4,6,8,4,4,2,6,10,8,4,3,2 }[opp->FighterID];
 		}
 		return 0;
 	}
@@ -356,8 +356,6 @@ void set_defeated_true(Player *ply) {		// 2eb6
 void set_defeated_false(Player *ply) {		//2eba
 	g.Defeated[ply->FighterID] = FALSE;
 }
-
-
 
 void proc_round_result(void) {		/* 8c80 */
     if(g.OnBonusStage) {
@@ -856,7 +854,7 @@ void bumpdifficulty_05(void) { /* 4584 */
 	   15,15,15,15,15,15,15,15,15,15, -1, -1, -1, -1, -1, -1,
 	};
 		
-	if (g.ActiveHumans != 3 && g.OnBonusStage == FALSE) {
+	if (g.ActiveHumans != BOTH_HUMAN && g.OnBonusStage == FALSE) {
 		if (g.HumanLoser) {
 			d6 = FALSE;
 			data = data_48d6;
@@ -882,8 +880,7 @@ void bumpdifficulty_06(void) { /* 45ea */
 	short d1, d2, d3;
 	short d6;
 	
-	
-	if (g.ActiveHumans != BOTH_HUMAN && g.OnBonusStage == 0) {
+	if (g.ActiveHumans != BOTH_HUMAN && g.OnBonusStage == FALSE) {
 		if (g.RoundResult < 0) {
 			// 4684
 			if(g.Diff06Cnt >= 9) {

@@ -244,6 +244,7 @@ typedef struct game {
 	char	x0a5c;			// not found set
 	u8		CarWasted;		/* 0x0a5d */
 	/* end init_fight_vars */
+    
     u8		x0a6a;			/* placeholder */
 							 
 	/* struct roundvars RoundVars;	*/ 
