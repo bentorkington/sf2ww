@@ -861,7 +861,7 @@ static const u16 *_GSRealignScroll2A(GState *gs, u16 **gfx_p) {
 #warning Scroll cursor arithmetic not optimal for CPS
 #endif
 	*gfx_p -= 2;
-	offset = (*gfx_p - BMAP_SCROLL2) * sizeof(u16); 
+	offset = (*gfx_p - BMAP_SCROLL2) * sizeof(u16);
 	d0 = offset & 0xffffcfc3;
 	d1 = (offset + 0x1000) & 0x3000;
 	d0 |= d1;

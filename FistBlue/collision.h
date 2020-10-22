@@ -8,7 +8,7 @@
  */
 
 
-void slib_ply_overlap();
+void slib_ply_overlap(void);
 
 // unused
 void sub_7d222(Player *vict, Object *obj);

@@ -102,7 +102,7 @@ void sub_61a0(void);
 void CreateIntegerSprite(u16 **gfx_p, u32 *cp_p, u8 d0, short *leading_zero, u16 d3 );
 void sub_5162(u16 **gfx_p, u32 *cp, u8 d0, short *d2, u16 d3);
 
-void fight_player_names();
+void fight_player_names(void);
 
 
 #endif /* INC_GFXLIB */

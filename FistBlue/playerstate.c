@@ -269,7 +269,7 @@ static void PSPlayerKO(Player *ply) {		/* 2a508 */
 }
 /*!
  @abstract postamble common to both computer and human players
- @param the player (%a6)
+ @param ply the player (%a6)
  @discussion sf2ua:0x2a410
     Called after comp_proc_stat and human_per_frame
  */
@@ -307,7 +307,7 @@ void player_postamble(Player *ply) {	// 2a410 called after comp_proc_stat and hu
 }
 /*!
  @abstract main entry to human player state machine
- @param the player (%a6)
+ @param ply the player (%a6)
  @discussion sf2ua:0x285f4
  */
 void human_per_frame(Player *ply) {		/* 285f4 */
@@ -1186,7 +1186,7 @@ void PSDizzyState(Player *ply) {		/* 29324 */
 
 /*!
  @abstract Returns TRUE of player Flip equals EnemyDirection
- @param the player (%a6)
+ @param ply the player (%a6)
  @discussion sf2ua:0x2a710
  */
 int is_facing_enemy(Player *ply) {		//2a720 badly named
@@ -1198,7 +1198,7 @@ int is_facing_enemy(Player *ply) {		//2a720 badly named
 }
 /*!
  @abstract Returns TRUE if player has walked off a platform
- @param the player (%a6)
+ @param ply the player (%a6)
  @discussion sf2ua:0x2a73e
  */
 short check_platform_end(Player *ply) {			/* 0x2a73e */

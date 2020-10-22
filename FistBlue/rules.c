@@ -415,8 +415,8 @@ int check_special_ability(Player *ply) {       /* 0x32e4 */
 }
 /*!
  sf2ua: 3338
- @param set to TRUE if airthrow
- @param the player performing the throw
+ @param airthrow set to TRUE if airthrow
+ @param ply the player performing the throw
  */
 int _check_throw(int airthrow, Player *ply) {		/* 0x3338 */
     int throwX , throwY;

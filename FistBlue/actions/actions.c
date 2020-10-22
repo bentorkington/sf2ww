@@ -2062,6 +2062,7 @@ void action_b8aa() {
 static void sub_160ca(void) {
     FBSetPalette(17 + g.BattleLoser, RHCODE16_ARRAY(0x160ae, 16, g.BattleLoser));
 }
+
 void action_1606c() {
 	Object *obj;
 	

@@ -36,6 +36,7 @@ extern struct executive_t Exec;
 static void sub_dee(void) {
 	g.CoinStatus = g.CoinStatus & ~(COIN_STATUS_1 | COIN_STATUS_2);
 }
+
 void decode_start_service(void) {	// 1e7a was swirlything
 	g.StartServiceButtons =
 		((g.RawButtons0Dash		& IPT_SERVICE) >> 2 ) |
@@ -230,7 +231,7 @@ void task_creditscreen(void) {          /* 6b52 */
     }
 	
     while(TRUE) {
-		if (g.RawButtons0Dash & IPT_SERVICE_NOTOGGLE || (g.Debug & (!g.JPCost & 0x80))) {
+        if (g.RawButtons0Dash & IPT_SERVICE_NOTOGGLE || (g.Debug & (!(g.JPCost & 0x80)))) {
             //init_test_menu();
             return;
         }

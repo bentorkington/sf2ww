@@ -22,9 +22,9 @@ void task_kill(unsigned short id);
 void create_task(void *task, short taskid, unsigned short param, unsigned char param1, unsigned char param2);
 void die_top8(void);
 void wrap_trap7(void *code, u16 p1, u16 p2);
-void justdie();
+void justdie(void);
 void print_task_table(void);
-void diefree();
+void diefree(void);
 
 #ifndef SF2_UCONTEXT		// only for ucontext_t?
 #define TASK_STACKSIZE  16384       
@@ -64,7 +64,7 @@ typedef struct {
     u8			timer;		// How long to sleep
 	
 #ifndef CPS 	
-	void		(*code)();	// !!: used by pthreads, where nothing else here is
+    void		(*code)(void);	// !!: used by pthreads, where nothing else here is
 	const char	*name;
 	const char	*signal;	
 	char	RHThreadID;

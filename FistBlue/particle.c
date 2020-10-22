@@ -140,14 +140,14 @@ static Object *action_null (void) {
     return NULL;
 }
 
-Object *(* const actiontypes[7])() = {
+Object *(* const actiontypes[7])(void) = {
     &action_null,
     &action_null,
     &AllocProjectile,
-    (Object *(*const)())&pop_1174,
+    (Object *(*const)(void))&pop_1174,
     &AllocActor,
     &action_null,
-    (Object *(*const)())&pop_5d0c,
+    (Object *(*const)(void))&pop_5d0c,
 };
 
 Object *alloc_action_by_type(short type) {

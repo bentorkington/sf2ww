@@ -112,7 +112,7 @@ void action_1e(Object *obj) {		//18c1c
 							break;
 						case 4:
 							NEXT(obj->mode1);
-							obj->LocalTimer = 3 * TICKS_PER_SECOND;
+							obj->LocalTimer = 3 * TICKS_PER_SECOND; // XXX overflow- check LocalTimer should be signed?
                             RHSetActionList(obj, RHCODE(0x1a200), obj->UserByte);
 							break;
 						case 6:

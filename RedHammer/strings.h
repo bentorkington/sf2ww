@@ -12,7 +12,7 @@
 #include <stdio.h>
 
 
-void redhammer_print_level_table();
+void redhammer_print_level_table(void);
 void redhammer_print_level(int level);
 
 #endif /* defined(__MT2__strings__) */

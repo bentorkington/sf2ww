@@ -239,14 +239,14 @@ static void game_mode_28(void) {	// 7af0
 				obj->exists = TRUE;
 				obj->Sel = SF2ACT_0X1B;
 				obj->Scroll = SCROLL_2;
-				action_1606c(obj);
+				action_1606c();
 				if (g.Version == VERSION_JAP) {
 					g.x5dfe.exists = TRUE;
-					action_b8aa(obj);
+					action_b8aa();
 				}
 				start_effect(LC0_LIGHT_ALL_ENABLE, 2);
 				proc_actions();
-				DSDrawAll_Hira();		// a drawsprites
+				DSDrawAll_Hira();
 				soundsting(SOUND_CONTINUE);				
 			}
 		case 12:

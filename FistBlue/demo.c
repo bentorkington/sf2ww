@@ -110,7 +110,7 @@ void task_attractSequence(void) {
 	fadenwait1();
 	sound_cq_f0f7();
 	while (TRUE) {
-		if (g.RawButtons0Dash & 0x40 || (g.Debug & (!g.JPCost & 0x80))) {
+        if (g.RawButtons0Dash & 0x40 || (g.Debug & (!(g.JPCost & 0x80)))) {
 			//todo initTestMenu(); //207c
 		} else if (!g.FreezeMachine) {
 			SMDemo();

@@ -22,14 +22,14 @@ void action_1286e(Object *obj, short d0);
 void action_207f0(Object *obj);
 
 
-void action_15c2e();
+void action_15c2e(void);
 
 void PrintPlayerPic(Player *ply, short side, short fighterid);
 
 
-void action_1ab8a();
-void action_b8aa();
-void action_1606c();
+void action_1ab8a(void);
+void action_b8aa(void);
+void action_1606c(void);
 void ActBlankaBiteBlood(Player *ply);
 
 void action_132fe(Object_G2 *obj_a2, int arg_d6);       // Car collision
