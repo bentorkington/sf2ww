@@ -749,7 +749,6 @@
 		B5B0763C155489B5009D301D /* act02_bicycleriders.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = act02_bicycleriders.c; sourceTree = "<group>"; };
 		B5B0764415548B28009D301D /* act07_elephants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = act07_elephants.h; sourceTree = "<group>"; };
 		B5B0764515548B28009D301D /* act07_elephants.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = act07_elephants.c; sourceTree = "<group>"; };
-		B5B0B53D1777DC7800C9C0EE /* TileScrollerWindow.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TileScrollerWindow.xib; sourceTree = "<group>"; };
 		B5B39B69157832F200494662 /* sf2gfx.bin */ = {isa = PBXFileReference; lastKnownFileType = archive.macbinary; path = sf2gfx.bin; sourceTree = "<group>"; };
 		B5B39BB01578345600494662 /* glutBasics.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = glutBasics.c; sourceTree = SOURCE_ROOT; };
 		B5B39CF9157836E100494662 /* MT2-Info copy.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "MT2-Info copy.plist"; sourceTree = "<group>"; };
@@ -949,7 +948,6 @@
 				8D1107310486CEB800E47090 /* MT2-Info.plist */,
 				089C165CFE840E0CC02AAC07 /* InfoPlist.strings */,
 				B5B39CF9157836E100494662 /* MT2-Info copy.plist */,
-				B5B0B53D1777DC7800C9C0EE /* TileScrollerWindow.xib */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
