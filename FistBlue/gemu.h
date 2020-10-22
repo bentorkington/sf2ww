@@ -197,6 +197,7 @@ typedef struct {
 	GPAL	PalUnk1[32][16];							// CPS 0x901000
 	GPAL	PalUnk2[32][16];							// CPS 0x901400
 								// 901800-903fff unknown
+    u16     Unused[0x1400];
 	/* Scrollable tilemaps */
     u16     Tilemap_Scroll2[CPS1_OTHER_SIZE][2];				/* CPS 0x904000 - 0x907fff */
     u16     Tilemap_Scroll3[CPS1_OTHER_SIZE][2];				/* CPS 0x908000 - 0x90bfff */
