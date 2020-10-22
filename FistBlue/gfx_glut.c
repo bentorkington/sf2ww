@@ -347,6 +347,10 @@ void gemu_cache_object(u16 tile, short palette) {
 	}
 }
 
+u16 *ehonda;
+
+#pragma mark Entry
+
 void gfx_glut_init(void) {
 	int i;
 	
@@ -357,7 +361,15 @@ void gfx_glut_init(void) {
     }
     printf("opened sf2gfx.bin\n");
     GfxGlut_FadeEnable = FALSE;
-	
+    
+    ehonda = malloc(0x20000);
+    FILE *ehondadata = fopen("/Users/ben/ehondagfx_le.dat", "r");
+    
+    long bytesread = fread(ehonda, 1, 0x20000, ehondadata);
+    printf("%ld bytes read E Honda\n", bytesread);
+    fclose(ehondadata);
+
+
 	for (i=0; i<4; i++) {
 		gemu_scroll_enable[i] = TRUE;
 	}
@@ -823,6 +835,10 @@ static void draw_scroll3(void) {
 	glPopMatrix();
 }	
 
+#pragma mark Entry 2
+
+int dummyScr1 = 0;
+
 void gfx_glut_drawgame(void) {
 	GLfloat gShapeSize = 11.0f;
 	
@@ -912,6 +928,13 @@ void gfx_glut_drawgame(void) {
 		glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
 	}
 	
+//    memcpy(&gemu, ehonda, 0x20000); // XXX
+//    
+//    g.CPS.Scroll1X = 0x1c6;
+//    
+//    g.CPS.Scroll2X = 0x108 + 0xc0;
+//    g.CPS.Scroll3X = 0x1c4;
+    
     SCROLL[(g.CPS.DispEna >>   6) & 3]();
 	SCROLL[(g.CPS.DispEna >>   8) & 3]();
 	SCROLL[(g.CPS.DispEna >>  10) & 3]();
@@ -1059,8 +1082,10 @@ void drawGLText(recCamera cam) {
 				 g.Player2.AITimer
 				 );
 		drawGLString(10, (lineSpacing * line++) + startOffest, outString);
-				sprintf	(outString, "SCR1: X:%04x Y:%04x (%04x/%04x) 1E:%04x 20:%04x FADE %x",
+				sprintf	(outString, "SCR1: X:%04x(%04x,%04x) Y:%04x (%04x/%04x) 1E:%04x 20:%04x FADE %x",
 						 gstate_Scroll1.XPI,
+                         g.CPS.Scroll1X,
+                         cps_a_emu.scroll1x,
 						 gstate_Scroll1.YPI,
 						 gstate_Scroll1.Offset,
 						 gstate_Scroll1.OffMask,
@@ -1069,8 +1094,10 @@ void drawGLText(recCamera cam) {
 						 (gemu.PalScroll1[0][0] & PALETTE_MASK_BRIGHTNESS) >> 12
 						 );
 				drawGLString(10, (lineSpacing * line++) + startOffest, outString);
-				sprintf	(outString, "SCR2: X:%04x Y:%04x (%04x/%04x) 1E:%04x 20:%04x FADE %x",
+				sprintf	(outString, "SCR2: X:%04x(%04x,%04x) Y:%04x (%04x/%04x) 1E:%04x 20:%04x FADE %x",
 						 gstate_Scroll2.XPI,
+                         g.CPS.Scroll3X,
+                         cps_a_emu.scroll2x,
 						gstate_Scroll2.YPI,
 						 gstate_Scroll2.Offset,
 						 gstate_Scroll2.OffMask,
@@ -1079,8 +1106,10 @@ void drawGLText(recCamera cam) {
 						 (gemu.PalScroll2[0][0] & PALETTE_MASK_BRIGHTNESS) >> 12
 						 );
 				drawGLString(10, (lineSpacing * line++) + startOffest, outString);
-		sprintf	(outString, "SCR3: X:%04x Y:%04x (%04x/%04x) 1E:%04x 20:%04x FADE %x",
-				 g.CPS.Scroll3X,
+		sprintf	(outString, "SCR3: X:%04x(%04x,%04x) Y:%04x (%04x/%04x) 1E:%04x 20:%04x FADE %x",
+				 gstate_Scroll3.XPI,
+                 g.CPS.Scroll3X,
+                 cps_a_emu.scroll3x,
 				 g.CPS.Scroll3Y,
 				 gstate_Scroll3.Offset,
 				 gstate_Scroll3.OffMask,

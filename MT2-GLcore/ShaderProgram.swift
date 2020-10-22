@@ -13,7 +13,7 @@ import OpenGLES
 #endif
 
 class ShaderProgram {
-    private var program: GLuint
+    var program: GLuint
 
     init() {
         program = glCreateProgram()

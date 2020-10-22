@@ -10,4 +10,13 @@
 
 #include <stdio.h>
 
+#ifdef __APPLE__
+#include <OpenGL/gl3.h>
+#else
+#include <GL/gl3.h>
+#endif
+
+void render_glcore(void);
+void init_glcore(unsigned int shaderProgram, GLuint objectTexture, GLuint scrollTexture);
+
 #endif /* gfx_glcore_h */

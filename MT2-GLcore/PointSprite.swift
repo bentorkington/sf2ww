@@ -7,7 +7,7 @@
 
 import OpenGL
 
-class PointSprite: Renderable
+class PointSprite
 {
     private var vertexArrayId: GLuint = 0
     private var bufferIds = [GLuint](repeating: 0, count: 5)
@@ -18,17 +18,6 @@ class PointSprite: Renderable
     init(program: ShaderProgram) {
         let points: [Float] = [
             0.0, 0.0, 0.1, 0.0, -20.0, 20.0, 20.0, 20.0
-        ]
-                
-        let tilemap: [UInt8] = [
-            0, 1, 2, 3, 4, 5, 6, 7,
-            0, 1, 2, 3, 4, 5, 6, 7,
-            1, 1, 0, 0, 1, 1, 0, 0,
-            1, 1, 0, 0, 1, 1, 0, 0,
-            0, 0, 1, 1, 0, 0, 1, 1,
-            0, 0, 1, 1, 0, 0, 1, 1,
-            1, 1, 0, 0, 1, 1, 0, 0,
-            1, 1, 0, 0, 1, 1, 0, 0,
         ]
         
         let palette: [UInt8] = [

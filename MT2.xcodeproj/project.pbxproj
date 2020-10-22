@@ -42,6 +42,8 @@
 		B519C69F253C039E0084B88D /* glwimp.c in Sources */ = {isa = PBXBuildFile; fileRef = B5ADB87013B2B59A00905DFE /* glwimp.c */; };
 		B519C6A6253C03BB0084B88D /* blanka_human.c in Sources */ = {isa = PBXBuildFile; fileRef = B56BFC6F156B444F00DC7BAD /* blanka_human.c */; };
 		B519C6AD253C03CF0084B88D /* trackball.c in Sources */ = {isa = PBXBuildFile; fileRef = B5ADB7B013B2B38400905DFE /* trackball.c */; };
+		B519C714253C27020084B88D /* PointSprite.swift in Sources */ = {isa = PBXBuildFile; fileRef = B519C713253C27020084B88D /* PointSprite.swift */; };
+		B519C723253C92EC0084B88D /* gfx_glcore.c in Sources */ = {isa = PBXBuildFile; fileRef = B519C722253C92EC0084B88D /* gfx_glcore.c */; };
 		B51D1C99253BE07100CEB195 /* redhammer.c in Sources */ = {isa = PBXBuildFile; fileRef = 6CF004551C2A01C9008EA965 /* redhammer.c */; };
 		B51D1CA1253BE0B500CEB195 /* GLUT.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B5ADB7BD13B2B3BE00905DFE /* GLUT.framework */; };
 		B51D1CA9253BE0C300CEB195 /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B5ADB7B913B2B3B300905DFE /* OpenGL.framework */; };
@@ -574,6 +576,9 @@
 		B51533F3147EEBDB004A87B0 /* drums.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = drums.h; sourceTree = "<group>"; };
 		B51533F4147EEBDB004A87B0 /* drums.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = drums.c; sourceTree = "<group>"; };
 		B519C6B4253C04A60084B88D /* game-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "game-Bridging-Header.h"; sourceTree = "<group>"; };
+		B519C713253C27020084B88D /* PointSprite.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PointSprite.swift; sourceTree = "<group>"; };
+		B519C721253C92EC0084B88D /* gfx_glcore.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = gfx_glcore.h; sourceTree = "<group>"; };
+		B519C722253C92EC0084B88D /* gfx_glcore.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = gfx_glcore.c; sourceTree = "<group>"; };
 		B51D1CC8253BE4C400CEB195 /* OpenGLES.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGLES.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS14.0.sdk/System/Library/Frameworks/OpenGLES.framework; sourceTree = DEVELOPER_DIR; };
 		B51D1D17253BF34100CEB195 /* MT2-GLcore.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "MT2-GLcore.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		B51D1D19253BF34100CEB195 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -983,6 +988,7 @@
 		B51D1D18253BF34100CEB195 /* MT2-GLcore */ = {
 			isa = PBXGroup;
 			children = (
+				B519C713253C27020084B88D /* PointSprite.swift */,
 				B51D1D84253BFC0E00CEB195 /* Shaders */,
 				B51D1D63253BF67A00CEB195 /* Matrix4.swift */,
 				B51D1D19253BF34100CEB195 /* AppDelegate.swift */,
@@ -1247,6 +1253,8 @@
 				B59F4C931A2992B4003699C1 /* redhammer.h */,
 				B50BCA161C040AF300C7A6F4 /* cps_tile.h */,
 				6CF004551C2A01C9008EA965 /* redhammer.c */,
+				B519C721253C92EC0084B88D /* gfx_glcore.h */,
+				B519C722253C92EC0084B88D /* gfx_glcore.c */,
 			);
 			path = RedHammer;
 			sourceTree = "<group>";
@@ -1656,6 +1664,7 @@
 				B51D1E5C253BFFC800CEB195 /* guile_human.c in Sources */,
 				B51D1E70253BFFD400CEB195 /* demo.c in Sources */,
 				B51D1ED9253C004000CEB195 /* text.c in Sources */,
+				B519C714253C27020084B88D /* PointSprite.swift in Sources */,
 				B51D1D64253BF67A00CEB195 /* Matrix4.swift in Sources */,
 				B51D1E5E253BFFC800CEB195 /* ryu.c in Sources */,
 				B51D1E3E253BFFAB00CEB195 /* ai.c in Sources */,
@@ -1676,6 +1685,7 @@
 				B51D1E6C253BFFD400CEB195 /* computer.c in Sources */,
 				B51D1EBD253C003500CEB195 /* sm.c in Sources */,
 				B51D1E6F253BFFD400CEB195 /* game.c in Sources */,
+				B519C723253C92EC0084B88D /* gfx_glcore.c in Sources */,
 				B51D1E14253BFF9700CEB195 /* act1e_worldflags.c in Sources */,
 				B51D1E54253BFFC800CEB195 /* blanka_comp.c in Sources */,
 				B51D1E06253BFF9100CEB195 /* act07_elephants.c in Sources */,

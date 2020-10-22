@@ -13,6 +13,7 @@
 #import "game.h"
 #import "task.h"
 #import "gemu.h"
+#import "gfx_glcore.h"
 
 extern CPSGFXEMU gemu;
 

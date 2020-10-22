@@ -35,7 +35,6 @@ class MyNSOpenGLView: NSOpenGLView
     
     override func reshape() {
         let frame = self.frame
-        print (frame)
 
         // Update the viewport.
         glViewport(0, 0, GLsizei(frame.size.width), GLsizei(frame.size.height))

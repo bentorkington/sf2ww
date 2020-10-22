@@ -2,6 +2,9 @@
 
 precision lowp float;
 
+flat in int tileIdentifier;
+flat in int tileAttribute;
+
 uniform sampler2D u_image;
 uniform sampler2D u_palette;
 
@@ -21,21 +24,27 @@ const int bitsPerByte = 8;
 const int bitsPerNibble = 4;
 
 void main() {
+//    fragColor = vec4(gl_PointCoord, 0.0, 1.0);
+//    return;
     // scale the point coord to tile dimensions
     vec2 pixelFloat = gl_PointCoord * tileSize;
     ivec2 pixel = ivec2(int(pixelFloat.x), int(pixelFloat.y));
     
+    int palette = tileAttribute & 0xf;
+    int flips = (tileAttribute & 0x60) >> 5;
     
     // we need to get the pixel color index, which requires reading four bytes from
     // the `index` texture
     
-    float pixelStride = 1.0 / atlasWidth;
-    float halfStride = pixelStride / 2.0;
+    vec2 pixelStride = vec2(1.0 / float(atlasWidth), 1.0 / float(atlasHeight));
     
-    float pixelStrideVert = 1.0 / atlasHeight;
+    //float pixelStride = 1.0 / atlasWidth;
+    vec2 halfStride = pixelStride / 2.0;
     
+    //float pixelStrideVert = 1.0 / atlasHeight;
+        
     int pixelId =
-    tileByteSize * tileId + // byte size of a tile
+    tileByteSize * tileIdentifier + // byte size of a tile
         (pixel.x / bitsPerByte) * bitsPerNibble + // number of bits per byte, bit per nibble
     rowByteStride * pixel.y; // bytes per row
     
@@ -44,10 +53,10 @@ void main() {
     
     int bit = 7 - (pixel.x % 8);
     
-    vec2 tileCoord1 = vec2(pixelStride * (xOff + 0) + halfStride, pixelStrideVert * yOff + halfStride);
-    vec2 tileCoord2 = vec2(pixelStride * (xOff + 1) + halfStride, pixelStrideVert * yOff + halfStride);
-    vec2 tileCoord4 = vec2(pixelStride * (xOff + 2) + halfStride, pixelStrideVert * yOff + halfStride);
-    vec2 tileCoord8 = vec2(pixelStride * (xOff + 3) + halfStride, pixelStrideVert * yOff + halfStride);
+    vec2 tileCoord1 = vec2(pixelStride.x * (xOff + 0) + halfStride.x, pixelStride.y * yOff + halfStride.y);
+    vec2 tileCoord2 = vec2(pixelStride.x * (xOff + 1) + halfStride.x, pixelStride.y * yOff + halfStride.y);
+    vec2 tileCoord4 = vec2(pixelStride.x * (xOff + 2) + halfStride.x, pixelStride.y * yOff + halfStride.y);
+    vec2 tileCoord8 = vec2(pixelStride.x * (xOff + 3) + halfStride.x, pixelStride.y * yOff + halfStride.y);
 
 //    int bit1 = (int(texture(u_image, tileCoord1).r) * 255) & (1 << bit);
 //    int bit2 = (int(texture(u_image, tileCoord2).r) * 255) & (1 << bit);
@@ -69,8 +78,21 @@ void main() {
 //    if (bit8 != 0) idx |= 0x8;
 //
 
+    if (idx == 15)
+        discard;
+    
     //float index = texture(u_image, gl_PointCoord).r; // * 255.0;
-    fragColor = texture(u_palette, vec2(idx / 15.0 , 0.5));
+    
+    
+    
+    // the CPS palette is packed in ARGB format, so shift it
+    vec4 cpsColor = texture(u_palette, vec2(idx / 15.0 , palette / 31.0));
+    
+    vec3 rawColor = cpsColor.gba;
+    vec3 brightness = vec3(cpsColor.r);
+    
+    fragColor = vec4(rawColor * brightness, 1.0);
+    
     
 //    fragColor = vec4(idx / 15.0, 0.0, tileCoord1.y * 16.0, 1.0);
 }

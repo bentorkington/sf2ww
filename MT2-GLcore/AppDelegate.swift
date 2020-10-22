@@ -101,7 +101,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
          */
         
         // Do some GL setup.
-        glClearColor(0.9, 0.3, 0.3, 1.0)
+        glClearColor(0.0, 0.0, 0.0, 1.0)
         glClearDepth(1.0)
         //glDisable(GLenum(GL_BLEND))
         glBlendFunc(GLenum(GL_SRC_ALPHA), GLenum(GL_ONE_MINUS_SRC_ALPHA))
@@ -115,22 +115,22 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 //        glFrontFace(GLenum(GL_CCW))
 //        glCullFace(GLenum(GL_BACK))
         
-        game = Game()
+        game = Game(withTextures: scrollTextures)
         
         timer = Timer(timeInterval: 1.0 / 60.0, repeats: true, block: timerFireMethod)
         RunLoop.current.add(timer, forMode: RunLoop.Mode.default)
         
         print("didFinishLaunching done")
-
     }
-
+    
     func applicationWillTerminate(_ aNotification: Notification) {
         // Insert code here to tear down your application
     }
 
     func timerFireMethod(_ sender: Timer!) {
         glClear(GLbitfield(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT))
-//        scene.render(view.projectionMatrix)
+        game?.render(view.projectionMatrix)
+        //        scene.render(view.projectionMatrix)
         glFlush()
         view.flush()
 
@@ -147,6 +147,5 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         gettimeofday(&t, nil)
         return UInt64(t.tv_sec * 1000) + UInt64(t.tv_usec / 1000)
     }
-
 }
 
