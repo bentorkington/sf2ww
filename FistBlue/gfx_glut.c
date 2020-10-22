@@ -39,6 +39,8 @@ extern Game g;
 #include "cps_tile.h"
 
 extern CPSGFXEMU gemu;
+extern struct cps_a_regs cps_a_emu;
+
 extern GLfloat gWimpScale;
 extern GState gstate_Scroll1;
 extern GState gstate_Scroll2;
@@ -47,6 +49,12 @@ extern ScrollState gstate_RowScroll;
 
 extern struct executive_t Exec;
 extern struct effectstate es;
+
+char    GfxGlut_FadeEnable;            /* whether or not to apply fading to palette lookups,
+                                        otherwise full-brightness                        */
+
+unsigned char tile[32][32];     /* temporary buffer for converting tiles */
+
 
 int gemu_scroll_enable[4];
 
@@ -228,7 +236,7 @@ static inline void gemu_color_tile(int pixelSize, short palette, GLubyte *img, G
 	
     for(u=0; u<pixelSize; u++) {
         for(v=0; v<pixelSize; v++) {
-            if(gemu.tile[u][v] == PALETTE_TRANSPARENT_ID) {
+            if(tile[u][v] == PALETTE_TRANSPARENT_ID) {
                 /* transparent pixel */
                 *img++ = TRANSPARENT_COLOR_R;
                 *img++ = TRANSPARENT_COLOR_G;
@@ -236,14 +244,14 @@ static inline void gemu_color_tile(int pixelSize, short palette, GLubyte *img, G
                 *img++ = ALPHA_TRANS; /* alpha */
             } else {
                 /* convert 4bit RGB + brightness to 8-bit RGBA */
-                if(gemu.FadeEnable) {
-                    master = (17 * ((*scrollPalette)[palette][ gemu.tile[u][v] ])>>12) / 15;
+                if(GfxGlut_FadeEnable) {
+                    master = (17 * ((*scrollPalette)[palette][ tile[u][v] ])>>12) / 15;
                 } else {
                     master = 17;    /* 4-bit to 8-bit conversion */
                 }
-                *img++ = master * (((*scrollPalette)[palette][ gemu.tile[u][v] ] & PALETTE_MASK_COLOR_R) >> 8);
-                *img++ = master * (((*scrollPalette)[palette][ gemu.tile[u][v] ] & PALETTE_MASK_COLOR_G) >> 4);
-                *img++ = master * (((*scrollPalette)[palette][ gemu.tile[u][v] ] & PALETTE_MASK_COLOR_B)     );
+                *img++ = master * (((*scrollPalette)[palette][ tile[u][v] ] & PALETTE_MASK_COLOR_R) >> 8);
+                *img++ = master * (((*scrollPalette)[palette][ tile[u][v] ] & PALETTE_MASK_COLOR_G) >> 4);
+                *img++ = master * (((*scrollPalette)[palette][ tile[u][v] ] & PALETTE_MASK_COLOR_B)     );
                 *img++ = ALPHA_OPAQUE; /* alpha */
             }
         }
@@ -348,7 +356,7 @@ void gfx_glut_init(void) {
         exit(EXIT_FAILURE);
     }
     printf("opened sf2gfx.bin\n");
-    gemu.FadeEnable = FALSE;
+    GfxGlut_FadeEnable = FALSE;
 	
 	for (i=0; i<4; i++) {
 		gemu_scroll_enable[i] = TRUE;
@@ -382,23 +390,23 @@ void gemu_readtile(u16 tileid) {          /* read a 16x16 tile */
     unsigned char buf[4];
     int tileaddr = (tileid * TILE_BYTES_16x16) + TILE_OFFSET_OBJECT;
     
-    memset(&gemu.tile, 0, sizeof(gemu.tile));   /* Clear the previous tile out */
+    memset(&tile, 0, sizeof(tile));   /* Clear the previous tile out */
     
     fseek(gfxrom, tileaddr, SEEK_SET);
     for(u=0; u<16; u++) {
         GFXROM_READFOUR;
         for(v=0; v<8; v++) {
-            if (buf[0] & pixbit[v]) { gemu.tile[u][v] += 1; }
-            if (buf[1] & pixbit[v]) { gemu.tile[u][v] += 2; }
-            if (buf[2] & pixbit[v]) { gemu.tile[u][v] += 4; }
-            if (buf[3] & pixbit[v]) { gemu.tile[u][v] += 8; }
+            if (buf[0] & pixbit[v]) { tile[u][v] += 1; }
+            if (buf[1] & pixbit[v]) { tile[u][v] += 2; }
+            if (buf[2] & pixbit[v]) { tile[u][v] += 4; }
+            if (buf[3] & pixbit[v]) { tile[u][v] += 8; }
         }
         GFXROM_READFOUR;
         for(v=0; v<8; v++) {        
-            if (buf[0] & pixbit[v]) { gemu.tile[u][v+8] += 1; }
-            if (buf[1] & pixbit[v]) { gemu.tile[u][v+8] += 2; }
-            if (buf[2] & pixbit[v]) { gemu.tile[u][v+8] += 4; }
-            if (buf[3] & pixbit[v]) { gemu.tile[u][v+8] += 8; }
+            if (buf[0] & pixbit[v]) { tile[u][v+8] += 1; }
+            if (buf[1] & pixbit[v]) { tile[u][v+8] += 2; }
+            if (buf[2] & pixbit[v]) { tile[u][v+8] += 4; }
+            if (buf[3] & pixbit[v]) { tile[u][v+8] += 8; }
         }
     }
 }
@@ -408,16 +416,16 @@ void gemu_readtile_scroll1(u16 tileid) {
 	
     int tileaddr = (tileid * TILE_BYTES_8x8) + TILE_OFFSET_SCROLLS; 
 	    
-    memset(&gemu.tile, 0, sizeof(gemu.tile));  
+    memset(&tile, 0, sizeof(tile));
     
     fseek(gfxrom, tileaddr, SEEK_SET);
     for(u=0; u<8; u++) {
         GFXROM_READFOUR;
         for(v=0; v<8; v++) {
-            if (buf[0] & pixbit[v]) { gemu.tile[u][v] += 1; }
-            if (buf[1] & pixbit[v]) { gemu.tile[u][v] += 2; }
-            if (buf[2] & pixbit[v]) { gemu.tile[u][v] += 4; }
-            if (buf[3] & pixbit[v]) { gemu.tile[u][v] += 8; }
+            if (buf[0] & pixbit[v]) { tile[u][v] += 1; }
+            if (buf[1] & pixbit[v]) { tile[u][v] += 2; }
+            if (buf[2] & pixbit[v]) { tile[u][v] += 4; }
+            if (buf[3] & pixbit[v]) { tile[u][v] += 8; }
         }
         GFXROM_READFOUR;		/* skip one */
     }
@@ -428,23 +436,23 @@ void gemu_readtile_scroll2(u16 tileid) {
 	
     int tileaddr = (tileid * TILE_BYTES_16x16) + TILE_OFFSET_SCROLLS;
 
-    memset(&gemu.tile, 0, sizeof(gemu.tile));  
+    memset(&tile, 0, sizeof(tile));
     
     fseek(gfxrom, tileaddr, SEEK_SET);
     for(u=0; u<16; u++) {
         GFXROM_READFOUR;
         for(v=0; v<8; v++) {
-            if (buf[0] & pixbit[v]) { gemu.tile[u][v] += 1; }
-            if (buf[1] & pixbit[v]) { gemu.tile[u][v] += 2; }
-            if (buf[2] & pixbit[v]) { gemu.tile[u][v] += 4; }
-            if (buf[3] & pixbit[v]) { gemu.tile[u][v] += 8; }
+            if (buf[0] & pixbit[v]) { tile[u][v] += 1; }
+            if (buf[1] & pixbit[v]) { tile[u][v] += 2; }
+            if (buf[2] & pixbit[v]) { tile[u][v] += 4; }
+            if (buf[3] & pixbit[v]) { tile[u][v] += 8; }
         }
         GFXROM_READFOUR;
         for(v=0; v<8; v++) {
-            if (buf[0] & pixbit[v]) { gemu.tile[u][v+8] += 1; }
-            if (buf[1] & pixbit[v]) { gemu.tile[u][v+8] += 2; }
-            if (buf[2] & pixbit[v]) { gemu.tile[u][v+8] += 4; }
-            if (buf[3] & pixbit[v]) { gemu.tile[u][v+8] += 8; }
+            if (buf[0] & pixbit[v]) { tile[u][v+8] += 1; }
+            if (buf[1] & pixbit[v]) { tile[u][v+8] += 2; }
+            if (buf[2] & pixbit[v]) { tile[u][v+8] += 4; }
+            if (buf[3] & pixbit[v]) { tile[u][v+8] += 8; }
         }
     }
 }
@@ -457,37 +465,37 @@ void gemu_readtile_scroll3(u16 tileid) {
 	
 	int tileaddr = (tileid * TILE_BYTES_32x32) + TILE_OFFSET_SCROLLS;
 	
-    memset(&gemu.tile, 0, sizeof(gemu.tile));  
+    memset(&tile, 0, sizeof(tile));  
     
     fseek(gfxrom, tileaddr, SEEK_SET);
     for(u=0; u<32; u++) {
         GFXROM_READFOUR;
         for(v=0; v<8; v++) {
-            if (buf[0] & pixbit[v]) { gemu.tile[u][v] += 1; }
-            if (buf[1] & pixbit[v]) { gemu.tile[u][v] += 2; }
-            if (buf[2] & pixbit[v]) { gemu.tile[u][v] += 4; }
-            if (buf[3] & pixbit[v]) { gemu.tile[u][v] += 8; }
+            if (buf[0] & pixbit[v]) { tile[u][v] += 1; }
+            if (buf[1] & pixbit[v]) { tile[u][v] += 2; }
+            if (buf[2] & pixbit[v]) { tile[u][v] += 4; }
+            if (buf[3] & pixbit[v]) { tile[u][v] += 8; }
         }
         GFXROM_READFOUR;
         for(v=0; v<8; v++) {
-            if (buf[0] & pixbit[v]) { gemu.tile[u][v+8] += 1; }
-            if (buf[1] & pixbit[v]) { gemu.tile[u][v+8] += 2; }
-            if (buf[2] & pixbit[v]) { gemu.tile[u][v+8] += 4; }
-            if (buf[3] & pixbit[v]) { gemu.tile[u][v+8] += 8; }
+            if (buf[0] & pixbit[v]) { tile[u][v+8] += 1; }
+            if (buf[1] & pixbit[v]) { tile[u][v+8] += 2; }
+            if (buf[2] & pixbit[v]) { tile[u][v+8] += 4; }
+            if (buf[3] & pixbit[v]) { tile[u][v+8] += 8; }
         }
 		GFXROM_READFOUR;
         for(v=0; v<8; v++) {
-            if (buf[0] & pixbit[v]) { gemu.tile[u][v+16] += 1; }
-            if (buf[1] & pixbit[v]) { gemu.tile[u][v+16] += 2; }
-            if (buf[2] & pixbit[v]) { gemu.tile[u][v+16] += 4; }
-            if (buf[3] & pixbit[v]) { gemu.tile[u][v+16] += 8; }
+            if (buf[0] & pixbit[v]) { tile[u][v+16] += 1; }
+            if (buf[1] & pixbit[v]) { tile[u][v+16] += 2; }
+            if (buf[2] & pixbit[v]) { tile[u][v+16] += 4; }
+            if (buf[3] & pixbit[v]) { tile[u][v+16] += 8; }
         }
         GFXROM_READFOUR;
         for(v=0; v<8; v++) {
-            if (buf[0] & pixbit[v]) { gemu.tile[u][v+24] += 1; }
-            if (buf[1] & pixbit[v]) { gemu.tile[u][v+24] += 2; }
-            if (buf[2] & pixbit[v]) { gemu.tile[u][v+24] += 4; }
-            if (buf[3] & pixbit[v]) { gemu.tile[u][v+24] += 8; }
+            if (buf[0] & pixbit[v]) { tile[u][v+24] += 1; }
+            if (buf[1] & pixbit[v]) { tile[u][v+24] += 2; }
+            if (buf[2] & pixbit[v]) { tile[u][v+24] += 4; }
+            if (buf[3] & pixbit[v]) { tile[u][v+24] += 8; }
         }
     }
 }
@@ -785,7 +793,7 @@ static void draw_scroll3(void) {
 	}
 	glPushMatrix();
 	glTranslatef(-(g.CPS.Scroll3X & 0x1f) / 32.0 * TILE_SIZE_SCR3, (g.CPS.Scroll3Y & 0x1f) / 32.0 * TILE_SIZE_SCR3, 0);
-	tilety = g.CPS.Scroll3Y / 32;
+	tilety = g.CPS.Scroll3Y / 32;   // XXX get these out of gemu.*
 	tiletx = g.CPS.Scroll3X / 32;
 	GLfloat master = (gemu.PalScroll3[0][0] & PALETTE_MASK_BRIGHTNESS) / TILE_BRIGHT_TO_FLOAT;
 	glColor3f(master, master, master);

@@ -11,6 +11,7 @@
 #define INC_GEMU
 
 #include "sf2types.h"
+#include "io.h"
 
 #define OBJECT_DRAW			gemuObjectDraw			
 #define OBJECT_DRAW_NOATTR	gemuObjectDrawNoAttr
@@ -41,11 +42,14 @@
 //    00 y000 0000 0yyy yyAA
 //        xxx xxxx x000 00AA
 
+// XXX check these, they look inconsistent as to whether they're tile or pixel based
+
 #define SCR1_CURSOR_SET(gfx_p, x, y) \
 (gfx_p) = gemu.Tilemap_Scroll1[ (x << 5) + ((y/4) & 0x1f) ];
 
 #define SCR2_CURSOR_SET(gfx_p, x, y) \
 gfx_p = gemu.Tilemap_Scroll2[((y & 0x30)<<6)+(x*16+(y & 0xf)) ];
+
 #define SCR3_CURSOR_SET(gfx_p, x, y) \
 gfx_p = gemu.Tilemap_Scroll3[ ((y & 0x38)<<6) + ((x & 0x3f) << 3) + (y & 7) ];
 
@@ -183,8 +187,7 @@ typedef struct {
     // Palette entries 
 	 
 	/*
-	 CPS stores packed nibbles in U16s, we use arrays of chars, which we later convert 
-	 up to an 8-bit value by multiplying by 17  
+	 Palettes, in ARGB 4/4/4/4 format
 	 */
 	
 	GPAL	PalObject[32][16];							// CPS 0x900000 
@@ -207,17 +210,6 @@ typedef struct {
 	// RowScroll 0x92 0000, 0x92 1000, 
 	short	RowScroll1[2048];
 	short	RowScroll2[2048];
-	
-    /* here on is non-CPS, only memory we use for emulating the tile to bitmap conversion */
-    /* the tile to texture memory, emulating the CPS tile lookup */
-    /* arrays of RGBA data fed into glTex2d                      */
-    unsigned char tile[32][32];     /* temporary buffer for converting tiles */
-    char    FadeEnable;             /* whether or not to apply fading to palette lookups,
-									 otherwise full-brightness                        */
-    
-    /* cache of RGBA values */
-	
-	u16 Scroll1X, Scroll2X, Scroll3X, Scroll1Y, Scroll2Y, Scroll3Y;
 } CPSGFXEMU;
 
 #endif

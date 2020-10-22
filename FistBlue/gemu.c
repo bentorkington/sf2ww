@@ -17,6 +17,8 @@
 #include "gemu.h"
 
 CPSGFXEMU gemu;
+struct cps_a_regs cps_a_emu;
+
 extern Game g;
 
 struct inputs gInputs;

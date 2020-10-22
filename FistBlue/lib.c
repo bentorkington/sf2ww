@@ -61,6 +61,7 @@ extern struct executive_t Exec;
 
 
 extern CPSGFXEMU gemu;
+extern struct cps_a_regs cps_a_emu;
 
 extern struct inputs gInputs;
 extern void *data_155c[];
@@ -229,18 +230,18 @@ void decode_params(void) {
 }
 static void intmaths(void) {
 #ifndef CPS
-	gemu.Scroll1X = g.CPS.Scroll1XDash;
+    cps_a_emu.scroll1x = g.CPS.Scroll1XDash;
 	g.CPS.Scroll1XDash = g.CPS.Scroll1X - 0x40;
-	gemu.Scroll2X = g.CPS.Scroll2XDash;
+    cps_a_emu.scroll2x = g.CPS.Scroll2XDash;
 	g.CPS.Scroll2XDash = g.CPS.Scroll2X - 0x40;
-	gemu.Scroll3X = g.CPS.Scroll3XDash;
+    cps_a_emu.scroll3x = g.CPS.Scroll3XDash;
 	g.CPS.Scroll3XDash = g.CPS.Scroll3X - 0x40;
 	/* TODO star1x star2x */
-	gemu.Scroll1Y = g.CPS.Scroll1YDash;
+    cps_a_emu.scroll1y = g.CPS.Scroll1YDash;
 	g.CPS.Scroll1YDash = 0x100 - g.CPS.Scroll1Y;
-	gemu.Scroll2Y = g.CPS.Scroll2YDash;
+    cps_a_emu.scroll2y = g.CPS.Scroll2YDash;
 	g.CPS.Scroll2YDash = 0x300 - g.CPS.Scroll2Y;
-	gemu.Scroll3Y = g.CPS.Scroll3YDash;
+    cps_a_emu.scroll3y = g.CPS.Scroll3YDash;
 	g.CPS.Scroll3YDash = 0x700 - g.CPS.Scroll3Y;
 	/* TODO star1x star1Y*/
 #endif
