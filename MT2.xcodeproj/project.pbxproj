@@ -192,12 +192,10 @@
 		B5B0764615548B28009D301D /* act07_elephants.c in Sources */ = {isa = PBXBuildFile; fileRef = B5B0764515548B28009D301D /* act07_elephants.c */; };
 		B5B39CFC1578370D00494662 /* MT2AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 256AC3D90F4B6AC300CF3369 /* MT2AppDelegate.m */; };
 		B5B39CFD1578370E00494662 /* OGLView.m in Sources */ = {isa = PBXBuildFile; fileRef = B5ADB7AC13B2B34900905DFE /* OGLView.m */; };
-		B5B39CFE1578370E00494662 /* ParamController.m in Sources */ = {isa = PBXBuildFile; fileRef = B5E9056213B2D5FE00833C5A /* ParamController.m */; };
 		B5B39CFF1578371400494662 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 29B97316FDCFA39411CA2CEA /* main.m */; };
 		B5BA3ACE147F0EBC0069ACD3 /* actions.c in Sources */ = {isa = PBXBuildFile; fileRef = B5ADB7E413B2B57D00905DFE /* actions.c */; };
 		B5C5742C1772782600496283 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 089C165CFE840E0CC02AAC07 /* InfoPlist.strings */; };
 		B5C5742D1772782600496283 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = B5ADB7A813B2B2EA00905DFE /* MainMenu.xib */; };
-		B5C5742E1772782600496283 /* ParamController.xib in Resources */ = {isa = PBXBuildFile; fileRef = B5E9056413B2D61900833C5A /* ParamController.xib */; };
 		B5C5742F1772782600496283 /* sf2gfx.bin in Resources */ = {isa = PBXBuildFile; fileRef = B5B39B69157832F200494662 /* sf2gfx.bin */; };
 		B5C574311772782600496283 /* trackball.c in Sources */ = {isa = PBXBuildFile; fileRef = B5ADB7B013B2B38400905DFE /* trackball.c */; };
 		B5C574321772782600496283 /* actions_198a.c in Sources */ = {isa = PBXBuildFile; fileRef = B5ADB7E613B2B57D00905DFE /* actions_198a.c */; };
@@ -269,7 +267,6 @@
 		B5C574761772782600496283 /* chunli_human.c in Sources */ = {isa = PBXBuildFile; fileRef = B5948BE6156F1B6E0029278E /* chunli_human.c */; };
 		B5C574771772782600496283 /* MT2AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 256AC3D90F4B6AC300CF3369 /* MT2AppDelegate.m */; };
 		B5C574781772782600496283 /* OGLView.m in Sources */ = {isa = PBXBuildFile; fileRef = B5ADB7AC13B2B34900905DFE /* OGLView.m */; };
-		B5C574791772782600496283 /* ParamController.m in Sources */ = {isa = PBXBuildFile; fileRef = B5E9056213B2D5FE00833C5A /* ParamController.m */; };
 		B5C5747A1772782600496283 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 29B97316FDCFA39411CA2CEA /* main.m */; };
 		B5C5747B1772782600496283 /* endings.c in Sources */ = {isa = PBXBuildFile; fileRef = B550DEA216BBA1BF00983A54 /* endings.c */; };
 		B5C5747D1772782600496283 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */; };
@@ -277,7 +274,6 @@
 		B5C5747F1772782600496283 /* GLUT.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B5ADB7BD13B2B3BE00905DFE /* GLUT.framework */; };
 		B5E0EFBA17754D8800F50790 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 089C165CFE840E0CC02AAC07 /* InfoPlist.strings */; };
 		B5E0EFBB17754D8800F50790 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = B5ADB7A813B2B2EA00905DFE /* MainMenu.xib */; };
-		B5E0EFBC17754D8800F50790 /* ParamController.xib in Resources */ = {isa = PBXBuildFile; fileRef = B5E9056413B2D61900833C5A /* ParamController.xib */; };
 		B5E0EFBD17754D8800F50790 /* sf2gfx.bin in Resources */ = {isa = PBXBuildFile; fileRef = B5B39B69157832F200494662 /* sf2gfx.bin */; };
 		B5E0EFBF17754D8800F50790 /* trackball.c in Sources */ = {isa = PBXBuildFile; fileRef = B5ADB7B013B2B38400905DFE /* trackball.c */; };
 		B5E0EFC017754D8800F50790 /* actions_198a.c in Sources */ = {isa = PBXBuildFile; fileRef = B5ADB7E613B2B57D00905DFE /* actions_198a.c */; };
@@ -349,7 +345,6 @@
 		B5E0F00417754D8800F50790 /* chunli_human.c in Sources */ = {isa = PBXBuildFile; fileRef = B5948BE6156F1B6E0029278E /* chunli_human.c */; };
 		B5E0F00517754D8800F50790 /* MT2AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 256AC3D90F4B6AC300CF3369 /* MT2AppDelegate.m */; };
 		B5E0F00617754D8800F50790 /* OGLView.m in Sources */ = {isa = PBXBuildFile; fileRef = B5ADB7AC13B2B34900905DFE /* OGLView.m */; };
-		B5E0F00717754D8800F50790 /* ParamController.m in Sources */ = {isa = PBXBuildFile; fileRef = B5E9056213B2D5FE00833C5A /* ParamController.m */; };
 		B5E0F00817754D8800F50790 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 29B97316FDCFA39411CA2CEA /* main.m */; };
 		B5E0F00917754D8800F50790 /* endings.c in Sources */ = {isa = PBXBuildFile; fileRef = B550DEA216BBA1BF00983A54 /* endings.c */; };
 		B5E0F00B17754D8800F50790 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */; };
@@ -357,7 +352,6 @@
 		B5E0F00D17754D8800F50790 /* GLUT.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B5ADB7BD13B2B3BE00905DFE /* GLUT.framework */; };
 		B5E0F01517754D9500F50790 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 089C165CFE840E0CC02AAC07 /* InfoPlist.strings */; };
 		B5E0F01617754D9500F50790 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = B5ADB7A813B2B2EA00905DFE /* MainMenu.xib */; };
-		B5E0F01717754D9500F50790 /* ParamController.xib in Resources */ = {isa = PBXBuildFile; fileRef = B5E9056413B2D61900833C5A /* ParamController.xib */; };
 		B5E0F01817754D9500F50790 /* sf2gfx.bin in Resources */ = {isa = PBXBuildFile; fileRef = B5B39B69157832F200494662 /* sf2gfx.bin */; };
 		B5E0F01A17754D9500F50790 /* trackball.c in Sources */ = {isa = PBXBuildFile; fileRef = B5ADB7B013B2B38400905DFE /* trackball.c */; };
 		B5E0F01B17754D9500F50790 /* actions_198a.c in Sources */ = {isa = PBXBuildFile; fileRef = B5ADB7E613B2B57D00905DFE /* actions_198a.c */; };
@@ -429,7 +423,6 @@
 		B5E0F05F17754D9500F50790 /* chunli_human.c in Sources */ = {isa = PBXBuildFile; fileRef = B5948BE6156F1B6E0029278E /* chunli_human.c */; };
 		B5E0F06017754D9500F50790 /* MT2AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 256AC3D90F4B6AC300CF3369 /* MT2AppDelegate.m */; };
 		B5E0F06117754D9500F50790 /* OGLView.m in Sources */ = {isa = PBXBuildFile; fileRef = B5ADB7AC13B2B34900905DFE /* OGLView.m */; };
-		B5E0F06217754D9500F50790 /* ParamController.m in Sources */ = {isa = PBXBuildFile; fileRef = B5E9056213B2D5FE00833C5A /* ParamController.m */; };
 		B5E0F06317754D9500F50790 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 29B97316FDCFA39411CA2CEA /* main.m */; };
 		B5E0F06417754D9500F50790 /* endings.c in Sources */ = {isa = PBXBuildFile; fileRef = B550DEA216BBA1BF00983A54 /* endings.c */; };
 		B5E0F06617754D9500F50790 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */; };
@@ -509,7 +502,6 @@
 		B5E8FD631776C9DD00C6060E /* glwimp.c in Sources */ = {isa = PBXBuildFile; fileRef = B5ADB87013B2B59A00905DFE /* glwimp.c */; };
 		B5E8FD641776CA1A00C6060E /* blanka_human.c in Sources */ = {isa = PBXBuildFile; fileRef = B56BFC6F156B444F00DC7BAD /* blanka_human.c */; };
 		B5E8FD681776DF3A00C6060E /* sf2gfx.bin in CopyFiles */ = {isa = PBXBuildFile; fileRef = B5B39B69157832F200494662 /* sf2gfx.bin */; };
-		B5E9056513B2D61900833C5A /* ParamController.xib in Resources */ = {isa = PBXBuildFile; fileRef = B5E9056413B2D61900833C5A /* ParamController.xib */; };
 		B5EB38E1149816D5007100DB /* reels.c in Sources */ = {isa = PBXBuildFile; fileRef = B5EB38E0149816D5007100DB /* reels.c */; };
 		B5F335381562FFA4005A4637 /* zangeif.c in Sources */ = {isa = PBXBuildFile; fileRef = B5F335371562FFA4005A4637 /* zangeif.c */; };
 		B5FD9F801488260A00DDF4D9 /* demo.c in Sources */ = {isa = PBXBuildFile; fileRef = B5FD9F7E1488260A00DDF4D9 /* demo.c */; };
@@ -782,9 +774,6 @@
 		B5E8FD101776C7D400C6060E /* MT2 GLUT */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = "MT2 GLUT"; sourceTree = BUILT_PRODUCTS_DIR; };
 		B5E8FD111776C7D400C6060E /* CoreFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreFoundation.framework; path = System/Library/Frameworks/CoreFoundation.framework; sourceTree = SDKROOT; };
 		B5E8FD161776C7D400C6060E /* MT2_GLUT.1 */ = {isa = PBXFileReference; lastKnownFileType = text.man; path = MT2_GLUT.1; sourceTree = "<group>"; };
-		B5E9056113B2D5FE00833C5A /* ParamController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ParamController.h; sourceTree = "<group>"; };
-		B5E9056213B2D5FE00833C5A /* ParamController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ParamController.m; sourceTree = "<group>"; };
-		B5E9056413B2D61900833C5A /* ParamController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ParamController.xib; sourceTree = "<group>"; };
 		B5EB38DF149816D5007100DB /* reels.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = reels.h; sourceTree = "<group>"; };
 		B5EB38E0149816D5007100DB /* reels.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = reels.c; sourceTree = "<group>"; };
 		B5F335361562FFA4005A4637 /* zangeif.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = zangeif.h; sourceTree = "<group>"; };
@@ -861,8 +850,6 @@
 				B5ADB7AC13B2B34900905DFE /* OGLView.m */,
 				256AC3D80F4B6AC300CF3369 /* MT2AppDelegate.h */,
 				256AC3D90F4B6AC300CF3369 /* MT2AppDelegate.m */,
-				B5E9056113B2D5FE00833C5A /* ParamController.h */,
-				B5E9056213B2D5FE00833C5A /* ParamController.m */,
 			);
 			name = Classes;
 			sourceTree = "<group>";
@@ -961,7 +948,6 @@
 				B5ADB7A813B2B2EA00905DFE /* MainMenu.xib */,
 				8D1107310486CEB800E47090 /* MT2-Info.plist */,
 				089C165CFE840E0CC02AAC07 /* InfoPlist.strings */,
-				B5E9056413B2D61900833C5A /* ParamController.xib */,
 				B5B39CF9157836E100494662 /* MT2-Info copy.plist */,
 				B5B0B53D1777DC7800C9C0EE /* TileScrollerWindow.xib */,
 			);
@@ -1472,7 +1458,6 @@
 			files = (
 				8D11072B0486CEB800E47090 /* InfoPlist.strings in Resources */,
 				B5ADB7A913B2B2EA00905DFE /* MainMenu.xib in Resources */,
-				B5E9056513B2D61900833C5A /* ParamController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1514,7 +1499,6 @@
 				6C6F0DEC1C349FED004CD78E /* sf2_09.bin in Resources */,
 				B5C5742D1772782600496283 /* MainMenu.xib in Resources */,
 				6C6F0DFA1C349FED004CD78E /* sf2u.35a in Resources */,
-				B5C5742E1772782600496283 /* ParamController.xib in Resources */,
 				6C6F0DF61C349FED004CD78E /* sf2_27.bin in Resources */,
 				6C6F0DF81C349FED004CD78E /* sf2_36a.bin in Resources */,
 				B5C5742F1772782600496283 /* sf2gfx.bin in Resources */,
@@ -1527,7 +1511,6 @@
 			files = (
 				B5E0EFBA17754D8800F50790 /* InfoPlist.strings in Resources */,
 				B5E0EFBB17754D8800F50790 /* MainMenu.xib in Resources */,
-				B5E0EFBC17754D8800F50790 /* ParamController.xib in Resources */,
 				B5E0EFBD17754D8800F50790 /* sf2gfx.bin in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1538,7 +1521,6 @@
 			files = (
 				B5E0F01517754D9500F50790 /* InfoPlist.strings in Resources */,
 				B5E0F01617754D9500F50790 /* MainMenu.xib in Resources */,
-				B5E0F01717754D9500F50790 /* ParamController.xib in Resources */,
 				B5E0F01817754D9500F50790 /* sf2gfx.bin in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1623,7 +1605,6 @@
 				B5948BE7156F1B6E0029278E /* chunli_human.c in Sources */,
 				B5B39CFC1578370D00494662 /* MT2AppDelegate.m in Sources */,
 				B5B39CFD1578370E00494662 /* OGLView.m in Sources */,
-				B5B39CFE1578370E00494662 /* ParamController.m in Sources */,
 				B5B39CFF1578371400494662 /* main.m in Sources */,
 				B550DEA316BBA1BF00983A54 /* endings.c in Sources */,
 			);
@@ -1786,7 +1767,6 @@
 				B5C574761772782600496283 /* chunli_human.c in Sources */,
 				B5C574771772782600496283 /* MT2AppDelegate.m in Sources */,
 				B5C574781772782600496283 /* OGLView.m in Sources */,
-				B5C574791772782600496283 /* ParamController.m in Sources */,
 				B5C5747A1772782600496283 /* main.m in Sources */,
 				B5C5747B1772782600496283 /* endings.c in Sources */,
 			);
@@ -1868,7 +1848,6 @@
 				B5E0F00417754D8800F50790 /* chunli_human.c in Sources */,
 				B5E0F00517754D8800F50790 /* MT2AppDelegate.m in Sources */,
 				B5E0F00617754D8800F50790 /* OGLView.m in Sources */,
-				B5E0F00717754D8800F50790 /* ParamController.m in Sources */,
 				B5E0F00817754D8800F50790 /* main.m in Sources */,
 				B5E0F00917754D8800F50790 /* endings.c in Sources */,
 			);
@@ -1950,7 +1929,6 @@
 				B5E0F05F17754D9500F50790 /* chunli_human.c in Sources */,
 				B5E0F06017754D9500F50790 /* MT2AppDelegate.m in Sources */,
 				B5E0F06117754D9500F50790 /* OGLView.m in Sources */,
-				B5E0F06217754D9500F50790 /* ParamController.m in Sources */,
 				B5E0F06317754D9500F50790 /* main.m in Sources */,
 				B5E0F06417754D9500F50790 /* endings.c in Sources */,
 			);
