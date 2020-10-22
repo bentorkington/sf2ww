@@ -151,6 +151,7 @@ void renderDummy(struct view *view) {
 {
     baseRect = [self convertRectToBase:[self bounds]]; 
     gfx_glut_reshape(baseRect.size.width, baseRect.size.height);
+    [super reshape];
 }
 
 - (void)awakeFromNib
