@@ -143,6 +143,12 @@ const u32 RH2DLong(u32 base, int dim2, int i1, int i2)
     return RHSwapLong(*(array + (i1 * dim2) + i2));
 }
 
+const u32 RH1DLong(u32 base, int index)
+{
+    u32 *array = RHCODE(base);
+    return RHSwapLong(*(array + index));
+}
+
 const u16 RH3DWord(u32 base, int dim2, int dim3, int i1, int i2, int i3)
 {
     u16 *array = RHCODE(base);

@@ -254,7 +254,7 @@ static short _GSCalcBlockIndex(GState *gs, CP cp) {
     }
     gs->Index        = index;
     gs->InitialIndex = index;
-	return gs->TileMaps[index/2];
+    return RHWordOffset(gs->TileMaps, index / 2);// gs->TileMaps[index/2];
 }
 
 static const u16 *_GSLookupScroll1(GState *gs, CP cp) {	/* 83e5c */
@@ -685,44 +685,17 @@ static void _GSMaintRowScroll(ScrollState *ss) {	/* 84480 */
 }
 
 static void _GSStageScroll1 (short d0) {	/* 83730 */
-	static const u16 data_89fac[8]={0x001e, 0x001f, 0x001e, 0x001f, 0x001a, 0x001b, 0x001c, 0x001d,  };
-	static const u16 data_89fbc[8]={0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0008, 0x0009, 0x000a,  };
-	static const u16 data_89fcc[8]={0x0000, 0x0000, 0x0000, 0x0000, 0x0018, 0x0017, 0x0018, 0x0017,  };
-	static const u16 data_89fdc[8]={0x0000, 0x000b, 0x000b, 0x000b, 0x0000, 0x000c, 0x000d, 0x000e,  };
-	static const u16 data_89fec[8]={0x0000, 0x0000, 0x0000, 0x0000, 0x002f, 0x0020, 0x0022, 0x0000,  };
-	static const u16 data_89ffc[8]={0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x000f, 0x0000, 0x0010,  };
-	static const u16 data_8a00c[8]={0x0000, 0x0000, 0x0000, 0x0000, 0x0006, 0x0004, 0x0005, 0x0007,  };
-	static const u16 data_8a01c[8]={0x0000, 0x0023, 0x0024, 0x0025, 0x0000, 0x0026, 0x0027, 0x0028,  };
-	static const u16 data_8a02c[8]={0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0019, 0x0000, 0x0019,  };
-	static const u16 data_8a03c[8]={0x0000, 0x0000, 0x0000, 0x0000, 0x0021, 0x0021, 0x0021, 0x0021,  };
-	static const u16 data_8a04c[8]={0x0000, 0x0001, 0x0002, 0x0003, 0x0000, 0x0001, 0x0002, 0x0003,  };
-	static const u16 data_8a05c[8]={0x0000, 0x0014, 0x0015, 0x0016, 0x0000, 0x0011, 0x0012, 0x0013,  };
-	static const u16 data_8a06c[8]={0x002d, 0x002e, 0x0000, 0x0000, 0x002b, 0x002c, 0x0000, 0x0000,  };
-	static const u16 data_8a07c[8]={0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000,  };
-	static const u16 data_8a08c[8]={0x0000, 0x0000, 0x0000, 0x0000, 0x001e, 0x001f, 0x001e, 0x001f,  };
-	static const u16 data_8a09c[8]={0x0000, 0x0000, 0x0000, 0x0000, 0x0029, 0x002a, 0x0000, 0x0000,  };
-	static const u16 data_8a0ac[8]={0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000,  };
-	static const u16 data_8a12c[8]={0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000,  };
-	static const u16 data_8a1ac[8]={0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000,  };
-	static const u16 data_8a22c[8]={0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000,  };
-	
-	static const u16 *data_89ebc[20]={
-		data_89fac, data_89fbc, data_89fcc, data_89fdc, data_89fec, data_89ffc, data_8a00c, data_8a01c,
-		data_8a02c, data_8a03c, data_8a04c, data_8a05c, data_8a06c, data_8a07c, data_8a08c, data_8a09c, 
-		data_8a0ac, data_8a12c, data_8a1ac, data_8a22c,  
-	};
-
 	int bonus;					/* not actually bonus, but VS Screen, etc */
 	//bonus = data_8375c[d0];
 	bonus = d0 >= 0x10 ? TRUE : FALSE;		/* more compact than a U16 LUT */
 	
     gstate_Scroll1.SpecialStage = bonus * 2;
-    gstate_Scroll1.Offset       = data_83834[bonus][0];			// add
-    gstate_Scroll1.OffMask      = data_83834[bonus][1];			// mask
-    gstate_Scroll1.gs_001a      = data_83834[bonus][2];		// not used yet
-    gstate_Scroll1.gs_001c      = data_83834[bonus][3];		// not used yet
-    
-    gstate_Scroll1.TileMaps = data_89ebc[d0];
+    gstate_Scroll1.Offset  = RH2DWord(0x83834, 4, bonus / 2, 0); /* 0x8 or 0x10 */
+    gstate_Scroll1.OffMask = RH2DWord(0x83834, 4, bonus / 2, 1); /* 0xe or 0x7e */
+    gstate_Scroll1.gs_001a = RH2DWord(0x83834, 4, bonus / 2, 2); /* 0x6 or 0xe */
+    gstate_Scroll1.gs_001c = RH2DWord(0x83834, 4, bonus / 2, 3); /* 0x8 or 0x70 */
+
+    gstate_Scroll1.TileMaps = RH1DLong(0x89ebc, d0);
 }
 static void _GSStageScroll2(short d0) {
 	short bonus;		/* not actually bonus but special stages */
@@ -730,25 +703,26 @@ static void _GSStageScroll2(short d0) {
 	bonus = d0 >= 0x10 ? 2: 0;
 
     gstate_Scroll2.SpecialStage = bonus;
-    gstate_Scroll2.Offset  = data_83834[bonus/2][0];
-    gstate_Scroll2.OffMask = data_83834[bonus/2][1];
-    gstate_Scroll2.gs_001a = data_83834[bonus/2][2];
-    gstate_Scroll2.gs_001c = data_83834[bonus/2][3];
+    gstate_Scroll2.Offset  = RH2DWord(0x83834, 4, bonus / 2, 0); /* 0x8 or 0x10 */
+    gstate_Scroll2.OffMask = RH2DWord(0x83834, 4, bonus / 2, 1); /* 0xe or 0x7e */
+    gstate_Scroll2.gs_001a = RH2DWord(0x83834, 4, bonus / 2, 2); /* 0x6 or 0xe */
+    gstate_Scroll2.gs_001c = RH2DWord(0x83834, 4, bonus / 2, 3); /* 0x8 or 0x70 */
+
     
-    gstate_Scroll2.TileMaps = data_89f0c[d0];
+    gstate_Scroll2.TileMaps = RH1DLong(0x89f0c, d0);
 }
+
 static void _GSStageScroll3(short d0) {	/* 837e0 */
-	/* SCROLL 3 */
     int bonus;
     bonus = d0 >= 0x10 ? 2 : 0 ;
 
     gstate_Scroll3.SpecialStage = bonus;		// not actually bonus but scrolldisable
-    gstate_Scroll3.Offset  = data_83834[bonus/2][0]; /* 0x8 or 0x10 */
-    gstate_Scroll3.OffMask = data_83834[bonus/2][1]; /* 0xe or 0x7e */
-    gstate_Scroll3.gs_001a = data_83834[bonus/2][2]; /* 0x6 or 0xe */
-    gstate_Scroll3.gs_001c = data_83834[bonus/2][3]; /* 0x8 or 0x70 */
+    gstate_Scroll3.Offset  = RH2DWord(0x83834, 4, bonus / 2, 0); /* 0x8 or 0x10 */
+    gstate_Scroll3.OffMask = RH2DWord(0x83834, 4, bonus / 2, 1); /* 0xe or 0x7e */
+    gstate_Scroll3.gs_001a = RH2DWord(0x83834, 4, bonus / 2, 2); /* 0x6 or 0xe */
+    gstate_Scroll3.gs_001c = RH2DWord(0x83834, 4, bonus / 2, 3); /* 0x8 or 0x70 */
     
-    gstate_Scroll3.TileMaps = data_89f5c[d0];
+    gstate_Scroll3.TileMaps = RH1DLong(0x89f5c, d0);
 }
 
 /* 
@@ -778,8 +752,8 @@ static void _GSFillScroll2(GState *gs) {  /* 0x83ae0 fill scroll2 from tilemap *
         for (j=0; j<256; j++) {
             SCR2_DRAW_TILE(
                 gfx_p,
-                data_e0000[ gs->TileMaps[i] ][j*2],
-                data_e0000[ gs->TileMaps[i] ][(j*2)+1]
+                data_e0000[ RHWordOffset(gs->TileMaps, i) ][j*2],
+                data_e0000[ RHWordOffset(gs->TileMaps, i) ][(j*2)+1]
             );
             SCR2_CURSOR_BUMP(gfx_p, 0, 1);
         }
@@ -797,7 +771,7 @@ static void _GSFillScroll3(GState *gs) {        /* 0x83b2a fill scroll3 from til
 	
 	for (i=0; i<4; i++) {
         for (j=0; j<64; j++) {
-            SCR3_DRAW_TILE(gfx_p, data_d8000[ gs->TileMaps[i] ][ j*2 ],data_d8000[ gs->TileMaps[i] ][ (j*2) +1]);
+            SCR3_DRAW_TILE(gfx_p, data_d8000[ RHWordOffset(gs->TileMaps, i) ][ j*2 ],data_d8000[ RHWordOffset(gs->TileMaps, i) ][ (j*2) +1]);
             SCR3_CURSOR_BUMP(gfx_p, 0, 1);
         }
     }
@@ -806,7 +780,7 @@ static void _GSFillScroll3(GState *gs) {        /* 0x83b2a fill scroll3 from til
 
     for(i=4;i<8; i++) {
         for(j=0; j<64; j++) {
-            SCR3_DRAW_TILE(gfx_p, data_d8000[ gs->TileMaps[i] ][ j*2 ], data_d8000[ gs->TileMaps[i] ][ (j*2)+1 ]);
+            SCR3_DRAW_TILE(gfx_p, data_d8000[ RHWordOffset(gs->TileMaps, i) ][ j*2 ], data_d8000[ RHWordOffset(gs->TileMaps, i) ][ (j*2)+1 ]);
             SCR3_CURSOR_BUMP(gfx_p, 0, 1);
         }
     }    
@@ -848,7 +822,7 @@ static const u16 *_GSRealignScr1a(GState *gs, u16 **gfx_p) {	// 84052 checked
 	*gfx_p = gemu.Tilemap_Scroll1[0] + ((element1 | element2) / sizeof(u16));
 	
 	gs->Index = (gs->Index + gs->Offset) & gs->OffMask;
-	return &data_d6800[gs->TileMaps[gs->Index/2]][gs->XCoarse/2];
+	return &data_d6800[ RHWordOffset(gs->TileMaps, gs->Index / 2) ][ gs->XCoarse/2 ];
 }
 
 static const u16 *_GSRealignScroll2A(GState *gs, u16 **gfx_p) {
@@ -868,7 +842,7 @@ static const u16 *_GSRealignScroll2A(GState *gs, u16 **gfx_p) {
 	*gfx_p = (u16 *)BMAP_SCROLL2 + (d0 / sizeof(u16));
 	
 	gs->Index = (gs->Index + gs->Offset) & gs->OffMask;
-	return &data_e0000[gs->TileMaps[gs->Index/2]][gs->XCoarse/2];
+	return &data_e0000[ RHWordOffset(gs->TileMaps, gs->Index / 2) ][gs->XCoarse/2];
 }
 static const u16 *skyscraper_realign(GState *gs, u16 **gfx_p) {			// 84384
 	u32 d0;
@@ -886,7 +860,7 @@ static const u16 *skyscraper_realign(GState *gs, u16 **gfx_p) {			// 84384
 	*gfx_p = (u16 *)BMAP_SCROLL2 + (d0 / sizeof(u16));
 	
 	gs->InitialIndex = ((gs->InitialIndex + 2) & gs->gs_001a) | (gs->InitialIndex & gs->gs_001c);	
-	return &data_e0000[gs->TileMaps[gs->InitialIndex/2]][gs->YCoarse/2];
+	return &data_e0000[ RHWordOffset(gs->TileMaps, gs->InitialIndex / 2) ][gs->YCoarse/2];
 }
 
 //void decode_scr3_coord(int offset) {
@@ -911,7 +885,7 @@ static const u16 *realign_scr3a(GState *gs, u16 **gfx_p) {
 	*gfx_p = (u16 *)BMAP_SCROLL3 + (d0 / sizeof(u16));
 	
 	gs->Index = (gs->Index + gs->Offset) & gs->OffMask;
-	return &data_d8000[gs->TileMaps[gs->Index/2]][gs->XCoarse/2];
+	return &data_d8000[ RHWordOffset(gs->TileMaps, gs->Index / 2) ][ gs->XCoarse/2 ];
 }
 static const u16 *realign_scr3b(GState *gs, u16 **gfx_p) {		// 8442a for scroll3
 	u32 d0;
@@ -929,7 +903,7 @@ static const u16 *realign_scr3b(GState *gs, u16 **gfx_p) {		// 8442a for scroll3
 	
 	gs->Index = (gs->Index + gs->Offset) & gs->OffMask;
 	
-	return &data_d8000[gs->TileMaps[gs->Index/2]][gs->XCoarse/2];
+	return &data_d8000[ RHWordOffset(gs->TileMaps, gs->Index / 2) ][ gs->XCoarse/2 ];
 }
 
 static void _GSDrawScroll1A(const u16 **tilep_a1, u16 **gfx_p_a0, int numrows_d0) {		/* 83f70 */
@@ -1442,12 +1416,12 @@ void GSInitForStage(void){			/* 83716 setup tilemaps & palettes from g.Pallete1 
 }
 
 void GSInitOffsets(void) {		/* 83860 */
-    gstate_Scroll1.XPI = data_83a00[g.CurrentStage][0];
-    gstate_Scroll1.YPI = data_83a00[g.CurrentStage][1];
-    gstate_Scroll2.XPI = data_83a00[g.CurrentStage][2];
-    gstate_Scroll2.YPI = data_83a00[g.CurrentStage][3];
-    gstate_Scroll3.XPI = data_83a00[g.CurrentStage][4];
-    gstate_Scroll3.YPI = data_83a00[g.CurrentStage][5];
+    gstate_Scroll1.XPI = RH2DWord(0x83a00, 6, g.CurrentStage, 0);
+    gstate_Scroll1.YPI = RH2DWord(0x83a00, 6, g.CurrentStage, 1);
+    gstate_Scroll2.XPI = RH2DWord(0x83a00, 6, g.CurrentStage, 2);
+    gstate_Scroll2.YPI = RH2DWord(0x83a00, 6, g.CurrentStage, 3);
+    gstate_Scroll3.XPI = RH2DWord(0x83a00, 6, g.CurrentStage, 4);
+    gstate_Scroll3.YPI = RH2DWord(0x83a00, 6, g.CurrentStage, 5);
 }
 
 void draw_background(void) {	

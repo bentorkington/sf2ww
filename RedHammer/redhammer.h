@@ -30,6 +30,7 @@ const u8 RHByteOffset(u32 base, int index);
 
 const u32 RH3DLong(u32 base, int dim2, int dim3, int i1, int i2, int i3);
 const u32 RH2DLong(u32 base, int dim2, int i1, int i2);
+const u32 RH1DLong(u32 base, int index);
 const u16 RH3DWord(u32 base, int dim2, int dim3, int i1, int i2, int i3);
 const short RH3DShort(u32 base, int dim2, int dim3, int i1, int i2, int i3);
 const u16 RH2DWord(u32 base, int dim2, int i1, int i2);

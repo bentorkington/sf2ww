@@ -25,7 +25,8 @@ typedef struct {
     FIXED16_16  Y;      /* 0xa-d */
     u16 SpecialStage;          /* either 0 or 2, 2 for bonus stage? */  
     u16 gs_0010;
-    const u16 *TileMaps;      /* ptr to tilemap */
+    /// host address pointer to tilemaps
+    u32 TileMaps;
     u16 Offset;       /* offset  */
     u16 OffMask;      /* bitmask */
     u16 gs_001a;
