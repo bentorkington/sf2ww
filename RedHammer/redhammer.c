@@ -98,15 +98,7 @@ int load_cps_roms()
         return 0;
     }
     
-    for (int i=0x20640; i<0x20740; ++i) {
-        printf("%02x ", g_code_roms[i] & 0xff);
-        if (i % 16 == 15) {
-            printf("\n");
-        }
-    }
-    
     return 1;
-    
 }
 void print_rom_offset(const char *message, const void *addr)
 {
