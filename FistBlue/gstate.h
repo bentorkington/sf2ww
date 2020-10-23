@@ -41,7 +41,7 @@ typedef struct {
     u16 YCoarse;    /* x0028 */
     u8  XUpdateMethod, YUpdateMethod;
     u16 XOff, YOff;
-} GState;
+} ScrollState;
 
 typedef struct {
     u16 exists;			// ff8cd2
@@ -68,13 +68,13 @@ typedef struct {
     RHTilePlane *planes;
     int RowOffset;
 #endif
-} ScrollState;
+} RowScrollState;
 
 void GSInitOffsets(void);
 void draw_background(void);
 
-void GSSetupScr2(GState *gs);
-void GSSetupScr3(GState *gs);
+void GSSetupScr2(ScrollState *gs);
+void GSSetupScr3(ScrollState *gs);
 
 void GSMain(void);
 

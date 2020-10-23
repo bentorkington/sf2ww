@@ -30,9 +30,9 @@
 #include "gemu.h"
 
 extern Game g;
-extern GState gstate_Scroll1;
-extern GState gstate_Scroll2;
-extern GState gstate_Scroll3;
+extern ScrollState gstate_Scroll1;
+extern ScrollState gstate_Scroll2;
+extern ScrollState gstate_Scroll3;
 
 
 #pragma mark Player Select

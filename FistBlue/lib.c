@@ -52,10 +52,10 @@
 
 
 extern Game g;
-extern GState gstate_Scroll1;
-extern GState gstate_Scroll2;
-extern GState gstate_Scroll3;
-extern ScrollState gstate_RowScroll;
+extern ScrollState gstate_Scroll1;
+extern ScrollState gstate_Scroll2;
+extern ScrollState gstate_Scroll3;
+extern RowScrollState gstate_RowScroll;
 
 extern struct executive_t Exec;
 
@@ -972,16 +972,16 @@ void clear_players(void) {
     memclear((char *)PLAYER2, (void *)(&PLAYER2->Alive) - (void *)(&PLAYER2->exists));
 }
 static void clear_gstates(void) {			/* 0x2944 */
-    memclear(&gstate_Scroll1, sizeof(GState));
-    memclear(&gstate_Scroll2, sizeof(GState));
-    memclear(&gstate_Scroll3, sizeof(GState));
+    memclear(&gstate_Scroll1, sizeof(ScrollState));
+    memclear(&gstate_Scroll2, sizeof(ScrollState));
+    memclear(&gstate_Scroll3, sizeof(ScrollState));
 }
 void clear_gsrowscroll(void) {
-    memclear (&gstate_RowScroll, sizeof(ScrollState));
+    memclear (&gstate_RowScroll, sizeof(RowScrollState));
 }
 static void clear_scrolls23() {			/* 0x29b0 */
-	memclear(&gstate_Scroll2, sizeof(GState));
-	memclear(&gstate_Scroll3, sizeof(GState));
+	memclear(&gstate_Scroll2, sizeof(ScrollState));
+	memclear(&gstate_Scroll3, sizeof(ScrollState));
 }
 
 void resetstate_B(void) {

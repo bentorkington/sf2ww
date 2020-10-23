@@ -31,9 +31,9 @@ __LINE__, __func__, string); } while (0)
 
 extern Game g;
 extern struct effectstate es;
-extern GState gstate_Scroll1;
-extern GState gstate_Scroll2;
-extern GState gstate_Scroll3;
+extern ScrollState gstate_Scroll1;
+extern ScrollState gstate_Scroll2;
+extern ScrollState gstate_Scroll3;
 
 static short sub_7e86(void);
 

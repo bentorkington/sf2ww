@@ -23,10 +23,10 @@ extern CPSGFXEMU gemu;
 extern Game g;
 extern int scroll_cursor;
 
-GState gstate_Scroll1;		/* b52 - bd1 */
-GState gstate_Scroll2;		/* bd2 - c51 */
-GState gstate_Scroll3;		/* c52 - cd1 */
-ScrollState gstate_RowScroll;	/* cd2 - d51 */
+ScrollState gstate_Scroll1;		/* b52 - bd1 */
+ScrollState gstate_Scroll2;		/* bd2 - c51 */
+ScrollState gstate_Scroll3;		/* c52 - cd1 */
+RowScrollState gstate_RowScroll;	/* cd2 - d51 */
 
 /* Ortersk costly */
 
@@ -41,30 +41,30 @@ static void gstate_nextlevel_scroll3(void);
 */
  
 static void draw_n_rows(unsigned short *gfx_p, const u16 *tile_p, short count);
-static void _GSDrawScroll2C(GState *gs, unsigned short *gfx_p, const u16 *tile_p, CP cp);
+static void _GSDrawScroll2C(ScrollState *gs, unsigned short *gfx_p, const u16 *tile_p, CP cp);
 
 
-static const u16 *_GSLookupScroll1(GState *gs, CP cp);
-static const u16 *_GSLookupScroll2(GState *gs, CP cp);
-static const u16 *_GSLookupScroll3(GState *gs, CP cp);
+static const u16 *_GSLookupScroll1(ScrollState *gs, CP cp);
+static const u16 *_GSLookupScroll2(ScrollState *gs, CP cp);
+static const u16 *_GSLookupScroll3(ScrollState *gs, CP cp);
 
-static void _GSFillScroll2(GState *gs);
+static void _GSFillScroll2(ScrollState *gs);
 static void _GSStageScroll1(short d0);
 static void _GSStageScroll2(short d0);
 static void _GSStageScroll3(short d0);
-static void _GSDrawScroll1B(GState *gs, u16 *gfx_p, const u16 *a1, CP cp);
-static void _GSMaintScroll1Y(GState *gstate);
+static void _GSDrawScroll1B(ScrollState *gs, u16 *gfx_p, const u16 *a1, CP cp);
+static void _GSMaintScroll1Y(ScrollState *gstate);
 
-static void _GSMaintScroll2(GState *gstate);
-static void _GSFillScroll3(GState *gs);
-static void _GSInitScroll1(GState *gstate);		/* init scroll1 */
+static void _GSMaintScroll2(ScrollState *gstate);
+static void _GSFillScroll3(ScrollState *gs);
+static void _GSInitScroll1(ScrollState *gstate);		/* init scroll1 */
 
-static void gstate_update_scroll1(GState *gs);
-static void gstate_update_scroll2(GState *gs);
-static void gstate_update_scroll3(GState *gs);
-static void _GSUpdateRowScroll(ScrollState *gs, short *a0, short *a1);
+static void gstate_update_scroll1(ScrollState *gs);
+static void gstate_update_scroll2(ScrollState *gs);
+static void gstate_update_scroll3(ScrollState *gs);
+static void _GSUpdateRowScroll(RowScrollState *gs, short *a0, short *a1);
 
-static void _GSDrawScroll3A(GState *gs, u16 *gfx_p, const u16 *tilep, CP cp);
+static void _GSDrawScroll3A(ScrollState *gs, u16 *gfx_p, const u16 *tilep, CP cp);
 
 #define SCR3X_PERSP 0
 #define SCR3X_NONE  2
@@ -155,7 +155,7 @@ static void _GSInitDispEna(void) {
 
 #pragma mark ---- Coordinate Calculators ----
 
-static CP _GSCoordOffsetScr1 (GState *gs, short offset) {	// 83d68 checked
+static CP _GSCoordOffsetScr1 (ScrollState *gs, short offset) {	// 83d68 checked
     CP cp;
     static const short data_83d84[4][2] = {
 		{   -64,   352,  },
@@ -170,7 +170,7 @@ static CP _GSCoordOffsetScr1 (GState *gs, short offset) {	// 83d68 checked
     
     return cp;
 }
-static CP _GSCoordOffsetScr2 (GState *gs, short offset) {
+static CP _GSCoordOffsetScr2 (ScrollState *gs, short offset) {
 	
 	static const short data_83db0[4][2] = {
 		{  -144,   384,  },
@@ -186,7 +186,7 @@ static CP _GSCoordOffsetScr2 (GState *gs, short offset) {
     
     return cp;
 }
-static CP _GSCoordOffsetScr3 (GState *gs, short offset) {
+static CP _GSCoordOffsetScr3 (ScrollState *gs, short offset) {
 	static const short data_83ddc[4][2] = {
 		{  -160,   384,  },
 		{   512,   384,  },
@@ -244,7 +244,7 @@ static void *_GSCoordsScroll3(CP cp){
 
 
 #pragma mark ---- Tilemap Lookup ----
-static short _GSCalcBlockIndex(GState *gs, CP cp) {   
+static short _GSCalcBlockIndex(ScrollState *gs, CP cp) {   
 	/* 0x83ee6 x and y div by 256 was cacl_gstate_2022 */
     short index;
     if (gs->SpecialStage) {
@@ -257,7 +257,7 @@ static short _GSCalcBlockIndex(GState *gs, CP cp) {
     return RHWordOffset(gs->TileMaps, index / 2);// gs->TileMaps[index/2];
 }
 
-static const u16 *_GSLookupScroll1(GState *gs, CP cp) {	/* 83e5c */
+static const u16 *_GSLookupScroll1(ScrollState *gs, CP cp) {	/* 83e5c */
 	/* No ATTRs */
     const u16 *temp2;
     	
@@ -270,7 +270,7 @@ static const u16 *_GSLookupScroll1(GState *gs, CP cp) {	/* 83e5c */
     temp2 += (gs->YCoarse + gs->XCoarse)/2;
     return temp2;
 }
-static const u16 *_GSLookupScroll2(GState *gs, CP cp) {	/* 83e8a */
+static const u16 *_GSLookupScroll2(ScrollState *gs, CP cp) {	/* 83e8a */
     const u16 *temp2;
     
     temp2 = data_e0000[_GSCalcBlockIndex(gs, cp)];
@@ -283,7 +283,7 @@ static const u16 *_GSLookupScroll2(GState *gs, CP cp) {	/* 83e8a */
 	temp2 += (gs->YCoarse + gs->XCoarse)/2;
     return temp2;
 }
-static const u16 *_GSLookupScroll3(GState *gs, CP cp) {	/* 83eba */
+static const u16 *_GSLookupScroll3(ScrollState *gs, CP cp) {	/* 83eba */
     const u16 *temp2;
     
     temp2 = data_d8000[_GSCalcBlockIndex(gs, cp)];
@@ -295,7 +295,7 @@ static const u16 *_GSLookupScroll3(GState *gs, CP cp) {	/* 83eba */
 
 #pragma mark ---- Scroll Maint ----
 
-static void _gstate_against_right(GState *gstate, int d1) {         // sf2ua:832f2
+static void _gstate_against_right(ScrollState *gstate, int d1) {         // sf2ua:832f2
 	int d3;
 	/* missing GPCollDetect redundant */
 	if (d1 > 6) {
@@ -312,7 +312,7 @@ static void _gstate_against_right(GState *gstate, int d1) {         // sf2ua:832
 	gstate->x0024 = 4;
 }
 
-static void _gstate_against_left(GState *gstate, int d0) {		// sf2ua:83334   d0 is negative
+static void _gstate_against_left(ScrollState *gstate, int d0) {		// sf2ua:83334   d0 is negative
 	int d3;
 	/* missing GPCollDetect redundant */
 	if (d0 < -6) {
@@ -331,7 +331,7 @@ static void _gstate_against_left(GState *gstate, int d0) {		// sf2ua:83334   d0 
 
 
 
-static void _GSMaintScroll3X(GState *gs) {		// 83658
+static void _GSMaintScroll3X(ScrollState *gs) {		// 83658
 	gs->x0024 = gstate_Scroll2.x0024;
 	switch (gs->XUpdateMethod) {
 		case SCR3X_PERSP:		// scroll 2 + Zdepth
@@ -344,7 +344,7 @@ static void _GSMaintScroll3X(GState *gs) {		// 83658
 	}
 }
 
-static void _GSMaintScroll3Y(GState *gs) {		// 8368c
+static void _GSMaintScroll3Y(ScrollState *gs) {		// 8368c
 	if (g.ScreenWobbleMagnitude) {
 		return;
 	}
@@ -374,7 +374,7 @@ static void _GSMaintScroll3Y(GState *gs) {		// 8368c
     }
 }
 
-static void update_scroll2_X (GState *gstate) {     /* 0x83270 */
+static void update_scroll2_X (ScrollState *gstate) {     /* 0x83270 */
 	short leftmost_x, rightmost_x;
 	short d0;
 	Player *left, *right;
@@ -417,7 +417,7 @@ static void update_scroll2_X (GState *gstate) {     /* 0x83270 */
 		FATALDEFAULT;
 	}
 }
-static void update_scroll2_Y (GState *gstate) { /* 0x3=83376 */
+static void update_scroll2_Y (ScrollState *gstate) { /* 0x3=83376 */
 	switch (gstate->YUpdateMethod) {
 		case 0:
 			if (g.x0ade || g.ScreenWobbleMagnitude) { return; }
@@ -434,7 +434,7 @@ static void update_scroll2_Y (GState *gstate) { /* 0x3=83376 */
 
 #define QUARTER_PIXEL 0x4000
 
-static void _GSMaintScroll1X(GState *gs) {	// 834d0
+static void _GSMaintScroll1X(ScrollState *gs) {	// 834d0
     short int temp;
 	
     gs->x0024 = gstate_Scroll2.x0024;
@@ -463,7 +463,7 @@ static void _GSMaintScroll1X(GState *gs) {	// 834d0
 		FATALDEFAULT;
     }
 }
-static void _GSMaintScroll1Y(GState *gstate) {    /* 83558 */
+static void _GSMaintScroll1Y(ScrollState *gstate) {    /* 83558 */
     if(g.ScreenWobbleMagnitude != 0)  {return;}
     
     gstate->x0025 = gstate_Scroll2.x0025;
@@ -495,7 +495,7 @@ static void _GSMaintScroll1Y(GState *gstate) {    /* 83558 */
 }
 
 
-static void _GSMaintScroll3(GState *gs) {   /* 835ec */
+static void _GSMaintScroll3(ScrollState *gs) {   /* 835ec */
 	switch (gs->mode0) {
 		case 0:
 			switch (gs->mode1) {
@@ -528,7 +528,7 @@ static void _GSMaintScroll3(GState *gs) {   /* 835ec */
 #define SCROLL_MAINT_INIT   0
 #define SCROLL_MAINT_NORM   2
 
-static void _GSMaintScroll2(GState *gstate){      /* 831ca was nextlevel_dosetups */
+static void _GSMaintScroll2(ScrollState *gstate){      /* 831ca was nextlevel_dosetups */
 	switch (gstate->mode0) {
 		case SCROLL_MAINT_INIT:
 			switch (gstate->mode1) {
@@ -578,7 +578,7 @@ static void _GSMaintScroll2(GState *gstate){      /* 831ca was nextlevel_dosetup
 			g.CPS.Scroll2Y = gstate->YPI;
     }
 }
-static void _GSMaintScroll1(GState *gs) {		// 8343a
+static void _GSMaintScroll1(ScrollState *gs) {		// 8343a
 
     switch (gs->mode0) {
 		case 0:
@@ -619,7 +619,7 @@ static void _GSMaintScroll1(GState *gs) {		// 8343a
 	}																\
 
 
-static void _GSMaintRowScroll(ScrollState *ss) {	/* 84480 */
+static void _GSMaintRowScroll(RowScrollState *ss) {	/* 84480 */
 	short *a1;
 
     switch (ss->mode0) {
@@ -739,7 +739,7 @@ static void gstate_nextlevel_scroll3 (void) {
 
 
 #pragma mark ---- Tilemap Fillers ----
-static void _GSFillScroll2(GState *gs) {  /* 0x83ae0 fill scroll2 from tilemap */
+static void _GSFillScroll2(ScrollState *gs) {  /* 0x83ae0 fill scroll2 from tilemap */
     int i,j;
     CPSCOORD gfx_p;
 	
@@ -760,7 +760,7 @@ static void _GSFillScroll2(GState *gs) {  /* 0x83ae0 fill scroll2 from tilemap *
     }
 }
 
-static void _GSFillScroll3(GState *gs) {        /* 0x83b2a fill scroll3 from tilemap */
+static void _GSFillScroll3(ScrollState *gs) {        /* 0x83b2a fill scroll3 from tilemap */
     int i,j;
     CPSCOORD gfx_p;
     
@@ -785,7 +785,7 @@ static void _GSFillScroll3(GState *gs) {        /* 0x83b2a fill scroll3 from til
         }
     }    
 }
-static void _GSInitScroll1(GState *gstate) {	/* 83b78 checked init scroll1 */
+static void _GSInitScroll1(ScrollState *gstate) {	/* 83b78 checked init scroll1 */
 	CP cp;		
 	short i;
 	const u16 *a1;
@@ -807,7 +807,7 @@ static void _GSInitScroll1(GState *gstate) {	/* 83b78 checked init scroll1 */
 
 // u16       yxxx xxxy yyyy[2]		2y x 64y x 32y x 2words x u16  tiles 8x8
 // void 00yx xxxx xyyy yy00			rowmask 0x1f80
-static const u16 *_GSRealignScr1a(GState *gs, u16 **gfx_p) {	// 84052 checked
+static const u16 *_GSRealignScr1a(ScrollState *gs, u16 **gfx_p) {	// 84052 checked
 	int element1, element2;
 	
 	*gfx_p -= 8;
@@ -825,7 +825,7 @@ static const u16 *_GSRealignScr1a(GState *gs, u16 **gfx_p) {	// 84052 checked
 	return &data_d6800[ RHWordOffset(gs->TileMaps, gs->Index / 2) ][ gs->XCoarse/2 ];
 }
 
-static const u16 *_GSRealignScroll2A(GState *gs, u16 **gfx_p) {
+static const u16 *_GSRealignScroll2A(ScrollState *gs, u16 **gfx_p) {
 	// 840e4 scroll2
 	u32 d0;
 	u32 d1;
@@ -844,7 +844,7 @@ static const u16 *_GSRealignScroll2A(GState *gs, u16 **gfx_p) {
 	gs->Index = (gs->Index + gs->Offset) & gs->OffMask;
 	return &data_e0000[ RHWordOffset(gs->TileMaps, gs->Index / 2) ][gs->XCoarse/2];
 }
-static const u16 *skyscraper_realign(GState *gs, u16 **gfx_p) {			// 84384
+static const u16 *skyscraper_realign(ScrollState *gs, u16 **gfx_p) {			// 84384
 	u32 d0;
 	u32 d1;
 	int offset;
@@ -869,7 +869,7 @@ static const u16 *skyscraper_realign(GState *gs, u16 **gfx_p) {			// 84384
 //	printf("X:%d Y:%d ",x, y);
 //}
 
-static const u16 *realign_scr3a(GState *gs, u16 **gfx_p) {	
+static const u16 *realign_scr3a(ScrollState *gs, u16 **gfx_p) {	
 	// 84178 for realigning scroll3 cursor
 	u32 d0;
 	u32 d1;
@@ -887,7 +887,7 @@ static const u16 *realign_scr3a(GState *gs, u16 **gfx_p) {
 	gs->Index = (gs->Index + gs->Offset) & gs->OffMask;
 	return &data_d8000[ RHWordOffset(gs->TileMaps, gs->Index / 2) ][ gs->XCoarse/2 ];
 }
-static const u16 *realign_scr3b(GState *gs, u16 **gfx_p) {		// 8442a for scroll3
+static const u16 *realign_scr3b(ScrollState *gs, u16 **gfx_p) {		// 8442a for scroll3
 	u32 d0;
 	u32 d1;
 	int offset;
@@ -923,7 +923,7 @@ static void _GSDrawScroll1A(const u16 **tilep_a1, u16 **gfx_p_a0, int numrows_d0
 		*gfx_p_a0 += 8;
     }
 }
-static void _GSDrawScroll1B(GState *gs, u16 *gfx_p, const u16 *a1, CP cp) {  /* 83f40 */
+static void _GSDrawScroll1B(ScrollState *gs, u16 *gfx_p, const u16 *a1, CP cp) {  /* 83f40 */
     int d3;
     int d0;
 	
@@ -943,7 +943,7 @@ static void _GSDrawScroll1B(GState *gs, u16 *gfx_p, const u16 *a1, CP cp) {  /* 
 	}
 }
 
-static void _GSDrawScroll2A(GState *gs, u16 *gfx_p, const u16 *tilep, CP cp) {  /* 840a4 */
+static void _GSDrawScroll2A(ScrollState *gs, u16 *gfx_p, const u16 *tilep, CP cp) {  /* 840a4 */
 	short d0 = (cp.y & 0xf0) >> 4;
 	short d3 = d0;
 	for (; d0>0; d0--) {			/* inlined 840dc */
@@ -981,7 +981,7 @@ inline static void draw_n_rows(u16 *gfx_p, const u16 *tile_p, short n_cols) {			
         SCR2_CURSOR_BUMP(tile_p, 1, 0);
     }
 }
-static void _GSDrawScroll2C(GState *gs, u16 *gfx_p, const u16 *tile_p, CP cp) {		// 84336
+static void _GSDrawScroll2C(ScrollState *gs, u16 *gfx_p, const u16 *tile_p, CP cp) {		// 84336
     short d2, d0;
     d2 = ((~cp.x) & 0xf0) >> 4;
     
@@ -1009,7 +1009,7 @@ static void sub_84170(int lines, u16 **gfx_p, const u16 **tilep) {
 }
 
 
-static void _GSDrawScroll3A(GState *gs, u16 *gfx_p, const u16 *tilep, CP cp) {  /* 84138 for Scroll3 was funky2_draw*/
+static void _GSDrawScroll3A(ScrollState *gs, u16 *gfx_p, const u16 *tilep, CP cp) {  /* 84138 for Scroll3 was funky2_draw*/
 	short d0 = ((~cp.y)  & 0xe0) >> 5;		// y / 32
 	short d3 = d0;
 	sub_84170(d0, &gfx_p, &tilep);
@@ -1028,7 +1028,7 @@ static void _GSDrawScroll3A(GState *gs, u16 *gfx_p, const u16 *tilep, CP cp) {  
 		sub_84170(1, &gfx_p, &tilep);
 	}
 }
-static void _GSDrawScroll3B(GState *gs, u16 *gfx_p, const u16 *tilep, CP cp) {  /* 843dc was funky3_draw*/
+static void _GSDrawScroll3B(ScrollState *gs, u16 *gfx_p, const u16 *tilep, CP cp) {  /* 843dc was funky3_draw*/
 	short d0 = (cp.y & 0xe0) >> 5;	// blocks of 32
 	short d2 = d0;
 	for (; d0 >= 0; --d0) {			
@@ -1073,7 +1073,7 @@ static void _GSDrawScroll3B(GState *gs, u16 *gfx_p, const u16 *tilep, CP cp) {  
 	}
 }
 
-static void gstate_update_scroll1 (GState *gs) {			//83498
+static void gstate_update_scroll1 (ScrollState *gs) {			//83498
     CP cp;
 		
     g.CPS.Scroll1X = gs->XPI;
@@ -1086,7 +1086,7 @@ static void gstate_update_scroll1 (GState *gs) {			//83498
 		_GSDrawScroll1B(gs, _GSCoordsScroll1(cp), _GSLookupScroll1(gs,cp), cp);
 	}
 }
-static void gstate_update_scroll2 (GState *gs) {
+static void gstate_update_scroll2 (ScrollState *gs) {
     short temp;
     CP cp;
 
@@ -1111,7 +1111,7 @@ static void gstate_update_scroll2 (GState *gs) {
     cp = _GSCoordOffsetScr2(gs, gs->x0024);
     _GSDrawScroll2C(gs, _GSCoordsScroll2(cp), _GSCoordsScroll2(cp), cp);     /* seems to only be used on attract building */
 }
-static void gstate_update_scroll3 (GState *gs) {		//83d06
+static void gstate_update_scroll3 (ScrollState *gs) {		//83d06
     short temp;
     CP cp;
 
@@ -1183,7 +1183,7 @@ AccumOffset.full += Offset;					\
  %a0: pointer to linescroll array
  %a1: pointer to position_x
  */
-static void _GSUpdateRowScroll(ScrollState *ss, short *a0, short *a1) { /* 84592 */
+static void _GSUpdateRowScroll(RowScrollState *ss, short *a0, short *a1) { /* 84592 */
 	int Offset;					// %d0
 	int i;
 	FIXED16_16 AccumOffset;		// %d1
@@ -1428,7 +1428,7 @@ void draw_background(void) {
     gstate_update_scroll2(&gstate_Scroll2);
     gstate_update_scroll3(&gstate_Scroll3);
 }
-void GSSetupScr2(GState *gs) {			// 83c3c
+void GSSetupScr2(ScrollState *gs) {			// 83c3c
     CP			cp;
 	int			i;
 	
@@ -1443,7 +1443,7 @@ void GSSetupScr2(GState *gs) {			// 83c3c
 		cp.x += 16;
 	}
 }
-void GSSetupScr3(GState *gs) {			// 83cd2 was setup_scroll3
+void GSSetupScr3(ScrollState *gs) {			// 83cd2 was setup_scroll3
     CP			cp;
 	int			i;
 	

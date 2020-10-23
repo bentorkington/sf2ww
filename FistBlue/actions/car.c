@@ -32,7 +32,7 @@
 #include "coll_bonus.h"
 
 extern Game g;
-extern GState gstate_Scroll1;
+extern ScrollState gstate_Scroll1;
 
 const HitBox hitb_25d86[] = {
 	{ 0,  0, -56, 64}, {22, 25, 56, 64}, {22, 25, 0, 25}, {61, 22, 48, 46},};

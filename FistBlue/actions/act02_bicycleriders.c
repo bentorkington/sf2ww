@@ -19,7 +19,7 @@
 
 extern Game g;
 extern int g_d7;
-extern GState gstate_Scroll2;
+extern ScrollState gstate_Scroll2;
 
 static void _create_bycycle(Object *obj, Object *nobj1, Object *nobj2) {		// d2ba
 	struct UserData_Act2 *ud   = (struct UserData_Act2 *)&obj->UserData;

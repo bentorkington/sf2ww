@@ -19,7 +19,7 @@
 #include "act07_elephants.h"
 typedef struct UserData_Act07 UD07;
 extern Game g;
-extern GState gstate_Scroll1;
+extern ScrollState gstate_Scroll1;
 
 
 void action_07(Object *obj) {		//e6cc 

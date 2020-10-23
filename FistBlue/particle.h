@@ -285,7 +285,7 @@ void setaction_direct(Object *obj, const Action *act);
 void actiontick(Object *obj);
 void check_rect_queue_draw(Object *obj);
 void check_onscreen_queue(Object *obj);
-GState *get_graphics_context(Object *obj);
+ScrollState *get_graphics_context(Object *obj);
 void update_motion(Object *obj);
 void CATrajectory(Object *obj);
 void enqueue_and_layer(Object *obj);

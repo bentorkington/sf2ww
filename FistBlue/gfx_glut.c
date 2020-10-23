@@ -42,10 +42,10 @@ extern CPSGFXEMU gemu;
 extern struct cps_a_regs cps_a_emu;
 
 extern GLfloat gWimpScale;
-extern GState gstate_Scroll1;
-extern GState gstate_Scroll2;
-extern GState gstate_Scroll3;
-extern ScrollState gstate_RowScroll;
+extern ScrollState gstate_Scroll1;
+extern ScrollState gstate_Scroll2;
+extern ScrollState gstate_Scroll3;
+extern RowScrollState gstate_RowScroll;
 
 extern struct executive_t Exec;
 extern struct effectstate es;

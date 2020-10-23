@@ -28,9 +28,9 @@
 
 extern Game g;
 extern struct effectstate es;
-extern GState gstate_Scroll1;
-extern GState gstate_Scroll2;
-extern GState gstate_Scroll3;
+extern ScrollState gstate_Scroll1;
+extern ScrollState gstate_Scroll2;
+extern ScrollState gstate_Scroll3;
 
 static void sub_94aec(int d2);
 

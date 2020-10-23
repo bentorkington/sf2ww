@@ -10,9 +10,9 @@
 #include "lib.h"
 
 extern Game g;
-extern GState gstate_Scroll1;
-extern GState gstate_Scroll2;
-extern GState gstate_Scroll3;
+extern ScrollState gstate_Scroll1;
+extern ScrollState gstate_Scroll2;
+extern ScrollState gstate_Scroll3;
 
 
 void RHSetActionList(Object *obj, const void *listaddr, short sel) {
@@ -59,7 +59,7 @@ void actiontick(Object *obj) {
 }
 
 void sub_25f8(Object *obj) {
-	GState *gs;
+	ScrollState *gs;
 	POINT16 point;
 	if (obj->exists) {
 		gs = get_graphics_context(obj);	
@@ -74,7 +74,7 @@ void sub_25f8(Object *obj) {
 	}
 }
 void check_rect_queue_draw(Object *obj) {   /* 0x2540 */
-    GState *gc;       
+    ScrollState *gc;       
 	POINT16 point;
 
     if(obj->exists) {
@@ -91,7 +91,7 @@ void check_rect_queue_draw(Object *obj) {   /* 0x2540 */
 }
 
 void check_onscreen_queue(Object *obj) {		// 0x2578
-	GState *gs;
+	ScrollState *gs;
 	int x,y;
 	
 	if (obj->exists != FALSE) { 
@@ -118,8 +118,8 @@ void die_if_offscreen(Object *obj) {	// 248c
 	}
 }
 
-GState *get_graphics_context(Object *obj) {		/* 2628 */
-	static GState *scrolls[3] = { &gstate_Scroll2, &gstate_Scroll1, &gstate_Scroll3 };
+ScrollState *get_graphics_context(Object *obj) {		/* 2628 */
+	static ScrollState *scrolls[3] = { &gstate_Scroll2, &gstate_Scroll1, &gstate_Scroll3 };
 	
     if (obj->Scroll) {
 		obj->x0044 = obj->XPI;

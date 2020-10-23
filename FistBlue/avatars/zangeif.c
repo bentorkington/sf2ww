@@ -25,7 +25,7 @@
 #include "zangeif.h"
 
 extern Game g;
-extern GState gstate_Scroll2;
+extern ScrollState gstate_Scroll2;
 int g_zangeif_d5;
 
 
