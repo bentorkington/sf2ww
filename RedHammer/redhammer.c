@@ -6,18 +6,24 @@
 //
 //
 
+#define IS_LITTLE_ENDIAN (1 == *(unsigned char *)&(const int){1})
+
+#ifndef CPS
+
 #include <stdio.h>
 #include <stdlib.h>
+
+#endif
+
 #include <unistd.h>
 
 #include "redhammer.h"
 
 #include "sf2types.h"
 
-char *g_code_roms;
-char *g_sound_roms;
-char *g_gfx_roms;
-
+char *g_code_roms = 0;
+char *g_sound_roms = 0;
+char *g_gfx_roms = 0;
 
 /** use the combined 'allroms.bin' instead of separate hi/lo ROMs */
 #define REDHAMMER_USE_ALLROMS_BIN
@@ -68,6 +74,8 @@ const char *sample_rom_names[] = {
     "sf2_19.bin",
 };
 
+#ifndef CPS
+
 int load_cps_roms()
 {
     if ((g_code_roms = malloc(ALL_CODE_SIZE))) {
@@ -100,71 +108,92 @@ int load_cps_roms()
     
     return 1;
 }
+
+#endif
+/** Print the CPS ROM address of a given pointer to the global data blob */
 void print_rom_offset(const char *message, const void *addr)
 {
     printf("%s: %08lx\n", message, ((char *)addr) - g_code_roms);
 }
+
 const void *RHOffsetLookup16(const u16 *base, int index)
 {    
     return base + (short)(RHSwapWord(*(base + index)) / 2);
 }
+
 const u16 RHWordOffset(u32 base, int index)
 {
     return RHSwapWord(*(u16 *)(RHCODE(base + (2 * index))));
 }
+
 const u8 RHByteOffset(u32 base, int index)
 {
     return *(u8 *)(RHCODE(base + index));
 }
+
 const u32 RH3DLong(u32 base, int dim2, int dim3, int i1, int i2, int i3)
 {
     u32 *array = RHCODE(base);
     return RHSwapLong(*(array + (i1 * dim2 * dim3) + (i2 * dim3) + i3));
 }
+
 const u32 RH2DLong(u32 base, int dim2, int i1, int i2)
 {
     u32 *array = RHCODE(base);
     return RHSwapLong(*(array + (i1 * dim2) + i2));
 }
+
 const u16 RH3DWord(u32 base, int dim2, int dim3, int i1, int i2, int i3)
 {
     u16 *array = RHCODE(base);
     return RHSwapWord(*(array + (i1 * dim2 * dim3) + (i2 * dim3) + i3));
 }
+
 const short RH3DShort(u32 base, int dim2, int dim3, int i1, int i2, int i3)
 {
     u16 *array = RHCODE(base);
     return RHSwapWord(*(array + (i1 * dim2 * dim3) + (i2 * dim3) + i3));
 }
+
 const u16 RH2DWord(u32 base, int dim2, int i1, int i2)
 {
     u16 *array = RHCODE(base);
     return RHSwapWord(*(array + (i1 * dim2) + i2));
 }
+
 const short RH2DShort(u32 base, int dim2, int i1, int i2) {
     u16 *array = RHCODE(base);
     return RHSwapWord(*(array + (i1 * dim2) + i2));
 }
+
 const u8 RH3DByte(u32 base, int dim2, int dim3, int i1, int i2, int i3)
 {
     u8 *array = RHCODE(base);
     return *(array + (i1 * dim2 * dim3) + (i2 * dim3) + i3);
 }
+
 const u8 RH2DByte(u32 base, int dim2, int i1, int i2)
 {
     u8 *array = RHCODE(base);
     return *(array + (i1 * dim2) + i2);
 }
 
-
-u32 RHSwapLong(const u32 num)
+inline u32 RHSwapLong(const u32 num)
 {
+#ifdef IS_LITTLE_ENDIAN
     return ((num>>24)&0xff) | ((num<<8)&0xff0000) | ((num>>8)&0xff00) | ((num<<24)&0xff000000);
+#else
+    return num
+#endif
 }
 
-u16 RHSwapWord(const u16 num)
+inline u16 RHSwapWord(const u16 num)
 {
+#ifdef IS_LITTLE_ENDIAN
     return ((num >> 8) & 0xff) | ((num << 8) & 0xff00);
+#else
+    return num
+#endif
 }
 u32 RHReadLong(int romaddr)
 {
