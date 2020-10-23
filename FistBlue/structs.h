@@ -196,7 +196,8 @@ typedef struct game {
     char	OnBonusStage;
     char    Pause_9e1;
     u16		ActionLibSel;
-    u16		Palette1;       /* 0x09e4 */
+    /// Determines which tilemaps and palettes to load
+    u16		Stage;       /* sf2ua 0x9e4 */
     u8		BattleWinner;
     u8		BattleLoser;
     u8		BisonBeater;

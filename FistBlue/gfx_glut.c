@@ -180,22 +180,6 @@ void gfx_glut_reshape(int width, int height) {
 	gCamera.screenHeight = height;
 	glViewport(0, 0, width, height);
 }
-	
-void ResetScrolls(void){
-	palette_base_1k();
-	scroll1_base_1k(g.CurrentStage);
-	scroll2_base_1k(g.CurrentStage);
-	scroll3_base_1k(g.CurrentStage);
-	GSInitForStage();
-	gstate_Scroll1.mode0=0;
-	gstate_Scroll1.mode1=0;
-	gstate_Scroll2.mode0=0;
-	gstate_Scroll2.mode1=0;
-	gstate_Scroll3.mode0=0;
-	gstate_Scroll3.mode1=0;
-	GSInitOffsets();
-	glutPostRedisplay();
-}
 
 void gemu_set_cache_clear(void) {
 	gemuCacheClear = TRUE;

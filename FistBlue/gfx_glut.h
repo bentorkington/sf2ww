@@ -42,7 +42,6 @@ void gfx_glut_mousedragged(int px, int py);
 void gfx_glut_rightmousedragged(int px, int py);
 
 void drawGLString(GLfloat x, GLfloat y, char *string);
-void ResetScrolls(void);
 
 void gemu_readtile(u16 tileid);
 void gemu_readtile_scroll3(u16 tileid);

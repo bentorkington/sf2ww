@@ -154,7 +154,7 @@ static void game_mode_28(void) {	// 7af0
 				NEXT(g.mode2);
 				sound_cq_f0f7();
 				LBResetState();
-				g.Palette1 = 0x11;
+				g.Stage = 0x11;
 				palette_from_game();
 				g.CPS.Scroll2X = 0;
 				g.CPS.Scroll2Y = 0;
@@ -438,15 +438,15 @@ static void draw_world_map(void) {		//856c mode 2,4,2
 			g.Pause_9e1			= 0;
 			g.NewChallengerWait = FALSE;
 			g.CPS.DispEna		= 0x12da;
-			g.Palette1			= 0x11;
+			g.Stage			= 0x11;
 			palette_macro(0x11);
-			GSInitForStage();
+			TMInitForStage();
 			g.CPS.Scroll2X		= 0;
 			g.CPS.Scroll2Y		= 0;
 
 			gstate_Scroll3.XPI = 0x0;
 			gstate_Scroll3.YPI = 0x700;
-			GSSetupScr3(&gstate_Scroll3);	// draw the world map background
+			TMSetupScroll3(&gstate_Scroll3);	// draw the world map background
 
 			g.CPS.Scroll1X = 0;
 			g.CPS.Scroll1Y = 0;
@@ -577,17 +577,19 @@ void gamemode_vs_screen (void) {
 			g.mode3   +=2;
 			g.timer3		= VS_SCREEN_DELAY;
 			g.CPS.DispEna	= 0x12da;
-			g.Palette1		= 0x11;
+			g.Stage		    = 0x11;
 			LBResetState();
+            
+            
 			g.ActionLibSel	= 0x12;
 			actionlibrary();			/* action 39x2 draw player names large */
-			GSInitForStage();			   		  /* set up the scroll params */
+            
+			TMInitForStage();			   		  /* set up the scroll params */
 			gstate_Scroll3.XPI  = 0x200;
 			gstate_Scroll3.YPI  = 0x700;
 			g.CPS.Scroll2X        = 0x0;
-			
 			g.CPS.Scroll2Y        = 0x0;
-			GSSetupScr3(&gstate_Scroll3);
+			TMSetupScroll3(&gstate_Scroll3);
 			draw_portraits_prefight();
 			palette_from_game();
 			/* CPS anti-tampering @ 0x8756 not included */
@@ -598,7 +600,7 @@ void gamemode_vs_screen (void) {
 			gstate_Scroll3.mode1 = 0x42;  
 			break;
 		case 2:
-			if(--g.timer3==0) {
+			if(--g.timer3 == 0) {
 				g.mode3 += 2;
 				es.FadeBusy=TRUE;
 				start_effect(0x0c1c, 0x3);
@@ -656,13 +658,13 @@ static void gamemode_init_round (void) {
 				NEXT(g.mode3);
 				set_initial_positions();
 			} else {
-				GSMain();
+				TMUpdate();
 			}
 			break;
 		case 8:
 			do {
 				g.timer3 = gstate_Scroll2.X.part.integer;
-				GSMain();
+				TMUpdate();
 			} while(g.timer3 != gstate_Scroll2.X.part.integer);
 			NEXT(g.mode2);		/* Go to 2,4,8 */
 			g.mode3 =0;
@@ -1094,7 +1096,7 @@ void gamemode_24I (void) {		// 7970
 				if(g.NoLoser == 0) {
 					g.CPS.Scroll2X = 0;
 					g.CPS.Scroll2Y = 0;
-					g.Palette1 = 0x11;
+					g.Stage = 0x11;
 					palette_from_game();
 					queuesound(SOUND_VICTORY);
 					draw_portraits_postfight();

@@ -28,21 +28,11 @@ ScrollState gstate_Scroll2;		/* bd2 - c51 */
 ScrollState gstate_Scroll3;		/* c52 - cd1 */
 RowScrollState gstate_RowScroll;	/* cd2 - d51 */
 
-/* Ortersk costly */
-
 static void _GSInitUpdateMethods(void);
 static void _GSInitDimensions(void);
 static void _GSInitDispEna(void);
-
-/*
-static void gstate_nextlevel_scroll1(void);
-static void gstate_nextlevel_scroll2(void);
-static void gstate_nextlevel_scroll3(void);
-*/
- 
 static void draw_n_rows(unsigned short *gfx_p, const u16 *tile_p, short count);
 static void _GSDrawScroll2C(ScrollState *gs, unsigned short *gfx_p, const u16 *tile_p, CP cp);
-
 
 static const u16 *_GSLookupScroll1(ScrollState *gs, CP cp);
 static const u16 *_GSLookupScroll2(ScrollState *gs, CP cp);
@@ -68,6 +58,7 @@ static void _GSDrawScroll3A(ScrollState *gs, u16 *gfx_p, const u16 *tilep, CP cp
 
 #define SCR3X_PERSP 0
 #define SCR3X_NONE  2
+
 #define SCR3Y_NONE  0
 #define SCR3Y_2Y    2
 #define SCR3Y_0_75  4
@@ -240,10 +231,8 @@ static void *_GSCoordsScroll3(CP cp){
 #endif
 } 
 
-
-
-
 #pragma mark ---- Tilemap Lookup ----
+
 static short _GSCalcBlockIndex(ScrollState *gs, CP cp) {   
 	/* 0x83ee6 x and y div by 256 was cacl_gstate_2022 */
     short index;
@@ -270,6 +259,7 @@ static const u16 *_GSLookupScroll1(ScrollState *gs, CP cp) {	/* 83e5c */
     temp2 += (gs->YCoarse + gs->XCoarse)/2;
     return temp2;
 }
+
 static const u16 *_GSLookupScroll2(ScrollState *gs, CP cp) {	/* 83e8a */
     const u16 *temp2;
     
@@ -283,6 +273,7 @@ static const u16 *_GSLookupScroll2(ScrollState *gs, CP cp) {	/* 83e8a */
 	temp2 += (gs->YCoarse + gs->XCoarse)/2;
     return temp2;
 }
+
 static const u16 *_GSLookupScroll3(ScrollState *gs, CP cp) {	/* 83eba */
     const u16 *temp2;
     
@@ -328,8 +319,6 @@ static void _gstate_against_left(ScrollState *gstate, int d0) {		// sf2ua:83334 
 	}
 	gstate->x0024 = 0xc;
 }
-
-
 
 static void _GSMaintScroll3X(ScrollState *gs) {		// 83658
 	gs->x0024 = gstate_Scroll2.x0024;
@@ -964,7 +953,7 @@ static void _GSDrawScroll2A(ScrollState *gs, u16 *gfx_p, const u16 *tilep, CP cp
 			*gfx_p++ = *tilep++;
 		}	
 	} else {
-		for (d0=0xf; d0>0; d0--) {			/* inlined 840dc */
+		for (d0 = 0xf; d0 > 0; d0--) {			/* inlined 840dc */
 			*gfx_p++ = *tilep++;
 			*gfx_p++ = *tilep++;
 		}
@@ -973,6 +962,7 @@ static void _GSDrawScroll2A(ScrollState *gs, u16 *gfx_p, const u16 *tilep, CP cp
 		*gfx_p++ = *tilep++;
 	}
 }
+
 inline static void draw_n_rows(u16 *gfx_p, const u16 *tile_p, short n_cols) {			// 84374
 	int i;
     for(i=0; i<=n_cols; i++) {
@@ -981,6 +971,7 @@ inline static void draw_n_rows(u16 *gfx_p, const u16 *tile_p, short n_cols) {			
         SCR2_CURSOR_BUMP(tile_p, 1, 0);
     }
 }
+
 static void _GSDrawScroll2C(ScrollState *gs, u16 *gfx_p, const u16 *tile_p, CP cp) {		// 84336
     short d2, d0;
     d2 = ((~cp.x) & 0xf0) >> 4;
@@ -1001,6 +992,7 @@ static void _GSDrawScroll2C(ScrollState *gs, u16 *gfx_p, const u16 *tile_p, CP c
 		draw_n_rows(gfx_p, tile_p, d0 - 16);
 	}
 }
+
 static void sub_84170(int lines, u16 **gfx_p, const u16 **tilep) {
 	for (; lines >= 0; --lines) {		
 		*(*gfx_p)++ = *(*tilep)++;
@@ -1082,10 +1074,11 @@ static void gstate_update_scroll1 (ScrollState *gs) {			//83498
     if((gs->XPI & 0x20) ^ gs->x001e) {		// does it need refilling?
 		gs->x001e ^= 0x20;
     
-		cp    = _GSCoordOffsetScr1(gs, gs->x0024);
-		_GSDrawScroll1B(gs, _GSCoordsScroll1(cp), _GSLookupScroll1(gs,cp), cp);
+		cp = _GSCoordOffsetScr1(gs, gs->x0024);
+		_GSDrawScroll1B(gs, _GSCoordsScroll1(cp), _GSLookupScroll1(gs, cp), cp);
 	}
 }
+
 static void gstate_update_scroll2 (ScrollState *gs) {
     short temp;
     CP cp;
@@ -1108,9 +1101,11 @@ static void gstate_update_scroll2 (ScrollState *gs) {
         gs->x001f ^= 0x10;
         
     }
+    
     cp = _GSCoordOffsetScr2(gs, gs->x0024);
     _GSDrawScroll2C(gs, _GSCoordsScroll2(cp), _GSCoordsScroll2(cp), cp);     /* seems to only be used on attract building */
 }
+
 static void gstate_update_scroll3 (ScrollState *gs) {		//83d06
     short temp;
     CP cp;
@@ -1394,7 +1389,12 @@ static void _GSUpdateRowScroll(RowScrollState *ss, short *a0, short *a1) { /* 84
 
     
 #pragma mark Publics
-void GSMain (void) {		/* 8318a */
+
+/**
+ @brief Update the tilemaps
+ @see sf2ua/0x8318a
+ */
+void TMUpdate(void) {
     debughook(4);
     if(g.OnBonusStage) {
 		/* 831b2 */
@@ -1409,13 +1409,22 @@ void GSMain (void) {		/* 8318a */
         _GSMaintScroll3(&gstate_Scroll3);
     }
 }
-void GSInitForStage(void){			/* 83716 setup tilemaps & palettes from g.Pallete1 */
-	_GSStageScroll1(g.Palette1);	
-	_GSStageScroll2(g.Palette1);
-	_GSStageScroll3(g.Palette1);
+
+/**
+ @brief Initialize the tilemaps for the current stage
+ @see sf2ua/0x83716
+ */
+void TMInitForStage(void){			/* 83716 setup tilemaps & palettes from g.Pallete1 */
+	_GSStageScroll1(g.Stage);	
+	_GSStageScroll2(g.Stage);
+	_GSStageScroll3(g.Stage);
 }
 
-void GSInitOffsets(void) {		/* 83860 */
+/**
+ @brief Move to the center of the stage arrangement
+ @see sf2ua/0x83860
+ */
+void TMGotoCenter(void) {
     gstate_Scroll1.XPI = RH2DWord(0x83a00, 6, g.CurrentStage, 0);
     gstate_Scroll1.YPI = RH2DWord(0x83a00, 6, g.CurrentStage, 1);
     gstate_Scroll2.XPI = RH2DWord(0x83a00, 6, g.CurrentStage, 2);
@@ -1424,11 +1433,15 @@ void GSInitOffsets(void) {		/* 83860 */
     gstate_Scroll3.YPI = RH2DWord(0x83a00, 6, g.CurrentStage, 5);
 }
 
-void draw_background(void) {	
+/**
+ @brief Parallax is handled by some other mechanism, just update scrolls 2 & 3
+ */
+void TMUpdateScrollsAttractSequence(void) {
     gstate_update_scroll2(&gstate_Scroll2);
     gstate_update_scroll3(&gstate_Scroll3);
 }
-void GSSetupScr2(ScrollState *gs) {			// 83c3c
+
+void TMSetupScroll2(ScrollState *gs) {			// 83c3c
     CP			cp;
 	int			i;
 	
@@ -1443,7 +1456,7 @@ void GSSetupScr2(ScrollState *gs) {			// 83c3c
 		cp.x += 16;
 	}
 }
-void GSSetupScr3(ScrollState *gs) {			// 83cd2 was setup_scroll3
+void TMSetupScroll3(ScrollState *gs) {			// 83cd2 was setup_scroll3
     CP			cp;
 	int			i;
 	

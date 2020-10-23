@@ -205,14 +205,14 @@ void SM_player_select(void) {		//7fc4
 					g.PLSL.ChallengerDelay      = 0;
 					g.Pause_9e1					= 0;
 					g.CPS.DispEna				= 0x12da;
-					g.Palette1					= 17;
+					g.Stage					= 17;
 					palette_from_game();
-					GSInitForStage();
+					TMInitForStage();
 					g.CPS.Scroll2X				= 0;
 					g.CPS.Scroll2Y				= 0;
 					gstate_Scroll3.XPI			= 0;
 					gstate_Scroll3.YPI			= 0x700;
-					GSSetupScr3(&gstate_Scroll3);
+					TMSetupScroll3(&gstate_Scroll3);
 					g.CPS.Scroll1X				= 0;
 					g.CPS.Scroll1Y				= 0x100;
 					g.PLSL.TimerCoarse			= 32;

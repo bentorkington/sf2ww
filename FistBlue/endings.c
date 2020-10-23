@@ -62,7 +62,7 @@ static void sub_aefe(void) {
 				g.x02ec = 0;
 				g.CPS.Scroll2X = 0;
 				g.CPS.Scroll2Y = 0;
-				g.Palette1 = 0x11;
+				g.Stage = 0x11;
 				palette_from_game();
 				queuesound(SOUND_VICTORY);
 				draw_portraits_postfight();
@@ -163,8 +163,8 @@ static void sm_ending_blanka(void) {	// a554
 						NEXT(g.mode3);
 						g.mode4 = 0;
 						_LBResetState();
-						g.Palette1 = 0x12;
-						GSInitForStage();
+						g.Stage = 0x12;
+						TMInitForStage();
 						palette_from_game();
 					}
 				FATALDEFAULT;
@@ -185,10 +185,10 @@ static void sm_ending_blanka(void) {	// a554
 							sub_6126();
 							gstate_Scroll2.X.part.integer = 0;
 							gstate_Scroll2.Y.part.integer = 0x300;
-							GSSetupScr2(&gstate_Scroll2);
+							TMSetupScroll2(&gstate_Scroll2);
 							gstate_Scroll3.X.part.integer = 0xffe0;
 							gstate_Scroll3.Y.part.integer = 0x0300;
-							GSSetupScr3(&gstate_Scroll3);
+							TMSetupScroll3(&gstate_Scroll3);
 							sub_94aec(1);
 							start_effect(2, 3);
 							break;
@@ -227,10 +227,10 @@ static void sm_ending_blanka(void) {	// a554
 							sub_6126();
 							gstate_Scroll2.X.part.integer = 0x200;
 							gstate_Scroll2.Y.part.integer = 0x300;
-							GSSetupScr2(&gstate_Scroll2);
+							TMSetupScroll2(&gstate_Scroll2);
 							gstate_Scroll3.X.part.integer = 0x200;
 							gstate_Scroll3.Y.part.integer = 0x300;
-							GSSetupScr3(&gstate_Scroll3);
+							TMSetupScroll3(&gstate_Scroll3);
 							sub_94aec(2);
 							start_effect(0x2, 3);
 							break;

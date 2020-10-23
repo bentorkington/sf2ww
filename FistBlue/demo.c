@@ -55,16 +55,16 @@ static void SMdemo_show_high_scores(void) {		//6aaa
 		case 0:
 			NEXT(g.mode1);
 			g.timer1    = 3 * TICKS_PER_SECOND;
-			g.Palette1  = 0x10;
+			g.Stage  = 0x10;
 			palette_macro(0x10);
-			GSInitForStage();
+			TMInitForStage();
 			gstate_Scroll2.XPI = 0x200;
 			gstate_Scroll2.YPI = 0x700;
-			GSSetupScr2(&gstate_Scroll2);
+			TMSetupScroll2(&gstate_Scroll2);
 			
 			gstate_Scroll3.XPI = 0x200;
 			gstate_Scroll3.YPI = 0x700;
-			GSSetupScr3(&gstate_Scroll3);
+			TMSetupScroll3(&gstate_Scroll3);
 			
 			QueueEffect(SL10 | SL10_HIGH_SCORE_TABLE, 0);
 			QueueEffect(0x02, 3);
@@ -154,22 +154,22 @@ void SMdemo_titlefightanim(void) {	// 0x6650 mode is 2,0
 		case 0:
 			NEXT(g.mode1);
 			g.Pause_9e1		= 0;
-			g.Palette1		= 16;
+			g.Stage		= 16;
 			g.ActionLibSel	= 0;
 			LBResetState();
 			sub_6704();     /* setup street fighter logo animation */
 			actionlibrary();
 			palette_macro(0x10);
-			GSInitForStage();
+			TMInitForStage();
 			g.CPS.DispEna = 0x079a;
 			
 			gstate_Scroll2.XPI =    0x0;
 			gstate_Scroll2.YPI =  0x500;
-			GSSetupScr2(&gstate_Scroll2);
+			TMSetupScroll2(&gstate_Scroll2);
 			
 			gstate_Scroll3.XPI =    0x0;
 			gstate_Scroll3.YPI =  0x600;
-			GSSetupScr3(&gstate_Scroll3);
+			TMSetupScroll3(&gstate_Scroll3);
 			
 			g.DemoStarted = TRUE;
 			if(g.FreePlay) {
@@ -211,7 +211,7 @@ void SMdemo_titlefightanim(void) {	// 0x6650 mode is 2,0
 		FATALDEFAULT;
     }
     proc_actions();
-    draw_background();
+    TMUpdateScrollsAttractSequence();
 	DSDrawAllMain();
 }
 
@@ -223,11 +223,11 @@ void SMdemo_winnersusedrugs (void) {
 			LBResetState();
 			actionlibrary();
 			palette_macro(0x10);
-			GSInitForStage();
+			TMInitForStage();
 			g.CPS.DispEna = 0x6da;
 			gstate_Scroll2.XPI = 0;
 			gstate_Scroll2.YPI = 0x700;
-			GSSetupScr2(&gstate_Scroll2);
+			TMSetupScroll2(&gstate_Scroll2);
 			start_effect(0x2, 3);
 			break;
 		case 2:
@@ -243,7 +243,7 @@ void SMdemo_winnersusedrugs (void) {
 static void setupdemofight(void) {		// 69e2
 	do {
 		g.timer4 = gstate_Scroll2.XPI;
-		GSMain();
+		TMUpdate();
 	} while (g.timer4 != gstate_Scroll2.XPI);
 	NEXT(g.mode3);
 	g.mode4 = 0;
@@ -306,7 +306,7 @@ static void sub_6964(void) {			// 6964 demo fight sm
 						NEXT(g.mode4);
 						set_initial_positions();
 					} else {
-						GSMain();
+						TMUpdate();
 					}
 					break;
 				case 8:

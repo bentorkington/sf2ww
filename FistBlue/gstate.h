@@ -8,11 +8,6 @@
 #include "../RedHammer/redhammer.h"
 #endif
 
-struct coordpair {
-    short x;
-    short y;
-};
-
 typedef struct Point16 CP;
 
 typedef struct {
@@ -70,15 +65,12 @@ typedef struct {
 #endif
 } RowScrollState;
 
-void GSInitOffsets(void);
-void draw_background(void);
-
-void GSSetupScr2(ScrollState *gs);
-void GSSetupScr3(ScrollState *gs);
-
-void GSMain(void);
-
-void GSInitForStage(void);			/* setup palettes from g.Pallete1 */
+void TMGotoCenter(void);
+void TMUpdateScrollsAttractSequence(void);
+void TMSetupScroll2(ScrollState *gs);
+void TMSetupScroll3(ScrollState *gs);
+void TMUpdate(void);
+void TMInitForStage(void);
 
 #endif	/* INC_GSTATE */
 

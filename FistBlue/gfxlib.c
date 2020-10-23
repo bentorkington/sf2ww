@@ -54,12 +54,12 @@ void setpalette_objtop(short palette) {		// 16ae
 }
 
 void palette_from_game(void) {			// 160c
-	printf("palettes_from_game %d\n", g.Palette1);
+	printf("palettes_from_game %d\n", g.Stage);
 
-    setpalette_objtop (g.Palette1);
-    setpalette_scroll1(g.Palette1);
-    setpalette_scroll2(g.Palette1);
-    setpalette_scroll3(g.Palette1);
+    setpalette_objtop (g.Stage);
+    setpalette_scroll1(g.Stage);
+    setpalette_scroll2(g.Stage);
+    setpalette_scroll3(g.Stage);
 }
 
 void palettes_nextlevel(void) {			// 1698
@@ -827,8 +827,8 @@ void sub_1a0c(void) {			//1a0c
     FBSetPalette(20, RHCODE16_ARRAY(0x1a42, 16, 4));
     
 	setpalette_scroll1(0x13);
-	setpalette_scroll2(g.Palette1);
-	setpalette_scroll3(g.Palette1);
+	setpalette_scroll2(g.Stage);
+	setpalette_scroll3(g.Stage);
 }
 
 #pragma mark Letterbox drawers for ending seqs

@@ -471,7 +471,7 @@ inline void proc_all_actions (void) {    /* 0x7f9a */
     actions_198a();
     proc_actions();
     actions_530a();
-    GSMain();      
+    TMUpdate();      
 }
 void all_actions_sprites (void) {
 	/* Collisions are ignored, otherwise same as fighttick */
@@ -840,7 +840,7 @@ void LBInitPlayers(void) {		// 2c8a
 	g.TimeWarpSlowdown  = 0;
 	g.TimeWarpSlowdown2 = 0;
 	FBUpdateDifficulty();
-	GSInitOffsets();
+	TMGotoCenter();
 }
     
 void ClearEffectQueue(void) {		/* 21c2 was resetcq */
@@ -1984,12 +1984,12 @@ void task_playground(void) {
                     NEXT(g.mode0);
                     g.CurrentStage = 3;
                     g.Pause_9e1		= 0;
-                    g.Palette1		= 3;
+                    g.Stage		= 3;
                     g.ActionLibSel	= 0;
                     LBResetState();
                     //actionlibrary();
                     palette_macro(0x01);
-                    GSInitForStage();
+                    TMInitForStage();
                     g.CPS.DispEna = 0x079a;
                     
                     //                    gstate_Scroll2.XPI =    0x0;
@@ -2040,13 +2040,13 @@ void task_playground(void) {
 
                     RHActionTick(&g.Player1);
                     proc_actions();
-                    GSMain();
+                    TMUpdate();
                     DSDrawAllMain();
                     break;
                 case 4:
                     g.CPS.Scroll2X = 320;
                     proc_actions();
-                    GSMain();
+                    TMUpdate();
                     DSDrawAllMain();
                 default:
                     break;
