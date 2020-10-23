@@ -679,8 +679,8 @@ void gamemode_prefightanim (void){
             g.mode3  +=2;
             setstagemusic();
             g.PreRoundAnim = TRUE;
-            g.x0305        = TRUE;  /* flags for mbison cape */
-            g.x0306        = TRUE;	/* cape thrown */
+            g.PreFightWait = TRUE;  /* flags for mbison cape */
+            g.ShowCapeAnimation = TRUE;	/* cape thrown */
             
             start_effect(LC0_LIGHT_ALL_ENABLE, 3);
         }

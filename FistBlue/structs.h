@@ -135,7 +135,7 @@ typedef struct game {
     u8		PlayersOnline;
     
     u8		NewChallengerWait;  // 2e5
-    char	TimeWarpTimer;
+    u8  	TimeWarpTimer;
     char	PreRoundAnim;
 	char	x02e8;
     char	PlyDrawOrder;		/* 0x02e9 */
@@ -150,8 +150,17 @@ typedef struct game {
 	short	DemoFightTimer;
 	char	x0302;
     char	TimeWarpSlowdown, TimeWarpSlowdown2;	/* 0x303-4 */
-    char	x0305;			/* Bison cape signal */
-    char	x0306;			/* Bison cape done */
+    /**
+     @brief TRUE until 'Fight!' sting is played
+     @discussion this is used for M.Bison's cape animation
+     @see sf2ua/player/0x305
+     */
+    char	PreFightWait;
+    /**
+     @brief TRUE if M.Bison cape animation should show for the first round
+     @see sf2ua/player/0x306
+     */
+    char	ShowCapeAnimation;
     char    NotUsed;    /* some debug signal */
 	short	UsageCount[8];		// 308-318
 

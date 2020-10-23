@@ -321,7 +321,7 @@ void human_per_frame(Player *ply) {		/* 285f4 */
         break;
     case 2:
         if(g.OnBonusStage) {
-            if(ply->TimerInvincible) {
+            if (ply->TimerInvincible) {
                 ply->TimerInvincible--;
             }
             if(ply->Energy != ply->EnergyDash) {
@@ -333,7 +333,8 @@ void human_per_frame(Player *ply) {		/* 285f4 */
 			                  
         check_powermove_input(ply);
         
-        if(g.PreRoundAnim) {
+        if (g.PreRoundAnim) {
+            // Wait for the round to start
             PLAYERTICK;
         } else {
             if(ply->TCollDis)  {ply->TCollDis--;}
@@ -1664,7 +1665,7 @@ static void ply_set_direction_bonus(Player *ply) {		/* 284f6 */
 static void ply_set_enemydirection(void) {		/* 2846e */
 	int temp, d2;
 	if (g.OnBonusStage) {
-		if (g.PreRoundAnim == 0) {
+		if (g.PreRoundAnim == FALSE) {
 			ply_set_direction_bonus(PLAYER1);
 			ply_set_direction_bonus(PLAYER2);
 		}

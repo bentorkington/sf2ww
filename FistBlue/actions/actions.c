@@ -2329,7 +2329,7 @@ static void sub_1acaa(Object *obj) {
 				--obj->Draw2.full;
 				if(obj->Draw2.full < 0 && obj->Draw2.full > -16) {return;}
 				NEXT(obj->mode1);
-				g.x0305 = FALSE;		// Queue the Bison Cape remove anim
+				g.PreFightWait = FALSE;		// Queue the Bison Cape remove anim
                 RHSetAction(obj, RHCODE(0x1af62));          /* FIGHT! */
 				break;
 			case 10:

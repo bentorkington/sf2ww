@@ -53,10 +53,12 @@
 #define SF2_CPU_I386
 #endif
 
-typedef  u16 * CPSCOORD;
+
+typedef u16 *CPSCOORD;
 typedef int FBBOOL;
 typedef u16 TILEWORD;
 typedef u16 PALETTEWORD;
+
 typedef struct tile_attribute_pair {
     u16 tileID;
     u16 attribute;
@@ -68,6 +70,8 @@ typedef struct tile_attribute_pair {
 #endif
 
 /* the fixed precision 16:16bit used in coordinates and vectors */
+
+#pragma mark Little Endian Fixed Precision
 
 #ifdef SF2_ENDIAN_LITTLE
 
@@ -95,8 +99,10 @@ typedef union DUALtag {
     }  __attribute__((packed)) part;
 } DUAL;
 
-
 #endif
+
+#pragma mark Big Endian Fixed Precision
+
 #ifdef SF2_ENDIAN_BIG
 
 typedef union FIXED16_16tag {
@@ -125,6 +131,8 @@ typedef union DUALtag {
 
 #endif
 
+#pragma mark Utility types
+
 struct adjust {
     char x;
     char y;
@@ -141,7 +149,9 @@ struct Point8 {
 	char x;
 	char y;
 };
+/// A signed 8-bit vector
 typedef struct Point8 POINT8;
+
 struct Point16 {
 	short x;
 	short y;
@@ -151,22 +161,35 @@ struct Size8 {
 	char width;
 	char height;
 };
+/// A signed 8-bit size
 typedef struct Size8 SIZE8;
+
 struct Rect8 {
 	struct Point8 origin;
 	struct Size8  size;
 };
+/// A signed 8-bit position and size
 typedef struct Rect8 RECT8;
+
 struct Vect16 {
 	FIXED8_8 x;
 	FIXED8_8 y;
 } __attribute__((packed));
+
 typedef struct Vect16 VECT16;
 struct Traj16 {
 	VECT16 Vel;
 	VECT16 Acl;
 };
 typedef struct Traj16 TRAJ16;
+
+struct Traj2D_16 {
+    FIXED8_8 VelX;
+    FIXED8_8 AclX;
+    FIXED8_8 VelY;
+    FIXED8_8 AclY;
+};
+typedef struct Traj2D_16 TRAJ_2D_16;
 
 struct extrasprite {
 	POINT16			Offset;

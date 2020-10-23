@@ -98,16 +98,16 @@ void sub_3623e(Player *ply) {		// 3623e cape processing
 			CASetAnim2(ply, STATUS_KICK, 0);
 			break;
 		case 2:
-			if (g.x0305 == 0) {
+			if (g.PreFightWait == FALSE) {
 				NEXT(ply->UserData[5]);
-				CASetAnim2(ply, STATUS_KICK, 1);
+				CASetAnim2(ply, STATUS_KICK, 1); // actually cape animation
 				return;
 			} 
 			/* FALLTHRU */
 		case 4:
 			// 36272
 			if (AF2) {
-				g.x0306 = FALSE;
+				g.ShowCapeAnimation = FALSE;
 				if ((obj = AllocActor())) {
 					obj->exists = TRUE;
 					obj->Sel = SF2ACT_BISONCAPE;

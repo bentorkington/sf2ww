@@ -189,7 +189,7 @@ void computer_per_frame(Player *ply) {		/* 2ac70 */
 			CASetAnim1(ply, STATUS_NORMAL);
 			break;
 		case 2:
-			if (g.RoundCnt==0  & ply->FighterID == FID_M_BISON && g.x0306) {
+			if (g.RoundCnt==0  & ply->FighterID == FID_M_BISON && g.ShowCapeAnimation) {
 				/* Special cape stuff */
 				sub_3623e(ply);
 			} else {
