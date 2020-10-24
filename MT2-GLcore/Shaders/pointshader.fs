@@ -28,7 +28,9 @@ void main() {
 //    return;
     // scale the point coord to tile dimensions
     vec2 pixelFloat = gl_PointCoord * tileSize;
-    ivec2 pixel = ivec2(int(pixelFloat.x), int(pixelFloat.y));
+    ivec2 pixel = ivec2(
+        min(int(pixelFloat.x), tileSize - 1),
+        min(int(pixelFloat.y), tileSize - 1));
     
     int palette = tileAttribute & 0xf;
     int flips = (tileAttribute & 0x60) >> 5;
