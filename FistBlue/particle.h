@@ -2,7 +2,7 @@
 #ifndef INC_PARTICLE
 #define INC_PARTICLE
 
-#include "gstate.h"
+#include "scroll.h"
 
 #define	GFX_LAYER1 4
 #define GFX_LAYER2 6

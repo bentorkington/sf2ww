@@ -131,6 +131,30 @@
 		B53EBC6E155F8C0600581C8D /* act_3f.c in Sources */ = {isa = PBXBuildFile; fileRef = B53EBC6D155F8C0600581C8D /* act_3f.c */; };
 		B53EBC80155F91F900581C8D /* act17.c in Sources */ = {isa = PBXBuildFile; fileRef = B53EBC7F155F91F900581C8D /* act17.c */; };
 		B53EBC84155F927300581C8D /* act16.c in Sources */ = {isa = PBXBuildFile; fileRef = B53EBC83155F927300581C8D /* act16.c */; };
+		B54FDCC92543AB940092E183 /* scroll_maint.c in Sources */ = {isa = PBXBuildFile; fileRef = B54FDCC82543AB940092E183 /* scroll_maint.c */; };
+		B54FDCCA2543AB950092E183 /* scroll_maint.c in Sources */ = {isa = PBXBuildFile; fileRef = B54FDCC82543AB940092E183 /* scroll_maint.c */; };
+		B54FDCCB2543AB950092E183 /* scroll_maint.c in Sources */ = {isa = PBXBuildFile; fileRef = B54FDCC82543AB940092E183 /* scroll_maint.c */; };
+		B54FDCCC2543AB950092E183 /* scroll_maint.c in Sources */ = {isa = PBXBuildFile; fileRef = B54FDCC82543AB940092E183 /* scroll_maint.c */; };
+		B54FDCCD2543AB950092E183 /* scroll_maint.c in Sources */ = {isa = PBXBuildFile; fileRef = B54FDCC82543AB940092E183 /* scroll_maint.c */; };
+		B54FDCCE2543AB950092E183 /* scroll_maint.c in Sources */ = {isa = PBXBuildFile; fileRef = B54FDCC82543AB940092E183 /* scroll_maint.c */; };
+		B54FDCD72543AD230092E183 /* parallax.c in Sources */ = {isa = PBXBuildFile; fileRef = B54FDCD62543AD230092E183 /* parallax.c */; };
+		B54FDCD82543AD230092E183 /* parallax.c in Sources */ = {isa = PBXBuildFile; fileRef = B54FDCD62543AD230092E183 /* parallax.c */; };
+		B54FDCD92543AD230092E183 /* parallax.c in Sources */ = {isa = PBXBuildFile; fileRef = B54FDCD62543AD230092E183 /* parallax.c */; };
+		B54FDCDA2543AD230092E183 /* parallax.c in Sources */ = {isa = PBXBuildFile; fileRef = B54FDCD62543AD230092E183 /* parallax.c */; };
+		B54FDCDB2543AD230092E183 /* parallax.c in Sources */ = {isa = PBXBuildFile; fileRef = B54FDCD62543AD230092E183 /* parallax.c */; };
+		B54FDCDC2543AD230092E183 /* parallax.c in Sources */ = {isa = PBXBuildFile; fileRef = B54FDCD62543AD230092E183 /* parallax.c */; };
+		B54FDCE52543ADC10092E183 /* scroll_util.c in Sources */ = {isa = PBXBuildFile; fileRef = B54FDCE42543ADC10092E183 /* scroll_util.c */; };
+		B54FDCE62543ADC10092E183 /* scroll_util.c in Sources */ = {isa = PBXBuildFile; fileRef = B54FDCE42543ADC10092E183 /* scroll_util.c */; };
+		B54FDCE72543ADC10092E183 /* scroll_util.c in Sources */ = {isa = PBXBuildFile; fileRef = B54FDCE42543ADC10092E183 /* scroll_util.c */; };
+		B54FDCE82543ADC10092E183 /* scroll_util.c in Sources */ = {isa = PBXBuildFile; fileRef = B54FDCE42543ADC10092E183 /* scroll_util.c */; };
+		B54FDCE92543ADC10092E183 /* scroll_util.c in Sources */ = {isa = PBXBuildFile; fileRef = B54FDCE42543ADC10092E183 /* scroll_util.c */; };
+		B54FDCEA2543ADC10092E183 /* scroll_util.c in Sources */ = {isa = PBXBuildFile; fileRef = B54FDCE42543ADC10092E183 /* scroll_util.c */; };
+		B54FDCF32543ADF20092E183 /* scroll_data.c in Sources */ = {isa = PBXBuildFile; fileRef = B54FDCF22543ADF20092E183 /* scroll_data.c */; };
+		B54FDCF42543ADF20092E183 /* scroll_data.c in Sources */ = {isa = PBXBuildFile; fileRef = B54FDCF22543ADF20092E183 /* scroll_data.c */; };
+		B54FDCF52543ADF20092E183 /* scroll_data.c in Sources */ = {isa = PBXBuildFile; fileRef = B54FDCF22543ADF20092E183 /* scroll_data.c */; };
+		B54FDCF62543ADF20092E183 /* scroll_data.c in Sources */ = {isa = PBXBuildFile; fileRef = B54FDCF22543ADF20092E183 /* scroll_data.c */; };
+		B54FDCF72543ADF20092E183 /* scroll_data.c in Sources */ = {isa = PBXBuildFile; fileRef = B54FDCF22543ADF20092E183 /* scroll_data.c */; };
+		B54FDCF82543ADF20092E183 /* scroll_data.c in Sources */ = {isa = PBXBuildFile; fileRef = B54FDCF22543ADF20092E183 /* scroll_data.c */; };
 		B550DEA316BBA1BF00983A54 /* endings.c in Sources */ = {isa = PBXBuildFile; fileRef = B550DEA216BBA1BF00983A54 /* endings.c */; };
 		B551553514773E8A00A8BBD9 /* coinage.c in Sources */ = {isa = PBXBuildFile; fileRef = B551553414773E8A00A8BBD9 /* coinage.c */; };
 		B55891431485AB2A00BBB0BA /* coll_projectile.c in Sources */ = {isa = PBXBuildFile; fileRef = B55891421485AB2A00BBB0BA /* coll_projectile.c */; };
@@ -607,6 +631,15 @@
 		B53EBC7F155F91F900581C8D /* act17.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = act17.c; sourceTree = "<group>"; };
 		B53EBC82155F927300581C8D /* act16.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = act16.h; sourceTree = "<group>"; };
 		B53EBC83155F927300581C8D /* act16.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = act16.c; sourceTree = "<group>"; };
+		B54FDCC72543AB940092E183 /* scroll_maint.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = scroll_maint.h; sourceTree = "<group>"; };
+		B54FDCC82543AB940092E183 /* scroll_maint.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = scroll_maint.c; sourceTree = "<group>"; };
+		B54FDCD52543AD230092E183 /* parallax.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = parallax.h; sourceTree = "<group>"; };
+		B54FDCD62543AD230092E183 /* parallax.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = parallax.c; sourceTree = "<group>"; };
+		B54FDCE32543ADC10092E183 /* scroll_util.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = scroll_util.h; sourceTree = "<group>"; };
+		B54FDCE42543ADC10092E183 /* scroll_util.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = scroll_util.c; sourceTree = "<group>"; };
+		B54FDCF12543ADF20092E183 /* scroll_data.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = scroll_data.h; sourceTree = "<group>"; };
+		B54FDCF22543ADF20092E183 /* scroll_data.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = scroll_data.c; sourceTree = "<group>"; };
+		B54FDCFF2543C8B20092E183 /* scroll.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = scroll.h; sourceTree = "<group>"; };
 		B550DEA116BBA1BF00983A54 /* endings.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = endings.h; sourceTree = "<group>"; };
 		B550DEA216BBA1BF00983A54 /* endings.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = endings.c; sourceTree = "<group>"; };
 		B551553314773E8A00A8BBD9 /* coinage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = coinage.h; sourceTree = "<group>"; };
@@ -1013,6 +1046,24 @@
 			path = Shaders;
 			sourceTree = "<group>";
 		};
+		B54FDCC62543AB680092E183 /* scrolls */ = {
+			isa = PBXGroup;
+			children = (
+				B5ADB82B13B2B57D00905DFE /* gstate.c */,
+				B5ADB82C13B2B57D00905DFE /* gstate.h */,
+				B54FDCC72543AB940092E183 /* scroll_maint.h */,
+				B54FDCC82543AB940092E183 /* scroll_maint.c */,
+				B54FDCD52543AD230092E183 /* parallax.h */,
+				B54FDCD62543AD230092E183 /* parallax.c */,
+				B54FDCE32543ADC10092E183 /* scroll_util.h */,
+				B54FDCE42543ADC10092E183 /* scroll_util.c */,
+				B54FDCF12543ADF20092E183 /* scroll_data.h */,
+				B54FDCF22543ADF20092E183 /* scroll_data.c */,
+				B54FDCFF2543C8B20092E183 /* scroll.h */,
+			);
+			path = scrolls;
+			sourceTree = "<group>";
+		};
 		B55891401485AB1B00BBB0BA /* coll */ = {
 			isa = PBXGroup;
 			children = (
@@ -1053,6 +1104,7 @@
 		B5ADB7E113B2B57D00905DFE /* FistBlue */ = {
 			isa = PBXGroup;
 			children = (
+				B54FDCC62543AB680092E183 /* scrolls */,
 				B55891401485AB1B00BBB0BA /* coll */,
 				B5AEA9D61405A44200DD9798 /* tests */,
 				B5ADB7E213B2B57D00905DFE /* actions */,
@@ -1074,8 +1126,6 @@
 				B5ADB82413B2B57D00905DFE /* gfxdata */,
 				B5ADB82913B2B57D00905DFE /* gfxlib.c */,
 				B5ADB82A13B2B57D00905DFE /* gfxlib.h */,
-				B5ADB82B13B2B57D00905DFE /* gstate.c */,
-				B5ADB82C13B2B57D00905DFE /* gstate.h */,
 				B5ADB82D13B2B57E00905DFE /* lib.c */,
 				B5ADB82E13B2B57E00905DFE /* lib.h */,
 				B5ADB82F13B2B57E00905DFE /* libdata.h */,
@@ -1550,6 +1600,7 @@
 				B5ADB85713B2B57E00905DFE /* mbison.c in Sources */,
 				B5ADB85813B2B57E00905DFE /* ryu.c in Sources */,
 				B5ADB85913B2B57E00905DFE /* vega.c in Sources */,
+				B54FDCE52543ADC10092E183 /* scroll_util.c in Sources */,
 				B5ADB85A13B2B57E00905DFE /* collision.c in Sources */,
 				B5ADB85B13B2B57E00905DFE /* computer.c in Sources */,
 				B5ADB85C13B2B57E00905DFE /* effects.c in Sources */,
@@ -1571,11 +1622,13 @@
 				B5ADB86B13B2B57E00905DFE /* sm.c in Sources */,
 				B5ADB86C13B2B57E00905DFE /* sound.c in Sources */,
 				B5ADB86D13B2B57E00905DFE /* sprite.c in Sources */,
+				B54FDCF32543ADF20092E183 /* scroll_data.c in Sources */,
 				B5ADB86E13B2B57E00905DFE /* task.c in Sources */,
 				B5ADB87213B2B59A00905DFE /* glwimp.c in Sources */,
 				B5871ED71408E4F4004A45F5 /* pthreads.c in Sources */,
 				B56A718C1411B0D300DF7F02 /* game.c in Sources */,
 				B551553514773E8A00A8BBD9 /* coinage.c in Sources */,
+				B54FDCC92543AB940092E183 /* scroll_maint.c in Sources */,
 				B51533F2147EEB4F004A87B0 /* car.c in Sources */,
 				B51533F5147EEBDB004A87B0 /* drums.c in Sources */,
 				B5BA3ACE147F0EBC0069ACD3 /* actions.c in Sources */,
@@ -1591,6 +1644,7 @@
 				B5B0763D155489B5009D301D /* act02_bicycleriders.c in Sources */,
 				B5B0764615548B28009D301D /* act07_elephants.c in Sources */,
 				B53EBC59155F86F400581C8D /* act29_wwlogo.c in Sources */,
+				B54FDCD72543AD230092E183 /* parallax.c in Sources */,
 				B53EBC62155F8A4600581C8D /* act3e_capcomlogos.c in Sources */,
 				B53EBC6E155F8C0600581C8D /* act_3f.c in Sources */,
 				B53EBC80155F91F900581C8D /* act17.c in Sources */,
@@ -1625,6 +1679,7 @@
 				B51D1E53253BFFC800CEB195 /* guile_comp.c in Sources */,
 				B51D1DF1253BFF8500CEB195 /* actions_530a.c in Sources */,
 				B51D1EB6253C003100CEB195 /* rules.c in Sources */,
+				B54FDCEA2543ADC10092E183 /* scroll_util.c in Sources */,
 				B51D1E85253C001F00CEB195 /* lib.c in Sources */,
 				B519C6AD253C03CF0084B88D /* trackball.c in Sources */,
 				B51D1DF8253BFF8C00CEB195 /* reels.c in Sources */,
@@ -1657,6 +1712,7 @@
 				B51D1E60253BFFC800CEB195 /* zangeif.c in Sources */,
 				B51D1D1A253BF34100CEB195 /* AppDelegate.swift in Sources */,
 				B51D1E8C253C002100CEB195 /* particle.c in Sources */,
+				B54FDCF82543ADF20092E183 /* scroll_data.c in Sources */,
 				B51D1EA1253C002A00CEB195 /* playerstate.c in Sources */,
 				B51D1E77253C001900CEB195 /* gfxlib.c in Sources */,
 				B51D1EC4253C003800CEB195 /* sound.c in Sources */,
@@ -1674,6 +1730,7 @@
 				B51D1E5F253BFFC800CEB195 /* ryuken_comp.c in Sources */,
 				B51D1DEA253BFF8300CEB195 /* actions_198a.c in Sources */,
 				B51D1DCE253BFF7400CEB195 /* car.c in Sources */,
+				B54FDCDC2543AD230092E183 /* parallax.c in Sources */,
 				B51D1E6E253BFFD400CEB195 /* effects.c in Sources */,
 				B51D1DE3253BFF7F00CEB195 /* actions.c in Sources */,
 				B51D1EA8253C002C00CEB195 /* projectiles.c in Sources */,
@@ -1695,6 +1752,7 @@
 				B51D1DAB253BFF1A00CEB195 /* pthreads.c in Sources */,
 				B51D1DA4253BFF1500CEB195 /* gemu.c in Sources */,
 				B51D1E93253C002400CEB195 /* player.c in Sources */,
+				B54FDCCE2543AB950092E183 /* scroll_maint.c in Sources */,
 				B51D1E37253BFFA500CEB195 /* act16.c in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1731,6 +1789,7 @@
 				B5C5744B1772782600496283 /* projectiles.c in Sources */,
 				B5C5744C1772782600496283 /* reactmode.c in Sources */,
 				B5C5744D1772782600496283 /* rules.c in Sources */,
+				B54FDCCA2543AB950092E183 /* scroll_maint.c in Sources */,
 				B5C5744E1772782600496283 /* sm.c in Sources */,
 				B5C5744F1772782600496283 /* sound.c in Sources */,
 				B5C574501772782600496283 /* sprite.c in Sources */,
@@ -1738,6 +1797,7 @@
 				B5C574521772782600496283 /* glwimp.c in Sources */,
 				B5C574531772782600496283 /* pthreads.c in Sources */,
 				B5C574541772782600496283 /* game.c in Sources */,
+				B54FDCF42543ADF20092E183 /* scroll_data.c in Sources */,
 				B5C574551772782600496283 /* coinage.c in Sources */,
 				6C6F0DE81C349FAA004CD78E /* redhammer.c in Sources */,
 				B5C574561772782600496283 /* car.c in Sources */,
@@ -1750,6 +1810,7 @@
 				B5C5745E1772782600496283 /* aitests.c in Sources */,
 				B5C5745F1772782600496283 /* testlib.c in Sources */,
 				B5C574601772782600496283 /* act2e_plane.c in Sources */,
+				B54FDCD82543AD230092E183 /* parallax.c in Sources */,
 				B5C574611772782600496283 /* act1e_worldflags.c in Sources */,
 				6C8C65271C37717200635FDB /* barrels.c in Sources */,
 				B5C574621772782600496283 /* act02_bicycleriders.c in Sources */,
@@ -1759,6 +1820,7 @@
 				B5C574661772782600496283 /* act_3f.c in Sources */,
 				B5C574671772782600496283 /* act17.c in Sources */,
 				B5C574681772782600496283 /* act16.c in Sources */,
+				B54FDCE62543ADC10092E183 /* scroll_util.c in Sources */,
 				B5C574691772782600496283 /* text.c in Sources */,
 				B5C5746A1772782600496283 /* zangeif.c in Sources */,
 				B5C5746B1772782600496283 /* sagat.c in Sources */,
@@ -1812,6 +1874,7 @@
 				B5E0EFD717754D8800F50790 /* playerselect.c in Sources */,
 				B5E0EFD817754D8800F50790 /* playerstate.c in Sources */,
 				B5E0EFD917754D8800F50790 /* projectiles.c in Sources */,
+				B54FDCCB2543AB950092E183 /* scroll_maint.c in Sources */,
 				B5E0EFDA17754D8800F50790 /* reactmode.c in Sources */,
 				B5E0EFDB17754D8800F50790 /* rules.c in Sources */,
 				B5E0EFDC17754D8800F50790 /* sm.c in Sources */,
@@ -1819,6 +1882,7 @@
 				B5E0EFDE17754D8800F50790 /* sprite.c in Sources */,
 				B5E0EFDF17754D8800F50790 /* task.c in Sources */,
 				B5E0EFE017754D8800F50790 /* glwimp.c in Sources */,
+				B54FDCF52543ADF20092E183 /* scroll_data.c in Sources */,
 				B5E0EFE117754D8800F50790 /* pthreads.c in Sources */,
 				B5E0EFE217754D8800F50790 /* game.c in Sources */,
 				B5E0EFE317754D8800F50790 /* coinage.c in Sources */,
@@ -1831,6 +1895,7 @@
 				B5E0EFEB17754D8800F50790 /* reels.c in Sources */,
 				B5E0EFEC17754D8800F50790 /* aitests.c in Sources */,
 				B5E0EFED17754D8800F50790 /* testlib.c in Sources */,
+				B54FDCD92543AD230092E183 /* parallax.c in Sources */,
 				B5E0EFEE17754D8800F50790 /* act2e_plane.c in Sources */,
 				B5E0EFEF17754D8800F50790 /* act1e_worldflags.c in Sources */,
 				B5E0EFF017754D8800F50790 /* act02_bicycleriders.c in Sources */,
@@ -1840,6 +1905,7 @@
 				B5E0EFF417754D8800F50790 /* act_3f.c in Sources */,
 				B5E0EFF517754D8800F50790 /* act17.c in Sources */,
 				B5E0EFF617754D8800F50790 /* act16.c in Sources */,
+				B54FDCE72543ADC10092E183 /* scroll_util.c in Sources */,
 				B5E0EFF717754D8800F50790 /* text.c in Sources */,
 				B5E0EFF817754D8800F50790 /* zangeif.c in Sources */,
 				B5E0EFF917754D8800F50790 /* sagat.c in Sources */,
@@ -1893,6 +1959,7 @@
 				B5E0F03217754D9500F50790 /* playerselect.c in Sources */,
 				B5E0F03317754D9500F50790 /* playerstate.c in Sources */,
 				B5E0F03417754D9500F50790 /* projectiles.c in Sources */,
+				B54FDCCC2543AB950092E183 /* scroll_maint.c in Sources */,
 				B5E0F03517754D9500F50790 /* reactmode.c in Sources */,
 				B5E0F03617754D9500F50790 /* rules.c in Sources */,
 				B5E0F03717754D9500F50790 /* sm.c in Sources */,
@@ -1900,6 +1967,7 @@
 				B5E0F03917754D9500F50790 /* sprite.c in Sources */,
 				B5E0F03A17754D9500F50790 /* task.c in Sources */,
 				B5E0F03B17754D9500F50790 /* glwimp.c in Sources */,
+				B54FDCF62543ADF20092E183 /* scroll_data.c in Sources */,
 				B5E0F03C17754D9500F50790 /* pthreads.c in Sources */,
 				B5E0F03D17754D9500F50790 /* game.c in Sources */,
 				B5E0F03E17754D9500F50790 /* coinage.c in Sources */,
@@ -1912,6 +1980,7 @@
 				B5E0F04617754D9500F50790 /* reels.c in Sources */,
 				B5E0F04717754D9500F50790 /* aitests.c in Sources */,
 				B5E0F04817754D9500F50790 /* testlib.c in Sources */,
+				B54FDCDA2543AD230092E183 /* parallax.c in Sources */,
 				B5E0F04917754D9500F50790 /* act2e_plane.c in Sources */,
 				B5E0F04A17754D9500F50790 /* act1e_worldflags.c in Sources */,
 				B5E0F04B17754D9500F50790 /* act02_bicycleriders.c in Sources */,
@@ -1921,6 +1990,7 @@
 				B5E0F04F17754D9500F50790 /* act_3f.c in Sources */,
 				B5E0F05017754D9500F50790 /* act17.c in Sources */,
 				B5E0F05117754D9500F50790 /* act16.c in Sources */,
+				B54FDCE82543ADC10092E183 /* scroll_util.c in Sources */,
 				B5E0F05217754D9500F50790 /* text.c in Sources */,
 				B5E0F05317754D9500F50790 /* zangeif.c in Sources */,
 				B5E0F05417754D9500F50790 /* sagat.c in Sources */,
@@ -1978,7 +2048,9 @@
 				B5E8FD391776C89400C6060E /* ehonda_comp.c in Sources */,
 				B5E8FD3A1776C89400C6060E /* ehonda_human.c in Sources */,
 				B5E8FD3B1776C89400C6060E /* guile.c in Sources */,
+				B54FDCDB2543AD230092E183 /* parallax.c in Sources */,
 				B5E8FD3C1776C89400C6060E /* guile_human.c in Sources */,
+				B54FDCCD2543AB950092E183 /* scroll_maint.c in Sources */,
 				B5E8FD3D1776C89400C6060E /* guile_comp.c in Sources */,
 				B5E8FD3E1776C89400C6060E /* mbison.c in Sources */,
 				B5E8FD3F1776C89400C6060E /* ryu.c in Sources */,
@@ -1990,8 +2062,10 @@
 				B5E8FD441776C89400C6060E /* zangeif.c in Sources */,
 				B5E8FD451776C89400C6060E /* chunli_comp.c in Sources */,
 				B5E8FD461776C89400C6060E /* chunli_human.c in Sources */,
+				B54FDCF72543ADF20092E183 /* scroll_data.c in Sources */,
 				B5E8FD471776C89D00C6060E /* coinage.c in Sources */,
 				B51D1CB1253BE0E600CEB195 /* barrels.c in Sources */,
+				B54FDCE92543ADC10092E183 /* scroll_util.c in Sources */,
 				B5E8FD481776C89D00C6060E /* computer.c in Sources */,
 				B5E8FD491776C89D00C6060E /* demo.c in Sources */,
 				B5E8FD4A1776C89D00C6060E /* effects.c in Sources */,
