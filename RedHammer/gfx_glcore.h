@@ -17,6 +17,6 @@
 #endif
 
 void render_glcore(void);
-void init_glcore(unsigned int shaderProgram, GLuint objectTexture, GLuint scrollTexture);
+void init_glcore(unsigned int shaderProgram, unsigned int shader2, GLuint objectTexture, GLuint scrollTexture);
 
 #endif /* gfx_glcore_h */

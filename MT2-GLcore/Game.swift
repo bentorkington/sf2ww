@@ -16,6 +16,7 @@ let NUM_LIGHTS = 3
 
 class Game {
     private var program: ShaderProgram
+    private var tileProgram: ShaderProgram
     
     private var lightPosition = [Float](repeating: 0.0, count: NUM_LIGHTS * 3)
     private var lightColor: [Float] = [1.0, 0.0, 0.0,
@@ -40,10 +41,14 @@ class Game {
         program.attachShader("pointshader.fs", withType: GL_FRAGMENT_SHADER)
         program.link()
         
+        tileProgram = ShaderProgram();
+        tileProgram.attachShader("tileshader.vs", withType: GL_VERTEX_SHADER)
+        tileProgram.attachShader("tileshader.fs", withType: GL_FRAGMENT_SHADER)
+        tileProgram.link()
+        
         renderable = PointSprite(program: program)
         
-        init_glcore(program.program, textures[0], textures[1])
-//        gfx_glut_init()
+        init_glcore(program.program, tileProgram.program, textures[0], textures[1])
         load_cps_roms()
         manual_init()
     }
@@ -54,7 +59,7 @@ class Game {
 //        let modelviewMatrix = translationMatrix * rotationMatrix
 
         // Enable the program and set uniform variables.
-        program.use()
+//        program.use()
         
 //        glBlendFunc(GLenum(GL_SRC_ALPHA), GLenum(GL_ONE_MINUS_SRC_ALPHA))
 //        glEnable(GLenum(GL_BLEND))

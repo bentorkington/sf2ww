@@ -39,6 +39,8 @@
 		8D11072F0486CEB800E47090 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */; };
 		B51533F2147EEB4F004A87B0 /* car.c in Sources */ = {isa = PBXBuildFile; fileRef = B51533F1147EEB4F004A87B0 /* car.c */; };
 		B51533F5147EEBDB004A87B0 /* drums.c in Sources */ = {isa = PBXBuildFile; fileRef = B51533F4147EEBDB004A87B0 /* drums.c */; };
+		B517DD592543E8E000649292 /* tileshader.vs in Resources */ = {isa = PBXBuildFile; fileRef = B517DD582543E8E000649292 /* tileshader.vs */; };
+		B517DD612543E8F300649292 /* tileshader.fs in Resources */ = {isa = PBXBuildFile; fileRef = B517DD602543E8F300649292 /* tileshader.fs */; };
 		B519C69F253C039E0084B88D /* glwimp.c in Sources */ = {isa = PBXBuildFile; fileRef = B5ADB87013B2B59A00905DFE /* glwimp.c */; };
 		B519C6A6253C03BB0084B88D /* blanka_human.c in Sources */ = {isa = PBXBuildFile; fileRef = B56BFC6F156B444F00DC7BAD /* blanka_human.c */; };
 		B519C6AD253C03CF0084B88D /* trackball.c in Sources */ = {isa = PBXBuildFile; fileRef = B5ADB7B013B2B38400905DFE /* trackball.c */; };
@@ -599,6 +601,8 @@
 		B51533F1147EEB4F004A87B0 /* car.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = car.c; sourceTree = "<group>"; };
 		B51533F3147EEBDB004A87B0 /* drums.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = drums.h; sourceTree = "<group>"; };
 		B51533F4147EEBDB004A87B0 /* drums.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = drums.c; sourceTree = "<group>"; };
+		B517DD582543E8E000649292 /* tileshader.vs */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.glsl; path = tileshader.vs; sourceTree = "<group>"; };
+		B517DD602543E8F300649292 /* tileshader.fs */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.glsl; path = tileshader.fs; sourceTree = "<group>"; };
 		B519C6B4253C04A60084B88D /* game-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "game-Bridging-Header.h"; sourceTree = "<group>"; };
 		B519C713253C27020084B88D /* PointSprite.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PointSprite.swift; sourceTree = "<group>"; };
 		B519C721253C92EC0084B88D /* gfx_glcore.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = gfx_glcore.h; sourceTree = "<group>"; };
@@ -1042,6 +1046,8 @@
 			children = (
 				B51D1D85253BFC2500CEB195 /* pointshader.fs */,
 				B51D1D86253BFC2500CEB195 /* pointshader.vs */,
+				B517DD582543E8E000649292 /* tileshader.vs */,
+				B517DD602543E8F300649292 /* tileshader.fs */,
 			);
 			path = Shaders;
 			sourceTree = "<group>";
@@ -1524,7 +1530,9 @@
 				B51D1D8D253BFC7700CEB195 /* pointshader.fs in Resources */,
 				B51D1D8E253BFC7700CEB195 /* pointshader.vs in Resources */,
 				B51D1D73253BFA3C00CEB195 /* sf2gfx.bin in Resources */,
+				B517DD592543E8E000649292 /* tileshader.vs in Resources */,
 				B51D1D1C253BF34300CEB195 /* Assets.xcassets in Resources */,
+				B517DD612543E8F300649292 /* tileshader.fs in Resources */,
 				B51D1D1F253BF34300CEB195 /* MainMenu.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
