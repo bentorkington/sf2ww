@@ -988,8 +988,12 @@ void resetstate_B(void) {
     clear_scrolls23();     /* clear gstate bd2 */
     _LBResetState();
 }
-               
-void LBResetState(void) {		// 2794
+
+/**
+ @brief Reset all per-round state
+ @see sf2ua/0x2794
+ */
+void LBResetState(void) {
     clear_gstates();  
     _LBResetState();
 }
@@ -1044,9 +1048,11 @@ void _LBResetState(void) {
     g.Layer3Grp5Cnt = 
     g.Layer3Grp6Cnt = 0; 
 }
+
 static void clear_playerselect(void) {			//2968
 	memclear(&g.PLSL,sizeof(struct state_playerselect));
 }
+
 static void sub_297a(void) {
 	g.FreeCount_530a = 20;
 	int i;

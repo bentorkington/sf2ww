@@ -162,7 +162,12 @@ void update_motion(Object *obj) {		/* 2416 */
 }
 
 
-void enqueue_and_layer (Object *obj) {		/* 25de */
+/**
+ @brief schedule the sprite to be drawn in the relevant layer
+ @param obj The sprite object to draw
+ @see sf2ua/0x25de
+ */
+void enqueue_and_layer (Object *obj) {
     switch(obj->Layer) {
         case GFX_LAYER1: 
             switch(obj->Pool) {

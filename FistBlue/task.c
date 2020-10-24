@@ -164,7 +164,6 @@ __asm__ volatile {
 }
 #endif
 
-
 void exit_ready (void) {
     Exec.Tasks[Exec.CurrentTask].status = TASK_READY;
 #ifdef SF2_UCONTEXT
@@ -179,7 +178,6 @@ void exit_ready (void) {
     // todo
 #endif
 }
-
 
 void task_die(void) {
 	Exec.Tasks[Exec.CurrentTask].status = TASK_EMPTY;
@@ -247,8 +245,6 @@ void create_task(void *task, short taskid, u16 param, u8 param1, u8 param2) {
 	RHCreateThread(taskid);
 #endif
 }
-
-
 
 static void despatch_tasks (void)
 {
