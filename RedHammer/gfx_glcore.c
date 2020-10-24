@@ -17,9 +17,9 @@ extern int gemu_scroll_enable[4];
 
 // Point sprites
 
-GLuint vertices_scroll1[CPS1_OBJ_SIZE][2];
-GLuint vertices_scroll2[CPS1_OBJ_SIZE][2];
-GLuint vertices_scroll3[CPS1_OBJ_SIZE][2];
+GLuint vertices_scroll1[CPS1_OTHER_SIZE][2];
+GLuint vertices_scroll2[CPS1_OTHER_SIZE][2];
+GLuint vertices_scroll3[CPS1_OTHER_SIZE][2];
 
 GLfloat dummy[] = {
     0.5, 0.5,
