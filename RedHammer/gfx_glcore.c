@@ -268,7 +268,9 @@ void init_glcore(unsigned int shaderProgram, unsigned int tileShader, GLuint tex
     
     glEnableVertexAttribArray(attrLocation);
     glVertexAttribIPointer(attrLocation, 2, GL_UNSIGNED_SHORT, 0, 0);
-    
+    glEnableVertexAttribArray(attrLocation + 1);
+    glVertexAttribIPointer(attrLocation + 1, 2, GL_UNSIGNED_SHORT, 0, (void *)2);
+
     // Scroll 2
     
     glBindVertexArray(scroll_vertex_arrays[1]);
@@ -284,7 +286,9 @@ void init_glcore(unsigned int shaderProgram, unsigned int tileShader, GLuint tex
     
     glEnableVertexAttribArray(attrLocation);
     glVertexAttribIPointer(attrLocation, 2, GL_UNSIGNED_SHORT, 0, 0);
-    
+    glEnableVertexAttribArray(attrLocation + 1);
+    glVertexAttribIPointer(attrLocation + 1, 2, GL_UNSIGNED_SHORT, 0, (void *)2);
+
     // Scroll 3
     
     glBindVertexArray(scroll_vertex_arrays[2]);
@@ -300,7 +304,8 @@ void init_glcore(unsigned int shaderProgram, unsigned int tileShader, GLuint tex
 
     glEnableVertexAttribArray(attrLocation);
     glVertexAttribIPointer(attrLocation, 2, GL_UNSIGNED_SHORT, 0, 0);
-
+    glEnableVertexAttribArray(attrLocation + 1);
+    glVertexAttribIPointer(attrLocation + 1, 2, GL_UNSIGNED_SHORT, 0, (void *)2);
     // done!
     
     glBindVertexArray(0);
