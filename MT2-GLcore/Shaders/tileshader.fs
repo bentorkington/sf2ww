@@ -20,13 +20,27 @@ flat in int tileAttribute;
 const int bitsPerByte = 8;
 const int bitsPerNibble = 4;
 
+const vec2 flips[] = vec2[] (
+    vec2(1.0, 1.0),
+    vec2(-1.0, 1.0),
+    vec2(1.0, -1.0),
+    vec2(-1.0, -1.0)
+);
+
+
 void main() {
-    ivec2 pixel = ivec2(
-        min(int(pixelPosition.x), tilePixelSize - 1),
-        min(int(pixelPosition.y), tilePixelSize -1 ));
+    int palette = tileAttribute & 0x1f;
+    int flipIndex = (tileAttribute & 0x60) >> 5;
     
-    int palette = tileAttribute & 0xf;
-    int flips = (tileAttribute & 0x60) >> 5;
+    vec2 flippedCoord = (pixelPosition * flips[flipIndex] + 0.5) * tilePixelSize;
+    
+    ivec2 pixel = ivec2(
+        min(int(flippedCoord.x), tilePixelSize - 1),
+        min(int(flippedCoord.y), tilePixelSize - 1 ));
+
+//    fragColor = vec4(pixel.x / 31.0, 1.0, pixel.y / 31.0, 1.0);
+//    return;
+
     
     // we need to get the pixel color index, which requires reading four bytes from
     // the `index` texture
