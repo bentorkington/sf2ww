@@ -31,6 +31,8 @@ GLuint polys_scroll2[CPS1_OTHER_SIZE][6][2];
 GLuint polys_scroll3[CPS1_OTHER_SIZE][6][2];
 
 GLfloat pixelPositions_scroll3[CPS1_OTHER_SIZE][6][2];
+GLushort tileAttributes_scroll1[CPS1_OTHER_SIZE][6][2];
+GLushort tileAttributes_scroll2[CPS1_OTHER_SIZE][6][2];
 GLushort tileAttributes_scroll3[CPS1_OTHER_SIZE][6][2];
 
 GLfloat dummy[] = {
@@ -81,20 +83,22 @@ GLushort dummyAttribs[] = {
     0x46a, 0, // the last vertex is the 'provoking vertex'
 };
 
+// POINTS:
+
 GLuint scroll_vertex_arrays[3];
 GLuint scroll_vertex_buffers[3];
 GLuint scroll_attr_buffers[3];
 
+// POLY:
 
+// this can be shared across all three scrolls
+GLuint pixel_position_buffer;
+
+GLuint poly_vertex_arrays[3];
 GLuint scroll_poly_arrays[3];
 GLuint scroll_poly_vertex_buffers[3];
-GLuint scrolly_poly_attr_buffers[3];
+GLuint scroll_poly_attr_buffers[3];
 
-GLuint dummyVertexArray;
-GLuint dummyVertexBuffer;
-GLuint dummyTexCoordsBuffer;
-GLuint dummyAttrBuffer;
-GLuint dummyPixelBuffer;
 
 GLuint vertexLocation;
 GLuint attrLocation;
@@ -181,6 +185,32 @@ static void setup_point_vertices() {
         vertices_scroll3[i][0] = scr3x * TILE_PIXELS_SCR3 + TILE_PIXELS_SCR3 / 2;
         vertices_scroll3[i][1] = 2048 - (scr3y * TILE_PIXELS_SCR3 + TILE_PIXELS_SCR3 / 2);
 
+        polys_scroll1[i][0][0] = (scr1x + 1) * TILE_PIXELS_SCR1;
+        polys_scroll1[i][0][1] = 512 - ((scr1y + 1) * TILE_PIXELS_SCR1);
+        polys_scroll1[i][1][0] = (scr1x + 1) * TILE_PIXELS_SCR1;
+        polys_scroll1[i][1][1] = 512 - (scr1y * TILE_PIXELS_SCR1);
+        polys_scroll1[i][2][0] = scr1x * TILE_PIXELS_SCR1;
+        polys_scroll1[i][2][1] = 512 - ((scr1y + 1) * TILE_PIXELS_SCR1);
+        polys_scroll1[i][3][0] = scr1x * TILE_PIXELS_SCR1;
+        polys_scroll1[i][3][1] = 512 - ((scr1y + 1) * TILE_PIXELS_SCR1);
+        polys_scroll1[i][4][0] = (scr1x + 1) * TILE_PIXELS_SCR1;
+        polys_scroll1[i][4][1] = 512 - (scr1y * TILE_PIXELS_SCR1);
+        polys_scroll1[i][5][0] = scr1x * TILE_PIXELS_SCR1;
+        polys_scroll1[i][5][1] = 512 - (scr1y * TILE_PIXELS_SCR1);
+        
+        polys_scroll2[i][0][0] = (scr2x + 1) * TILE_PIXELS_SCR2;
+        polys_scroll2[i][0][1] = 1024 - ((scr2y + 1) * TILE_PIXELS_SCR2);
+        polys_scroll2[i][1][0] = (scr2x + 1) * TILE_PIXELS_SCR2;
+        polys_scroll2[i][1][1] = 1024 - (scr2y * TILE_PIXELS_SCR2);
+        polys_scroll2[i][2][0] = scr2x * TILE_PIXELS_SCR2;
+        polys_scroll2[i][2][1] = 1024 - ((scr2y + 1) * TILE_PIXELS_SCR2);
+        polys_scroll2[i][3][0] = scr2x * TILE_PIXELS_SCR2;
+        polys_scroll2[i][3][1] = 1024 - ((scr2y + 1) * TILE_PIXELS_SCR2);
+        polys_scroll2[i][4][0] = (scr2x + 1) * TILE_PIXELS_SCR2;
+        polys_scroll2[i][4][1] = 1024 - (scr2y * TILE_PIXELS_SCR2);
+        polys_scroll2[i][5][0] = scr2x * TILE_PIXELS_SCR2;
+        polys_scroll2[i][5][1] = 1024 - (scr2y * TILE_PIXELS_SCR2);
+        
         polys_scroll3[i][0][0] = (scr3x + 1) * TILE_PIXELS_SCR3;
         polys_scroll3[i][0][1] = 2048 - ((scr3y + 1) * TILE_PIXELS_SCR3);
         polys_scroll3[i][1][0] = (scr3x + 1) * TILE_PIXELS_SCR3;
@@ -194,7 +224,7 @@ static void setup_point_vertices() {
         polys_scroll3[i][5][0] = scr3x * TILE_PIXELS_SCR3;
         polys_scroll3[i][5][1] = 2048 - (scr3y * TILE_PIXELS_SCR3);
 
-        
+        // same for all scrolls
         pixelPositions_scroll3[i][0][0] = 0.5;
         pixelPositions_scroll3[i][0][1] = 0.5;
         pixelPositions_scroll3[i][1][0] = 0.5;
@@ -341,30 +371,76 @@ void init_glcore(unsigned int shaderProgram, unsigned int tileShader, GLuint tex
     glUseProgram(tileShader);
     glUniform1i(tileProgramLocations.paletteTexture, 1);
     
-    glGenVertexArrays(1, &dummyVertexArray);
-    glGenBuffers(1, &dummyVertexBuffer);
-    glGenBuffers(1, &dummyTexCoordsBuffer);
-    glGenBuffers(1, &dummyPixelBuffer);
-    glGenBuffers(1, &dummyAttrBuffer);
+    // pixel positions to share across 3 scrolls
+    glGenBuffers(1, &pixel_position_buffer);
+    glBindBuffer(GL_ARRAY_BUFFER, pixel_position_buffer);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(GLfloat) * 6 * 2 * CPS1_OTHER_SIZE, pixelPositions_scroll3, GL_STATIC_DRAW);
 
-    glBindVertexArray(dummyVertexArray);
-    glBindBuffer(GL_ARRAY_BUFFER, dummyVertexBuffer);
+    glGenVertexArrays(3, poly_vertex_arrays);
+    glGenBuffers(3, scroll_poly_vertex_buffers);
+    glGenBuffers(3, scroll_poly_attr_buffers);
+
+    
+    
+    // Scroll 1
+    glBindVertexArray(poly_vertex_arrays[0]);
+
+    glBindBuffer(GL_ARRAY_BUFFER, scroll_poly_vertex_buffers[0]);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(GLuint) * 6 * 2 * CPS1_OTHER_SIZE, polys_scroll1, GL_STATIC_DRAW);
+    glVertexAttribIPointer(tileVertexLocation, 2, GL_UNSIGNED_INT, 0, 0);
+    glEnableVertexAttribArray(tileVertexLocation);
+
+    glBindBuffer(GL_ARRAY_BUFFER, pixel_position_buffer);
+    glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 0, 0);
+    glEnableVertexAttribArray(2);
+
+    glBindBuffer(GL_ARRAY_BUFFER, scroll_poly_attr_buffers[0]);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(GLushort) * 6 * 2 * CPS1_OTHER_SIZE, tileAttributes_scroll1, GL_DYNAMIC_DRAW);
+    glVertexAttribIPointer(3, 2, GL_UNSIGNED_SHORT, 0, 0);
+    glEnableVertexAttribArray(3);
+    glVertexAttribIPointer(4, 2, GL_UNSIGNED_SHORT, 0, (void *)2);
+    glEnableVertexAttribArray(4);
+    
+    // Scroll 2
+    glBindVertexArray(poly_vertex_arrays[1]);
+
+    glBindBuffer(GL_ARRAY_BUFFER, scroll_poly_vertex_buffers[1]);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(GLuint) * 6 * 2 * CPS1_OTHER_SIZE, polys_scroll2, GL_STATIC_DRAW);
+    glVertexAttribIPointer(tileVertexLocation, 2, GL_UNSIGNED_INT, 0, 0);
+    glEnableVertexAttribArray(tileVertexLocation);
+
+    glBindBuffer(GL_ARRAY_BUFFER, pixel_position_buffer);
+    glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 0, 0);
+    glEnableVertexAttribArray(2);
+
+    glBindBuffer(GL_ARRAY_BUFFER, scroll_poly_attr_buffers[1]);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(GLushort) * 6 * 2 * CPS1_OTHER_SIZE, tileAttributes_scroll2, GL_DYNAMIC_DRAW);
+    glVertexAttribIPointer(3, 2, GL_UNSIGNED_SHORT, 0, 0);
+    glEnableVertexAttribArray(3);
+    glVertexAttribIPointer(4, 2, GL_UNSIGNED_SHORT, 0, (void *)2);
+    glEnableVertexAttribArray(4);
+    
+    // Scroll 3
+    glBindVertexArray(poly_vertex_arrays[2]);
+
+    glBindBuffer(GL_ARRAY_BUFFER, scroll_poly_vertex_buffers[2]);
     glBufferData(GL_ARRAY_BUFFER, sizeof(GLuint) * 6 * 2 * CPS1_OTHER_SIZE, polys_scroll3, GL_STATIC_DRAW);
     glVertexAttribIPointer(tileVertexLocation, 2, GL_UNSIGNED_INT, 0, 0);
     glEnableVertexAttribArray(tileVertexLocation);
 
-    glBindBuffer(GL_ARRAY_BUFFER, dummyPixelBuffer);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(GLfloat) * 6 * 2 * CPS1_OTHER_SIZE, pixelPositions_scroll3, GL_STATIC_DRAW);
+    glBindBuffer(GL_ARRAY_BUFFER, pixel_position_buffer);
     glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 0, 0);
     glEnableVertexAttribArray(2);
-    
-    glBindBuffer(GL_ARRAY_BUFFER, dummyAttrBuffer);
+
+    glBindBuffer(GL_ARRAY_BUFFER, scroll_poly_attr_buffers[2]);
     glBufferData(GL_ARRAY_BUFFER, sizeof(GLushort) * 6 * 2 * CPS1_OTHER_SIZE, tileAttributes_scroll3, GL_DYNAMIC_DRAW);
     glVertexAttribIPointer(3, 2, GL_UNSIGNED_SHORT, 0, 0);
     glEnableVertexAttribArray(3);
     glVertexAttribIPointer(4, 2, GL_UNSIGNED_SHORT, 0, (void *)2);
     glEnableVertexAttribArray(4);
 
+    glBindVertexArray(0);
+    
     printf("after dummy glError is %d\n", glGetError());
 
     // set up the Scroll 1 -3 layers
@@ -399,21 +475,21 @@ void init_glcore(unsigned int shaderProgram, unsigned int tileShader, GLuint tex
     }
 }
 
-void render_dummy(void) {
-    glUniform1i(pl.tileSize, 16);
-    glUniform1f(pl.pointSize, 16.0);
-    glUniform1i(pl.rowByteStride, 8);
-    glUniform1i(pl.tileByteSize, 0x80);
-    glUniform1i(pl.atlasWidth, 2048);
-    glUniform1i(pl.atlasHeight, 2304);
-    
-    glActiveTexture(GL_TEXTURE0);
-    glBindTexture(GL_TEXTURE_2D, objectTexture);
-    
-    glBindVertexArray(dummyVertexArray);
-    glDrawArrays(GL_POINTS, 0, 4);
-}
-
+//void render_dummy(void) {
+//    glUniform1i(pl.tileSize, 16);
+//    glUniform1f(pl.pointSize, 16.0);
+//    glUniform1i(pl.rowByteStride, 8);
+//    glUniform1i(pl.tileByteSize, 0x80);
+//    glUniform1i(pl.atlasWidth, 2048);
+//    glUniform1i(pl.atlasHeight, 2304);
+//
+//    glActiveTexture(GL_TEXTURE0);
+//    glBindTexture(GL_TEXTURE_2D, objectTexture);
+//
+//    glBindVertexArray(dummyVertexArray);
+//    glDrawArrays(GL_POINTS, 0, 4);
+//}
+//
 
 void set_up_sprite_shader() {
     glUniform1i(pl.tileSize, 16);
@@ -477,7 +553,47 @@ void set_up_scroll3_shader() {
     glBindTexture(GL_TEXTURE_2D, scrollTexture);
 }
 
+void render_tile_scr1(void) {
+    glUniform2i(tileProgramLocations.scrollPosition, cps_a_emu.scroll1x % 512, cps_a_emu.scroll1y % 512);
+    glUniform1i(tileProgramLocations.rowByteStride, 8);
+    glUniform1i(tileProgramLocations.tileByteSize, 0x40);
+    glUniform1i(tileProgramLocations.tilePixelSize, 8);
+    
+    glBindVertexArray(poly_vertex_arrays[0]);
+    
+    for (int i = 0; i < CPS1_OTHER_SIZE; i++) {
+        tileAttributes_scroll1[i][2][0] = scrolls[0][i * 2 + 0];
+        tileAttributes_scroll1[i][2][1] = scrolls[0][i * 2 + 1];
+        tileAttributes_scroll1[i][5][0] = scrolls[0][i * 2 + 0];
+        tileAttributes_scroll1[i][5][1] = scrolls[0][i * 2 + 1];
+    }
+    glBindBuffer(GL_ARRAY_BUFFER, scroll_poly_attr_buffers[0]);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(GLushort) * 6 * 2 * CPS1_OTHER_SIZE, tileAttributes_scroll1, GL_DYNAMIC_DRAW);
+    glActiveTexture(GL_TEXTURE1);
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, 16, 32, 0, GL_RGBA, GL_UNSIGNED_SHORT_4_4_4_4, palettes[0]);
+    glDrawArrays(GL_TRIANGLES, 0, CPS1_OTHER_SIZE * 6);
+}
 
+void render_tile_scr2(void) {
+    glUniform2i(tileProgramLocations.scrollPosition, cps_a_emu.scroll2x % 1024, cps_a_emu.scroll2y % 1024);
+    glUniform1i(tileProgramLocations.rowByteStride, 8);
+    glUniform1i(tileProgramLocations.tileByteSize, 0x80);
+    glUniform1i(tileProgramLocations.tilePixelSize, 16);
+    
+    glBindVertexArray(poly_vertex_arrays[1]);
+    
+    for (int i = 0; i < CPS1_OTHER_SIZE; i++) {
+        tileAttributes_scroll2[i][2][0] = scrolls[1][i * 2 + 0];
+        tileAttributes_scroll2[i][2][1] = scrolls[1][i * 2 + 1];
+        tileAttributes_scroll2[i][5][0] = scrolls[1][i * 2 + 0];
+        tileAttributes_scroll2[i][5][1] = scrolls[1][i * 2 + 1];
+    }
+    glBindBuffer(GL_ARRAY_BUFFER, scroll_poly_attr_buffers[1]);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(GLushort) * 6 * 2 * CPS1_OTHER_SIZE, tileAttributes_scroll2, GL_DYNAMIC_DRAW);
+    glActiveTexture(GL_TEXTURE1);
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, 16, 32, 0, GL_RGBA, GL_UNSIGNED_SHORT_4_4_4_4, palettes[1]);
+    glDrawArrays(GL_TRIANGLES, 0, CPS1_OTHER_SIZE * 6);
+}
 
 void render_tile_scr3(void) {
     glUniform2i(tileProgramLocations.scrollPosition, cps_a_emu.scroll3x % 2048, cps_a_emu.scroll3y % 2048);
@@ -485,7 +601,7 @@ void render_tile_scr3(void) {
     glUniform1i(tileProgramLocations.tileByteSize, 0x200);
     glUniform1i(tileProgramLocations.tilePixelSize, 32);
     
-    glBindVertexArray(dummyVertexArray);
+    glBindVertexArray(poly_vertex_arrays[2]);
     
     for (int i = 0; i < CPS1_OTHER_SIZE; i++) {
         tileAttributes_scroll3[i][2][0] = scrolls[2][i * 2 + 0];
@@ -493,7 +609,7 @@ void render_tile_scr3(void) {
         tileAttributes_scroll3[i][5][0] = scrolls[2][i * 2 + 0];
         tileAttributes_scroll3[i][5][1] = scrolls[2][i * 2 + 1];
     }
-    glBindBuffer(GL_ARRAY_BUFFER, dummyAttrBuffer);
+    glBindBuffer(GL_ARRAY_BUFFER, scroll_poly_attr_buffers[2]);
     glBufferData(GL_ARRAY_BUFFER, sizeof(GLushort) * 6 * 2 * CPS1_OTHER_SIZE, tileAttributes_scroll3, GL_DYNAMIC_DRAW);
     glActiveTexture(GL_TEXTURE1);
     glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, 16, 32, 0, GL_RGBA, GL_UNSIGNED_SHORT_4_4_4_4, palettes[2]);
@@ -510,6 +626,8 @@ void render_glcore(void) {
     glActiveTexture(GL_TEXTURE0);
     glBindTexture(GL_TEXTURE_2D, scrollTexture);
 
+    render_tile_scr1();
+    render_tile_scr2();
     render_tile_scr3();
     return;
     
