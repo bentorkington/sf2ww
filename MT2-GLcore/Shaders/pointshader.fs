@@ -23,17 +23,27 @@ out vec4 fragColor;
 const int bitsPerByte = 8;
 const int bitsPerNibble = 4;
 
+const vec2 flips[] = vec2[] (
+    vec2(1.0, 1.0),
+    vec2(-1.0, 1.0),
+    vec2(1.0, -1.0),
+    vec2(-1.0, -1.0)
+);
+
 void main() {
 //    fragColor = vec4(gl_PointCoord, 0.0, 1.0);
 //    return;
+    int palette = tileAttribute & 0xf;
+    int flipFlags = (tileAttribute & 0x60) >> 5;
     // scale the point coord to tile dimensions
-    vec2 pixelFloat = gl_PointCoord * tileSize;
+    vec2 flippedCoord = (gl_PointCoord - 0.5) * flips[flipFlags] + 0.5;
+    
+    vec2 pixelFloat = flippedCoord * tileSize;
     ivec2 pixel = ivec2(
         min(int(pixelFloat.x), tileSize - 1),
         min(int(pixelFloat.y), tileSize - 1));
     
-    int palette = tileAttribute & 0xf;
-    int flips = (tileAttribute & 0x60) >> 5;
+
     
     // we need to get the pixel color index, which requires reading four bytes from
     // the `index` texture
