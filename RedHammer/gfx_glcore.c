@@ -24,6 +24,10 @@ GLuint vertices_scroll1[CPS1_OTHER_SIZE][2];
 GLuint vertices_scroll2[CPS1_OTHER_SIZE][2];
 GLuint vertices_scroll3[CPS1_OTHER_SIZE][2];
 
+GLuint scroll_vertex_arrays[3];
+GLuint scroll_vertex_buffers[3];
+GLuint scroll_attr_buffers[3];
+
 // Poly sprites
 
 GLuint polys_scroll1[CPS1_OTHER_SIZE][6][2];
@@ -35,62 +39,6 @@ GLushort tileAttributes_scroll1[CPS1_OTHER_SIZE][6][2];
 GLushort tileAttributes_scroll2[CPS1_OTHER_SIZE][6][2];
 GLushort tileAttributes_scroll3[CPS1_OTHER_SIZE][6][2];
 
-GLfloat dummy[] = {
-    0.5, 0.5, 0.0,
-    0.5, 0.0, 0.0,
-    0.0, 0.5, 0.0,
-    0.0, 0.5, 0.0,
-    0.5, 0.0, 0.0,
-    0.0, 0.0, 0.0,
-    
-};
-
-GLfloat dummyPixelsPositions[] = {
-    32.0, 0.0,
-    32.0, 32.0,
-    0.0, 0.0,
-    0.0, 0.0,
-    32.0, 32.0,
-    0.0, 32.0,
-};
-
-GLfloat dummyTexCoords[] = {
-    1.0, 1.0,
-    1.0, 0.0,
-    0.0, 1.0,
-    0.0, 1.0,
-    1.0, 1.0,
-    0.0, 0.0,
-};
-
-GLuint dummyInt[] = {
-    50, 0,
-    0, 0,
-    0, 50,
-    50, 0,
-    50, 0,
-    0, 50,
-    50, 50,
-    50, 0,
-};
-
-GLushort dummyAttribs[] = {
-    0x404, 1,
-    0x404, 1,
-    0x46a, 0, // the last vertex is the 'provoking vertex'
-    0x404, 1,
-    0x404, 1,
-    0x46a, 0, // the last vertex is the 'provoking vertex'
-};
-
-// POINTS:
-
-GLuint scroll_vertex_arrays[3];
-GLuint scroll_vertex_buffers[3];
-GLuint scroll_attr_buffers[3];
-
-// POLY:
-
 // this can be shared across all three scrolls
 GLuint pixel_position_buffer;
 
@@ -99,6 +47,7 @@ GLuint scroll_poly_arrays[3];
 GLuint scroll_poly_vertex_buffers[3];
 GLuint scroll_poly_attr_buffers[3];
 
+// uniform locations
 
 GLuint vertexLocation;
 GLuint attrLocation;
@@ -355,18 +304,14 @@ void init_glcore(unsigned int shaderProgram, unsigned int tileShader, GLuint tex
     
     glUseProgram(shaderProgram);
     glUniform1i(glGetUniformLocation(shaderProgram, "u_palette"), 1);
-    
-    // set up the dummy layer
-    
+        
     vertexLocation = glGetAttribLocation(shaderProgram, "aVertexPosition");
     attrLocation = glGetAttribLocation(shaderProgram, "tileAttributes");
-
+    
     glEnableVertexAttribArray(vertexLocation);
     glEnableVertexAttribArray(attrLocation);
 
     tileVertexLocation = glGetAttribLocation(tileShader, "bVertexPosition");
-
-    printf("before dummy glError is %d\n", glGetError());
 
     glUseProgram(tileShader);
     glUniform1i(tileProgramLocations.paletteTexture, 1);
@@ -380,7 +325,6 @@ void init_glcore(unsigned int shaderProgram, unsigned int tileShader, GLuint tex
     glGenBuffers(3, scroll_poly_vertex_buffers);
     glGenBuffers(3, scroll_poly_attr_buffers);
 
-    
     
     // Scroll 1
     glBindVertexArray(poly_vertex_arrays[0]);
@@ -475,21 +419,7 @@ void init_glcore(unsigned int shaderProgram, unsigned int tileShader, GLuint tex
     }
 }
 
-//void render_dummy(void) {
-//    glUniform1i(pl.tileSize, 16);
-//    glUniform1f(pl.pointSize, 16.0);
-//    glUniform1i(pl.rowByteStride, 8);
-//    glUniform1i(pl.tileByteSize, 0x80);
-//    glUniform1i(pl.atlasWidth, 2048);
-//    glUniform1i(pl.atlasHeight, 2304);
-//
-//    glActiveTexture(GL_TEXTURE0);
-//    glBindTexture(GL_TEXTURE_2D, objectTexture);
-//
-//    glBindVertexArray(dummyVertexArray);
-//    glDrawArrays(GL_POINTS, 0, 4);
-//}
-//
+#pragma mark Point shader setup
 
 void set_up_sprite_shader() {
     glUniform1i(pl.tileSize, 16);
@@ -553,8 +483,10 @@ void set_up_scroll3_shader() {
     glBindTexture(GL_TEXTURE_2D, scrollTexture);
 }
 
+#pragma mark Tile shader setup
+
 void render_tile_scr1(void) {
-    glUniform2i(tileProgramLocations.scrollPosition, cps_a_emu.scroll1x % 512, cps_a_emu.scroll1y % 512);
+    glUniform2i(tileProgramLocations.scrollPosition, (cps_a_emu.scroll1x % 512) - 512 + 2, cps_a_emu.scroll1y % 512);
     glUniform1i(tileProgramLocations.rowByteStride, 8);
     glUniform1i(tileProgramLocations.tileByteSize, 0x40);
     glUniform1i(tileProgramLocations.tilePixelSize, 8);
@@ -626,9 +558,9 @@ void render_glcore(void) {
     glActiveTexture(GL_TEXTURE0);
     glBindTexture(GL_TEXTURE_2D, scrollTexture);
 
-    render_tile_scr1();
-    render_tile_scr2();
     render_tile_scr3();
+    render_tile_scr2();
+    render_tile_scr1();
     return;
     
     glUseProgram(pointProgram);

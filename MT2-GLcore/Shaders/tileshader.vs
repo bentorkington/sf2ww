@@ -14,9 +14,9 @@ flat out int tileIdentifier;
 flat out int tileAttribute;
 
 void main() {
-    float scale = 0.002;
+    float scale = 0.01;
     vec4 scaleVec = vec4(scale, scale, scale, 1.0);
-    vec4 offset = ivec4(212 - scrollPosition.x, -512 + scrollPosition.y, 0, 1);
+    vec4 offset = ivec4(-256 - scrollPosition.x, -128 + scrollPosition.y, 0, 1);
 
     texturePosition = bTexturePosition;
     pixelPosition = bPixelPosition;
