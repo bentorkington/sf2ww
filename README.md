@@ -4,11 +4,15 @@ C99 rewrite of Street Fighter II World Warrior (MAME romset sf2ua)
 
 ## ROMs required to run
 
+Use Xcode to build the project (sorry, Makefile is out of date, little help please?), set the build target to MT2
+
 The engine expects the game ROMs to be saved into the Resources folder in the app bundle. These are
 
 sf2gfx.bin - All the tile ROMs, interleaved and concatenated
 
-Either all of the even/odd code ROMs, or one file allroms.bin, interleaved and concatenated. Use redhammer.c/REDHAMMER_USE_ALLROMS_BIN define to switch.
+1. Get a tool for interleaving both the code and graphics ROMs together, such as [this one](https://www.romhacking.net/forum/index.php?topic=26264.0)
+2. Use the script in `bin/mt2-merge.sh` to merge your roms into `sf2gfx.bin` and `allroms.bin`
+3. Copy these files to the Resources directory in the MT2.app bundle
 
 ## Components of the project
 
