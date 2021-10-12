@@ -2,6 +2,14 @@
 
 C99 rewrite of Street Fighter II World Warrior (MAME romset sf2ua)
 
+## Read this first!
+
+This is a work in progress, not a complete game. It currently only builds in Xcode, and even then the whole game is riddled with bugs.
+
+If you're after a complete, breathtaking gaming experience, *this repo is not for you*.
+
+This repo is for people who'd like to learn what a game like SF2 looks like inside, and those that can help complete it. If you don't understand why someone would do this, go back to Reddit please.
+
 ## ROMs required to run
 
 Use Xcode to build the project (sorry, Makefile is out of date, little help please?), set the build target to MT2
