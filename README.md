@@ -10,6 +10,10 @@ If you're after a complete, breathtaking gaming experience, *this repo is not fo
 
 This repo is for people who'd like to learn what a game like SF2 looks like inside, and those that can help complete it. If you don't understand why someone would do this, go back to Reddit please.
 
+## Want to learn more?
+
+Check out the [blog](https://sf2platinum.wordpress.com). I'd always intended to write more (don't we all) but I've been very short of time lately, which is why I decided to open this repo up. It'd be a waste if I did all this work and noone ever saw it.
+
 ## ROMs required to run
 
 Use Xcode to build the project (sorry, Makefile is out of date, little help please?), set the build target to MT2
