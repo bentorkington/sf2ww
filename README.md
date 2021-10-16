@@ -49,7 +49,7 @@ An abandoned windowing GUI toolkit. I thought it might be fun to try writing a b
 ## Issues right now
 
 * The project is a bit of a mess and needs organising
-* No instructions on how to run it, which ROMs are required, etc. out of the box
+* ~~No instructions on how to run it, which ROMs are required, etc. out of the box~~
 * No unit tests. Most game functions are tightly coupled to the game state and have side effects, making unit testing almost impossible
 * The project should be split up into RedHammer, FistBlue, and one combining them, so that RedHammer can be 
 
