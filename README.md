@@ -42,6 +42,10 @@ OpenGL + pthreads wrapper for running the game on POSIX systems
 
 All original work, no CAPCOM code in here
 
+### SwiftBeam
+
+An abandoned windowing GUI toolkit. I thought it might be fun to try writing a basic window manager from scratch. It wasn't. I thought I'd use it to manage debug windows, etc. Might pull this out one day.
+
 ## Issues right now
 
 * The project is a bit of a mess and needs organising
