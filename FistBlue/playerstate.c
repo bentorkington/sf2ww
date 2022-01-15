@@ -1246,7 +1246,7 @@ void turn_around(Player *ply) {	/* bright eyes 0x2a92a */
                 ply->mode1 = PLSTAT_TURNAROUND;
                 ply->mode2 = 2;
                 ply->mode3 = 0;
-                CASetAnim1(ply, STATUS_TURN_AROUND);
+                CASetAnim1(ply, STATUS_CROUCH_TURN);
             }
         }
 	} else {
