@@ -27,7 +27,10 @@
 #define SF2_CPU_AMD64
 #endif
 
-
+#ifdef __arm__
+#define SF2_ENDIAN_LITTLE
+#define SF2_CPU_ARM
+#endif 
 // Big Endian CPUs
 
 #ifdef __POWERPC__
