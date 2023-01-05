@@ -345,14 +345,6 @@ void gfx_glut_init(void) {
     }
     printf("opened sf2gfx.bin\n");
     GfxGlut_FadeEnable = FALSE;
-    
-    ehonda = malloc(0x20000);
-    FILE *ehondadata = fopen("/Users/ben/ehondagfx_le.dat", "r");
-    
-    long bytesread = fread(ehonda, 1, 0x20000, ehondadata);
-    printf("%ld bytes read E Honda\n", bytesread);
-    fclose(ehondadata);
-
 
 	for (i=0; i<4; i++) {
 		gemu_scroll_enable[i] = TRUE;
