@@ -13,3 +13,17 @@ DerivedData/
 !default.perspectivev3
 
 *.bin
+*.o
+.deps
+aclocal.m4
+autom4te.cache
+compile
+config.h
+config.log
+config.status
+depcomp
+glutBasics
+install-sh
+missing
+stamp-h1
+Makefile
