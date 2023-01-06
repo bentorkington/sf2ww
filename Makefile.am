@@ -3,7 +3,7 @@ ACLOCAL_AMFLAGS = ${ACLOCAL_FLAGS}
 
 CFLAGS = -std=c99
 
-INCLUDES = -I$(top_srcdir) -I$(includedir) -IFistBlue -IFistBlue/actions -IFistBlue/ai -IFistBlue/avatars -IFistBlue/gfxdata -IFistBlue/tests -IRedHammer -I SwiftBeam -lglut -lGLUT -lGL 
+INCLUDES = -I$(top_srcdir) -I$(includedir) -ISiennaBird -IFistBlue -IFistBlue/actions -IFistBlue/ai -IFistBlue/avatars -IFistBlue/gfxdata -IFistBlue/scrolls -IFistBlue/scrolls -IFistBlue/tests -IRedHammer -I SwiftBeam -lglut -lGLUT -lGL -lm
 bin_PROGRAMS = glutBasics 
 glutBasics_SOURCES = glutBasics.c trackball.c \
 			FistBlue/coinage.c \
@@ -13,12 +13,16 @@ glutBasics_SOURCES = glutBasics.c trackball.c \
 			FistBlue/computer.c \
 			FistBlue/demo.c \
 			FistBlue/effects.c \
+			FistBlue/endings.c \
 			FistBlue/fightgfx.c \
 			FistBlue/game.c \
 			FistBlue/gemu.c \
 			FistBlue/gfx_glut.c \
 			FistBlue/gfxlib.c \
-			FistBlue/gstate.c \
+			FistBlue/scrolls/gstate.c \
+			FistBlue/scrolls/parallax.c \
+			FistBlue/scrolls/scroll_data.c \
+			FistBlue/scrolls/scroll_maint.c \
 			FistBlue/lib.c     \
 			FistBlue/particle.c \
 			FistBlue/player.c \
@@ -34,10 +38,9 @@ glutBasics_SOURCES = glutBasics.c trackball.c \
 			FistBlue/text.c					\
 			FistBlue/ai/ai.c				\
 			FistBlue/tests/aitests.c		\
-			FistBlue/tests/fbtests.c		\
 			FistBlue/tests/testlib.c			\
-			FistBlue/gfxdata/palettes.c		\
 			RedHammer/pthreads.c						\
+			RedHammer/redhammer.c                 \
 			SwiftBeam/glwimp.c			\
 			FistBlue/actions/actions.c \
 			FistBlue/actions/actions_198a.c \
@@ -54,6 +57,7 @@ glutBasics_SOURCES = glutBasics.c trackball.c \
 			FistBlue/actions/car.c					\
 			FistBlue/actions/drums.c					\
 			FistBlue/actions/reels.c					\
+			FistBlue/actions/barrels.c					\
 			FistBlue/avatars/ryu.c \
 			FistBlue/avatars/guile.c 					\
 			FistBlue/avatars/ehonda.c					\
@@ -76,7 +80,7 @@ glutBasics_SOURCES = glutBasics.c trackball.c \
 			FistBlue/avatars/guile_human.c				\
 			FistBlue/avatars/ryuken_human.c				
 			
-glutBasics_LDADD = -lGL -lGLU -lglut 
+glutBasics_LDADD = -lGL -lGLU -lglut -lm
 glutBasics_LDFLAGS = -pthread
 
 
