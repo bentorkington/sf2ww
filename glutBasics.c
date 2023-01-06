@@ -42,8 +42,7 @@
 #include "redhammer.h"
 
 
-Game g;
-
+extern struct game g;
 extern struct inputs gInputs;
 
 //#define DEBUG
