@@ -32,7 +32,7 @@ extern const struct dualptr *dataAIAggressive[];
 extern const struct defense_strategy **dataAIDefensive[];
 
 static void _test_ai_putmsg(const char *message);
-static void _test_ai_checkall();
+static void _test_ai_checkall(Player *ply);
 static void _test_ai_clearsave_check_strategy(Player *ply, int d0);
 static int  _test_ai_clearsave_check_highai(Player *ply, int instr);
 static int  _test_ai_check_highai(Player *ply, int instr);

@@ -3665,10 +3665,10 @@ static void action_41(Object *obj)
                     obj->UserData[1] = 0;
                     obj->UserData[2] = 0;
 
-                    obj->XPI       = RH2DWord(RHCODE(0x21358), 4, 0, obj->Step);
-                    obj->YPI       = RH2DWord(RHCODE(0x21358), 4, 1, obj->Step);
-                    obj->VelX.full = RH2DWord(RHCODE(0x21358), 4, 2, obj->Step);
-                    obj->VelY.full = RH2DWord(RHCODE(0x21358), 4, 3, obj->Step);
+                    obj->XPI       = RH2DWord(0x21358, 4, 0, obj->Step);
+                    obj->YPI       = RH2DWord(0x21358, 4, 1, obj->Step);
+                    obj->VelX.full = RH2DWord(0x21358, 4, 2, obj->Step);
+                    obj->VelY.full = RH2DWord(0x21358, 4, 3, obj->Step);
 
                     obj->AclX.full = 0;
                     obj->AclY.full = 0x40;
@@ -3715,10 +3715,10 @@ static void action_41(Object *obj)
                     obj->Pool = 0;
                     obj->UserData[0] = 0;
                     
-                    obj->XPI       = RH2DWord(RHCODE(0x21436), 3, 0, obj->Step);
-                    obj->YPI       = RH2DWord(RHCODE(0x21436), 3, 1, obj->Step);
-                    obj->VelX.full = RH2DWord(RHCODE(0x21436), 3, 2, obj->Step);
-                    obj->VelY.full = RH2DWord(RHCODE(0x21436), 3, 3, obj->Step);
+                    obj->XPI       = RH2DWord(0x21436, 3, 0, obj->Step);
+                    obj->YPI       = RH2DWord(0x21436, 3, 1, obj->Step);
+                    obj->VelX.full = RH2DWord(0x21436, 3, 2, obj->Step);
+                    obj->VelY.full = RH2DWord(0x21436, 3, 3, obj->Step);
                     
                     obj->AclX.full = 0;
                     obj->AclY.full = 0x40;
