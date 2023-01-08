@@ -171,6 +171,9 @@
 		B57AE5DF19D7DFEF0065D862 /* strings.c in Sources */ = {isa = PBXBuildFile; fileRef = B57AE5DC19D7D1610065D862 /* strings.c */; };
 		B57E3B46296A7DFE007F6872 /* main.c in Sources */ = {isa = PBXBuildFile; fileRef = B57E3B45296A7DFE007F6872 /* main.c */; };
 		B57E3B4B296A7E3D007F6872 /* libcmocka.0.7.0.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = B57E3B4A296A7E3D007F6872 /* libcmocka.0.7.0.dylib */; };
+		B57E3B50296A8BE4007F6872 /* test_redhammer.c in Sources */ = {isa = PBXBuildFile; fileRef = B57E3B4F296A8BE4007F6872 /* test_redhammer.c */; };
+		B57E3B53296A8F9A007F6872 /* test_sf2types.c in Sources */ = {isa = PBXBuildFile; fileRef = B57E3B52296A8F9A007F6872 /* test_sf2types.c */; };
+		B57E3B6B296A978F007F6872 /* redhammer.c in Sources */ = {isa = PBXBuildFile; fileRef = 6CF004551C2A01C9008EA965 /* redhammer.c */; };
 		B5871ED71408E4F4004A45F5 /* pthreads.c in Sources */ = {isa = PBXBuildFile; fileRef = B5871ED61408E4F4004A45F5 /* pthreads.c */; };
 		B5948A26156EDE260029278E /* ehonda_comp.c in Sources */ = {isa = PBXBuildFile; fileRef = B5948A25156EDE260029278E /* ehonda_comp.c */; };
 		B5948A28156EDE3C0029278E /* ehonda_human.c in Sources */ = {isa = PBXBuildFile; fileRef = B5948A27156EDE3C0029278E /* ehonda_human.c */; };
@@ -682,6 +685,10 @@
 		B57E3B45296A7DFE007F6872 /* main.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = main.c; sourceTree = "<group>"; };
 		B57E3B4A296A7E3D007F6872 /* libcmocka.0.7.0.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libcmocka.0.7.0.dylib; path = ../../../../../usr/local/Cellar/cmocka/1.1.5/lib/libcmocka.0.7.0.dylib; sourceTree = "<group>"; };
 		B57E3B4C296A7EB6007F6872 /* FBTests.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = FBTests.entitlements; sourceTree = "<group>"; };
+		B57E3B4E296A8BE4007F6872 /* test_redhammer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = test_redhammer.h; sourceTree = "<group>"; };
+		B57E3B4F296A8BE4007F6872 /* test_redhammer.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = test_redhammer.c; sourceTree = "<group>"; };
+		B57E3B51296A8F9A007F6872 /* test_sf2types.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = test_sf2types.h; sourceTree = "<group>"; };
+		B57E3B52296A8F9A007F6872 /* test_sf2types.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = test_sf2types.c; sourceTree = "<group>"; };
 		B5869A8313B561F1001844D9 /* graphics.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = graphics.h; sourceTree = "<group>"; };
 		B5869A8413B561F1001844D9 /* graphics.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = graphics.c; sourceTree = "<group>"; };
 		B5871ED51408E4F4004A45F5 /* pthreads.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = pthreads.h; sourceTree = "<group>"; };
@@ -1138,6 +1145,10 @@
 			children = (
 				B57E3B4C296A7EB6007F6872 /* FBTests.entitlements */,
 				B57E3B45296A7DFE007F6872 /* main.c */,
+				B57E3B4E296A8BE4007F6872 /* test_redhammer.h */,
+				B57E3B4F296A8BE4007F6872 /* test_redhammer.c */,
+				B57E3B51296A8F9A007F6872 /* test_sf2types.h */,
+				B57E3B52296A8F9A007F6872 /* test_sf2types.c */,
 			);
 			path = FBTests;
 			sourceTree = "<group>";
@@ -1828,6 +1839,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				B57E3B46296A7DFE007F6872 /* main.c in Sources */,
+				B57E3B6B296A978F007F6872 /* redhammer.c in Sources */,
+				B57E3B50296A8BE4007F6872 /* test_redhammer.c in Sources */,
+				B57E3B53296A8F9A007F6872 /* test_sf2types.c in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
