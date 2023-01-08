@@ -426,7 +426,11 @@ void SM_game (void) {			/* 76e0 */
     }
 }
 
-static void draw_world_map(void) {		//856c mode 2,4,2
+/**
+ @brief State machine for the world map between battles (but not before the first)
+ @note sf2ua:0x856c
+ */
+static void world_map_between_battles(void) {
 	Object *obj;
 	set_waitmode();
 		
@@ -467,15 +471,13 @@ static void draw_world_map(void) {		//856c mode 2,4,2
 				case 0:
 					if (g.OnBonusStage || g.CurrentStage == 8 ) {
 						NEXT(g.mode4);
-						check_if_new_player();
-					} else if (g.Pause_9e1 == 0) {
-						check_if_new_player();
-					} else if ((obj = AllocActor())) {
-						obj->exists = TRUE;
-						obj->Sel = SF2ACT_0X2E;
-						synth_plane_setup(obj, g.LastFightStage, g.CurrentStage);
-						NEXT(g.mode4);
-						check_if_new_player();
+					} else if (g.Pause_9e1 != 0) {
+                        if ((obj = AllocActor())) {
+                            obj->exists = TRUE;
+                            obj->Sel = SF2ACT_0X2E;
+                            synth_plane_setup(obj, g.LastFightStage, g.CurrentStage);
+                            NEXT(g.mode4);
+                        }
 					}
 					break;
 				case 2:
@@ -483,17 +485,16 @@ static void draw_world_map(void) {		//856c mode 2,4,2
 						NEXT(g.mode4);	
 						g.timer3 = 1 * TICKS_PER_SECOND;
 					}
-					check_if_new_player();
 					break;
 				case 4:
 					if (--g.timer3 == 0) {
 						NEXT(g.mode3);
 						g.mode4 = 0;
 					}
-					check_if_new_player();
 					break;
 				FATALDEFAULT;
 			}
+            check_if_new_player();
 			proc_actions();
 			DSDrawAllMain();
 			break;
@@ -534,7 +535,7 @@ void game_mode_24 (void) {		// 0x7786
                 g.mode2 +=2;
                 g.FirstFight = FALSE;
             } else {
-                draw_world_map();
+                world_map_between_battles();
             }
             break;
 			
