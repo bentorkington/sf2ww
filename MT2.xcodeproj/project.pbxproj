@@ -169,6 +169,8 @@
 		B56BFC92156B48FD00DC7BAD /* ryuken_comp.c in Sources */ = {isa = PBXBuildFile; fileRef = B56BFC91156B48FD00DC7BAD /* ryuken_comp.c */; };
 		B57AE5DE19D7D1610065D862 /* strings.c in Sources */ = {isa = PBXBuildFile; fileRef = B57AE5DC19D7D1610065D862 /* strings.c */; };
 		B57AE5DF19D7DFEF0065D862 /* strings.c in Sources */ = {isa = PBXBuildFile; fileRef = B57AE5DC19D7D1610065D862 /* strings.c */; };
+		B57E3B46296A7DFE007F6872 /* main.c in Sources */ = {isa = PBXBuildFile; fileRef = B57E3B45296A7DFE007F6872 /* main.c */; };
+		B57E3B4B296A7E3D007F6872 /* libcmocka.0.7.0.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = B57E3B4A296A7E3D007F6872 /* libcmocka.0.7.0.dylib */; };
 		B5871ED71408E4F4004A45F5 /* pthreads.c in Sources */ = {isa = PBXBuildFile; fileRef = B5871ED61408E4F4004A45F5 /* pthreads.c */; };
 		B5948A26156EDE260029278E /* ehonda_comp.c in Sources */ = {isa = PBXBuildFile; fileRef = B5948A25156EDE260029278E /* ehonda_comp.c */; };
 		B5948A28156EDE3C0029278E /* ehonda_human.c in Sources */ = {isa = PBXBuildFile; fileRef = B5948A27156EDE3C0029278E /* ehonda_human.c */; };
@@ -536,6 +538,15 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
+		B57E3B41296A7DFC007F6872 /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = /usr/share/man/man1/;
+			dstSubfolderSpec = 0;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 1;
+		};
 		B5E8FD0E1776C7D400C6060E /* CopyFiles */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
@@ -667,6 +678,10 @@
 		B572140C19DE70AB00160398 /* sf2.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = sf2.h; sourceTree = "<group>"; };
 		B57AE5DC19D7D1610065D862 /* strings.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = strings.c; sourceTree = "<group>"; };
 		B57AE5DD19D7D1610065D862 /* strings.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = strings.h; sourceTree = "<group>"; };
+		B57E3B43296A7DFC007F6872 /* FBTests */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = FBTests; sourceTree = BUILT_PRODUCTS_DIR; };
+		B57E3B45296A7DFE007F6872 /* main.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = main.c; sourceTree = "<group>"; };
+		B57E3B4A296A7E3D007F6872 /* libcmocka.0.7.0.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libcmocka.0.7.0.dylib; path = ../../../../../usr/local/Cellar/cmocka/1.1.5/lib/libcmocka.0.7.0.dylib; sourceTree = "<group>"; };
+		B57E3B4C296A7EB6007F6872 /* FBTests.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = FBTests.entitlements; sourceTree = "<group>"; };
 		B5869A8313B561F1001844D9 /* graphics.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = graphics.h; sourceTree = "<group>"; };
 		B5869A8413B561F1001844D9 /* graphics.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = graphics.c; sourceTree = "<group>"; };
 		B5871ED51408E4F4004A45F5 /* pthreads.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = pthreads.h; sourceTree = "<group>"; };
@@ -841,6 +856,14 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		B57E3B40296A7DFC007F6872 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				B57E3B4B296A7E3D007F6872 /* libcmocka.0.7.0.dylib in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		B5C5747C1772782600496283 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -922,6 +945,7 @@
 				B5E0F06C17754D9500F50790 /* MT2 ETC.app */,
 				B5E8FD101776C7D400C6060E /* MT2 GLUT */,
 				B51D1D17253BF34100CEB195 /* MT2-GLcore.app */,
+				B57E3B43296A7DFC007F6872 /* FBTests */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -935,6 +959,7 @@
 				B5C574151772781900496283 /* MT2_tests */,
 				B5E8FD131776C7D400C6060E /* MT2 GLUT */,
 				B51D1D18253BF34100CEB195 /* MT2-GLcore */,
+				B57E3B44296A7DFE007F6872 /* FBTests */,
 				29B97323FDCFA39411CA2CEA /* Frameworks */,
 				19C28FACFE9D520D11CA2CBB /* Products */,
 				B5C574841772782800496283 /* MT2 JAP-Info.plist */,
@@ -997,6 +1022,7 @@
 		29B97323FDCFA39411CA2CEA /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				B57E3B4A296A7E3D007F6872 /* libcmocka.0.7.0.dylib */,
 				B51D1CC8253BE4C400CEB195 /* OpenGLES.framework */,
 				1058C7A0FEA54F0111CA2CBB /* Linked Frameworks */,
 				B5E8FD111776C7D400C6060E /* CoreFoundation.framework */,
@@ -1105,6 +1131,15 @@
 				B5B39BB01578345600494662 /* glutBasics.c */,
 			);
 			name = "GLUT App";
+			sourceTree = "<group>";
+		};
+		B57E3B44296A7DFE007F6872 /* FBTests */ = {
+			isa = PBXGroup;
+			children = (
+				B57E3B4C296A7EB6007F6872 /* FBTests.entitlements */,
+				B57E3B45296A7DFE007F6872 /* main.c */,
+			);
+			path = FBTests;
 			sourceTree = "<group>";
 		};
 		B5ADB7E113B2B57D00905DFE /* FistBlue */ = {
@@ -1399,6 +1434,23 @@
 			productReference = B51D1D17253BF34100CEB195 /* MT2-GLcore.app */;
 			productType = "com.apple.product-type.application";
 		};
+		B57E3B42296A7DFC007F6872 /* FBTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = B57E3B49296A7DFE007F6872 /* Build configuration list for PBXNativeTarget "FBTests" */;
+			buildPhases = (
+				B57E3B3F296A7DFC007F6872 /* Sources */,
+				B57E3B40296A7DFC007F6872 /* Frameworks */,
+				B57E3B41296A7DFC007F6872 /* CopyFiles */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = FBTests;
+			productName = FBTests;
+			productReference = B57E3B43296A7DFC007F6872 /* FBTests */;
+			productType = "com.apple.product-type.tool";
+		};
 		B5C5742A1772782600496283 /* MT2 tests */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = B5C574801772782600496283 /* Build configuration list for PBXNativeTarget "MT2 tests" */;
@@ -1485,6 +1537,11 @@
 						DevelopmentTeam = L2D42QR3GV;
 						ProvisioningStyle = Automatic;
 					};
+					B57E3B42296A7DFC007F6872 = {
+						CreatedOnToolsVersion = 14.2;
+						DevelopmentTeam = L2D42QR3GV;
+						ProvisioningStyle = Automatic;
+					};
 				};
 			};
 			buildConfigurationList = C01FCF4E08A954540054247B /* Build configuration list for PBXProject "MT2" */;
@@ -1509,6 +1566,7 @@
 				B5E0F01317754D9500F50790 /* MT2 ETC */,
 				B5E8FD0F1776C7D400C6060E /* MT2 GLUT */,
 				B51D1D16253BF34100CEB195 /* MT2-GLcore */,
+				B57E3B42296A7DFC007F6872 /* FBTests */,
 			);
 		};
 /* End PBXProject section */
@@ -1762,6 +1820,14 @@
 				B51D1E93253C002400CEB195 /* player.c in Sources */,
 				B54FDCCE2543AB950092E183 /* scroll_maint.c in Sources */,
 				B51D1E37253BFFA500CEB195 /* act16.c in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		B57E3B3F296A7DFC007F6872 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				B57E3B46296A7DFE007F6872 /* main.c in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2237,6 +2303,82 @@
 			};
 			name = Release;
 		};
+		B57E3B47296A7DFE007F6872 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_ENTITLEMENTS = FBTests/FBTests.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEVELOPMENT_TEAM = L2D42QR3GV;
+				ENABLE_HARDENED_RUNTIME = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				HEADER_SEARCH_PATHS = /usr/local/include;
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					/usr/local/Cellar/cmocka/1.1.5/lib,
+				);
+				MACOSX_DEPLOYMENT_TARGET = 13.1;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		B57E3B48296A7DFE007F6872 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_ENTITLEMENTS = FBTests/FBTests.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEVELOPMENT_TEAM = L2D42QR3GV;
+				ENABLE_HARDENED_RUNTIME = NO;
+				ENABLE_NS_ASSERTIONS = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				HEADER_SEARCH_PATHS = /usr/local/include;
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					/usr/local/Cellar/cmocka/1.1.5/lib,
+				);
+				MACOSX_DEPLOYMENT_TARGET = 13.1;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
 		B5C574811772782600496283 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -2542,6 +2684,15 @@
 			buildConfigurations = (
 				B51D1D22253BF34300CEB195 /* Debug */,
 				B51D1D23253BF34300CEB195 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		B57E3B49296A7DFE007F6872 /* Build configuration list for PBXNativeTarget "FBTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				B57E3B47296A7DFE007F6872 /* Debug */,
+				B57E3B48296A7DFE007F6872 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
