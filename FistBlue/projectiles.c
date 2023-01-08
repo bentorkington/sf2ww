@@ -115,17 +115,13 @@ static void projsm_fireball(Object *obj, short d7) {
 			obj->flag1	= TRUE;
 			obj->Step	= obj->Flip ^ 1;
 			obj->Energy = 0x100;
-			if(obj->Flip) {
-				obj->XPI += data_22bf6[obj->Sel];
-			} else {
-			    obj->XPI -= data_22bf6[obj->Sel];
-			}
+            obj->XPI += data_22bf6[obj->Sel] * FLIP(obj);
 			obj->YPI += data_22c00[obj->Sel];
 			obj->HitBoxes  = data_22c0a[obj->Sel].hb;
 			obj->MoreBoxes = data_22c0a[obj->Sel].mb;
 			
-			if(obj->Sel == 4) {							  /* Tiger? */
-				obj->Path = data_22c3e[obj->SubSel/2];    /* short[] *s */
+			if (obj->Sel == 4) {							  /* Tiger? */
+				obj->Path = data_22c3e[obj->SubSel/2];
 			} else {
 				obj->Path = data_22c32[obj->SubSel/2];
 			}
@@ -133,12 +129,13 @@ static void projsm_fireball(Object *obj, short d7) {
             /* data_22c4a: Hadouken, unused, unused, Sonic Boom, Tiger */
             RHSetActionList(obj, RHCODE(((const u32[]){0x22cd2, 0x22cd2, 0x22cd2, 0x22cd2, 0x22e88, 0x23134}[obj->Sel])), 0);
 
-            if(obj->Sel == 0 && sf2rand() == 0) {
+            if (obj->Sel == 0 && sf2rand() == 0) {
 				obj->Draw1				= TRUE;
 				obj->Draw2.part.integer = PALETTE_OBJ_GOLDFIREBALL;	
 			}
-			if(obj->Sel == 4) {	/* Tiger */
-				obj->YPI += (int[]){0, -40}[obj->UserByte];   /* 22c5e ducking tiger offsets */
+
+			if (obj->Sel == 4) {	/* Tiger */
+				obj->YPI += (int[]){ 0, -40 }[obj->UserByte];   /* 22c5e ducking tiger offsets */
 			}
 			break;
 		case 2:

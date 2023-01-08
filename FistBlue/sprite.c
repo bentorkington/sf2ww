@@ -572,6 +572,14 @@ static void ds_draw_hiragana(void) {		// 7e884
 		0x818f, 0x817e, 0x816f, 0x816e
 	};
 	
+	/*
+	0x8180: a ka sa ta na ha ma ya ra wa
+	0x8190: i ki shi chi ni hi mi ya ri yo
+	0x81a0: u ku su tsu nu fu mu yu ru
+	0x81b0: e ke se te ne he me yu re wo
+	0x81c0: o ko so to no ho mo yo ro n
+	*/
+
 	u16 *img;
 	short count;
 	

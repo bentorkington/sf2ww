@@ -69,13 +69,21 @@ break;
 diefree();       \
 break;
 
+// deprecated:
 #define XPI X.part.integer
 #define YPI Y.part.integer
-#define FLT2FIX(x) (0x10000 * (x))
+
+// new:
+#define XFPI x.part.integer
+#define FYPI y.part.integer
+
+#define FLT2FP16(x) (0x10000 * (x))
+#define FLT2FP8(x) (0x100 * (x))
 
 #define MINUS_ONE -1
 
-#define FLIP  ply->Flip & 1 ? 1 : -1
+// returns -1 if `obj` is flipped
+#define FLIP(obj) ((obj)->Flip ? 1 : -1)
 
 #define CP_X ( cp >> 16    )
 #define CP_Y ( cp & 0xffff )

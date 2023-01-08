@@ -1299,16 +1299,22 @@ void set_falling_from_platform(Player *ply) {   /* was setjumping2 */
     ply->Airborne = AIR_JUMPING;
     CASetAnim1(ply, STATUS_FALLING);
 }
+/**
+ * @brief Start the player jumping
+ * 
+ * @param ply the player %a6
+ * @note sf2ua:0x2a9d2
+ */
 void set_jumping(Player *ply) {
     ply->mode1 = PLSTAT_JUMPING;
     ply->mode2 = ply->mode3 = 0;
     set_towardsaway(ply);
 	
-	
     ply->VelX.full  = data_2aa30[ply->FighterID][ply->Step ^ ply->Flip][0]; /* word */
     ply->AclX.full  = data_2aa30[ply->FighterID][ply->Step ^ ply->Flip][1];
     ply->VelY.full  = data_2aa30[ply->FighterID][ply->Step ^ ply->Flip][2];
     ply->AclY.full  = data_2aa30[ply->FighterID][ply->Step ^ ply->Flip][3];
+
     if(ply->Flip) {
         ply->VelX.full = -ply->VelX.full;
         ply->AclX.full = -ply->AclX.full;

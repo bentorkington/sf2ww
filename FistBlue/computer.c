@@ -849,7 +849,6 @@ static void process_plstat_frontend(Player *ply) {		/* 2ad2a */
 	}
 	comp_proc_stat(ply);
 }
-
 static void comp_changetactics(Player *ply, short d0) {	/* 2c1b4 */
 	ply->YokeSaved = ply->YokeAttackingMe;
 	if(d0 != 2) {	/* Save current AI state for later retrieval, and set AIForceDefensive */
@@ -1027,14 +1026,20 @@ static void comp_set_falling(Player *ply) { /* 2ce0e */
 	ply->Airborne = AIR_JUMPING;
 	CASetAnim1(ply, STATUS_FALLING);
 }
-void comp_set_jump(Player *ply) {		/* 2ceda was comp_jumps */
+/**
+ * @brief Start a computer player on a jump
+ * 
+ * @param ply the player %a6
+ * @note sf2ua:2ceda
+ */
+void comp_set_jump(Player *ply) {
 	short *traj;
 	u8 jumpindex;
 	
 	ply->mode1 = PLSTAT_JUMPING;
 	ply->mode2 = ply->mode3 = 0;
 	
-	jumpindex = ply->AIJumpSel;		// is a byte read of x0227 in asm
+	jumpindex = ply->AIJumpSel & 0xff;
 	if(ply->Flip) { jumpindex ^= 0x1; }
 	ply->Step = jumpindex;
 	jumpindex ^= ply->Flip;
