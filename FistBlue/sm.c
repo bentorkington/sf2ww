@@ -160,10 +160,8 @@ static void game_mode_28(void) {	// 7af0
 				g.CPS.Scroll2Y = 0;
 				g.CPS.Scroll1X = 0;
 				g.CPS.Scroll1Y = 0;
-				gstate_Scroll2.XPI = 0;
-				gstate_Scroll2.YPI = 0;
-				gstate_Scroll3.XPI = 0;
-				gstate_Scroll3.YPI = 0;
+                SET_VECTFP16(gstate_Scroll2.position, 0, 0);
+                SET_VECTFP16(gstate_Scroll3.position, 0, 0);
 				if (g.x0a50) {
 					// 7b90
 					g.mode2 = 0xa;
@@ -448,8 +446,7 @@ static void world_map_between_battles(void) {
 			g.CPS.Scroll2X		= 0;
 			g.CPS.Scroll2Y		= 0;
 
-			gstate_Scroll3.XPI = 0x0;
-			gstate_Scroll3.YPI = 0x700;
+            SET_VECTFP16(gstate_Scroll3.position, 0, 1792);
 			TMSetupScroll3(&gstate_Scroll3);	// draw the world map background
 
 			g.CPS.Scroll1X = 0;
@@ -586,8 +583,7 @@ void gamemode_vs_screen (void) {
 			actionlibrary();			/* action 39x2 draw player names large */
             
 			TMInitForStage();			   		  /* set up the scroll params */
-			gstate_Scroll3.XPI  = 0x200;
-			gstate_Scroll3.YPI  = 0x700;
+            SET_VECTFP16(gstate_Scroll3.position, 512, 1792);
 			g.CPS.Scroll2X        = 0x0;
 			g.CPS.Scroll2Y        = 0x0;
 			TMSetupScroll3(&gstate_Scroll3);
@@ -664,11 +660,11 @@ static void gamemode_init_round (void) {
 			break;
 		case 8:
 			do {
-				g.timer3 = gstate_Scroll2.X.part.integer;
+				g.timer3 = gstate_Scroll2.position.x.part.integer;
 				TMUpdate();
-			} while(g.timer3 != gstate_Scroll2.X.part.integer);
+			} while(g.timer3 != gstate_Scroll2.position.x.part.integer);
 			NEXT(g.mode2);		/* Go to 2,4,8 */
-			g.mode3 =0;
+			g.mode3 = 0;
 			break;
 		FATALDEFAULT;
     }

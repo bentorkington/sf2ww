@@ -20,8 +20,7 @@ typedef struct {
     u8  mode1;
     /* unused? */
 
-    FIXED16_16  X;      /* Fixed precision world->display offsets */
-    FIXED16_16  Y;      /* 0xa-d */
+    struct VectFP16 position;
     u16 SpecialStage;          /* either 0 or 2, 2 for bonus stage? */
     u16 gs_0010;
     /// host address pointer to tilemaps
@@ -47,9 +46,8 @@ typedef struct {
     u8  mode0;
     u8  mode1;
     /* unused? */
-    
-    FIXED16_16  X;      /* Fixed precision world->display offsets */
-    FIXED16_16  Y;      /* 0xa-d */
+
+    struct VectFP16 position;
     u16 CenterX;          /* the zero-parallax x coordinate */
     u16 ss_0010;        /* amount of parallax skew per pixel off-center */
     u16 GroundRow;

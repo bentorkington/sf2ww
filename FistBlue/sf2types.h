@@ -180,6 +180,19 @@ struct Vect16 {
 } __attribute__((packed));
 
 typedef struct Vect16 VECT16;
+
+struct VectFP16 {
+    FIXED16_16 x;
+    FIXED16_16 y;
+};
+
+#define MAKE_VECTFP16(x, y) (struct VectFP16) {{.part.integer = (x)}, {.part.integer = (y)}}
+
+// deliberately doesn't set the fractional part to reflect the original code
+#define SET_VECTFP16(vect, x_int, y_int)   \
+(vect).x.part.integer = (x_int);           \
+(vect).y.part.integer = (y_int);           \
+
 struct Traj16 {
 	VECT16 Vel;
 	VECT16 Acl;

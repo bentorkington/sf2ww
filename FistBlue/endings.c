@@ -183,11 +183,9 @@ static void sm_ending_blanka(void) {	// a554
 							g.CPS.Scroll1X = 0;
 							g.CPS.Scroll1Y = 0x100;
 							sub_6126();
-							gstate_Scroll2.X.part.integer = 0;
-							gstate_Scroll2.Y.part.integer = 0x300;
+                            SET_VECTFP16(gstate_Scroll2.position, 0, 768);
 							TMSetupScroll2(&gstate_Scroll2);
-							gstate_Scroll3.X.part.integer = 0xffe0;
-							gstate_Scroll3.Y.part.integer = 0x0300;
+                            SET_VECTFP16(gstate_Scroll3.position, -32, 768);
 							TMSetupScroll3(&gstate_Scroll3);
 							sub_94aec(1);
 							start_effect(2, 3);
@@ -225,11 +223,9 @@ static void sm_ending_blanka(void) {	// a554
 							g.CPS.Scroll1X = 0;
 							g.CPS.Scroll1Y = 0x100;
 							sub_6126();
-							gstate_Scroll2.X.part.integer = 0x200;
-							gstate_Scroll2.Y.part.integer = 0x300;
+                            SET_VECTFP16(gstate_Scroll2.position, 512, 768);
 							TMSetupScroll2(&gstate_Scroll2);
-							gstate_Scroll3.X.part.integer = 0x200;
-							gstate_Scroll3.Y.part.integer = 0x300;
+                            SET_VECTFP16(gstate_Scroll3.position, 512, 768);
 							TMSetupScroll3(&gstate_Scroll3);
 							sub_94aec(2);
 							start_effect(0x2, 3);

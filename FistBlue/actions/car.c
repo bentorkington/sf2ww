@@ -373,7 +373,7 @@ void _ActSMCar(Object_G2 *obj) {			// The CarID 6, BONUS0
 					case 18:							//25b50;
 						if(_car_check_P1(obj) < 0) {
 							NEXT(obj->mode2);
-							gstate_Scroll1.XPI += 256;
+							gstate_Scroll1.position.x.part.integer += 256;
 							obj->YPI -= 24;
 							ActStartScreenWobble();
 							queuesound(0x2a);

@@ -239,8 +239,8 @@ void GSFillScroll2(ScrollState *gs) {  /* 0x83ae0 fill scroll2 from tilemap */
     int i,j;
     CPSCOORD gfx_p;
     
-    g.CPS.Scroll2X = gs->XPI - (SCREEN_WIDTH / 2);
-    g.CPS.Scroll2Y = gs->YPI;
+    g.CPS.Scroll2X = gs->position.x.part.integer - (SCREEN_WIDTH / 2);
+    g.CPS.Scroll2Y = gs->position.y.part.integer;
     SCR2_CURSOR_SET(gfx_p, 0, 32);         /* starting at tile 0x800:
                               0x906000 = 0x904000 + (0x800 * 4) */
     
@@ -260,8 +260,8 @@ void GSFillScroll3(ScrollState *gs) {        /* 0x83b2a fill scroll3 from tilema
     int i,j;
     CPSCOORD gfx_p;
     
-    g.CPS.Scroll3X = gs->XPI;
-    g.CPS.Scroll3Y = gs->YPI;
+    g.CPS.Scroll3X = gs->position.x.part.integer;
+    g.CPS.Scroll3Y = gs->position.y.part.integer;
     
     SCR3_CURSOR_SET(gfx_p, 0, 24);
     

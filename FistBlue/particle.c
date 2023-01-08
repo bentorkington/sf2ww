@@ -63,8 +63,8 @@ void sub_25f8(Object *obj) {
 	POINT16 point;
 	if (obj->exists) {
 		gs = get_graphics_context(obj);	
-		point.x = obj->XPI - gs->XPI;
-		point.y = obj->YPI - gs->YPI;
+		point.x = obj->XPI - gs->position.x.part.integer;
+		point.y = obj->YPI - gs->position.y.part.integer;
 		if ((point.x > -64 && point.x < 544) && (point.y > -96 && point.y < 512)) {
 			obj->flag1 = TRUE;
 			enqueue_and_layer(obj);
@@ -80,9 +80,9 @@ void check_rect_queue_draw(Object *obj) {   /* 0x2540 */
     if(obj->exists) {
         obj->flag1 = FALSE;
         gc = get_graphics_context(obj);
-        point.x = obj->XPI - gc->XPI;  /*world to camera */
+        point.x = obj->XPI - gc->position.x.part.integer;  /*world to camera */
         if (point.x < -VISIBLE_MARGIN || point.x > (SCREEN_WIDTH + VISIBLE_MARGIN)) { return; }
-        point.y = obj->YPI - gc->YPI;
+        point.y = obj->YPI - gc->position.y.part.integer;
         point.y += VISIBLE_MARGIN;
         if (point.y < -VISIBLE_MARGIN || point.y > (SCREEN_HEIGHT + VISIBLE_MARGIN)) { return; }
         obj->flag1=TRUE;
@@ -97,9 +97,9 @@ void check_onscreen_queue(Object *obj) {		// 0x2578
 	if (obj->exists != FALSE) { 
 		obj->flag1 = FALSE;
 		gs = get_graphics_context(obj);
-		x = obj->XPI - gs->XPI + VISIBLE_MARGIN;
+		x = obj->XPI - gs->position.x.part.integer + VISIBLE_MARGIN;
 		if (x < 0 || x >= 576) { return; }	
-		y = obj->YPI - gs->YPI + VISIBLE_MARGIN;
+		y = obj->YPI - gs->position.y.part.integer + VISIBLE_MARGIN;
 		if (y < 0 || y >= 448) { return; }
 		obj->flag1=TRUE;
 		enqueue_and_layer(obj);
@@ -109,10 +109,10 @@ void check_onscreen_queue(Object *obj) {		// 0x2578
 
 
 void die_if_offscreen(Object *obj) {	// 248c
-	if (obj->XPI - gstate_Scroll2.XPI <= -96   ||
-		obj->XPI - gstate_Scroll2.XPI > 480 ||
-		obj->YPI - gstate_Scroll2.YPI <= -96 ||
-		obj->YPI - gstate_Scroll2.YPI > 352)
+	if (obj->XPI - gstate_Scroll2.position.x.part.integer <= -96   ||
+		obj->XPI - gstate_Scroll2.position.x.part.integer > 480 ||
+		obj->YPI - gstate_Scroll2.position.y.part.integer <= -96 ||
+		obj->YPI - gstate_Scroll2.position.y.part.integer > 352)
 	{	
 		obj->mode0 = 6;		// actor dies
 	}

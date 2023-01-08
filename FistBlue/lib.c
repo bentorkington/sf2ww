@@ -2018,8 +2018,8 @@ void task_playground(void) {
                     g.Player2.XPI = 40;
                     g.Player1.exists = TRUE;
       
-                    gstate_Scroll2.XPI = 0x1ce;
-                    gstate_Scroll2.YPI = 0;
+                    gstate_Scroll2.position.x.part.integer = 0x1ce;
+                    gstate_Scroll2.position.y.part.integer = 0;
                     
                     g.Player1.FighterID = FID_RYU;
                     g.Player1.exists = TRUE;
@@ -2066,12 +2066,12 @@ void task_playground(void) {
 
 #pragma mark Synthetics
 // these are here mainly to keep things tidy and avoid modules needing to #include and extern globals
-short get_scr1x() { return gstate_Scroll1.XPI; }
-short get_scr1y() { return gstate_Scroll1.YPI; }
-short get_scr2x() { return gstate_Scroll2.XPI; }
-short get_scr2y() { return gstate_Scroll2.YPI; }
-short get_scr3x() { return gstate_Scroll3.XPI; }
-short get_scr3y() { return gstate_Scroll3.YPI; }
+short get_scr1x() { return gstate_Scroll1.position.x.part.integer; }
+short get_scr1y() { return gstate_Scroll1.position.y.part.integer; }
+short get_scr2x() { return gstate_Scroll2.position.x.part.integer; }
+short get_scr2y() { return gstate_Scroll2.position.y.part.integer; }
+short get_scr3x() { return gstate_Scroll3.position.x.part.integer; }
+short get_scr3y() { return gstate_Scroll3.position.y.part.integer; }
 
 
 

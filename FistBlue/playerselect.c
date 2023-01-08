@@ -210,8 +210,7 @@ void SM_player_select(void) {		//7fc4
 					TMInitForStage();
 					g.CPS.Scroll2X				= 0;
 					g.CPS.Scroll2Y				= 0;
-					gstate_Scroll3.XPI			= 0;
-					gstate_Scroll3.YPI			= 0x700;
+                    SET_VECTFP16(gstate_Scroll3.position, 0, 1792);
 					TMSetupScroll3(&gstate_Scroll3);
 					g.CPS.Scroll1X				= 0;
 					g.CPS.Scroll1Y				= 0x100;

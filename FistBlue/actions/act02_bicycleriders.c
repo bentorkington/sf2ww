@@ -78,8 +78,7 @@ void action_2(Object *obj) {				//d240 Bicycle people
 				obj->Scroll = SCROLL_2;
 				obj->ZDepth = 64;	
 				obj->Flip   = obj->Step;
-				obj->XPI    = gstate_Scroll2.XPI;
-				obj->XPI   += obj->Step ? -80 : 464;
+				obj->XPI    = gstate_Scroll2.position.x.part.integer + obj->Step ? -80 : 464;
 				obj->YPI    = 64;
 				obj->Path   = (const VECT16 *)data_d3ae;
 				if (obj->SubSel < 0) {

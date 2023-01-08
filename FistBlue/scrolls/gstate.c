@@ -105,32 +105,32 @@ void GSInitDispEna(void) {
 
 
 static CP _GSCoordOffsetScr2 (ScrollState *gs, short offset) {
-	static const short data_83db0[4][2] = {
-		{  -144,   384,  },
-		{   512,   384,  },
-		{  -144,  -144,  },
-		{  -144,   384,  },
+	static const struct Point16 data_83db0[4] = {
+		{ -144,   384 },
+		{  512,   384 },
+		{ -144,  -144 },
+		{ -144,   384 },
 	};
 	
     CP cp;
     offset &= 0xf;
-    cp.x = gs->XPI + data_83db0[offset/4][0];
-    cp.y = ~(gs->YPI + data_83db0[offset/4][1]);
+    cp.x = gs->position.x.part.integer + data_83db0[offset/4].x;
+    cp.y = ~(gs->position.y.part.integer + data_83db0[offset/4].y);
     
     return cp;
 }
 static CP _GSCoordOffsetScr3 (ScrollState *gs, short offset) {
-	static const short data_83ddc[4][2] = {
-		{  -160,   384,  },
-		{   512,   384,  },
-		{  -160,  -160,  },
-		{  -160,   384,  },
+	static const struct Point16 data_83ddc[4] = {
+		{ -160,   384 },
+		{  512,   384 },
+		{ -160,  -160 },
+		{ -160,   384 },
 	};
 	
     CP cp;
     offset &= 0x000f;
-    cp.x =   gs->XPI + data_83ddc[offset/4][0];
-    cp.y = ~(gs->YPI + data_83ddc[offset/4][1]);
+    cp.x =   gs->position.x.part.integer + data_83ddc[offset/4].x;
+    cp.y = ~(gs->position.y.part.integer + data_83ddc[offset/4].y);
     
     return cp;
 }
@@ -230,10 +230,10 @@ static void gstate_update_scroll2 (ScrollState *gs) {
     short temp;
     CP cp;
 
-    g.CPS.Scroll2X = gs->XPI;
-    g.CPS.Scroll2Y = gs->YPI;
+    g.CPS.Scroll2X = gs->position.x.part.integer;
+    g.CPS.Scroll2Y = gs->position.x.part.integer;
     	
-    temp = gs->XPI & 0x10;
+    temp = gs->position.x.part.integer & 0x10;
     temp ^= gs->x001e;
     if (temp == 0) {
         gs->x001e ^= 0x10;
@@ -242,7 +242,7 @@ static void gstate_update_scroll2 (ScrollState *gs) {
     cp = _GSCoordOffsetScr2(gs, gs->x0024);
     GSDrawScroll2A(gs, _GSCoordsScroll2(cp), _GSCoordsScroll2(cp),cp);
     
-    temp  = gs->YPI & 0x10;
+    temp  = gs->position.y.part.integer & 0x10;
     temp ^= gs->x001f;
     if(temp == 0) {
         gs->x001f ^= 0x10;
@@ -256,10 +256,10 @@ static void gstate_update_scroll3 (ScrollState *gs) {		//83d06
     short temp;
     CP cp;
 
-    g.CPS.Scroll3X = gs->X.part.integer;
-    g.CPS.Scroll3Y = gs->Y.part.integer;
+    g.CPS.Scroll3X = gs->position.x.part.integer;
+    g.CPS.Scroll3Y = gs->position.y.part.integer;
     
-    temp  = gs->XPI & 0x20;
+    temp  = gs->position.x.part.integer & 0x20;
     temp ^= gs->x001e;
     if(temp == 0) {
         gs->x001e ^= 0x20;
@@ -268,7 +268,7 @@ static void gstate_update_scroll3 (ScrollState *gs) {		//83d06
     }
     	
     
-    temp  = gs->YPI & 0x20;
+    temp  = gs->position.y.part.integer & 0x20;
     temp ^= gs->x001f;
     if(temp == 0) {
         gs->x001f ^= 0x20;
@@ -314,12 +314,12 @@ void TMInitForStage(void){			/* 83716 setup tilemaps & palettes from g.Pallete1 
  @see sf2ua/0x83860
  */
 void TMGotoCenter(void) {
-    gstate_Scroll1.XPI = RH2DWord(0x83a00, 6, g.CurrentStage, 0);
-    gstate_Scroll1.YPI = RH2DWord(0x83a00, 6, g.CurrentStage, 1);
-    gstate_Scroll2.XPI = RH2DWord(0x83a00, 6, g.CurrentStage, 2);
-    gstate_Scroll2.YPI = RH2DWord(0x83a00, 6, g.CurrentStage, 3);
-    gstate_Scroll3.XPI = RH2DWord(0x83a00, 6, g.CurrentStage, 4);
-    gstate_Scroll3.YPI = RH2DWord(0x83a00, 6, g.CurrentStage, 5);
+    gstate_Scroll1.position.x.part.integer = RH2DWord(0x83a00, 6, g.CurrentStage, 0);
+    gstate_Scroll1.position.y.part.integer = RH2DWord(0x83a00, 6, g.CurrentStage, 1);
+    gstate_Scroll2.position.x.part.integer = RH2DWord(0x83a00, 6, g.CurrentStage, 2);
+    gstate_Scroll2.position.y.part.integer = RH2DWord(0x83a00, 6, g.CurrentStage, 3);
+    gstate_Scroll3.position.x.part.integer = RH2DWord(0x83a00, 6, g.CurrentStage, 4);
+    gstate_Scroll3.position.y.part.integer = RH2DWord(0x83a00, 6, g.CurrentStage, 5);
 }
 
 /**
@@ -334,11 +334,11 @@ void TMSetupScroll2(ScrollState *gs) {			// 83c3c
     CP			cp;
 	int			i;
 	
-	g.CPS.Scroll2X = gs->XPI;
-	g.CPS.Scroll2Y = gs->YPI;
+	g.CPS.Scroll2X = gs->position.x.part.integer;
+	g.CPS.Scroll2Y = gs->position.y.part.integer;
 	
-    cp.x = gs->XPI -  144;
-    cp.y = ~(gs->YPI + 384);
+    cp.x = gs->position.x.part.integer -  144;
+    cp.y = ~(gs->position.y.part.integer + 384);
 	
 	for (i=0x29; i >= 0; --i) {			// 768 pixels
 		GSDrawScroll2A(gs, _GSCoordsScroll2(cp), _GSLookupScroll2(gs, cp), cp);
@@ -349,11 +349,11 @@ void TMSetupScroll3(ScrollState *gs) {			// 83cd2 was setup_scroll3
     CP			cp;
 	int			i;
 	
-	g.CPS.Scroll3X = gs->XPI;
-	g.CPS.Scroll3Y = gs->YPI;
+	g.CPS.Scroll3X = gs->position.x.part.integer;
+	g.CPS.Scroll3Y = gs->position.y.part.integer;
 	
-    cp.x = gs->XPI -  160;
-    cp.y = ~(gs->YPI + 384);
+    cp.x = gs->position.x.part.integer -  160;
+    cp.y = ~(gs->position.y.part.integer + 384);
 	
 	for (i=0x15; i >= 0; --i) {			// 0x16 x 32 = 704 pixels
 		_GSDrawScroll3A(gs, _GSCoordsScroll3(cp), _GSLookupScroll3(gs, cp), cp);

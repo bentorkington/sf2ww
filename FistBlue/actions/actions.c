@@ -291,7 +291,7 @@ static void action_1(Object *obj) {	/* cb2a */
 						obj->VelY.full = obj->YPI;
 					}
 					obj->YPI = obj->VelY.full;
-					obj->YPI += (gstate_Scroll2.YPI >> 1);
+					obj->YPI += (gstate_Scroll2.position.y.part.integer >> 1);
 					check_rect_queue_draw(obj);
 					break;
 				case 2 ... 11:
@@ -1333,13 +1333,13 @@ static void action_15(Object *obj) {
 #pragma mark Act18
 static int sub_12fe6(Object *obj) {
 	if (obj->SubSel) {
-		if (gstate_Scroll1.XPI < 448) {
+		if (gstate_Scroll1.position.x.part.integer < 448) {
 			return TRUE;
 		} else {
 			return FALSE;
 		}
 	} else {
-		if (gstate_Scroll1.XPI < 416) {
+		if (gstate_Scroll1.position.x.part.integer < 416) {
 			return TRUE;
 		} else {
 			return FALSE;
@@ -2813,8 +2813,8 @@ static void action_30(Object *obj) {		// 1da4a
 	switch (obj->mode0) {
 		case 0:
 			NEXT(obj->mode0);
-			obj->XPI += gstate_Scroll3.XPI;
-			obj->YPI += gstate_Scroll3.YPI;
+			obj->XPI += gstate_Scroll3.position.x.part.integer;
+			obj->YPI += gstate_Scroll3.position.y.part.integer;
 			obj->Pool = 6;
             RHSetAction(obj, RHCODE(0x1da8c));
 			/* FALLTHRU */
@@ -2985,9 +2985,9 @@ static void sub_1fe36(Object *obj) {
 	UD36 *ud = (UD36 *)obj->UserData;
 
 	g.ScreenWobbleMagnitude = 0;
-	gstate_Scroll1.YPI = ud->Save_Scroll1Y;
-	gstate_Scroll2.YPI = ud->Save_Scroll2Y;
-	gstate_Scroll3.YPI = ud->Save_Scroll3Y;
+	gstate_Scroll1.position.y.part.integer = ud->Save_Scroll1Y;
+	gstate_Scroll2.position.y.part.integer = ud->Save_Scroll2Y;
+	gstate_Scroll3.position.y.part.integer = ud->Save_Scroll3Y;
 }
 static void sub_1fe4e(Object *obj, short adjust) {	/* per stage wobbles */
 	UD36 *ud = (UD36 *)obj->UserData;
@@ -2997,8 +2997,8 @@ static void sub_1fe4e(Object *obj, short adjust) {	/* per stage wobbles */
 			if (gstate_Scroll1.mode1) {
 				ud->Save_Scroll1Y = 0x100;
 			}
-			gstate_Scroll2.YPI += adjust;
-			gstate_Scroll3.YPI += adjust;
+			gstate_Scroll2.position.y.part.integer += adjust;
+			gstate_Scroll3.position.y.part.integer += adjust;
 			break;
 		case STAGE_JAPAN_EHONDA:
 		case STAGE_USA_GUILE:
@@ -3010,20 +3010,20 @@ static void sub_1fe4e(Object *obj, short adjust) {	/* per stage wobbles */
 		case STAGE_SPAIN_VEGA:
 		case STAGE_BONUS_CAR:
 		case STAGE_BONUS_UNKNOWN:			// 1fe96
-			gstate_Scroll1.YPI += adjust;
-			gstate_Scroll2.YPI += adjust;
-			gstate_Scroll3.YPI += adjust;
+			gstate_Scroll1.position.y.part.integer += adjust;
+			gstate_Scroll2.position.y.part.integer += adjust;
+			gstate_Scroll3.position.y.part.integer += adjust;
 			break;
 		case STAGE_BRAZIL_BLANKA:
 		case STAGE_USA_BALROG:
 		case STAGE_BONUS_BARRELS:
 		case STAGE_BONUS_DRUMS:
-			gstate_Scroll2.YPI += adjust;
-			gstate_Scroll3.YPI += adjust;
+			gstate_Scroll2.position.y.part.integer += adjust;
+			gstate_Scroll3.position.y.part.integer += adjust;
 			break;
 		case STAGE_USSR_ZANGIEF:
-			gstate_Scroll1.YPI += adjust;
-			gstate_Scroll2.YPI += adjust;
+			gstate_Scroll1.position.y.part.integer += adjust;
+			gstate_Scroll2.position.y.part.integer += adjust;
 			break;
 		default:
 			break;
@@ -3038,9 +3038,9 @@ void action_36(Object *obj) {		/* 1fdc4 */
 			NEXT(obj->mode0);
 			obj->LocalTimer = 8;
 			obj->SubTimer = 7;
-			ud->Save_Scroll1Y = gstate_Scroll1.YPI;
-			ud->Save_Scroll2Y = gstate_Scroll2.YPI;
-			ud->Save_Scroll3Y = gstate_Scroll3.YPI;
+			ud->Save_Scroll1Y = gstate_Scroll1.position.y.part.integer;
+			ud->Save_Scroll2Y = gstate_Scroll2.position.y.part.integer;
+			ud->Save_Scroll3Y = gstate_Scroll3.position.y.part.integer;
 			break;
 		case 2:
 			if (--obj->SubTimer < 0) {
@@ -3054,9 +3054,9 @@ void action_36(Object *obj) {		/* 1fdc4 */
 			}
 			if (obj->SubTimer & 1) {
                 g.ScreenWobbleMagnitude = 3;
-                ud->Save_Scroll1Y = gstate_Scroll1.YPI;
-                ud->Save_Scroll2Y = gstate_Scroll2.YPI;
-                ud->Save_Scroll3Y = gstate_Scroll3.YPI;
+                ud->Save_Scroll1Y = gstate_Scroll1.position.y.part.integer;
+                ud->Save_Scroll2Y = gstate_Scroll2.position.y.part.integer;
+                ud->Save_Scroll3Y = gstate_Scroll3.position.y.part.integer;
                 sub_1fe4e(obj, 3);
             } else {
                 sub_1fe36(obj);

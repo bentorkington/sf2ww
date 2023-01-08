@@ -135,9 +135,9 @@ void action_07(Object *obj) {		//e6cc
 						actiontickdraw(obj);
 						if (obj->SubSel == 1) {
 							if (obj->AnimFlags & 1) {
-								gstate_Scroll1.YPI = 0xf8;
+								gstate_Scroll1.position.y.part.integer = 248;
 							} else {
-								gstate_Scroll1.YPI = 0;
+								gstate_Scroll1.position.y.part.integer = 0;
 							}
 						}
 						break;

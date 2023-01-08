@@ -30,10 +30,10 @@ static void _gstate_against_right(ScrollState *gstate, int d1) {         // sf2u
     if (d1 > 6) {
         d1 = 6;
     }
-    d3 = gstate->XPI;
-    gstate->XPI += d1;
-    if (gstate->XPI > g.StageMaxX ) {
-        gstate->XPI = g.StageMaxX;
+    d3 = gstate->position.x.part.integer;
+    gstate->position.x.part.integer += d1;
+    if (gstate->position.x.part.integer > g.StageMaxX ) {
+        gstate->position.x.part.integer = g.StageMaxX;
         gstate->XOff = g.StageMaxX - d3;
     } else {
         gstate->XOff = d1;
@@ -47,10 +47,10 @@ static void _gstate_against_left(ScrollState *gstate, int d0) {        // sf2ua:
     if (d0 < -6) {
         d0 = -6;
     }
-    d3 = gstate->XPI;
-    gstate->XPI += d0;
-    if (gstate->XPI < g.StageMinX ) {
-        gstate->XPI = g.StageMinX;
+    d3 = gstate->position.x.part.integer;
+    gstate->position.x.part.integer += d0;
+    if (gstate->position.x.part.integer < g.StageMinX ) {
+        gstate->position.x.part.integer = g.StageMinX;
         gstate->XOff = g.StageMinX - d3;
     } else {
         gstate->XOff = d0;
@@ -62,7 +62,7 @@ static void _GSMaintScroll3X(ScrollState *gs) {        // 83658
     gs->x0024 = gstate_Scroll2.x0024;
     switch (gs->XUpdateMethod) {
         case SCR3X_PERSP:        // scroll 2 + Zdepth
-            gs->XPI = gstate_Scroll2.XPI + (gstate_RowScroll.Scroll3Parallax.part.integer - (SCREEN_WIDTH / 2));
+            gs->position.x.part.integer = gstate_Scroll2.position.x.part.integer + (gstate_RowScroll.Scroll3Parallax.part.integer - (SCREEN_WIDTH / 2));
             break;
         case SCR3X_NONE:
             // do nothing
@@ -78,24 +78,24 @@ static void _GSMaintScroll3Y(ScrollState *gs) {        // 8368c
     gs->x0025 = gstate_Scroll2.x0025;
     switch (gs->YUpdateMethod) {
         case 0x2:
-            gs->YPI = gstate_Scroll2.YPI;
+            gs->position.y.part.integer = gstate_Scroll2.position.y.part.integer;
             break;
         case 0x0:
             break;
         case 0x4:
-            gs->Y.full += gstate_Scroll2.YOff * 0xc000 ; /* 0.75 */
+            gs->position.y.full += gstate_Scroll2.YOff * 0xc000 ; /* 0.75 */
             break;
         case 6:
-            gs->Y.full += gstate_Scroll2.YOff * 0x8000;  /* 0.5 */
+            gs->position.y.full += gstate_Scroll2.YOff * 0x8000;  /* 0.5 */
             break;
         case 8:
-            gs->Y.full += gstate_Scroll2.YOff * 0xe000;  /* 0.875 */
+            gs->position.y.full += gstate_Scroll2.YOff * 0xe000;  /* 0.875 */
             break;
         case 10:
-            gs->Y.full += gstate_Scroll2.YOff * 0x14000; /* 1.25 */
+            gs->position.y.full += gstate_Scroll2.YOff * 0x14000; /* 1.25 */
             break;
         case 12:
-            gs->YPI += gstate_Scroll2.YPI - gs->YOff;
+            gs->position.y.part.integer += gstate_Scroll2.position.y.part.integer - gs->YOff;
             gs->YOff = 0;
             break;
     }
@@ -122,16 +122,16 @@ static void update_scroll2_X (ScrollState *gstate) {     /* 0x83270 */
             rightmost_x += right->Size;
 
             if ((rightmost_x - leftmost_x) < 256) {
-                if (rightmost_x - gstate->XPI  >= (SCREEN_WIDTH - 64)) {
-                    _gstate_against_right(gstate,rightmost_x - gstate->XPI - (SCREEN_WIDTH - 64));
-                } else if (leftmost_x - gstate->XPI < 64) {
-                    _gstate_against_left(gstate,leftmost_x - gstate->XPI - 64);
+                if (rightmost_x - gstate->position.x.part.integer  >= (SCREEN_WIDTH - 64)) {
+                    _gstate_against_right(gstate,rightmost_x - gstate->position.x.part.integer - (SCREEN_WIDTH - 64));
+                } else if (leftmost_x - gstate->position.x.part.integer < 64) {
+                    _gstate_against_left(gstate,leftmost_x - gstate->position.x.part.integer - 64);
                 }
             } else if ((rightmost_x - leftmost_x) < SCREEN_WIDTH) {             // XXX checkme
-                d0=(left->XPI - left->Size + right->XPI + right->Size)/2;
-                d0-=gstate->XPI;
-                d0-= SCREEN_WIDTH / 2;
-                if (d0<0) {
+                d0 = (left->XPI - left->Size + right->XPI + right->Size)/2;
+                d0 -= gstate->position.x.part.integer;
+                d0 -= SCREEN_WIDTH / 2;
+                if (d0 < 0) {
                     _gstate_against_left(gstate, d0);
                 } else {
                     _gstate_against_right(gstate, d0);
@@ -168,23 +168,25 @@ static void _GSMaintScroll1X(ScrollState *gs) {    // 834d0
     gs->x0024 = gstate_Scroll2.x0024;
     switch (gs->XUpdateMethod) {
         case SCR1X_PERSPECTIVE:         // follow parallax from linescroll
-            temp = gs->X.part.integer;
-            gs->XPI = gstate_Scroll2.XPI + gstate_RowScroll.Scroll1Parallax.part.integer - (SCREEN_WIDTH / 2);
-            g.x8b14 = gs->XPI - temp;
+            temp = gs->position.x.part.integer;
+            gs->position.x.part.integer = gstate_Scroll2.position.x.part.integer
+                + gstate_RowScroll.Scroll1Parallax.part.integer
+                - (SCREEN_WIDTH / 2);
+            g.x8b14 = gs->position.x.part.integer - temp;
             break;
         case SCR1X_SKY:
-            gs->X.full += QUARTER_PIXEL;        /* plus 0.25 */
-            if(gs->mode1 == 0 && gs->XPI >= 0x200) {
+            gs->position.x.full += QUARTER_PIXEL;        /* plus 0.25 */
+            if(gs->mode1 == 0 && gs->position.x.part.integer >= 0x200) {
                 gs->mode1 += 2;
-                gs->YPI += 0x100;
+                gs->position.y.part.integer += 0x100;
             }
             gs->x0024 = 4;
-            gs->XPI  -= g.x8c02;
+            gs->position.x.part.integer  -= g.x8c02;
             break;
         case SCR1X_SKY2:
-            gs->X.full += QUARTER_PIXEL;
+            gs->position.x.full += QUARTER_PIXEL;
             gs->x0024   = 4;
-            gs->XPI -= g.x8c02;
+            gs->position.x.part.integer -= g.x8c02;
             break;
         case SCR1X_NONE:           /* does nothing */
             break;
@@ -199,27 +201,27 @@ static void _GSMaintScroll1Y(ScrollState *gstate) {    /* 83558 */
     gstate->x0025 = gstate_Scroll2.x0025;
     switch (gstate->YUpdateMethod) {
         case SCR1Y_FOLLOW_SCR2:
-            gstate->YPI = gstate_Scroll2.YPI;
+            gstate->position.y.part.integer = gstate_Scroll2.position.y.part.integer;
             break;
         case SCR1Y_NONE:
             break;
         case 4:
-            gstate->Y.full += gstate_Scroll2.YOff * 128;   /* XXX all need <<4 */
+            gstate->position.y.full += gstate_Scroll2.YOff * 128;   /* XXX all need <<4 */
             break;
         case 6:
-            gstate->Y.full += gstate_Scroll2.YOff * 320;
+            gstate->position.y.full += gstate_Scroll2.YOff * 320;
             break;
         case 8:
-            gstate->Y.full += gstate_Scroll2.YOff * 288;
+            gstate->position.y.full += gstate_Scroll2.YOff * 288;
             break;
         case 10:
-            gstate->Y.full += gstate_Scroll2.YOff * 224;
+            gstate->position.y.full += gstate_Scroll2.YOff * 224;
             break;
         case 12:
-            gstate->Y.full += gstate_Scroll2.YOff * 160;
+            gstate->position.y.full += gstate_Scroll2.YOff * 160;
             break;
         case 14:
-            gstate->YPI += gstate_Scroll2.YOff;
+            gstate->position.y.part.integer += gstate_Scroll2.YOff;
             break;
     }
 }
@@ -249,8 +251,8 @@ void GSMaintScroll3(ScrollState *gs) {   /* 835ec */
         case 2:
             _GSMaintScroll3X(gs);
             _GSMaintScroll3Y(gs);
-            g.CPS.Scroll3X = gs->XPI;
-            g.CPS.Scroll3Y = gs->YPI;
+            g.CPS.Scroll3X = gs->position.x.part.integer;
+            g.CPS.Scroll3Y = gs->position.y.part.integer;
             break;
     }
 }
@@ -300,12 +302,12 @@ void GSMaintScroll2(ScrollState *gstate){      /* 831ca was nextlevel_dosetups *
             update_scroll2_Y(gstate);        /* sub_83376 same for vert */
 //            if(g.OnBonusStage) {    // XXX
               if(1) {
-                g.CPS.Scroll2X = gstate->XPI;
+                g.CPS.Scroll2X = gstate->position.x.part.integer;
             } else {
                 // compensate for Rowscroll
-                g.CPS.Scroll2X = gstate->XPI - (SCREEN_WIDTH / 2);
+                g.CPS.Scroll2X = gstate->position.x.part.integer - (SCREEN_WIDTH / 2);
             }
-            g.CPS.Scroll2Y = gstate->YPI;
+            g.CPS.Scroll2Y = gstate->position.y.part.integer;
     }
 }
 
@@ -321,16 +323,16 @@ static u16 *_GSCoordsScroll1(CP cp){            //83dec checked
 
 static CP _GSCoordOffsetScr1 (ScrollState *gs, short offset) {    // 83d68 checked
     CP cp;
-    static const short data_83d84[4][2] = {
-        {   -64,   352,  },
-        {   416,   352,  },
-        {   -64,  -128,  },
-        {   -64,   352,  },
+    static const struct Point16 data_83d84[4] = {
+        { -64,   352 },
+        { 416,   352 },
+        { -64,  -128 },
+        { -64,   352 },
     };
     
     offset &= 0xf;
-    cp.x =   gs->XPI + data_83d84[offset/4][0];
-    cp.y = ~(gs->YPI + data_83d84[offset/4][1]);
+    cp.x =   gs->position.x.part.integer + data_83d84[offset/4].x;
+    cp.y = ~(gs->position.y.part.integer + data_83d84[offset/4].y);
     
     return cp;
 }
@@ -341,11 +343,11 @@ static void _GSInitScroll1(ScrollState *gstate) {    /* 83b78 checked init scrol
     const u16 *a1;
     u16 *gfx_p;
     
-    g.CPS.Scroll1X = gstate->XPI;
-    g.CPS.Scroll1Y = gstate->YPI;
+    g.CPS.Scroll1X = gstate->position.x.part.integer;
+    g.CPS.Scroll1Y = gstate->position.y.part.integer;
     
-    cp.x = gstate->XPI - 0x40;
-    cp.y = ~(gstate->YPI + 0x160);
+    cp.x = gstate->position.x.part.integer - 0x40;
+    cp.y = ~(gstate->position.y.part.integer + 0x160);
     
     for (i=0; i<16; ++i) {
         gfx_p = _GSCoordsScroll1(cp);
@@ -358,10 +360,10 @@ static void _GSInitScroll1(ScrollState *gstate) {    /* 83b78 checked init scrol
 static void gstate_update_scroll1 (ScrollState *gs) {            //83498
     CP cp;
         
-    g.CPS.Scroll1X = gs->XPI;
-    g.CPS.Scroll1Y = gs->YPI;
+    g.CPS.Scroll1X = gs->position.x.part.integer;
+    g.CPS.Scroll1Y = gs->position.y.part.integer;
     
-    if((gs->XPI & 0x20) ^ gs->x001e) {        // does it need refilling?
+    if((gs->position.x.part.integer & 0x20) ^ gs->x001e) {        // does it need refilling?
         gs->x001e ^= 0x20;
     
         cp = _GSCoordOffsetScr1(gs, gs->x0024);

@@ -58,12 +58,10 @@ static void SMdemo_show_high_scores(void) {		//6aaa
 			g.Stage  = 0x10;
 			palette_macro(0x10);
 			TMInitForStage();
-			gstate_Scroll2.XPI = 0x200;
-			gstate_Scroll2.YPI = 0x700;
+            SET_VECTFP16(gstate_Scroll2.position, 512, 1792);
 			TMSetupScroll2(&gstate_Scroll2);
-			
-			gstate_Scroll3.XPI = 0x200;
-			gstate_Scroll3.YPI = 0x700;
+
+            SET_VECTFP16(gstate_Scroll3.position, 512, 1792);
 			TMSetupScroll3(&gstate_Scroll3);
 			
 			QueueEffect(SL10 | SL10_HIGH_SCORE_TABLE, 0);
@@ -162,13 +160,11 @@ void SMdemo_titlefightanim(void) {	// 0x6650 mode is 2,0
 			palette_macro(0x10);
 			TMInitForStage();
 			g.CPS.DispEna = 0x079a;
-			
-			gstate_Scroll2.XPI =    0x0;
-			gstate_Scroll2.YPI =  0x500;
+
+            SET_VECTFP16(gstate_Scroll2.position, 0, 1280);
 			TMSetupScroll2(&gstate_Scroll2);
-			
-			gstate_Scroll3.XPI =    0x0;
-			gstate_Scroll3.YPI =  0x600;
+
+            SET_VECTFP16(gstate_Scroll3.position, 0, 1536);
 			TMSetupScroll3(&gstate_Scroll3);
 			
 			g.DemoStarted = TRUE;
@@ -185,26 +181,26 @@ void SMdemo_titlefightanim(void) {	// 0x6650 mode is 2,0
                 NEXT(g.mode1)
 			break;
 		case 4: 
-			gstate_Scroll2.Y.full+= 0x00008000;    /*half, parallax scroll*/
-			gstate_Scroll3.YPI   += 1;
-			if (gstate_Scroll3.YPI > 0x700) {
-				g.mode1 +=2;
-				gstate_Scroll3.YPI = 0x700;
-				g.timer2 = 180;      /* 180 (decimal) ticks */
+			gstate_Scroll2.position.y.full+= 0x00008000;    /*half, parallax scroll*/
+			gstate_Scroll3.position.y.part.integer += 1;
+			if (gstate_Scroll3.position.y.part.integer > 1792) {
+				g.mode1 += 2;
+				gstate_Scroll3.position.y.part.integer = 1792;
+				g.timer2 = 180;
 				start_effect(0x0c1e, 3);
 			}
 			break;
 		case 6:
 			if (!g.timer2--) {
-				g.mode1 +=2;
+				g.mode1 += 2;
 				g.Pause_9e1 = -1;
 				g.timer2 = 750;
 			}
 			break;
 		case 8:
 			if (!g.timer2--) {
-				g.mode0 +=2;
-				g.mode1  =0;
+				g.mode0 += 2;
+				g.mode1  = 0;
 				if (g.Version != VERSION_USA) { g.mode0 = 0x8; }
 			}
 			break;
@@ -225,8 +221,7 @@ void SMdemo_winnersusedrugs (void) {
 			palette_macro(0x10);
 			TMInitForStage();
 			g.CPS.DispEna = 0x6da;
-			gstate_Scroll2.XPI = 0;
-			gstate_Scroll2.YPI = 0x700;
+            SET_VECTFP16(gstate_Scroll2.position, 0, 1792);
 			TMSetupScroll2(&gstate_Scroll2);
 			start_effect(0x2, 3);
 			break;
@@ -242,9 +237,9 @@ void SMdemo_winnersusedrugs (void) {
 
 static void setupdemofight(void) {		// 69e2
 	do {
-		g.timer4 = gstate_Scroll2.XPI;
+		g.timer4 = gstate_Scroll2.position.x.part.integer;
 		TMUpdate();
-	} while (g.timer4 != gstate_Scroll2.XPI);
+	} while (g.timer4 != gstate_Scroll2.position.x.part.integer);
 	NEXT(g.mode3);
 	g.mode4 = 0;
 	//todo  create_task(konami_94888, 5, 0, 0, 0);
@@ -252,6 +247,7 @@ static void setupdemofight(void) {		// 69e2
 	g.PreRoundAnim = TRUE;
 	start_effect(0x02, 3);
 }
+
 static void sub_6a54(void) {
 	NEXT(g.mode0);
 	g.mode1 = g.mode2 = g.mode2 = 0;
@@ -259,7 +255,8 @@ static void sub_6a54(void) {
 	sound_cq_f0f7();
 	die_top8();
 	//task_kill(5);		// kill the konami watcher
-}	
+}
+
 static void sub_6a78(void) {
 	if (g.TimeWarpTimer) {
 		if (--g.TimeWarpTimer == 0) {
@@ -275,6 +272,7 @@ static void sub_6a78(void) {
 	CDCheckPlayers();
 	sub_7e4dc();
 }
+
 static void sub_6964(void) {			// 6964 demo fight sm
 	switch (g.mode3) {
 		case 0:

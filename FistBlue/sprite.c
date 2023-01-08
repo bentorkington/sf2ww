@@ -853,24 +853,24 @@ static void sprite_coords(Object *obj, short *coordpair) {		// 7f160
 		switch (obj->Scroll) {
 			case SCROLL_2:
 				if(obj->ZDepth == 0) {
-					coordpair[0]=obj->XPI - gstate_Scroll2.XPI;
-					coordpair[1]=obj->YPI - gstate_Scroll2.YPI;
+					coordpair[0]=obj->XPI - gstate_Scroll2.position.x.part.integer;
+					coordpair[1]=obj->YPI - gstate_Scroll2.position.y.part.integer;
 					if(obj->OnGround) {	/* move with screen wobble */
 						coordpair[1] += g.ScreenWobbleMagnitude;
 					}
 				} else {
 					temp = g.x02be[1024 - (obj->ZDepth + 1)];
-					coordpair[0]=obj->XPI - (temp-192) - gstate_Scroll2.XPI;
-					coordpair[1]=obj->YPI - gstate_Scroll2.YPI;
+					coordpair[0]=obj->XPI - (temp-192) - gstate_Scroll2.position.x.part.integer;
+					coordpair[1]=obj->YPI - gstate_Scroll2.position.y.part.integer;
 				}
 				break;
 			case SCROLL_1:
-				coordpair[0]=obj->XPI - gstate_Scroll1.XPI;
-				coordpair[1]=obj->YPI - gstate_Scroll1.YPI;
+				coordpair[0]=obj->XPI - gstate_Scroll1.position.x.part.integer;
+				coordpair[1]=obj->YPI - gstate_Scroll1.position.y.part.integer;
 				break;
 			case SCROLL_3:
-				coordpair[0]=obj->XPI - gstate_Scroll3.XPI;
-				coordpair[1]=obj->YPI - gstate_Scroll3.YPI;
+				coordpair[0]=obj->XPI - gstate_Scroll3.position.x.part.integer;
+				coordpair[1]=obj->YPI - gstate_Scroll3.position.y.part.integer;
 				break;
 			FATALDEFAULT;
 		}

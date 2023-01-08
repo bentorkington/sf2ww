@@ -128,10 +128,10 @@ void TMMaintRowScroll(RowScrollState *ss) {    /* 84480 */
             a1 = &ss->ss_001c[ss->x0024 / 4];
             // xxx lookup 84564 - 2e
             ss->x0024 = (ss->x0024 + 4) & 0xc;
-            ss->YPI = gstate_Scroll2.YPI;
-            g.CPS.RowScrollOffset = ss->YPI;
-            if (a1[0] != gstate_Scroll2.XPI) {
-                a1[0] = gstate_Scroll2.XPI;
+            ss->position.y.part.integer = gstate_Scroll2.position.y.part.integer;
+            g.CPS.RowScrollOffset = ss->position.y.part.integer;
+            if (a1[0] != gstate_Scroll2.position.x.part.integer) {
+                a1[0] = gstate_Scroll2.position.x.part.integer;
                 _GSUpdateRowScroll(ss, g.x02be, a1);
             }
             break;

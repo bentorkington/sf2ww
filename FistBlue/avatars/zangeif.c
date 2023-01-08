@@ -1086,7 +1086,7 @@ void PSCBVictoryZangeif(Player *ply) {		// 31f48
 								obj->Sel    = 0x25;
 								obj->SubSel = 0xf;
 								ply->Owner = (Player *)obj;
-								if(ply->XPI - gstate_Scroll2.XPI >= 0x90) {
+								if(ply->XPI - gstate_Scroll2.position.x.part.integer >= 0x90) {
 									obj->XPI = ply->XPI -0x80;
 									obj->Flip = 1;
 								} else {

@@ -1059,10 +1059,10 @@ void drawGLText(recCamera cam) {
 				 );
 		drawGLString(10, (lineSpacing * line++) + startOffest, outString);
 				sprintf	(outString, "SCR1: X:%04x(%04x,%04x) Y:%04x (%04x/%04x) 1E:%04x 20:%04x FADE %x",
-						 gstate_Scroll1.XPI,
+						 gstate_Scroll1.position.x.part.integer,
                          g.CPS.Scroll1X,
                          cps_a_emu.scroll1x,
-						 gstate_Scroll1.YPI,
+						 gstate_Scroll1.position.y.part.integer,
 						 gstate_Scroll1.Offset,
 						 gstate_Scroll1.OffMask,
 						 gstate_Scroll1.x001e,
@@ -1071,10 +1071,10 @@ void drawGLText(recCamera cam) {
 						 );
 				drawGLString(10, (lineSpacing * line++) + startOffest, outString);
 				sprintf	(outString, "SCR2: X:%04x(%04x,%04x) Y:%04x (%04x/%04x) 1E:%04x 20:%04x FADE %x",
-						 gstate_Scroll2.XPI,
+						 gstate_Scroll2.position.x.part.integer,
                          g.CPS.Scroll3X,
                          cps_a_emu.scroll2x,
-						gstate_Scroll2.YPI,
+						 gstate_Scroll2.position.y.part.integer,
 						 gstate_Scroll2.Offset,
 						 gstate_Scroll2.OffMask,
 						 gstate_Scroll2.x001e,
@@ -1083,7 +1083,7 @@ void drawGLText(recCamera cam) {
 						 );
 				drawGLString(10, (lineSpacing * line++) + startOffest, outString);
 		sprintf	(outString, "SCR3: X:%04x(%04x,%04x) Y:%04x (%04x/%04x) 1E:%04x 20:%04x FADE %x",
-				 gstate_Scroll3.XPI,
+				 gstate_Scroll3.position.x.part.integer,
                  g.CPS.Scroll3X,
                  cps_a_emu.scroll3x,
 				 g.CPS.Scroll3Y,
