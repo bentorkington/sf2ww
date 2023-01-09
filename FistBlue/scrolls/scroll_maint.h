@@ -16,20 +16,16 @@ enum ScrollMode1Y {
 };
 
 enum ScrollMode1X {
-    /// Follow the perspective calculations from the Rowscroll layer
-    SCR1X_PERSPECTIVE,
-    /// Scroll horizontally continuously
-    SCR1X_SKY = 2,
+    SCR1X_PERSPECTIVE,                          /*! Follow the perspective calculations from the Rowscroll layer */
+    SCR1X_SKY = 2,                              /*! Scroll horizontally continuously */
     SCR1X_SKY2 = 4,
-    /// Do nothing
-    SCR1X_NONE = 6,
+    SCR1X_NONE = 6,                             /*! Do nothing*/
+
 };
 
 enum ScrollMode2Y {
-    /// Automatically follow the two players along the stage
-    SCR2Y_FIGHT = 0,
-    /// Do nothing
-    SCR2Y_NONE = 2,
+    SCR2Y_FIGHT = 0,                            /*! Automatically follow the two players along the stage */
+    SCR2Y_NONE = 2,                             /*! Do nothing*/
 };
 
 #define SCR3X_PERSP 0

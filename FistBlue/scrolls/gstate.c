@@ -114,8 +114,8 @@ static CP _GSCoordOffsetScr2 (ScrollState *gs, short offset) {
 	
     CP cp;
     offset &= 0xf;
-    cp.x = gs->position.x.part.integer + data_83db0[offset/4].x;
-    cp.y = ~(gs->position.y.part.integer + data_83db0[offset/4].y);
+    cp.x = gs->position.x.part.integer + data_83db0[offset / 4].x;
+    cp.y = ~(gs->position.y.part.integer + data_83db0[offset / 4].y);
     
     return cp;
 }
@@ -129,8 +129,8 @@ static CP _GSCoordOffsetScr3 (ScrollState *gs, short offset) {
 	
     CP cp;
     offset &= 0x000f;
-    cp.x =   gs->position.x.part.integer + data_83ddc[offset/4].x;
-    cp.y = ~(gs->position.y.part.integer + data_83ddc[offset/4].y);
+    cp.x =   gs->position.x.part.integer + data_83ddc[offset / 4].x;
+    cp.y = ~(gs->position.y.part.integer + data_83ddc[offset / 4].y);
     
     return cp;
 }
@@ -174,17 +174,17 @@ static void _GSDrawScroll2C(ScrollState *gs, u16 *gfx_p, const u16 *tile_p, CP c
     
     draw_n_rows(gfx_p, tile_p, d2);
     
-    tile_p=skyscraper_realign(gs, &gfx_p);
+    tile_p = skyscraper_realign(gs, &gfx_p);
     draw_n_rows(gfx_p, tile_p, 15);
     
-    tile_p=skyscraper_realign(gs, &gfx_p);
+    tile_p = skyscraper_realign(gs, &gfx_p);
     d2 += 17;
     d0 = 41 - d2;
-    if(d0 < 15) {
+    if (d0 < 15) {
         draw_n_rows(gfx_p, tile_p, d0);
     } else {
         draw_n_rows(gfx_p, tile_p, 15);
-        tile_p=skyscraper_realign(gs, &gfx_p);
+        tile_p = skyscraper_realign(gs, &gfx_p);
         draw_n_rows(gfx_p, tile_p, d0 - 16);
     }
 }
@@ -196,9 +196,8 @@ static void sub_84170(int lines, u16 **gfx_p, const u16 **tilep) {
     }
 }
 
-
 static void _GSDrawScroll3A(ScrollState *gs, u16 *gfx_p, const u16 *tilep, CP cp) {  /* 84138 for Scroll3 was funky2_draw*/
-    short d0 = ((~cp.y)  & 0xe0) >> 5;        // y / 32
+    short d0 = ((~cp.y) & 0xe0) >> 5;        // y / 32
     short d3 = d0;
     sub_84170(d0, &gfx_p, &tilep);
 
@@ -219,8 +218,8 @@ static void _GSDrawScroll3A(ScrollState *gs, u16 *gfx_p, const u16 *tilep, CP cp
 
 inline static void draw_n_rows(u16 *gfx_p, const u16 *tile_p, short n_cols) {            // 84374
     int i;
-    for(i=0; i<=n_cols; i++) {
-        SCR2_DRAW_TILE(gfx_p, *tile_p, *tile_p+1);
+    for(i = 0; i <= n_cols; i++) {
+        SCR2_DRAW_TILE(gfx_p, *tile_p, *tile_p + 1);
         SCR2_CURSOR_BUMP(gfx_p,  1, 0);
         SCR2_CURSOR_BUMP(tile_p, 1, 0);
     }
@@ -261,7 +260,7 @@ static void gstate_update_scroll3 (ScrollState *gs) {		//83d06
     
     temp  = gs->position.x.part.integer & 0x20;
     temp ^= gs->x001e;
-    if(temp == 0) {
+    if (temp == 0) {
         gs->x001e ^= 0x20;
 		cp = _GSCoordOffsetScr3(gs, gs->x0024);
 		_GSDrawScroll3A(gs, _GSCoordsScroll3(cp), _GSLookupScroll3(gs, cp), cp);
@@ -270,7 +269,7 @@ static void gstate_update_scroll3 (ScrollState *gs) {		//83d06
     
     temp  = gs->position.y.part.integer & 0x20;
     temp ^= gs->x001f;
-    if(temp == 0) {
+    if (temp == 0) {
         gs->x001f ^= 0x20;
 		cp = _GSCoordOffsetScr3(gs, gs->x0024);
 		// XXX _GSDrawScroll3B(gs, _GSCoordsScroll3(cp), _GSLookupScroll3(gs, cp),cp);
@@ -285,7 +284,7 @@ static void gstate_update_scroll3 (ScrollState *gs) {		//83d06
  */
 void TMUpdate(void) {
     debughook(4);
-    if(g.OnBonusStage) {
+    if (g.OnBonusStage) {
 		/* 831b2 */
         GSMaintScroll2(&gstate_Scroll2);
         GSMaintScroll1(&gstate_Scroll1);
@@ -340,7 +339,7 @@ void TMSetupScroll2(ScrollState *gs) {			// 83c3c
     cp.x = gs->position.x.part.integer -  144;
     cp.y = ~(gs->position.y.part.integer + 384);
 	
-	for (i=0x29; i >= 0; --i) {			// 768 pixels
+	for (i = 0x29; i >= 0; --i) {			// 768 pixels
 		GSDrawScroll2A(gs, _GSCoordsScroll2(cp), _GSLookupScroll2(gs, cp), cp);
 		cp.x += 16;
 	}
@@ -355,7 +354,7 @@ void TMSetupScroll3(ScrollState *gs) {			// 83cd2 was setup_scroll3
     cp.x = gs->position.x.part.integer -  160;
     cp.y = ~(gs->position.y.part.integer + 384);
 	
-	for (i=0x15; i >= 0; --i) {			// 0x16 x 32 = 704 pixels
+	for (i = 0x15; i >= 0; --i) {			// 0x16 x 32 = 704 pixels
 		_GSDrawScroll3A(gs, _GSCoordsScroll3(cp), _GSLookupScroll3(gs, cp), cp);
 		cp.x += 32;
 	}
