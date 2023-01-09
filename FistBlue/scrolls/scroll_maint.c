@@ -95,7 +95,7 @@ static void _GSMaintScroll3Y(ScrollState *gs) {        // 8368c
             gs->position.y.full += gstate_Scroll2.YOff * 0x14000; /* 1.25 */
             break;
         case 12:
-            gs->position.y.part.integer += gstate_Scroll2.position.y.part.integer - gs->YOff;
+            gs->position.y.part.integer = gstate_Scroll2.position.y.part.integer - gs->YOff;
             gs->YOff = 0;
             break;
     }
