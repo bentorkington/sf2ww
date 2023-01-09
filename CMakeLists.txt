@@ -1,9 +1,10 @@
 cmake_minimum_required(VERSION 3.0.0)
 project(mt2-glut VERSION 0.1.0 LANGUAGES C)
 
+set(THREADS_PREFER_PTHREAD_FLAG ON)
 find_package(GLUT REQUIRED)
 find_package(OpenGL REQUIRED)
-
+find_package(Threads REQUIRED)
 
 add_executable(glutBasics glutBasics.c
             trackball.c
@@ -96,7 +97,7 @@ target_include_directories(glutBasics PUBLIC
     SwiftBeam
 )
 
-target_link_libraries(glutBasics OpenGL::GL GLUT::GLUT)
+target_link_libraries(glutBasics PRIVATE m OpenGL::GL OpenGL::GLU GLUT::GLUT Threads::Threads)
 
 if (APPLE)
     message(STATUS "Designed by Apple in California")
