@@ -151,7 +151,7 @@ void sf2_backtrace(int count) {
 	char** strs = backtrace_symbols(callstack, frames);
     
     if (count && frames > (count-1)) {
-        frames = count-1;
+        frames = count - 1;
     }
 	for (i = 0; i < frames; ++i) {
 		printf("%s\n", strs[i]);
@@ -164,14 +164,11 @@ void sf2_backtrace(int count) {
 
 void debughook(int data) {
 	/* unimp */
-
-
 }
 
 // todo: move me
 _Noreturn void FBPanic(int data) {
 	printf("PANIC()\n");
-    return;
 
 #ifndef CPS
 	void *callstack[128];
@@ -182,13 +179,8 @@ _Noreturn void FBPanic(int data) {
 	}
 	free(strs);
 
-	exit(1);
+    abort();
 #endif
-	
-	while (TRUE) {
-		
-	}
-	/* do panic stuff here */
 }
 
 #pragma mark ---- Jumper Decoding ---
