@@ -26,6 +26,29 @@ sf2gfx.bin - All the tile ROMs, interleaved and concatenated
 2. Use the script in `bin/mt2-merge.sh` to merge your roms into `sf2gfx.bin` and `allroms.bin`
 3. Copy these files to the Resources directory in the MT2.app bundle
 
+## Building
+
+### Linux / macOS using Cmake
+
+```bash
+mkdir build
+cd build
+cmake ..
+make
+```
+
+### With Xcode
+
+Open the MT2.xcodeproj project and build either the MT2 (a Cocoa app) or MT2GLUT (command line app) target
+
+#### MT2 Cocoa app
+
+After building, open the compiled bundle in Finder by using Show Package Contents, and copy your `allroms.bin` and `sf2gfx.bin` files to the `Contents/Resources` directory
+
+#### MT2GLUT app
+
+Ensure `allroms.bin` and `sf2gfx.bin` are in your current directory when running `glutBasics`
+
 ## Components of the project
 
 ### Fistblue
