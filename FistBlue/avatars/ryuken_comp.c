@@ -263,7 +263,7 @@ void PLCBCompAttackRyuKen(Player *ply) {
 						case 0:	RyuKenStartHadouken(ply); break;
 						case 2: RyuSMHadouken(ply); break;
 						case 4: 
-							if(sub_2d7d2(ply)==0) {
+							if(ryuken_power_move_recovery_timer(ply)==0) {
 								RyuExitStandAttack(ply);
 							}
 							break;

@@ -15,7 +15,7 @@
 	FIXED8_8		Draw2;					// 0x16	
     short			Timer;                  // 0x18
     const FBAction *ActionScript;
-    u8      		LocalTimer;				// 0x1e	 another Timer
+    u8      		LocalTimer;				// 0x1e	 Move recovery timer
     u8      		SubTimer;
     signed char		Sel;					// 20
     signed char		SubSel;					// 21

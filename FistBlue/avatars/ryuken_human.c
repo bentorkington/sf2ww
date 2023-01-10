@@ -31,14 +31,18 @@ extern Game g;
 typedef struct KenRyuInputs KRBtns;
 typedef struct UserData_RyuKen UD;
 
-void PSCBPowerRyu(Player *ply) {		//2d714
-	struct UserData_RyuKen *ud=(struct UserData_RyuKen *)&ply->UserData;
+/**
+ * @brief Power move state machine
+ * @note sf2ua/0x2d714
+ */
+void PSCBPowerRyu(Player *ply) {
+	struct UserData_RyuKen *ud = (struct UserData_RyuKen *)&ply->UserData;
 	
 	if (ply->Timer2) {
-		ply->Timer2--;
+		--ply->Timer2;
 	} else {
-		switch (ud->x00c0) {
-			case 0:					//2d732
+		switch (ud->current_power_move) {
+			case RYUKEN_POWER_MOVE_HADOUKEN:
 				switch (ply->mode2) {
 					case 0:
 						/* Tamper protection removed */
@@ -48,15 +52,14 @@ void PSCBPowerRyu(Player *ply) {		//2d714
 						RyuSMHadouken(ply);
 						break;
 					case 4:
-						//sub_2d7c8(ply);
-						if (sub_2d7d2(ply)==0) {
+						if (ryuken_power_move_recovery_timer(ply) == FALSE) {
 							ply_exit_stand(ply);
 						}
 						break;
-						FATALDEFAULT;
+                    FATALDEFAULT;
 				}
 				break;
-			case 2:					//2d902
+			case RYUKEN_POWER_MOVE_HURRICANE:                         //2d902
 				switch (ply->mode2) {
 					case 0:		
 						RyuStartHurricane(ply);
@@ -70,7 +73,7 @@ void PSCBPowerRyu(Player *ply) {		//2d714
 						FATALDEFAULT;
 				}
 				break;
-			case 4:					//2d7de
+			case RYUKEN_POWER_MOVE_SHORYUKEN:                        //2d7de
 				switch (ply->mode2) {
 					case 0:
 						RyuStartShoryuken(ply);
@@ -89,14 +92,15 @@ void PSCBPowerRyu(Player *ply) {		//2d714
 		}
 	}
 }
+
 static void _RyuStandNoThrow(Player *ply) {
 	static const short data_2cfaa[]={25, 31, 41};
 	static const short data_2cfb0[]={ 0,  0, 40};
 
 	ply->Move = ply->ButtonStrength;
-	if (ply->PunchKick==PLY_PUNCHING) {
+	if (ply->PunchKick == PLY_PUNCHING) {
 		if (ply->OppXDist > data_2cfaa[ply->ButtonStrength / 2]) {
-			ply->Move++;		/* do different punch if opponent is close */
+			++ply->Move;		/* do different punch if opponent is close */
 		}
 	}
 	else {
@@ -108,19 +112,17 @@ static void _RyuStandNoThrow(Player *ply) {
 }
 
 static short _RyuKenCheckThrow(Player *ply, short d6) {	//2cfb6
-	d6 &= 0x3;
-	if (d6 == 0 || ply->ButtonStrength == 0) {
-		return FALSE;
-	}
-	PLY_THROW_SET(-0x18, 0x35, 0x18, 0x10);
-	if(throwvalid(ply)) {
-		if ((ply->JoyDecode.full & JOY_LEFT) == 0) {
-			ply->Flip = FACING_LEFT;
-		} else {
-			ply->Flip = FACING_RIGHT;
-		}
-		return TRUE;
-	}
+    if (((d6 & JOY_LEFT) || (d6 & JOY_RIGHT)) && ply->ButtonStrength != 0) {
+        PLY_THROW_SET(-0x18, 0x35, 0x18, 0x10);
+        if (throwvalid(ply)) {
+            if ((ply->JoyDecode.full & JOY_LEFT) == 0) {
+                ply->Flip = FACING_LEFT;
+            } else {
+                ply->Flip = FACING_RIGHT;
+            }
+            return TRUE;
+        }
+    }
 	return FALSE;
 }
 
@@ -144,33 +146,26 @@ short doublebtn(Player *ply) {		/* 2d4f0 */
 		BUTTON_D,	BUTTON_E,	BUTTON_F,
 	};
 	
-	if (ply->AnimFlags & 0xff) {
+	if (AF2) {
 		return buttonspressed(ply, data_2d50e[ply->ButtonStrength + (ply->PunchKick * 3)]);
 	} else {
 		return 0;
 	}
 }
 
-
-
-
 static void _RyuAttack0(Player *ply) {		// 2d1b4
 	switch (ply->mode2) {
 		case 0:
 			quirkysound(ply->ButtonStrength / 2);
-			if (ply->PunchKick == PLY_PUNCHING)
-                setstatus4(ply, STATUS_PUNCH);
-            else
-                setstatus4(ply, STATUS_KICK);
-
+            setstatus4(ply, ply->PunchKick == PLY_PUNCHING ? STATUS_PUNCH : STATUS_KICK);
             break;
 		case 2:
 			if (AF1) {
 				ply_exit_stand(ply);
 				return;
 			}
-			if(doublebtn(ply)!=0) {	
-				if(PSSetNextAction(ply)) {
+			if (doublebtn(ply) != 0) {
+				if (PSSetNextAction(ply)) {
 					plstat_do_nextaction(ply);
 				} else {
 					g.HumanMoveCnt++;
@@ -183,6 +178,7 @@ static void _RyuAttack0(Player *ply) {		// 2d1b4
 	}
 	PLAYERTICK;
 }
+
 static short sub_2d080(Player *ply) {
 	ply->Move = ply->ButtonStrength >> 1;
 	return 1;
@@ -192,22 +188,18 @@ static void _RyuAttack2(Player *ply) {		//2d214
 	switch (ply->mode2) {
 		case 0:
 			quirkysound(ply->ButtonStrength / 2);
-			if (ply->PunchKick) {
-				setstatus4(ply, STATUS_CROUCH_KICK);
-			} else {
-				setstatus4(ply, STATUS_CROUCH_PUNCH);
-			}
+            setstatus4(ply, ply->PunchKick ? STATUS_CROUCH_KICK : STATUS_CROUCH_PUNCH);
 			break;
 		case 2:
-			if (ply->AnimFlags & 0x8000) {
+			if (AF1) {
 				ply_exit_crouch(ply);
 				return;
 			}
-			if(doublebtn(ply)!=0) {
-				if(PSSetNextAction(ply)) {
+			if (doublebtn(ply) != 0) {
+				if (PSSetNextAction(ply)) {
 					plstat_do_nextaction(ply);
 				} else {
-					g.HumanMoveCnt++;
+					++g.HumanMoveCnt;
 					sub_2d080(ply);
 					ply->mode2 = 0;
 				}
@@ -247,6 +239,7 @@ static void _RyuKenTopThrow(Player *ply) {
         FATALDEFAULT;
     }
 }
+
 static void _RyuAttack6(Player *ply) {		//2d28e RyuKenThrow
 	UD *ud=(UD *)&ply->UserData;
 	
@@ -255,15 +248,9 @@ static void _RyuAttack6(Player *ply) {		//2d28e RyuKenThrow
 		switch (ply->mode2) {
 			case 0:
                 NEXT(ply->mode2)
-				ud->ShoryukenX.full = 0x48000;
-
-                if (ply->Flip)
-                    ud->ShoryukenX.full = -0x48000;
-				else
-                    ud->ShoryukenX.full = 0x48000;
-                
-				ud->ShoryukenY.full     = 0x00020000;
-				ud->ShoryukenYDash.full = 0xffffe000;
+                ud->ShoryukenX.full     = FLT2FP16(-4.5 * FLIP(ply));
+				ud->ShoryukenY.full     = FLT2FP16(2);
+				ud->ShoryukenYDash.full = FLT2FP16(-0.125);
 
                 soundsting(SOUND_HUA);
 				CASetAnim2(ply, 0x54, ply->Move);
@@ -280,7 +267,7 @@ static void _RyuAttack6(Player *ply) {		//2d28e RyuKenThrow
                             PLAYERTICK;
                             break;
                         case 2:
-                            if(KenTrajectory(ply) < 0) { PLAYERGROUND; }
+                            if (KenTrajectory(ply) < 0) { PLAYERGROUND; }
                             if (AF2) {
                                 /* inlined 2d2d0 */
                                 set_throw_trajectory(ply, 0, ply->Flip ^ 1, 13);
@@ -289,8 +276,8 @@ static void _RyuAttack6(Player *ply) {		//2d28e RyuKenThrow
                             PLAYERTICK;
                             break;
                         case 4:
-                            if(KenTrajectory(ply) < 0) {
-                                if(PLAYERGROUND) {
+                            if (KenTrajectory(ply) < 0) {
+                                if (PLAYERGROUND) {
                                     NEXT(ply->mode3);
                                     ActStartScreenWobble(); 
                                 }
@@ -320,81 +307,84 @@ static void _RyuAttack6(Player *ply) {		//2d28e RyuKenThrow
 		}
 	}
 }
-short RyuPowerSuccess(Player *ply, char *a2) { // 2d6ee
+
+short RyuPowerSuccess(Player *ply, struct ryuken_power_move_state *a2) { // 2d6ee
 	struct UserData_RyuKen *ud=(struct UserData_RyuKen *)&ply->UserData;
 	
 	ply->mode1 = PLSTAT_IN_POWERMOVE;
 	ply->mode2 = 0;
 	ud->x00c2 = 5;
-	a2[2] = 0;
+	a2->x02 = 0;
 	ply->Attacking = TRUE;
 	BumpDiff_PowerMove();
-	g.HumanMoveCnt++;
+	++g.HumanMoveCnt;
 	return 0;
 }
-static void _RyuPowerStrCheck(Player *ply, char *user, u16 d0){		//2d632
+
+static void _RyuPowerStrCheck(Player *ply, struct ryuken_power_move_state *user, u16 d0) {		//2d632
 	struct UserData_RyuKen *ud=(struct UserData_RyuKen *)&ply->UserData;
 	
-	if(check_special_ability(ply)==0 && ud->x00c2) {
+	if (check_special_ability(ply) == 0 && ud->x00c2) {
 		decode_buttons(ply, d0);		
-		if (ply->ButtonStrength >= user[1]) {
-			user[0] = user[2] = 0;
+        if (ply->ButtonStrength >= user->input_timer) { /* more powerful specials are slightly harder to input */
+            user->sequence_index = 0;
+            user->x02 = 0;
 		} else {
-			user[2] = 1;
+			user->x02 = 1;
 		}
 	}
 }
 
-static void RyuCheckSequence(Player *ply, const u16 *movedata, char *user) {	// 2d58e
+static void RyuCheckSequence(Player *ply, const u16 *input_sequence, struct ryuken_power_move_state *user) {	// 2d58e
     static const char otherdata[32]={
         10,   8,   8,  11,   8,   8,   9,   8,
-        9,   8,   8,  10,   8,   8,  11,  13,
-        8,  15,   9,   8,  10,  12,   8,   8,
+         9,   8,   8,  10,   8,   8,  11,  13,
+         8,  15,   9,   8,  10,  12,   8,   8,
         11,   8,   9,   8,  14,  12,   8,  10,
     };
     
 	u16 buttons;
-	switch (user[0]) {
+	switch (user->sequence_index) {
 		case 0:
-			if ((ply->JoyCorrect2 & 0xf) == movedata[0]) {
-				NEXT(user[0]);
-				user[1] = otherdata[RAND32];
+			if ((ply->JoyCorrect2 & JOY_MOVEMASK) == input_sequence[0]) {
+				NEXT(user->sequence_index);
+				user->input_timer = otherdata[RAND32];
 			} else {
-				user[0] = 0;
-                user[2] = 0;
+				user->sequence_index = 0;
+                user->x02 = 0;
 			}
 			break;
 		case 2:
-			if (--user[1] == 0) {
-				user[0] = 0;
-                user[2] = 0;
-			} else if ((ply->JoyCorrect2 & 0xf) == movedata[1]) {
-				NEXT(user[0]);
-				user[1] = otherdata[RAND32];
+			if (--user->input_timer == 0) {
+				user->sequence_index = 0;
+                user->x02 = 0;
+			} else if ((ply->JoyCorrect2 & JOY_MOVEMASK) == input_sequence[1]) {
+				NEXT(user->sequence_index);
+				user->input_timer = otherdata[RAND32];
 			}
 			break;
 		case 4:
-			if (--user[1] == 0) {
-				user[0] = 0;
-                user[2] = 0;
-			} else if ((ply->JoyCorrect2 & 0xf) == movedata[2]) {
-				if ((buttons = buttonspressed(ply, movedata[3]))) {		/* arg in %D1 @ 32c8 */
-					_RyuPowerStrCheck(ply, user,buttons);
-				} else if ((buttons=buttonsreleased(ply, movedata[3]))) {
-					_RyuPowerStrCheck(ply, user,buttons);
+			if (--user->input_timer == 0) {
+				user->sequence_index = 0;
+                user->x02 = 0;
+			} else if ((ply->JoyCorrect2 & JOY_MOVEMASK) == input_sequence[2]) {
+				if ((buttons = buttonspressed(ply, input_sequence[3]))) {		/* arg in %D1 @ 32c8 */
+					_RyuPowerStrCheck(ply, user, buttons);
+				} else if ((buttons=buttonsreleased(ply, input_sequence[3]))) {
+					_RyuPowerStrCheck(ply, user, buttons);
 				} else {
-					NEXT(user[0]);
+					NEXT(user->sequence_index);
 				}
 			}
 			break;
 		case 6:
-			if (--user[1] == 0) {
-				user[0] = 0;
-                user[2] = 0;
+			if (--user->input_timer == 0) {
+				user->sequence_index = 0;
+                user->x02 = 0;
 			} else {
-				if ((buttons = buttonspressed(ply, movedata[3]))) {		/* arg in %D1 @ 32c8 */
+				if ((buttons = buttonspressed(ply, input_sequence[3]))) {		/* arg in %D1 @ 32c8 */
 					_RyuPowerStrCheck(ply, user,buttons);
-				} else if ((buttons=buttonsreleased(ply, movedata[3]))) {
+				} else if ((buttons=buttonsreleased(ply, input_sequence[3]))) {
 					_RyuPowerStrCheck(ply, user,buttons);
 				}
 			}
@@ -402,15 +392,16 @@ static void RyuCheckSequence(Player *ply, const u16 *movedata, char *user) {	// 
 			FATALDEFAULT;
 	}
 }
+
 void PSCBAttackRyu(Player *ply) {		//2d168
 	struct UserData_RyuKen *ud=(struct UserData_RyuKen *)&ply->UserData;
 	
 	// suicide code removed 
 	if (ply->Timer2) {
-		ply->Timer2--;
+		--ply->Timer2;
 	} else {
 		if (ud->x00c2) {
-			ud->x00c2--;
+			--ud->x00c2;
 		}
 		switch (ply->StandSquat) {
 			case PLY_STAND:	_RyuAttack0(ply);	break;
@@ -432,17 +423,16 @@ KRBtns sub_2d0d8(Player *ply) {
 	return retval;
 }
 
-static short sub_2d142(Player *ply, char *a2) {
+static void sub_2d142(Player *ply, struct ryuken_power_move_state *a2) {
 	UD *ud=(UD *)&ply->UserData;
 	
 	ply->mode1 = PLSTAT_IN_POWERMOVE;
 	ply->mode2 = 0;
 	ud->x00c2 = 5;
-	a2[2]=0;
-	ply->Attacking = 1;
+	a2->x02 = 0;
+	ply->Attacking = TRUE;
 	BumpDiff_PowerMove();		
 	g.HumanMoveCnt++;
-	return -1;
 }
 
 short PLCBStandRyu(Player *ply) {		//2cf44
@@ -451,19 +441,18 @@ short PLCBStandRyu(Player *ply) {		//2cf44
 	KRBtns buttons;		
 	
 	ud->x00c2 = 5;
-	buttons = sub_2d0d8(ply);
-	if(buttons.buttons == 0){ return 0; }						// KenRyu GetButtons
+    buttons = sub_2d0d8(ply);                   /* KenRyu GetButtons */
+	if (buttons.buttons == 0){
+        return 0;
+    }
     
 	ply->StandSquat = PLY_STAND;
-	g.HumanMoveCnt += 1;
+	++g.HumanMoveCnt;
 	decode_buttons(ply, buttons.buttons);
-	if (LBRareChance()) {
-		/* 2d0ec */
-		if (ply->PunchKick != 0) {
-			ud->x00c0=2;
-			return sub_2d142(ply, ud->HurricaneTriggerState);
-		} else {
-			if (0xbbbbbbbb & (1 << RAND32)) {
+
+	if (LBRareChance()) {                       /* 1 in 512 lucky free power move @2d0ec */
+		if (ply->PunchKick == PLY_PUNCHING) {
+            if (0xbbbbbbbb & (1 << RAND32)) {   /* 75% Hadouken, 25% Shoryuken*/
 				/* 2d114 */
 				if (ply->Projectile) {
 					if (ply->StandSquat) {
@@ -471,59 +460,67 @@ short PLCBStandRyu(Player *ply) {		//2cf44
 					}
 					else {
 						_RyuKenStandMove(ply, buttons.stick);
-						return TRUE;
+						return 1;
 					}
 				} else {
-					ud->x00c0= 0;
-					return sub_2d142(ply, ud->FireballTriggerState);
+					ud->current_power_move = RYUKEN_POWER_MOVE_HADOUKEN;
+					sub_2d142(ply, &ud->FireballTriggerState);
+                    return -1;
 				}
 			}
 			else {
-				ud->x00c0=4;
-				return sub_2d142(ply, ud->ShoryukenTriggerState);
+				ud->current_power_move = RYUKEN_POWER_MOVE_SHORYUKEN;
+				sub_2d142(ply, &ud->ShoryukenTriggerState);
+                return -1;
 			}
-		}
+        } else {
+            ud->current_power_move = RYUKEN_POWER_MOVE_HURRICANE;
+            sub_2d142(ply, &ud->HurricaneTriggerState);
+            return -1;
+        }
 	} else {
 		_RyuKenStandMove(ply, buttons.stick);
-		return TRUE;
-	}		
-	
+		return 1;
+	}
 }
+
 short PLCBCrouchRyu(Player *ply) {		//2d05a
 	struct UserData_RyuKen *ud=(struct UserData_RyuKen *)&ply->UserData;
 	KRBtns buttons;
 	
 	ud->x00c2 = 5;
-	buttons=sub_2d0d8(ply);
+	buttons = sub_2d0d8(ply);
 	if (buttons.buttons) {
 		ply->StandSquat = PLY_CROUCH;
 		g.HumanMoveCnt++;
 		decode_buttons(ply, buttons.buttons);
 		if (LBRareChance()) {
 			// 2d0ec
-			if (ply->PunchKick != 0) {
-				ud->x00c0 = 2;
-				return sub_2d142(ply, ud->HurricaneTriggerState);
-			} else if (0xbbbbbbbb & (1<<RAND32)) {
-				if (ply->Projectile) {
-					if (ply->StandSquat) {
+			if (ply->PunchKick != PLY_PUNCHING) {
+				ud->current_power_move = RYUKEN_POWER_MOVE_HURRICANE;
+				sub_2d142(ply, &ud->HurricaneTriggerState);
+                return -1;
+            } else if (0xbbbbbbbb & (1<<RAND32)) { /* 75% Hadouken, 25% Shoryuken */
+                if (ply->Projectile) {          /* can't fire a second Hadouken, so */
+					if (ply->StandSquat) {      /* do and ordinary move instead     */
 						return sub_2d080(ply);
 					} else {
 						_RyuKenStandMove(ply, buttons.stick);
 						return TRUE;
 					}
 				} else {
-					ud->x00c0 = 0;
-					return sub_2d142(ply, ud->FireballTriggerState);
+					ud->current_power_move = RYUKEN_POWER_MOVE_HADOUKEN;
+					sub_2d142(ply, &ud->FireballTriggerState);
+                    return -1;
 				}
 			} else {
-				ud->x00c0 = 4;
-				return sub_2d142(ply, ud->ShoryukenTriggerState);
+				ud->current_power_move = RYUKEN_POWER_MOVE_SHORYUKEN;
+				sub_2d142(ply, &ud->ShoryukenTriggerState);
+                return -1;
 			}
 		} else {
 			return sub_2d080(ply);
 		}
-		
 	}
 	return 0;
 }
@@ -536,7 +533,7 @@ short PLCBJumpRyu(Player *ply) {		//2d08e
 	
 	buttons = sub_2d0d8(ply);
 	if (buttons.buttons) {
-		g.HumanMoveCnt++;
+		++g.HumanMoveCnt;
 		decode_buttons(ply, buttons.buttons);
 		quirkysound(ply->ButtonStrength >> 1);
 		ud->x00c2 = 0;
@@ -546,15 +543,16 @@ short PLCBJumpRyu(Player *ply) {		//2d08e
 			temp = ply->ButtonStrength;
 		}
 		ply->Move = temp;
-		if (ply->PunchKick != 0) {
-			CASetAnim2(ply, STATUS_JUMP_KICK, temp);
+        if (ply->PunchKick == PLY_PUNCHING) {
+            CASetAnim2(ply, STATUS_JUMP_PUNCH, temp);
 		} else {
-			CASetAnim2(ply, STATUS_JUMP_PUNCH, temp);
+            CASetAnim2(ply, STATUS_JUMP_KICK, temp);
 		}
-		return 1;
+		return TRUE;
 	}
-	return 0;
+	return FALSE;
 }
+
 void PLCBPowerRyu(Player *ply){		// 2d51a check Ryu / Ken powermoves
 #define D 0x4
 #define B 0x1
@@ -573,29 +571,28 @@ void PLCBPowerRyu(Player *ply){		// 2d51a check Ryu / Ken powermoves
 #undef P
 	struct UserData_RyuKen *ud=(struct UserData_RyuKen *)&ply->UserData;
 
-	
 	if (ply->PSFinishedParticipating) {
-		return ;
+		return;
 	}
 	/* check for hurricane */
-	RyuCheckSequence(ply, RyuMoveHurricane, ud->HurricaneTriggerState);
-	if (ud->HurricaneTriggerState[2]) {
-		ud->x00c0 = 2;
-		RyuPowerSuccess(ply, ud->ShoryukenTriggerState);
+	RyuCheckSequence(ply, RyuMoveHurricane, &ud->HurricaneTriggerState);
+	if (ud->HurricaneTriggerState.x02) {
+		ud->current_power_move = RYUKEN_POWER_MOVE_HURRICANE;
+		RyuPowerSuccess(ply, &ud->ShoryukenTriggerState);
 		return;
 	}
-    RyuCheckSequence(ply, RyuMoveShoyuken, ud->ShoryukenTriggerState);
-	if (ud->ShoryukenTriggerState[2]) {
-		ud->x00c0 = 4;
-		RyuPowerSuccess(ply, ud->ShoryukenTriggerState);
+    RyuCheckSequence(ply, RyuMoveShoyuken, &ud->ShoryukenTriggerState);
+	if (ud->ShoryukenTriggerState.x02) {
+		ud->current_power_move = RYUKEN_POWER_MOVE_SHORYUKEN;
+		RyuPowerSuccess(ply, &ud->ShoryukenTriggerState);
 		return;
 	}
-	RyuCheckSequence(ply, RyuMoveFireball, ud->FireballTriggerState);
-	if (ud->FireballTriggerState[2] && ply->Projectile==0) {
-		ud->x00c0 = 0;
-		RyuPowerSuccess(ply, ud->FireballTriggerState);
+	RyuCheckSequence(ply, RyuMoveFireball, &ud->FireballTriggerState);
+	if (ud->FireballTriggerState.x02 && ply->Projectile == 0) {
+		ud->current_power_move = RYUKEN_POWER_MOVE_HADOUKEN;
+		RyuPowerSuccess(ply, &ud->FireballTriggerState);
 		return;
 	}
-	ud->FireballTriggerState[2] = 0;
+	ud->FireballTriggerState.x02 = 0;
 }
 

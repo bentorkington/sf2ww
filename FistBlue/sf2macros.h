@@ -82,7 +82,7 @@ break;
 
 #define MINUS_ONE -1
 
-// returns -1 if `obj` is flipped
+// returns -1 if `obj` is facing right, -1 if facing left
 #define FLIP(obj) ((obj)->Flip ? 1 : -1)
 
 #define CP_X ( cp >> 16    )

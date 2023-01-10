@@ -134,13 +134,14 @@ void RyuKenStartHadouken(Player *ply) {			//2d766
 	NEXT(ply->mode2);
 	CASetAnim2(ply, STATUS_HADOUKEN, ply->ButtonStrength/2);
 }
+
 // animate until seqence ends, then init projectile
 void RyuSMHadouken(Player *ply) {		//2d778
 	Object *obj;
 	
 	if (AF1) {
 		NEXT(ply->mode2);
-		if ((obj=AllocProjectile())) {
+		if ((obj = AllocProjectile())) {
 			obj->exists = TRUE;
 			obj->Sel	= SF2_PROJ_HADOUKEN;
 			obj->XPI	= ply->XPI;
@@ -156,7 +157,12 @@ void RyuSMHadouken(Player *ply) {		//2d778
 	PLAYERTICK;
 }
 // hold timer at end
-short sub_2d7d2(Player *ply) {
+/**
+ * @brief process power move recovery
+ * @return `TRUE` until the power move recovery time has elapsed
+ * @note sf2ua/0x2d7d2
+ */
+short ryuken_power_move_recovery_timer(Player *ply) {
 	if (--ply->LocalTimer) {
 		PLAYERTICK;
 		return TRUE;

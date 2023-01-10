@@ -23,7 +23,7 @@ void RyuStartShoryuken(Player *ply);
 void RyuSMShoryuken(Player *ply);
 void RyuStartHurricane(Player *ply);
 void RyuSMHurricane(Player *ply);
-short sub_2d7d2(Player *ply);
+short ryuken_power_move_recovery_timer(Player *ply);
 
 /*!
  sf2ua: 2d3a2
@@ -43,21 +43,35 @@ void PSCBAttackRyu(Player *ply);
 
 void PSCBVictoryRyu(Player *ply);
 
+enum ryuken_power_move {
+    RYUKEN_POWER_MOVE_HADOUKEN = 0,
+    RYUKEN_POWER_MOVE_HURRICANE = 2,
+    RYUKEN_POWER_MOVE_SHORYUKEN = 4,
+};
+
+struct ryuken_power_move_state {
+    char    sequence_index;
+    char    input_timer;
+    char    x02;
+    char    unused[5];
+};
+
 struct UserData_RyuKen {
 	u16		x0084;
 	char	x0086;
 	
 	// State information for each of the Powermoves triggers
-	char	FireballTriggerState[8];	// 0x90 
-	char	HurricaneTriggerState[8];	// 0x98
-	char	ShoryukenTriggerState[8];	// 0xa0
+    struct ryuken_power_move_state FireballTriggerState;    // 0x90
+    struct ryuken_power_move_state HurricaneTriggerState;	// 0x98
+    struct ryuken_power_move_state ShoryukenTriggerState;	// 0xa0
 
     // Powermove state machine
-	char	x00c0;
+	char	current_power_move;       /*! Current power move type, RYUKEN_POWER_MOVE_* 0xc0 */
 	char	x00c1;
 	char	x00c2;
 
 	Object *x00d0;
+    // XXX these are for throws too
 	FIXED16_16	ShoryukenX;			/* 0xf0 */
 	FIXED16_16  ShoryukenXDash;
 	FIXED16_16	ShoryukenY;			/* f8 */
