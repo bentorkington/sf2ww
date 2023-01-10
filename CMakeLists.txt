@@ -111,3 +111,6 @@ endif()
 if (NOT UNIX)
     message(FATAL_ERROR "Only Unix builds are supported")
 endif()
+
+enable_testing()
+add_subdirectory(FBTests)
