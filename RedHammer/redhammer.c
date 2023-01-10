@@ -76,18 +76,22 @@ const char *sample_rom_names[] = {
 
 #ifndef CPS
 
-int load_cps_roms()
+void load_cps_roms()
 {
     if ((g_code_roms = malloc(ALL_CODE_SIZE))) {
 #ifdef REDHAMMER_USE_ALLROMS_BIN
         FILE *allroms = fopen("allroms.bin", "r");
+        if (allroms == NULL) {
+            puts("Can't open allroms.bin\n");
+            exit(EXIT_FAILURE);
+        }
         long bytesread = fread(g_code_roms, 1, ALL_CODE_SIZE, allroms);
         printf("allroms: read %ld bytes\n", bytesread);
 #else
         FILE *rom0;     // even ROM
         FILE *rom1;     // odd ROM
         
-        printf("opening from %s", getcwd(__DARWIN_NULL, 0));
+        printf("opening from %s", getcwd(NULL, 0));
         
         for (int i=0; i<4; ++i) {
             printf("opening %s and %s\n", code_rom_names[2*i + 0], code_rom_names[2*i + 1]);
@@ -103,10 +107,9 @@ int load_cps_roms()
 #endif
     }
     else {
-        return 0;
+        puts("Can't allocate memory!");
+        exit(EXIT_FAILURE);
     }
-    
-    return 1;
 }
 
 #endif
