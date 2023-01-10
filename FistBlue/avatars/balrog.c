@@ -130,6 +130,7 @@ static void sub_37114(Player *ply) {
 			break;
 		case 2:
 			switch (ply->Move) {
+                case 0:
 					if (AF1) {
 						sub_36f1e(ply);
 					} else {
