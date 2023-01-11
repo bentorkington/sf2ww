@@ -56,7 +56,15 @@ static void _ApplyDamageAdjustment(Player *opp, int damage, const char data[]);
 void hitsound(int sound) {      /* 0x352a */
     queuesound(sound & 0xff);
 }
-int find_apex(Player *ply) {       /* 320e */
+
+/**
+ * @brief applies gravity to the player's velocity, returning `FALSE` (check?) if this frame was the apex of the jump
+ * 
+ * @param ply 
+ * @return int 
+ * @note sf2ua:0x320e
+ */
+int find_apex(Player *ply) {
     int a,b;
     a = (ply->VelX.full >= 0);     /* zero considered positive */
     ply->VelX.full -= ply->AclX.full;
@@ -96,8 +104,8 @@ void check_ply_x_bounds (Player *ply) {	/* 3232 verified */
 void LBStartTimeWarp(void) {   /* 0x3534 */
     Object *obj;
     
-    if(g.OnBonusStage) { return; }
-	if((obj=AllocActor())) {
+    if (g.OnBonusStage) { return; }
+	if ((obj=AllocActor())) {
         g.FlagTimeWarp = TRUE;         /* time slows down */
         obj->exists	   = TRUE;
         obj->Sel       = SF2ACT_TIMEWARP;
@@ -110,7 +118,7 @@ static void apply_throw_damage(Player *ply, Player *opp_a3, short index) {		///0
 	LBGetDamage(ply, opp_a3, index);
     opp_a3->UndealtDamage = dr.damage;
     opp_a3->RewardID = dr.d5;             /* score reward */
-    if(g.FastEndingFight == 0 && g.OnBonusStage == 0) {
+    if (g.FastEndingFight == 0 && g.OnBonusStage == 0) {
         if(opp_a3->Energy < dr.damage) { return; }
         
         /* player is knocked out */
@@ -136,6 +144,7 @@ int _EnergyDamageAdjust(Player *ply, int damage) {			// 3640 change to globals
     if (damage == 0) { damage = 1; }
     return damage;
 }
+
 void LBGetDamage(Player *ply, Player *opp, int index) {	/* 0x35c0 */
 	/* XXX modify to return struct */
     if((index & 0x7f) >= 0x20) {
@@ -166,7 +175,7 @@ void set_throw_trajectory(Player *ply, int trajectory, int direction, short dama
     
     temp = ply->Opponent->ThrownFromDizzy;
     ply->Opponent->ThrownFromDizzy = FALSE;
-    if(temp==0) {
+    if (temp==0) {
         player_check_dizzy(ply->Opponent);
     }
     LBThrowClear(ply, ply->Opponent);
@@ -189,7 +198,6 @@ void ply_grip_release(Player *ply, int direction) {		//369a
     opp->Direction = direction;
     LBThrowClear(ply, opp);
 }
-
 
 void sub_36d6(Player *ply, short x, short y, short throwtrajd0, char direction, int damage_d2, int sound_d6, short subsel_d3) {
 // %d0 trajectory %d1 direction %d2 damage %d3 subsel %d4 = x %d5 = y %d6 = sound 
@@ -239,7 +247,6 @@ void LBThrowClear(Player *ply, Player *opp) {		// 0x3764
     opp->ThrowStat    = 0;
     opp->Attacking    = FALSE;
 }
-
 
 void LBInitHitBoxes(Player *ply) {	/* 388c initialise player hitboxes, vega clar */
     ply->exists = TRUE;

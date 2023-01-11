@@ -102,6 +102,7 @@ static void SMDemo(void) {
 		FATALDEFAULT;
 	}
 }
+
 void task_attractSequence(void) {
 	g.InDemo = TRUE;
 	g.CPS.DispEna = 0x12da;
@@ -133,6 +134,7 @@ void SMdemo_fade_and_clear(void) {		// 6618
         }
     }
 }
+
 static void sub_6704(void) {		// SF2 logo, spinning and scaling
 	Object *obj;
 	if ((obj=AllocActor())) {

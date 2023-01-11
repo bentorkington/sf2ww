@@ -39,6 +39,7 @@ void ActStartVomit(Player *ply) {			// 1e304
 		ud->x008e   = &FreeActor;	//??
 	}
 }
+
 void action_1e336(Player *ply) {
 	UD23 *ud;
 	
@@ -64,6 +65,7 @@ void action_1e336(Player *ply) {
 		}
 	}
 }
+
 static void _CreateDizzyObject(Player *ply, short d2) {		// 1e3c8
 	Object *obj;
 	UD23 *ud;
@@ -78,11 +80,13 @@ static void _CreateDizzyObject(Player *ply, short d2) {		// 1e3c8
 		obj->X.full = obj->Y.full = 0;
 	}
 }
+
 void StartDizzyAnim(Player *ply) {				// 1e3bc
 	_CreateDizzyObject(ply, 0);
 	_CreateDizzyObject(ply, 8);
 	_CreateDizzyObject(ply, 16);
 }
+
 void ActBlankaBiteBlood(Player *ply) {			//1e402 not just Blanka XXX
 	Object *obj;
 	if ((obj=AllocActor())) {
@@ -92,6 +96,7 @@ void ActBlankaBiteBlood(Player *ply) {			//1e402 not just Blanka XXX
 		obj->Owner = ply;
 	}
 }
+
 static Player *sub_1e7ae(Object *obj) {		// 1e7ae
 	char x,y;
 	Player *ply = obj->Owner;	
@@ -244,6 +249,7 @@ static void sub_1e59a(Object *obj) {		// birds and stars?
 			FATALDEFAULT;
 	}
 }
+
 static void _act23_animate(Object *obj) {		// 1e77e
 	UD23 *ud = (UD23 *) &obj->UserData;
 	

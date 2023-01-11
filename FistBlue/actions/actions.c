@@ -249,6 +249,7 @@ static void action_0(Object *obj) {    /* c934 Guile stage actions */
         break;
     }
 }
+
 static void action_1(Object *obj) {	/* cb2a */
 	switch (obj->mode0) {
 		case 0:
@@ -263,7 +264,7 @@ static void action_1(Object *obj) {	/* cb2a */
 					/* cbb6 */
 					switch (obj->mode1) {
 						case 0:
-							if(g.FightOver) {
+							if (g.FightOver) {
 								NEXT(obj->mode1);
 								obj->Timer = 10;
 								obj->x002e = 0;
@@ -285,7 +286,7 @@ static void action_1(Object *obj) {	/* cb2a */
 					break;
 				case 1:
 					/* cc1e */
-					if(obj->mode1==0) {
+					if (obj->mode1==0) {
 						NEXT(obj->mode1);
 						obj->OnGround = TRUE;	/* u8 */
 						obj->VelY.full = obj->YPI;
@@ -308,11 +309,6 @@ static void action_1(Object *obj) {	/* cb2a */
 	}	
 }
 
-
-#pragma mark ACT02 Bycycle riders on ChunLi Stage
-
-
-
 #pragma mark ACT03 Das Boat
 
 static void action_3(Object *obj) {    /* d81e Das Boat */
@@ -324,7 +320,7 @@ static void action_3(Object *obj) {    /* d81e Das Boat */
             RHSetAction(obj, RHCODE(0xd878));
 			break;
 		case 2:
-			if (0x74f6 & ( 1 << RAND16)) {
+			if (0x74f6 & (1 << RAND16)) {
 				gstate_Scroll3.YOff = obj->AnimFlags & 0xf;
 				enqueue_and_layer(obj);
 			} else {
@@ -349,6 +345,7 @@ static void sub_dac2(Player *ply) {
 		ply->OnPlatform = FALSE;
 	}
 }
+
 static void action_4(Object *obj) {     /* da72 */
     switch (obj->mode0) {
 		case 0:
@@ -496,7 +493,7 @@ static void sub_f664(Object *obj) {
 	} else {
 		if ((obj->AnimFlags & 0xf) != 6) {
 			ud->h0083c = 1;
-			for (i=9; i>=0; --i) {
+			for (i = 9; i >= 0; --i) {
 				if (0xaaaa & (1 << RAND16)) {
 					if ((nobj = AllocActor()) == NULL) {
 						return;
@@ -514,7 +511,6 @@ static void sub_f664(Object *obj) {
 					} [i];
 				}
 			}
-			
 		}
 	}
 }	
@@ -537,7 +533,7 @@ static void action_09(Object *obj) {	// f568
 				case 0:
 					// f620
 					NEXT(obj->mode1);
-					obj->LocalTimer = (char []){60,0x78,60,0x78,0x78,60,0xb4,0x78}[RAND8];
+					obj->LocalTimer = (char []){ 60,0x78,60,0x78,0x78,60,0xb4,0x78 }[RAND8];
 					break;
 				case 2:
 					// f63c
@@ -1278,6 +1274,7 @@ static void action_13(Object *obj) {  // 119ee
 			break;
 	}
 }
+
 #pragma mark Act14
 static void action_14(Object *obj) {
 	// doesn't call FreeActor(), needs to be wiped out.
@@ -1328,9 +1325,11 @@ static void action_15(Object *obj) {
 			break;
 	}
 }
+
 #pragma mark Act16
 #pragma mark Act17
 #pragma mark Act18
+
 static int sub_12fe6(Object *obj) {
 	if (obj->SubSel) {
 		if (gstate_Scroll1.position.x.part.integer < 448) {
@@ -1361,7 +1360,7 @@ static void action_18(Object *obj) {
 			switch (obj->mode1) {
 				case 0:
 					NEXT(obj->mode1);
-					for (int i=14; i>=0; --i) {
+					for (int i = 14; i >= 0; --i) {
 						// not quite same, sf2ua bails on
 						// first fail of AllocActor
 						if ((nobj = AllocActor())) {
@@ -1455,12 +1454,14 @@ static void action_139ea(Object_G2 *obj_a2)
     car->h00a0w = 0;
     sub_13a0e(obj_a2, 3, 0, 0, 0);
 }
+
 static void action_139fc(Object_G2 *obj_a2)
 {
     UDcar *car = (UDcar *)&obj_a2->UserByte;
     car->h00a0w = 0;
     sub_13a0e(obj_a2, 3, 1, 0, 0);
 }
+
 void action_132fe(Object_G2 *obj_a2, int arg_d6)
 {
     UDcar *car = (UDcar *)&obj_a2->UserByte;
@@ -1787,6 +1788,7 @@ void action_132fe(Object_G2 *obj_a2, int arg_d6)
                         obj->Step   = 2;
                         obj->LocalTimer = 3;
                     }
+                    
                     car->h00a0w = 0x67;
                     car->h00a2w = 0x56;
                     sub_13a0e(obj_a2, 5, 1, 2, 2);

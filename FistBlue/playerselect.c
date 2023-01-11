@@ -66,6 +66,7 @@ static void check_for_new_players(void) {		// 843e
 		queuesound(SOUND_CHALLENGER);
 	}
 }
+
 static void timer_tick(void) {		//8498
 	if (!g.PLSL.TimeExpired) {	
 		if (--g.PLSL.TimerFine == 0) {
@@ -78,6 +79,7 @@ static void timer_tick(void) {		//8498
 		}
 	}
 }
+
 static void update_player_display(Player *ply) {		// 8352
 	DrawTileText(ply->Side ? TILETEXT_PLAYER_2 : TILETEXT_PLAYER_1);
 	
@@ -86,7 +88,6 @@ static void update_player_display(Player *ply) {		// 8352
 
 #define AVATARMENU_COLS    4
 #define AVATARMENU_ROWS    2
-
 
 static int _update_cursor_vert(u16 d6) {		// 8554
 	if (d6 & JOY_UP) {

@@ -38,8 +38,6 @@ extern short g_d7;		/* global for counter */
 
 static void sub_25f06(Object_G2 *obj);
 
-
-
 static void _SMAct00(Object_G2 *obj) {			// 24a50
 	/* big fish on Brazil level */
 	switch (obj->mode0) {
@@ -148,8 +146,8 @@ static void _SMKenDrums(Object_G2 *obj) {				// 24a74
 			break;
 		FATALDEFAULT;
 	}
-	
 }
+
 static void _SMRyuSigns(Object_G2 *obj) {		// 24c4e
 	Object *nobj;
 	short i;

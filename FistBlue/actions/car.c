@@ -47,7 +47,6 @@ const struct hitboxes hitboxes_25d6c = {
 	(const struct hitbox *)hitb_25d78,
 };	
 
-
 static int _car_check_P1(Object_G2 *obj){			// 25d94
 	if (obj->UD.UDcar.p1.as > 0 && obj->UD.UDcar.p1.bs != obj->UD.UDcar.p1.as) {
 		obj->UD.UDcar.p1.bs = obj->UD.UDcar.p1.as;
@@ -55,6 +54,7 @@ static int _car_check_P1(Object_G2 *obj){			// 25d94
 	}
 	return FALSE;
 }
+
 static int _car_check_P2(Object_G2 *obj){			// 25da8
 	if (obj->UD.UDcar.p2.as > 0 && obj->UD.UDcar.p2.bs != obj->UD.UDcar.p2.as) {
 		obj->UD.UDcar.p2.bs = obj->UD.UDcar.p2.as;
@@ -62,9 +62,11 @@ static int _car_check_P2(Object_G2 *obj){			// 25da8
 	}
 	return FALSE;
 }
+
 static void car_setaction(Object_G2 *obj) {//25dbc
     RHSetActionList((Object *)obj, RHCODE(0x25b8a), obj->UD.UDcar.HitsTaken + obj->UD.UDcar.h0092c);
 }
+
 static void _car_disable_ply_shadow(Player *ply) {				// 26122
 	if (ply->YPI != 40) {
 		if (ply->Side) {
@@ -74,9 +76,11 @@ static void _car_disable_ply_shadow(Player *ply) {				// 26122
 		}
 	}
 }
+
 static void _car_init_as_bs(CarPlayer *cp) {			// 25dcc
 	cp->as = cp->bs = (char []){3,5,4,5,3,4,5,4,4,4,5,3,4,3,5,3}[sf2rand() & 15];
 }
+
 static int _check_platform(Player *plya3, Object_G2 *obj) {		//26096
 	int d2;
 	
@@ -110,6 +114,7 @@ static int _check_platform(Player *plya3, Object_G2 *obj) {		//26096
 	plya3->OnPlatform = FALSE;
 	return FALSE;
 }
+
 static void sub_25f06(Object_G2 *obj) {		// players on top of car
 	Object *nobj;
 	switch (obj->UD.UDcar.PeopleOnMe) {

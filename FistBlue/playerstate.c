@@ -275,7 +275,7 @@ static void PSPlayerKO(Player *ply) {		/* 2a508 */
  */
 void player_postamble(Player *ply) {	// 2a410 called after comp_proc_stat and human_per_frame
 	int temp;
-	if(ply->BlockStun) {
+	if (ply->BlockStun) {
 		/* 2a500 */
 		if (ply->Energy >= 0) {
 			PSPlayerDamage(ply, ply->Energy);
@@ -283,9 +283,9 @@ void player_postamble(Player *ply) {	// 2a410 called after comp_proc_stat and hu
 			PSPlayerKO(ply);
 		}
 	} else {
-		if(ply->Energy < 0) {
+		if (ply->Energy < 0) {
 			PSPlayerKO(ply);
-		} else if(ply->Energy != ply->EnergyDash) {
+		} else if (ply->Energy != ply->EnergyDash) {
 			// 2a428 
 			ply->MultiHitToggle ^= 1;
 			if(ply->UndealtDamage == 0) {
@@ -337,11 +337,11 @@ void human_per_frame(Player *ply) {		/* 285f4 */
             // Wait for the round to start
             PLAYERTICK;
         } else {
-            if(ply->TCollDis)  {ply->TCollDis--;}
-            if(ply->NoThrow_t) {ply->NoThrow_t--;}
-            if(ply->ThrowStat < 0) {
-                if(ply->DizzyClearCnt) {
-                    if(ply->DizzyClearCnt-- == 0) {
+            if (ply->TCollDis)  {ply->TCollDis--;}
+            if (ply->NoThrow_t) {ply->NoThrow_t--;}
+            if (ply->ThrowStat < 0) {
+                if (ply->DizzyClearCnt) {
+                    if (ply->DizzyClearCnt-- == 0) {
                         ply->DizzyCount=0;
                     }
                 }
@@ -352,7 +352,7 @@ void human_per_frame(Player *ply) {		/* 285f4 */
                 
                 if (ply->mode0 == 2) { 
 					if (ply->DizzyClearCnt) {
-						if(--ply->DizzyClearCnt  == 0) {
+						if (--ply->DizzyClearCnt  == 0) {
 							ply->DizzyCount = 0;
 						}
 					}
@@ -361,8 +361,7 @@ void human_per_frame(Player *ply) {		/* 285f4 */
             }
         }
     }
-}        
-                
+}
 
 void PSPushBack(Player *ply) {		/* 29ed4 handle pushback/tumble */
 	const char *cur = ply->PSPushBacks;
@@ -370,24 +369,25 @@ void PSPushBack(Player *ply) {		/* 29ed4 handle pushback/tumble */
 	char a;
 	
 	if (ply->ProjectilePushBack)    { return; }
-	if(ply->mode3 > 4) { return; }
+	if (ply->mode3 > 4) { return; }
 	x = *cur++;
-	if(x<=0) {
+	if (x<=0) {
 		cur--;
 		x=0;
 	}
 	ply->PSPushBacks = cur;
-	if(ply->BoundCheck == 0 || ply->PlatformFallDir == 0) { return;}
-	if(ply->x012a < 0) {		/* copy of VelX.full */
-		a=1;
+	if (ply->BoundCheck == 0 || ply->PlatformFallDir == 0) { return;}
+	if (ply->x012a < 0) {		/* copy of VelX.full */
+		a = 1;
 	} else {
-		a =  2;
+		a = 2;
 		x = -x;
 	}
-	if(a == ply->PlatformFallDir && ply->DidCollideDash == FALSE) {
+	if (a == ply->PlatformFallDir && ply->DidCollideDash == FALSE) {
 		ply->Opponent->XPI += x;
 	}
 }
+
 void RMTumble(Player *ply) {	// 294f2
 	SMTumble(ply);
 	if (ply->Tumble) {
@@ -398,6 +398,7 @@ void RMTumble(Player *ply) {	// 294f2
 		check_dizzy(ply);
 	}
 }
+
 static void _PSPlatformCheck(Player *ply) {	// 2979a
 	if (ply->Human) {
 		if (check_platform_end(ply)) {
@@ -405,6 +406,7 @@ static void _PSPlatformCheck(Player *ply) {	// 2979a
 		}
 	}
 }
+
 static void _PSDizzyStruggle(Player *ply) {		//29fe0
 	const static u32 data_98cd2[32]={
 		0xfc000000, 0xfc000000, 0xf8000000, 0xf8000000,
@@ -437,6 +439,7 @@ static void _PSDizzyStruggle(Player *ply) {		//29fe0
 		}
 	}
 }
+
 static void _PSDizzyState(Player *ply) {	/* 29f34 diziness */
 	switch (ply->mode3) {
 		case 0:
@@ -474,9 +477,8 @@ static void _PSDizzyState(Player *ply) {	/* 29f34 diziness */
 }
 
 static int is_projectile_near(Player *ply) {			/* 2a6fe */
-	if(ply->Opponent->Projectile == 0) { return 0; }
-	if(
-	   ABS((ply->Opponent->Projectile->XPI - ply->XPI)) < 224 ) {
+	if (ply->Opponent->Projectile == 0) { return 0; }
+	if (ABS((ply->Opponent->Projectile->XPI - ply->XPI)) < 224 ) {
 		return TRUE;
 	} else {
 		return FALSE;
@@ -484,8 +486,8 @@ static int is_projectile_near(Player *ply) {			/* 2a6fe */
 }
 
 static int retreat_or_block(Player *ply) {     /* 2a6b8 */
-	if ( is_projectile_near(ply) || (ply->Opponent->Attacking && ply->OppXDist <= 0xe0) ) {
-		if(ply->Flip) {
+	if (is_projectile_near(ply) || (ply->Opponent->Attacking && ply->OppXDist <= 0xe0) ) {
+		if (ply->Flip) {
 			if (ply->JoyDecode.full & 2) {
 				return TRUE;
 			}
@@ -565,7 +567,7 @@ void proc_plstat_normal(Player *ply) {          /* 286cc */
 				crouch(ply);   
 			else {
 				temp = ply_cb_standmove(ply);
-				if(temp > 0)
+				if (temp > 0)
 					set_attacking(ply);
 				else if (temp == 0) {
 					if ( is_pushing_up(ply) )
@@ -665,9 +667,11 @@ void proc_plstat_crouch(Player *ply) {		// 28940
 			FATALDEFAULT;
 	}
 }
+
 void PSCBAttackBlankaStub (Player *ply) {
     /* XXX stub */
 }
+
 void proc_plstat_attacking(Player *ply) {
     static void (* const PCB_ATTACK[8])(Player *ply) = {
 		PSCBAttackRyu,
@@ -722,12 +726,13 @@ void proc_plstat_powermove(Player *ply) {
 	 */
 	
 }
+
 void proc_plstat_jumping(Player *ply) {         /* 28a46 */
     int temp;
-	switch(ply->mode2) {
+	switch (ply->mode2) {
 		case 0:			// Init Jump
 			PLAYERTICK;
-			if((ply->AnimFlags & 0xff) == 0) {
+			if ((ply->AnimFlags & 0xff) == 0) {
 				NEXT(ply->mode2);
 				ply->Airborne			= AIR_JUMPING;
 				ply->IsJumpThreat       = TRUE;
@@ -736,14 +741,14 @@ void proc_plstat_jumping(Player *ply) {         /* 28a46 */
 			break;
 		case 2:			// During jump, can attack
 			temp = ply_cb_jumpmove(ply);
-			if(temp) {
-				if(temp<0) {
+			if (temp) {
+				if (temp<0) {
 					/* 28b42 */
 					ply->Attacking	  = TRUE;
 					ply->IsJumpThreat = TRUE;
 					ply->mode2 = 0;
 					ply->mode3 = 0;
-					if(ply->Timer2) {
+					if (ply->Timer2) {
 						--ply->Timer2;
 					} else {
 						CATrajectory((Object *)ply);
@@ -766,22 +771,22 @@ void proc_plstat_jumping(Player *ply) {         /* 28a46 */
 			break;
 		case 4:  
 			/* normal end to jump, never attacked in the jump */
-			if(PSGetRoundResult())          { react_to_result(ply); return; }
-			if(is_facing_enemy(ply))        { turn_around(ply);     return; }
-			if(is_holding_down(ply)) {
+			if (PSGetRoundResult())          { react_to_result(ply); return; }
+			if (is_facing_enemy(ply))        { turn_around(ply);     return; }
+			if (is_holding_down(ply)) {
 				ply->LocalTimer = 0;                 /* 28ba6 */
 				temp=ply_cb_crouchmove(ply);
-				if(temp<1)                  { return; }
-				if(temp)                    { set_attacking(ply);     return; }
-				if(retreat_or_block(ply))   { standblock_crouch(ply); return; }
+				if (temp < 1)                { return; }
+				if (temp)                    { set_attacking(ply);     return; }
+				if (retreat_or_block(ply))   { standblock_crouch(ply); return; }
 				crouch(ply);
 				return;
 			}
-			temp=ply_cb_standmove(ply);
-			if(temp<0) {return;}
-			if(temp)                        { set_attacking(ply); return; }
-			if(is_pushing_up(ply))          { set_jumping(ply);   return; }
-			if(retreat_or_block(ply))       { set_standblock(ply);return; }
+			temp = ply_cb_standmove(ply);
+			if (temp<0) {return;}
+			if (temp)                        { set_attacking(ply); return; }
+			if (is_pushing_up(ply))          { set_jumping(ply);   return; }
+			if (retreat_or_block(ply))       { set_standblock(ply);return; }
 			ply->LocalTimer--;
 			ply_exit_stand(ply);
 			break;
@@ -793,11 +798,11 @@ void proc_plstat_jumping(Player *ply) {         /* 28a46 */
 			jump_physics(ply);
 			break;
 		case 8:		// bounced off a wall, only for ChunLi, (maybe Vega?)
-			if(--ply->TmrWallBounce2) {return;}
+			if (--ply->TmrWallBounce2) {return;}
 			ply->mode2 = 2;
 			PLY_TRAJ0(0x0400, 0x0600, 0x0005, 0x0048);
 			ply->TmrWallBounce = 9;
-			if(ply->Flip ^= 1 == 0) {
+			if (ply->Flip ^= 1 == 0) {
 				ply->VelX.full = -ply->VelX.full;
 				ply->AclX.full = -ply->AclX.full;
 			}
@@ -805,90 +810,91 @@ void proc_plstat_jumping(Player *ply) {         /* 28a46 */
 			break;
     }
 }
+
 void proc_plstat_standingup (Player *ply) {		/* 28c06 */
     int temp;
 	
-    switch(ply->mode2) {
+    switch (ply->mode2) {
 		case 0:
 			PLAYERTICK;
-			if(PSGetRoundResult())      { react_to_result(ply); return; }
-			if(is_holding_down(ply)) {        
+			if (PSGetRoundResult())      { react_to_result(ply); return; }
+			if (is_holding_down(ply)) {        
 				NEXT(ply->mode2);            /* 28c5a back down again */
 				temp=ply_cb_crouchmove(ply);
-				if(temp<0)                 { return; }
-				if(temp)                   { set_attacking(ply); return; }
-				if(retreat_or_block(ply))  { standblock_crouch(ply); return; }
-				if(AF1){ ply_exit_crouch(ply); return; }		// ???
+				if (temp<0)                 { return; }
+				if (temp)                   { set_attacking(ply); return; }
+				if (retreat_or_block(ply))  { standblock_crouch(ply); return; }
+				if (AF1) { ply_exit_crouch(ply); return; }		// ???
 				temp = ply->Timer;
 				CASetAnim2(ply, STATUS_CROUCH_TURN, ply->AnimFlags & 0xff);  
 				ply->Timer = temp;
 				return;
 			}
-			if(ply->JoyDecode.full & (JOY_LEFT | JOY_RIGHT))   { ply_exit_stand(ply); return; }
+			if (ply->JoyDecode.full & (JOY_LEFT | JOY_RIGHT))   { ply_exit_stand(ply); return; }
 			temp=ply_cb_standmove(ply);
-			if(temp<0) {return;}
-			if(temp)                        { set_attacking(ply); return; }
-			if(is_pushing_up(ply))          { set_jumping(ply); return; }
-			if(retreat_or_block(ply))       { set_standblock(ply); return; }
-			if(AF1)							{ ply_exit_stand(ply); return; }
+			if (temp < 0) {return;}
+			if (temp)                        { set_attacking(ply); return; }
+			if (is_pushing_up(ply))          { set_jumping(ply); return; }
+			if (retreat_or_block(ply))       { set_standblock(ply); return; }
+			if (AF1)							{ ply_exit_stand(ply); return; }
 			break;
 		case 2:		/* 28c90 */
 			PLAYERTICK;
-			if(PSGetRoundResult()) {
+			if (PSGetRoundResult()) {
 				react_to_result(ply);
 				return;
 			}
-			if(!is_holding_down(ply)) { 
+			if (!is_holding_down(ply)) { 
 				/* 28cc0 */
-				temp=ply_cb_standmove(ply);
-				if(temp<0)                 { return; }
-				if(temp)                   { set_attacking(ply); return; }
-				if(is_pushing_up(ply))     { set_jumping(ply); return; }  
-				if(retreat_or_block(ply))  { standblock_crouch(ply); return; }                  
-				if(AF1)					   { ply_exit_stand(ply); return; }
+				temp = ply_cb_standmove(ply);
+				if (temp<0)                 { return; }
+				if (temp)                   { set_attacking(ply); return; }
+				if (is_pushing_up(ply))     { set_jumping(ply); return; }  
+				if (retreat_or_block(ply))  { standblock_crouch(ply); return; }                  
+				if (AF1)					   { ply_exit_stand(ply); return; }
 				
 				ply->mode2 = 0;
 				CASetAnim2(ply, STATUS_TURN_AROUND, ply->AnimFlags & 0xff);
 				return;
 			}
-			temp=ply_cb_crouchmove(ply);
-			if(temp<0)                 { return; }
-			if(temp)                   { set_attacking(ply); return; }
-			if(retreat_or_block(ply))  { standblock_crouch(ply); return; }  
-			if(AF1) { ply_exit_crouch(ply); return; }
+			temp = ply_cb_crouchmove(ply);
+			if (temp < 0)                 { return; }
+			if (temp)                     { set_attacking(ply); return; }
+			if (retreat_or_block(ply))    { standblock_crouch(ply); return; }  
+			if (AF1) { ply_exit_crouch(ply); return; }
 			break;
     }
 }
 void proc_plstat_blockstun(Player *ply) {       /* 28cfe */
     switch(ply->mode2) {
 		case 0:
-			if(PSGetRoundResult())              { react_to_result(ply); return; }
-			if (is_facing_enemy(ply))           { turn_around(ply);     return; } 
+			if (PSGetRoundResult())              { react_to_result(ply); return; }
+			if (is_facing_enemy(ply))            { turn_around(ply);     return; } 
 			
 			PLAYERTICK;
 			
-			if (retreat_or_block(ply))          { sub_28d78(ply); return; }
-			if (is_holding_down(ply))           { PSJumpFromCrouch(ply); return; }
+			if (retreat_or_block(ply))           { sub_28d78(ply); return; }
+			if (is_holding_down(ply))            { PSJumpFromCrouch(ply); return; }
 			standattack_or_jump(ply);
 			break;
 		case 2:            /* later after standattack_or_jump 28de0 */
 			PLAYERTICK;
-			if(ply->AnimFlags & 0x8000)          { ply_exit_stand(ply);  return; }
-			if(retreat_or_block(ply))           { sub_28d36(ply);       return; }
-			if(is_holding_down(ply))            { PSTurnAroundCrouch(ply);       return; }
+			if (ply->AnimFlags & 0x8000)         { ply_exit_stand(ply);  return; }
+			if (retreat_or_block(ply))           { sub_28d36(ply);       return; }
+			if (is_holding_down(ply))            { PSTurnAroundCrouch(ply);       return; }
 			standattack_or_jump(ply);
 			break;
 		case 4:  
 			PLAYERTICK;
-			if(retreat_or_block(ply))           { sub_28d78(ply);       return; }
-			if(is_holding_down(ply))            { _PSStandBlockToCrouchBlock(ply);       return; }
+			if (retreat_or_block(ply))           { sub_28d78(ply);       return; }
+			if (is_holding_down(ply))            { _PSStandBlockToCrouchBlock(ply);       return; }
 			crouchmove_or_jump(ply);
 			break;                   
 		case 6:
 			PLAYERTICK;
-			if(ply->AnimFlags & 0x8000)          { ply_exit_crouch(ply);     return; }
-			if(retreat_or_block(ply))           { sub_28d36(ply);           return; }
-			if(is_holding_down(ply))            { _PSStandBlockToCrouchBlock(ply);           return; }  
+			if (ply->AnimFlags & 0x8000)         { ply_exit_crouch(ply);     return; }
+			if (retreat_or_block(ply))           { sub_28d36(ply);           return; }
+			if (is_holding_down(ply))            { _PSStandBlockToCrouchBlock(ply);           return; }  
 			crouchmove_or_jump(ply);
     }
 }
@@ -1060,14 +1066,14 @@ void jump_physics(Player *ply) {       /* 0x28aa4 do jump physics, player to gro
             return;
         }
     }
-    if(ply->FighterID == FID_CHUN_LI) {     /* chun-li can bounce off walls */
-        if(g.GPHitBoxCoords[1][0] == 0) {
-            if(ply->TmrWallBounce) {
+    if (ply->FighterID == FID_CHUN_LI) {     /* chun-li can bounce off walls */
+        if (g.GPHitBoxCoords[1][0] == 0) {
+            if (ply->TmrWallBounce) {
                 ply->TmrWallBounce--;
                 PLAYERTICK;
                 return;
             }
-            if(ply->YPI >= 0x68                             /* high enough */
+            if (ply->YPI >= 0x68                             /* high enough */
                && ply->VelX.full != 0                       /* we were not jumping straight up */
                && (ply->PlatformFallDir || ply->BoundCheck)           /* we have hit a wall */
                && ply->JoyDecode.full & (ply->BoundCheck - 1)    /* joy is opposite to side we bounced off */
@@ -1119,11 +1125,13 @@ static void _PSStandBlockToCrouchBlock(Player *ply) {		// 28d7e
     CASetAnim2(ply, STATUS_STAND_BLOCK2, AF2);		// standing block
     standattack_or_jump(ply);
 }
+
 void PSTurnAroundCrouch(Player *ply) {		// 28d9a
     ply->mode2=PLSTAT_TURNAROUND;    
     CASetAnim2(ply, STATUS_CROUCH_BLOCK2, AF2);		
     standattack_or_jump(ply);
 }
+
 void crouchmove_or_jump(Player *ply) {
     int temp;
     temp=ply_cb_crouchmove(ply);
@@ -1131,6 +1139,7 @@ void crouchmove_or_jump(Player *ply) {
     if (temp)                   { set_attacking(ply);       return; }
     if (is_pushing_up(ply))     { set_jumping(ply);         return; }
 }
+
 void standattack_or_jump(Player *ply) {
     int temp;
     temp=ply_cb_standmove(ply);
@@ -1191,30 +1200,28 @@ void PSDizzyState(Player *ply) {		/* 29324 */
  @discussion sf2ua:0x2a710
  */
 int is_facing_enemy(Player *ply) {		//2a720 badly named
-	if (ply->Flip == ply->EnemyDirection) {
-		return FALSE;
-	} else {
-		return TRUE;
-	}
+    return ply->Flip != ply->EnemyDirection;
 }
+
 /*!
  @abstract Returns TRUE if player has walked off a platform
  @param ply the player (%a6)
  @discussion sf2ua:0x2a73e
  */
 short check_platform_end(Player *ply) {			/* 0x2a73e */
-	if(ply->OnPlatform2) {
-		if(ply->OnPlatform) {
+	if (ply->OnPlatform2) {
+		if (ply->OnPlatform) {
 			return FALSE;
 		}
 		ply->OnPlatform2 = 0;
 	}
-	if(ply->YPI <= 40) {
+	if (ply->YPI <= 40) {
 		ply->YPI = 40;
 		return FALSE;
 	}
 	return TRUE;
 }
+
 int is_pushing_up(Player *ply) {		//2a72a
 	if (ply->x01ad) {			// hmm, look at action04
 		return 0;
@@ -1222,6 +1229,7 @@ int is_pushing_up(Player *ply) {		//2a72a
 		return (ply->JoyDecode.full & JOY_UP);
 	}
 }
+
 int is_holding_down(Player *ply) {			// 2a8aa
     return (ply->JoyDecode.full & JOY_DOWN);
 }
