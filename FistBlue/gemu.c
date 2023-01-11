@@ -48,6 +48,7 @@ void FBSetPalette(short major, const u16 *palette)
         gemu.PalObject[major][i] = RHSwapWord(palette[i]);
     }
 }
+
 void palette_base_1k(void) {		// move me back to gfxlib
     int u, v;
     for(u=0; u<32; u++) {
@@ -66,6 +67,7 @@ void scroll1_base_1k(short stage) {
         }
     }
 }
+
 void scroll2_base_1k(short stage) {
     int u, v;
     printf ("Setting palette stage %d\n",stage);
@@ -76,6 +78,7 @@ void scroll2_base_1k(short stage) {
         }
     }
 }
+
 void scroll3_base_1k(short stage) {
     int u, v;
     printf ("Setting palette stage %d\n",stage);
@@ -124,12 +127,15 @@ inline void gemuObjectDrawIDCoords(short id, u16 x, u16 y, u16 tile, u16 attr) {
 	gemu.Tilemap_Object[id][3]=attr;
 	
 }
+
 inline void gemuIncGfxCursor(u32 *gfxcursor, short x, short y) {
 	*gfxcursor += (x << 16) + y;
 }
+
 inline void gemuCoordOffset(u32 *gfxcursor, short x, short y) {
     *gfxcursor += (x << 16) + y;
 }
+
 inline void gemuWriteEndTag(u16 *slot) {
 	*(slot+0)=0x0000;
 	*(slot+1)=0x0100;

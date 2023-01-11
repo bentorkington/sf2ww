@@ -411,12 +411,13 @@ int check_special_ability(Player *ply) {       /* 0x32e4 */
         return 1;
     }
 }
+
 /*!
- sf2ua: 3338
+ @note sf2ua:0x3338
  @param airthrow set to TRUE if airthrow
  @param ply the player performing the throw
  */
-int _check_throw(int airthrow, Player *ply) {		/* 0x3338 */
+int _check_throw(int airthrow, Player *ply) {
     int throwX , throwY;
  	
     Player *opp = ply->Opponent;
@@ -473,14 +474,15 @@ int _check_throw(int airthrow, Player *ply) {		/* 0x3338 */
     
     return TRUE;
 }
+
 /**
- sf2ua: 0x3332
+ @note sf2ua: 0x3332
  */
 int airthrowvalid(Player *ply) {
     return _check_throw(TRUE, ply);
 }
 /**
- sf2ua: 0x3338
+ @note sf2ua: 0x3338
  */
 int throwvalid(Player *ply) {
     return _check_throw(FALSE, ply);
@@ -516,8 +518,6 @@ void set_initial_positions(void) {          /* 0x37da */
     }
 }
    
-
-
 void give_one_point(short side) {		//53d6
 	Player *ply = side ? PLAYER2 : PLAYER1;
 	if (g.PlayersOnline & (1 << ply->Side)) {
@@ -527,7 +527,15 @@ void give_one_point(short side) {		//53d6
 		}
 	}
 }
-        
+
+static void boss_level_check (void) {			//2c1a
+	if (g.LevelCursor >= 7) {
+		g.UpToBosses = TRUE;
+		if (g.LevelCursor == 8) {
+			g.OnLevel8 = TRUE;		/* u8 */
+		}
+	}
+}
 
 static void bonus_level_setup(short stage) {	// 2be6
 	g.OnBonusStage = TRUE;
@@ -542,21 +550,28 @@ void sub_2b7c(void) {
 		STAGE_INDIA_DHALSIM, 
 		STAGE_JAPAN_EHONDA
 	};
-	if(g.InDemo) {
+
+	if (g.InDemo) {
 		g.CurrentStage = SF2_DEMO_STAGES[g.DemoStageIndex];       /* 2b60 */
 	} else if (g.x0a0f == 0) {
-		if(g.OnBonusStage == FALSE) {
+		if (g.OnBonusStage == FALSE) {
 			g.LastFightStage = g.CurrentStage;
 		} 
 		g.OnBonusStage = FALSE;
-		if(g.BonusDone == 0 && g.x09f9 == (g.NotUsed ? 2 : 3)) {
+		if (g.BonusDone == 0 && g.x09f9 == (g.NotUsed ? 2 : 3)) {
 			bonus_level_setup(STAGE_BONUS_CAR);
 		} else if  (g.BonusDone == 1 && g.x09f9 == (g.NotUsed ? 4 : 6)) {
 			bonus_level_setup(STAGE_BONUS_BARRELS);
-		} else  if (g.BonusDone == 2  && g.NoLoser) {
+		} else if (g.BonusDone == 2  && g.NoLoser) {
 			bonus_level_setup(STAGE_BONUS_DRUMS);
 		} else {
-			_bumplevel();
+           	while ((g.CurrentStage = g.LevelScript[g.LevelCursor]) < 0) {
+                /* 2b76 */
+                ++g.LevelCursor;
+            }
+                
+            if (g.LevelScript[g.LevelCursor+1] ==  0x10) { g.OnFinalStage = TRUE; }
+            boss_level_check();
 		}
 	} else {
 		bonus_level_setup(g.x0a10);		
@@ -733,10 +748,10 @@ void BumpDiff_NewGame(void) {
  */
 void bumpdifficulty_08(void) {
 	short d0;
-	if(g.ActiveHumans == 3) { return; }
-	if(g.OnBonusStage)      { return; }
+	if (g.ActiveHumans == BOTH_HUMAN || g.OnBonusStage) { return; }
+
 	g.x0a0a++;
-	if(g.x0a0a >= 0xf0) {
+	if (g.x0a0a >= 0xf0) {
 		g.x0a0a = 0;
 		g.Diff_0a04 += 3;
 		g.Diff_0a04 &= 0xff;
@@ -744,11 +759,11 @@ void bumpdifficulty_08(void) {
 	}
 	d0 = (!g.ContrP1DB.full) & g.ContrP1.full;
 
-    if(g.Player1.Human == FALSE) {
+    if (g.Player1.Human == FALSE) {
 		d0 = (!g.ContrP2DB.full) & g.ContrP2.full;
 	}
     
-	if(d0 & BUTTON_MASK) {
+	if (d0 & BUTTON_MASK) {
         if (g.Diff_0a06 < -1) {
             g.Diff_0a06 = -1;
         } else {
@@ -770,7 +785,7 @@ void bumpdifficulty_02(void) {
 		0x04, 0x04, 0x04, 0x04, 0x04, 0x04, 
 	};
 
-	if(g.ActiveHumans != BOTH_HUMAN && !g.OnBonusStage)
+	if (g.ActiveHumans != BOTH_HUMAN && !g.OnBonusStage)
     {
         if(g.Diff_0ad6 < 0x3d) {
             g.x8a36      = data_44f6[g.Diff_0ad6];

@@ -49,8 +49,6 @@
 #define TICKER_X 176
 #define TICKER_Y 208
 
-
-
 extern Game g;
 extern ScrollState gstate_Scroll1;
 extern ScrollState gstate_Scroll2;
@@ -72,19 +70,11 @@ static void sub_2c38(void);
 static void clear_playerselect(void);
 static void sub_297a(void);
 static void clear_gstates(void);
-
-
-#ifdef APPLICATION_TESTS
-int main(void) {
-	printf("lib.c v0.01 tests\n");
-}
-#endif
-
 static void decode_jumpers(void);
 
 static void sub_2c38(void) {		// 2c38
-	int d2=g.CurrentStage;
-	if(g.OnBonusStage==FALSE && g.ActiveHumans != 3) {
+	int d2 = g.CurrentStage;
+	if (g.OnBonusStage == FALSE && g.ActiveHumans != BOTH_HUMAN) {
 		if (g.Player1.Human || g.Player1.x02ae) {
 			if (g.Player1.FighterID == d2) {
 				d2 = g.Player1.FighterSelect;
@@ -187,7 +177,7 @@ _Noreturn void FBPanic(int data) {
 
 void decode_difficulty(void) {
 	g.Difficulty = g.JPDifficulty & JP_DIFFMASK;
-	if(g.Version == VERSION_JAP) {
+	if (g.Version == VERSION_JAP) {
 		g.JapanJumper = 1 ^ ((g.JPDifficulty & JP_JAPANJUMP) / JP_JAPANJUMP);
 	}
 }
@@ -394,7 +384,7 @@ void LBGetInputs(void) {		//2224
 	g.Player2.JoyDecodeDash.full = g.Player2.JoyDecode.full;
 	if (g.InDemo) {
 		if ((g.JPCost & 0x80) && (g.JPCost & 0x40)) {
-			sub_22a8();
+			sub_22a8();                         /* debug override the demo */
 		} else {
 			_controlscript_P1();
 			_controlscript_P2();
@@ -423,25 +413,25 @@ void set_waitmode(void) {		/* 2388 */
 	short player1 = 0; 
 	short player2 = 0;
 	
-	if(g.InDemo == FALSE) { 
+	if (g.InDemo == FALSE) { 
 		g.WaitMode = FALSE;
 		
-		if(g.PlayersOnline & ONLY_P1) {
+		if (g.PlayersOnline & ONLY_P1) {
 			player1 = g.Player1.JoyDecode.full;
 		}
-		if(g.PlayersOnline & ONLY_P2) {
+		if (g.PlayersOnline & ONLY_P2) {
 			player2 = g.Player2.JoyDecode.full;
 		}
- 		_any_buttons(player1,player2);
+ 		_any_buttons(player1, player2);
 	}
 }
 
 #pragma mark ---- Timer Callbacks ----
 
 void fightstuff (void) {
-    if(g.TimeWarpTimer) {
-        if(--g.TimeWarpTimer == 0) { g.FlagTimeWarp = FALSE; } 
-        if(--g.TimeWarpSlowdown == 0) { 
+    if (g.TimeWarpTimer) {
+        if (--g.TimeWarpTimer == 0) { g.FlagTimeWarp = FALSE; } 
+        if (--g.TimeWarpSlowdown == 0) { 
             g.TimeWarpSlowdown = g.TimeWarpSlowdown2; 
             fighttick();
         } else {
@@ -496,7 +486,7 @@ static void soundhook(void) {
 
 static void _refresh_jumpers(void) {		//1d72
 	_get_live_jumpers();		
-	if(g.Debug && (g.JPParam & JP_DBGNOCOLLIDE)) {
+	if (g.Debug && (g.JPParam & JP_DBGNOCOLLIDE)) {
 		g.DebugNoCollide = TRUE;
 	} else {
 		g.DebugNoCollide = FALSE;
@@ -531,8 +521,8 @@ void sf2_interrupt (void) {
 #endif
     g.NoInterrupt = FALSE;
     
-    for(i = 0; i<MAX_TASKS; ++i) {
-        if(Exec.Tasks[i].status == TASK_SLEEP) {
+    for (i = 0; i < MAX_TASKS; ++i) {
+        if (Exec.Tasks[i].status == TASK_SLEEP) {
 			if (--Exec.Tasks[i].timer == 0) {
 				Exec.Tasks[i].status = TASK_READY;
 			}
@@ -544,10 +534,10 @@ void sf2_interrupt (void) {
 
 
 void reset_layer_prios(void) {		//18e4 
-	g.CPS.Prio[0]=0;
-	g.CPS.Prio[1]=0;
-	g.CPS.Prio[2]=0;
-	g.CPS.Prio[3]=0;
+	g.CPS.Prio[0] = 0;
+	g.CPS.Prio[1] = 0;
+	g.CPS.Prio[2] = 0;
+	g.CPS.Prio[3] = 0;
 }
 	
 void sub_18c8(void) {
@@ -563,12 +553,12 @@ void startup (void) {
     int i;
 	
 	static const struct HiScore data_da4[] = {
-		{0x50000, {'N','I','N',0 }},
-		{0x45000, {'S','I','N',0 }},
-		{0x40000, {'H','A','C',0 }},
-		{0x35000, {'M','T','I',0 }},
-		{0x30000, {'E','S','H',0 }},
-		{0x25000, {'C','B','X',0 }},
+		{ 0x50000, {'N','I','N',0 } },
+		{ 0x45000, {'S','I','N',0 } },
+		{ 0x40000, {'H','A','C',0 } },
+		{ 0x35000, {'M','T','I',0 } },
+		{ 0x30000, {'E','S','H',0 } },
+		{ 0x25000, {'C','B','X',0 } },
 	};
 	
 #ifdef CPS
@@ -580,7 +570,7 @@ void startup (void) {
     g.soundNext     = 0;
     g.soundCurrent  = 0;
     
-    for (i=0; i<0x80; i++) {g.effectQueue[i] = 0xffff;}
+    for (i = 0; i < 0x80; ++i) { g.effectQueue[i] = 0xffff; }
 #ifdef SOUND
     for (i=0; i<0x80; i++) {g.soundQueue[i] =  0;}
 #endif
@@ -607,8 +597,8 @@ void startup (void) {
     }
 #endif 
 
-	for (i=0; i<6; i++) {  g.HiScoreTable[i] = data_da4[i];  }
-	for (i=7; i>=0; i--) { Exec.FreeTaskStack[i]=&Exec.Tasks[15-i];}
+	for (i = 0; i < 6; ++i) {  g.HiScoreTable[i] = data_da4[i];  }
+	for (i = 7; i >= 0; --i) { Exec.FreeTaskStack[i] = &Exec.Tasks[15 - i]; }
 	
     Exec.FreeTasks    = 8;
 	Exec.NextFreeTask = &Exec.FreeTaskStack[0];
@@ -937,7 +927,7 @@ u32 MakePointObj (int x, int y) {		/* 50ac */
 void LBAddPoints(int d0, short d1) {		// 55c2
 	Player *ply;
 
-	ply = d1==0 ? PLAYER1 : PLAYER2;
+	ply = d1 == 0 ? PLAYER1 : PLAYER2;
 	if (ply->Human) {
 		add_bcd_32(data_530c[d0/2], &ply->BonusScore);
 	}
@@ -963,14 +953,17 @@ void clear_players(void) {
     memclear((char *)PLAYER1, (void *)(&PLAYER1->Alive) - (void *)(&PLAYER1->exists));	
     memclear((char *)PLAYER2, (void *)(&PLAYER2->Alive) - (void *)(&PLAYER2->exists));
 }
+
 static void clear_gstates(void) {			/* 0x2944 */
     memclear(&gstate_Scroll1, sizeof(ScrollState));
     memclear(&gstate_Scroll2, sizeof(ScrollState));
     memclear(&gstate_Scroll3, sizeof(ScrollState));
 }
+
 void clear_gsrowscroll(void) {
     memclear (&gstate_RowScroll, sizeof(RowScrollState));
 }
+
 static void clear_scrolls23() {			/* 0x29b0 */
 	memclear(&gstate_Scroll2, sizeof(ScrollState));
 	memclear(&gstate_Scroll3, sizeof(ScrollState));
@@ -1229,24 +1222,24 @@ static void ply2_loses(void) {		/* 0x8ed6 */
 	print_timeremaining();
 	g.RoundResult = ROUNDRESULT_P1_WINS;
 	g.Player1.RoundsWon++;
-	if(g.InDemo) { return; }
+	if (g.InDemo) { return; }
 	g.WinningFighter = g.Player1.FighterID;
 	g.LosingFighter  = g.Player2.FighterID;
 	g.HumanWinner    = g.Player1.x02ae | g.Player1.Human;
-	if(g.HumanWinner == 0) { g.ComputerWon = TRUE; }
+	if (g.HumanWinner == 0) { g.ComputerWon = TRUE; }
 	g.HumanLoser      = g.Player2.x02ae | g.Player2.Human;
 	g.RoundWinnerSide = g.Player1.Side;
 	g.RoundLoserSide  = g.Player2.Side;
 	g.NewChallengerWait = TRUE;
-	if(g.JapanJumper) {
-		if(g.OnFinalStage && (g.Player2.x02ae || g.Player2.Human) && g.Player1.RoundsWon == 2) {
+	if (g.JapanJumper) {
+		if (g.OnFinalStage && (g.Player2.x02ae || g.Player2.Human) && g.Player1.RoundsWon == 2) {
 			g.SkipEnding = FALSE;
 			g.BattleOver = TRUE;
 		}
 		return;
 	}
-	if(g.x031e == 0) { return; }
-	if(g.Player2.x02ae | g.Player2.Human) {
+	if (g.x031e == 0) { return; }
+	if (g.Player2.x02ae | g.Player2.Human) {
 		if(g.Player1.RoundsWon == 2) {
 			g.SkipEnding = TRUE;
 			g.BattleOver = TRUE;
@@ -1344,9 +1337,18 @@ short sub_2fe6(Player *ply, Object *obj, short yoke) {
 
 #pragma mark ---- BCD emulation ----
 
+/* 
+    The MC68000 has dedicatd instructions for arithmetic on Binary Coded
+    Decimals, which the game uses for storing user-visible decimals such
+    as the score, and time remaining. 
+ 
+    Many other CPUs do too, and perhaps there's some smarter way to handle
+    this in C, but for now, these routines emulated BCD arithmetic       
+*/
+
 #ifdef GUSTY_LOBSTER
-void add_bcd_32(int op, u32 *bcd) {			/* not SF2 code */
-//    printf("add_bcd_32 0x%08x + 0x%08x = ", *bcd, op);
+
+void add_bcd_32(int op, u32 *bcd) {
 	int t1, t2, t3, t4, t5, t6;
 	t1 = op + 0x06666666;
 	t2 = t1 + *bcd;
@@ -1357,6 +1359,7 @@ void add_bcd_32(int op, u32 *bcd) {			/* not SF2 code */
 	*bcd = t2 - t6;
 //    printf("0x%08x\n", *bcd);
 }
+
 void sub_bcd_32(int op, u32 *bcd) {
 	int t1,t2,t3,t4,t5,t6;
 	t1 = 0xffffffff - op;
@@ -1367,37 +1370,44 @@ void sub_bcd_32(int op, u32 *bcd) {
 	t6 = (t5 >> 2) | (t5 >> 3);
 	add_bcd_32(t2 - t6, bcd);
 }
+
 void add_bcd_32_16(u32 op, u16 *bcd) {
     u32 arg = *bcd;
     add_bcd_32(op, &arg);
     *bcd = arg;
 }
+
 void sub_bcd_32_16(u32 op, u16 *bcd) {
     u32 arg = *bcd;
     sub_bcd_32(op, &arg);
     *bcd = arg;
 }
+
 void sub_bcd_32_8shift(u32 op, u16 *bcd) {
     u32 arg = *bcd >> 8;
     u32 unused = *bcd & 0xff;
     sub_bcd_32(op, &arg);
     *bcd = (arg << 8) + unused;
 }
+
 void add_bcd_16(u16 op, u16 *bcd) {
 	u32 arg = *bcd;
 	add_bcd_32((u32) op, &arg);
 	*bcd = arg;
 }
+
 void sub_bcd_16(u16 op, u16 *bcd) {
 	u32 arg = *bcd;
 	sub_bcd_32((u32) op, &arg);
 	*bcd = arg;
 }
+
 void add_bcd_8(u8 op, u8 *bcd) {
 	u32 arg = *bcd;
 	add_bcd_32((u32) op, &arg);
 	*bcd = arg;
 }
+
 void sub_bcd_8(u8 op, u8 *bcd) {
 	u32 arg = *bcd;
 	sub_bcd_32((u32) op, &arg);
@@ -1405,18 +1415,18 @@ void sub_bcd_8(u8 op, u8 *bcd) {
 }
 #else
 #error No CPS BCD glue yet!
-#endif
+#endif /* GUTSY_LOBSTER */
 
 
 // move to gfxlib.
 static void proc_round_timer(void) {	/* 905c process round timers */
-	if(g.TimeRemainBCD == 0 && g.TimeRemainTicks == 0) { return; }
-	if(g.DisableTimer || g.RoundResult) { return; }
-	if(g.TimeRemainBCD <= (g.OnBonusStage ? 0x10 : 0x15)) { 
+	if (g.TimeRemainBCD == 0 && g.TimeRemainTicks == 0) { return; }
+	if (g.DisableTimer || g.RoundResult)                { return; }
+	if (g.TimeRemainBCD <= (g.OnBonusStage ? 0x10 : 0x15)) { 
 		sub_90c8();							/* start the timeremain counter flashing */
 	}
-	if(g.Debug && (g.JPCost & JP_DBGNOTICK)) { return; }
-	if(--g.TimeRemainTicks) {return;}
+	if (g.Debug && (g.JPCost & JP_DBGNOTICK)) { return; }
+	if (--g.TimeRemainTicks) {return;}
 	
 	g.TimeRemainTicks = SF2_GAME_TICKS;		// not real seconds, two thirds of a second.
 	if (g.TimeRemainBCD > 0) {				/* buggered slightly from original code */
@@ -1429,6 +1439,7 @@ static void proc_round_timer(void) {	/* 905c process round timers */
 		print_timeremaining();
 	}
 }
+
 static void decide_timeout_result(void) {   /* 0x901e */
 	if(g.Player1.Energy < g.Player2.Energy) {
 		ply1_loses();
@@ -1581,11 +1592,6 @@ void setup_stage_actions (void) { /* 822be */
 		{0x08, 0x07, 0x05, 0x00, 0x04, 0x00, 0x0000, 0x01f0, 0x0090},
 		{0x08, 0x00, 0x03, 0x00, 0x04, 0x00, 0x0000, 0x0240, 0x0050},
 	};
-    /*
-     FID_RYU,		FID_E_HONDA,	FID_BLANKA,		FID_GUILE,
-     FID_KEN,		FID_CHUN_LI,	FID_ZANGEIF,	FID_DHALSIM,
-     FID_M_BISON,	FID_SAGAT,		FID_BALROG,		FID_VEGA,
-     */
 
 	static const struct actionhdr data_825bc[]={
 		{0x08, 0x00, 0x15, 0x00, 0x00, 0x00, 0x0000, 0x0178, 0x0098},       // Chun Li
@@ -1740,7 +1746,7 @@ void setup_stage_actions (void) { /* 822be */
 	if (count <= 0) { return; }
 	
 	const struct actionhdr *data = data_stageactions[g.CurrentStage];
-	for (i=0; i<count; ++i) {
+	for (i = 0; i < count; ++i) {
 		if ((action = alloc_action_by_type(data[i].Type))) {
             printf("Stage action type:%d sel:0x%2x subsel:0x%2x\n", data[i].Type, data[i].Sel, data[i].SubSel);
 			action->exists   = TRUE;
@@ -1933,7 +1939,7 @@ void actionlibrary(void) {
 	if (count <= 0) { return; }
 	
 	const struct actionhdr *data = data_actions[g.ActionLibSel];
-	for (i=0; i< count; i++) {
+	for (i = 0; i < count; ++i) {
 		if ((action = alloc_action_by_type(data[i].Type))) {
 			action->exists = TRUE;
             action->SubSel = data[i].SubSel;
@@ -1948,24 +1954,6 @@ void actionlibrary(void) {
 	}
 }
 
-void _bumplevel(void) {		/* 2bf2 */
-	while((g.CurrentStage = g.LevelScript[g.LevelCursor]) < 0) {
-		/* 2b76 */
-		++g.LevelCursor;
-	}
-        
-	if(g.LevelScript[g.LevelCursor+1] ==  0x10) {g.OnFinalStage = TRUE;}
-	boss_level_check();
-}
-
-void boss_level_check (void) {			//2c1a
-	if(g.LevelCursor >= 7) {
-		g.UpToBosses = TRUE;
-		if(g.LevelCursor == 8) {
-			g.OnLevel8 = TRUE;		/* u8 */
-		}
-	}
-}
 
 void task_playground(void) {
     g.InDemo = TRUE;

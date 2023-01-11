@@ -17,7 +17,6 @@
 #include <stdio.h>
 #endif
 
-
 extern Game g;
 
 extern CPSGFXEMU gemu;
@@ -32,9 +31,8 @@ static void drawsimple_scroll2noattr(Object *obj, const u16 *tiles, int width, i
 #pragma mark ---- Palette Setters ----
 
 void palette_base_scroll1(void) {
-    int u, v;
-    for(u=0; u<32; u++) {
-        for(v=0; v<16; v++) {
+    for (int u = 0; u < 32; ++u) {
+        for (int v = 0; v < 16; ++v) {
             gemu.PalScroll1[u][v] = RH2DWord(0x86676, 16, u, v);
         }
     }
@@ -45,9 +43,8 @@ void set_shadow_pen(void) {	/* 1ae2 Shadow opaque colour */
 }
 
 void setpalette_objtop(short palette) {		// 16ae
-    short u, v;
-    for(u=16; u<32; u++) {
-        for(v=0;v<16; v++) {
+    for (int u = 16; u < 32; ++u) {
+        for (int v = 0;v < 16; ++v) {
             gemu.PalObject[u][v] = RH3DWord(0x8aaac, 16, 16, palette, u-16, v);
         }
     }
@@ -81,10 +78,8 @@ void setpalette_scroll1_CS(void) {
 }
 
 void setpalette_scroll1(short palette) {		// emulation of 16ca
-    int u,v;
-
-    for(u=0; u<32; u++) {
-        for(v=0; v<16; v++) {
+    for(int u = 0; u < 32; ++u) {
+        for(int v = 0; v < 16; ++v) {
             gemu.PalScroll1[u][v] = RH3DWord(0xc0000, 32, 16, palette, u, v);
         }
     }
@@ -99,19 +94,16 @@ inline void palette_scr1_19(void) {		// 1692
 }
 
 void setpalette_scroll2(short palette) {		// emulation of 16ea
-    int u,v;
-
-    for(u=0; u<32; u++) {
-        for(v=0; v<16; v++) {
+    for (int u=0; u<32; u++) {
+        for (int v=0; v<16; v++) {
             gemu.PalScroll2[u][v] = RH3DWord(0xc5000, 32, 16, palette, u, v);
 		}
     }
 }
-void setpalette_scroll3(short palette) {		// emulation of 1706
-    int u,v;
 
-    for(u=0; u<32; u++) {
-        for(v=0; v<16; v++) {
+void setpalette_scroll3(short palette) {		// emulation of 1706
+    for (int u = 0; u < 32; ++u) {
+        for (int v = 0; v < 16; ++v) {
             gemu.PalScroll3[u][v] = RH3DWord(0xca000, 32, 16, palette, u, v);
         }
     }
@@ -124,10 +116,8 @@ void setpalette_scroll3(short palette) {		// emulation of 1706
  * @see sf2ua/0x1742
  */
 void sub_1742(int palette) {
-	short u, v;
-
-    for(u=16; u<32; u++) {
-        for(v=0;v<16; v++) {
+    for (int u = 16; u < 32; ++u) {
+        for (int v = 0; v < 16; ++v) {
 			gemu.PalObject[u][v] = RH3DWord(0x8aaac, 16, 16, palette, u-16, v) | 0xf000;
         }
     }
@@ -141,10 +131,9 @@ void sub_1742(int palette) {
  @see sf2ua/0x56fe
  */
 void gfxrepeat(u16 *gfxram, int count, u16 character, u16 attribute) {
-    unsigned int i;
-    for(i=0; i<count; i++) {
-        gfxram[(i*2)+0] = character;
-        gfxram[(i*2)+1] = attribute;
+    for (int i = 0; i < count; ++i) {
+        gfxram[(i * 2) + 0] = character;
+        gfxram[(i * 2) + 1] = attribute;
     }
 }
 

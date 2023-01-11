@@ -61,9 +61,7 @@ void setup_stage_actions(void);
 void quirkysound(short data);
 void set_ply_directions(Player *ply);
 short sub_2fe6(Player *ply, Object *a0, short yoke);
-void _bumplevel(void);		/* 2bf2 */
 u8 calc_flightpath(Object *obj, int x, int y);
-void boss_level_check (void);
 void LBInitPlayers(void);
 short start_effect(short d0, short d1);
 void player_check_dizzy(Player *ply);	/* 377c test player dizzying */

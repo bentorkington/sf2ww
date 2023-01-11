@@ -198,5 +198,7 @@ typedef enum sf2stages {
 	STAGE_UNKNOWN1,				// 11 skyscraper, worldmap, vs screen
 	STAGE_UNKNOWN2,
 	STAGE_UNKNOWN3,
+	STAGE_UNKNOWN4,
+    STAGE_COUNT,
 } FBStageID;
 #endif /* INC_SF2CONST */
