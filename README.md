@@ -37,6 +37,8 @@ cmake ..
 make
 ```
 
+Copy `sf2gfx.bin` and `allroms.bin`files next to the executable binary.
+
 ### With Xcode
 
 Open the MT2.xcodeproj project and build either the MT2 (a Cocoa app) or MT2GLUT (command line app) target
