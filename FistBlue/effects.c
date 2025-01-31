@@ -371,7 +371,7 @@ void syslib_00 (void) {					// e12
 	DIEFREE;	
 }        
 
-static void sub_4cb2() {
+static void sub_4cb2(void) {
 	u16 *gfx_p;
 	if (g.Player1.Alive) {
         OBJ_CURSOR_SET(gfx_p, 0);

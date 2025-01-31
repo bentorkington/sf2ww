@@ -251,7 +251,7 @@ static void sm_ending_blanka(void) {	// a554
 	}
 }
 
-static void sub_947b2() {		// task
+static void sub_947b2(void) {		// task
 	//todo
 }
 static void sub_94aec(int d2) {

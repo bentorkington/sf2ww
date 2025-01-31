@@ -74,7 +74,7 @@ const char *sample_rom_names[] = {
 
 #ifndef CPS
 
-void load_cps_roms()
+void load_cps_roms(void)
 {
     if ((g_code_roms = malloc(ALL_CODE_SIZE))) {
 #ifdef REDHAMMER_USE_ALLROMS_BIN

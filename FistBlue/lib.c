@@ -187,7 +187,7 @@ static void decode_jumpers(void) {
 	decode_params();
 }
 
-void read_jumpers() {
+void read_jumpers(void) {
     g.JPCost       = GET_JUMPER(0);
     g.JPDifficulty = GET_JUMPER(1);
     g.JPParam      = GET_JUMPER(2);
@@ -964,7 +964,7 @@ void clear_gsrowscroll(void) {
     memclear (&gstate_RowScroll, sizeof(RowScrollState));
 }
 
-static void clear_scrolls23() {			/* 0x29b0 */
+static void clear_scrolls23(void) {			/* 0x29b0 */
 	memclear(&gstate_Scroll2, sizeof(ScrollState));
 	memclear(&gstate_Scroll3, sizeof(ScrollState));
 }
@@ -1179,12 +1179,12 @@ static void _LBPrintTicker(u32 *coords, u8 remaining_bcd) {
 	sub_52bc(gp, *coords >> 16, *coords & 0xffff, remaining_bcd);
 }
 
-void sub_528a() {		/* print number of barrels remaining */
+void sub_528a(void) {		/* print number of barrels remaining */
 	u32 coords=MakePointObj(TICKER_X, TICKER_Y);
 	_LBPrintTicker(&coords, g.x8ab9);		
 }
 
-void sub_529c() {
+void sub_529c(void) {
 	u32 coords = MakePointObj(TICKER_X, TICKER_Y);
 	_LBPrintTicker(&coords, g.TimeRemainBCD);
 }
@@ -2046,12 +2046,12 @@ void task_playground(void) {
 
 #pragma mark Synthetics
 // these are here mainly to keep things tidy and avoid modules needing to #include and extern globals
-short get_scr1x() { return gstate_Scroll1.position.x.part.integer; }
-short get_scr1y() { return gstate_Scroll1.position.y.part.integer; }
-short get_scr2x() { return gstate_Scroll2.position.x.part.integer; }
-short get_scr2y() { return gstate_Scroll2.position.y.part.integer; }
-short get_scr3x() { return gstate_Scroll3.position.x.part.integer; }
-short get_scr3y() { return gstate_Scroll3.position.y.part.integer; }
+short get_scr1x(void) { return gstate_Scroll1.position.x.part.integer; }
+short get_scr1y(void) { return gstate_Scroll1.position.y.part.integer; }
+short get_scr2x(void) { return gstate_Scroll2.position.x.part.integer; }
+short get_scr2y(void) { return gstate_Scroll2.position.y.part.integer; }
+short get_scr3x(void) { return gstate_Scroll3.position.x.part.integer; }
+short get_scr3y(void) { return gstate_Scroll3.position.y.part.integer; }
 
 
 

@@ -538,7 +538,8 @@ void setactiondraw(Object *obj, const FBSimpleAction **act, int step) {	//41b6
     draw_simple(obj);
 }
 
-static void _fill_with_tile1() {		// 604c
+
+static void _fill_with_tile1(void) {		// 604c
 	gfxrepeat(BMAP_SCROLL2, 0x3ff, GFXROM_SCROLL2 + 1, 0);
 }
 
@@ -561,7 +562,7 @@ void DrawFighterNameAt(u16 *gfx_p, int x_d5, int y_d6, Player *ply, const u16 *a
 	FBDrawTileLine(gfx_p, RHOffsetLookup16(a3, ply->FighterID), x_d5, y_d6);
 }
 
-void fight_player_names() {			// 961a
+void fight_player_names(void) {			// 961a
 	u16 *gfx_p;
     
 	if (g.OnBonusStage == FALSE || g.Player1.Human) {

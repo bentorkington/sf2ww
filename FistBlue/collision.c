@@ -889,7 +889,7 @@ void make_collision_sound(Player *ply, const HitBoxAct *a3) {         /* 7d700 c
 
 
 
-void CDCheckPushBoxes () {			/* 7e136 check pushboxes, take action */
+void CDCheckPushBoxes (void) {			/* 7e136 check pushboxes, take action */
     if(g.BattleOver) {return;}
     g.GPCollDetect = FALSE;
 	const HitBox *a3,*a4;
