@@ -816,6 +816,7 @@
 		B5B39B69157832F200494662 /* sf2gfx.bin */ = {isa = PBXFileReference; lastKnownFileType = archive.macbinary; path = sf2gfx.bin; sourceTree = "<group>"; };
 		B5B39BB01578345600494662 /* glutBasics.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = glutBasics.c; sourceTree = SOURCE_ROOT; };
 		B5B39CF9157836E100494662 /* MT2-Info copy.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "MT2-Info copy.plist"; sourceTree = "<group>"; };
+		B5B7EF222D4D5BD300D7D54F /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		B5C574171772781A00496283 /* MT2_tests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "MT2_tests-Info.plist"; sourceTree = "<group>"; };
 		B5C574191772781A00496283 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		B5C5741B1772781A00496283 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
@@ -960,6 +961,7 @@
 		29B97314FDCFA39411CA2CEA /* MT2 */ = {
 			isa = PBXGroup;
 			children = (
+				B5B7EF222D4D5BD300D7D54F /* README.md */,
 				080E96DDFE201D6D7F000001 /* Classes */,
 				29B97315FDCFA39411CA2CEA /* Other Sources */,
 				29B97317FDCFA39411CA2CEA /* Resources */,

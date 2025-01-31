@@ -78,6 +78,12 @@ An abandoned windowing GUI toolkit. I thought it might be fun to try writing a b
 
 ## About the code
 
+### Coding style
+
+Use the [Linux kernel style guide](https://www.kernel.org/doc/Documentation/process/coding-style.rst)
+
+A lot of this code was written while I was still a rookie C programmer (and probably tired), so there will be plenty of code not conforming. Feel free to fix whatever you find, but try to stick to the kernel style if adding new code.
+
 ### Endianness
 
 CPS SF2 runs on a big-endian m68k CPU. When we're running natively on a little-endian CPU, this creates complications when trying to keep binary compatibility with in-memory structures. Endian swapping is mostly done at runtime except where it can be easily cached beforehand. The code has been tested on a big-endian PowerPC G4, but not for some time.
