@@ -226,6 +226,10 @@
 		B5B39CFC1578370D00494662 /* MT2AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 256AC3D90F4B6AC300CF3369 /* MT2AppDelegate.m */; };
 		B5B39CFD1578370E00494662 /* OGLView.m in Sources */ = {isa = PBXBuildFile; fileRef = B5ADB7AC13B2B34900905DFE /* OGLView.m */; };
 		B5B39CFF1578371400494662 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 29B97316FDCFA39411CA2CEA /* main.m */; };
+		B5B7EF242D4D7A7200D7D54F /* allroms.bin in Resources */ = {isa = PBXBuildFile; fileRef = B5B7EF232D4D7A5C00D7D54F /* allroms.bin */; };
+		B5B7EF252D4D7A7200D7D54F /* allroms.bin in Resources */ = {isa = PBXBuildFile; fileRef = B5B7EF232D4D7A5C00D7D54F /* allroms.bin */; };
+		B5B7EF262D4D7A7300D7D54F /* allroms.bin in Resources */ = {isa = PBXBuildFile; fileRef = B5B7EF232D4D7A5C00D7D54F /* allroms.bin */; };
+		B5B7EF272D4D7A7400D7D54F /* allroms.bin in Resources */ = {isa = PBXBuildFile; fileRef = B5B7EF232D4D7A5C00D7D54F /* allroms.bin */; };
 		B5BA3ACE147F0EBC0069ACD3 /* actions.c in Sources */ = {isa = PBXBuildFile; fileRef = B5ADB7E413B2B57D00905DFE /* actions.c */; };
 		B5C5742C1772782600496283 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 089C165CFE840E0CC02AAC07 /* InfoPlist.strings */; };
 		B5C5742D1772782600496283 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = B5ADB7A813B2B2EA00905DFE /* MainMenu.xib */; };
@@ -817,6 +821,7 @@
 		B5B39BB01578345600494662 /* glutBasics.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = glutBasics.c; sourceTree = SOURCE_ROOT; };
 		B5B39CF9157836E100494662 /* MT2-Info copy.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "MT2-Info copy.plist"; sourceTree = "<group>"; };
 		B5B7EF222D4D5BD300D7D54F /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
+		B5B7EF232D4D7A5C00D7D54F /* allroms.bin */ = {isa = PBXFileReference; lastKnownFileType = archive.macbinary; path = allroms.bin; sourceTree = "<group>"; };
 		B5C574171772781A00496283 /* MT2_tests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "MT2_tests-Info.plist"; sourceTree = "<group>"; };
 		B5C574191772781A00496283 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		B5C5741B1772781A00496283 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
@@ -996,6 +1001,7 @@
 		29B97317FDCFA39411CA2CEA /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				B5B7EF232D4D7A5C00D7D54F /* allroms.bin */,
 				6CF004571C2A128C008EA965 /* sf2_05.bin */,
 				6CF004581C2A128C008EA965 /* sf2_06.bin */,
 				6CF004591C2A128C008EA965 /* sf2_07.bin */,
@@ -1602,6 +1608,7 @@
 				B51D1D8E253BFC7700CEB195 /* pointshader.vs in Resources */,
 				B51D1D73253BFA3C00CEB195 /* sf2gfx.bin in Resources */,
 				B517DD592543E8E000649292 /* tileshader.vs in Resources */,
+				B5B7EF272D4D7A7400D7D54F /* allroms.bin in Resources */,
 				B51D1D1C253BF34300CEB195 /* Assets.xcassets in Resources */,
 				B517DD612543E8F300649292 /* tileshader.fs in Resources */,
 				B51D1D1F253BF34300CEB195 /* MainMenu.xib in Resources */,
@@ -1612,6 +1619,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B5B7EF262D4D7A7300D7D54F /* allroms.bin in Resources */,
 				6C6F0DF51C349FED004CD78E /* sf2_26.bin in Resources */,
 				6C6F0DF71C349FED004CD78E /* sf2_29a.bin in Resources */,
 				B5C5742C1772782600496283 /* InfoPlist.strings in Resources */,
@@ -1644,6 +1652,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B5B7EF252D4D7A7200D7D54F /* allroms.bin in Resources */,
 				B5E0EFBA17754D8800F50790 /* InfoPlist.strings in Resources */,
 				B5E0EFBB17754D8800F50790 /* MainMenu.xib in Resources */,
 				B5E0EFBD17754D8800F50790 /* sf2gfx.bin in Resources */,
@@ -1654,6 +1663,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B5B7EF242D4D7A7200D7D54F /* allroms.bin in Resources */,
 				B5E0F01517754D9500F50790 /* InfoPlist.strings in Resources */,
 				B5E0F01617754D9500F50790 /* MainMenu.xib in Resources */,
 				B5E0F01817754D9500F50790 /* sf2gfx.bin in Resources */,
