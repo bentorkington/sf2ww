@@ -84,9 +84,11 @@ static void _test_ai_setup_agg0(Player *ply) {			// 89a8a
 	ply->AIStratIndexAgg0 = 0;
 }
 static void _test_ai_setup_agg1(Player *ply) {			// 89ad0
-	AIAggTable *b = dataAIAggressive[ply->FighterID]->a2[ply->OpponentID];
-	ply->AIStratAgg1 = b->x0134[b->x023e[ply->RoughTimeRemain]];
-	ply->AIStratIndexAgg1 = 0;
+    return; // XXX
+    
+	// AIAggTable *b = dataAIAggressive[ply->FighterID]->a2[ply->OpponentID];
+	// ply->AIStratAgg1 = b->x0134[b->x023e[ply->RoughTimeRemain]];
+	// ply->AIStratIndexAgg1 = 0;
 }
 static void _test_ai_setup_def(Player *ply) {			// 89b32
 	ply->AIStratDef = dataAIDefensive[ply->FighterID][ply->x0203]->codes[ply->x020c & 0x3f];

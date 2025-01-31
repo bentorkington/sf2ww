@@ -31,7 +31,7 @@ u16 **data_82c16[4] = {
 };
 
 static void sub_82bec(Object2 *act) {
-	act->x0048 = data_82c16[act->UserByte][g.CurrentStage][act->Timer2];
+	// act->x0048 = data_82c16[act->UserByte][g.CurrentStage][act->Timer2];
 	/* XXX fixme */
 }
 
@@ -165,5 +165,4 @@ void actions_530a(void) {			/* 82a52 */
 		d7--;
 	}
 }
-
 
