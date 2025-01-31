@@ -8,12 +8,10 @@
 #ifndef gfx_glcore_h
 #define gfx_glcore_h
 
-#include <stdio.h>
-
 #ifdef __APPLE__
 #include <OpenGL/gl3.h>
 #else
-#include <GL/gl3.h>
+#include <GL/gl.h>
 #endif
 
 void render_glcore(void);

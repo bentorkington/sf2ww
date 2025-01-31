@@ -9,9 +9,6 @@
 #import <Cocoa/Cocoa.h>
 #import <GLUT/glut.h>
 
-
-
-
 @interface OGLView : NSOpenGLView {
 	NSTimer *timer;
 	int displayList;

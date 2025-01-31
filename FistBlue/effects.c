@@ -1,16 +1,12 @@
-    /* effects.c Ported Low level CPS routines */
+/* effects.c Ported Low level CPS routines */
 
 #include <stdio.h>
 
 #include "sf2.h"
-
 #include "structs.h"
-
 #include "lib.h"
 #include "task.h"
 #include "rules.h"
-
-
 #include "gfxlib.h"
 #include "gemu.h"
 #include "sprite.h"
@@ -18,7 +14,6 @@
 #include "sound.h"
 #include "effects.h"
 #include "sf2io.h"
-
 #include "text.h"
 
 #ifndef CPS
@@ -27,12 +22,10 @@
 
 extern struct executive_t Exec;
 
-
 extern CPSGFXEMU gemu;
 extern Game g;
 
 struct effectstate es;
-
 
 #define CPS_VIDEO_SCROLL1 (u16 *)&gemu.Tilemap_Scroll1
 #define CPS_VIDEO_SCROLL2 (u16 *)&gemu.Tilemap_Scroll2
@@ -42,16 +35,15 @@ struct effectstate es;
 #define CPS_PALBASE_SCROLL2 (u16 *)&gemu.PalScroll2
 #define CPS_PALBASE_SCROLL3 (u16 *)&gemu.PalScroll3
 
-static void syslib_00 (void);
+static void syslib_00(void);
 static void syslib_04(void);
-static void syslib_08 (void);
-static void syslib_0c (void);
-static void syslib_10 (void);
-static void syslib_18 (void);
-static void syslib_1c (void);
-static void syslib_20 (void);
-static void syslib_26 (void);
-
+static void syslib_08(void);
+static void syslib_0c(void);
+static void syslib_10(void);
+static void syslib_18(void);
+static void syslib_1c(void);
+static void syslib_20(void);
+static void syslib_26(void);
 
 void *data_155c[] = {
 	syslib_00,
@@ -536,8 +528,6 @@ static void sub_5072(u16 **gfx_p, short d0, short leadingZeroes, u16 attr) {		//
 	_draw_bcd_char_scr1(gfx_p, d0,      &leadingZeroes, attr);
 }
 
-
-
 static void syslib_04(void) {		// SL04	 597a version string
 	Task *task = &Exec.Tasks[Exec.CurrentTask];
 	task->params.x0014 = 0;
@@ -558,7 +548,7 @@ static void syslib_10(void) {
 			task->params.Param1 = 0;
 			task->params.Param2 = 0;
 			task->params.Param0 &= 0xff00;
-			task->params.Param0 |= g.TwoCreditsToStart ? 8 : 7;
+			task->params.Param0 |= g.TwoCreditsToStart ? 8 : 7; // BUG
 			sub_5982(task);
 			SCR1_CURSOR_CPS(gfx_p, 0x90d670);  // y=19f x=5
 			sub_5072(&gfx_p, g.NumberCredits, 0, 0);
@@ -571,7 +561,7 @@ static void syslib_10(void) {
 				printlonghex2(&gfx_p, 0x80, 0xc0 - (i * 32), g.HiScoreTable[i].score, 0);
 			}
 			for (i=4; i>=0; --i) {
-				CreateLongwordSprite(&gfx_p, 0x100, 0xc0 - (i * 32), g.HiScoreTable[i].name, 0);
+				CreateLongwordSprite(&gfx_p, 0x100, 0xc0 - (i * 32), (uint32_t)g.HiScoreTable[i].name, 0);
 			}
 			DIEFREE;
 			break;
@@ -1299,5 +1289,3 @@ void task_game(void) {			// 7672 Game Supertask
 }
 
 	
-
-
