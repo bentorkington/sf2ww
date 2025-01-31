@@ -423,7 +423,7 @@ static void _PSDizzyStruggle(Player *ply) {		//29fe0
 	if (ply->Human) {
 		/* 29fe4 */
 		if ((ply->JoyDecodeDash.full & 0xf) && 
-			(!ply->JoyDecodeDash.full & ply->JoyDecode.full & 0xf)
+			(!(ply->JoyDecodeDash.full & ply->JoyDecode.full & 0xf))
 			) {
 			ply->DizzyStruggle += 2;
 		}
