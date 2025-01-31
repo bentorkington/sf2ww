@@ -879,7 +879,7 @@ static void set_blockstun_react(Player *vict) {		/* 7d6ec  checked */
     }    
 }
 void make_collision_sound(Player *ply, const HitBoxAct *a3) {         /* 7d700 checked */
-    if(ply->BlockStun || g.GPHitBlocked) {
+    if (ply->BlockStun || g.GPHitBlocked) {
 		queuesound(SOUND_HIT_BLOCKED);  /* blocked hit thud */
     } else {
         queuesound(a3->Sound);
@@ -890,16 +890,16 @@ void make_collision_sound(Player *ply, const HitBoxAct *a3) {         /* 7d700 c
 
 
 void CDCheckPushBoxes (void) {			/* 7e136 check pushboxes, take action */
-    if(g.BattleOver) {return;}
+    if (g.BattleOver) { return; }
     g.GPCollDetect = FALSE;
 	const HitBox *a3,*a4;
 	
-    if(g.Player1.exists == FALSE) { return; }
-	
-    if((a3=CDGetPushBox((Object *)PLAYER1))) {
+    if (g.Player1.exists == FALSE) { return; }
+
+    if ((a3 = CDGetPushBox((Object *)PLAYER1))) {
 		if (g.Player2.exists) {
-			if((a4=CDGetPushBox((Object*)PLAYER2))) {
-				if(slib_check_overlap((Object *)PLAYER1, PLAYER2,a3,a4)) {
+			if ((a4=CDGetPushBox((Object*)PLAYER2))) {
+				if (slib_check_overlap((Object *)PLAYER1, PLAYER2,a3,a4)) {
 					// 7e16e
 					if (hitresult[HITRES_D2]) {
 						g.GPCollDetect = TRUE;
@@ -909,7 +909,7 @@ void CDCheckPushBoxes (void) {			/* 7e136 check pushboxes, take action */
 						hitresult[HITRES_D2] = -8;
 					}
 					
-					if(g.Player1.Airborne || g.Player2.Airborne) {
+					if (g.Player1.Airborne || g.Player2.Airborne) {
 						sub_7e218(hitresult[HITRES_D2],d6);
 					} else {
 						sub_7e19a(d6);
@@ -938,22 +938,22 @@ static void _CDCheckPlayer(Player *ply, Player *vict) {     /* 7cf38 */
     }
     if (vict->CompImmune || vict->TCollDis || vict->Invincible) { return; }
     temp = active->Shove;
-    if(temp < 0) { temp = 1; }
-    if(temp == vict->SufferHB5) { return; }
-    if((active->ReactMode == RM_MULTIHIT ||  active->ReactMode == RM_ELECTROCUTED) 
+    if (temp < 0) { temp = 1; }
+    if (temp == vict->SufferHB5) { return; }
+    if ((active->ReactMode == RM_MULTIHIT ||  active->ReactMode == RM_ELECTROCUTED)
 	   && vict->MultiHoldoff ) {
         return;
     }
-    if(!check_main_hitboxes((Object *)ply, (Object *)vict, active))   { return; }
-    if(active->ReactMode == RM_MULTIHIT	|| 
+    if (!check_main_hitboxes((Object *)ply, (Object *)vict, active))   { return; }
+    if (active->ReactMode == RM_MULTIHIT	||
 	   active->ReactMode == RM_ELECTROCUTED) {
         vict->MultiHoldoff = 18;     
     }
-    if(vict->Human == 0) {
+    if (vict->Human == 0) {
         g.x0ae4++;
     }
     vict->SufferHB5 = active->Shove;
-    if(vict->SufferHB5 < 0) {
+    if (vict->SufferHB5 < 0) {
         vict->SufferHB5 = 1;
     }
     vict->NextReelStrength = active->Strength;
@@ -962,7 +962,7 @@ static void _CDCheckPlayer(Player *ply, Player *vict) {     /* 7cf38 */
     _CDSpecialReactMode(ply, vict, active);
 	
     damage = lookup_damage_and_score(ply, vict, active);
-    if(sub_7d4fa(vict, active) == 0) {
+    if (sub_7d4fa(vict, active) == 0) {
         damage=damage_multiplier(vict, damage);
         damage=randomize_damage(vict, damage, active);
         damage=diminishing_damage(damage, vict);
@@ -971,7 +971,7 @@ static void _CDCheckPlayer(Player *ply, Player *vict) {     /* 7cf38 */
             if (damage == 0) { damage = 1; }
         }
         vict->Energy -= damage;
-        if(vict->Energy < 0) {
+        if (vict->Energy < 0) {
             vict->Energy    = -1;
 			start_timewarp_action(vict);
             g.GPHitBlocked    = FALSE;
@@ -982,7 +982,7 @@ static void _CDCheckPlayer(Player *ply, Player *vict) {     /* 7cf38 */
     set_newreact(vict, ply, active);       
     make_collision_sound(vict, active);
     sub_7d74e(ply, vict, active);		     /* splash, see if vega loses claw */
-    if(vict->BlockStun || g.OnBonusStage) { return; }
+    if (vict->BlockStun || g.OnBonusStage) { return; }
     QueueEffect(g.GPPointsReward, ply->Side);                    /* award points */
 }
 short CDPushOverlap(Player *a2, Object *a6) {	
