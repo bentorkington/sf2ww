@@ -17,8 +17,6 @@
 #include "sf2const.h"
 #include "pthreads.h"
 #include "task.h"
-#include "structs.h"
-
 
 extern struct executive_t Exec;
 
