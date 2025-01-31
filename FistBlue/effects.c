@@ -561,7 +561,7 @@ static void syslib_10(void) {
 				printlonghex2(&gfx_p, 0x80, 0xc0 - (i * 32), g.HiScoreTable[i].score, 0);
 			}
 			for (i=4; i>=0; --i) {
-				CreateLongwordSprite(&gfx_p, 0x100, 0xc0 - (i * 32), (uint32_t)g.HiScoreTable[i].name, 0);
+				CreateLongwordSprite(&gfx_p, 0x100, 0xc0 - (i * 32), (uint32_t /* XXX */)g.HiScoreTable[i].name, 0);
 			}
 			DIEFREE;
 			break;

@@ -31,7 +31,7 @@ const u16 *skyscraper_realign(ScrollState *gs, u16 **gfx_p) {            // 8438
 #warning Scroll cursor arithmetic not optimal for CPS
 #endif
     *gfx_p -= 0x20;
-    offset = (*gfx_p - BMAP_SCROLL2) * sizeof(u16);
+    offset = (int)(*gfx_p - BMAP_SCROLL2) * sizeof(u16);
     d0 = offset & 0xfffff000;
     d1 = (offset + 0x40) & 0xfff;
     d0 |= d1;
@@ -56,7 +56,7 @@ const u16 *realign_scr3a(ScrollState *gs, u16 **gfx_p) {
 #warning Scroll cursor arithmetic not optimal for CPS
 #endif
     *gfx_p -= 2;
-    offset = (*(gfx_p) - BMAP_SCROLL3) * sizeof(u16);
+    offset = (int)(*(gfx_p) - BMAP_SCROLL3) * sizeof(u16);
     d0 = offset & 0xffffc7e3;
     d1 = (offset + 0x800) & 0x3800;
     d0 |= d1;
@@ -75,7 +75,7 @@ static const u16 *realign_scr3b(ScrollState *gs, u16 **gfx_p) {        // 8442a 
 #warning Scroll cursor arithmetic not optimal for CPS
 #endif
     *gfx_p -= 16;
-    offset = (*gfx_p - BMAP_SCROLL3) * sizeof(u16);
+    offset = (int)(*gfx_p - BMAP_SCROLL3) * sizeof(u16);
     d0 = offset & 0xfffff800;
     d1 = (offset + 0x20) & 0x7ff;
     d0 |= d1;
@@ -93,7 +93,7 @@ static const u16 *_GSRealignScr1a(ScrollState *gs, u16 **gfx_p) {    // 84052 ch
     
     *gfx_p -= 8;
     
-    element2 = element1 = (*gfx_p - gemu.Tilemap_Scroll1[0]) * sizeof(u16);
+    element2 = element1 = (int)(*gfx_p - gemu.Tilemap_Scroll1[0]) * sizeof(u16);
     //element2 = *gfx_p;
     
     element1 &= 0xcf80;    // top of this column
@@ -116,7 +116,7 @@ static const u16 *_GSRealignScroll2A(ScrollState *gs, u16 **gfx_p) {
 #warning Scroll cursor arithmetic not optimal for CPS
 #endif
     *gfx_p -= 2;
-    offset = (*gfx_p - BMAP_SCROLL2) * sizeof(u16);
+    offset = (int)(*gfx_p - BMAP_SCROLL2) * sizeof(u16);
     d0 = offset & 0xffffcfc3;
     d1 = (offset + 0x1000) & 0x3000;
     d0 |= d1;
