@@ -94,7 +94,7 @@ void action_207f0(Object *obj, short d7) {
                     obj2->Sel = 0x9;
                     obj2->SubSel = 7-i;
                     obj2->x002e = 0;
-                    ud->barrel[i]=obj2;
+                    ud->barrel[i] = (Object *)obj2;
                 }
             }
             break;

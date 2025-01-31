@@ -1,6 +1,8 @@
 #ifndef INC_GFXLIB
 #define INC_GFXLIB
 
+#include <stdint.h>
+
 #include	"task.h"
 /* gfxlib.c */
 
@@ -94,7 +96,7 @@ void drawsimple_scroll2noattr_check(Object *obj, const u16 *tiles, int width, in
 
 void set_shadow_pen(void);
 
-void CreateLongwordSprite(u16 **cursor, short x, short y, int arg, short attr);	//51fe
+void CreateLongwordSprite(u16 **cursor, short x, short y, uint32_t arg, short attr);	//51fe
 void printlonghex2(u16 **cursor, short x, short y, int arg, short attr);
 
 void sub_6126(void);

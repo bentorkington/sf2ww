@@ -265,7 +265,7 @@ static void _putword(u16 **cursor, u32 *gfxcursor, u16 arg, u16 attr){		//5208
  @brief Create a sprite for a 32-bit BCD/hex value
  @see sf2ua/0x51fe
  */
-void CreateLongwordSprite(u16 **cursor, short x, short y, int arg, short attr) {
+void CreateLongwordSprite(u16 **cursor, short x, short y, uint32_t arg, short attr) {
     u32 gfxcursor = MakePointObj(x,y);
     _putword(cursor, &gfxcursor, arg >> 16   , attr);
     _putword(cursor, &gfxcursor, arg & 0xffff, attr);

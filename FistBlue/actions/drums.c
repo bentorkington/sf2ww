@@ -89,7 +89,7 @@ void _SMAct04(Object_G2 *obj) {		// 27ea2 ID4 BONUS3
 				obj->Direction = 1;
 			}
 			if (obj->mode1) {
-				CDBonusCollisionCheck((Object *)obj);
+				CDBonusCollisionCheck((Object_G2 *)obj);
 				if (obj->mode2) {
 					if ((obj->AnimFlags & 0x8000) == 0) {
 						actiontick((Object *)obj);

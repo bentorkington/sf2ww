@@ -104,8 +104,7 @@ void _BlankaCatchSet(Player *ply) {		//2e8a6
 }
 
 void _BlankaSetAnim(Player *ply, u16 d0, u16 d1) {		// 2ef68
-    u32 offset = RHReadWord(0x46df4 + d0);
-    RHSetActionList((Object *)ply, offset, d1);
+    RHSetActionList((Object *)ply, RHOffsetLookup16(RHCODE(0x46df4), d0 / 2), d1);
 }
 
 void PSCBVictoryBlanka(Player *ply) {
