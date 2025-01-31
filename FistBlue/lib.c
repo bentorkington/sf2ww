@@ -27,19 +27,12 @@
 #include "effects.h"
 #include "sm.h"
 
-#ifdef REDHAMMER
-#import "demo.h"
-#endif
-
-#ifdef __APPLE__
-#include <execinfo.h>
-#endif
 
 #ifndef CPS
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
-
+#include <execinfo.h>
 #endif
 
 #include "libdata.h"
