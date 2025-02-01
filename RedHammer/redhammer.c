@@ -187,7 +187,7 @@ const u8 RH2DByte(u32 base, int dim2, int i1, int i2)
 
 inline u32 RHSwapLong(const u32 num)
 {
-#ifdef __LITTLE_ENDIAN__
+#ifdef SF2_ENDIAN_LITTLE
     return ((num>>24)&0xff) | ((num<<8)&0xff0000) | ((num>>8)&0xff00) | ((num<<24)&0xff000000);
 #else
     return num;
@@ -196,7 +196,7 @@ inline u32 RHSwapLong(const u32 num)
 
 inline u16 RHSwapWord(const u16 num)
 {
-#ifdef __LITTLE_ENDIAN__
+#ifdef SF2_ENDIAN_LITTLE
     return ((num >> 8) & 0xff) | ((num << 8) & 0xff00);
 #else
     return num;
