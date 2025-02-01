@@ -44,11 +44,13 @@
 
 extern struct game g;
 extern struct inputs gInputs;
-
+extern int gShowHelp;
 //#define DEBUG
 
 extern CPSGFXEMU gemu;
-int time_wait=12;
+
+/// Set the overall game speed here, set to 1000 / FPS
+int time_wait = 12; // milliseconds
 
 typedef struct {
    GLdouble x,y,z;
@@ -119,10 +121,12 @@ void reshape (int w, int h) {
     gfx_glut_reshape(w, h);
     glutPostRedisplay();
 }
+
 void maindisplay(void) {
     gfx_glut_drawgame();
     glutSwapBuffers();
 }
+
 void mouse (int button, int state, int x, int y) {
     switch (button) {
         case GLUT_LEFT_BUTTON:
@@ -147,9 +151,11 @@ void mouse (int button, int state, int x, int y) {
             break;
     }
 }
+
 void mouseMotion(int x, int y) {
     gfx_glut_mousedragged(x, y);
 }
+
 void special(int key, int px, int py) {
     switch (key) {
         case GLUT_KEY_UP:		gInputs.p10 |= JOY_UP;    break;
@@ -181,13 +187,6 @@ void keyup(unsigned char inkey, int px, int py) {
         case '2':       gInputs.in0 &= ~IPT_START2;	            break;
         case '5':       gInputs.in0 &= ~IPT_COIN1;	            break;
         case '6':       gInputs.in0 &= ~IPT_COIN2;	            break;
-        
-#ifdef REDHAMMER
-        case 'k':
-            g.Player2.Energy = -1;      break;
-        case 'K':
-            g.Player1.Energy = -1;      break;
-#endif
         default: break;
     }
 }
@@ -208,15 +207,25 @@ void key(unsigned char inkey, int px, int py){
         case '5':       gInputs.in0 |= IPT_COIN1;	   break;
         case '6':       gInputs.in0 |= IPT_COIN2;	   break;
             
+#ifdef REDHAMMER
+        case 'k':
+            g.Player2.Energy = -1;      break;
+        case 'K':
+            g.Player1.Energy = -1;      break;
+        case '[':
+            gShowHelp = !gShowHelp;     break;
+#endif
     }
 }
+
 void timerFunc(int value) {
     task_timer();
   
     glutPostRedisplay();
     glutTimerFunc(time_wait, timerFunc, 0);
 }
-int main (int argc, const char * argv[])
+
+int main(int argc, const char * argv[])
 {
     load_cps_roms();
 
@@ -231,13 +240,13 @@ int main (int argc, const char * argv[])
     
     glutIgnoreKeyRepeat(TRUE);
 
-    glutReshapeFunc (reshape);
-    glutDisplayFunc (maindisplay);
-    glutKeyboardFunc (key);
+    glutReshapeFunc(reshape);
+    glutDisplayFunc(maindisplay);
+    glutKeyboardFunc(key);
     glutKeyboardUpFunc(keyup);
-    glutSpecialFunc (special);
-    glutSpecialUpFunc (specialup);
-    glutMouseFunc (mouse);
+    glutSpecialFunc(special);
+    glutSpecialUpFunc(specialup);
+    glutMouseFunc(mouse);
     glutMotionFunc(mouseMotion);
     glutTimerFunc(40, timerFunc, 0);
     glutMainLoop();

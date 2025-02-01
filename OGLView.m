@@ -32,11 +32,15 @@
 
 #include "redhammer.h"
 
+// You're not the boss of me
+#define GL_SILENCE_DEPRECATION 1
 #define DEBUG TRUE
+
 extern Game g;
 extern CPSGFXEMU gemu;
 
 extern int gGameInWindow;
+extern int gShowHelp;
 LBView *gGameTitleBar;
 LBView *gGameWindowIcon;
 LBView *gGameArea;
@@ -112,8 +116,6 @@ GLfloat gShapeSize = 11.0f;
     gGameTitleBar     = addSubView(gameView, &DrawTitleBar, &DragBarClicked, WIN_TITLE_HEIGHT + 8, 2, 400 - (WIN_TITLE_HEIGHT + 10), WIN_TITLE_HEIGHT - 4);
     gGameArea         = addSubView(gameView, &DrawNull, &GameViewClicked, 0, WIN_TITLE_HEIGHT, 400, 300);			// XXX
     
-    
-    
     manual_init();
     
     timer = [[NSTimer scheduledTimerWithTimeInterval:1.0 / 60
@@ -137,8 +139,6 @@ void renderDummy(struct view *view) {
     glDisable(GL_TEXTURE_2D);
     glPopMatrix();
 }
-
-
 
 - (id)initWithCoder:(NSCoder *)c
 {
@@ -281,6 +281,7 @@ void renderDummy(struct view *view) {
             case 'K': g.Player2.Energy = -1;           break;
             case 'p': g.JPParam ^= JP_FREEZE;          break;
             case 'W': gGameInWindow = 1-gGameInWindow; break;
+            case '[': gShowHelp = !gShowHelp;          break;
             default:
                 break;
         }

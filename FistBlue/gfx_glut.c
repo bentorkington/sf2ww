@@ -56,7 +56,6 @@ char    GfxGlut_FadeEnable;            /* whether or not to apply fading to pale
 
 unsigned char tile[32][32];     /* temporary buffer for converting tiles */
 
-
 int gemu_scroll_enable[4];
 
 FILE * gfxrom;
@@ -83,11 +82,9 @@ clock_t start, finish ;
 double duration, frames, FPS ;
 float lightX, theta, radius;
 
-int gframecnt = 0;
-int camera=0;
-int texture_mode=1;
-int enable_lighting=1;
-int showTextures=1;
+int texture_mode = 1;
+int enable_lighting = 1;
+int showTextures = 1;
 
 #define DTOR 0.0174532925
 
@@ -136,8 +133,7 @@ GLboolean gTrackBall;
 
 int gGameInWindow = 0;
 int gShowInfo = 1;
-int gShowHelp = 1;
-
+int gShowHelp = 0;
 
 GLint va_scroll1[65 * 65][3];
 GLuint vaindex_scroll1[64 * 64][4];
@@ -445,6 +441,7 @@ void gemu_readtile_scroll2(u16 tileid) {
         }
     }
 }
+
 void gemu_readtile_scroll3(u16 tileid) {
     unsigned char pixbit[8] = { 128, 64, 32, 16, 8, 4, 2, 1 };
     int u, v;
@@ -517,8 +514,8 @@ static void draw_scroll1(void) {
 	GLfloat master = (gemu.PalScroll1[0][0] & PALETTE_MASK_BRIGHTNESS) / TILE_BRIGHT_TO_FLOAT;
 	glColor3f(master, master, master);
 	
-	for(y=0; y<32; y++) {
-        for(x=0; x<48; x++) {
+	for (y = 0; y < 32; y++) {
+        for (x = 0; x < 48; x++) {
 			int gx = x + ((g.CPS.Scroll1X >> 3) & 0x3f);
             int element = SCROLL_DECODE_SCR1(gx, y);
 			
@@ -563,12 +560,12 @@ glEnd();
 	
 	
 	glEnable(GL_TEXTURE_2D);
-	for (j=0; j<0x100; j++) {
+	for (j = 0; j < 0x100; j++) {
 		if(gemu.Tilemap_Object[j][3] == TILE_OBJECT_END_TAG) {	// End Tag
 			break;
 		}
 	}
-	for (i=j; i>=0; i--) {
+	for (i = j; i >= 0; i--) {
 		tile = gemu.Tilemap_Object[i][2];
 		if (tile != 0) {
 			pal    = gemu.Tilemap_Object[i][3] & 0x1f;
@@ -763,12 +760,9 @@ static void draw_scroll2_planes(void) {
                 glTexCoord2f(flips[flip][3][0],flips[flip][3][1]);
                 glVertex3f(((sx+1) * size), (( sy ) * size), zTop);
                 glEnd();
-
-
             }
         }
     }
-    
 }
 
 static void draw_scroll3(void) {
@@ -865,20 +859,17 @@ void gfx_glut_drawgame(void) {
 	glEnable(GL_LIGHTING);
 	glEnable(GL_BLEND);
 	
-	gframecnt++;
-    finish = clock() ;
-	duration += (double)(finish - start) / CLOCKS_PER_SEC ;
-	frames ++ ;
-	FPS = frames / duration ;
-	start = clock() ;
-	
+    finish = clock();
+	duration += (double)(finish - start) / CLOCKS_PER_SEC;
+	frames++;
+	FPS = frames / duration;
+	start = clock();
 
 	glScalef(0.3, -0.3, 0.3);
 	
-	glClearColor (0.2f, 0.1f, 0.0f, 1.0f);	// clear the surface
+	glClearColor(0.0f, 0.0f, 0.0f, 1.0f);	// clear the surface
 	glClear (GL_COLOR_BUFFER_BIT);
-	
-	
+
 	if (enable_lighting) {
 		glEnable(GL_LIGHTING);
 	} else {
@@ -904,13 +895,6 @@ void gfx_glut_drawgame(void) {
 		glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 		glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
 	}
-	
-//    memcpy(&gemu, ehonda, 0x20000); // XXX
-//    
-//    g.CPS.Scroll1X = 0x1c6;
-//    
-//    g.CPS.Scroll2X = 0x108 + 0xc0;
-//    g.CPS.Scroll3X = 0x1c4;
     
     SCROLL[(g.CPS.DispEna >>   6) & 3]();
 	SCROLL[(g.CPS.DispEna >>   8) & 3]();
@@ -948,8 +932,7 @@ void drawGLText(recCamera cam) {
 	GLint lineSpacing = 13;
 	GLint line = 0;
 	GLint startOffest = 7;
-	
-	
+
 	glGetIntegerv(GL_VIEWPORT, vp);
 	glViewport(0, 0, cam.screenWidth, cam.screenHeight);
 	
@@ -963,24 +946,10 @@ void drawGLText(recCamera cam) {
 	
 	glTranslatef(-cam.screenWidth / 2.0f, -cam.screenHeight / 2.0f, 0.0f);
 	
-	
 	// draw 
 	glDisable(GL_LIGHTING);
 	glColor3f (1.0, 1.0, 1.0);
-	if (gShowInfo && camera) {
-		
-		sprintf (outString, "Camera Position: (%0.1f, %0.1f, %0.1f)", gCamera.viewPos.x, gCamera.viewPos.y, gCamera.viewPos.z);
-		drawGLString (10, cam.screenHeight - (lineSpacing * line++) - startOffest, outString);
-		sprintf (outString, "Trackball Rotation: (%0.1f, %0.2f, %0.2f, %0.2f)", gTrackBallRotation[0], gTrackBallRotation[1], gTrackBallRotation[2], gTrackBallRotation[3]);
-		drawGLString (10, cam.screenHeight - (lineSpacing * line++) - startOffest, outString);
-		sprintf (outString, "World Rotation: (%0.1f, %0.2f, %0.2f, %0.2f)", gWorldRotation[0], gWorldRotation[1], gWorldRotation[2], gWorldRotation[3]);
-		drawGLString (10, cam.screenHeight - (lineSpacing * line++) - startOffest, outString);
-		sprintf (outString, "Aperture: %0.1f", gCamera.aperture);
-		drawGLString (10, cam.screenHeight - (lineSpacing * line++) - startOffest, outString);
-		sprintf (outString, "Focus Distance: %0.1f", gCamera.focalLength);
-		drawGLString (10, cam.screenHeight - (lineSpacing * line++) - startOffest, outString);
-	}
-	
+
 	if (gGameInWindow) {
 		DrawFrameAndTitle(gameView, gCamera.screenHeight);		
 		DrawFrameAndTitle(dummyWindow->view, gCamera.screenHeight);
@@ -990,6 +959,7 @@ void drawGLText(recCamera cam) {
 	infoView.rect.top    =  20;
 	infoView.rect.width  = 580;
 	infoView.rect.height = 180;
+
 	if (gShowHelp) {
 		glColor4f(0.3, 0.3, 0.3, 0.7);		
 		DrawMyFrame(&infoView);
@@ -1108,13 +1078,9 @@ void drawGLText(recCamera cam) {
 				 g.coinslot1.shifted_bits,
 				 g.CoinStatus);
 		drawGLString(10, (lineSpacing * line++) + startOffest, outString);
-		
-				 
-		
-		
+
 		glTranslatef(-infoView.rect.left, -infoView.rect.top, 0.0);
 		glDisable(GL_SCISSOR_TEST);
-		
 	}
 	
 	glPopMatrix();
@@ -1205,9 +1171,11 @@ void gfx_glut_rightmousedown(int px, int py) {
 void gfx_glut_mousedragged(int px, int py) {
 	mouseTrackball(px, py);
 }
+
 void gfx_glut_rightmousedragged(int px, int py) {
 	mouseDolly(px, py);
 }
+
 void gfx_glut_mouseup(int px, int py) {
 	gTrackBall = GL_FALSE;
 	rollToTrackball (px, py, gTrackBallRotation);
@@ -1215,6 +1183,7 @@ void gfx_glut_mouseup(int px, int py) {
 		addToRotationTrackball (gTrackBallRotation, gWorldRotation);
 	gTrackBallRotation [0] = gTrackBallRotation [1] = gTrackBallRotation [2] = gTrackBallRotation [3] = 0.0f;	
 }
+
 void gfx_glut_rightmouseup(int px, int py) {
 	mouseDolly(px, py);
 	gDolly = GL_FALSE;
