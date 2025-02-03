@@ -33,7 +33,7 @@
 #endif 
 // Big Endian CPUs
 
-#ifdef __POWERPC__
+#ifdef __powerpc__
 #define SF2_ENDIAN_BIG
 #define SF2_CPU_POWERPC
 #endif
