@@ -1,17 +1,14 @@
 /* playerstate.c */
 
-#include "sf2.h"
-
 #include "gstate.h"
+#include "sf2macros.h"
 #include "structs.h"
 #include "player.h"
 
 #include "structs.h"
 #include "particle.h"
-#include "sprite.h"
 #include "sound.h"
 
-#include "gfxlib.h"
 #include "sf2io.h"
 
 #include "playerstate.h"
@@ -31,10 +28,7 @@
 #include "blanka.h"
 #include "chunli.h"
 
-
 extern Game g;
-//extern struct geepee GP;
-
 
 extern u16 data_2aa30[12][4][4];
 extern struct smalladjust data_29126[];
@@ -59,21 +53,19 @@ void PSCBVictoryZangeif(Player *ply);
 // walking speed of each avatar
 
 const short data_2abb0[12][8] = {
-	{ -0x300, 0x0000, 0x0200, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000,  },
-	{ 0xfda0, 0x0000, 0x01a0, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000,  },
-	{ 0xfdc0, 0x0000, 0x01e0, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000,  },
-	{ 0xfca0, 0x0000, 0x0280, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000,  },
-	{ 0xfd00, 0x0000, 0x0200, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000,  },
-	{ 0xfc00, 0x0000, 0x0300, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000,  },
-	{ 0xfd80, 0x0000, 0x0180, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000,  },
-	{ 0xfe00, 0x0000, 0x0160, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000,  },
-	{ 0xfc00, 0x0000, 0x0300, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000,  },
-	{ 0xfd80, 0x0000, 0x0200, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000,  },
-	{ 0xfc80, 0x0000, 0x0300, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000,  },
-	{ 0xfb80, 0x0000, 0x0380, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000,  },
+	{ -0x300, 0, 0x0200, 0, 0, 0, 0, 0  },
+	{ 0xfda0, 0, 0x01a0, 0, 0, 0, 0, 0  },
+	{ 0xfdc0, 0, 0x01e0, 0, 0, 0, 0, 0  },
+	{ 0xfca0, 0, 0x0280, 0, 0, 0, 0, 0  },
+	{ 0xfd00, 0, 0x0200, 0, 0, 0, 0, 0  },
+	{ 0xfc00, 0, 0x0300, 0, 0, 0, 0, 0  },
+	{ 0xfd80, 0, 0x0180, 0, 0, 0, 0, 0  },
+	{ 0xfe00, 0, 0x0160, 0, 0, 0, 0, 0  },
+	{ 0xfc00, 0, 0x0300, 0, 0, 0, 0, 0  },
+	{ 0xfd80, 0, 0x0200, 0, 0, 0, 0, 0  },
+	{ 0xfc80, 0, 0x0300, 0, 0, 0, 0, 0  },
+	{ 0xfb80, 0, 0x0380, 0, 0, 0, 0, 0  },
 };
-
-
 
 static short PSGetRoundResult(void) {		/* 2a768 */
 	return g.RoundResult;
@@ -82,10 +74,10 @@ static short PSGetRoundResult(void) {		/* 2a768 */
 void PSEntry(Player *ply) {   /* 0x28396 was: player_per_frame */
     short offsetsel;
 	
-    if(ply->Human) {      		
+    if (ply->Human) {      		
         human_per_frame(ply);
     } else {             
-        if(g.OnBonusStage) {
+        if (g.OnBonusStage) {
 			/* shouldn't happen */
             ply->PSFinishedParticipating = TRUE;
         } else {
@@ -97,8 +89,8 @@ void PSEntry(Player *ply) {   /* 0x28396 was: player_per_frame */
 	
 	// Update an 'extra' sprite associated with an avatar, such as Vega's claw
     ply->ExtraSpriteEna = FALSE;
-    if(ply->exists && ply->VegaHasClaw) {
-        if((offsetsel = ply->ActionScript->ExtraSprite)) {
+    if (ply->exists && ply->VegaHasClaw) {
+        if ((offsetsel = ply->ActionScript->ExtraSprite)) {
             ply->ExtraSpriteEna = TRUE;
             ply->Draw_OffsetX = ply->Sprite2[offsetsel].Offset.x;
             ply->Draw_OffsetY = ply->Sprite2[offsetsel].Offset.y;
@@ -150,7 +142,7 @@ static void PSDizzyRandomise(Player *ply) {	        	/* 2a638 4 callers */
 	};
 	
 	ply->DizzyCount += data_2a698[RAND32];			/* chars */
-	if(ply->DizzyCount > 0x1e) {
+	if (ply->DizzyCount > 0x1e) {
 		PSMakeDizzy(ply);
 	}
 }
@@ -159,12 +151,12 @@ static void PSDizzyAccounting(Player *ply) {
 	static const u16 data_2a5ec[3][2] = {{0x6, 0x28},{0xb, 0x37},{0xe, 0x50}};
 	
 	if (ply->BlockStun) { return; }
-	if(ply->DizzyFall) {
+	if (ply->DizzyFall) {
 		PSMakeDizzy(ply);
 		return;
 	}
-	if(ply->IsBlockingSuper) {
-		if(ply->ReactMode == RM_MULTIHIT) {
+	if (ply->IsBlockingSuper) {
+		if (ply->ReactMode == RM_MULTIHIT) {
 			ply->DizzyCount    +=   8;
 			ply->DizzyClearCnt += 120;
 		} else {
@@ -221,15 +213,15 @@ static void PSPlayerDamage(Player *ply, short energy){		//2a460
 	ply->Invincible   = FALSE;
 	ply->BlockStun    = FALSE;
 	
-	if(ply->DizzyFall == FALSE && (ply->ReactMode == RM_HURRICANE 
+	if (ply->DizzyFall == FALSE && (ply->ReactMode == RM_HURRICANE 
 						        || ply->ReactMode == RM_MULTIHIT)) {
 		ply->Invincible = TRUE;
 	}
-	if(ply->VegaHasClaw) {
-		if(ply->ClawCnt <= 8) {
+	if (ply->VegaHasClaw) {
+		if (ply->ClawCnt <= 8) {
 			ply->ClawCnt++;
 		} else {
-			if( 0xdfdf & (1 << (RAND16)) ) {
+			if (0xdfdf & (1 << (RAND16))) {
 				ply->VegaHasClaw = FALSE;
 				action_1cd3c(ply);
 			}
@@ -320,15 +312,15 @@ void human_per_frame(Player *ply) {		/* 285f4 */
         CASetAnim1(ply, STATUS_NORMAL);
         break;
     case 2:
-        if(g.OnBonusStage) {
+        if (g.OnBonusStage) {
             if (ply->TimerInvincible) {
                 ply->TimerInvincible--;
             }
-            if(ply->Energy != ply->EnergyDash) {
+            if (ply->Energy != ply->EnergyDash) {
                 ply->Energy = ply->EnergyDash ^ 0x1;
             }
         }
-        if(ply->MultiHoldoff)	/* hit by chunli, honda or blanka multi */
+        if (ply->MultiHoldoff)	/* hit by chunli, honda or blanka multi */
 			ply->MultiHoldoff--;  
 			                  
         check_powermove_input(ply);
@@ -412,7 +404,6 @@ static void _PSDizzyStruggle(Player *ply) {		//29fe0
 		0xfc000000, 0xfc000000, 0xf8000000, 0xf8000000,
 		0xf8000000, 0xf8000000, 0xf0000000, 0xf0000000,
 		0xf0000000, 0xe0000000, 0xc0000000, 0x80000000,
-		
 		0xffff0000, 0xffff0000, 0xfffe0000, 0xfffe0000, 
 		0xfffc0000, 0xfffc0000, 0xfff80000, 0xfff80000,
 		0xfff00000, 0xfff00000, 0xffe00000, 0xffc00000,
@@ -432,7 +423,7 @@ static void _PSDizzyStruggle(Player *ply) {		//29fe0
 		}
 	} else {
 		/* 2a01a computer */
-		if(data_98cd2[ply->Difficulty] & (1 << RAND32)) {		/* u32 x 32 */
+		if (data_98cd2[ply->Difficulty] & (1 << RAND32)) {		/* u32 x 32 */
 			ply->DizzyStruggle += (char []){
 				2,2,1,2,2,1,3,1,3,2,1,1
 			}[ply->FighterID];
@@ -546,7 +537,7 @@ void sub_28814(Player *ply) {			// 28814
 #pragma mark ---- proc_plstat_* ----
 
 void proc_plstat_normal(Player *ply) {          /* 286cc */
-    int temp;
+    int move;
 	
     switch (ply->mode2){
 		case 0:
@@ -559,25 +550,19 @@ void proc_plstat_normal(Player *ply) {          /* 286cc */
 			/* FALLTHRU */
 		case 2:
 			set_towardsaway(ply);
-			if(PSGetRoundResult())
-				react_to_result(ply);
-			else if (is_facing_enemy(ply))
-				turn_around(ply); 
-			else if (is_holding_down(ply))
-				crouch(ply);   
+			if (PSGetRoundResult())         react_to_result(ply);
+			else if (is_facing_enemy(ply))  turn_around(ply); 
+			else if (is_holding_down(ply))  crouch(ply);   
 			else {
-				temp = ply_cb_standmove(ply);
-				if (temp > 0)
+				move = ply_cb_standmove(ply);
+				if (move > 0)
 					set_attacking(ply);
-				else if (temp == 0) {
-					if ( is_pushing_up(ply) )
-						set_jumping(ply);  
-					else if ( retreat_or_block(ply) )
-						set_standblock(ply);
-					else if ( check_platform_end(ply) )
-						set_falling_from_platform(ply);
+				else if (move == 0) {
+					if (is_pushing_up(ply))           set_jumping(ply);  
+					else if (retreat_or_block(ply))   set_standblock(ply);
+					else if (check_platform_end(ply)) set_falling_from_platform(ply);
                     else {
-                        if ( ply->Step != ply->StepSave ) {
+                        if (ply->Step != ply->StepSave) {
                             ply->StepSave = ply->Step;
                             CASetAnimWithStep(ply, STATUS_WALKING);
                         }
@@ -590,34 +575,32 @@ void proc_plstat_normal(Player *ply) {          /* 286cc */
 		FATALDEFAULT
     }
 }
+
 void proc_plstat_crouch(Player *ply) {		// 28940
     int result;
 	
     switch (ply->mode2){
 		case 0:
 			PLAYERTICK;
-			if(check_platform_end(ply))
-                set_falling_from_platform(ply);
-			else if ( PSGetRoundResult() )
-                react_to_result(ply);
-			else if ( is_facing_enemy(ply) )
-                turn_around(ply);
-			else if ( is_holding_down(ply) ) {
+			if(check_platform_end(ply))    set_falling_from_platform(ply);
+			else if (PSGetRoundResult())   react_to_result(ply);
+			else if (is_facing_enemy(ply)) turn_around(ply);
+			else if (is_holding_down(ply)) {
 				/* 289b2 */
 				result = ply_cb_crouchmove(ply);
                 if (result > 0) {
-                    if (result)
+                    if (result) // XXX always true
                         set_attacking(ply);
                     else if (retreat_or_block(ply) )
                         standblock_crouch(ply);
                 }
 			} else {
 				result = ply_cb_standmove(ply);
-                if ( result > 0 ) {
+                if (result > 0) {
                     set_attacking(ply);
                 }
                 else if (result == 0) {
-                    if ( is_pushing_up(ply) )
+                    if (is_pushing_up(ply))
                         set_jumping(ply);
                     else if ( retreat_or_block(ply) )
                         set_standblock(ply);
@@ -631,35 +614,25 @@ void proc_plstat_crouch(Player *ply) {		// 28940
 		case 2:
 			// 289c8
 			PLAYERTICK;
-			if (check_platform_end(ply))
-				set_falling_from_platform(ply);
-			else if (PSGetRoundResult())
-				react_to_result(ply);
-			else if (is_facing_enemy(ply))
-				turn_around(ply);
+			if (check_platform_end(ply))   set_falling_from_platform(ply);
+			else if (PSGetRoundResult())   react_to_result(ply);
+			else if (is_facing_enemy(ply)) turn_around(ply);
 			else if (is_holding_down(ply)) {
 				result = ply_cb_crouchmove(ply);
-				if (result<0) {
-					return;
-				} else if (result > 0) {
-					set_attacking(ply);
-				} else if (retreat_or_block(ply)) {
-					standblock_crouch(ply);
-				} else if (ply->Flip != 2) {
+				if (result < 0)                 return;
+				else if (result > 0)            set_attacking(ply);
+				else if (retreat_or_block(ply)) standblock_crouch(ply);
+				else if (ply->Flip != 2) {
 					ply->mode2 = 0;
 					CASetAnim2(ply, STATUS_CROUCH, AF2);
 				}
 			} else {
 				result = ply_cb_standmove(ply);
-				if (result < 0) {
-					return;
-				} else if (result > 0) {
-					set_attacking(ply);
-				} else if (is_pushing_up(ply)) {
-					set_jumping(ply);
-				} else if (retreat_or_block(ply)) {
-					set_standblock(ply);
-				} else if (AF1) {
+				if (result < 0) return;
+				else if (result > 0)            set_attacking(ply);
+				else if (is_pushing_up(ply))    set_jumping(ply);
+				else if (retreat_or_block(ply)) set_standblock(ply);
+				else if (AF1) {
 					ply_exit_stand(ply);
 				}
 			}
@@ -963,7 +936,7 @@ void proc_plstat_victory(Player *ply) {		//296f2
 					_PSPlatformCheck(ply);
 					break;
 				case 4:
-					if (g.FlagTimeWarp==0) {
+					if (g.FlagTimeWarp == 0) {
 						NEXT(ply->mode2);
 						ply->LocalTimer = 40;
 					}
@@ -1051,7 +1024,6 @@ void proc_plstat_victory(Player *ply) {		//296f2
 }
 
 void jump_physics(Player *ply) {       /* 0x28aa4 do jump physics, player to ground collision, and react */
-    
 	CATrajectory((Object *)ply);
     if(ply->VelY.full < 0) {    /* on the way back down? */
         if(PLAYERGROUND) {

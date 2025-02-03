@@ -36,6 +36,9 @@ short g_tilecount;	/* tile budget */
 /* Trigonometry data cos(a), sin(a), -sin(a), cos(a) 
    steps of 11.25 degrees, 8 steps = 90 degrees    */
 
+/* Two curiosities here: it's not clear why there's a second column for cos(), and
+ * I imagine integer wrap-around is responsible for sin(270) to be wrong. */
+
 static const short data_trig[32][4] = {		/* 7f030 */
     {   256,     0,     0,   256,  },
     {   250,    49,   -49,   250,  },
@@ -604,6 +607,10 @@ static void sub_7e6b8(void) {	// cousin of spritelib_drawall
 	ds_draw_hiragana();
 }
 
+
+/* The CPS uses double-buffered tile maps. Since RedHammer takes care of all that, we patch it out here.
+ * Haven't found any side effects so far */
+
 /* 7e4dc 910300 160 */
 void sub_7e4dc(void) {		
 	debughook(5);
@@ -681,8 +688,6 @@ void DSDrawAll_Hira(void) {		/* library */
 	swap_object_buffer();
 }
 
-
-
 static void swap_object_buffer(void) {	/* 7e610 */
 	if (g.DisableDblBuf) {
 		g.CPS.ObjBase = 0x9100;	/* flip bit in DblBuffer emu */
@@ -733,6 +738,7 @@ const short *sub_7f224(u16 dim) {  /* 7f224 lookup for an array of tile coords p
 		return &data_7f7f2[data_7f6f2[dim]];
 	}
 }
+
 static void draw_player_extrasprite(Player *ply) {	/* 7ed04 */
 	short coordpair[2];
 	const short *coordpointer;
@@ -785,6 +791,7 @@ static void _DSDrawPlayers(void) {
 		draw_playersprite(PLAYER2);
 	}
 }
+
 inline static void draw_playersprite(Player *ply) {
 	if (ply->exists && ply->flag1) {
 		ply->OnGround = ply->Airborne;
@@ -792,6 +799,7 @@ inline static void draw_playersprite(Player *ply) {
 	}
     
 }
+
 static void _DSDrawShadows(void) {
 	/* 7e726 player shadows */
 	/* was drawsprites_118a 
@@ -812,6 +820,7 @@ void DSDrawShadows(void) {			/* 7bc00 */
     draw_shadow(PLAYER1, &g.Ply1Shadow);
     draw_shadow(PLAYER2, &g.Ply2Shadow);    
 }
+
 void draw_shadow(Player *ply, Object *obj) {    //7bc14
     if (obj->mode0 == 0) {
         obj->mode0  = 2;

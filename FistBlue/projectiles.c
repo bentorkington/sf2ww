@@ -223,5 +223,4 @@ static void sub_23508(Object *obj, short d7) {	/* Yoga Flame */
 			break;
 		FATALDEFAULT;
 	}
-	
 }

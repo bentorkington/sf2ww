@@ -60,7 +60,6 @@ void palette_base_1k(void) {		// move me back to gfxlib
 
 void scroll1_base_1k(short stage) {
     int u, v;
-    printf ("Setting palette stage %d\n",stage);
     for(u=0; u<32; u++) {
         for(v=0; v<16; v++) {
             gemu.PalScroll1[u][v] = RH3DWord(0xc0000, 32, 16, stage, u, v);
@@ -70,7 +69,6 @@ void scroll1_base_1k(short stage) {
 
 void scroll2_base_1k(short stage) {
     int u, v;
-    printf ("Setting palette stage %d\n",stage);
     for(u=0; u<32; u++) {
         for(v=0; v<16; v++) {
             /* convert 4-bit RGBM to 8-bit RGBM */
@@ -81,7 +79,6 @@ void scroll2_base_1k(short stage) {
 
 void scroll3_base_1k(short stage) {
     int u, v;
-    printf ("Setting palette stage %d\n",stage);
     for(u=0; u<32; u++) {
         for(v=0; v<16; v++) {
             /* convert 4-bit RGBM to 8-bit RGBM */
