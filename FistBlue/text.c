@@ -43,7 +43,7 @@ void sub_54bc(u16 **gfx_p, short x, short y, u8 *string) {		// 54bc
 		sub_5162(gfx_p, &cp, string[1], &leadingzero, 13);
 		sub_5162(gfx_p, &cp, string[0], &leadingzero, 13);
 #else
-	 	sub_516a(gfx_p, &cp, string[0], &leadingzero, 13);
+	 	CreateIntegerSprite(gfx_p, &cp, string[0], &leadingzero, 13);
 		sub_5162(gfx_p, &cp, string[1], &leadingzero, 13);
 		sub_5162(gfx_p, &cp, string[2], &leadingzero, 13);
 		sub_5162(gfx_p, &cp, string[3], &leadingzero, 13);
