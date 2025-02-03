@@ -46,6 +46,8 @@
 		B519C6AD253C03CF0084B88D /* trackball.c in Sources */ = {isa = PBXBuildFile; fileRef = B5ADB7B013B2B38400905DFE /* trackball.c */; };
 		B519C714253C27020084B88D /* PointSprite.swift in Sources */ = {isa = PBXBuildFile; fileRef = B519C713253C27020084B88D /* PointSprite.swift */; };
 		B519C723253C92EC0084B88D /* gfx_glcore.c in Sources */ = {isa = PBXBuildFile; fileRef = B519C722253C92EC0084B88D /* gfx_glcore.c */; };
+		B51B92A12D4DDF8100C243EB /* allroms.bin in Resources */ = {isa = PBXBuildFile; fileRef = B5B7EF232D4D7A5C00D7D54F /* allroms.bin */; };
+		B51B92A22D4DDF8500C243EB /* sf2gfx.bin in Resources */ = {isa = PBXBuildFile; fileRef = B5B39B69157832F200494662 /* sf2gfx.bin */; };
 		B51D1C99253BE07100CEB195 /* redhammer.c in Sources */ = {isa = PBXBuildFile; fileRef = 6CF004551C2A01C9008EA965 /* redhammer.c */; };
 		B51D1CA1253BE0B500CEB195 /* GLUT.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B5ADB7BD13B2B3BE00905DFE /* GLUT.framework */; };
 		B51D1CA9253BE0C300CEB195 /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B5ADB7B913B2B3B300905DFE /* OpenGL.framework */; };
@@ -1595,6 +1597,8 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B51B92A12D4DDF8100C243EB /* allroms.bin in Resources */,
+				B51B92A22D4DDF8500C243EB /* sf2gfx.bin in Resources */,
 				8D11072B0486CEB800E47090 /* InfoPlist.strings in Resources */,
 				B5ADB7A913B2B2EA00905DFE /* MainMenu.xib in Resources */,
 			);
@@ -2601,7 +2605,7 @@
 				GCC_PREPROCESSOR_DEFINITIONS = "GL_SILENCE_DEPRECATION=1";
 				INFOPLIST_FILE = "MT2-Info.plist";
 				INSTALL_PATH = "$(HOME)/Applications";
-				MACOSX_DEPLOYMENT_TARGET = 10.9;
+				MACOSX_DEPLOYMENT_TARGET = 14.5;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.yourcompany.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = MT2;
 				SDKROOT = macosx;
@@ -2622,7 +2626,7 @@
 				GCC_PREPROCESSOR_DEFINITIONS = "GL_SILENCE_DEPRECATION=1";
 				INFOPLIST_FILE = "MT2-Info.plist";
 				INSTALL_PATH = "$(HOME)/Applications";
-				MACOSX_DEPLOYMENT_TARGET = 10.9;
+				MACOSX_DEPLOYMENT_TARGET = 14.5;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.yourcompany.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = MT2;
 				SDKROOT = macosx;
