@@ -114,3 +114,5 @@ endif()
 
 enable_testing()
 add_subdirectory(FBTests)
+
+install(TARGETS glutBasics DESTINATION bin)
